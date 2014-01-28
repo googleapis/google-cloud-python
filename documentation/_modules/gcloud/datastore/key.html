@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gcloud.datastore.key &mdash; gcloud 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="gcloud 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">gcloud 0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for gcloud.datastore.key</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">izip</span>
+
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+
+<div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="c"># TODO: Determine if this really should be immutable.</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  An immutable representation of a datastore Key.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span> <span class="ow">or</span> <span class="p">[{</span><span class="s">&#39;kind&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">}]</span>
+
+  <span class="k">def</span> <span class="nf">_clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Duplicates the Key.</span>
+
+<span class="sd">    We make a shallow copy of the :class:`gcloud.datastore.dataset.Dataset`</span>
+<span class="sd">    because it holds a reference an authenticated connection,</span>
+<span class="sd">    which we don&#39;t want to lose.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">clone</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="n">clone</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>  <span class="c"># Make a shallow copy of the Dataset.</span>
+    <span class="k">return</span> <span class="n">clone</span>
+
+  <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Key.from_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.from_protobuf">[docs]</a>  <span class="k">def</span> <span class="nf">from_protobuf</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">:</span>
+      <span class="n">element_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;kind&#39;</span><span class="p">:</span> <span class="n">element</span><span class="o">.</span><span class="n">kind</span><span class="p">}</span>
+
+      <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">):</span>
+        <span class="n">element_dict</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">id</span>
+
+      <span class="k">elif</span> <span class="n">element</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">):</span>
+        <span class="n">element_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span>
+
+      <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_dict</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dataset</span><span class="p">:</span>
+      <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Key.to_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.to_protobuf">[docs]</a>  <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Key</span><span class="p">()</span>
+
+    <span class="c"># Apparently &#39;s~&#39; is a prefix for High-Replication and is necessary here.</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">dataset_id</span><span class="p">:</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">dataset_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;s~&#39;</span><span class="p">):</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="s">&#39;s~&#39;</span> <span class="o">+</span> <span class="n">dataset_id</span>
+
+      <span class="n">key</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
+      <span class="n">key</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">():</span>
+      <span class="n">element</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">path_element</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+      <span class="k">if</span> <span class="s">&#39;kind&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span>
+      <span class="k">if</span> <span class="s">&#39;id&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+      <span class="k">if</span> <span class="s">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+        <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">key</span>
+</div>
+  <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Key.from_path"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.from_path">[docs]</a>  <span class="k">def</span> <span class="nf">from_path</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">id_or_name</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+      <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;kind&#39;</span><span class="p">:</span> <span class="n">kind</span><span class="p">}</span>
+      <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">entry</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>
+      <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
+    <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span>
+    <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Key.is_partial"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.is_partial">[docs]</a>  <span class="k">def</span> <span class="nf">is_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_or_name</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Key.dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.dataset">[docs]</a>  <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">dataset</span><span class="p">:</span>
+      <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+      <span class="n">clone</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+      <span class="k">return</span> <span class="n">clone</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>
+</div>
+<div class="viewcode-block" id="Key.namespace"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.namespace">[docs]</a>  <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">namespace</span><span class="p">:</span>
+      <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+      <span class="n">clone</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
+      <span class="k">return</span> <span class="n">clone</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span>
+</div>
+<div class="viewcode-block" id="Key.path"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.path">[docs]</a>  <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
+      <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+      <span class="n">clone</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
+      <span class="k">return</span> <span class="n">clone</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+</div>
+<div class="viewcode-block" id="Key.kind"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.kind">[docs]</a>  <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">kind</span><span class="p">:</span>
+      <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+      <span class="n">clone</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kind</span>
+      <span class="k">return</span> <span class="n">clone</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">():</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;kind&#39;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Key.id"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.id">[docs]</a>  <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">id</span><span class="p">:</span>
+      <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+      <span class="n">clone</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+      <span class="k">return</span> <span class="n">clone</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">():</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Key.name"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.name">[docs]</a>  <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+      <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+      <span class="n">clone</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+      <span class="k">return</span> <span class="n">clone</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">():</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Key.id_or_name"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.id_or_name">[docs]</a>  <span class="k">def</span> <span class="nf">id_or_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">()</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Key.parent"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.parent">[docs]</a>  <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+  <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&#39;&lt;Key</span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">gcloud 0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, JJ Geewax.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

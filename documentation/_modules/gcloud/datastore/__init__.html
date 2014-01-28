@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gcloud.datastore.__init__ &mdash; gcloud 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="gcloud 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">gcloud 0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for gcloud.datastore.__init__</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Shortcut methods for getting set up with Google Cloud Datastore.</span>
+
+<span class="sd">You&#39;ll typically use these to get started with the API:</span>
+
+<span class="sd">&gt;&gt;&gt; import gcloud.datastore</span>
+<span class="sd">&gt;&gt;&gt; dataset = gcloud.datastore.get_dataset(&#39;dataset-id-here&#39;,</span>
+<span class="sd">                                          &#39;long-email@googleapis.com&#39;,</span>
+<span class="sd">                                          &#39;/path/to/private.key&#39;)</span>
+<span class="sd">&gt;&gt;&gt; # Then do other things...</span>
+<span class="sd">&gt;&gt;&gt; query = dataset.query().kind(&#39;EntityKind&#39;)</span>
+<span class="sd">&gt;&gt;&gt; entity = dataset.entity(&#39;EntityKind&#39;)</span>
+
+<span class="sd">The main concepts with this API are:</span>
+
+<span class="sd">- :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">  which represents a connection between your machine and the Cloud Datastore</span>
+<span class="sd">  API.</span>
+
+<span class="sd">- :class:`gcloud.datastore.dataset.Dataset`</span>
+<span class="sd">  which represents a particular dataset</span>
+<span class="sd">  (akin to a database name in relational database world).</span>
+
+<span class="sd">- :class:`gcloud.datastore.entity.Entity`</span>
+<span class="sd">  which represents a single entity in the datastore</span>
+<span class="sd">  (akin to a row in relational database world).</span>
+
+<span class="sd">- :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">  which represents a pointer to a particular entity in the datastore</span>
+<span class="sd">  (akin to a unique identifier in relational database world).</span>
+
+<span class="sd">- :class:`gcloud.datastore.query.Query`</span>
+<span class="sd">  which represents a lookup or search over the rows in the datastore.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;0.1.2&#39;</span>
+
+
+<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to the Cloud Datastore.</span>
+
+<span class="sd">  Use this if you are going to access several datasets</span>
+<span class="sd">  with the same set of credentials (unlikely):</span>
+
+<span class="sd">  &gt;&gt;&gt; import gcloud.datastore</span>
+<span class="sd">  &gt;&gt;&gt; connection = gcloud.datastore.get_connection(email, key_path)</span>
+<span class="sd">  &gt;&gt;&gt; dataset1 = connection.dataset(&#39;dataset1&#39;)</span>
+<span class="sd">  &gt;&gt;&gt; dataset2 = connection.dataset(&#39;dataset2&#39;)</span>
+
+<span class="sd">  :type client_email: string</span>
+<span class="sd">  :param client_email: The e-mail attached to the service account.</span>
+
+<span class="sd">  :type private_key_path: string</span>
+<span class="sd">  :param private_key_path: The path to a private key file (this file was</span>
+<span class="sd">                           given to you when you created the service</span>
+<span class="sd">                           account).</span>
+
+<span class="sd">  :rtype: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">  :returns: A connection defined with the proper credentials.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="kn">from</span> <span class="nn">connection</span> <span class="kn">import</span> <span class="n">Connection</span>
+  <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">Credentials</span>
+
+  <span class="n">credentials</span> <span class="o">=</span> <span class="n">Credentials</span><span class="o">.</span><span class="n">get_for_service_account</span><span class="p">(</span>
+      <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="get_dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_dataset">[docs]</a><span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to a particular dataset in the Cloud Datastore.</span>
+
+<span class="sd">  You&#39;ll generally use this as the first call to working with the API:</span>
+
+<span class="sd">  &gt;&gt;&gt; import gcloud.datastore</span>
+<span class="sd">  &gt;&gt;&gt; dataset = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">  &gt;&gt;&gt; # Now you can do things with the dataset.</span>
+<span class="sd">  &gt;&gt;&gt; dataset.query().kind(&#39;TestKind&#39;).fetch()</span>
+<span class="sd">  [...]</span>
+
+<span class="sd">  :type dataset_id: string</span>
+<span class="sd">  :param dataset_id: The id of the dataset you want to use.</span>
+<span class="sd">                     This is akin to a database name</span>
+<span class="sd">                     and is usually the same as your Cloud Datastore project</span>
+<span class="sd">                     name.</span>
+
+<span class="sd">  :type client_email: string</span>
+<span class="sd">  :param client_email: The e-mail attached to the service account.</span>
+
+<span class="sd">  :type private_key_path: string</span>
+<span class="sd">  :param private_key_path: The path to a private key file (this file was</span>
+<span class="sd">                           given to you when you created the service</span>
+<span class="sd">                           account).</span>
+
+<span class="sd">  :rtype: :class:`gcloud.datastore.dataset.Dataset`</span>
+<span class="sd">  :returns: A dataset with a connection using the provided credentials.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">gcloud 0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, JJ Geewax.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

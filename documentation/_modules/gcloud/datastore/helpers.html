@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gcloud.datastore.helpers &mdash; gcloud 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="gcloud 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">gcloud 0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for gcloud.datastore.helpers</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Helper methods for dealing with Cloud Datastore&#39;s Protobuf API.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">pytz</span>
+
+<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
+
+
+<div class="viewcode-block" id="get_protobuf_attribute_and_value"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.helpers.get_protobuf_attribute_and_value">[docs]</a><span class="k">def</span> <span class="nf">get_protobuf_attribute_and_value</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Given a value, return the protobuf attribute name and proper value.</span>
+
+<span class="sd">  The Protobuf API uses different attribute names</span>
+<span class="sd">  based on value types rather than inferring the type.</span>
+<span class="sd">  This method simply determines the proper attribute name</span>
+<span class="sd">  based on the type of the value provided</span>
+<span class="sd">  and returns the attribute name</span>
+<span class="sd">  as well as a properly formatted value.</span>
+
+<span class="sd">  Certain value types need to be coerced into a different type (such as a</span>
+<span class="sd">  `datetime.datetime` into an integer timestamp, or a</span>
+<span class="sd">  `gcloud.datastore.key.Key` into a Protobuf representation.</span>
+<span class="sd">  This method handles that for you.</span>
+
+<span class="sd">  For example:</span>
+
+<span class="sd">  &gt;&gt;&gt; get_protobuf_attribute_and_value(1234)</span>
+<span class="sd">  (&#39;integer_value&#39;, 1234)</span>
+<span class="sd">  &gt;&gt;&gt; get_protobuf_attribute_and_value(&#39;my_string&#39;)</span>
+<span class="sd">  (&#39;string_value&#39;, &#39;my_string&#39;)</span>
+
+<span class="sd">  :type val: `datetime.datetime`, :class:`gcloud.datastore.key.Key`,</span>
+<span class="sd">             bool, float, integer, string</span>
+<span class="sd">  :param val: The value to be scrutinized.</span>
+
+<span class="sd">  :returns: A tuple of the attribute name and proper value type.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;timestamp_microseconds&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+  <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Key</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
+  <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;boolean&#39;</span><span class="p">,</span> <span class="n">val</span>
+  <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;double&#39;</span><span class="p">,</span> <span class="n">val</span>
+  <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">)):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;integer&#39;</span><span class="p">,</span> <span class="n">val</span>
+  <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;string&#39;</span><span class="p">,</span> <span class="n">val</span>
+
+  <span class="k">return</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#39;_value&#39;</span><span class="p">,</span> <span class="n">value</span>
+
+</div>
+<div class="viewcode-block" id="get_value_from_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.helpers.get_value_from_protobuf">[docs]</a><span class="k">def</span> <span class="nf">get_value_from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;Given a protobuf for a Property, get the correct value.</span>
+
+<span class="sd">  The Cloud Datastore Protobuf API returns a Property Protobuf</span>
+<span class="sd">  which has one value set and the rest blank.</span>
+<span class="sd">  This method retrieves the the one value provided.</span>
+
+<span class="sd">  Some work is done to coerce the return value into a more useful type</span>
+<span class="sd">  (particularly in the case of a timestamp value, or a key value).</span>
+
+<span class="sd">  :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Property`</span>
+<span class="sd">  :param pb: The Property Protobuf.</span>
+
+<span class="sd">  :returns: The value provided by the Protobuf.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">if</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;timestamp_microseconds_value&#39;</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">timestamp_microseconds_value</span> <span class="o">/</span> <span class="mf">1e6</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+  <span class="k">elif</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;key_value&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="p">)</span>
+
+  <span class="k">elif</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;boolean_value&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">boolean_value</span>
+
+  <span class="k">elif</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;double_value&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">double_value</span>
+
+  <span class="k">elif</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;integer_value&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">integer_value</span>
+
+  <span class="k">elif</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;string_value&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">string_value</span>
+
+  <span class="k">else</span><span class="p">:</span>
+    <span class="c"># TODO(jjg): Should we raise a ValueError here?</span>
+    <span class="k">return</span> <span class="bp">None</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">gcloud 0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, JJ Geewax.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

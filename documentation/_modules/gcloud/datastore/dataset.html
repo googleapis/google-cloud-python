@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gcloud.datastore.dataset &mdash; gcloud 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="gcloud 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">gcloud 0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for gcloud.datastore.dataset</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;A dataset in the Cloud Datastore.</span>
+
+<span class="sd">  This class acts as an abstraction of a single dataset</span>
+<span class="sd">  in the Cloud Datastore.</span>
+
+<span class="sd">  A dataset is analogous to a database</span>
+<span class="sd">  in relational database world,</span>
+<span class="sd">  and corresponds to a single project</span>
+<span class="sd">  using the Cloud Datastore.</span>
+
+<span class="sd">  Typically, you would only have one of these per connection</span>
+<span class="sd">  however it didn&#39;t seem right to collapse the functionality</span>
+<span class="sd">  of a connection and a dataset together into a single class.</span>
+
+<span class="sd">  Datasets (like :class:`gcloud.datastore.query.Query`)</span>
+<span class="sd">  are immutable.</span>
+<span class="sd">  That is, you cannot change the ID and connection</span>
+<span class="sd">  references.</span>
+<span class="sd">  If you need to modify the connection or ID,</span>
+<span class="sd">  it&#39;s recommended to construct a new :class:`Dataset`.</span>
+
+<span class="sd">  :type id: string</span>
+<span class="sd">  :param id: The ID of the dataset (your project ID)</span>
+
+<span class="sd">  :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">  :param connection: The connection to use for executing API calls.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span>
+
+<div class="viewcode-block" id="Dataset.connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.connection">[docs]</a>  <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the current connection.</span>
+
+<span class="sd">      &gt;&gt;&gt; dataset = Dataset(&#39;dataset-id&#39;, connection=conn)</span>
+<span class="sd">      &gt;&gt;&gt; dataset.connection()</span>
+<span class="sd">      &lt;Connection object&gt;</span>
+
+<span class="sd">    :rtype: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :returns: Returns the current connection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span>
+</div>
+<div class="viewcode-block" id="Dataset.id"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.id">[docs]</a>  <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the current dataset ID.</span>
+
+<span class="sd">      &gt;&gt;&gt; dataset = Dataset(&#39;dataset-id&#39;, connection=conn)</span>
+<span class="sd">      &gt;&gt;&gt; dataset.id()</span>
+<span class="sd">      &#39;dataset-id&#39;</span>
+
+<span class="sd">    :rtype: string</span>
+<span class="sd">    :returns: The current dataset ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+</div>
+<div class="viewcode-block" id="Dataset.query"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.query">[docs]</a>  <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
+    <span class="k">return</span> <span class="n">Query</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Dataset.entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.entity">[docs]</a>  <span class="k">def</span> <span class="nf">entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
+    <span class="k">return</span> <span class="n">Entity</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Dataset.transaction"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.transaction">[docs]</a>  <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
+    <span class="k">return</span> <span class="n">Transaction</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Dataset.get_entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.get_entity">[docs]</a>  <span class="k">def</span> <span class="nf">get_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves an entity from the dataset, along with all of its attributes.</span>
+
+<span class="sd">    :type key: :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param item_name: The name of the item to retrieve.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.datastore.entity.Entity` or ``None``</span>
+<span class="sd">    :return: The requested entity, or ``None`` if there was no match found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">entities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_entities</span><span class="p">([</span><span class="n">key</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">entities</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Dataset.get_entities"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.get_entities">[docs]</a>  <span class="k">def</span> <span class="nf">get_entities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+    <span class="c"># This import is here to avoid circular references.</span>
+    <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
+
+    <span class="n">entity_pbs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
+        <span class="n">key_pbs</span><span class="o">=</span><span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">])</span>
+
+    <span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">entity_pb</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">:</span>
+      <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Entity</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">entities</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">gcloud 0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, JJ Geewax.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

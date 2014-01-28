@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Full ‘getting started’ guide &mdash; gcloud 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="gcloud 0.1 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">gcloud 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="full-getting-started-guide">
+<h1>Full &#8216;getting started&#8217; guide<a class="headerlink" href="#full-getting-started-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="creating-a-project">
+<h2>Creating a project<a class="headerlink" href="#creating-a-project" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you don&#8217;t have a Google account,
+you should probably sign up for one now...</p>
+</div>
+<ul>
+<li><p class="first"><strong>Create a project</strong></p>
+<p>Start off by visiting <a class="reference external" href="https://cloud.google.com/console">https://cloud.google.com/console</a>
+and click on the big red button
+that says &#8220;Create Project&#8221;.</p>
+</li>
+<li><p class="first"><strong>Choose a name</strong></p>
+<p>In the box that says &#8220;name&#8221;,
+choose something friendly.
+This is going to be the <em>human-readable</em> name
+for your project.</p>
+</li>
+<li><p class="first"><strong>Choose an ID</strong></p>
+<p>In the box that says &#8220;ID&#8221;,
+choose something unique
+(hyphens are OK).
+I typically choose a project name
+that starts with my initials,
+then a hyphen,
+then a unique identifier for the work I&#8217;m doing.
+For this example,
+you might choose <tt class="docutils literal"><span class="pre">&lt;initials&gt;-quickstart</span></tt>.</p>
+</li>
+</ul>
+<p>Then click OK
+(give it a second to create your project).</p>
+</div>
+<div class="section" id="enable-the-cloud-datastore-api">
+<h2>Enable the Cloud Datastore API<a class="headerlink" href="#enable-the-cloud-datastore-api" title="Permalink to this headline">¶</a></h2>
+<p>Now that you created a project,
+you need to <em>turn on</em> the Cloud Datastore API.
+This is sort of like telling Google
+which services you intend to use for this project.</p>
+<ul class="simple">
+<li><strong>Click on APIs &amp; Auth</strong>
+on the left hand side,
+and scroll down to where it says
+&#8220;Google Cloud Datastore API&#8221;.</li>
+<li><strong>Click the &#8220;Off&#8221; button</strong>
+on the right side
+to turn it into an &#8220;On&#8221; button.</li>
+</ul>
+</div>
+<div class="section" id="enable-a-service-account">
+<h2>Enable a &#8220;Service Account&#8221;<a class="headerlink" href="#enable-a-service-account" title="Permalink to this headline">¶</a></h2>
+<p>Now that you have a project
+that has access to the Cloud Datastore API,
+we need to make sure we are able to access our data.
+There are many ways to authenticate,
+but we&#8217;re going to use a Service Account for today.</p>
+<p>A <em>Service Account</em> is sort of like a username and password
+(like when you&#8217;re connecting to your MySQL database),
+except the username is automatically generated
+(and is an e-mail address)
+and the password is actually a private key file.</p>
+<p>To create a Service Account:</p>
+<ul>
+<li><p class="first"><strong>Click on Credentials</strong>
+under the &#8220;APIs &amp; Auth&#8221; section.</p>
+</li>
+<li><p class="first"><strong>Click the big red button</strong>
+that says &#8220;Create New Client ID&#8221;
+under the OAuth section
+(the first one).</p>
+</li>
+<li><p class="first"><strong>Choose &#8220;Service Account&#8221;</strong>
+and click the blue button
+that says &#8220;Create Client ID&#8221;.</p>
+</li>
+<li><p class="first"><strong>This will automatically</strong>
+download a private key file.
+<strong>Do not lost this.</strong></p>
+</li>
+<li><p class="first"><strong>Rename your key</strong> something shorter.
+I like to name the key <tt class="docutils literal"><span class="pre">&lt;project</span> <span class="pre">name&gt;.key</span></tt>.</p>
+<p>This is like your password for the account.</p>
+</li>
+<li><p class="first"><strong>Copy the long weird e-mail address</strong>
+labeled &#8220;E-mail address&#8221;
+in the information section
+for the Service Account
+you just created.</p>
+<p>This is like your username for the account.</p>
+</li>
+</ul>
+<p>OK. That&#8217;s it!
+Time to start doing things with your Cloud Datastore project.</p>
+</div>
+<div class="section" id="add-some-data-to-your-datastore">
+<h2>Add some data to your Datastore<a class="headerlink" href="#add-some-data-to-your-datastore" title="Permalink to this headline">¶</a></h2>
+<p>Open a Python console and...</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gclouddatastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">gclouddatastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;&lt;your-project-id-here&#39;</span><span class="p">,</span>
+<span class="go">        &#39;&lt;the e-mail address you copied here&gt;&#39;,</span>
+<span class="go">        &#39;/path/to/&lt;your project&gt;.key&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+<span class="go">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Your name&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+<span class="go">[&lt;Entity{...} {&#39;name&#39;: &#39;Your name&#39;, &#39;age&#39;: 25}&gt;]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Full &#8216;getting started&#8217; guide</a><ul>
+<li><a class="reference internal" href="#creating-a-project">Creating a project</a></li>
+<li><a class="reference internal" href="#enable-the-cloud-datastore-api">Enable the Cloud Datastore API</a></li>
+<li><a class="reference internal" href="#enable-a-service-account">Enable a &#8220;Service Account&#8221;</a></li>
+<li><a class="reference internal" href="#add-some-data-to-your-datastore">Add some data to your Datastore</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/datastore-getting-started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">gcloud 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, JJ Geewax.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>
