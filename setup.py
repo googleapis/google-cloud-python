@@ -2,9 +2,9 @@ import sys
 
 
 try:
-  from setuptools import setup
+  from setuptools import setup, find_packages
 except ImportError:
-  from distutils.core import setup
+  from distutils.core import setup, find_packages
 
 
 if sys.version_info <= (2, 4):
@@ -13,8 +13,17 @@ if sys.version_info <= (2, 4):
   sys.exit(1)
 
 
+requirements = [
+    'httplib2',
+    'oauth2client',
+    'protobuf',
+    'pycrypto',
+    'pyopenssl',
+    'pytz',
+    ]
+
 setup(name='gcloud',
-      version='0.01',
+      version='0.02.1',
       description='API Client library for Google Cloud',
       author='JJ Geewax',
       author_email='jj@geewax.org',
@@ -23,16 +32,11 @@ setup(name='gcloud',
       packages=find_packages(),
       license='Apache 2.0',
       platforms='Posix; MacOS X; Windows',
-      package_data={'': 'gcloud/datastore/demo.key'},
+      package_data={'': ['gcloud/datastore/demo.key']},
       include_package_data=True,
       zip_safe=False,
-      setup_requires=['httplib2',
-                      'oauth2client',
-                      'protobuf',
-                      'pycrypto',
-                      'pyopenssl',
-                      'pytz',
-                      ],
+      setup_requires=requirements,
+      install_requires=requirements,
       classifiers=['Development Status :: 1 - Planning',
                    'Intended Audience :: Developers',
                    'License :: OSI Approved :: Apache Software License',
