@@ -34,3 +34,9 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Built documentation
+docs/_build
+
+# Virtual environment
+env/

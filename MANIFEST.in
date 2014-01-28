@@ -1,0 +1,3 @@
+include README.rst
+graft gcloud
+global-exclude *.pyc
