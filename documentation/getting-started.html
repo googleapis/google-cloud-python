@@ -8,7 +8,7 @@
     
     <title>Getting started with gcloud &mdash; gcloud 0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -23,26 +23,74 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
     <link rel="top" title="gcloud 0.1 documentation" href="index.html" /> 
   </head>
-  <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">gcloud 0.1 documentation</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document" class="two-column docs">
+    <div id="sandbar">
+      <header id="gc-googlebar">
+      <a id="gc-logo" href="index.html">
+          <img src="_static/developers-logo.svg" alt="Google">
+        </a>
+        <form class="gc-search" action="search.html" method="GET">
+          <div class="searchbox" style="width: 429px;">
+            <span class="button button-blue mini">Google Cloud Python API</span>
+            <input type="hidden" name="check_keywords" value="yes">
+            <input type="hidden" name="area" value="default">
+            <input type="text" name="q" class="q" id="q" value=""
+              placeholder="Search" autocomplete="off" style="width: 263px;">
+          </div>
+          <button class="button button-blue" style="top: 0px; left: 444px;">
+          <img src="_static/search.png" alt="Search">
+        </button>
+
+        <input type="hidden" name="p" id="search_project" value="/compute">
+
+      </form>
+      </header>
+    </div>
+    
+<div id="gc-wrapper">
+  <div id="gc-appbar">
+    <h1><a href="index.html">gcloud 0.1 documentation</a></h1>
+  </div>
+    <div id="gc-main" class="main">
+      <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<nav class="gc-toc">
+  <ul>
+<li><a class="reference internal" href="#">Getting started with gcloud</a><ul>
+<li><a class="reference internal" href="#installing-gcloud">Installing gcloud</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/getting-started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main" id="gc-content">
             
   <div class="section" id="getting-started-with-gcloud">
 <h1>Getting started with gcloud<a class="headerlink" href="#getting-started-with-gcloud" title="Permalink to this headline">¶</a></h1>
@@ -78,53 +126,15 @@ $ python setup.py install
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Getting started with gcloud</a><ul>
-<li><a class="reference internal" href="#installing-gcloud">Installing gcloud</a></li>
-</ul>
-</li>
-</ul>
-
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/getting-started.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">gcloud 0.1 documentation</a> &raquo;</li> 
-      </ul>
     </div>
-    <div class="footer">
+  </div>
+    <footer id="gc-footer" class="footer" role="contentinfo">
+    <div id="gc-copyright">
         &copy; Copyright 2014, JJ Geewax.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
-    </div>
+      </div>
+    </footer>
   </body>
 </html>
