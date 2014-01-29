@@ -29,6 +29,10 @@ body.docs table th.field-name {
   font-weight: bold;
 }
 
+.admonition {
+  margin-bottom: 1em;
+}
+
 a.headerlink {
   visibility: hidden;
   padding: 0 4px 0 4px;

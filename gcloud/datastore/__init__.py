@@ -35,6 +35,10 @@ The main concepts with this API are:
 
 __version__ = '0.1.2'
 
+SCOPE = ('https://www.googleapis.com/auth/datastore ',
+         'https://www.googleapis.com/auth/userinfo.email')
+"""The scope required for authenticating as a Cloud Datastore consumer."""
+
 
 def get_connection(client_email, private_key_path):
   """Shortcut method to establish a connection to the Cloud Datastore.
@@ -58,11 +62,11 @@ def get_connection(client_email, private_key_path):
   :rtype: :class:`gcloud.datastore.connection.Connection`
   :returns: A connection defined with the proper credentials.
   """
-  from connection import Connection
-  from credentials import Credentials
+  from gcloud.credentials import Credentials
+  from gcloud.datastore.connection import Connection
 
   credentials = Credentials.get_for_service_account(
-      client_email, private_key_path)
+      client_email, private_key_path, scope=SCOPE)
   return Connection(credentials=credentials)
 
 def get_dataset(dataset_id, client_email, private_key_path):

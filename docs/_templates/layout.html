@@ -59,17 +59,23 @@
             {%- block sidebartoc %}
             {%- include "localtoc.html" %}
             {%- endblock %}
+
+            <h3>All API Docs</h3>
+            <nav class="gc-toc">
+            {{ toctree(includehidden=True, maxdepth=1, titles_only=True) }}
+            </nav>
+
             {%- block sidebarrel %}
-            {%- include "relations.html" %}
+            {# include "relations.html" #}
             {%- endblock %}
             {%- block sidebarsourcelink %}
-            {%- include "sourcelink.html" %}
+            {# include "sourcelink.html" #}
             {%- endblock %}
             {%- if customsidebar %}
             {%- include customsidebar %}
             {%- endif %}
             {%- block sidebarsearch %}
-            {%- include "searchbox.html" %}
+            {#- include "searchbox.html" #}
             {%- endblock %}
           {%- endif %}
         </div>
