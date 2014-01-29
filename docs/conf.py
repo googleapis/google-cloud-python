@@ -190,7 +190,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'gcloud.tex', u'gcloud Documentation',
+  ('index', 'gcloud.tex', u'gCloud Documentation',
    u'JJ Geewax', 'manual'),
 ]
 
@@ -220,7 +220,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'gcloud', u'gcloud Documentation',
+    ('index', 'gcloud', u'gCloud Documentation',
      [u'JJ Geewax'], 1)
 ]
 
@@ -234,7 +234,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'gcloud', u'gcloud Documentation',
+  ('index', 'gcloud', u'gCloud Documentation',
    u'JJ Geewax', 'gcloud', 'Python API for Google Cloud.',
    'Miscellaneous'),
 ]
