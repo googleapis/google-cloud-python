@@ -7,7 +7,7 @@ Official documentation
 If you just want to **use** the library
 (not contribute to it),
 check out the official documentation:
-http://jgeewax.github.io/gcloud/docs/
+http://jgeewax.github.io/gcloud/documentation/
 
 Incredibly quick demo
 ---------------------
