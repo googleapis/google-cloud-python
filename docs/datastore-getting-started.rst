@@ -1,12 +1,12 @@
-Full 'getting started' guide
-----------------------------
-
-Creating a project
-~~~~~~~~~~~~~~~~~~
+Getting started with Cloud Datastore
+====================================
 
 .. note::
-  If you don't have a Google account,
-  you should probably sign up for one now...
+  If you just want to kick the tires,
+  you might prefer :doc:`datastore-quickstart`.
+
+Creating a project
+------------------
 
 * **Create a project**
 
@@ -37,7 +37,7 @@ Then click OK
 (give it a second to create your project).
 
 Enable the Cloud Datastore API
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------
 
 Now that you created a project,
 you need to *turn on* the Cloud Datastore API.
@@ -54,7 +54,7 @@ which services you intend to use for this project.
   to turn it into an "On" button.
 
 Enable a "Service Account"
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 Now that you have a project
 that has access to the Cloud Datastore API,
@@ -102,15 +102,16 @@ To create a Service Account:
 OK. That's it!
 Time to start doing things with your Cloud Datastore project.
 
-Add some data to your Datastore
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add some data to your dataset
+-----------------------------
 
 Open a Python console and...
 
-  >>> import gclouddatastore
-  >>> dataset = gclouddatastore.get_dataset('<your-project-id-here',
-          '<the e-mail address you copied here>',
-          '/path/to/<your project>.key')
+  >>> from gcloud import datastore
+  >>> dataset = datastore.get_dataset(
+  >>>     '<your-project-id-here',
+  >>>     '<the e-mail address you copied here>',
+  >>>     '/path/to/<your project>.key')
   >>> dataset.query().fetch()
   []
   >>> entity = dataset.entity('Person')
@@ -119,3 +120,10 @@ Open a Python console and...
   >>> entity.save()
   >>> dataset.query('Person').fetch()
   [<Entity{...} {'name': 'Your name', 'age': 25}>]
+
+And that's it!
+--------------
+
+Next,
+take a look at the complete
+:doc:`datastore-api`.
