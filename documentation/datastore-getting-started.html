@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Full ‘getting started’ guide &mdash; gcloud 0.1 documentation</title>
+    <title>Getting started with Cloud Datastore &mdash; gcloud 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -60,11 +60,12 @@
 <nav class="gc-toc">
   <ul><li><a href="index.html">gCloud Documentation</a></li></ul>
   <ul>
-<li><a class="reference internal" href="#">Full &#8216;getting started&#8217; guide</a><ul>
+<li><a class="reference internal" href="#">Getting started with Cloud Datastore</a><ul>
 <li><a class="reference internal" href="#creating-a-project">Creating a project</a></li>
 <li><a class="reference internal" href="#enable-the-cloud-datastore-api">Enable the Cloud Datastore API</a></li>
 <li><a class="reference internal" href="#enable-a-service-account">Enable a &#8220;Service Account&#8221;</a></li>
-<li><a class="reference internal" href="#add-some-data-to-your-datastore">Add some data to your Datastore</a></li>
+<li><a class="reference internal" href="#add-some-data-to-your-dataset">Add some data to your dataset</a></li>
+<li><a class="reference internal" href="#and-that-s-it">And that&#8217;s it!</a></li>
 </ul>
 </li>
 </ul>
@@ -96,15 +97,15 @@
         <div class="bodywrapper">
           <div class="body" role="main" id="gc-content">
             
-  <div class="section" id="full-getting-started-guide">
-<h1>Full &#8216;getting started&#8217; guide<a class="headerlink" href="#full-getting-started-guide" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="creating-a-project">
-<h2>Creating a project<a class="headerlink" href="#creating-a-project" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="getting-started-with-cloud-datastore">
+<h1>Getting started with Cloud Datastore<a class="headerlink" href="#getting-started-with-cloud-datastore" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you don&#8217;t have a Google account,
-you should probably sign up for one now...</p>
+<p class="last">If you just want to kick the tires,
+you might prefer <a class="reference internal" href="datastore-quickstart.html"><em>Cloud Datastore in 10 seconds</em></a>.</p>
 </div>
+<div class="section" id="creating-a-project">
+<h2>Creating a project<a class="headerlink" href="#creating-a-project" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first"><strong>Create a project</strong></p>
 <p>Start off by visiting <a class="reference external" href="https://cloud.google.com/console">https://cloud.google.com/console</a>
@@ -193,13 +194,14 @@ you just created.</p>
 <p>OK. That&#8217;s it!
 Time to start doing things with your Cloud Datastore project.</p>
 </div>
-<div class="section" id="add-some-data-to-your-datastore">
-<h2>Add some data to your Datastore<a class="headerlink" href="#add-some-data-to-your-datastore" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="add-some-data-to-your-dataset">
+<h2>Add some data to your dataset<a class="headerlink" href="#add-some-data-to-your-dataset" title="Permalink to this headline">¶</a></h2>
 <p>Open a Python console and...</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gclouddatastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">gclouddatastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;&lt;your-project-id-here&#39;</span><span class="p">,</span>
-<span class="go">        &#39;&lt;the e-mail address you copied here&gt;&#39;,</span>
-<span class="go">        &#39;/path/to/&lt;your project&gt;.key&#39;)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s">&#39;&lt;your-project-id-here&#39;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s">&#39;&lt;the e-mail address you copied here&gt;&#39;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="s">&#39;/path/to/&lt;your project&gt;.key&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
 <span class="go">[]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
@@ -210,6 +212,12 @@ Time to start doing things with your Cloud Datastore project.</p>
 <span class="go">[&lt;Entity{...} {&#39;name&#39;: &#39;Your name&#39;, &#39;age&#39;: 25}&gt;]</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="and-that-s-it">
+<h2>And that&#8217;s it!<a class="headerlink" href="#and-that-s-it" title="Permalink to this headline">¶</a></h2>
+<p>Next,
+take a look at the complete
+<a class="reference internal" href="datastore-api.html"><em>Cloud Datastore API Documentation</em></a>.</p>
 </div>
 </div>
 

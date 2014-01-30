@@ -1,11 +1,10 @@
-Get started in 10 seconds
--------------------------
+Cloud Datastore in 10 seconds
+=============================
 
-.. warning::
-  This will use a *shared* dataset,
+.. note::
+  This will use a **shared** dataset,
   which means any data you save
   will be available to anyone.
-
   If you want to create your own dataset,
   follow the
   (pretty simple)
@@ -13,7 +12,7 @@ Get started in 10 seconds
   :doc:`datastore-getting-started`.
 
 Install the library
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 The source code for the library
 (and demo code)
@@ -28,20 +27,24 @@ included in the package::
 
   $ python -m gcloud.datastore.demo
 
+And that's it!
+You just read and wrote a bunch of data
+to the Cloud Datastore.
+
 Try it yourself
-~~~~~~~~~~~~~~~
+---------------
 
-Crack open a Python interactive shell::
+You can interact with a demo dataset
+in a Python interactive shell.
 
-  $ python  # or ipython
-
-And play with the demo dataset::
+Start by importing the demo module
+and instantiating the demo dataset::
 
   >>> from gcloud.datastore import demo
   >>> dataset = demo.get_dataset()
 
-But once you have the dataset,
-you can manipulate data in the datastore::
+Once you have the dataset,
+you can create entities and save them::
 
   >>> dataset.query('MyExampleKind').fetch()
   [<Entity{...}, ]
@@ -52,9 +55,20 @@ you can manipulate data in the datastore::
   >>> dataset.query('Person').fetch()
   [<Entity{...} {'name': 'Your name', 'age': 25}>]
 
-The ``get_dataset`` method is just a shortcut for::
+.. note::
+  The ``get_dataset`` method is just a shortcut for::
 
   >>> from gcloud import datastore
   >>> from gcloud.datastore import demo
   >>> dataset = datastore.get_dataset(
-          demo.DATASET_ID, demo.CLIENT_EMAIL, demo.PRIVATE_KEY_PATH)
+  >>>     demo.DATASET_ID, demo.CLIENT_EMAIL, demo.PRIVATE_KEY_PATH)
+
+OK, that's it!
+--------------
+
+Next,
+take a look at the :doc:`datastore-getting-started`
+to see how to create your own project and dataset.
+
+And you can always check out
+the :doc:`datastore-api`.

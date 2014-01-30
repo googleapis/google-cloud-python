@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Get started in 10 seconds &mdash; gcloud 0.1 documentation</title>
+    <title>Cloud Datastore in 10 seconds &mdash; gcloud 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -60,9 +60,10 @@
 <nav class="gc-toc">
   <ul><li><a href="index.html">gCloud Documentation</a></li></ul>
   <ul>
-<li><a class="reference internal" href="#">Get started in 10 seconds</a><ul>
+<li><a class="reference internal" href="#">Cloud Datastore in 10 seconds</a><ul>
 <li><a class="reference internal" href="#install-the-library">Install the library</a></li>
 <li><a class="reference internal" href="#try-it-yourself">Try it yourself</a></li>
+<li><a class="reference internal" href="#ok-that-s-it">OK, that&#8217;s it!</a></li>
 </ul>
 </li>
 </ul>
@@ -94,18 +95,18 @@
         <div class="bodywrapper">
           <div class="body" role="main" id="gc-content">
             
-  <div class="section" id="get-started-in-10-seconds">
-<h1>Get started in 10 seconds<a class="headerlink" href="#get-started-in-10-seconds" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p>This will use a <em>shared</em> dataset,
+  <div class="section" id="cloud-datastore-in-10-seconds">
+<h1>Cloud Datastore in 10 seconds<a class="headerlink" href="#cloud-datastore-in-10-seconds" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will use a <strong>shared</strong> dataset,
 which means any data you save
-will be available to anyone.</p>
-<p class="last">If you want to create your own dataset,
+will be available to anyone.
+If you want to create your own dataset,
 follow the
 (pretty simple)
 instructions in the
-<a class="reference internal" href="datastore-getting-started.html"><em>Full &#8216;getting started&#8217; guide</em></a>.</p>
+<a class="reference internal" href="datastore-getting-started.html"><em>Getting started with Cloud Datastore</em></a>.</p>
 </div>
 <div class="section" id="install-the-library">
 <h2>Install the library<a class="headerlink" href="#install-the-library" title="Permalink to this headline">¶</a></h2>
@@ -122,20 +123,22 @@ included in the package:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ python -m gcloud.datastore.demo
 </pre></div>
 </div>
+<p>And that&#8217;s it!
+You just read and wrote a bunch of data
+to the Cloud Datastore.</p>
 </div>
 <div class="section" id="try-it-yourself">
 <h2>Try it yourself<a class="headerlink" href="#try-it-yourself" title="Permalink to this headline">¶</a></h2>
-<p>Crack open a Python interactive shell:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python  # or ipython
-</pre></div>
-</div>
-<p>And play with the demo dataset:</p>
+<p>You can interact with a demo dataset
+in a Python interactive shell.</p>
+<p>Start by importing the demo module
+and instantiating the demo dataset:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">demo</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">demo</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>But once you have the dataset,
-you can manipulate data in the datastore:</p>
+<p>Once you have the dataset,
+you can create entities and save them:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;MyExampleKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
 <span class="go">[&lt;Entity{...}, ]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
@@ -146,13 +149,24 @@ you can manipulate data in the datastore:</p>
 <span class="go">[&lt;Entity{...} {&#39;name&#39;: &#39;Your name&#39;, &#39;age&#39;: 25}&gt;]</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
 <p>The <tt class="docutils literal"><span class="pre">get_dataset</span></tt> method is just a shortcut for:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">demo</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span>
-<span class="go">        demo.DATASET_ID, demo.CLIENT_EMAIL, demo.PRIVATE_KEY_PATH)</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">demo</span><span class="o">.</span><span class="n">DATASET_ID</span><span class="p">,</span> <span class="n">demo</span><span class="o">.</span><span class="n">CLIENT_EMAIL</span><span class="p">,</span> <span class="n">demo</span><span class="o">.</span><span class="n">PRIVATE_KEY_PATH</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="ok-that-s-it">
+<h2>OK, that&#8217;s it!<a class="headerlink" href="#ok-that-s-it" title="Permalink to this headline">¶</a></h2>
+<p>Next,
+take a look at the <a class="reference internal" href="datastore-getting-started.html"><em>Getting started with Cloud Datastore</em></a>
+to see how to create your own project and dataset.</p>
+<p>And you can always check out
+the <a class="reference internal" href="datastore-api.html"><em>Cloud Datastore API Documentation</em></a>.</p>
 </div>
 </div>
 
