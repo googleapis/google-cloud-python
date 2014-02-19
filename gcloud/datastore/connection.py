@@ -12,7 +12,7 @@ class Connection(object):
   This class should understand only the basic types (and protobufs)
   in method arguments, however should be capable of returning advanced types.
 
-  :type credentials: :class:`gcloud.datastore.credentials.Credentials`
+  :type credentials: :class:`gcloud.credentials.Credentials`
   :param credentials: The OAuth2 Credentials to use for this connection.
   """
 
@@ -41,6 +41,7 @@ class Connection(object):
     :rtype: :class:`httplib2.Http`
     :returns: A Http object used to transport data.
     """
+
     if not self._http:
       self._http = httplib2.Http()
       if self._credentials:

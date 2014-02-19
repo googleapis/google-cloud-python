@@ -1,5 +1,5 @@
-Cloud Datastore API Documentation
-=================================
+Cloud Datastore
+===============
 
 :mod:`gcloud.datastore`
 -----------------------

@@ -15,12 +15,8 @@ class Credentials(object):
     which use this class under the hood.
   """
 
-  SCOPE = ('https://www.googleapis.com/auth/datastore '
-           'https://www.googleapis.com/auth/userinfo.email')
-  """The scope required for authenticating as a Cloud Datastore consumer."""
-
   @classmethod
-  def get_for_service_account(cls, client_email, private_key_path):
+  def get_for_service_account(cls, client_email, private_key_path, scope=None):
     """Gets the credentials for a service account.
 
     :type client_email: string
@@ -30,8 +26,15 @@ class Credentials(object):
     :param private_key_path: The path to a private key file (this file was
                              given to you when you created the service
                              account).
+
+    :type scope: string or tuple of strings
+    :param scope: The scope against which to authenticate.
+                  (Different services require different scopes,
+                  check the documentation for which scope is required
+                  for the different levels of access
+                  to any particular API.)
     """
     return client.SignedJwtAssertionCredentials(
         service_account_name=client_email,
         private_key=open(private_key_path).read(),
-        scope=cls.SCOPE)
+        scope=scope)
