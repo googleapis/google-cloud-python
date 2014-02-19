@@ -58,19 +58,18 @@
     <div id="gc-main" class="main">
       <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+
+            <h3>All API Docs</h3>
+            <nav class="gc-toc">
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../common-api.html">Cloud Common</a></li>
+</ul>
+
+            </nav>
+            
+            
         </div>
       </div>
 
@@ -94,7 +93,7 @@
 <span class="sd">  This class should understand only the basic types (and protobufs)</span>
 <span class="sd">  in method arguments, however should be capable of returning advanced types.</span>
 
-<span class="sd">  :type credentials: :class:`gcloud.datastore.credentials.Credentials`</span>
+<span class="sd">  :type credentials: :class:`gcloud.credentials.Credentials`</span>
 <span class="sd">  :param credentials: The OAuth2 Credentials to use for this connection.</span>
 <span class="sd">  &quot;&quot;&quot;</span>
 
@@ -123,6 +122,7 @@
 <span class="sd">    :rtype: :class:`httplib2.Http`</span>
 <span class="sd">    :returns: A Http object used to transport data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_http</span><span class="p">:</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">_http</span> <span class="o">=</span> <span class="n">httplib2</span><span class="o">.</span><span class="n">Http</span><span class="p">()</span>
       <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span><span class="p">:</span>

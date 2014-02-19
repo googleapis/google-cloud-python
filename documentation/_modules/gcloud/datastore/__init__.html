@@ -58,19 +58,18 @@
     <div id="gc-main" class="main">
       <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+
+            <h3>All API Docs</h3>
+            <nav class="gc-toc">
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../common-api.html">Cloud Common</a></li>
+</ul>
+
+            </nav>
+            
+            
         </div>
       </div>
 
@@ -117,6 +116,10 @@
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;0.1.2&#39;</span>
 
+<span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/datastore &#39;</span><span class="p">,</span>
+         <span class="s">&#39;https://www.googleapis.com/auth/userinfo.email&#39;</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;The scope required for authenticating as a Cloud Datastore consumer.&quot;&quot;&quot;</span>
+
 
 <div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>
   <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to the Cloud Datastore.</span>
@@ -140,11 +143,11 @@
 <span class="sd">  :rtype: :class:`gcloud.datastore.connection.Connection`</span>
 <span class="sd">  :returns: A connection defined with the proper credentials.</span>
 <span class="sd">  &quot;&quot;&quot;</span>
-  <span class="kn">from</span> <span class="nn">connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-  <span class="kn">from</span> <span class="nn">credentials</span> <span class="kn">import</span> <span class="n">Credentials</span>
+  <span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">Credentials</span>
+  <span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 
   <span class="n">credentials</span> <span class="o">=</span> <span class="n">Credentials</span><span class="o">.</span><span class="n">get_for_service_account</span><span class="p">(</span>
-      <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">)</span>
+      <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">SCOPE</span><span class="p">)</span>
   <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="get_dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_dataset">[docs]</a><span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>

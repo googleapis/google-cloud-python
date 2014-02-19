@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Cloud Datastore API Documentation &mdash; gcloud 0.1 documentation</title>
+    <title>Cloud Datastore &mdash; gcloud 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,7 +24,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/sidebar.js"></script>
-    <link rel="top" title="gcloud 0.1 documentation" href="index.html" /> 
+    <link rel="top" title="gcloud 0.1 documentation" href="index.html" />
+    <link rel="next" title="Cloud Storage" href="storage-api.html" />
+    <link rel="prev" title="Google Cloud Python API" href="index.html" /> 
   </head>
   <body role="document" class="two-column docs">
     <div id="sandbar">
@@ -60,7 +62,7 @@
 <nav class="gc-toc">
   <ul><li><a href="index.html">gCloud Documentation</a></li></ul>
   <ul>
-<li><a class="reference internal" href="#">Cloud Datastore API Documentation</a><ul>
+<li><a class="reference internal" href="#">Cloud Datastore</a><ul>
 <li><a class="reference internal" href="#module-gcloud.datastore.__init__"><tt class="docutils literal"><span class="pre">gcloud.datastore</span></tt></a></li>
 <li><a class="reference internal" href="#module-gcloud.datastore.connection">Connections</a></li>
 <li><a class="reference internal" href="#module-gcloud.datastore.credentials">Credentials</a></li>
@@ -75,24 +77,18 @@
 </ul>
 
   </nav>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/datastore-api.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+
+            <h3>All API Docs</h3>
+            <nav class="gc-toc">
+            <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-api.html">Cloud Common</a></li>
+</ul>
+
+            </nav>
+            
+            
         </div>
       </div>
 
@@ -101,8 +97,8 @@
         <div class="bodywrapper">
           <div class="body" role="main" id="gc-content">
             
-  <div class="section" id="cloud-datastore-api-documentation">
-<h1>Cloud Datastore API Documentation<a class="headerlink" href="#cloud-datastore-api-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="cloud-datastore">
+<h1>Cloud Datastore<a class="headerlink" href="#cloud-datastore" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-gcloud.datastore.__init__">
 <span id="gcloud-datastore"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gcloud.datastore</span></tt><a class="headerlink" href="#module-gcloud.datastore.__init__" title="Permalink to this headline">¶</a></h2>
 <p>Shortcut methods for getting set up with Google Cloud Datastore.</p>
@@ -133,6 +129,12 @@ which represents a pointer to a particular entity in the datastore
 <li><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a>
 which represents a lookup or search over the rows in the datastore.</li>
 </ul>
+<dl class="data">
+<dt id="gcloud.datastore.__init__.SCOPE">
+<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">SCOPE</tt><em class="property"> = ('https://www.googleapis.com/auth/datastore ', 'https://www.googleapis.com/auth/userinfo.email')</em><a class="headerlink" href="#gcloud.datastore.__init__.SCOPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scope required for authenticating as a Cloud Datastore consumer.</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="gcloud.datastore.__init__.get_connection">
 <tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_connection</tt><big>(</big><em>client_email</em>, <em>private_key_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_connection" title="Permalink to this definition">¶</a></dt>
@@ -219,7 +221,7 @@ in method arguments, however should be capable of returning advanced types.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<a class="reference internal" href="#gcloud.datastore.credentials.Credentials" title="gcloud.datastore.credentials.Credentials"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.credentials.Credentials</span></tt></a>) &#8211; The OAuth2 Credentials to use for this connection.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<a class="reference internal" href="common-api.html#gcloud.credentials.Credentials" title="gcloud.credentials.Credentials"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.credentials.Credentials</span></tt></a>) &#8211; The OAuth2 Credentials to use for this connection.</td>
 </tr>
 </tbody>
 </table>
@@ -492,7 +494,7 @@ uses this method to fetch data:</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x1ed70c0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x347ba60&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -503,7 +505,7 @@ uses this method to fetch data:</p>
 <p>A simple wrapper around the OAuth2 credentials library.</p>
 <dl class="class">
 <dt id="gcloud.datastore.credentials.Credentials">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.credentials.</tt><tt class="descname">Credentials</tt><a class="reference internal" href="_modules/gcloud/datastore/credentials.html#Credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.credentials.Credentials" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.credentials.</tt><tt class="descname">Credentials</tt><a class="headerlink" href="#gcloud.datastore.credentials.Credentials" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>An object used to simplify the OAuth2 credentials library.</p>
 <div class="admonition note">
@@ -518,12 +520,11 @@ which use this class under the hood.</p>
 <dl class="attribute">
 <dt id="gcloud.datastore.credentials.Credentials.SCOPE">
 <tt class="descname">SCOPE</tt><em class="property"> = 'https://www.googleapis.com/auth/datastore https://www.googleapis.com/auth/userinfo.email'</em><a class="headerlink" href="#gcloud.datastore.credentials.Credentials.SCOPE" title="Permalink to this definition">¶</a></dt>
-<dd><p>The scope required for authenticating as a Cloud Datastore consumer.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="classmethod">
 <dt id="gcloud.datastore.credentials.Credentials.get_for_service_account">
-<em class="property">classmethod </em><tt class="descname">get_for_service_account</tt><big>(</big><em>client_email</em>, <em>private_key_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/credentials.html#Credentials.get_for_service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.credentials.Credentials.get_for_service_account" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><tt class="descname">get_for_service_account</tt><big>(</big><em>client_email</em>, <em>private_key_path</em><big>)</big><a class="headerlink" href="#gcloud.datastore.credentials.Credentials.get_for_service_account" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the credentials for a service account.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

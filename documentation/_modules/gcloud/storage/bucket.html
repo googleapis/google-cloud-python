@@ -1,0 +1,651 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gcloud.storage.bucket &mdash; gcloud 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sidebar.js"></script>
+    <link rel="top" title="gcloud 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document" class="two-column docs">
+    <div id="sandbar">
+      <header id="gc-googlebar">
+      <a id="gc-logo" href="../../../index.html">
+        <img src="_static/cloudplatform-horizontal.png" alt="Google">
+        </a>
+        <form class="gc-search" action="search.html" method="GET">
+          <div class="searchbox" style="width: 429px;">
+            <span class="button button-blue mini">Google Cloud Python API</span>
+            <input type="hidden" name="check_keywords" value="yes">
+            <input type="hidden" name="area" value="default">
+            <input type="text" name="q" class="q" id="q" value=""
+              placeholder="Search" autocomplete="off" style="width: 263px;">
+          </div>
+          <button class="button button-blue" style="top: 0px; left: 444px;">
+          <img src="_static/search.png" alt="Search">
+        </button>
+
+        <input type="hidden" name="p" id="search_project" value="/compute">
+
+      </form>
+      </header>
+    </div>
+    
+<div id="gc-wrapper">
+  <div id="gc-appbar">
+    <h1><a href="../../../index.html">gcloud 0.1 documentation</a></h1>
+  </div>
+    <div id="gc-main" class="main">
+      <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+
+            <h3>All API Docs</h3>
+            <nav class="gc-toc">
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../common-api.html">Cloud Common</a></li>
+</ul>
+
+            </nav>
+            
+            
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main" id="gc-content">
+            
+  <h1>Source code for gcloud.storage.bucket</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">BucketACL</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">KeyIterator</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.key</span> <span class="kn">import</span> <span class="n">Key</span>
+
+
+<div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;A class representing a Bucket on Cloud Storage.</span>
+
+<span class="sd">  :type connection: :class:`gcloud.storage.connection.Connection`</span>
+<span class="sd">  :param connection: The connection to use when sending requests.</span>
+
+<span class="sd">  :type name: string</span>
+<span class="sd">  :param name: The name of the bucket.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span>
+
+    <span class="c"># ACL rules are lazily retrieved.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">acl</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">default_object_acl</span> <span class="o">=</span> <span class="bp">None</span>
+
+  <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Bucket.from_dict"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.from_dict">[docs]</a>  <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">bucket_dict</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct a new bucket from a dictionary of data from Cloud Storage.</span>
+
+<span class="sd">    :type bucket_dict: dict</span>
+<span class="sd">    :param bucket_dict: The dictionary of data to construct a bucket from.</span>
+
+<span class="sd">    :rtype: :class:`Bucket`</span>
+<span class="sd">    :returns: A bucket constructed from the data provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span>
+               <span class="n">metadata</span><span class="o">=</span><span class="n">bucket_dict</span><span class="p">)</span>
+</div>
+  <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&#39;&lt;Bucket: </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+  <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">KeyIterator</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
+
+  <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+
+  <span class="nd">@property</span>
+<div class="viewcode-block" id="Bucket.path"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.path">[docs]</a>  <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The URL path to this bucket.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot determine path without bucket name.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s">&#39;/b/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+</div>
+<div class="viewcode-block" id="Bucket.get_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_key">[docs]</a>  <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get a key object by name.</span>
+
+<span class="sd">    This will return None if the key doesn&#39;t exist::</span>
+
+<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; print bucket.get_key(&#39;/path/to/key.txt&#39;)</span>
+<span class="sd">      &lt;Key: my-bucket, /path/to/key.txt&gt;</span>
+<span class="sd">      &gt;&gt;&gt; print bucket.get_key(&#39;/does-not-exist.txt&#39;)</span>
+<span class="sd">      None</span>
+
+<span class="sd">    :type key: string or :class:`gcloud.storage.key.Key`</span>
+<span class="sd">    :param key: The name of the key to retrieve.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.storage.key.Key` or None</span>
+<span class="sd">    :returns: The key object if it exists, otherwise None.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># Coerce this to a key object (either from a Key or a string).</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+      <span class="k">return</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="Bucket.get_all_keys"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_all_keys">[docs]</a>  <span class="k">def</span> <span class="nf">get_all_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;List all the keys in this bucket.</span>
+
+<span class="sd">    This will **not** retrieve all the data for all the keys,</span>
+<span class="sd">    it will only retrieve metadata about the keys.</span>
+
+<span class="sd">    This is equivalent to::</span>
+
+<span class="sd">      keys = [key for key in bucket]</span>
+
+<span class="sd">    :rtype: list of :class:`gcloud.storage.key.Key`</span>
+<span class="sd">    :returns: A list of all the Key objects in this bucket.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Bucket.new_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.new_key">[docs]</a>  <span class="k">def</span> <span class="nf">new_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a path name (or a Key), return a :class:`gcloud.storage.key.Key` object.</span>
+
+<span class="sd">    This is really useful when you&#39;re not sure</span>
+<span class="sd">    if you have a Key object or a string path name.</span>
+<span class="sd">    Given either of those types,</span>
+<span class="sd">    this returns the corresponding Key object.</span>
+
+<span class="sd">    :type key: string or :class:`gcloud.storage.key.Key`</span>
+<span class="sd">    :param key: A path name or actual key object.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.storage.key.Key`</span>
+<span class="sd">    :returns: A Key object with the path provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">Key</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">key</span>
+
+    <span class="c"># Support Python 2 and 3.</span>
+    <span class="k">try</span><span class="p">:</span>
+      <span class="n">string_type</span> <span class="o">=</span> <span class="nb">basestring</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+      <span class="n">string_type</span> <span class="o">=</span> <span class="nb">str</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">Key</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Invalid key: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>  <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Delete this bucket.</span>
+
+<span class="sd">    The bucket **must** be empty in order to delete it.</span>
+<span class="sd">    If the bucket doesn&#39;t exist,</span>
+<span class="sd">    this will raise a :class:`gcloud.storage.exceptions.NotFoundError`.</span>
+<span class="sd">    If the bucket is not empty,</span>
+<span class="sd">    this will raise an Exception.</span>
+
+<span class="sd">    :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># TODO: Make sure the proper exceptions are raised.</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Bucket.delete_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.delete_key">[docs]</a>  <span class="k">def</span> <span class="nf">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="c"># TODO: Should we accept a &#39;silent&#39; param here to not raise an exception?</span>
+    <span class="sd">&quot;&quot;&quot;Deletes a key from the current bucket.</span>
+
+<span class="sd">    If the key isn&#39;t found,</span>
+<span class="sd">    this will throw a :class:`gcloud.storage.exceptions.NotFoundError`.</span>
+
+<span class="sd">    For example::</span>
+
+<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">      &gt;&gt;&gt; from gcloud.storage import exceptions</span>
+<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; print bucket.get_all_keys()</span>
+<span class="sd">      [&lt;Key: my-bucket, my-file.txt&gt;]</span>
+<span class="sd">      &gt;&gt;&gt; bucket.delete_key(&#39;my-file.txt&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; try:</span>
+<span class="sd">      ...   bucket.delete_key(&#39;doesnt-exist&#39;)</span>
+<span class="sd">      ... except exceptions.NotFoundError:</span>
+<span class="sd">      ...   pass</span>
+
+
+<span class="sd">    :type key: string or :class:`gcloud.storage.key.Key`</span>
+<span class="sd">    :param key: A key name or Key object to delete.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.storage.key.Key`</span>
+<span class="sd">    :returns: The key that was just deleted.</span>
+<span class="sd">    :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">key</span>
+</div>
+<div class="viewcode-block" id="Bucket.delete_keys"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.delete_keys">[docs]</a>  <span class="k">def</span> <span class="nf">delete_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+    <span class="c"># TODO: What should be the return value here?</span>
+    <span class="c"># NOTE: boto returns a MultiDeleteResult instance.</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Bucket.copy_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.copy_key">[docs]</a>  <span class="k">def</span> <span class="nf">copy_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+<div class="viewcode-block" id="Bucket.upload_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.upload_file">[docs]</a>  <span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># TODO: What do we do about overwriting data?</span>
+    <span class="sd">&quot;&quot;&quot;Shortcut method to upload a file into this bucket.</span>
+
+<span class="sd">    Use this method to quickly put a local file in Cloud Storage.</span>
+
+<span class="sd">    For example::</span>
+
+<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;, &#39;remote-text-file.txt&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; print bucket.get_all_keys()</span>
+<span class="sd">      [&lt;Key: my-bucket, remote-text-file.txt&gt;]</span>
+
+<span class="sd">    If you don&#39;t provide a key value,</span>
+<span class="sd">    we will try to upload the file using the local filename</span>
+<span class="sd">    as the key</span>
+<span class="sd">    (**not** the complete path)::</span>
+
+<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; print bucket.get_all_keys()</span>
+<span class="sd">      [&lt;Key: my-bucket, my-file.txt&gt;]</span>
+
+<span class="sd">    :type filename: string</span>
+<span class="sd">    :param filename: Local path to the file you want to upload.</span>
+
+<span class="sd">    :type key: string or :class:`gcloud.storage.key.Key`</span>
+<span class="sd">    :param key: The key (either an object or a remote path)</span>
+<span class="sd">                of where to put the file.</span>
+
+<span class="sd">                If this is blank,</span>
+<span class="sd">                we will try to upload the file</span>
+<span class="sd">                to the root of the bucket</span>
+<span class="sd">                with the same name as on your local file system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Bucket.has_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.has_metadata">[docs]</a>  <span class="k">def</span> <span class="nf">has_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if metadata is available locally.</span>
+
+<span class="sd">    :type field: string</span>
+<span class="sd">    :param field: (optional) the particular field to check for.</span>
+
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    :returns: Whether metadata is available locally.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">elif</span> <span class="n">field</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Bucket.reload_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.reload_metadata">[docs]</a>  <span class="k">def</span> <span class="nf">reload_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reload metadata from Cloud Storage.</span>
+
+<span class="sd">    :type full: bool</span>
+<span class="sd">    :param full: If True, loads all data (include ACL data).</span>
+
+<span class="sd">    :rtype: :class:`Bucket`</span>
+<span class="sd">    :returns: The bucket you just reloaded data for.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">projection</span> <span class="o">=</span> <span class="s">&#39;full&#39;</span> <span class="k">if</span> <span class="n">full</span> <span class="k">else</span> <span class="s">&#39;noAcl&#39;</span>
+    <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="n">projection</span><span class="p">}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</div>
+<div class="viewcode-block" id="Bucket.get_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_metadata">[docs]</a>  <span class="k">def</span> <span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get all metadata or a specific field.</span>
+
+<span class="sd">    If you request a field that isn&#39;t available,</span>
+<span class="sd">    and that field can be retrieved by refreshing data</span>
+<span class="sd">    from Cloud Storage,</span>
+<span class="sd">    this method will reload the data using</span>
+<span class="sd">    :func:`Bucket.reload_metadata`.</span>
+
+<span class="sd">    :type field: string</span>
+<span class="sd">    :param field: (optional) A particular field to retrieve from metadata.</span>
+
+<span class="sd">    :type default: anything</span>
+<span class="sd">    :param default: The value to return if the field provided wasn&#39;t found.</span>
+
+<span class="sd">    :rtype: dict or anything</span>
+<span class="sd">    :returns: All metadata or the value of the specific field.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_metadata</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">):</span>
+      <span class="n">full</span> <span class="o">=</span> <span class="p">(</span><span class="n">field</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="s">&#39;defaultObjectAcl&#39;</span><span class="p">))</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">reload_metadata</span><span class="p">(</span><span class="n">full</span><span class="o">=</span><span class="n">full</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">field</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
+</div>
+<div class="viewcode-block" id="Bucket.patch_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.patch_metadata">[docs]</a>  <span class="k">def</span> <span class="nf">patch_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Update particular fields of this bucket&#39;s metadata.</span>
+
+<span class="sd">    This method will only update the fields provided</span>
+<span class="sd">    and will not touch the other fields.</span>
+
+<span class="sd">    It will also reload the metadata locally</span>
+<span class="sd">    based on the servers response.</span>
+
+<span class="sd">    :type metadata: dict</span>
+<span class="sd">    :param metadata: The dictionary of values to update.</span>
+
+<span class="sd">    :rtype: :class:`Bucket`</span>
+<span class="sd">    :returns: The current bucket.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="bp">self</span>
+</div>
+<div class="viewcode-block" id="Bucket.configure_website"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.configure_website">[docs]</a>  <span class="k">def</span> <span class="nf">configure_website</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_page_suffix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">not_found_page</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Configure website-related metadata.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">      This (apparently) only works</span>
+<span class="sd">      if your bucket name is a domain name</span>
+<span class="sd">      (and to do that, you need to get approved somehow...).</span>
+
+<span class="sd">      Check out the official documentation here:</span>
+<span class="sd">      https://developers.google.com/storage/docs/website-configuration</span>
+
+<span class="sd">    If you want this bucket to host a website,</span>
+<span class="sd">    just provide the name of an index page</span>
+<span class="sd">    and a page to use when a key isn&#39;t found::</span>
+
+<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, private_key_path)</span>
+<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(bucket_name)</span>
+<span class="sd">      &gt;&gt;&gt; bucket.configure_website(&#39;index.html&#39;, &#39;404.html&#39;)</span>
+
+<span class="sd">    You probably should also make the whole bucket public::</span>
+
+<span class="sd">      &gt;&gt;&gt; bucket.make_public(recursive=True, future=True)</span>
+
+<span class="sd">    This says:</span>
+<span class="sd">    &quot;Make the bucket public,</span>
+<span class="sd">    and all the stuff already in the bucket,</span>
+<span class="sd">    and anything else I add to the bucket.</span>
+<span class="sd">    Just make it all public.&quot;</span>
+
+<span class="sd">    :type main_page_suffix: string</span>
+<span class="sd">    :param main_page_suffix: The page to use as the main page of a directory.</span>
+<span class="sd">                             Typically something like index.html.</span>
+
+<span class="sd">    :type not_found_page: string</span>
+<span class="sd">    :param not_found_page: The file to use when a page isn&#39;t found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;website&#39;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="s">&#39;mainPageSuffix&#39;</span><span class="p">:</span> <span class="n">main_page_suffix</span><span class="p">,</span>
+          <span class="s">&#39;notFoundPage&#39;</span><span class="p">:</span> <span class="n">not_found_page</span><span class="p">,</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_metadata</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Bucket.disable_website"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.disable_website">[docs]</a>  <span class="k">def</span> <span class="nf">disable_website</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Disable the website configuration for this bucket.</span>
+
+<span class="sd">    This is really just a shortcut for</span>
+<span class="sd">    setting the website-related attributes to ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Bucket.reload_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.reload_acl">[docs]</a>  <span class="k">def</span> <span class="nf">reload_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.</span>
+
+<span class="sd">    :rtype: :class:`Bucket`</span>
+<span class="sd">    :returns: The current bucket.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">acl</span> <span class="o">=</span> <span class="n">BucketACL</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+      <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">self</span>
+</div>
+<div class="viewcode-block" id="Bucket.get_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_acl">[docs]</a>  <span class="k">def</span> <span class="nf">get_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c"># TODO: This might be a VERY long list. Use the specific API endpoint.</span>
+    <span class="sd">&quot;&quot;&quot;Get ACL metadata as a :class:`gcloud.storage.acl.BucketACL` object.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.storage.acl.BucketACL`</span>
+<span class="sd">    :returns: An ACL object for the current bucket.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">reload_acl</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span>
+</div>
+<div class="viewcode-block" id="Bucket.save_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.save_acl">[docs]</a>  <span class="k">def</span> <span class="nf">save_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Save the ACL data for this bucket.</span>
+
+<span class="sd">    If called without arguments,</span>
+<span class="sd">    this will save the ACL currently stored on the Bucket object.</span>
+<span class="sd">    For example,</span>
+<span class="sd">    this will save</span>
+<span class="sd">    the ACL stored in ``some_other_acl``::</span>
+
+<span class="sd">       &gt;&gt;&gt; bucket.acl = some_other_acl</span>
+<span class="sd">       &gt;&gt;&gt; bucket.save_acl()</span>
+
+<span class="sd">    You can also provide a specific ACL to save</span>
+<span class="sd">    instead of the one currently set</span>
+<span class="sd">    on the Bucket object::</span>
+
+<span class="sd">       &gt;&gt;&gt; bucket.save_acl(acl=my_other_acl)</span>
+
+<span class="sd">    You can use this to set access controls</span>
+<span class="sd">    to be consistent from one bucket to another::</span>
+
+<span class="sd">      &gt;&gt;&gt; bucket1 = connection.get_bucket(bucket1_name)</span>
+<span class="sd">      &gt;&gt;&gt; bucket2 = connection.get_bucket(bucket2_name)</span>
+<span class="sd">      &gt;&gt;&gt; bucket2.save_acl(bucket1.get_acl())</span>
+
+<span class="sd">    If you want to **clear** the ACL for the bucket,</span>
+<span class="sd">    you must save an empty list (``[]``)</span>
+<span class="sd">    rather than using ``None``</span>
+<span class="sd">    (which is interpreted as wanting to save the current ACL)::</span>
+
+<span class="sd">      &gt;&gt;&gt; bucket.save_acl(None)  # Saves the current ACL (self.acl).</span>
+<span class="sd">      &gt;&gt;&gt; bucket.save_acl([])  # Clears the current ACL.</span>
+
+<span class="sd">    :type acl: :class:`gcloud.storage.acl.ACL`</span>
+<span class="sd">    :param acl: The ACL object to save.</span>
+<span class="sd">                If left blank, this will save the ACL</span>
+<span class="sd">                set locally on the bucket.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># We do things in this weird way because [] and None</span>
+    <span class="c"># both evaluate to False, but mean very different things.</span>
+    <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="n">acl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span>
+
+    <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_metadata</span><span class="p">({</span><span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)})</span>
+</div>
+<div class="viewcode-block" id="Bucket.clear_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.clear_acl">[docs]</a>  <span class="k">def</span> <span class="nf">clear_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove all ACL rules from the bucket.</span>
+
+<span class="sd">    Note that this won&#39;t actually remove *ALL* the rules,</span>
+<span class="sd">    but it will remove all the non-default rules.</span>
+<span class="sd">    In short,</span>
+<span class="sd">    you&#39;ll still have access</span>
+<span class="sd">    to a bucket that you created</span>
+<span class="sd">    even after you clear ACL rules</span>
+<span class="sd">    with this method.</span>
+
+<span class="sd">    For example,</span>
+<span class="sd">    imagine that you granted access to this bucket</span>
+<span class="sd">    to a bunch of coworkers::</span>
+
+<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, private_key_path)</span>
+<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(bucket_name)</span>
+<span class="sd">      &gt;&gt;&gt; acl = bucket.get_acl()</span>
+<span class="sd">      &gt;&gt;&gt; acl.user(&#39;coworker1@example.org&#39;).grant_read()</span>
+<span class="sd">      &gt;&gt;&gt; acl.user(&#39;coworker2@example.org&#39;).grant_read()</span>
+<span class="sd">      &gt;&gt;&gt; acl.save()</span>
+
+<span class="sd">    Now they work in another part of the company</span>
+<span class="sd">    and you want to &#39;start fresh&#39; on who has access::</span>
+
+<span class="sd">      &gt;&gt;&gt; acl.clear_acl()</span>
+
+<span class="sd">    At this point all the custom rules you created have been removed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="p">[])</span>
+</div>
+<div class="viewcode-block" id="Bucket.reload_default_object_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.reload_default_object_acl">[docs]</a>  <span class="k">def</span> <span class="nf">reload_default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reload the Default Object ACL rules for this bucket.</span>
+
+<span class="sd">    :rtype: :class:`Bucket`</span>
+<span class="sd">    :returns: The current bucket.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">default_object_acl</span> <span class="o">=</span> <span class="n">DefaultObjectACL</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s">&#39;defaultObjectAcl&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+      <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_object_acl</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">default_object_acl</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="bp">self</span>
+</div>
+<div class="viewcode-block" id="Bucket.get_default_object_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_default_object_acl">[docs]</a>  <span class="k">def</span> <span class="nf">get_default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the current Default Object ACL rules.</span>
+
+<span class="sd">    If the appropriate metadata isn&#39;t available locally,</span>
+<span class="sd">    this method will reload it from Cloud Storage.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.storage.acl.DefaultObjectACL`</span>
+<span class="sd">    :returns: A DefaultObjectACL object for this bucket.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_object_acl</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">reload_default_object_acl</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_object_acl</span>
+</div>
+<div class="viewcode-block" id="Bucket.save_default_object_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.save_default_object_acl">[docs]</a>  <span class="k">def</span> <span class="nf">save_default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Save the Default Object ACL rules for this bucket.</span>
+
+<span class="sd">    :type acl: :class:`gcloud.storage.acl.DefaultObjectACL`</span>
+<span class="sd">    :param acl: The DefaultObjectACL object to save.</span>
+<span class="sd">                If not provided, this will look at</span>
+<span class="sd">                the ``default_object_acl`` property</span>
+<span class="sd">                and save that.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">acl</span> <span class="o">=</span> <span class="n">acl</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_object_acl</span>
+
+    <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_metadata</span><span class="p">({</span><span class="s">&#39;defaultObjectAcl&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)})</span>
+</div>
+<div class="viewcode-block" id="Bucket.clear_default_object_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.clear_default_object_acl">[docs]</a>  <span class="k">def</span> <span class="nf">clear_default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove the Default Object ACL from this bucket.&quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_default_object_acl</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="p">[])</span>
+</div>
+<div class="viewcode-block" id="Bucket.make_public"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.make_public">[docs]</a>  <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make a bucket public.</span>
+
+<span class="sd">    :type recursive: bool</span>
+<span class="sd">    :param recursive: If True, this will make all keys inside the bucket</span>
+<span class="sd">                      public as well.</span>
+
+<span class="sd">    :type future: bool</span>
+<span class="sd">    :param future: If True, this will make all objects created in the future</span>
+<span class="sd">                   public as well.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">future</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">get_default_object_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">save_default_object_acl</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">recursive</span><span class="p">:</span>
+      <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    </div>
+  </div>
+    <footer id="gc-footer" class="footer" role="contentinfo">
+    <div id="gc-copyright">
+        &copy; Copyright 2014, JJ Geewax.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      </div>
+    </footer>
+  </body>
+</html>

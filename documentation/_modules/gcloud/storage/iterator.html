@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gcloud.storage.iterator &mdash; gcloud 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/sidebar.js"></script>
+    <link rel="top" title="gcloud 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document" class="two-column docs">
+    <div id="sandbar">
+      <header id="gc-googlebar">
+      <a id="gc-logo" href="../../../index.html">
+        <img src="_static/cloudplatform-horizontal.png" alt="Google">
+        </a>
+        <form class="gc-search" action="search.html" method="GET">
+          <div class="searchbox" style="width: 429px;">
+            <span class="button button-blue mini">Google Cloud Python API</span>
+            <input type="hidden" name="check_keywords" value="yes">
+            <input type="hidden" name="area" value="default">
+            <input type="text" name="q" class="q" id="q" value=""
+              placeholder="Search" autocomplete="off" style="width: 263px;">
+          </div>
+          <button class="button button-blue" style="top: 0px; left: 444px;">
+          <img src="_static/search.png" alt="Search">
+        </button>
+
+        <input type="hidden" name="p" id="search_project" value="/compute">
+
+      </form>
+      </header>
+    </div>
+    
+<div id="gc-wrapper">
+  <div id="gc-appbar">
+    <h1><a href="../../../index.html">gcloud 0.1 documentation</a></h1>
+  </div>
+    <div id="gc-main" class="main">
+      <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+
+            <h3>All API Docs</h3>
+            <nav class="gc-toc">
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../common-api.html">Cloud Common</a></li>
+</ul>
+
+            </nav>
+            
+            
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main" id="gc-content">
+            
+  <h1>Source code for gcloud.storage.iterator</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Iterators for paging through API responses.</span>
+
+<span class="sd">These iterators</span>
+<span class="sd">simplify the process</span>
+<span class="sd">of paging through API responses</span>
+<span class="sd">where the response</span>
+<span class="sd">is a list of results</span>
+<span class="sd">with a ``nextPageToken``.</span>
+
+<span class="sd">To make an iterator work,</span>
+<span class="sd">just override the ``get_items_from_response`` method</span>
+<span class="sd">so that given a response</span>
+<span class="sd">(containing a page of results)</span>
+<span class="sd">it parses those results</span>
+<span class="sd">into an iterable</span>
+<span class="sd">of the actual objects you want::</span>
+
+<span class="sd">  class MyIterator(Iterator):</span>
+<span class="sd">    def get_items_from_response(self, response):</span>
+<span class="sd">      items = response.get(&#39;items&#39;, [])</span>
+<span class="sd">      for item in items:</span>
+<span class="sd">        yield MyItemClass.from_dict(item, other_arg=True)</span>
+
+<span class="sd">You then can use this</span>
+<span class="sd">to get **all** the results</span>
+<span class="sd">from a resource::</span>
+
+<span class="sd">  &gt;&gt;&gt; iterator = MyIterator(...)</span>
+<span class="sd">  &gt;&gt;&gt; list(iterator)  # Convert to a list (consumes all values).</span>
+
+<span class="sd">Or you can walk your way through items</span>
+<span class="sd">and call off the search early</span>
+<span class="sd">if you find what you&#39;re looking for</span>
+<span class="sd">(resulting in possibly fewer requests)::</span>
+
+<span class="sd">  &gt;&gt;&gt; for item in MyIterator(...):</span>
+<span class="sd">  &gt;&gt;&gt;   print item.name</span>
+<span class="sd">  &gt;&gt;&gt;   if not item.is_valid:</span>
+<span class="sd">  &gt;&gt;&gt;     break</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;A generic class for iterating through Cloud Storage list responses.</span>
+
+<span class="sd">  :type connection: :class:`gcloud.storage.connection.Connection`</span>
+<span class="sd">  :param connection: The connection to use to make requests.</span>
+
+<span class="sd">  :type path: string</span>
+<span class="sd">  :param path: The path to query for the list of items.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="bp">None</span>
+
+  <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterate through the list of items.&quot;&quot;&quot;</span>
+
+    <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next_page</span><span class="p">():</span>
+      <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_page_response</span><span class="p">()</span>
+      <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_items_from_response</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">item</span>
+
+<div class="viewcode-block" id="Iterator.has_next_page"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.Iterator.has_next_page">[docs]</a>  <span class="k">def</span> <span class="nf">has_next_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determines whether or not this iterator has more pages.</span>
+
+<span class="sd">    :rtype: bool</span>
+<span class="sd">    :returns: Whether the iterator has more pages or not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="Iterator.get_query_params"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.Iterator.get_query_params">[docs]</a>  <span class="k">def</span> <span class="nf">get_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Getter for query parameters for the next request.</span>
+
+<span class="sd">    :rtype: dict or None</span>
+<span class="sd">    :returns: A dictionary of query parameters or None if there are none.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">:</span>
+      <span class="k">return</span> <span class="p">{</span><span class="s">&#39;pageToken&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">}</span>
+</div>
+<div class="viewcode-block" id="Iterator.get_next_page_response"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.Iterator.get_next_page_response">[docs]</a>  <span class="k">def</span> <span class="nf">get_next_page_response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Requests the next page from the path provided.</span>
+
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :returns: The parsed JSON response of the next page&#39;s contents.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next_page</span><span class="p">():</span>
+      <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;No more pages. Try resetting the iterator.&#39;</span><span class="p">)</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_query_params</span><span class="p">())</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="Iterator.reset"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.Iterator.reset">[docs]</a>  <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Resets the iterator to the beginning.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="Iterator.get_items_from_response"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.Iterator.get_items_from_response">[docs]</a>  <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Factory method called while iterating. This should be overriden.</span>
+
+<span class="sd">    This method should be overridden by a subclass.</span>
+<span class="sd">    It should accept the API response</span>
+<span class="sd">    of a request for the next page of items,</span>
+<span class="sd">    and return a list (or other iterable)</span>
+<span class="sd">    of items.</span>
+
+<span class="sd">    Typically this method will construct</span>
+<span class="sd">    a Bucket or a Key</span>
+<span class="sd">    from the page of results in the response.</span>
+
+<span class="sd">    :type response: dict</span>
+<span class="sd">    :param response: The response of asking for the next page of items.</span>
+
+<span class="sd">    :rtype: iterable</span>
+<span class="sd">    :returns: Items that the iterator should yield.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div></div>
+<div class="viewcode-block" id="BucketIterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.BucketIterator">[docs]</a><span class="k">class</span> <span class="nc">BucketIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;An iterator listing all buckets.</span>
+
+<span class="sd">  You shouldn&#39;t have to use this directly,</span>
+<span class="sd">  but instead should use the helper methods</span>
+<span class="sd">  on :class:`gcloud.storage.connection.Connection` objects.</span>
+
+<span class="sd">  :type connection: :class:`gcloud.storage.connection.Connection`</span>
+<span class="sd">  :param connection: The connection to use for querying the list of buckets.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">BucketIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BucketIterator.get_items_from_response"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.BucketIterator.get_items_from_response">[docs]</a>  <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Factory method which yields :class:`gcloud.storage.bucket.Bucket` items from a response.</span>
+
+<span class="sd">    :type response: dict</span>
+<span class="sd">    :param response: The JSON API response for a page of buckets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+      <span class="k">yield</span> <span class="n">Bucket</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="KeyIterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyIterator">[docs]</a><span class="k">class</span> <span class="nc">KeyIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;An iterator listing keys.</span>
+
+<span class="sd">  You shouldn&#39;t have to use this directly,</span>
+<span class="sd">  but instead should use the helper methods</span>
+<span class="sd">  on :class:`gcloud.storage.key.Key` objects.</span>
+
+<span class="sd">  :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">  :param bucket: The bucket from which to list keys.</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">KeyIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+        <span class="n">connection</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="KeyIterator.get_items_from_response"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyIterator.get_items_from_response">[docs]</a>  <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Factory method which yields :class:`gcloud.storage.key.Key` items from a response.</span>
+
+<span class="sd">    :type response: dict</span>
+<span class="sd">    :param response: The JSON API response for a page of keys.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">gcloud.storage.key</span> <span class="kn">import</span> <span class="n">Key</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+      <span class="k">yield</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="KeyDataIterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyDataIterator">[docs]</a><span class="k">class</span> <span class="nc">KeyDataIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="c"># TODO: Use an actual HTTP streaming library,</span>
+  <span class="c">#       not multiple requests and the range header.</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_more_data</span><span class="p">():</span>
+      <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_chunk</span><span class="p">()</span>
+
+<div class="viewcode-block" id="KeyDataIterator.reset"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyDataIterator.reset">[docs]</a>  <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="KeyDataIterator.has_more_data"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyDataIterator.has_more_data">[docs]</a>  <span class="k">def</span> <span class="nf">has_more_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span><span class="p">:</span>
+      <span class="c"># self._total_bytes **should** be set by this point.</span>
+      <span class="c"># If it isn&#39;t, something is wrong.</span>
+      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Size of object is unknown... This is bad.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="KeyDataIterator.get_headers"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyDataIterator.get_headers">[docs]</a>  <span class="k">def</span> <span class="nf">get_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CHUNK_SIZE</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span> <span class="ow">and</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span><span class="p">:</span>
+      <span class="n">end</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s">&#39;Range&#39;</span><span class="p">:</span> <span class="s">&#39;bytes=</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)}</span>
+</div>
+<div class="viewcode-block" id="KeyDataIterator.get_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyDataIterator.get_url">[docs]</a>  <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;alt&#39;</span><span class="p">:</span> <span class="s">&#39;media&#39;</span><span class="p">})</span>
+</div>
+<div class="viewcode-block" id="KeyDataIterator.get_next_chunk"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyDataIterator.get_next_chunk">[docs]</a>  <span class="k">def</span> <span class="nf">get_next_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_more_data</span><span class="p">():</span>
+      <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;No more data in this iterator. Try resetting.&#39;</span><span class="p">)</span>
+
+    <span class="n">response</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
+        <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_headers</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">206</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="s">&#39;content-range&#39;</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+        <span class="n">content_range</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;content-range&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">content_range</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+
+      <span class="k">return</span> <span class="n">content</span>
+
+    <span class="c"># Expected a 200 or a 206... Got something else, which is bad.</span>
+    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">response</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    </div>
+  </div>
+    <footer id="gc-footer" class="footer" role="contentinfo">
+    <div id="gc-copyright">
+        &copy; Copyright 2014, JJ Geewax.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      </div>
+    </footer>
+  </body>
+</html>
