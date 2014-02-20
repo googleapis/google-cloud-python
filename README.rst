@@ -7,7 +7,7 @@ Official documentation
 If you just want to **use** the library
 (not contribute to it),
 check out the official documentation:
-http://GoogleCloudPlatform.github.io/gcloud-python/documentation/
+http://GoogleCloudPlatform.github.io/gcloud-python/
 
 Incredibly quick demo
 ---------------------
