@@ -7,14 +7,14 @@ Official documentation
 If you just want to **use** the library
 (not contribute to it),
 check out the official documentation:
-http://jgeewax.github.io/gcloud/documentation/
+http://GoogleCloudPlatform.github.io/gcloud-python/
 
 Incredibly quick demo
 ---------------------
 
 Start by cloning the repository::
 
-  $ git clone git://github.com/jgeewax/gcloud.git
+  $ git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
   $ cd gcloud
   $ python setup.py develop
 
@@ -38,9 +38,9 @@ How do I build the docs?
 
 Make sure you have ``sphinx`` installed and::
 
-  $ git clone git://github.com/jgeewax/gcloud.git
+  $ git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
   $ pip install sphinx
-  $ cd gcloud/docs
+  $ cd gcloud-python/docs
   $ make html
 
 How do I run the tests?
@@ -48,6 +48,6 @@ How do I run the tests?
 
 Make sure you have ``nose`` installed and::
 
-  $ git clone git://github.com/jgeewax/gcloud.git
+  $ git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
   $ pip install unittest2 nose
   $ nosetests
