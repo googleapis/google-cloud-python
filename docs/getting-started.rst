@@ -20,9 +20,9 @@ try installing the ``dev`` packages beforehand::
 
   $ sudo apt-get install python-dev libssl-dev
 
-If you want to install gcloud from source,
+If you want to install `gcloud-python` from source,
 you can clone the repository from GitHub::
 
-  $ git clone git://github.com/jgeewax/gcloud.git
-  $ cd gcloud
+  $ git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
+  $ cd gcloud-python
   $ python setup.py install
