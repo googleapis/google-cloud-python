@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -10,6 +11,7 @@
     
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -27,7 +29,7 @@
     <link rel="top" title="gcloud 0.1 documentation" href="#" />
     <link rel="next" title="Cloud Datastore" href="datastore-api.html" /> 
   </head>
-  <body role="document" class="two-column docs">
+  <body role="document" class="two-column docs"><a href="https://github.com/GoogleCloudPlatform/gcloud-python"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="_static/forkme.png" alt="Fork me on GitHub"></a>
     <div id="sandbar">
       <header id="gc-googlebar">
       <a id="gc-logo" href="#">
@@ -63,8 +65,7 @@
   <ul>
 <li><a class="reference internal" href="#">Google Cloud Python API</a><ul>
 <li><a class="reference internal" href="#getting-started">Getting started</a></li>
-<li><a class="reference internal" href="#cloud-datastore">Cloud Datastore</a></li>
-<li><a class="reference internal" href="#cloud-storage">Cloud Storage</a></li>
+<li><a class="reference internal" href="#services">Services</a></li>
 <li><a class="reference internal" href="#common-modules">Common modules</a></li>
 <li><a class="reference internal" href="#how-to-contribute">How to contribute</a></li>
 </ul>
@@ -107,8 +108,11 @@ and is <strong>not</strong> the official Google Python API client library.</p>
 you should probably take a look at
 <a class="reference internal" href="getting-started.html"><em>Getting started with gcloud</em></a>.</p>
 </div>
-<div class="section" id="cloud-datastore">
-<h2>Cloud Datastore<a class="headerlink" href="#cloud-datastore" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="services">
+<h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
+<div class="service topic">
+<p class="topic-title first">Cloud Datastore</p>
+<a class="reference external image-reference" href="datastore-api.html"><img alt="_images/datastore-logo.png" src="_images/datastore-logo.png" /></a>
 <ul class="simple">
 <li>Google&#8217;s <a class="reference external" href="https://developers.google.com/datastore/">official documentation</a></li>
 <li><a class="reference internal" href="datastore-quickstart.html"><em>Cloud Datastore in 10 seconds</em></a></li>
@@ -116,13 +120,40 @@ you should probably take a look at
 <li><a class="reference internal" href="datastore-api.html"><em>Cloud Datastore API Documentation</em></a></li>
 </ul>
 </div>
-<div class="section" id="cloud-storage">
-<h2>Cloud Storage<a class="headerlink" href="#cloud-storage" title="Permalink to this headline">¶</a></h2>
+<div class="service topic">
+<p class="topic-title first">Cloud Storage</p>
+<a class="reference external image-reference" href="storage-api.html"><img alt="_images/storage-logo.png" src="_images/storage-logo.png" /></a>
 <ul class="simple">
 <li>Google&#8217;s <a class="reference external" href="https://developers.google.com/storage/">official documentation</a></li>
 <li><a class="reference internal" href="storage-quickstart.html"><em>Cloud Storage in 10 seconds</em></a></li>
+<li><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/37">Getting started with Cloud Storage</a></li>
 <li><a class="reference internal" href="storage-api.html"><em>Cloud Storage API Documentation</em></a></li>
 </ul>
+</div>
+<div class="service topic">
+<p class="topic-title first">Compute Engine</p>
+<a class="reference external image-reference" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/34"><img alt="_images/compute-logo.png" src="_images/compute-logo.png" /></a>
+<ul class="simple">
+<li>Google&#8217;s <a class="reference external" href="https://developers.google.com/compute/">official documentation</a></li>
+<li>Coming soon...</li>
+</ul>
+</div>
+<div class="service topic">
+<p class="topic-title first">Cloud SQL</p>
+<a class="reference external image-reference" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/35"><img alt="_images/cloudsql-logo.png" src="_images/cloudsql-logo.png" /></a>
+<ul class="simple">
+<li>Google&#8217;s <a class="reference external" href="https://developers.google.com/cloud-sql/">official documentation</a></li>
+<li>Coming soon...</li>
+</ul>
+</div>
+<div class="service topic">
+<p class="topic-title first">Big Query</p>
+<a class="reference external image-reference" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/36"><img alt="_images/bigquery-logo.png" src="_images/bigquery-logo.png" /></a>
+<ul class="simple">
+<li>Google&#8217;s <a class="reference external" href="https://developers.google.com/bigquery/">official documentation</a></li>
+<li>Coming soon...</li>
+</ul>
+</div>
 </div>
 <div class="section" id="common-modules">
 <h2>Common modules<a class="headerlink" href="#common-modules" title="Permalink to this headline">¶</a></h2>
@@ -135,9 +166,22 @@ you should probably take a look at
 <p>Want to help out?
 That&#8217;s awesome.
 The library is open source
-and <a class="reference external" href="https://github.com/jgeewax/gcloud">lives on GitHub</a>.
+and <a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python">lives on GitHub</a>.
 Open an issue
 or fork the library and submit a pull request.</p>
+<p>Keep in mind that before we can accept any pull requests
+we have to jump through a couple of legal hurdles,
+primarily a Contributor License Agreement (CLA):</p>
+<ul class="simple">
+<li><strong>If you are an individual writing original source code</strong>
+and you&#8217;re sure you own the intellectual property,
+then you&#8217;ll need to sign an <a class="reference external" href="http://code.google.com/legal/individual-cla-v1.0.html">individual CLA</a>.</li>
+<li><strong>If you work for a company that wants to allow you to contribute your work</strong>,
+then you&#8217;ll need to sign a <a class="reference external" href="http://code.google.com/legal/corporate-cla-v1.0.html">corporate CLA</a>.</li>
+</ul>
+<p>Follow either of the two links above to access the appropriate CLA
+and instructions for how to sign and return it.
+Once we receive it, we&#8217;ll be able to accept your pull requests.</p>
 </div>
 </div>
 

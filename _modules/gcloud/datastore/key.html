@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -10,6 +11,7 @@
     
     <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -27,7 +29,7 @@
     <link rel="top" title="gcloud 0.1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
-  <body role="document" class="two-column docs">
+  <body role="document" class="two-column docs"><a href="https://github.com/GoogleCloudPlatform/gcloud-python"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="_static/forkme.png" alt="Fork me on GitHub"></a>
     <div id="sandbar">
       <header id="gc-googlebar">
       <a id="gc-logo" href="../../../index.html">
@@ -131,9 +133,10 @@
     <span class="n">key</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Key</span><span class="p">()</span>
 
     <span class="c"># Apparently &#39;s~&#39; is a prefix for High-Replication and is necessary here.</span>
+    <span class="c"># Another valid preflix is &#39;e~&#39; indicating EU datacenters.</span>
     <span class="n">dataset_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">dataset_id</span><span class="p">:</span>
-      <span class="k">if</span> <span class="ow">not</span> <span class="n">dataset_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;s~&#39;</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">dataset_id</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;s~&#39;</span><span class="p">,</span> <span class="s">&#39;e~&#39;</span><span class="p">]:</span>
         <span class="n">dataset_id</span> <span class="o">=</span> <span class="s">&#39;s~&#39;</span> <span class="o">+</span> <span class="n">dataset_id</span>
 
       <span class="n">key</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
