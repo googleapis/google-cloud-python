@@ -27,7 +27,7 @@ body.two-column #gc-sidebar {
 
 .service.topic {
   width: 33%;
-  height: 435px;
+  height: 340px;
   float: left;
   text-align: center;
 }
@@ -37,6 +37,10 @@ body.two-column #gc-sidebar {
   font-size: 167%;
   font-family: 'open sans', arial, sans-serif;
   font-weight: 600;
+}
+
+.service.topic img {
+  width: 160px;
 }
 
 .service.topic ul {
