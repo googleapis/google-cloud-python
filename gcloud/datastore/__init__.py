@@ -2,10 +2,10 @@
 
 You'll typically use these to get started with the API:
 
->>> import gcloud.datastore
->>> dataset = gcloud.datastore.get_dataset('dataset-id-here',
-                                          'long-email@googleapis.com',
-                                          '/path/to/private.key')
+>>> from gcloud import datastore
+>>> dataset = datastore.get_dataset('dataset-id-here',
+...                                 'long-email@googleapis.com',
+...                                 '/path/to/private.key')
 >>> # Then do other things...
 >>> query = dataset.query().kind('EntityKind')
 >>> entity = dataset.entity('EntityKind')
@@ -46,8 +46,8 @@ def get_connection(client_email, private_key_path):
   Use this if you are going to access several datasets
   with the same set of credentials (unlikely):
 
-  >>> import gcloud.datastore
-  >>> connection = gcloud.datastore.get_connection(email, key_path)
+  >>> from gcloud import datastore
+  >>> connection = datastore.get_connection(email, key_path)
   >>> dataset1 = connection.dataset('dataset1')
   >>> dataset2 = connection.dataset('dataset2')
 
@@ -74,8 +74,8 @@ def get_dataset(dataset_id, client_email, private_key_path):
 
   You'll generally use this as the first call to working with the API:
 
-  >>> import gcloud.datastore
-  >>> dataset = gcloud.datastore.get_dataset('dataset-id', email, key_path)
+  >>> from gcloud import datastore
+  >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
   >>> # Now you can do things with the dataset.
   >>> dataset.query().kind('TestKind').fetch()
   [...]
