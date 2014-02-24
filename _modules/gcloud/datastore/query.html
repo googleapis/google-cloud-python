@@ -114,8 +114,8 @@
 <span class="sd">  which generates a query that can be executed</span>
 <span class="sd">  without any additional work::</span>
 
-<span class="sd">    &gt;&gt;&gt; import gcloud.datastore</span>
-<span class="sd">    &gt;&gt;&gt; dataset = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">    &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
 <span class="sd">    &gt;&gt;&gt; query = dataset.query(&#39;MyKind&#39;)</span>
 
 <span class="sd">  :type kind: string</span>
@@ -300,8 +300,8 @@
 
 <span class="sd">    For example::</span>
 
-<span class="sd">      &gt;&gt;&gt; import gcloud.datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
 <span class="sd">      &gt;&gt;&gt; query = dataset.query(&#39;Person&#39;).filter(&#39;name =&#39;, &#39;Sally&#39;)</span>
 <span class="sd">      &gt;&gt;&gt; query.fetch()</span>
 <span class="sd">      [&lt;Entity object&gt;, &lt;Entity object&gt;, ...]</span>

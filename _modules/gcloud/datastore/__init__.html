@@ -85,10 +85,10 @@
 
 <span class="sd">You&#39;ll typically use these to get started with the API:</span>
 
-<span class="sd">&gt;&gt;&gt; import gcloud.datastore</span>
-<span class="sd">&gt;&gt;&gt; dataset = gcloud.datastore.get_dataset(&#39;dataset-id-here&#39;,</span>
-<span class="sd">                                          &#39;long-email@googleapis.com&#39;,</span>
-<span class="sd">                                          &#39;/path/to/private.key&#39;)</span>
+<span class="sd">&gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">&gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id-here&#39;,</span>
+<span class="sd">...                                 &#39;long-email@googleapis.com&#39;,</span>
+<span class="sd">...                                 &#39;/path/to/private.key&#39;)</span>
 <span class="sd">&gt;&gt;&gt; # Then do other things...</span>
 <span class="sd">&gt;&gt;&gt; query = dataset.query().kind(&#39;EntityKind&#39;)</span>
 <span class="sd">&gt;&gt;&gt; entity = dataset.entity(&#39;EntityKind&#39;)</span>
@@ -129,8 +129,8 @@
 <span class="sd">  Use this if you are going to access several datasets</span>
 <span class="sd">  with the same set of credentials (unlikely):</span>
 
-<span class="sd">  &gt;&gt;&gt; import gcloud.datastore</span>
-<span class="sd">  &gt;&gt;&gt; connection = gcloud.datastore.get_connection(email, key_path)</span>
+<span class="sd">  &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">  &gt;&gt;&gt; connection = datastore.get_connection(email, key_path)</span>
 <span class="sd">  &gt;&gt;&gt; dataset1 = connection.dataset(&#39;dataset1&#39;)</span>
 <span class="sd">  &gt;&gt;&gt; dataset2 = connection.dataset(&#39;dataset2&#39;)</span>
 
@@ -157,8 +157,8 @@
 
 <span class="sd">  You&#39;ll generally use this as the first call to working with the API:</span>
 
-<span class="sd">  &gt;&gt;&gt; import gcloud.datastore</span>
-<span class="sd">  &gt;&gt;&gt; dataset = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">  &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">  &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
 <span class="sd">  &gt;&gt;&gt; # Now you can do things with the dataset.</span>
 <span class="sd">  &gt;&gt;&gt; dataset.query().kind(&#39;TestKind&#39;).fetch()</span>
 <span class="sd">  [...]</span>

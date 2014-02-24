@@ -98,22 +98,22 @@
 <span class="sd">  (either ``insert_auto_id`` or ``upsert``)</span>
 <span class="sd">  into the same mutation, and execute those within a transaction::</span>
 
-<span class="sd">    import gcloud.datastore</span>
-<span class="sd">    dataset = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
-<span class="sd">    with dataset.transaction(bulk_mutation=True)  # The default.</span>
-<span class="sd">      entity1.save()</span>
-<span class="sd">      entity2.save()</span>
+<span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">    &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; with dataset.transaction(bulk_mutation=True)  # The default.</span>
+<span class="sd">    ...   entity1.save()</span>
+<span class="sd">    ...   entity2.save()</span>
 
 <span class="sd">  To rollback a transaction if there is an error::</span>
 
-<span class="sd">    import gcloud.datastore</span>
-<span class="sd">    dataset = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
-<span class="sd">    with dataset.transaction() as t:</span>
-<span class="sd">      try:</span>
-<span class="sd">        do_some_work()</span>
-<span class="sd">        entity1.save()</span>
-<span class="sd">      except:</span>
-<span class="sd">        t.rollback()</span>
+<span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">    &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; with dataset.transaction() as t:</span>
+<span class="sd">    ...   try:</span>
+<span class="sd">    ...     do_some_work()</span>
+<span class="sd">    ...     entity1.save()</span>
+<span class="sd">    ...   except:</span>
+<span class="sd">    ...     t.rollback()</span>
 
 <span class="sd">  If the transaction isn&#39;t rolled back,</span>
 <span class="sd">  it will commit by default.</span>
@@ -125,8 +125,8 @@
 <span class="sd">    That means,</span>
 <span class="sd">    if you try::</span>
 
-<span class="sd">      with dataset.transaction():</span>
-<span class="sd">        entity = dataset.entity(&#39;Thing&#39;).save()</span>
+<span class="sd">      &gt;&gt;&gt; with dataset.transaction():</span>
+<span class="sd">      ...   entity = dataset.entity(&#39;Thing&#39;).save()</span>
 
 <span class="sd">    ``entity`` won&#39;t have a complete Key</span>
 <span class="sd">    until the transaction is committed.</span>
@@ -135,12 +135,11 @@
 <span class="sd">    the automatically generated ID will be assigned</span>
 <span class="sd">    to the entity::</span>
 
-<span class="sd">      with dataset.transaction():</span>
-<span class="sd">        entity = dataset.entity(&#39;Thing&#39;)</span>
-<span class="sd">        entity.save()</span>
-<span class="sd">        assert entity.key().is_partial()  # There is no ID on this key.</span>
-
-<span class="sd">      assert not entity.key().is_partial()  # There *is* an ID on this key.</span>
+<span class="sd">      &gt;&gt;&gt; with dataset.transaction():</span>
+<span class="sd">      ...   entity = dataset.entity(&#39;Thing&#39;)</span>
+<span class="sd">      ...   entity.save()</span>
+<span class="sd">      ...   assert entity.key().is_partial()  # There is no ID on this key.</span>
+<span class="sd">      &gt;&gt;&gt; assert not entity.key().is_partial()  # There *is* an ID on this key.</span>
 
 <span class="sd">  .. warning::</span>
 <span class="sd">    If you&#39;re using the automatically generated ID functionality,</span>
@@ -156,16 +155,16 @@
 <span class="sd">  If you don&#39;t want to use the context manager</span>
 <span class="sd">  you can initialize a transaction manually::</span>
 
-<span class="sd">    transaction = dataset.transaction()</span>
-<span class="sd">    transaction.begin()</span>
+<span class="sd">    &gt;&gt;&gt; transaction = dataset.transaction()</span>
+<span class="sd">    &gt;&gt;&gt; transaction.begin()</span>
 
-<span class="sd">    entity = dataset.entity(&#39;Thing&#39;)</span>
-<span class="sd">    entity.save()</span>
+<span class="sd">    &gt;&gt;&gt; entity = dataset.entity(&#39;Thing&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; entity.save()</span>
 
-<span class="sd">    if error:</span>
-<span class="sd">      transaction.rollback()</span>
-<span class="sd">    else:</span>
-<span class="sd">      transaction.commit()</span>
+<span class="sd">    &gt;&gt;&gt; if error:</span>
+<span class="sd">    ...   transaction.rollback()</span>
+<span class="sd">    ... else:</span>
+<span class="sd">    ...   transaction.commit()</span>
 
 <span class="sd">  For now,</span>
 <span class="sd">  this library will enforce a rule of</span>
@@ -178,31 +177,31 @@
 
 <span class="sd">  For example, this is perfectly valid::</span>
 
-<span class="sd">    import gcloud.datastore</span>
-<span class="sd">    dataset = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
-<span class="sd">    with dataset.transaction():</span>
-<span class="sd">      dataset.entity(&#39;Thing&#39;).save()</span>
+<span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">    &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; with dataset.transaction():</span>
+<span class="sd">    ...   dataset.entity(&#39;Thing&#39;).save()</span>
 
 <span class="sd">  However, this **wouldn&#39;t** be acceptable::</span>
 
-<span class="sd">    import gcloud.datastore</span>
-<span class="sd">    dataset = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
-<span class="sd">    with dataset.transaction():</span>
-<span class="sd">      dataset.entity(&#39;Thing&#39;).save()</span>
-<span class="sd">      with dataset.transaction():</span>
-<span class="sd">        dataset.entity(&#39;Thing&#39;).save()</span>
+<span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">    &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; with dataset.transaction():</span>
+<span class="sd">    ...   dataset.entity(&#39;Thing&#39;).save()</span>
+<span class="sd">    ...   with dataset.transaction():</span>
+<span class="sd">    ...     dataset.entity(&#39;Thing&#39;).save()</span>
 
 <span class="sd">  Technically, it looks like the Protobuf API supports this type of pattern,</span>
 <span class="sd">  however it makes the code particularly messy.</span>
 <span class="sd">  If you really need to nest transactions, try::</span>
 
-<span class="sd">    import gcloud.datastore</span>
-<span class="sd">    dataset1 = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
-<span class="sd">    dataset2 = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
-<span class="sd">    with dataset1.transaction():</span>
-<span class="sd">      dataset1.entity(&#39;Thing&#39;).save()</span>
-<span class="sd">      with dataset2.transaction():</span>
-<span class="sd">        dataset2.entity(&#39;Thing&#39;).save()</span>
+<span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">    &gt;&gt;&gt; dataset1 = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; dataset2 = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; with dataset1.transaction():</span>
+<span class="sd">    ...   dataset1.entity(&#39;Thing&#39;).save()</span>
+<span class="sd">    ...   with dataset2.transaction():</span>
+<span class="sd">    ...     dataset2.entity(&#39;Thing&#39;).save()</span>
 
 <span class="sd">  :type dataset: :class:`gcloud.datastore.dataset.Dataset`</span>
 <span class="sd">  :param dataset: The dataset to which this :class:`Transaction` belongs.</span>
