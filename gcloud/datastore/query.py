@@ -31,8 +31,8 @@ class Query(object):
   which generates a query that can be executed
   without any additional work::
 
-    >>> import gcloud.datastore
-    >>> dataset = gcloud.datastore.get_dataset('dataset-id', email, key_path)
+    >>> from gcloud import datastore
+    >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
     >>> query = dataset.query('MyKind')
 
   :type kind: string
@@ -217,8 +217,8 @@ class Query(object):
 
     For example::
 
-      >>> import gcloud.datastore
-      >>> dataset = gcloud.datastore.get_dataset('dataset-id', email, key_path)
+      >>> from gcloud import datastore
+      >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
       >>> query = dataset.query('Person').filter('name =', 'Sally')
       >>> query.fetch()
       [<Entity object>, <Entity object>, ...]

@@ -195,8 +195,8 @@ class Connection(object):
     Under the hood, the :class:`gcloud.datastore.query.Query` class
     uses this method to fetch data:
 
-    >>> import gcloud.datastore
-    >>> connection = gcloud.datastore.get_connection(email, key_path)
+    >>> from gcloud import datastore
+    >>> connection = datastore.get_connection(email, key_path)
     >>> dataset = connection.dataset('dataset-id')
     >>> query = dataset.query().kind('MyKind').filter('property =', 'value')
 
@@ -238,9 +238,9 @@ class Connection(object):
     and is used under the hood for methods like
     :func:`gcloud.datastore.dataset.Dataset.get_entity`:
 
-    >>> import gcloud.datastore
+    >>> from gcloud import datastore
     >>> from gcloud.datastore.key import Key
-    >>> connection = gcloud.datastore.get_connection(email, key_path)
+    >>> connection = datastore.get_connection(email, key_path)
     >>> dataset = connection.dataset('dataset-id')
     >>> key = Key(dataset=dataset).kind('MyKind').id(1234)
 
