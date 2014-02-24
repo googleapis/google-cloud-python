@@ -17,14 +17,6 @@ Connections
   :undoc-members:
   :show-inheritance:
 
-Credentials
------------
-
-.. automodule:: gcloud.datastore.credentials
-  :members:
-  :undoc-members:
-  :show-inheritance:
-
 Datasets
 --------
 

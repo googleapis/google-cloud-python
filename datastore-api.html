@@ -67,7 +67,6 @@
 <li><a class="reference internal" href="#">Cloud Datastore</a><ul>
 <li><a class="reference internal" href="#module-gcloud.datastore.__init__"><tt class="docutils literal"><span class="pre">gcloud.datastore</span></tt></a></li>
 <li><a class="reference internal" href="#module-gcloud.datastore.connection">Connections</a></li>
-<li><a class="reference internal" href="#module-gcloud.datastore.credentials">Credentials</a></li>
 <li><a class="reference internal" href="#module-gcloud.datastore.dataset">Datasets</a></li>
 <li><a class="reference internal" href="#module-gcloud.datastore.entity">Entities</a></li>
 <li><a class="reference internal" href="#module-gcloud.datastore.key">Keys</a></li>
@@ -105,10 +104,10 @@
 <span id="gcloud-datastore"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gcloud.datastore</span></tt><a class="headerlink" href="#module-gcloud.datastore.__init__" title="Permalink to this headline">¶</a></h2>
 <p>Shortcut methods for getting set up with Google Cloud Datastore.</p>
 <p>You&#8217;ll typically use these to get started with the API:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id-here&#39;</span><span class="p">,</span>
-<span class="go">                                          &#39;long-email@googleapis.com&#39;,</span>
-<span class="go">                                          &#39;/path/to/private.key&#39;)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id-here&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                                <span class="s">&#39;long-email@googleapis.com&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                                <span class="s">&#39;/path/to/private.key&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Then do other things...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">)</span>
@@ -143,8 +142,8 @@ which represents a lookup or search over the rows in the datastore.</li>
 <dd><p>Shortcut method to establish a connection to the Cloud Datastore.</p>
 <p>Use this if you are going to access several datasets
 with the same set of credentials (unlikely):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset1</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset1&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset2&#39;</span><span class="p">)</span>
 </pre></div>
@@ -176,8 +175,8 @@ account).</li>
 <tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_dataset</tt><big>(</big><em>dataset_id</em>, <em>client_email</em>, <em>private_key_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to establish a connection to a particular dataset in the Cloud Datastore.</p>
 <p>You&#8217;ll generally use this as the first call to working with the API:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Now you can do things with the dataset.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;TestKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
 <span class="go">[...]</span>
@@ -365,9 +364,9 @@ and
 <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>)
 and is used under the hood for methods like
 <a class="reference internal" href="#gcloud.datastore.dataset.Dataset.get_entity" title="gcloud.datastore.dataset.Dataset.get_entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.get_entity()</span></tt></a>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
 </pre></div>
@@ -444,8 +443,8 @@ and returns a list of entity protobufs matching the query.</p>
 in favor of the <a class="reference internal" href="#gcloud.datastore.query.Query.fetch" title="gcloud.datastore.query.Query.fetch"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.query.Query.fetch()</span></tt></a> method.</p>
 <p>Under the hood, the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a> class
 uses this method to fetch data:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;property =&#39;</span><span class="p">,</span> <span class="s">&#39;value&#39;</span><span class="p">)</span>
 </pre></div>
@@ -496,53 +495,8 @@ uses this method to fetch data:</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x3b2edc0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x3769dc0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-gcloud.datastore.credentials">
-<span id="credentials"></span><h2>Credentials<a class="headerlink" href="#module-gcloud.datastore.credentials" title="Permalink to this headline">¶</a></h2>
-<p>A simple wrapper around the OAuth2 credentials library.</p>
-<dl class="class">
-<dt id="gcloud.datastore.credentials.Credentials">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.credentials.</tt><tt class="descname">Credentials</tt><a class="headerlink" href="#gcloud.datastore.credentials.Credentials" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>An object used to simplify the OAuth2 credentials library.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You should not need to use this class directly.
-Instead, use the helper methods provided in
-<a class="reference internal" href="#gcloud.datastore.__init__.get_connection" title="gcloud.datastore.__init__.get_connection"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.__init__.get_connection()</span></tt></a>
-and
-<a class="reference internal" href="#gcloud.datastore.__init__.get_dataset" title="gcloud.datastore.__init__.get_dataset"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.__init__.get_dataset()</span></tt></a>
-which use this class under the hood.</p>
-</div>
-<dl class="attribute">
-<dt id="gcloud.datastore.credentials.Credentials.SCOPE">
-<tt class="descname">SCOPE</tt><em class="property"> = 'https://www.googleapis.com/auth/datastore https://www.googleapis.com/auth/userinfo.email'</em><a class="headerlink" href="#gcloud.datastore.credentials.Credentials.SCOPE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="gcloud.datastore.credentials.Credentials.get_for_service_account">
-<em class="property">classmethod </em><tt class="descname">get_for_service_account</tt><big>(</big><em>client_email</em>, <em>private_key_path</em><big>)</big><a class="headerlink" href="#gcloud.datastore.credentials.Credentials.get_for_service_account" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the credentials for a service account.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account).</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
 
 </dd></dl>
 
@@ -952,8 +906,8 @@ but instead use the helper
 <a class="reference internal" href="#gcloud.datastore.dataset.Dataset.query" title="gcloud.datastore.dataset.Dataset.query"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.query()</span></tt></a> method
 which generates a query that can be executed
 without any additional work:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1010,8 +964,8 @@ sends the Query as a protobuf,
 parses the responses to Entity protobufs,
 and then converts them to <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a> objects.</p>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name =&#39;</span><span class="p">,</span> <span class="s">&#39;Sally&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
 <span class="go">[&lt;Entity object&gt;, &lt;Entity object&gt;, ...]</span>
@@ -1168,22 +1122,22 @@ the following snippet of code
 will put the two <tt class="docutils literal"><span class="pre">save</span></tt> operations
 (either <tt class="docutils literal"><span class="pre">insert_auto_id</span></tt> or <tt class="docutils literal"><span class="pre">upsert</span></tt>)
 into the same mutation, and execute those within a transaction:</p>
-<div class="highlight-python"><div class="highlight"><pre>import gcloud.datastore
-dataset = gcloud.datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)
-with dataset.transaction(bulk_mutation=True)  # The default.
-  entity1.save()
-  entity2.save()
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">(</span><span class="n">bulk_mutation</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c"># The default.</span>
+<span class="gp">... </span>  <span class="n">entity1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="n">entity2</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>To rollback a transaction if there is an error:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
-  <span class="k">try</span><span class="p">:</span>
-    <span class="n">do_some_work</span><span class="p">()</span>
-    <span class="n">entity1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-  <span class="k">except</span><span class="p">:</span>
-    <span class="n">t</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">do_some_work</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">entity1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="k">except</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">t</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>If the transaction isn&#8217;t rolled back,
@@ -1195,8 +1149,8 @@ automatically assigned IDs for entities
 will not be available at save time!
 That means,
 if you try:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-  <span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 <p><tt class="docutils literal"><span class="pre">entity</span></tt> won&#8217;t have a complete Key
@@ -1204,12 +1158,11 @@ until the transaction is committed.</p>
 <p>Once you exit the transaction (or call <tt class="docutils literal"><span class="pre">commit()</span></tt>),
 the automatically generated ID will be assigned
 to the entity:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-  <span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span>
-  <span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-  <span class="k">assert</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">is_partial</span><span class="p">()</span>  <span class="c"># There is no ID on this key.</span>
-
-<span class="k">assert</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">is_partial</span><span class="p">()</span>  <span class="c"># There *is* an ID on this key.</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="k">assert</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">is_partial</span><span class="p">()</span>  <span class="c"># There is no ID on this key.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">is_partial</span><span class="p">()</span>  <span class="c"># There *is* an ID on this key.</span>
 </pre></div>
 </div>
 </div>
@@ -1226,16 +1179,16 @@ and it could jumble things up.</p>
 </div>
 <p>If you don&#8217;t want to use the context manager
 you can initialize a transaction manually:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">transaction</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
-<span class="n">transaction</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
 
-<span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span>
-<span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-<span class="k">if</span> <span class="n">error</span><span class="p">:</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
-<span class="k">else</span><span class="p">:</span>
-  <span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">error</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">transaction</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+<span class="gp">... </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>For now,
@@ -1247,31 +1200,31 @@ If you want to work with two transactions at the same time
 that must happen over two separate
 <a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a> s.</p>
 <p>For example, this is perfectly valid:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-  <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>However, this <strong>wouldn&#8217;t</strong> be acceptable:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-  <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-  <span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-    <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Technically, it looks like the Protobuf API supports this type of pattern,
 however it makes the code particularly messy.
 If you really need to nest transactions, try:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">gcloud.datastore</span>
-<span class="n">dataset1</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
-<span class="n">dataset2</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">dataset1</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-  <span class="n">dataset1</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-  <span class="k">with</span> <span class="n">dataset2</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-    <span class="n">dataset2</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset1</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset2</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dataset1</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<span class="gp">... </span>  <span class="n">dataset1</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="k">with</span> <span class="n">dataset2</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">dataset2</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
