@@ -1,5 +1,6 @@
 """Helper methods for dealing with Cloud Datastore's Protobuf API."""
 from datetime import datetime
+import time
 
 import pytz
 
