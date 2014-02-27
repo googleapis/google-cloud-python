@@ -26,6 +26,10 @@ class Connection(object):
     self._credentials = credentials
 
   @property
+  def credentials(self):
+    return self._credentials
+
+  @property
   def http(self):
     """A getter for the HTTP transport used in talking to the API.
 
