@@ -1,6 +1,6 @@
 """Helper methods for dealing with Cloud Datastore's Protobuf API."""
+import calendar
 from datetime import datetime
-import time
 
 import pytz
 
@@ -37,7 +37,15 @@ def get_protobuf_attribute_and_value(val):
   """
 
   if isinstance(val, datetime):
-    name, value = 'timestamp_microseconds', time.mktime(val.timetuple())
+    name = 'timestamp_microseconds'
+    # If the datetime is naive (no timezone), consider that it was
+    # intended to be UTC and replace the tzinfo to that effect.
+    if not val.tzinfo:
+      val = val.replace(tzinfo=pytz.utc)
+    # Regardless of what timezone is on the value, convert it to UTC.
+    val = val.astimezone(pytz.utc)
+    # Convert the datetime to a microsecond timestamp.
+    value = long(calendar.timegm(val.timetuple()) * 1e6) + val.microsecond
   elif isinstance(val, Key):
     name, value = 'key', val.to_protobuf()
   elif isinstance(val, bool):
@@ -69,8 +77,9 @@ def get_value_from_protobuf(pb):
   """
 
   if pb.value.HasField('timestamp_microseconds_value'):
-    timestamp = pb.value.timestamp_microseconds_value / 1e6
-    return datetime.fromtimestamp(timestamp).replace(tzinfo=pytz.utc)
+    microseconds = pb.value.timestamp_microseconds_value
+    return (datetime.utcfromtimestamp(0) +
+            datetime.timedelta(microseconds=microseconds))
 
   elif pb.value.HasField('key_value'):
     return Key.from_protobuf(pb.value.key_value)
