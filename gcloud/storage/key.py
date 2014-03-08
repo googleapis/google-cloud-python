@@ -65,6 +65,19 @@ class Key(object):
     return '<Key: %s, %s>' % (bucket_name, self.name)
 
   @property
+  def connection(self):
+    """Getter property for the connection to use with this Key.
+
+    :rtype: :class:`gcloud.storage.connection.Connection` or None
+    :returns: The connection to use, or None if no connection is set.
+    """
+
+    # TODO: If a bucket isn't defined, this is basically useless.
+    #       Where do we throw an error?
+    if self.bucket and self.bucket.connection:
+      return self.bucket.connection
+
+  @property
   def path(self):
     """Getter property for the URL path to this Key.
 
@@ -84,18 +97,31 @@ class Key(object):
     return '{storage_base_url}/{self.bucket.name}/{self.name}'.format(
         storage_base_url='http://commondatastorage.googleapis.com', self=self)
 
-  @property
-  def connection(self):
-    """Getter property for the connection to use with this Key.
+  def generate_signed_url(self, expiration, method='GET'):
+    """Generates a signed URL for this key.
 
-    :rtype: :class:`gcloud.storage.connection.Connection` or None
-    :returns: The connection to use, or None if no connection is set.
+    If you have a key that you want to allow access to
+    for a set amount of time,
+    you can use this method to generate a URL
+    that is only valid within a certain time period.
+
+    This is particularly useful if you don't want publicly accessible keys,
+    but don't want to require users to explicitly log in.
+
+    :type expiration: int, long, datetime.datetime, datetime.timedelta
+    :param expiration: When the signed URL should expire.
+
+    :type method: string
+    :param method: The HTTP verb that will be used when requesting the URL.
+
+    :rtype: string
+    :returns: A signed URL you can use to access the resource until expiration.
     """
 
-    # TODO: If a bucket isn't defined, this is basically useless.
-    #       Where do we throw an error?
-    if self.bucket and self.bucket.connection:
-      return self.bucket.connection
+    resource = '/{self.bucket.name}/{self.name}'.format(self=self)
+    return self.connection.generate_signed_url(resource=resource,
+                                               expiration=expiration,
+                                               method=method)
 
   def exists(self):
     """Determines whether or not this key exists.
