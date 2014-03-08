@@ -1,3 +1,4 @@
+import calendar
 from datetime import datetime
 import time
 
@@ -28,7 +29,7 @@ class TestHelpers(unittest2.TestCase):
             test_value, expected_name, actual_name))
 
   def test_get_protobuf_value(self):
-    now = datetime.now()
+    now = datetime.utcnow()
 
     mapping = (
         (str('string'), 'string'),
@@ -37,7 +38,7 @@ class TestHelpers(unittest2.TestCase):
         (long(), int()),
         (float(), float()),
         (bool(), bool()),
-        (now, time.mktime(now.timetuple())),
+        (now, long(calendar.timegm(now.timetuple()) * 1e6 + now.microsecond)),
         (Key(), Key().to_protobuf()),
         )
 
