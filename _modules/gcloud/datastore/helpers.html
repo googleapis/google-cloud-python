@@ -82,6 +82,7 @@
             
   <h1>Source code for gcloud.datastore.helpers</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Helper methods for dealing with Cloud Datastore&#39;s Protobuf API.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">calendar</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 <span class="kn">import</span> <span class="nn">pytz</span>
@@ -119,7 +120,15 @@
 <span class="sd">  &quot;&quot;&quot;</span>
 
   <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
-    <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;timestamp_microseconds&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;timestamp_microseconds&#39;</span>
+    <span class="c"># If the datetime is naive (no timezone), consider that it was</span>
+    <span class="c"># intended to be UTC and replace the tzinfo to that effect.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span>
+      <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="c"># Regardless of what timezone is on the value, convert it to UTC.</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="c"># Convert the datetime to a microsecond timestamp.</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">long</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span> <span class="o">+</span> <span class="n">val</span><span class="o">.</span><span class="n">microsecond</span>
   <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Key</span><span class="p">):</span>
     <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
   <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
@@ -151,8 +160,9 @@
 <span class="sd">  &quot;&quot;&quot;</span>
 
   <span class="k">if</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;timestamp_microseconds_value&#39;</span><span class="p">):</span>
-    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">timestamp_microseconds_value</span> <span class="o">/</span> <span class="mf">1e6</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+    <span class="n">microseconds</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">timestamp_microseconds_value</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="n">microseconds</span><span class="p">))</span>
 
   <span class="k">elif</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;key_value&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="p">)</span>
