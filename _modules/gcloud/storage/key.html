@@ -148,6 +148,19 @@
     <span class="k">return</span> <span class="s">&#39;&lt;Key: </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
   <span class="nd">@property</span>
+<div class="viewcode-block" id="Key.connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.connection">[docs]</a>  <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Getter property for the connection to use with this Key.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.storage.connection.Connection` or None</span>
+<span class="sd">    :returns: The connection to use, or None if no connection is set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># TODO: If a bucket isn&#39;t defined, this is basically useless.</span>
+    <span class="c">#       Where do we throw an error?</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span>
+</div>
+  <span class="nd">@property</span>
 <div class="viewcode-block" id="Key.path"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.path">[docs]</a>  <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Getter property for the URL path to this Key.</span>
 
@@ -167,18 +180,31 @@
     <span class="k">return</span> <span class="s">&#39;{storage_base_url}/{self.bucket.name}/{self.name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">storage_base_url</span><span class="o">=</span><span class="s">&#39;http://commondatastorage.googleapis.com&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 </div>
-  <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.connection">[docs]</a>  <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Getter property for the connection to use with this Key.</span>
+<div class="viewcode-block" id="Key.generate_signed_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.generate_signed_url">[docs]</a>  <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a signed URL for this key.</span>
 
-<span class="sd">    :rtype: :class:`gcloud.storage.connection.Connection` or None</span>
-<span class="sd">    :returns: The connection to use, or None if no connection is set.</span>
+<span class="sd">    If you have a key that you want to allow access to</span>
+<span class="sd">    for a set amount of time,</span>
+<span class="sd">    you can use this method to generate a URL</span>
+<span class="sd">    that is only valid within a certain time period.</span>
+
+<span class="sd">    This is particularly useful if you don&#39;t want publicly accessible keys,</span>
+<span class="sd">    but don&#39;t want to require users to explicitly log in.</span>
+
+<span class="sd">    :type expiration: int, long, datetime.datetime, datetime.timedelta</span>
+<span class="sd">    :param expiration: When the signed URL should expire.</span>
+
+<span class="sd">    :type method: string</span>
+<span class="sd">    :param method: The HTTP verb that will be used when requesting the URL.</span>
+
+<span class="sd">    :rtype: string</span>
+<span class="sd">    :returns: A signed URL you can use to access the resource until expiration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c"># TODO: If a bucket isn&#39;t defined, this is basically useless.</span>
-    <span class="c">#       Where do we throw an error?</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span>
+    <span class="n">resource</span> <span class="o">=</span> <span class="s">&#39;/{self.bucket.name}/{self.name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">generate_signed_url</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
+                                               <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">,</span>
+                                               <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Key.exists"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.exists">[docs]</a>  <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Determines whether or not this key exists.</span>
