@@ -1,6 +1,6 @@
 """Helper methods for dealing with Cloud Datastore's Protobuf API."""
 import calendar
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytz
 
@@ -79,7 +79,7 @@ def get_value_from_protobuf(pb):
   if pb.value.HasField('timestamp_microseconds_value'):
     microseconds = pb.value.timestamp_microseconds_value
     return (datetime.utcfromtimestamp(0) +
-            datetime.timedelta(microseconds=microseconds))
+            timedelta(microseconds=microseconds))
 
   elif pb.value.HasField('key_value'):
     return Key.from_protobuf(pb.value.key_value)
