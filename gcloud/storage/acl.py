@@ -15,22 +15,25 @@ and you can interact with that using
 Adding and removing permissions can be done with the following methods
 (in increasing order of granularity):
 
- - :func:`ACL.all`
-   corresponds to access for all users.
- - :func:`ACL.all_authenticated` corresponds
-   to access for all users that are signed into a Google account.
- - :func:`ACL.domain` corresponds to access on a
-   per Google Apps domain (ie, ``example.com``).
- - :func:`ACL.group` corresponds to access on a
-   per group basis (either by ID or e-mail address).
- - :func:`ACL.user` corresponds to access on a
-   per user basis (either by ID or e-mail address).
+- :func:`ACL.all`
+  corresponds to access for all users.
+- :func:`ACL.all_authenticated` corresponds
+  to access for all users that are signed into a Google account.
+- :func:`ACL.domain` corresponds to access on a
+  per Google Apps domain (ie, ``example.com``).
+- :func:`ACL.group` corresponds to access on a
+  per group basis (either by ID or e-mail address).
+- :func:`ACL.user` corresponds to access on a
+  per user basis (either by ID or e-mail address).
 
-And you are able to ``grant`` and ``revoke`` the following roles::
+And you are able to ``grant`` and ``revoke`` the following roles:
 
-  - :func:`ACL.Entity.grant_read` and :func:`ACL.Entity.revoke_read`
-  - :func:`ACL.Entity.grant_write` and :func:`ACL.Entity.revoke_write`
-  - :func:`ACL.Entity.grant_owner` and :func:`ACL.Entity.revoke_owner`
+- **Reading**:
+  :func:`ACL.Entity.grant_read` and :func:`ACL.Entity.revoke_read`
+- **Writing**:
+  :func:`ACL.Entity.grant_write` and :func:`ACL.Entity.revoke_write`
+- **Owning**:
+  :func:`ACL.Entity.grant_owner` and :func:`ACL.Entity.revoke_owner`
 
 You can use any of these like any other factory method
 (these happen to be :class:`ACL.Entity` factories)::
