@@ -25,13 +25,13 @@ Chances are you have some dependency problems,
 if you're on Ubuntu,
 try installing the pre-compiled packages::
 
-  $ sudo apt-get install python-crypto python-openssl
+  $ sudo apt-get install python-crypto python-openssl libffi-dev
 
 or try installing the development packages
 (that have the header files included)
 and then ``pip install`` the dependencies again::
 
-  $ sudo apt-get install python-dev libssl-dev
+  $ sudo apt-get install python-dev libssl-dev libffi-dev
 
 How do I build the docs?
 ------------------------
