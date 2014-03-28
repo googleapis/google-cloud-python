@@ -75,7 +75,7 @@ class Connection(connection.Connection):
     url = self.build_api_url(path=path, query_params=query_params,
                              api_base_url=api_base_url,
                              api_version=api_version)
-    print url
+
     # Making the executive decision that any dictionary
     # data will be sent properly as JSON.
     if data and isinstance(data, dict):
