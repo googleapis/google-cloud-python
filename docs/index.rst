@@ -43,7 +43,7 @@ Services
 
   - Google's `official documentation <https://developers.google.com/storage/>`_
   - :doc:`storage-quickstart`
-  - `Getting started with Cloud Storage <https://github.com/GoogleCloudPlatform/gcloud-python/issues/37>`_
+  - :doc:`Getting started with Cloud Storage <storage-getting-started>`
   - :doc:`Cloud Storage API Documentation <storage-api>`
 
 .. topic:: Compute Engine
