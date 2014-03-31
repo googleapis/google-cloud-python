@@ -1,0 +1,420 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting started with Cloud Storage &mdash; gcloud 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <link rel="top" title="gcloud 0.1 documentation" href="index.html" /> 
+  </head>
+  <body role="document" class="two-column docs"><a href="https://github.com/GoogleCloudPlatform/gcloud-python"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="_static/forkme.png" alt="Fork me on GitHub"></a>
+    <div id="sandbar">
+      <header id="gc-googlebar">
+      <a id="gc-logo" href="index.html">
+        <img src="_static/cloudplatform-horizontal.png" alt="Google">
+        </a>
+        <form class="gc-search" action="search.html" method="GET">
+          <div class="searchbox" style="width: 429px;">
+            <span class="button button-blue mini">Google Cloud Python API</span>
+            <input type="hidden" name="check_keywords" value="yes">
+            <input type="hidden" name="area" value="default">
+            <input type="text" name="q" class="q" id="q" value=""
+              placeholder="Search" autocomplete="off" style="width: 263px;">
+          </div>
+          <button class="button button-blue" style="top: 0px; left: 444px;">
+          <img src="_static/search.png" alt="Search">
+        </button>
+
+        <input type="hidden" name="p" id="search_project" value="/compute">
+
+      </form>
+      </header>
+    </div>
+    
+<div id="gc-wrapper">
+  <div id="gc-appbar">
+    <h1><a href="index.html">gcloud 0.1 documentation</a></h1>
+  </div>
+    <div id="gc-main" class="main">
+      <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<nav class="gc-toc">
+  <ul><li><a href="index.html">gCloud Documentation</a></li></ul>
+  <ul>
+<li><a class="reference internal" href="#">Getting started with Cloud Storage</a><ul>
+<li><a class="reference internal" href="#creating-a-project">Creating a project</a></li>
+<li><a class="reference internal" href="#enabling-the-api">Enabling the API</a></li>
+<li><a class="reference internal" href="#enabling-a-service-account">Enabling a service account</a></li>
+<li><a class="reference internal" href="#creating-a-connection">Creating a connection</a></li>
+<li><a class="reference internal" href="#creating-a-bucket">Creating a bucket</a></li>
+<li><a class="reference internal" href="#storing-data">Storing data</a></li>
+<li><a class="reference internal" href="#accessing-a-bucket">Accessing a bucket</a></li>
+<li><a class="reference internal" href="#deleting-a-bucket">Deleting a bucket</a></li>
+<li><a class="reference internal" href="#listing-available-buckets">Listing available buckets</a></li>
+<li><a class="reference internal" href="#managing-access-control">Managing access control</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav>
+
+            <h3>All API Docs</h3>
+            <nav class="gc-toc">
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common-api.html">Cloud Common</a></li>
+</ul>
+
+            </nav>
+            
+            
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main" id="gc-content">
+            
+  <div class="section" id="getting-started-with-cloud-storage">
+<h1>Getting started with Cloud Storage<a class="headerlink" href="#getting-started-with-cloud-storage" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial focuses on using <tt class="docutils literal"><span class="pre">gcloud</span></tt> to access
+Google Cloud Storage.
+We&#8217;ll go through the basic concepts,
+how to operate on buckets and keys,
+and how to handle access control,
+among other things.</p>
+<p>We&#8217;re going to assume that you&#8217;ve already downloaded
+and installed the library.</p>
+<div class="section" id="creating-a-project">
+<h2>Creating a project<a class="headerlink" href="#creating-a-project" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first"><strong>Create a project</strong></p>
+<p>Start off by visiting <a class="reference external" href="https://cloud.google.com/console">https://cloud.google.com/console</a>
+and click on the big red button
+that says &#8220;Create Project&#8221;.</p>
+</li>
+<li><p class="first"><strong>Choose a name</strong></p>
+<p>In the box that says &#8220;name&#8221;,
+choose something friendly.
+This is going to be the <em>human-readable</em> name
+for your project.</p>
+</li>
+<li><p class="first"><strong>Choose an ID</strong></p>
+<p>In the box that says &#8220;ID&#8221;,
+choose something unique
+(hyphens are OK).
+I typically choose a project name
+that starts with my initials,
+then a hyphen,
+then a unique identifier for the work I&#8217;m doing.
+For this example,
+you might choose <tt class="docutils literal"><span class="pre">&lt;initials&gt;-quickstart</span></tt>.</p>
+</li>
+</ul>
+<p>Then click OK
+(give it a second to create your project).</p>
+</div>
+<div class="section" id="enabling-the-api">
+<h2>Enabling the API<a class="headerlink" href="#enabling-the-api" title="Permalink to this headline">¶</a></h2>
+<p>Now that you created a project,
+you need to <strong>turn on</strong> the Cloud Datastore API.
+This is sort of like telling Google
+which services you intend to use for this project.</p>
+<ul class="simple">
+<li><strong>Click on APIs &amp; Auth</strong>
+on the left hand side,
+and scroll down to where it says
+&#8220;Google Cloud Storage JSON API&#8221;.</li>
+<li><strong>Click the &#8220;Off&#8221; button</strong>
+on the right side
+to turn it into an &#8220;On&#8221; button.</li>
+</ul>
+</div>
+<div class="section" id="enabling-a-service-account">
+<h2>Enabling a service account<a class="headerlink" href="#enabling-a-service-account" title="Permalink to this headline">¶</a></h2>
+<p>Now that you have a project,
+we need to make sure we are able to access our data.
+There are many ways to authenticate,
+but we&#8217;re going to use a Service Account for today.</p>
+<p>A <em>Service Account</em> is sort of like a username and password
+(like when you&#8217;re connecting to your MySQL database),
+except the username is automatically generated
+(and is an e-mail address)
+and the password is actually a private key file.</p>
+<p>To create a Service Account:</p>
+<ul>
+<li><p class="first"><strong>Click on Credentials</strong>
+under the &#8220;APIs &amp; Auth&#8221; section.</p>
+</li>
+<li><p class="first"><strong>Click the big red button</strong>
+that says &#8220;Create New Client ID&#8221;
+under the OAuth section
+(the first one).</p>
+</li>
+<li><p class="first"><strong>Choose &#8220;Service Account&#8221;</strong>
+and click the blue button
+that says &#8220;Create Client ID&#8221;.</p>
+</li>
+<li><p class="first"><strong>This will automatically</strong>
+download a private key file.
+<strong>Do not lose this.</strong></p>
+</li>
+<li><p class="first"><strong>Rename your key</strong> something shorter.
+I like to name the key <tt class="docutils literal"><span class="pre">&lt;project</span> <span class="pre">name&gt;.p12</span></tt>.</p>
+<p>This is like your password for the account.</p>
+</li>
+<li><p class="first"><strong>Copy the long weird e-mail address</strong>
+labeled &#8220;E-mail address&#8221;
+in the information section
+for the Service Account
+you just created.</p>
+<p>This is like your username for the account.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="creating-a-connection">
+<h2>Creating a connection<a class="headerlink" href="#creating-a-connection" title="Permalink to this headline">¶</a></h2>
+<p>The first step in accessing Cloud Storage
+is to create a connection to the service:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project_name</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We&#8217;re going to use this
+<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">connection</span></tt></a> object
+for the rest of this guide.</p>
+</div>
+<div class="section" id="creating-a-bucket">
+<h2>Creating a bucket<a class="headerlink" href="#creating-a-bucket" title="Permalink to this headline">¶</a></h2>
+<p>Once you&#8217;ve established a connection to Cloud Storage,
+the first thing you typically want to do is
+create a new bucket.
+A bucket is a container used to store
+objects in Cloud Storage
+(if you&#8217;re familiar with S3,
+buckets on Cloud Storage mean the same thing).
+Think of each bucket as a single &#8220;disk drive&#8221;,
+where you can store lots of files on each.
+How you organize your data is up to you,
+but it&#8217;s typical to group common data
+in a single bucket.</p>
+<p>Let&#8217;s create a bucket:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s">&#39;test&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;gcloud/storage/connection.py&quot;</span>, line <span class="m">340</span>, in <span class="n">create_bucket</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+  File <span class="nb">&quot;gcloud/storage/connection.py&quot;</span>, line <span class="m">224</span>, in <span class="n">api_request</span>
+    <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+<span class="gr">gcloud.storage.exceptions.ConnectionError</span>: <span class="n">{&#39;status&#39;: &#39;409&#39;, &#39;alternate-protocol&#39;: &#39;443:quic&#39;, &#39;content-length&#39;: &#39;271&#39;, &#39;x-xss-protection&#39;: &#39;1; mode=block&#39;, &#39;x-content-type-options&#39;: &#39;nosniff&#39;, &#39;expires&#39;: &#39;Sat, 15 Mar 2014 19:19:47 GMT&#39;, &#39;server&#39;: &#39;GSE&#39;, &#39;-content-encoding&#39;: &#39;gzip&#39;, &#39;cache-control&#39;: &#39;private, max-age=0&#39;, &#39;date&#39;: &#39;Sat, 15 Mar 2014 19:19:47 GMT&#39;, &#39;x-frame-options&#39;: &#39;SAMEORIGIN&#39;, &#39;content-type&#39;: &#39;application/json; charset=UTF-8&#39;}{</span>
+<span class="go"> &quot;error&quot;: {</span>
+<span class="go">  &quot;errors&quot;: [</span>
+<span class="go">   {</span>
+<span class="go">    &quot;domain&quot;: &quot;global&quot;,</span>
+<span class="go">    &quot;reason&quot;: &quot;conflict&quot;,</span>
+<span class="go">    &quot;message&quot;: &quot;Sorry, that name is not available. Please try a different one.&quot;</span>
+<span class="go">   }</span>
+<span class="go">  ],</span>
+<span class="go">  &quot;code&quot;: 409,</span>
+<span class="go">  &quot;message&quot;: &quot;Sorry, that name is not available. Please try a different one.&quot;</span>
+<span class="go"> }</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p><strong>Whoops!</strong>
+It might be important to mention
+that bucket names are like domain names:
+it&#8217;s one big namespace that we all share,
+so you have to pick a bucket name that isn&#8217;t already taken.</p>
+<p>It&#8217;s up to you to decide what a good name is,
+let&#8217;s assume that you found a unique name
+and are ready to move on with your newly created bucket.</p>
+</div>
+<div class="section" id="storing-data">
+<h2>Storing data<a class="headerlink" href="#storing-data" title="Permalink to this headline">¶</a></h2>
+<p>OK, so you have a bucket. Now what?
+Cloud Storage is just an arbitrary data container,
+so you can put whatever format of data you want.
+The naming of your files is also arbitrary,
+however the Cloud Storage online file browser
+tries to make it feel a bit like a file system
+by recognizing forward-slashes (<tt class="docutils literal"><span class="pre">/</span></tt>)
+so if you want to group data into &#8220;directories&#8221;,
+you can do that.</p>
+<p>The fundamental container for a file in Cloud Storage
+is called an Object,
+however <tt class="docutils literal"><span class="pre">gcloud</span></tt> uses the term <tt class="docutils literal"><span class="pre">Key</span></tt>
+to avoid confusion between <tt class="docutils literal"><span class="pre">object</span></tt> and <tt class="docutils literal"><span class="pre">Object</span></tt>.</p>
+<p>If you want to set some data,
+you just create a <tt class="docutils literal"><span class="pre">Key</span></tt> inside your bucket
+and store your data inside the key:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="s">&#39;greeting.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;Hello world!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.new_key" title="gcloud.storage.bucket.Bucket.new_key"><tt class="xref py py-func docutils literal"><span class="pre">new_key</span></tt></a>
+creates a <a class="reference internal" href="storage-api.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> object locally
+and
+<a class="reference internal" href="storage-api.html#gcloud.storage.key.Key.set_contents_from_string" title="gcloud.storage.key.Key.set_contents_from_string"><tt class="xref py py-func docutils literal"><span class="pre">set_contents_from_string</span></tt></a>
+allows you to put a string into the key.</p>
+<p>Now we can test if it worked:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="s">&#39;greeting.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">key</span><span class="o">.</span><span class="n">get_contents_as_string</span><span class="p">()</span>
+<span class="go">Hello world!</span>
+</pre></div>
+</div>
+<p>What if you want to save the contents to a file?</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">get_contents_to_filename</span><span class="p">(</span><span class="s">&#39;greetings.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then you can look at the file in a terminal:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ cat greetings.txt
+Hello world!
+</pre></div>
+</div>
+<p>And what about when you&#8217;re not dealing with text?
+That&#8217;s pretty simple too:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="s">&#39;kitten.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_filename</span><span class="p">(</span><span class="s">&#39;kitten.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And to test whether it worked?</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="s">&#39;kitten.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">get_contents_to_filename</span><span class="p">(</span><span class="s">&#39;kitten2.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and check if they are the same in a terminal:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ diff kitten.jpg kitten2.jpg
+</pre></div>
+</div>
+<p>Notice that we&#8217;re using
+<a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.get_key" title="gcloud.storage.bucket.Bucket.get_key"><tt class="xref py py-func docutils literal"><span class="pre">get_key</span></tt></a>
+to retrieve a key we know exists remotely.
+If the key doesn&#8217;t exist, it will return <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">get_key</span></tt> is <strong>not</strong> retrieving the entire object&#8217;s data.</p>
+</div>
+<p>If you want to &#8220;get-or-create&#8221; the key
+(that is, overwrite it if it already exists),
+you can use <a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.new_key" title="gcloud.storage.bucket.Bucket.new_key"><tt class="xref py py-func docutils literal"><span class="pre">new_key</span></tt></a>.
+However, keep in mind, the key is not created
+until you store some data inside of it.</p>
+<p>If you want to check whether a key exists,
+you can use the <tt class="docutils literal"><span class="pre">in</span></tt> operator in Python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&#39;kitten.jpg&#39;</span> <span class="ow">in</span> <span class="n">bucket</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&#39;does-not-exist&#39;</span> <span class="ow">in</span> <span class="n">bucket</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="accessing-a-bucket">
+<h2>Accessing a bucket<a class="headerlink" href="#accessing-a-bucket" title="Permalink to this headline">¶</a></h2>
+<p>If you already have a bucket,
+use <a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection.get_bucket" title="gcloud.storage.connection.Connection.get_bucket"><tt class="xref py py-func docutils literal"><span class="pre">get_bucket</span></tt></a>
+to retrieve the bucket object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you want to get all the keys in the bucket,
+you can use
+<a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.get_all_keys" title="gcloud.storage.bucket.Bucket.get_all_keys"><tt class="xref py py-func docutils literal"><span class="pre">get_all_keys</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">keys</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_keys</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>However, if you&#8217;re looking to iterate through the keys,
+you can use the bucket itself as an iterator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">key</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-a-bucket">
+<h2>Deleting a bucket<a class="headerlink" href="#deleting-a-bucket" title="Permalink to this headline">¶</a></h2>
+<p>You can delete a bucket using the
+<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection.delete_bucket" title="gcloud.storage.connection.Connection.delete_bucket"><tt class="xref py py-func docutils literal"><span class="pre">delete_bucket</span></tt></a>
+method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Remember, the bucket you&#8217;re deleting needs to be empty,
+otherwise you&#8217;ll get an error.</p>
+<p>If you have a full bucket, you can delete it this way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">key</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="listing-available-buckets">
+<h2>Listing available buckets<a class="headerlink" href="#listing-available-buckets" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">Connection</span></tt></a>
+object itself is iterable,
+so you can loop over it, or call <tt class="docutils literal"><span class="pre">list</span></tt> on it to get a list object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="nb">list</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="managing-access-control">
+<h2>Managing access control<a class="headerlink" href="#managing-access-control" title="Permalink to this headline">¶</a></h2>
+<p>Cloud storage provides fine-grained access control
+for both buckets and keys.
+<cite>gcloud</cite> tries to simplify access control
+by working with entities and &#8220;grants&#8221;.
+On any ACL,
+you get a reference to an entity,
+and then either grant or revoke a specific access level.
+Additionally, we provide two default entities:
+all users, and all authenticated users.</p>
+<p>For example, if you want to grant read access to all users on your bucket:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For more detail on access control,
+see <a class="reference internal" href="storage-api.html#module-gcloud.storage.acl" title="gcloud.storage.acl"><tt class="xref py py-mod docutils literal"><span class="pre">gcloud.storage.acl</span></tt></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    </div>
+  </div>
+    <footer id="gc-footer" class="footer" role="contentinfo">
+    <div id="gc-copyright">
+        &copy; Copyright 2014, JJ Geewax.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      </div>
+    </footer>
+  </body>
+</html>
