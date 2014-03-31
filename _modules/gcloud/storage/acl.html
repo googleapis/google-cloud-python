@@ -98,22 +98,25 @@
 <span class="sd">Adding and removing permissions can be done with the following methods</span>
 <span class="sd">(in increasing order of granularity):</span>
 
-<span class="sd"> - :func:`ACL.all`</span>
-<span class="sd">   corresponds to access for all users.</span>
-<span class="sd"> - :func:`ACL.all_authenticated` corresponds</span>
-<span class="sd">   to access for all users that are signed into a Google account.</span>
-<span class="sd"> - :func:`ACL.domain` corresponds to access on a</span>
-<span class="sd">   per Google Apps domain (ie, ``example.com``).</span>
-<span class="sd"> - :func:`ACL.group` corresponds to access on a</span>
-<span class="sd">   per group basis (either by ID or e-mail address).</span>
-<span class="sd"> - :func:`ACL.user` corresponds to access on a</span>
-<span class="sd">   per user basis (either by ID or e-mail address).</span>
+<span class="sd">- :func:`ACL.all`</span>
+<span class="sd">  corresponds to access for all users.</span>
+<span class="sd">- :func:`ACL.all_authenticated` corresponds</span>
+<span class="sd">  to access for all users that are signed into a Google account.</span>
+<span class="sd">- :func:`ACL.domain` corresponds to access on a</span>
+<span class="sd">  per Google Apps domain (ie, ``example.com``).</span>
+<span class="sd">- :func:`ACL.group` corresponds to access on a</span>
+<span class="sd">  per group basis (either by ID or e-mail address).</span>
+<span class="sd">- :func:`ACL.user` corresponds to access on a</span>
+<span class="sd">  per user basis (either by ID or e-mail address).</span>
 
-<span class="sd">And you are able to ``grant`` and ``revoke`` the following roles::</span>
+<span class="sd">And you are able to ``grant`` and ``revoke`` the following roles:</span>
 
-<span class="sd">  - :func:`ACL.Entity.grant_read` and :func:`ACL.Entity.revoke_read`</span>
-<span class="sd">  - :func:`ACL.Entity.grant_write` and :func:`ACL.Entity.revoke_write`</span>
-<span class="sd">  - :func:`ACL.Entity.grant_owner` and :func:`ACL.Entity.revoke_owner`</span>
+<span class="sd">- **Reading**:</span>
+<span class="sd">  :func:`ACL.Entity.grant_read` and :func:`ACL.Entity.revoke_read`</span>
+<span class="sd">- **Writing**:</span>
+<span class="sd">  :func:`ACL.Entity.grant_write` and :func:`ACL.Entity.revoke_write`</span>
+<span class="sd">- **Owning**:</span>
+<span class="sd">  :func:`ACL.Entity.grant_owner` and :func:`ACL.Entity.revoke_owner`</span>
 
 <span class="sd">You can use any of these like any other factory method</span>
 <span class="sd">(these happen to be :class:`ACL.Entity` factories)::</span>

@@ -1592,8 +1592,7 @@ and you can interact with that using
 </div>
 <p>Adding and removing permissions can be done with the following methods
 (in increasing order of granularity):</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><a class="reference internal" href="#gcloud.storage.acl.ACL.all" title="gcloud.storage.acl.ACL.all"><tt class="xref py py-func docutils literal"><span class="pre">ACL.all()</span></tt></a>
 corresponds to access for all users.</li>
 <li><a class="reference internal" href="#gcloud.storage.acl.ACL.all_authenticated" title="gcloud.storage.acl.ACL.all_authenticated"><tt class="xref py py-func docutils literal"><span class="pre">ACL.all_authenticated()</span></tt></a> corresponds
@@ -1605,13 +1604,15 @@ per group basis (either by ID or e-mail address).</li>
 <li><a class="reference internal" href="#gcloud.storage.acl.ACL.user" title="gcloud.storage.acl.ACL.user"><tt class="xref py py-func docutils literal"><span class="pre">ACL.user()</span></tt></a> corresponds to access on a
 per user basis (either by ID or e-mail address).</li>
 </ul>
-</div></blockquote>
 <p>And you are able to <tt class="docutils literal"><span class="pre">grant</span></tt> and <tt class="docutils literal"><span class="pre">revoke</span></tt> the following roles:</p>
-<div class="highlight-python"><div class="highlight"><pre>- :func:`ACL.Entity.grant_read` and :func:`ACL.Entity.revoke_read`
-- :func:`ACL.Entity.grant_write` and :func:`ACL.Entity.revoke_write`
-- :func:`ACL.Entity.grant_owner` and :func:`ACL.Entity.revoke_owner`
-</pre></div>
-</div>
+<ul class="simple">
+<li><strong>Reading</strong>:
+<a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.grant_read" title="gcloud.storage.acl.ACL.Entity.grant_read"><tt class="xref py py-func docutils literal"><span class="pre">ACL.Entity.grant_read()</span></tt></a> and <a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.revoke_read" title="gcloud.storage.acl.ACL.Entity.revoke_read"><tt class="xref py py-func docutils literal"><span class="pre">ACL.Entity.revoke_read()</span></tt></a></li>
+<li><strong>Writing</strong>:
+<a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.grant_write" title="gcloud.storage.acl.ACL.Entity.grant_write"><tt class="xref py py-func docutils literal"><span class="pre">ACL.Entity.grant_write()</span></tt></a> and <a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.revoke_write" title="gcloud.storage.acl.ACL.Entity.revoke_write"><tt class="xref py py-func docutils literal"><span class="pre">ACL.Entity.revoke_write()</span></tt></a></li>
+<li><strong>Owning</strong>:
+<a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.grant_owner" title="gcloud.storage.acl.ACL.Entity.grant_owner"><tt class="xref py py-func docutils literal"><span class="pre">ACL.Entity.grant_owner()</span></tt></a> and <a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.revoke_owner" title="gcloud.storage.acl.ACL.Entity.revoke_owner"><tt class="xref py py-func docutils literal"><span class="pre">ACL.Entity.revoke_owner()</span></tt></a></li>
+</ul>
 <p>You can use any of these like any other factory method
 (these happen to be <a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><tt class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></tt></a> factories):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s">&#39;me@example.org&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>

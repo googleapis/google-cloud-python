@@ -64,8 +64,8 @@
   <ul>
 <li><a class="reference internal" href="#">Getting started with Cloud Datastore</a><ul>
 <li><a class="reference internal" href="#creating-a-project">Creating a project</a></li>
-<li><a class="reference internal" href="#enable-the-cloud-datastore-api">Enable the Cloud Datastore API</a></li>
-<li><a class="reference internal" href="#enable-a-service-account">Enable a &#8220;Service Account&#8221;</a></li>
+<li><a class="reference internal" href="#enabling-the-api">Enabling the API</a></li>
+<li><a class="reference internal" href="#enabling-a-service-account">Enabling a service account</a></li>
 <li><a class="reference internal" href="#add-some-data-to-your-dataset">Add some data to your dataset</a></li>
 <li><a class="reference internal" href="#and-that-s-it">And that&#8217;s it!</a></li>
 </ul>
@@ -129,10 +129,10 @@ you might choose <tt class="docutils literal"><span class="pre">&lt;initials&gt;
 <p>Then click OK
 (give it a second to create your project).</p>
 </div>
-<div class="section" id="enable-the-cloud-datastore-api">
-<h2>Enable the Cloud Datastore API<a class="headerlink" href="#enable-the-cloud-datastore-api" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="enabling-the-api">
+<h2>Enabling the API<a class="headerlink" href="#enabling-the-api" title="Permalink to this headline">¶</a></h2>
 <p>Now that you created a project,
-you need to <em>turn on</em> the Cloud Datastore API.
+you need to <strong>turn on</strong> the Cloud Datastore API.
 This is sort of like telling Google
 which services you intend to use for this project.</p>
 <ul class="simple">
@@ -145,10 +145,9 @@ on the right side
 to turn it into an &#8220;On&#8221; button.</li>
 </ul>
 </div>
-<div class="section" id="enable-a-service-account">
-<h2>Enable a &#8220;Service Account&#8221;<a class="headerlink" href="#enable-a-service-account" title="Permalink to this headline">¶</a></h2>
-<p>Now that you have a project
-that has access to the Cloud Datastore API,
+<div class="section" id="enabling-a-service-account">
+<h2>Enabling a service account<a class="headerlink" href="#enabling-a-service-account" title="Permalink to this headline">¶</a></h2>
+<p>Now that you have a project,
 we need to make sure we are able to access our data.
 There are many ways to authenticate,
 but we&#8217;re going to use a Service Account for today.</p>
@@ -173,10 +172,10 @@ that says &#8220;Create Client ID&#8221;.</p>
 </li>
 <li><p class="first"><strong>This will automatically</strong>
 download a private key file.
-<strong>Do not lost this.</strong></p>
+<strong>Do not lose this.</strong></p>
 </li>
 <li><p class="first"><strong>Rename your key</strong> something shorter.
-I like to name the key <tt class="docutils literal"><span class="pre">&lt;project</span> <span class="pre">name&gt;.key</span></tt>.</p>
+I like to name the key <tt class="docutils literal"><span class="pre">&lt;project</span> <span class="pre">name&gt;.p12</span></tt>.</p>
 <p>This is like your password for the account.</p>
 </li>
 <li><p class="first"><strong>Copy the long weird e-mail address</strong>
@@ -187,8 +186,6 @@ you just created.</p>
 <p>This is like your username for the account.</p>
 </li>
 </ul>
-<p>OK. That&#8217;s it!
-Time to start doing things with your Cloud Datastore project.</p>
 </div>
 <div class="section" id="add-some-data-to-your-dataset">
 <h2>Add some data to your dataset<a class="headerlink" href="#add-some-data-to-your-dataset" title="Permalink to this headline">¶</a></h2>

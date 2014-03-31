@@ -83,7 +83,7 @@
   <h1>Source code for gcloud.datastore.helpers</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Helper methods for dealing with Cloud Datastore&#39;s Protobuf API.&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">calendar</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
 <span class="kn">import</span> <span class="nn">pytz</span>
 
@@ -162,7 +162,7 @@
   <span class="k">if</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;timestamp_microseconds_value&#39;</span><span class="p">):</span>
     <span class="n">microseconds</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">timestamp_microseconds_value</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span>
-            <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="n">microseconds</span><span class="p">))</span>
+            <span class="n">timedelta</span><span class="p">(</span><span class="n">microseconds</span><span class="o">=</span><span class="n">microseconds</span><span class="p">))</span>
 
   <span class="k">elif</span> <span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;key_value&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="p">)</span>
