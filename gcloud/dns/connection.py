@@ -1,9 +1,6 @@
 import json
-import urllib
 
 from gcloud import connection
-from gcloud.dns import exceptions
-from gcloud.dns.project import Project
 from gcloud.dns.zone import Zone
 
 
@@ -23,24 +20,6 @@ class Connection(connection.JsonConnection):
 
     self.project_id = project_id
 
-  def get_project(self, project):
-    project = self.new_project(project)
-    response = self.api_request(method='GET', path=project.path)
-    return Project.from_dict(response, connection=self)
-
-  def new_project(self, project):
-    if isinstance(project, Project):
-      return project
-
-    # Support Python 2 and 3.
-    try:
-      string_type = basestring
-    except NameError:
-      string_type = str
-
-    if isinstance(project, string_type):
-      return Project(connection=self)
-
   def create_zone(self, data):
     zone = self.new_zone(data['name'])
     response = self.api_request(method='POST', path=zone.path,
@@ -57,7 +36,7 @@ class Connection(connection.JsonConnection):
     zone = self.new_zone(zone)
     response = self.api_request(method='GET', path=zone.path)
     return Zone.from_dict(response['managedZones'][0],
-                                 connection=self)
+                          connection=self)
 
   def list_zones(self):
     zone = self.new_zone('test')

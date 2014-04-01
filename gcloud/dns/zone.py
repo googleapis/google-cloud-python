@@ -1,26 +1,26 @@
 class Zone(object):
 
-  def __init__(self, connection=None, creationTime=None, description=None,
-               dnsName=None, id=None, kind=None, name=None, nameServers=None):
+  def __init__(self, connection=None, creation_time=None, description=None,
+               dns_name=None, id=None, kind=None, name=None,
+               name_servers=None):
     self.connection = connection
-    self.creationTime = creationTime
+    self.creation_time = creation_time
     self.description = description
-    self.dnsName = dnsName
+    self.dns_name = dns_name
     self.id = id
     self.kind = kind
     self.name = name
-    self.nameServers = nameServers
+    self.name_servers = name_servers
 
   @classmethod
   def from_dict(cls, zone_dict, connection=None):
 
     return cls(connection=connection,
-               creationTime=zone_dict['creationTime'],
+               creation_time=zone_dict['creationTime'],
                description=zone_dict['description'],
-               dnsName=zone_dict['dnsName'],
-               id=zone_dict['id'],
+               dns_name=zone_dict['dnsName'], id=zone_dict['id'],
                kind=zone_dict['kind'], name=zone_dict['name'],
-               nameServers=zone_dict['nameServers'])
+               name_servers=zone_dict['nameServers'])
 
   @property
   def path(self):

@@ -2,6 +2,8 @@ import httplib2
 import json
 import urllib
 
+import exceptions
+
 
 class Connection(object):
   """A generic connection to Google Cloud Platform.
@@ -43,6 +45,7 @@ class Connection(object):
       if self._credentials:
         self._http = self._credentials.authorize(self._http)
     return self._http
+
 
 class JsonConnection(Connection):
   API_BASE_URL = 'https://www.googleapis.com'
@@ -98,7 +101,7 @@ class JsonConnection(Connection):
     url = self.build_api_url(path=path, query_params=query_params,
                              api_base_url=api_base_url,
                              api_version=api_version)
-    print url
+
     # Making the executive decision that any dictionary
     # data will be sent properly as JSON.
     if data and isinstance(data, dict):

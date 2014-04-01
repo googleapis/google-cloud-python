@@ -14,3 +14,8 @@ def get_connection(project_id, client_email, private_key_path):
   credentials = Credentials.get_for_service_account(
       client_email, private_key_path, scope=SCOPE)
   return Connection(project_id=project_id, credentials=credentials)
+
+
+def get_zone(zone_name, project_id, client_email, private_key_path):
+  connection = get_connection(project_id, client_email, private_key_path)
+  return connection.get_zone(zone_name)
