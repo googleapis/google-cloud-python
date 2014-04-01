@@ -9,21 +9,22 @@ class Project(object):
     self.number = number
     self.quota = quota
 
-  @property
-  def path(self):
-    """The URL path to this instances."""
-
-    if not self.connection.project_name:
-      raise ValueError('Cannot determine path without project name.')
-
-    return self.connection.project_name
-
   @classmethod
   def from_dict(cls, project_dict, connection=None):
 
     return cls(connection=connection, id=project_dict['id'],
                kind=project_dict['kind'], number=project_dict['number'],
                quota=project_dict['quota'])
+
+  @property
+  def path(self):
+    """The URL path to this instances."""
+
+    if not self.connection.project_id:
+      raise ValueError('Cannot determine path without project name.')
+
+    return self.connection.project_id
+
 
   def get(self):
     return self.connection.get_project(self)

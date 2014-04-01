@@ -1,7 +1,9 @@
+from gcloud.exceptions import gcloudError
+
 # TODO: Make these super useful.
 
 
-class DNSError(Exception):
+class DNSError(gcloudError):
   pass
 
 

@@ -6,3 +6,4 @@
 # Let's start by importing the demo module and getting a connection:
 from gcloud.dns import demo
 connection = demo.get_connection()
+print connection.get_project('gceremote')

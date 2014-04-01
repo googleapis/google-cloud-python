@@ -1,0 +1,2 @@
+class gcloudError(Exception):
+  pass
