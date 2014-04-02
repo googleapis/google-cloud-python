@@ -48,17 +48,18 @@ class Connection(object):
 
 
 class JsonConnection(Connection):
+
   API_BASE_URL = 'https://www.googleapis.com'
   """The base of the API call URL."""
 
   _EMPTY = object()
   """A pointer to represent an empty value for default arguments."""
 
-  def __init__(self, project_id=None, *args, **kwargs):
+  def __init__(self, project=None, *args, **kwargs):
 
     super(JsonConnection, self).__init__(*args, **kwargs)
 
-    self.project_id = project_id
+    self.project = project
 
   def build_api_url(self, path, query_params=None, api_base_url=None,
                     api_version=None):
@@ -69,7 +70,7 @@ class JsonConnection(Connection):
         path=path)
 
     query_params = query_params or {}
-    query_params.update({'project': self.project_id})
+    query_params.update({'project': self.project})
     url += '?' + urllib.urlencode(query_params)
 
     return url

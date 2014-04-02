@@ -26,10 +26,10 @@ class Zone(object):
   def path(self):
     """The URL path to this zone."""
 
-    if not self.connection.project_id:
+    if not self.connection.project:
       raise ValueError('Cannot determine path without project name.')
 
-    return self.connection.project_id + '/managedZones/'
+    return self.connection.project + '/managedZones/'
 
   def delete(self):
     return self.connection.delete_zone(self)

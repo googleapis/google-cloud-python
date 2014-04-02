@@ -14,11 +14,11 @@ class Connection(connection.JsonConnection):
   _EMPTY = object()
   """A pointer to represent an empty value for default arguments."""
 
-  def __init__(self, project_id=None, *args, **kwargs):
+  def __init__(self, project=None, *args, **kwargs):
 
     super(Connection, self).__init__(*args, **kwargs)
 
-    self.project_id = project_id
+    self.project = project
 
   def create_zone(self, data):
     zone = self.new_zone(data['name'])
