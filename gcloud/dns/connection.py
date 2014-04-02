@@ -55,3 +55,9 @@ class Connection(connection.JsonConnection):
 
     if isinstance(zone, string_type):
       return Zone(connection=self, name=zone)
+
+  def create_changes(self, zone, data):
+    zone = self.new_zone(zone)
+    self.api_request(method='POST', path=zone.path + zone.name + '/changes',
+                     data=data)
+    return True
