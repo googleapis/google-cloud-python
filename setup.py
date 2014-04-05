@@ -7,6 +7,18 @@ except ImportError:
   from distutils.core import setup, find_packages
 
 
+try:
+  import pyopenssl, pycrypto
+except ImportError:
+  try:
+    import apt
+    cache = apt.cache.Cache()
+    cache['python-dev'].mark_install()
+    cache.commit()
+  except (ImportError, Exception):
+    print "Can't install python-dev... might be needed for other requirements"
+
+
 if sys.version_info <= (2, 4):
   error = 'Requires Python Version 2.5 or above... exiting.'
   print >> sys.stderr, error
