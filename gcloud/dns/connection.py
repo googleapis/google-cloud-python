@@ -61,3 +61,22 @@ class Connection(connection.JsonConnection):
     self.api_request(method='POST', path=zone.path + zone.name + '/changes',
                      data=data)
     return True
+
+  def new_resource(self, name, type, ttl, rrdatas):
+    return {'kind': 'dns#resourceRecordSet', 'name': name, 'type': type,
+            'ttl': ttl, 'rrdatas': rrdatas}
+
+  def new_change(self):
+    return {'kind': "dns#change", 'additions': [], 'deletions': []}
+
+  def create_record(self, zone, data):
+    zone = self.new_zone(zone)
+    self.api_request(method='POST', path=zone.path + zone.name + '/changes',
+                     data=data)
+    return True
+
+  def list_records(self, zone):
+    zone = self.new_zone(zone)
+    response = self.api_request(method='GET',
+                                path=zone.path + zone.name + '/changes')
+    print json.dumps(response, indent=2)
