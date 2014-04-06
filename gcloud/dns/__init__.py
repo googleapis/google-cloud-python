@@ -1,0 +1,21 @@
+__version__ = '0.1'
+
+# TODO: Allow specific scopes and authorization levels.
+SCOPE = ('https://www.googleapis.com/auth/cloud-platform',
+         'https://www.googleapis.com/auth/ndev.clouddns.readonly',
+         'https://www.googleapis.com/auth/ndev.clouddns.readwrite')
+"""The scope required for authenticating as a Cloud DNS consumer."""
+
+
+def get_connection(project, client_email, private_key_path):
+  from gcloud.credentials import Credentials
+  from gcloud.dns.connection import Connection
+
+  credentials = Credentials.get_for_service_account(
+      client_email, private_key_path, scope=SCOPE)
+  return Connection(project=project, credentials=credentials)
+
+
+def get_zone(zone_name, project, client_email, private_key_path):
+  connection = get_connection(project, client_email, private_key_path)
+  return connection.get_zone(zone_name)
