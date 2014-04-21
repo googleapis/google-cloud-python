@@ -3,6 +3,7 @@ import copy
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.entity import Entity
+from gcloud.datastore.key import Key
 
 
 # TODO: Figure out how to properly handle namespaces.
@@ -130,6 +131,72 @@ class Query(object):
     # Set the value to filter on based on the type.
     attr_name, pb_value = helpers.get_protobuf_attribute_and_value(value)
     setattr(property_filter.value, attr_name, pb_value)
+    return clone
+
+  def ancestor(self, ancestor):
+    """Filter the query based on an ancestor.
+
+    This will return a clone of the current :class:`Query`
+    filtered by the ancestor provided.
+
+    For example::
+
+      >>> parent_key = Key.from_path('Person', '1')
+      >>> query = dataset.query('Person')
+      >>> filtered_query = query.ancestor(parent_key)
+
+    If you don't have a :class:`gcloud.datastore.key.Key` but just
+    know the path, you can provide that as well::
+
+      >>> query = dataset.query('Person')
+      >>> filtered_query = query.ancestor(['Person', '1'])
+
+    Each call to ``.ancestor()`` returns a cloned :class:`Query:,
+    however a query may only have one ancestor at a time.
+
+    :type ancestor: :class:`gcloud.datastore.key.Key` or list
+    :param ancestor: Either a Key or a path of the form
+                     ``['Kind', 'id or name', 'Kind', 'id or name', ...]``.
+
+    :rtype: :class:`Query`
+    :returns: A Query filtered by the ancestor provided.
+    """
+
+    clone = self._clone()
+
+    # If an ancestor filter already exists, remove it.
+    for i, filter in enumerate(clone._pb.filter.composite_filter.filter):
+      property_filter = filter.property_filter
+      if property_filter.operator == datastore_pb.PropertyFilter.HAS_ANCESTOR:
+        del clone._pb.filter.composite_filter.filter[i]
+
+        # If we just deleted the last item, make sure to clear out the filter
+        # property all together.
+        if not clone._pb.filter.composite_filter.filter:
+          clone._pb.ClearField('filter')
+
+    # If the ancestor is None, just return (we already removed the filter).
+    if not ancestor:
+      return clone
+
+    # If a list was provided, turn it into a Key.
+    if isinstance(ancestor, list):
+      ancestor = Key.from_path(*ancestor)
+
+    # If we don't have a Key value by now, something is wrong.
+    if not isinstance(ancestor, Key):
+      raise TypeError('Expected list or Key, got %s.' % type(ancestor))
+
+    # Get the composite filter and add a new property filter.
+    composite_filter = clone._pb.filter.composite_filter
+    composite_filter.operator = datastore_pb.CompositeFilter.AND
+
+    # Filter on __key__ HAS_ANCESTOR == ancestor.
+    ancestor_filter = composite_filter.filter.add().property_filter
+    ancestor_filter.property.name = '__key__'
+    ancestor_filter.operator = datastore_pb.PropertyFilter.HAS_ANCESTOR
+    ancestor_filter.value.key_value.CopyFrom(ancestor.to_protobuf())
+
     return clone
 
   def kind(self, *kinds):
