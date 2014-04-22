@@ -37,19 +37,19 @@ SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
          'https://www.googleapis.com/auth/devstorage.read_write')
 
 
-def get_connection(project_name, client_email, private_key_path):
+def get_connection(project, client_email, private_key_path):
   """Shortcut method to establish a connection to Cloud Storage.
 
   Use this if you are going to access several buckets
   with the same set of credentials:
 
   >>> from gcloud import storage
-  >>> connection = storage.get_connection(project_name, email, key_path)
+  >>> connection = storage.get_connection(project, email, key_path)
   >>> bucket1 = connection.get_bucket('bucket1')
   >>> bucket2 = connection.get_bucket('bucket2')
 
-  :type project_name: string
-  :param project_name: The name of the project to connect to.
+  :type project: string
+  :param project: The name of the project to connect to.
 
   :type client_email: string
   :param client_email: The e-mail attached to the service account.
@@ -68,15 +68,15 @@ def get_connection(project_name, client_email, private_key_path):
 
   credentials = Credentials.get_for_service_account(
       client_email, private_key_path, scope=SCOPE)
-  return Connection(project_name=project_name, credentials=credentials)
+  return Connection(project=project, credentials=credentials)
 
-def get_bucket(bucket_name, project_name, client_email, private_key_path):
+def get_bucket(bucket_name, project, client_email, private_key_path):
   """Shortcut method to establish a connection to a particular bucket.
 
   You'll generally use this as the first call to working with the API:
 
   >>> from gcloud import storage
-  >>> bucket = storage.get_bucket(project_name, bucket_name, email, key_path)
+  >>> bucket = storage.get_bucket(project, bucket_name, email, key_path)
   >>> # Now you can do things with the bucket.
   >>> bucket.exists('/path/to/file.txt')
   False
@@ -85,8 +85,8 @@ def get_bucket(bucket_name, project_name, client_email, private_key_path):
   :param bucket_name: The id of the bucket you want to use.
                     This is akin to a disk name on a file system.
 
-  :type project_name: string
-  :param project_name: The name of the project to connect to.
+  :type project: string
+  :param project: The name of the project to connect to.
 
   :type client_email: string
   :param client_email: The e-mail attached to the service account.
@@ -100,5 +100,5 @@ def get_bucket(bucket_name, project_name, client_email, private_key_path):
   :returns: A bucket with a connection using the provided credentials.
   """
 
-  connection = get_connection(project_name, client_email, private_key_path)
+  connection = get_connection(project, client_email, private_key_path)
   return connection.get_bucket(bucket_name)

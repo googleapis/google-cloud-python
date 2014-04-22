@@ -31,7 +31,7 @@ class Connection(connection.Connection):
   :class:`gcloud.storage.bucket.Bucket` objects::
 
     >>> from gcloud import storage
-    >>> connection = storage.get_connection(project_name, email, key_path)
+    >>> connection = storage.get_connection(project, email, key_path)
     >>> bucket = connection.create_bucket('my-bucket-name')
 
   You can then delete this bucket::
@@ -67,15 +67,15 @@ class Connection(connection.Connection):
 
   API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
 
-  def __init__(self, project_name, *args, **kwargs):
+  def __init__(self, project, *args, **kwargs):
     """
-    :type project_name: string
-    :param project_name: The project name to connect to.
+    :type project: string
+    :param project: The project name to connect to.
     """
 
     super(Connection, self).__init__(*args, **kwargs)
 
-    self.project_name = project_name
+    self.project = project
 
   def __iter__(self):
     return iter(BucketIterator(connection=self))
@@ -115,7 +115,7 @@ class Connection(connection.Connection):
         path=path)
 
     query_params = query_params or {}
-    query_params.update({'project': self.project_name})
+    query_params.update({'project': self.project})
     url += '?' + urllib.urlencode(query_params)
 
     return url
@@ -242,7 +242,7 @@ class Connection(connection.Connection):
     so these two operations are identical::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, email, key_path)
+      >>> connection = storage.get_connection(project, email, key_path)
       >>> for bucket in connection.get_all_buckets():
       >>>   print bucket
       >>> # ... is the same as ...
@@ -269,7 +269,7 @@ class Connection(connection.Connection):
 
       >>> from gcloud import storage
       >>> from gcloud.storage import exceptions
-      >>> connection = storage.get_connection(project_name, email, key_path)
+      >>> connection = storage.get_connection(project, email, key_path)
       >>> try:
       >>>   bucket = connection.get_bucket('my-bucket')
       >>> except exceptions.NotFoundError:
@@ -296,7 +296,7 @@ class Connection(connection.Connection):
     than catching an exception::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, email, key_path)
+      >>> connection = storage.get_connection(project, email, key_path)
       >>> bucket = connection.get_bucket('doesnt-exist')
       >>> print bucket
       None
@@ -323,7 +323,7 @@ class Connection(connection.Connection):
     For example::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, client, key_path)
+      >>> connection = storage.get_connection(project, client, key_path)
       >>> bucket = connection.create_bucket('my-bucket')
       >>> print bucket
       <Bucket: my-bucket>
@@ -347,7 +347,7 @@ class Connection(connection.Connection):
     or to delete a bucket object::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, email, key_path)
+      >>> connection = storage.get_connection(project, email, key_path)
       >>> connection.delete_bucket('my-bucket')
       True
 

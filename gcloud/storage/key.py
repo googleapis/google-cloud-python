@@ -264,7 +264,7 @@ class Key(object):
     You can use this method to quickly set the value of a key::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, email, key_path)
+      >>> connection = storage.get_connection(project, email, key_path)
       >>> bucket = connection.get_bucket(bucket_name)
       >>> key = bucket.new_key('my_text_file.txt')
       >>> key.set_contents_from_string('This is the contents of my file!')

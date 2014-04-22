@@ -62,7 +62,7 @@ class Bucket(object):
     This will return None if the key doesn't exist::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, email, key_path)
+      >>> connection = storage.get_connection(project, email, key_path)
       >>> bucket = connection.get_bucket('my-bucket')
       >>> print bucket.get_key('/path/to/key.txt')
       <Key: my-bucket, /path/to/key.txt>
@@ -157,7 +157,7 @@ class Bucket(object):
 
       >>> from gcloud import storage
       >>> from gcloud.storage import exceptions
-      >>> connection = storage.get_connection(project_name, email, key_path)
+      >>> connection = storage.get_connection(project, email, key_path)
       >>> bucket = connection.get_bucket('my-bucket')
       >>> print bucket.get_all_keys()
       [<Key: my-bucket, my-file.txt>]
@@ -198,7 +198,7 @@ class Bucket(object):
     For example::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, email, key_path)
+      >>> connection = storage.get_connection(project, email, key_path)
       >>> bucket = connection.get_bucket('my-bucket')
       >>> bucket.upload_file('~/my-file.txt', 'remote-text-file.txt')
       >>> print bucket.get_all_keys()
@@ -210,7 +210,7 @@ class Bucket(object):
     (**not** the complete path)::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, email, key_path)
+      >>> connection = storage.get_connection(project, email, key_path)
       >>> bucket = connection.get_bucket('my-bucket')
       >>> bucket.upload_file('~/my-file.txt')
       >>> print bucket.get_all_keys()
@@ -329,7 +329,7 @@ class Bucket(object):
     and a page to use when a key isn't found::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, email, private_key_path)
+      >>> connection = storage.get_connection(project, email, private_key_path)
       >>> bucket = connection.get_bucket(bucket_name)
       >>> bucket.configure_website('index.html', '404.html')
 
@@ -460,7 +460,7 @@ class Bucket(object):
     to a bunch of coworkers::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project_name, email, private_key_path)
+      >>> connection = storage.get_connection(project, email, private_key_path)
       >>> bucket = connection.get_bucket(bucket_name)
       >>> acl = bucket.get_acl()
       >>> acl.user('coworker1@example.org').grant_read()

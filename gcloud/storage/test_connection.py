@@ -7,4 +7,4 @@ class TestConnection(unittest2.TestCase):
 
   def test_init(self):
     connection = Connection('project-name')
-    self.assertEqual('project-name', connection.project_name)
+    self.assertEqual('project-name', connection.project)
