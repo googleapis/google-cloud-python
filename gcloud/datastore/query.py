@@ -244,4 +244,5 @@ class Query(object):
     entity_pbs = self.dataset().connection().run_query(
         query_pb=clone.to_protobuf(), dataset_id=self.dataset().id())
 
-    return [Entity.from_protobuf(entity) for entity in entity_pbs]
+    return [Entity.from_protobuf(entity, dataset=self.dataset())
+            for entity in entity_pbs]
