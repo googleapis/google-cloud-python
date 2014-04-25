@@ -217,10 +217,7 @@ otherwise you'll get an error.
 
 If you have a full bucket, you can delete it this way::
 
-  >>> bucket = connection.get_bucket('my-bucket')
-  >>> for key in bucket:
-  ...   key.delete()
-  >>> bucket.delete()
+  >>> bucket = connection.get_bucket('my-bucket', force=True)
 
 Listing available buckets
 -------------------------

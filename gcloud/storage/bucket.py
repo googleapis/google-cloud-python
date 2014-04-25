@@ -130,7 +130,7 @@ class Bucket(object):
 
     raise TypeError('Invalid key: %s' % key)
 
-  def delete(self):
+  def delete(self, force=False):
     """Delete this bucket.
 
     The bucket **must** be empty in order to delete it.
@@ -139,12 +139,20 @@ class Bucket(object):
     If the bucket is not empty,
     this will raise an Exception.
 
+    If you want to delete a non-empty bucket you can pass
+    in a force parameter set to true.
+    This will iterate through the bucket's keys and delete the related objects,
+    before deleting the bucket.
+
+    :type force: bool
+    :param full: If True, empties the bucket's objects then deletes it.
+
     :raises: :class:`gcloud.storage.exceptions.NotFoundError`
     """
 
     # TODO: Make sure the proper exceptions are raised.
 
-    return self.connection.delete_bucket(self.name)
+    return self.connection.delete_bucket(self.name, force=force)
 
   def delete_key(self, key):
     # TODO: Should we accept a 'silent' param here to not raise an exception?
