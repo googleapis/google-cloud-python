@@ -12,7 +12,7 @@ Google Cloud Python API
 
 .. warning::
   This library is **still under construction**
-  and is **not** the official Google Python API client library.
+  and is **not** the official Google Cloud Python API client library.
 
 Getting started
 ---------------
