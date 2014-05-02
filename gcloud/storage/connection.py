@@ -340,7 +340,7 @@ class Connection(connection.Connection):
                                 data={'name': bucket.name})
     return Bucket.from_dict(response, connection=self)
 
-  def delete_bucket(self, bucket, *args, **kwargs):
+  def delete_bucket(self, bucket, force=False, *args, **kwargs):
     """Delete a bucket.
 
     You can use this method to delete a bucket by name,
@@ -369,12 +369,21 @@ class Connection(connection.Connection):
     :type bucket: string or :class:`gcloud.storage.bucket.Bucket`
     :param bucket: The bucket name (or bucket object) to create.
 
+    :type force: bool
+    :param full: If True, empties the bucket's objects then deletes it.
+
     :rtype: bool
     :returns: True if the bucket was deleted.
     :raises: :class:`gcloud.storage.exceptions.NotFoundError`
     """
 
     bucket = self.new_bucket(bucket)
+
+    # This force delete operation is slow.
+    if force:
+      for key in bucket:
+        key.delete()
+
     response = self.api_request(method='DELETE', path=bucket.path)
     return True
 
