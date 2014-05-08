@@ -3,6 +3,6 @@ python:
   - "2.6"
   - "2.7"
 # command to install dependencies
-install: "pip install ."
+install: "pip install . unittest2"
 # command to run tests
 script: nosetests
