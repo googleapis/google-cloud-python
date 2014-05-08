@@ -4,7 +4,7 @@ Google Cloud Python Client
 The goal of this project is to make it really simple and Pythonic
 to use Google Cloud Platform services.
 
-[![Build Status](https://travis-ci.org/GoogleCloudPlatform/gcloud-python.svg?branch=master)](https://travis-ci.org/GoogleCloudPlatform/gcloud-python)
+.. image:: https://travis-ci.org/GoogleCloudPlatform/gcloud-python.svg?branch=master   :target: https://travis-ci.org/GoogleCloudPlatform/gcloud-python
 
 Quickstart
 ----------
