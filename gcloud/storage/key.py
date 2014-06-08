@@ -132,6 +132,19 @@ class Key(object):
 
     return self.bucket.get_key(self.name) is not None
 
+  def rename(self, new_name):
+    """Renames this key.
+
+    :type new_name: string
+    :param new_name: The new name for this key.
+    """
+    new_key = self.bucket.copy_key(self, self.bucket, new_name)
+    self.delete()
+    # This feels like a dirty hack, but since the bucket is the same we can
+    # just change the name attribute of this instance to have it point to the
+    # new key.
+    self.name = new_key.name
+
   def delete(self):
     """Deletes a key from Cloud Storage.
 

@@ -194,8 +194,28 @@ class Bucket(object):
     for key in keys:
       self.delete_key(key)
 
-  def copy_key(self):
-    raise NotImplementedError
+  def copy_key(self, key, destination_bucket, new_name=None):
+    """Copy the given key to the given bucket, optionally with a new name.
+
+    :type key: string or :class:`gcloud.storage.key.Key`
+    :param key: The key to be copied.
+
+    :type destination_bucket: :class:`gcloud.storage.bucket.Bucket`
+    :param destination_bucket: The bucket where the key should be copied into.
+
+    :type new_name: string
+    :param new_name: (optional) the new name for the copied file.
+
+    :rtype: :class:`gcloud.storage.key.Key`
+    :returns: The new Key.
+    """
+    # TODO: Check that the user has WRITE permissions on the dst bucket?
+    if new_name is None:
+      new_name = key.name
+    new_key = destination_bucket.new_key(new_name)
+    api_path = key.path + '/copyTo' + new_key.path
+    self.connection.api_request(method='POST', path=api_path)
+    return new_key
 
   def upload_file(self, filename, key=None):
     # TODO: What do we do about overwriting data?
