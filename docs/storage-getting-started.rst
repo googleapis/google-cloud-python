@@ -20,7 +20,7 @@ Enabling the API
 ----------------
 
 Now that you created a project,
-you need to **turn on** the Cloud Datastore API.
+you need to **turn on** the Google Cloud Storage API.
 This is sort of like telling Google
 which services you intend to use for this project.
 
