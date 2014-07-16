@@ -50,6 +50,7 @@ you can create buckets and keys::
   'this is test content!'
   >>> print bucket.get_all_keys()
   [<Key: my-new-bucket, my-test-file.txt>]
+  >>> key.delete()
   >>> bucket.delete()
 
 .. note::
