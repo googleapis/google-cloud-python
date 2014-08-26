@@ -4,6 +4,7 @@ from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
+import base64
 
 
 # TODO: Figure out how to properly handle namespaces.
@@ -55,6 +56,7 @@ class Query(object):
   def __init__(self, kind=None, dataset=None):
     self._dataset = dataset
     self._pb = datastore_pb.Query()
+    self._cursor = None
 
     if kind:
       self._pb.kind.add().name = kind
@@ -316,11 +318,31 @@ class Query(object):
             for entity in entity_pbs]
 
   def cursor(self):
-    return self._cursor
+    """Returns a base64-encoded cursor string denoting the position in the query's result
+    set following the last result retrieved.
+
+    .. Caution:: Invoking this method on a query that has not yet has been
+      executed will raise an AssertionError exception.
+
+    :rtype: string
+    :returns: The lastest end_cursor for query
+    """
+    assert self._cursor
+    return base64.b64encode(self._cursor)
 
   def with_cursor(self, start_cursor, end_cursor=None):
+    """Specifies the starting and (optionally) ending positions within a query's
+    result set from which to retrieve results.
+
+    :type start_cursor: bytes
+    :param start_cursor: Base64-encoded cursor string specifying where to start the query.
+
+    :type end_cursor: bytes
+    :param end_cursor: Base64-encoded cursor string specifying where to end the query.
+
+    """
     if start_cursor:
-      self._pb.start_cursor = start_cursor
+      self._pb.start_cursor = base64.b64decode(start_cursor)
     if end_cursor:
-      self._pb.end_cursor = end_cursor
+      self._pb.end_cursor = base64.b64decode(end_cursor)
 
