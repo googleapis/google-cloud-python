@@ -361,7 +361,7 @@ class Query(object):
     clone = self._clone()
 
     for p in properties:
-      property_order = self._pb.order.add()
+      property_order = clone._pb.order.add()
 
       if p.startswith('-'):
         property_order.property.name = p[1:]
