@@ -346,3 +346,30 @@ class Query(object):
     if end_cursor:
       self._pb.end_cursor = base64.b64decode(end_cursor)
 
+  def order(self, *properties):
+    """Adds a sort order to the query. If more than one sort order is added,
+    they will be applied in the order specified.
+
+    :type properties: string
+    :param properties: String giving the name of the property on which to sort,
+    optionally preceded by a hyphen (-) to specify descending order.
+    Omitting the hyphen specifies ascending order by default.
+
+    :rtype: :class:`Query`
+    :returns: A Query order by properties.
+    """
+    clone = self._clone()
+
+    for p in properties:
+      property_order = self._pb.order.add()
+
+      if p.startswith('-'):
+        property_order.property.name = p[1:]
+        property_order.direct = property_order.DESCENDING
+      else:
+        property_order.property.name = p
+        property_order.direction = property_order.ASCENDING
+
+    return clone
+
+
