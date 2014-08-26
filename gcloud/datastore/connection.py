@@ -226,7 +226,7 @@ class Connection(object):
 
     request.query.CopyFrom(query_pb)
     response = self._rpc(dataset_id, 'runQuery', request, datastore_pb.RunQueryResponse)
-    return [e.entity for e in response.batch.entity_result]
+    return ([e.entity for e in response.batch.entity_result], response.batch.end_cursor, response.batch.more_results, response.batch.skipped_results)
 
   def lookup(self, dataset_id, key_pbs):
     """Lookup keys from a dataset in the Cloud Datastore.

@@ -308,8 +308,19 @@ class Query(object):
     if limit:
       clone = self.limit(limit)
 
-    entity_pbs = self.dataset().connection().run_query(
+    entity_pbs, end_cursor, more_results, skipped_results = self.dataset().connection().run_query(
         query_pb=clone.to_protobuf(), dataset_id=self.dataset().id())
 
+    self._cursor = end_cursor
     return [Entity.from_protobuf(entity, dataset=self.dataset())
             for entity in entity_pbs]
+
+  def cursor(self):
+    return self._cursor
+
+  def with_cursor(self, start_cursor, end_cursor=None):
+    if start_cursor:
+      self._pb.start_cursor = start_cursor
+    if end_cursor:
+      self._pb.end_cursor = end_cursor
+
