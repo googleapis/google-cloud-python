@@ -41,3 +41,4 @@ docs/_build
 
 # Virtual environment
 env/
+coverage.xml
