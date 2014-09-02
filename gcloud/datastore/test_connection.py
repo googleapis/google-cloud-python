@@ -303,7 +303,6 @@ class TestConnection(unittest2.TestCase):
                         DATASET_ID,
                         'runQuery',
                        ])
-        rsp = datastore_pb.RunQueryResponse()
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.run_query(DATASET_ID, q_pb), [])
         self.assertEqual(http._called_with,
@@ -335,7 +334,6 @@ class TestConnection(unittest2.TestCase):
                         DATASET_ID,
                         'runQuery',
                        ])
-        rsp = datastore_pb.RunQueryResponse()
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.run_query(DATASET_ID, q_pb, 'NS')
         returned, = result # one entity
@@ -347,6 +345,102 @@ class TestConnection(unittest2.TestCase):
                              'Content-Length': '16',
                             },
                           'body': b'\x12\x04"\x02NS\x1a\x08\x1a\x06\n\x04Kind',
+                         })
+
+    def test_lookup_single_key_empty_response(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb = Key(dataset=Dataset(DATASET_ID),
+                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.LookupResponse()
+        conn = self._makeOne()
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'lookup',
+                       ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        self.assertEqual(conn.lookup(DATASET_ID, key_pb), None)
+        self.assertEqual(http._called_with,
+                         {'uri': URI,
+                          'method': 'POST',
+                          'headers':
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '26',
+                            },
+                          'body': b'\x1a\x18\n\x0b\x1a\ts~'
+                                  b'DATASET\x12\t\n\x04Kind\x10\xd2\t',
+                         })
+
+    def test_lookup_single_key_nonempty_response(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb = Key(dataset=Dataset(DATASET_ID),
+                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.LookupResponse()
+        entity = datastore_pb.Entity()
+        entity.key.CopyFrom(key_pb)
+        rsp_pb.found.add(entity=entity)
+        conn = self._makeOne()
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'lookup',
+                       ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        found = conn.lookup(DATASET_ID, key_pb)
+        self.assertEqual(found.key.path_element[0].kind, 'Kind')
+        self.assertEqual(found.key.path_element[0].id, 1234)
+        self.assertEqual(http._called_with,
+                         {'uri': URI,
+                          'method': 'POST',
+                          'headers':
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '26',
+                            },
+                          'body': b'\x1a\x18\n\x0b\x1a\ts~'
+                                  b'DATASET\x12\t\n\x04Kind\x10\xd2\t',
+                         })
+
+    def test_lookup_multiple_keys_empty_response(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(dataset=Dataset(DATASET_ID),
+                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(dataset=Dataset(DATASET_ID),
+                      path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        rsp_pb = datastore_pb.LookupResponse()
+        conn = self._makeOne()
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'lookup',
+                       ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        self.assertEqual(conn.lookup(DATASET_ID, [key_pb1, key_pb2]), [])
+        self.assertEqual(http._called_with,
+                         {'uri': URI,
+                          'method': 'POST',
+                          'headers':
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '52',
+                            },
+                          'body': b'\x1a\x18\n\x0b\x1a\ts~DATASET'
+                                  b'\x12\t\n\x04Kind\x10\xd2\t'
+                                  b'\x1a\x18\n\x0b\x1a\ts~DATASET'
+                                  b'\x12\t\n\x04Kind\x10\xa9\x12',
                          })
 
 class Http(object):
