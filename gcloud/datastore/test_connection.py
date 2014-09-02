@@ -43,7 +43,7 @@ class TestConnection(unittest2.TestCase):
     def test__request_w_200(self):
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
-        DATA = 'DATA'
+        DATA = b'DATA'
         conn = self._makeOne()
         URI = '/'.join([conn.API_BASE_URL,
                         'datastore',
@@ -57,7 +57,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with,
                          {'uri': URI,
                           'method': 'POST',
-                          'headers': 
+                          'headers':
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '4',
                             },
@@ -79,7 +79,7 @@ class TestConnection(unittest2.TestCase):
 
         class ReqPB(object):
             def SerializeToString(self):
-                return 'REQPB'
+                return b'REQPB'
 
         class RspPB(object):
             def __init__(self, pb):
@@ -105,11 +105,11 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with,
                          {'uri': URI,
                           'method': 'POST',
-                          'headers': 
+                          'headers':
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '5',
                             },
-                          'body': 'REQPB',
+                          'body': b'REQPB',
                          })
 
     def test_build_api_url_w_default_base_version(self):
@@ -178,7 +178,7 @@ class TestConnection(unittest2.TestCase):
         self.assertTrue(dataset.connection() is conn)
         self.assertEqual(dataset.id(), DATASET_ID)
 
-    def test_begin_transaction_already(self):
+    def test_begin_transaction_w_existing_transaction(self):
         DATASET_ID = 'DATASET'
         conn = self._makeOne()
         conn.transaction(object())
@@ -187,14 +187,6 @@ class TestConnection(unittest2.TestCase):
     def test_begin_transaction_default_serialize(self):
         from gcloud.datastore.connection import datastore_pb
         xact = object()
-        class RspPB(object):
-            def __init__(self, pb):
-                self._pb = pb
-                self.transaction = xact
-            @classmethod
-            def FromString(cls, pb):
-                return cls(pb)
-
         DATASET_ID = 'DATASET'
         TRANSACTION = 'TRANSACTION'
         rsp_pb = datastore_pb.BeginTransactionResponse()
@@ -212,7 +204,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with,
                          {'uri': URI,
                           'method': 'POST',
-                          'headers': 
+                          'headers':
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '2',
                             },
@@ -222,14 +214,6 @@ class TestConnection(unittest2.TestCase):
     def test_begin_transaction_explicit_serialize(self):
         from gcloud.datastore.connection import datastore_pb
         xact = object()
-        class RspPB(object):
-            def __init__(self, pb):
-                self._pb = pb
-                self.transaction = xact
-            @classmethod
-            def FromString(cls, pb):
-                return cls(pb)
-
         DATASET_ID = 'DATASET'
         TRANSACTION = 'TRANSACTION'
         rsp_pb = datastore_pb.BeginTransactionResponse()
@@ -247,11 +231,122 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with,
                          {'uri': URI,
                           'method': 'POST',
-                          'headers': 
+                          'headers':
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '2',
                             },
                           'body': b'\x08\x01', # SERIALIZABLE
+                         })
+
+    def test_rollback_transaction_wo_existing_transaction(self):
+        DATASET_ID = 'DATASET'
+        TRANSACTION_ID = 'TRANSACTION'
+        conn = self._makeOne()
+        self.assertRaises(ValueError,
+                          conn.rollback_transaction, DATASET_ID, TRANSACTION_ID)
+
+    def test_rollback_transaction_w_existing_transaction_no_id(self):
+        class Xact(object):
+            def id(self):
+                return None
+        DATASET_ID = 'DATASET'
+        TRANSACTION_ID = 'TRANSACTION'
+        conn = self._makeOne()
+        conn.transaction(Xact())
+        self.assertRaises(ValueError,
+                          conn.rollback_transaction, DATASET_ID, TRANSACTION_ID)
+
+    def test_rollback_transaction_ok(self):
+        from gcloud.datastore.connection import datastore_pb
+        class Xact(object):
+            def id(self):
+                return 'xact'
+        xact = object()
+
+        DATASET_ID = 'DATASET'
+        TRANSACTION = 'TRANSACTION'
+        rsp_pb = datastore_pb.RollbackResponse()
+        conn = self._makeOne()
+        conn.transaction(Xact())
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'rollback',
+                       ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        self.assertEqual(conn.rollback_transaction(DATASET_ID, TRANSACTION),
+                         None)
+        self.assertEqual(http._called_with,
+                         {'uri': URI,
+                          'method': 'POST',
+                          'headers':
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '13',
+                            },
+                          'body': b'\n\x0bTRANSACTION',
+                         })
+
+    def test_run_query_wo_namespace_empty_result(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.query import Query
+        DATASET_ID = 'DATASET'
+        KIND = 'Nonesuch'
+        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        rsp_pb = datastore_pb.RunQueryResponse()
+        conn = self._makeOne()
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'runQuery',
+                       ])
+        rsp = datastore_pb.RunQueryResponse()
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        self.assertEqual(conn.run_query(DATASET_ID, q_pb), [])
+        self.assertEqual(http._called_with,
+                         {'uri': URI,
+                          'method': 'POST',
+                          'headers':
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '14',
+                            },
+                          'body': b'\x1a\x0c\x1a\n\n\x08Nonesuch',
+                         })
+
+    def test_run_query_w_namespace_nonempty_result(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.query import Query
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        entity = datastore_pb.Entity()
+        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb.batch.entity_result.add(entity=entity)
+        rsp_pb.batch.entity_result_type = 1  # FULL
+        rsp_pb.batch.more_results = 3 # NO_MORE_RESULTS
+        conn = self._makeOne()
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'runQuery',
+                       ])
+        rsp = datastore_pb.RunQueryResponse()
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        result = conn.run_query(DATASET_ID, q_pb, 'NS')
+        returned, = result # one entity
+        self.assertEqual(http._called_with,
+                         {'uri': URI,
+                          'method': 'POST',
+                          'headers':
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '16',
+                            },
+                          'body': b'\x12\x04"\x02NS\x1a\x08\x1a\x06\n\x04Kind',
                          })
 
 class Http(object):
