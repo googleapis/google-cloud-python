@@ -201,15 +201,14 @@ class TestConnection(unittest2.TestCase):
                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(DATASET_ID), TRANSACTION)
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers':
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '2',
-                            },
-                          'body': b'\x08\x00', # SNAPSHOT
-                         })
+                            })
+        self.assertEqual(cw['body'], b'\x08\x00') # SNAPSHOT
 
     def test_begin_transaction_explicit_serialize(self):
         from gcloud.datastore.connection import datastore_pb
@@ -228,15 +227,14 @@ class TestConnection(unittest2.TestCase):
                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(DATASET_ID, True), TRANSACTION)
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers':
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '2',
-                            },
-                          'body': b'\x08\x01', # SERIALIZABLE
-                         })
+                            })
+        self.assertEqual(cw['body'], b'\x08\x01') # SERIALIZABLE
 
     def test_rollback_transaction_wo_existing_transaction(self):
         DATASET_ID = 'DATASET'
@@ -278,15 +276,14 @@ class TestConnection(unittest2.TestCase):
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.rollback_transaction(DATASET_ID, TRANSACTION),
                          None)
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers':
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '13',
-                            },
-                          'body': b'\n\x0bTRANSACTION',
-                         })
+                            })
+        self.assertEqual(cw['body'], b'\n\x0bTRANSACTION')
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore.connection import datastore_pb
@@ -305,15 +302,14 @@ class TestConnection(unittest2.TestCase):
                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.run_query(DATASET_ID, q_pb), [])
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers':
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '14',
-                            },
-                          'body': b'\x1a\x0c\x1a\n\n\x08Nonesuch',
-                         })
+                            })
+        self.assertEqual(cw['body'], b'\x1a\x0c\x1a\n\n\x08Nonesuch')
 
     def test_run_query_w_namespace_nonempty_result(self):
         from gcloud.datastore.connection import datastore_pb
@@ -337,15 +333,15 @@ class TestConnection(unittest2.TestCase):
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.run_query(DATASET_ID, q_pb, 'NS')
         returned, = result # one entity
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers':
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '16',
-                            },
-                          'body': b'\x12\x04"\x02NS\x1a\x08\x1a\x06\n\x04Kind',
-                         })
+                            })
+        self.assertEqual(cw['body'],
+                         b'\x12\x04"\x02NS\x1a\x08\x1a\x06\n\x04Kind')
 
     def test_lookup_single_key_empty_response(self):
         from gcloud.datastore.connection import datastore_pb
@@ -365,16 +361,16 @@ class TestConnection(unittest2.TestCase):
                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.lookup(DATASET_ID, key_pb), None)
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers':
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '26',
-                            },
-                          'body': b'\x1a\x18\n\x0b\x1a\ts~'
-                                  b'DATASET\x12\t\n\x04Kind\x10\xd2\t',
-                         })
+                            })
+        self.assertEqual(cw['body'],
+                         b'\x1a\x18\n\x0b\x1a\ts~DATASET'
+                         b'\x12\t\n\x04Kind\x10\xd2\t')
 
     def test_lookup_single_key_nonempty_response(self):
         from gcloud.datastore.connection import datastore_pb
@@ -399,16 +395,16 @@ class TestConnection(unittest2.TestCase):
         found = conn.lookup(DATASET_ID, key_pb)
         self.assertEqual(found.key.path_element[0].kind, 'Kind')
         self.assertEqual(found.key.path_element[0].id, 1234)
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers':
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '26',
-                            },
-                          'body': b'\x1a\x18\n\x0b\x1a\ts~'
-                                  b'DATASET\x12\t\n\x04Kind\x10\xd2\t',
-                         })
+                            })
+        self.assertEqual(cw['body'],
+                         b'\x1a\x18\n\x0b\x1a\ts~DATASET'
+                         b'\x12\t\n\x04Kind\x10\xd2\t')
 
     def test_lookup_multiple_keys_empty_response(self):
         from gcloud.datastore.connection import datastore_pb
@@ -430,18 +426,18 @@ class TestConnection(unittest2.TestCase):
                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.lookup(DATASET_ID, [key_pb1, key_pb2]), [])
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers':
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '52',
-                            },
-                          'body': b'\x1a\x18\n\x0b\x1a\ts~DATASET'
-                                  b'\x12\t\n\x04Kind\x10\xd2\t'
-                                  b'\x1a\x18\n\x0b\x1a\ts~DATASET'
-                                  b'\x12\t\n\x04Kind\x10\xa9\x12',
-                         })
+                            })
+        self.assertEqual(cw['body'],
+                         b'\x1a\x18\n\x0b\x1a\ts~DATASET'
+                         b'\x12\t\n\x04Kind\x10\xd2\t'
+                         b'\x1a\x18\n\x0b\x1a\ts~DATASET'
+                         b'\x12\t\n\x04Kind\x10\xa9\x12')
 
 class Http(object):
 
