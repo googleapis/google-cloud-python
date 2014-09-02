@@ -14,6 +14,7 @@ class Credentials(object):
     :func:`gcloud.datastore.__init__.get_dataset`
     which use this class under the hood.
   """
+  _CLIENT = client # allow for testing
 
   @classmethod
   def get_for_service_account(cls, client_email, private_key_path, scope=None):
@@ -34,7 +35,7 @@ class Credentials(object):
                   for the different levels of access
                   to any particular API.)
     """
-    return client.SignedJwtAssertionCredentials(
+    return cls._CLIENT.SignedJwtAssertionCredentials(
         service_account_name=client_email,
         private_key=open(private_key_path).read(),
         scope=scope)
