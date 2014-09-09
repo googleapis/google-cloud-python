@@ -206,7 +206,7 @@ class Entity(dict):
     self.dataset().connection().delete_entity(
         dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf())
 
-  def __repr__(self):
+  def __repr__(self): #pragma NO COVER
     # TODO: Make sure that this makes sense.
     # An entity should have a key all the time (even if it's partial).
     if self.key():
