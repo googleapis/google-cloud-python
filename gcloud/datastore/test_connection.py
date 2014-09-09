@@ -439,6 +439,89 @@ class TestConnection(unittest2.TestCase):
                          b'\x1a\x18\n\x0b\x1a\ts~DATASET'
                          b'\x12\t\n\x04Kind\x10\xa9\x12')
 
+    def test_commit_wo_transaction(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb = Key(dataset=Dataset(DATASET_ID),
+                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.CommitResponse()
+        mutation = datastore_pb.Mutation()
+        insert = mutation.upsert.add()
+        insert.key.CopyFrom(key_pb)
+        prop = insert.property.add()
+        prop.name = 'foo'
+        prop.value.string_value = 'Foo'
+        conn = self._makeOne()
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'commit',
+                       ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        result = conn.commit(DATASET_ID, mutation)
+        self.assertEqual(result.index_updates, 0)
+        self.assertEqual(list(result.insert_auto_id_key), [])
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '47',
+                            })
+        self.assertEqual(cw['body'],
+                         b'\x12+\n)\n\x18\n\x0b\x1a\ts~DATASET'
+                         b'\x12\t\n\x04Kind\x10\xd2\t'
+                         b'\x12\r\n\x03foo"\x06\x8a\x01\x03Foo(\x02'
+                         )
+
+    def test_commit_w_transaction(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        class Xact(object):
+            def id(self):
+                return 'xact'
+        DATASET_ID = 'DATASET'
+        key_pb = Key(dataset=Dataset(DATASET_ID),
+                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.CommitResponse()
+        mutation = datastore_pb.Mutation()
+        insert = mutation.upsert.add()
+        insert.key.CopyFrom(key_pb)
+        prop = insert.property.add()
+        prop.name = 'foo'
+        prop.value.string_value = 'Foo'
+        conn = self._makeOne()
+        conn.transaction(Xact())
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'commit',
+                       ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        result = conn.commit(DATASET_ID, mutation)
+        self.assertEqual(result.index_updates, 0)
+        self.assertEqual(list(result.insert_auto_id_key), [])
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '53',
+                            })
+        self.assertEqual(cw['body'],
+                         b'\n\x04xact'
+                         b'\x12+\n)\n\x18\n\x0b\x1a\ts~DATASET'
+                         b'\x12\t\n\x04Kind\x10\xd2\t'
+                         b'\x12\r\n\x03foo"\x06\x8a\x01\x03Foo(\x01'
+                         )
+
 class Http(object):
 
     def __init__(self, headers, content):
