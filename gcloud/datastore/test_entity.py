@@ -91,6 +91,16 @@ class TestEntity(unittest2.TestCase):
         entity.reload() # does not raise, does not update on miss
         self.assertEqual(entity['foo'], 'Foo')
 
+    def test_reload_hit(self):
+        dataset = _Dataset()
+        dataset['KEY'] = {'foo': 'Bar'}
+        key = _Key(dataset)
+        entity = self._makeOne()
+        entity.key(key)
+        entity['foo'] = 'Foo'
+        entity.reload()
+        self.assertEqual(entity['foo'], 'Bar')
+
 
 class _Key(object):
     def __init__(self, dataset):
