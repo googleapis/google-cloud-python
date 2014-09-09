@@ -88,7 +88,8 @@ class TestEntity(unittest2.TestCase):
         entity = self._makeOne()
         entity.key(key)
         entity['foo'] = 'Foo'
-        entity.reload() # does not raise, does not update on miss
+        # does not raise, does not update on miss
+        self.assertTrue(entity.reload() is entity)
         self.assertEqual(entity['foo'], 'Foo')
 
     def test_reload_hit(self):
@@ -98,20 +99,124 @@ class TestEntity(unittest2.TestCase):
         entity = self._makeOne()
         entity.key(key)
         entity['foo'] = 'Foo'
-        entity.reload()
+        self.assertTrue(entity.reload() is entity)
         self.assertEqual(entity['foo'], 'Bar')
+
+    def test_save_wo_transaction_wo_auto_id_wo_returned_key(self):
+        connection = _Connection()
+        dataset = _Dataset(connection)
+        key = _Key(dataset)
+        entity = self._makeOne()
+        entity.key(key)
+        entity['foo'] = 'Foo'
+        self.assertTrue(entity.save() is entity)
+        self.assertEqual(entity['foo'], 'Foo')
+        self.assertEqual(connection._saved,
+                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
+        self.assertEqual(key._path, None)
+
+    def test_save_w_transaction_wo_partial_key(self):
+        connection = _Connection()
+        transaction = connection._transaction = _Transaction()
+        dataset = _Dataset(connection)
+        key = _Key(dataset)
+        entity = self._makeOne()
+        entity.key(key)
+        entity['foo'] = 'Foo'
+        self.assertTrue(entity.save() is entity)
+        self.assertEqual(entity['foo'], 'Foo')
+        self.assertEqual(connection._saved,
+                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
+        self.assertEqual(transaction._added, ())
+        self.assertEqual(key._path, None)
+
+    def test_save_w_transaction_w_partial_key(self):
+        connection = _Connection()
+        transaction = connection._transaction = _Transaction()
+        dataset = _Dataset(connection)
+        key = _Key(dataset)
+        key._partial = True
+        entity = self._makeOne()
+        entity.key(key)
+        entity['foo'] = 'Foo'
+        self.assertTrue(entity.save() is entity)
+        self.assertEqual(entity['foo'], 'Foo')
+        self.assertEqual(connection._saved,
+                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
+        self.assertEqual(transaction._added, (entity,))
+        self.assertEqual(key._path, None)
+
+    def test_save_w_returned_key(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        key_pb = datastore_pb.Key()
+        key_pb.partition_id.dataset_id = _DATASET_ID
+        key_pb.path_element.add(kind=_KIND, id=_ID)
+        connection = _Connection()
+        connection._save_result = key_pb
+        dataset = _Dataset(connection)
+        key = _Key(dataset)
+        entity = self._makeOne()
+        entity.key(key)
+        entity['foo'] = 'Foo'
+        self.assertTrue(entity.save() is entity)
+        self.assertEqual(entity['foo'], 'Foo')
+        self.assertEqual(connection._saved,
+                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
+        self.assertEqual(key._path, [{'kind': _KIND, 'id': _ID}])
+
+    def test_delete(self):
+        connection = _Connection()
+        dataset = _Dataset(connection)
+        key = _Key(dataset)
+        entity = self._makeOne()
+        entity.key(key)
+        entity['foo'] = 'Foo'
+        self.assertTrue(entity.delete() is None)
+        self.assertEqual(connection._deleted, (_DATASET_ID, 'KEY'))
 
 
 class _Key(object):
+    _key = 'KEY'
+    _partial = False
+    _path = None
     def __init__(self, dataset):
         self._dataset = dataset
     def dataset(self):
         return self._dataset
     def to_protobuf(self):
-        return 'KEY'
+        return self._key
+    def is_partial(self):
+        return self._partial
+    def path(self, path):
+        self._path = path
 
 class _Dataset(dict):
+    def __init__(self, connection=None):
+        self._connection = connection
+    def id(self):
+        return _DATASET_ID
+    def connection(self):
+        return self._connection
     def get_entity(self, key):
         return self.get(key)
     def get_entities(self, keys):
         return [self.get(x) for x in keys]
+
+class _Connection(object):
+    _transaction = _saved = _deleted = None
+    _save_result = True
+    def transaction(self):
+        return self._transaction
+    def save_entity(self, dataset_id, key_pb, properties):
+        self._saved = (dataset_id, key_pb, properties)
+        return self._save_result
+    def delete_entity(self, dataset_id, key_pb):
+        self._deleted = (dataset_id, key_pb)
+
+class _Transaction(object):
+    _added = ()
+    def __nonzero__(self):
+        return True
+    __bool__ = __nonzero__
+    def add_auto_id_entity(self, entity):
+        self._added += (entity,)
