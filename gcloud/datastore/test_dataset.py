@@ -1,28 +1,53 @@
 import unittest2
 
-from gcloud.datastore.dataset import Dataset
-from gcloud.datastore.entity import Entity
-from gcloud.datastore.query import Query
 
 
 class TestDataset(unittest2.TestCase):
 
-  def test_init_id_required(self):
-    with self.assertRaises(Exception):
-      dataset = Dataset()
+    def _getTargetClass(self):
+        from gcloud.datastore.dataset import Dataset
+        return Dataset
 
-    dataset = Dataset('dataset-id-here')
-    self.assertEqual('dataset-id-here', dataset.id())
-    self.assertEqual(None, dataset.connection())
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
 
-  def test_query_factory(self):
-    dataset = Dataset('test')
-    query = dataset.query()
-    self.assertIsInstance(query, Query)
-    self.assertEqual(dataset, query.dataset())
+    def test_ctor_missing_dataset_id(self):
+        self.assertRaises(TypeError, self._makeOne)
 
-  def test_entity_factory(self):
-    dataset = Dataset('test')
-    entity = dataset.entity('TestKind')
-    self.assertIsInstance(entity, Entity)
-    self.assertEqual('TestKind', entity.kind())
+    def test_ctor_defaults(self):
+        DATASET_ID = 'DATASET'
+        dataset = self._makeOne(DATASET_ID)
+        self.assertEqual(dataset.id(), DATASET_ID)
+        self.assertEqual(dataset.connection(), None)
+
+    def test_ctor_explicit(self):
+        DATASET_ID = 'DATASET'
+        CONNECTION = object()
+        dataset = self._makeOne(DATASET_ID, CONNECTION)
+        self.assertEqual(dataset.id(), DATASET_ID)
+        self.assertTrue(dataset.connection() is CONNECTION)
+
+    def test_query_factory(self):
+        from gcloud.datastore.query import Query
+        DATASET_ID = 'DATASET'
+        dataset = self._makeOne(DATASET_ID)
+        query = dataset.query()
+        self.assertIsInstance(query, Query)
+        self.assertTrue(query.dataset() is dataset)
+
+    def test_entity_factory(self):
+        from gcloud.datastore.entity import Entity
+        DATASET_ID = 'DATASET'
+        KIND = 'KIND'
+        dataset = self._makeOne(DATASET_ID)
+        entity = dataset.entity(KIND)
+        self.assertIsInstance(entity, Entity)
+        self.assertEqual(entity.kind(), KIND)
+
+    def test_transaction_factory(self):
+        from gcloud.datastore.transaction import Transaction
+        DATASET_ID = 'DATASET'
+        dataset = self._makeOne(DATASET_ID)
+        transaction = dataset.transaction()
+        self.assertIsInstance(transaction, Transaction)
+        self.assertTrue(transaction.dataset() is dataset)
