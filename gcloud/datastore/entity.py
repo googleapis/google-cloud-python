@@ -164,7 +164,7 @@ class Entity(dict):
     """
 
     # Note that you must have a valid key, otherwise this makes no sense.
-    entity = self.dataset().get_entities(self.key().to_protobuf())
+    entity = self.dataset().get_entity(self.key().to_protobuf())
 
     # TODO(jjg): Raise an error if something dumb happens.
     if entity:

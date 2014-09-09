@@ -81,3 +81,27 @@ class TestEntity(unittest2.TestCase):
         self.assertTrue(key.dataset() is dataset)
         self.assertEqual(key.kind(), _KIND)
         self.assertEqual(key.id(), _ID)
+
+    def test_reload_miss(self):
+        dataset = _Dataset()
+        key = _Key(dataset)
+        entity = self._makeOne()
+        entity.key(key)
+        entity['foo'] = 'Foo'
+        entity.reload() # does not raise, does not update on miss
+        self.assertEqual(entity['foo'], 'Foo')
+
+
+class _Key(object):
+    def __init__(self, dataset):
+        self._dataset = dataset
+    def dataset(self):
+        return self._dataset
+    def to_protobuf(self):
+        return 'KEY'
+
+class _Dataset(dict):
+    def get_entity(self, key):
+        return self.get(key)
+    def get_entities(self, keys):
+        return [self.get(x) for x in keys]
