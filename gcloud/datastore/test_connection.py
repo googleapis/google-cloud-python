@@ -522,7 +522,109 @@ class TestConnection(unittest2.TestCase):
                          b'\x12\r\n\x03foo"\x06\x8a\x01\x03Foo(\x01'
                          )
 
+    def test_save_entity_wo_transaction_w_upsert(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb = Key(dataset=Dataset(DATASET_ID),
+                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.CommitResponse()
+        conn = self._makeOne()
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'commit',
+                       ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
+        self.assertEqual(result, True)
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '47',
+                            })
+        self.assertEqual(cw['body'],
+                         b'\x12+\n)\n\x18\n\x0b\x1a\ts~DATASET'
+                         b'\x12\t\n\x04Kind\x10\xd2\t'
+                         b'\x12\r\n\x03foo"\x06\x8a\x01\x03Foo(\x02'
+                         )
+
+    def test_save_entity_wo_transaction_w_auto_id(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb = Key(dataset=Dataset(DATASET_ID),
+                      path=[{'kind': 'Kind'}]).to_protobuf()
+        updated_key_pb = Key(dataset=Dataset(DATASET_ID),
+                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.CommitResponse()
+        mr_pb = rsp_pb.mutation_result
+        mr_pb.index_updates = 0
+        iaik_pb = mr_pb.insert_auto_id_key.add()
+        iaik_pb.CopyFrom(updated_key_pb)
+        conn = self._makeOne()
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'commit',
+                       ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
+        self.assertEqual(result, updated_key_pb)
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers'],
+                            {'Content-Type': 'application/x-protobuf',
+                             'Content-Length': '44',
+                            })
+        self.assertEqual(cw['body'],
+                         b'\x12("&\n\x15\n\x0b\x1a\ts~DATASET'
+                         b'\x12\x06\n\x04Kind'
+                         b'\x12\r\n\x03foo"\x06\x8a\x01\x03Foo(\x02'
+                         )
+
+    def test_save_entity_w_transaction(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        mutation = datastore_pb.Mutation()
+        class Xact(object):
+            def id(self):
+                return 'xact'
+            def mutation(self):
+                return mutation
+        DATASET_ID = 'DATASET'
+        key_pb = Key(dataset=Dataset(DATASET_ID),
+                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.CommitResponse()
+        conn = self._makeOne()
+        conn.transaction(Xact())
+        URI = '/'.join([conn.API_BASE_URL,
+                        'datastore',
+                        conn.API_VERSION,
+                        'datasets',
+                        DATASET_ID,
+                        'commit',
+                       ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
+        self.assertEqual(result, True)
+        self.assertEqual(http._called_with, None)
+        mutation = conn.mutation()
+        self.assertEqual(len(mutation.upsert), 1)
+
 class Http(object):
+
+    _called_with = None
 
     def __init__(self, headers, content):
         self._headers = headers
