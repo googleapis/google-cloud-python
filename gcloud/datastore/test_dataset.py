@@ -51,3 +51,76 @@ class TestDataset(unittest2.TestCase):
         transaction = dataset.transaction()
         self.assertIsInstance(transaction, Transaction)
         self.assertTrue(transaction.dataset() is dataset)
+
+    def test_get_entities_miss(self):
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        connection = _Connection()
+        dataset = self._makeOne(DATASET_ID, connection)
+        key = Key(dataset=dataset, path=[{'kind': 'Kind', 'id': 1234}])
+        self.assertEqual(dataset.get_entities([key]), [])
+
+    def test_get_entities_hit(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+        entity_pb = datastore_pb.Entity()
+        path_element = entity_pb.key.path_element.add()
+        path_element.kind = KIND
+        path_element.id = ID
+        prop = entity_pb.property.add()
+        prop.name = 'foo'
+        prop.value.string_value = 'Foo'
+        connection = _Connection(entity_pb)
+        dataset = self._makeOne(DATASET_ID, connection)
+        key = Key(dataset=dataset, path=PATH)
+        result, = dataset.get_entities([key])
+        key = result.key()
+        self.assertTrue(key.dataset() is dataset)
+        self.assertEqual(key.path(), PATH)
+        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result['foo'], 'Foo')
+
+    def test_get_entity_miss(self):
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        connection = _Connection()
+        dataset = self._makeOne(DATASET_ID, connection)
+        key = Key(dataset=dataset, path=[{'kind': 'Kind', 'id': 1234}])
+        self.assertEqual(dataset.get_entity(key), None)
+
+    def test_get_entity_hit(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+        entity_pb = datastore_pb.Entity()
+        path_element = entity_pb.key.path_element.add()
+        path_element.kind = KIND
+        path_element.id = ID
+        prop = entity_pb.property.add()
+        prop.name = 'foo'
+        prop.value.string_value = 'Foo'
+        connection = _Connection(entity_pb)
+        dataset = self._makeOne(DATASET_ID, connection)
+        key = Key(dataset=dataset, path=PATH)
+        result = dataset.get_entity(key)
+        key = result.key()
+        self.assertTrue(key.dataset() is dataset)
+        self.assertEqual(key.path(), PATH)
+        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result['foo'], 'Foo')
+
+
+class _Connection(object):
+    _called_with = None
+    def __init__(self, *result):
+        self._result = list(result)
+    def lookup(self, **kw):
+        self._called_with = kw
+        return self._result
