@@ -1,49 +1,136 @@
-import calendar
-from datetime import datetime
-import time
-
 import unittest2
 
-from gcloud.datastore import helpers
-from gcloud.datastore.key import Key
+
+class Test_get_protobuf_attribute_and_value(unittest2.TestCase):
+
+    def _callFUT(self, val):
+        from gcloud.datastore.helpers import get_protobuf_attribute_and_value
+        return get_protobuf_attribute_and_value(val)
+
+    def test_datetime_naive(self):
+        import calendar
+        import datetime
+        import pytz
+        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375) # no zone
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
+        name, value = self._callFUT(naive)
+        self.assertEqual(name, 'timestamp_microseconds_value')
+        self.assertEqual(value / 1000000, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value % 1000000, 4375)
+
+    def test_datetime_w_zone(self):
+        import calendar
+        import datetime
+        import pytz
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
+        name, value = self._callFUT(utc)
+        self.assertEqual(name, 'timestamp_microseconds_value')
+        self.assertEqual(value / 1000000, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value % 1000000, 4375)
+
+    def test_key(self):
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _ID = 1234
+        _PATH = [{'kind': _KIND, 'id': _ID}]
+        key = Key(dataset=Dataset(_DATASET), path=_PATH)
+        name, value = self._callFUT(key)
+        self.assertEqual(name, 'key_value')
+        self.assertEqual(value, key.to_protobuf())
+
+    def test_bool(self):
+        name, value = self._callFUT(False)
+        self.assertEqual(name, 'boolean_value')
+        self.assertEqual(value, False)
+
+    def test_float(self):
+        name, value = self._callFUT(3.1415926)
+        self.assertEqual(name, 'double_value')
+        self.assertEqual(value, 3.1415926)
+
+    def test_int(self):
+        name, value = self._callFUT(42)
+        self.assertEqual(name, 'integer_value')
+        self.assertEqual(value, 42)
+
+    def test_long(self):
+        must_be_long = 1 << 63
+        name, value = self._callFUT(must_be_long)
+        self.assertEqual(name, 'integer_value')
+        self.assertEqual(value, must_be_long)
+
+    def test_native_str(self):
+        name, value = self._callFUT('str')
+        self.assertEqual(name, 'string_value')
+        self.assertEqual(value, 'str')
+
+    def test_unicode(self):
+        name, value = self._callFUT(u'str')
+        self.assertEqual(name, 'string_value')
+        self.assertEqual(value, u'str')
 
 
-class TestHelpers(unittest2.TestCase):
+class Test_get_value_from_protobuf(unittest2.TestCase):
 
-  def test_get_protobuf_attribute(self):
-    mapping = (
-        (str(), 'string_value'),
-        (unicode(), 'string_value'),
-        (int(), 'integer_value'),
-        (long(), 'integer_value'),
-        (float(), 'double_value'),
-        (bool(), 'boolean_value'),
-        (datetime.now(), 'timestamp_microseconds_value'),
-        (Key(), 'key_value'),
-        )
+    def _callFUT(self, pb):
+        from gcloud.datastore.helpers import get_value_from_protobuf
+        return get_value_from_protobuf(pb)
 
-    for test_value, expected_name in mapping:
-      actual_name, _ = helpers.get_protobuf_attribute_and_value(test_value)
-      self.assertEqual(expected_name, actual_name,
-          'Test value "%s" expected %s, got %s' % (
-            test_value, expected_name, actual_name))
+    def _makePB(self, attr_name, value):
+        from gcloud.datastore.datastore_v1_pb2 import Property
+        prop = Property()
+        setattr(prop.value, attr_name, value)
+        return prop
 
-  def test_get_protobuf_value(self):
-    now = datetime.utcnow()
+    def test_datetime(self):
+        import calendar
+        import datetime
+        import pytz
+        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375) # no zone
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
+        micros = (calendar.timegm(utc.timetuple()) * 1000000) + 4375
+        pb = self._makePB('timestamp_microseconds_value', micros)
+        # self.assertEqual(self._callFUT(pb), utc) XXX
+        # see https://github.com/GoogleCloudPlatform/gcloud-python/issues/131
+        self.assertEqual(self._callFUT(pb), naive)
 
-    mapping = (
-        (str('string'), 'string'),
-        (unicode('string'), 'string'),
-        (int(), int()),
-        (long(), int()),
-        (float(), float()),
-        (bool(), bool()),
-        (now, long(calendar.timegm(now.timetuple()) * 1e6 + now.microsecond)),
-        (Key(), Key().to_protobuf()),
-        )
+    def test_key(self):
+        from gcloud.datastore.datastore_v1_pb2 import Property
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _ID = 1234
+        _PATH = [{'kind': _KIND, 'id': _ID}]
+        pb = Property()
+        expected = Key(dataset=Dataset(_DATASET), path=_PATH).to_protobuf()
+        pb.value.key_value.CopyFrom(expected)
+        found = self._callFUT(pb)
+        self.assertEqual(found.to_protobuf(), expected)
 
-    for test_value, expected_value in mapping:
-      _, actual_value = helpers.get_protobuf_attribute_and_value(test_value)
-      self.assertEqual(expected_value, actual_value,
-          'Test value "%s" expected %s, got %s.' % (
-            test_value, expected_value, actual_value))
+    def test_bool(self):
+        pb = self._makePB('boolean_value', False)
+        self.assertEqual(self._callFUT(pb), False)
+
+    def test_float(self):
+        pb = self._makePB('double_value', 3.1415926)
+        self.assertEqual(self._callFUT(pb), 3.1415926)
+
+    def test_int(self):
+        pb = self._makePB('integer_value', 42)
+        self.assertEqual(self._callFUT(pb), 42)
+
+    def test_native_str(self):
+        pb = self._makePB('string_value', 'str')
+        self.assertEqual(self._callFUT(pb), 'str')
+
+    def test_unicode(self):
+        pb = self._makePB('string_value', u'str')
+        self.assertEqual(self._callFUT(pb), u'str')
+
+    def test_unknown(self):
+        from gcloud.datastore.datastore_v1_pb2 import Property
+        pb = Property()
+        self.assertEqual(self._callFUT(pb), None) # XXX desirable?
