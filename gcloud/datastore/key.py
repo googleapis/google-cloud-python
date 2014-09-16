@@ -146,8 +146,9 @@ class Key(object):
   def id_or_name(self):
     return self.id() or self.name()
 
-  def parent(self):
+  def parent(self):#pragma NO COVER
+    # See https://github.com/GoogleCloudPlatform/gcloud-python/issues/135
     raise NotImplementedError
 
-  def __repr__(self):
+  def __repr__(self): #pragma NO COVER
     return '<Key%s>' % self.path()
