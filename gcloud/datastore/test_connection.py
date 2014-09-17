@@ -208,7 +208,10 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '2',
                             })
-        self.assertEqual(cw['body'], b'\x08\x00') # SNAPSHOT
+        rq_class = datastore_pb.BeginTransactionRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.isolation_level, rq_class.SNAPSHOT)
 
     def test_begin_transaction_explicit_serialize(self):
         from gcloud.datastore.connection import datastore_pb
@@ -234,7 +237,10 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '2',
                             })
-        self.assertEqual(cw['body'], b'\x08\x01') # SERIALIZABLE
+        rq_class = datastore_pb.BeginTransactionRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.isolation_level, rq_class.SERIALIZABLE)
 
     def test_rollback_transaction_wo_existing_transaction(self):
         DATASET_ID = 'DATASET'
@@ -283,7 +289,10 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '13',
                             })
-        self.assertEqual(cw['body'], b'\n\x0bTRANSACTION')
+        rq_class = datastore_pb.RollbackRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore.connection import datastore_pb
@@ -309,7 +318,11 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '14',
                             })
-        self.assertEqual(cw['body'], b'\x1a\x0c\x1a\n\n\x08Nonesuch')
+        rq_class = datastore_pb.RunQueryRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.partition_id.namespace, '')
+        self.assertEqual(request.query, q_pb)
 
     def test_run_query_w_namespace_nonempty_result(self):
         from gcloud.datastore.connection import datastore_pb
@@ -340,8 +353,11 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '16',
                             })
-        self.assertEqual(cw['body'],
-                         b'\x12\x04"\x02NS\x1a\x08\x1a\x06\n\x04Kind')
+        rq_class = datastore_pb.RunQueryRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.partition_id.namespace, 'NS')
+        self.assertEqual(request.query, q_pb)
 
     def test_lookup_single_key_empty_response(self):
         from gcloud.datastore.connection import datastore_pb
@@ -368,9 +384,12 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '26',
                             })
-        self.assertEqual(cw['body'],
-                         b'\x1a\x18\n\x0b\x1a\ts~DATASET'
-                         b'\x12\t\n\x04Kind\x10\xd2\t')
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 1)
+        self.assertEqual(keys[0], key_pb)
 
     def test_lookup_single_key_nonempty_response(self):
         from gcloud.datastore.connection import datastore_pb
@@ -402,9 +421,12 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '26',
                             })
-        self.assertEqual(cw['body'],
-                         b'\x1a\x18\n\x0b\x1a\ts~DATASET'
-                         b'\x12\t\n\x04Kind\x10\xd2\t')
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 1)
+        self.assertEqual(keys[0], key_pb)
 
     def test_lookup_multiple_keys_empty_response(self):
         from gcloud.datastore.connection import datastore_pb
@@ -433,11 +455,13 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '52',
                             })
-        self.assertEqual(cw['body'],
-                         b'\x1a\x18\n\x0b\x1a\ts~DATASET'
-                         b'\x12\t\n\x04Kind\x10\xd2\t'
-                         b'\x1a\x18\n\x0b\x1a\ts~DATASET'
-                         b'\x12\t\n\x04Kind\x10\xa9\x12')
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 2)
+        self.assertEqual(keys[0], key_pb1)
+        self.assertEqual(keys[1], key_pb2)
 
     def test_commit_wo_transaction(self):
         from gcloud.datastore.connection import datastore_pb
@@ -472,11 +496,12 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '47',
                             })
-        self.assertEqual(cw['body'],
-                         b'\x12+\n)\n\x18\n\x0b\x1a\ts~DATASET'
-                         b'\x12\t\n\x04Kind\x10\xd2\t'
-                         b'\x12\r\n\x03foo"\x06\x8a\x01\x03Foo(\x02'
-                         )
+        rq_class = datastore_pb.CommitRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, '')
+        self.assertEqual(request.mutation, mutation)
+        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_commit_w_transaction(self):
         from gcloud.datastore.connection import datastore_pb
@@ -515,12 +540,12 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '53',
                             })
-        self.assertEqual(cw['body'],
-                         b'\n\x04xact'
-                         b'\x12+\n)\n\x18\n\x0b\x1a\ts~DATASET'
-                         b'\x12\t\n\x04Kind\x10\xd2\t'
-                         b'\x12\r\n\x03foo"\x06\x8a\x01\x03Foo(\x01'
-                         )
+        rq_class = datastore_pb.CommitRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, 'xact')
+        self.assertEqual(request.mutation, mutation)
+        self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
 
     def test_save_entity_wo_transaction_w_upsert(self):
         from gcloud.datastore.connection import datastore_pb
@@ -548,11 +573,22 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '47',
                             })
-        self.assertEqual(cw['body'],
-                         b'\x12+\n)\n\x18\n\x0b\x1a\ts~DATASET'
-                         b'\x12\t\n\x04Kind\x10\xd2\t'
-                         b'\x12\r\n\x03foo"\x06\x8a\x01\x03Foo(\x02'
-                         )
+        rq_class = datastore_pb.CommitRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, '')
+        mutation = request.mutation
+        self.assertEqual(len(mutation.insert_auto_id), 0)
+        upserts = list(mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        upsert = upserts[0]
+        self.assertEqual(upsert.key, key_pb)
+        props = list(upsert.property)
+        self.assertEqual(len(props), 1)
+        self.assertEqual(props[0].name, 'foo')
+        self.assertEqual(props[0].value.string_value, 'Foo')
+        self.assertEqual(len(mutation.delete), 0)
+        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_save_entity_wo_transaction_w_auto_id(self):
         from gcloud.datastore.connection import datastore_pb
@@ -586,11 +622,23 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '44',
                             })
-        self.assertEqual(cw['body'],
-                         b'\x12("&\n\x15\n\x0b\x1a\ts~DATASET'
-                         b'\x12\x06\n\x04Kind'
-                         b'\x12\r\n\x03foo"\x06\x8a\x01\x03Foo(\x02'
-                         )
+        rq_class = datastore_pb.CommitRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, '')
+        mutation = request.mutation
+        inserts = list(mutation.insert_auto_id)
+        insert = inserts[0]
+        self.assertEqual(insert.key, key_pb)
+        props = list(insert.property)
+        self.assertEqual(len(props), 1)
+        self.assertEqual(props[0].name, 'foo')
+        self.assertEqual(props[0].value.string_value, 'Foo')
+        self.assertEqual(len(inserts), 1)
+        upserts = list(mutation.upsert)
+        self.assertEqual(len(upserts), 0)
+        self.assertEqual(len(mutation.delete), 0)
+        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_save_entity_w_transaction(self):
         from gcloud.datastore.connection import datastore_pb
@@ -649,10 +697,18 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '30',
                             })
-        self.assertEqual(cw['body'],
-                         b'\x12\x1a*\x18\n\x0b\x1a\ts~DATASET'
-                         b'\x12\t\n\x04Kind\x10\xd2\t(\x02'
-                         )
+        rq_class = datastore_pb.CommitRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, '')
+        mutation = request.mutation
+        self.assertEqual(len(mutation.insert_auto_id), 0)
+        self.assertEqual(len(mutation.upsert), 0)
+        deletes = list(mutation.delete)
+        self.assertEqual(len(deletes), 1)
+        delete = deletes[0]
+        self.assertEqual(delete, key_pb)
+        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_delete_entities_w_transaction(self):
         from gcloud.datastore.connection import datastore_pb
@@ -711,10 +767,18 @@ class TestConnection(unittest2.TestCase):
                             {'Content-Type': 'application/x-protobuf',
                              'Content-Length': '30',
                             })
-        self.assertEqual(cw['body'],
-                         b'\x12\x1a*\x18\n\x0b\x1a\ts~DATASET'
-                         b'\x12\t\n\x04Kind\x10\xd2\t(\x02'
-                         )
+        rq_class = datastore_pb.CommitRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, '')
+        mutation = request.mutation
+        self.assertEqual(len(mutation.insert_auto_id), 0)
+        self.assertEqual(len(mutation.upsert), 0)
+        deletes = list(mutation.delete)
+        self.assertEqual(len(deletes), 1)
+        delete = deletes[0]
+        self.assertEqual(delete, key_pb)
+        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_delete_entity_w_transaction(self):
         from gcloud.datastore.connection import datastore_pb
