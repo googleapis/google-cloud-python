@@ -61,6 +61,7 @@ def get_protobuf_attribute_and_value(val):
 
 
 def get_value_from_value_pb(value_pb):
+  from entity import Entity
   """Given a protobuf for a Property, get the correct value.
 
   The Cloud Datastore Protobuf API returns a Property Protobuf
@@ -102,7 +103,7 @@ def get_value_from_value_pb(value_pb):
     return value_pb.blob_value
 
   elif value_pb.HasField('entity_value'):
-    return value_pb.entity_value
+    return Entity.from_protobuf(value_pb.entity_value)
 
   elif value_pb.list_value:
     return [get_value_from_value_pb(k) for k in value_pb.list_value]
