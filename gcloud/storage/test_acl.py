@@ -116,3 +116,69 @@ class Test_ACL_Entity(unittest2.TestCase):
         entity.grant(ACL.Role.Owner)
         entity.revoke_owner()
         self.assertEqual(entity.get_roles(), set())
+
+
+class Test_ACL(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.acl import ACL
+        return ACL
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        acl = self._makeOne()
+        self.assertEqual(acl.entities, {})
+
+    def test___iter___empty(self):
+        acl = self._makeOne()
+        self.assertEqual(list(acl), [])
+
+    def test___iter___non_empty_no_roles(self):
+        TYPE = 'type'
+        ID = 'id'
+        acl = self._makeOne()
+        entity = acl.entity(TYPE, ID)
+        self.assertEqual(list(acl), [])
+
+    def test___iter___non_empty_w_roles(self):
+        TYPE = 'type'
+        ID = 'id'
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.entity(TYPE, ID)
+        entity.grant(ROLE)
+        self.assertEqual(list(acl),
+                         [{'entity': '%s-%s' % (TYPE, ID), 'role': ROLE}])
+
+    def test_entity_from_dict_allUsers(self):
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.entity_from_dict({'entity': 'allUsers', 'role': ROLE})
+        self.assertEqual(entity.type, 'allUsers')
+        self.assertEqual(entity.identifier, None)
+        self.assertEqual(entity.get_roles(), set([ROLE]))
+        self.assertEqual(list(acl),
+                         [{'entity': 'allUsers', 'role': ROLE}])
+
+    def test_entity_from_dict_allAuthenticatedUsers(self):
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.entity_from_dict({'entity': 'allAuthenticatedUsers',
+                                       'role': ROLE})
+        self.assertEqual(entity.type, 'allAuthenticatedUsers')
+        self.assertEqual(entity.identifier, None)
+        self.assertEqual(entity.get_roles(), set([ROLE]))
+        self.assertEqual(list(acl),
+                         [{'entity': 'allAuthenticatedUsers', 'role': ROLE}])
+
+    def test_entity_from_dict_string_w_hyphen(self):
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.entity_from_dict({'entity': 'type-id', 'role': ROLE})
+        self.assertEqual(entity.type, 'type')
+        self.assertEqual(entity.identifier, 'id')
+        self.assertEqual(entity.get_roles(), set([ROLE]))
+        self.assertEqual(list(acl),
+                         [{'entity': 'type-id', 'role': ROLE}])
