@@ -187,10 +187,188 @@ class TestKeyIterator(unittest2.TestCase):
         self.assertEqual(key.name, KEY)
 
 
+class TestKeyDataIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.iterator import KeyDataIterator
+        return KeyDataIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        self.assertTrue(iterator.key is key)
+        self.assertEqual(iterator._bytes_written, 0)
+        self.assertEqual(iterator._total_bytes, None)
+
+    def test__iter__(self):
+        response1 = _Response(status=200)
+        response1['content-range'] = '0-10/15'
+        response2 = _Response(status=200)
+        response2['content-range'] = '11-14/15'
+        connection = _Connection((response1, '01234567890'),
+                                 (response2, '1234'),
+                                )
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        chunks = list(iterator)
+        self.assertEqual(len(chunks), 2)
+        self.assertEqual(chunks[0], '01234567890')
+        self.assertEqual(chunks[1], '1234')
+        self.assertEqual(iterator._bytes_written, 15)
+        self.assertEqual(iterator._total_bytes, 15)
+        kws = connection._requested
+        self.assertEqual(kws[0]['method'], 'GET')
+        self.assertEqual(kws[0]['url'], 
+                         'http://example.com/b/name/o/key?alt=media')
+        self.assertEqual(kws[0]['headers'], {'Range': 'bytes=0-10'})
+        self.assertEqual(kws[1]['method'], 'GET')
+        self.assertEqual(kws[1]['url'], 
+                         'http://example.com/b/name/o/key?alt=media')
+        self.assertEqual(kws[1]['headers'], {'Range': 'bytes=11-'})
+
+    def test_reset(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        iterator._bytes_written = 10
+        iterator._total_bytes = 1000
+        iterator.reset()
+        self.assertEqual(iterator._bytes_written, 0)
+        self.assertEqual(iterator._total_bytes, None)
+
+    def test_has_more_data_new(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        self.assertTrue(iterator.has_more_data())
+
+    def test_has_more_data_invalid(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        iterator._bytes_written = 10 # no _total_bytes
+        self.assertRaises(ValueError, iterator.has_more_data)
+
+    def test_has_more_data_true(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        iterator._bytes_written = 10
+        iterator._total_bytes = 1000
+        self.assertTrue(iterator.has_more_data())
+
+    def test_has_more_data_false(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        iterator._bytes_written = 1000
+        iterator._total_bytes = 1000
+        self.assertFalse(iterator.has_more_data())
+
+    def test_get_headers_new(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        headers = iterator.get_headers()
+        self.assertEqual(len(headers), 1)
+        self.assertEqual(headers['Range'], 'bytes=0-10')
+
+    def test_get_headers_ok(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        iterator._bytes_written = 10
+        iterator._total_bytes = 1000
+        headers = iterator.get_headers()
+        self.assertEqual(len(headers), 1)
+        self.assertEqual(headers['Range'], 'bytes=10-20')
+
+    def test_get_headers_off_end(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        iterator._bytes_written = 95
+        iterator._total_bytes = 100
+        headers = iterator.get_headers()
+        self.assertEqual(len(headers), 1)
+        self.assertEqual(headers['Range'], 'bytes=95-')
+
+    def test_get_url(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        self.assertEqual(iterator.get_url(),
+                         'http://example.com/b/name/o/key?alt=media')
+
+    def test_get_next_chunk_underflow(self):
+        connection = _Connection()
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        iterator._bytes_written = iterator._total_bytes = 10
+        self.assertRaises(RuntimeError, iterator.get_next_chunk)
+
+    def test_get_next_chunk_200(self):
+        response = _Response(status=200)
+        response['content-range'] = '0-10/100'
+        connection = _Connection((response, 'CHUNK'))
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        chunk = iterator.get_next_chunk()
+        self.assertEqual(chunk, 'CHUNK')
+        self.assertEqual(iterator._bytes_written, len(chunk))
+        self.assertEqual(iterator._total_bytes, 100)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['url'], 
+                         'http://example.com/b/name/o/key?alt=media')
+        self.assertEqual(kw['headers'], {'Range': 'bytes=0-10'})
+
+    def test_get_next_chunk_206(self):
+        response = _Response(status=206)
+        connection = _Connection((response, 'CHUNK'))
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        iterator._total_bytes = 1000
+        chunk = iterator.get_next_chunk()
+        self.assertEqual(chunk, 'CHUNK')
+        self.assertEqual(iterator._bytes_written, len(chunk))
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['url'], 
+                         'http://example.com/b/name/o/key?alt=media')
+        self.assertEqual(kw['headers'], {'Range': 'bytes=0-10'})
+
+    def test_get_next_chunk_416(self):
+        response = _Response(status=416)
+        connection = _Connection((response, ''))
+        key = _Key(connection)
+        iterator = self._makeOne(key)
+        iterator._total_bytes = 1000
+        self.assertRaises(Exception, iterator.get_next_chunk)
+
+
+class _Response(dict):
+    @property
+    def status(self):
+        return self['status']
+
 class _Connection(object):
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
+    def make_request(self, **kw):
+        from gcloud.storage.exceptions import NotFoundError
+        self._requested.append(kw)
+        try:
+            response, self._responses = self._responses[0], self._responses[1:]
+        except:
+            raise NotFoundError('miss', None)
+        else:
+            return response
     def api_request(self, **kw):
         from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
@@ -200,8 +378,19 @@ class _Connection(object):
             raise NotFoundError('miss', None)
         else:
             return response
+    def build_api_url(self, path, query_params=None):
+        from urllib import urlencode
+        from urlparse import urlunsplit
+        qs = urlencode(query_params or {})
+        return urlunsplit(('http', 'example.com', path, qs, ''))
 
 class _Bucket(object):
     path = '/b/name'
+    def __init__(self, connection):
+        self.connection = connection
+
+class _Key(object):
+    CHUNK_SIZE = 10
+    path = '/b/name/o/key'
     def __init__(self, connection):
         self.connection = connection
