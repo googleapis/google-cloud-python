@@ -111,6 +111,89 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(iterator.next_page_token, None)
 
 
+class TestBucketIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.iterator import BucketIterator
+        return BucketIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = _Connection()
+        iterator = self._makeOne(connection)
+        self.assertTrue(iterator.connection is connection)
+        self.assertEqual(iterator.path, '/b')
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+
+    def test_get_items_from_response_empty(self):
+        connection = _Connection()
+        iterator = self._makeOne(connection)
+        self.assertEqual(list(iterator.get_items_from_response({})), [])
+
+    def test_get_items_from_response_non_empty(self):
+        from gcloud.storage.bucket import Bucket
+        KEY = 'key'
+        response = {'items': [{'name': KEY}]}
+        connection = _Connection()
+        iterator = self._makeOne(connection)
+        buckets = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(buckets), 1)
+        bucket = buckets[0]
+        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertTrue(bucket.connection is connection)
+        self.assertEqual(bucket.name, KEY)
+
+
+class TestKeyIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.iterator import KeyIterator
+        return KeyIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def _makeBucket(self, connection):
+        class _Bucket(object):
+            path = '/b/name'
+            def __init__(self, connection):
+                self.connection = connection
+        return _Bucket(connection)
+
+    def test_ctor(self):
+        connection = _Connection()
+        bucket = self._makeBucket(connection)
+        iterator = self._makeOne(bucket)
+        self.assertTrue(iterator.bucket is bucket)
+        self.assertTrue(iterator.connection is connection)
+        self.assertEqual(iterator.path, '%s/o' % bucket.path)
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+
+    def test_get_items_from_response_empty(self):
+        connection = _Connection()
+        bucket = self._makeBucket(connection)
+        iterator = self._makeOne(bucket)
+        self.assertEqual(list(iterator.get_items_from_response({})), [])
+
+    def test_get_items_from_response_non_empty(self):
+        from gcloud.storage.key import Key
+        KEY = 'key'
+        response = {'items': [{'name': KEY}]}
+        connection = _Connection()
+        bucket = self._makeBucket(connection)
+        iterator = self._makeOne(bucket)
+        keys = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(keys), 1)
+        key = keys[0]
+        self.assertTrue(isinstance(key, Key))
+        self.assertTrue(key.connection is connection)
+        self.assertEqual(key.name, KEY)
+
+
 class _Connection(object):
     def __init__(self, *responses):
         self._responses = responses
