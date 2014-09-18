@@ -38,7 +38,7 @@ class Bucket(object):
     return cls(connection=connection, name=bucket_dict['name'],
                metadata=bucket_dict)
 
-  def __repr__(self):
+  def __repr__(self): #pragma NO COVER
     return '<Bucket: %s>' % self.name
 
   def __iter__(self):
@@ -122,7 +122,7 @@ class Bucket(object):
     # Support Python 2 and 3.
     try:
       string_type = basestring
-    except NameError:
+    except NameError: #pragma NO COVER PY3k
       string_type = str
 
     if isinstance(key, string_type):
@@ -194,7 +194,7 @@ class Bucket(object):
     for key in keys:
       self.delete_key(key)
 
-  def copy_key(self):
+  def copy_key(self): #pragma NO COVER
     raise NotImplementedError
 
   def upload_file(self, filename, key=None):
