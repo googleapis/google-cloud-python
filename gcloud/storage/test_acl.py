@@ -367,3 +367,74 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(entity.identifier, None)
         self.assertEqual(list(acl),
                          [{'entity': 'allAuthenticatedUsers', 'role': ROLE}])
+
+
+class Test_BucketACL(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.acl import BucketACL
+        return BucketACL
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        bucket = object()
+        acl = self._makeOne(bucket)
+        self.assertEqual(acl.entities, {})
+        self.assertEqual(list(acl.get_entities()), [])
+        self.assertTrue(acl.bucket is bucket)
+
+    def test_save(self):
+        class _Bucket(object):
+            def save_acl(self, acl):
+                self._saved = acl
+        bucket = _Bucket()
+        acl = self._makeOne(bucket)
+        acl.save()
+        self.assertTrue(bucket._saved is acl)
+
+
+class Test_DefaultObjectACL(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.acl import DefaultObjectACL
+        return DefaultObjectACL
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_save(self):
+        class _Bucket(object):
+            def save_default_object_acl(self, acl):
+                self._saved = acl
+        bucket = _Bucket()
+        acl = self._makeOne(bucket)
+        acl.save()
+        self.assertTrue(bucket._saved is acl)
+
+
+class Test_ObjectACL(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.acl import ObjectACL
+        return ObjectACL
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        key = object()
+        acl = self._makeOne(key)
+        self.assertEqual(acl.entities, {})
+        self.assertEqual(list(acl.get_entities()), [])
+        self.assertTrue(acl.key is key)
+
+    def test_save(self):
+        class _Key(object):
+            def save_acl(self, acl):
+                self._saved = acl
+        key = _Key()
+        acl = self._makeOne(key)
+        acl.save()
+        self.assertTrue(key._saved is acl)

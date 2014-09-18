@@ -352,7 +352,7 @@ class ACL(object):
 
     return self.entities.values()
 
-  def save(self): #pragma NO_COVER
+  def save(self): #pragma NO COVER
     """A method to be overridden by subclasses.
 
     :raises: NotImplementedError
