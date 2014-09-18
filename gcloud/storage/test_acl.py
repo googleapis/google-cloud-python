@@ -130,6 +130,7 @@ class Test_ACL(unittest2.TestCase):
     def test_ctor(self):
         acl = self._makeOne()
         self.assertEqual(acl.entities, {})
+        self.assertEqual(list(acl.get_entities()), [])
 
     def test___iter___empty(self):
         acl = self._makeOne()
@@ -161,6 +162,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(entity.get_roles(), set([ROLE]))
         self.assertEqual(list(acl),
                          [{'entity': 'allUsers', 'role': ROLE}])
+        self.assertEqual(list(acl.get_entities()), [entity])
 
     def test_entity_from_dict_allAuthenticatedUsers(self):
         ROLE = 'role'
@@ -172,6 +174,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(entity.get_roles(), set([ROLE]))
         self.assertEqual(list(acl),
                          [{'entity': 'allAuthenticatedUsers', 'role': ROLE}])
+        self.assertEqual(list(acl.get_entities()), [entity])
 
     def test_entity_from_dict_string_w_hyphen(self):
         ROLE = 'role'
@@ -182,6 +185,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(entity.get_roles(), set([ROLE]))
         self.assertEqual(list(acl),
                          [{'entity': 'type-id', 'role': ROLE}])
+        self.assertEqual(list(acl.get_entities()), [entity])
 
     def test_entity_from_dict_string_wo_hyphen(self):
         ROLE = 'role'
@@ -189,3 +193,177 @@ class Test_ACL(unittest2.TestCase):
         self.assertRaises(ValueError,
                           acl.entity_from_dict,
                                 {'entity': 'bogus', 'role': ROLE})
+        self.assertEqual(list(acl.get_entities()), [])
+
+    def test_has_entity_miss_str(self):
+        acl = self._makeOne()
+        self.assertFalse(acl.has_entity('nonesuch'))
+
+    def test_has_entity_miss_entity(self):
+        from gcloud.storage.acl import ACL
+        TYPE = 'type'
+        ID = 'id'
+        entity = ACL.Entity(TYPE, ID)
+        acl = self._makeOne()
+        self.assertFalse(acl.has_entity(entity))
+
+    def test_has_entity_hit_str(self):
+        TYPE = 'type'
+        ID = 'id'
+        acl = self._makeOne()
+        acl.entity(TYPE, ID)
+        self.assertTrue(acl.has_entity('%s-%s' % (TYPE, ID)))
+
+    def test_has_entity_hit_entity(self):
+        TYPE = 'type'
+        ID = 'id'
+        acl = self._makeOne()
+        entity = acl.entity(TYPE, ID)
+        self.assertTrue(acl.has_entity(entity))
+
+    def test_get_entity_miss_str_no_default(self):
+        acl = self._makeOne()
+        self.assertEqual(acl.get_entity('nonesuch'), None)
+
+    def test_get_entity_miss_entity_no_default(self):
+        from gcloud.storage.acl import ACL
+        TYPE = 'type'
+        ID = 'id'
+        entity = ACL.Entity(TYPE, ID)
+        acl = self._makeOne()
+        self.assertEqual(acl.get_entity(entity), None)
+
+    def test_get_entity_miss_str_w_default(self):
+        DEFAULT = object()
+        acl = self._makeOne()
+        self.assertTrue(acl.get_entity('nonesuch', DEFAULT) is DEFAULT)
+
+    def test_get_entity_miss_entity_w_default(self):
+        from gcloud.storage.acl import ACL
+        DEFAULT = object()
+        TYPE = 'type'
+        ID = 'id'
+        entity = ACL.Entity(TYPE, ID)
+        acl = self._makeOne()
+        self.assertTrue(acl.get_entity(entity, DEFAULT) is DEFAULT)
+
+    def test_get_entity_hit_str(self):
+        TYPE = 'type'
+        ID = 'id'
+        acl = self._makeOne()
+        acl.entity(TYPE, ID)
+        self.assertTrue(acl.has_entity('%s-%s' % (TYPE, ID)))
+
+    def test_get_entity_hit_entity(self):
+        TYPE = 'type'
+        ID = 'id'
+        acl = self._makeOne()
+        entity = acl.entity(TYPE, ID)
+        self.assertTrue(acl.has_entity(entity))
+
+    def test_add_entity_miss(self):
+        from gcloud.storage.acl import ACL
+        TYPE = 'type'
+        ID = 'id'
+        ROLE = 'role'
+        entity = ACL.Entity(TYPE, ID)
+        entity.grant(ROLE)
+        acl = self._makeOne()
+        acl.add_entity(entity)
+        self.assertEqual(list(acl),
+                         [{'entity': 'type-id', 'role': ROLE}])
+        self.assertEqual(list(acl.get_entities()), [entity])
+
+    def test_add_entity_hit(self):
+        from gcloud.storage.acl import ACL
+        TYPE = 'type'
+        ID = 'id'
+        KEY = '%s-%s' % (TYPE, ID)
+        ROLE = 'role'
+        entity = ACL.Entity(TYPE, ID)
+        entity.grant(ROLE)
+        acl = self._makeOne()
+        before = acl.entity(TYPE, ID)
+        acl.add_entity(entity)
+        self.assertFalse(acl.get_entity(KEY) is before)
+        self.assertTrue(acl.get_entity(KEY) is entity)
+        self.assertEqual(list(acl),
+                         [{'entity': 'type-id', 'role': ROLE}])
+        self.assertEqual(list(acl.get_entities()), [entity])
+
+    def test_entity_miss(self):
+        TYPE = 'type'
+        ID = 'id'
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.entity(TYPE, ID)
+        entity.grant(ROLE)
+        self.assertEqual(list(acl),
+                         [{'entity': 'type-id', 'role': ROLE}])
+        self.assertEqual(list(acl.get_entities()), [entity])
+
+    def test_entity_hit(self):
+        TYPE = 'type'
+        ID = 'id'
+        ROLE = 'role'
+        acl = self._makeOne()
+        before = acl.entity(TYPE, ID)
+        before.grant(ROLE)
+        entity = acl.entity(TYPE, ID)
+        self.assertTrue(entity is before)
+        self.assertEqual(list(acl),
+                         [{'entity': 'type-id', 'role': ROLE}])
+        self.assertEqual(list(acl.get_entities()), [entity])
+
+    def test_user(self):
+        ID = 'id'
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.user(ID)
+        entity.grant(ROLE)
+        self.assertEqual(entity.type, 'user')
+        self.assertEqual(entity.identifier, ID)
+        self.assertEqual(list(acl),
+                         [{'entity': 'user-%s' % ID, 'role': ROLE}])
+
+    def test_group(self):
+        ID = 'id'
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.group(ID)
+        entity.grant(ROLE)
+        self.assertEqual(entity.type, 'group')
+        self.assertEqual(entity.identifier, ID)
+        self.assertEqual(list(acl),
+                         [{'entity': 'group-%s' % ID, 'role': ROLE}])
+
+    def test_domain(self):
+        ID = 'id'
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.domain(ID)
+        entity.grant(ROLE)
+        self.assertEqual(entity.type, 'domain')
+        self.assertEqual(entity.identifier, ID)
+        self.assertEqual(list(acl),
+                         [{'entity': 'domain-%s' % ID, 'role': ROLE}])
+
+    def test_all(self):
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.all()
+        entity.grant(ROLE)
+        self.assertEqual(entity.type, 'allUsers')
+        self.assertEqual(entity.identifier, None)
+        self.assertEqual(list(acl),
+                         [{'entity': 'allUsers', 'role': ROLE}])
+
+    def test_all_authenticated(self):
+        ROLE = 'role'
+        acl = self._makeOne()
+        entity = acl.all_authenticated()
+        entity.grant(ROLE)
+        self.assertEqual(entity.type, 'allAuthenticatedUsers')
+        self.assertEqual(entity.identifier, None)
+        self.assertEqual(list(acl),
+                         [{'entity': 'allAuthenticatedUsers', 'role': ROLE}])
