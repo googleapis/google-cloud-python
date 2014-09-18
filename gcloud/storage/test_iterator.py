@@ -156,16 +156,9 @@ class TestKeyIterator(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def _makeBucket(self, connection):
-        class _Bucket(object):
-            path = '/b/name'
-            def __init__(self, connection):
-                self.connection = connection
-        return _Bucket(connection)
-
     def test_ctor(self):
         connection = _Connection()
-        bucket = self._makeBucket(connection)
+        bucket = _Bucket(connection)
         iterator = self._makeOne(bucket)
         self.assertTrue(iterator.bucket is bucket)
         self.assertTrue(iterator.connection is connection)
@@ -175,7 +168,7 @@ class TestKeyIterator(unittest2.TestCase):
 
     def test_get_items_from_response_empty(self):
         connection = _Connection()
-        bucket = self._makeBucket(connection)
+        bucket = _Bucket(connection)
         iterator = self._makeOne(bucket)
         self.assertEqual(list(iterator.get_items_from_response({})), [])
 
@@ -184,7 +177,7 @@ class TestKeyIterator(unittest2.TestCase):
         KEY = 'key'
         response = {'items': [{'name': KEY}]}
         connection = _Connection()
-        bucket = self._makeBucket(connection)
+        bucket = _Bucket(connection)
         iterator = self._makeOne(bucket)
         keys = list(iterator.get_items_from_response(response))
         self.assertEqual(len(keys), 1)
@@ -207,3 +200,8 @@ class _Connection(object):
             raise NotFoundError('miss', None)
         else:
             return response
+
+class _Bucket(object):
+    path = '/b/name'
+    def __init__(self, connection):
+        self.connection = connection
