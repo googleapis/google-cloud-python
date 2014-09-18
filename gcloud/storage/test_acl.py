@@ -182,3 +182,10 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(entity.get_roles(), set([ROLE]))
         self.assertEqual(list(acl),
                          [{'entity': 'type-id', 'role': ROLE}])
+
+    def test_entity_from_dict_string_wo_hyphen(self):
+        ROLE = 'role'
+        acl = self._makeOne()
+        self.assertRaises(ValueError,
+                          acl.entity_from_dict,
+                                {'entity': 'bogus', 'role': ROLE})

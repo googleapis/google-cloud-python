@@ -223,7 +223,7 @@ class ACL(object):
       entity = self.entity(type=type, identifier=identifier)
 
     if not isinstance(entity, ACL.Entity):
-      raise ValueError('Invalid dictionary: %s' % acl_dict)
+      raise ValueError('Invalid dictionary: %s' % entity_dict)
 
     return entity.grant(role)
 
