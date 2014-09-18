@@ -412,7 +412,7 @@ class Connection(connection.Connection):
     # Support Python 2 and 3.
     try:
       string_type = basestring
-    except NameError:
+    except NameError: #pragma NO COVER PY3k
       string_type = str
 
     if isinstance(bucket, string_type):
@@ -420,7 +420,7 @@ class Connection(connection.Connection):
 
     raise TypeError('Invalid bucket: %s' % bucket)
 
-  def generate_signed_url(self, resource, expiration, method='GET', content_md5=None, content_type=None):
+  def generate_signed_url(self, resource, expiration, method='GET', content_md5=None, content_type=None): #pragma NO COVER UGH
     """Generate a signed URL to provide query-string authentication to a resource.
 
     :type resource: string
