@@ -1,3 +1,5 @@
+import io
+
 import unittest2
 
 
@@ -265,6 +267,41 @@ class Test_Bucket(unittest2.TestCase):
         with _Monkey(MUT, Key=_Key):
             bucket.upload_file(FILENAME, KEY)
         self.assertEqual(_uploaded, [(bucket, KEY, FILENAME)])
+
+    def test_upload_file_object_no_key(self):
+        from gcloud.test_credentials import _Monkey
+        from gcloud.storage import bucket as MUT
+        FILENAME = 'file.txt'
+        FILEOBJECT = MockFile(FILENAME)
+        _uploaded = []
+        class _Key(object):
+            def __init__(self, bucket, name):
+                self._bucket = bucket
+                self._name = name
+            def set_contents_from_file(self, fh):
+                _uploaded.append((self._bucket, self._name, fh))
+        bucket = self._makeOne()
+        with _Monkey(MUT, Key=_Key):
+            bucket.upload_file_object(FILEOBJECT)
+        self.assertEqual(_uploaded, [(bucket, FILENAME, FILEOBJECT)])
+
+    def test_upload_file_object_explicit_key(self):
+        from gcloud.test_credentials import _Monkey
+        from gcloud.storage import bucket as MUT
+        FILENAME = 'file.txt'
+        FILEOBJECT = MockFile(FILENAME)
+        KEY = 'key'
+        _uploaded = []
+        class _Key(object):
+            def __init__(self, bucket, name):
+                self._bucket = bucket
+                self._name = name
+            def set_contents_from_file(self, fh):
+                _uploaded.append((self._bucket, self._name, fh))
+        bucket = self._makeOne()
+        with _Monkey(MUT, Key=_Key):
+            bucket.upload_file_object(FILEOBJECT, KEY)
+        self.assertEqual(_uploaded, [(bucket, KEY, FILEOBJECT)])
 
     def test_has_metdata_none_set(self):
         NONESUCH = 'nonesuch'
@@ -790,4 +827,10 @@ class _Connection(object):
         if not self._delete_ok:
             raise NotFoundError('miss', None)
         return True
-    
+
+
+class MockFile(io.StringIO):
+    name = None
+    def __init__(self, name, buffer_ = None):
+        super(MockFile, self).__init__(buffer_)
+        self.name = name
