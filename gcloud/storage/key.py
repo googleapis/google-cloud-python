@@ -72,8 +72,6 @@ class Key(object):
     :returns: The connection to use, or None if no connection is set.
     """
 
-    # TODO: If a bucket isn't defined, this is basically useless.
-    #       Where do we throw an error?
     if self.bucket and self.bucket.connection:
       return self.bucket.connection
 
@@ -166,9 +164,6 @@ class Key(object):
     :raises: :class:`gcloud.storage.exceptions.NotFoundError`
     """
 
-    # TODO: Add good error checking.
-    # TODO: Add good exception handling.
-    # TODO: Set timestamp? Make optional, default being to set it if possible?
     with open(filename, 'wb') as fh:
       self.get_contents_to_file(fh)
 
@@ -239,8 +234,6 @@ class Key(object):
           'Content-Range': 'bytes %d-%d/%d' % (start, end, total_bytes),
           }
 
-      # TODO: Error checking for response code.
-      # TODO: Exponential backoff when errors come through.
       response, content = self.connection.make_request(content_type='text/plain',
           method='POST', url=upload_url, headers=headers, data=data)
 
@@ -279,7 +272,6 @@ class Key(object):
     :returns: The updated Key object.
     """
 
-    # TODO: How do we handle NotFoundErrors?
     string_buffer = StringIO()
     string_buffer.write(data)
     self.set_contents_from_file(fh=string_buffer, rewind=True,
@@ -385,7 +377,6 @@ class Key(object):
     return self
 
   def get_acl(self):
-    # TODO: This might be a VERY long list. Use the specific API endpoint.
     """Get ACL metadata as a :class:`gcloud.storage.acl.ObjectACL` object.
 
     :rtype: :class:`gcloud.storage.acl.ObjectACL`
