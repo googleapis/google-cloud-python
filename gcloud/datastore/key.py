@@ -6,7 +6,6 @@ from gcloud.datastore.dataset import Dataset
 
 
 class Key(object):
-  # TODO: Determine if this really should be immutable.
   """
   An immutable representation of a datastore Key.
   """
