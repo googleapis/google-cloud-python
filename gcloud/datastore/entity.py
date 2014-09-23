@@ -164,7 +164,7 @@ class Entity(dict):
     """
 
     # Note that you must have a valid key, otherwise this makes no sense.
-    entity = self.dataset().get_entities(self.key().to_protobuf())
+    entity = self.dataset().get_entity(self.key().to_protobuf())
 
     # TODO(jjg): Raise an error if something dumb happens.
     if entity:
@@ -206,7 +206,7 @@ class Entity(dict):
     self.dataset().connection().delete_entity(
         dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf())
 
-  def __repr__(self):
+  def __repr__(self): #pragma NO COVER
     # TODO: Make sure that this makes sense.
     # An entity should have a key all the time (even if it's partial).
     if self.key():

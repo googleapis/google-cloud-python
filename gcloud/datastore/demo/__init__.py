@@ -10,5 +10,5 @@ DATASET_ID = 'gcloud-datastore-demo'
 PRIVATE_KEY_PATH = os.path.join(os.path.dirname(__file__), 'demo.key')
 
 
-def get_dataset():
+def get_dataset(): #pragma NO COVER
   return datastore.get_dataset(DATASET_ID, CLIENT_EMAIL, PRIVATE_KEY_PATH)
