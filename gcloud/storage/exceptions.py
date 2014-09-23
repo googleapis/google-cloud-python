@@ -1,5 +1,3 @@
-# TODO: Make these super useful.
-
 class StorageError(Exception):
   pass
 

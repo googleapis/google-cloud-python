@@ -186,8 +186,6 @@ class KeyIterator(Iterator):
 
 
 class KeyDataIterator(object):
-  # TODO: Use an actual HTTP streaming library,
-  #       not multiple requests and the range header.
 
   def __init__(self, key):
     self.key = key

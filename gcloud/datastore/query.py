@@ -6,8 +6,6 @@ from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
 
-# TODO: Figure out how to properly handle namespaces.
-
 class Query(object):
   """A Query against the Cloud Datastore.
 
@@ -60,7 +58,6 @@ class Query(object):
       self._pb.kind.add().name = kind
 
   def _clone(self):
-    # TODO(jjg): Double check that this makes sense...
     clone = copy.deepcopy(self)
     clone._dataset = self._dataset  # Shallow copy the dataset.
     return clone
@@ -216,8 +213,6 @@ class Query(object):
               If a kind is provided, returns a clone of the :class:`Query`
               with those kinds set.
     """
-    # TODO: Do we want this to be additive?
-    #       If not, clear the _pb.kind attribute.
     if kinds:
       clone = self._clone()
       for kind in kinds:

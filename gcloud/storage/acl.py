@@ -101,7 +101,6 @@ class ACL(object):
                          is optional.
       """
 
-      # TODO: Add validation of types.
       self.identifier = identifier
       self.roles = set([])
       self.type = type

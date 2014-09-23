@@ -97,5 +97,4 @@ def get_value_from_protobuf(pb):
     return pb.value.string_value
 
   else:
-    # TODO(jjg): Should we raise a ValueError here?
     return None

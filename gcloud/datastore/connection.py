@@ -322,8 +322,6 @@ class Connection(object):
     :type properties: dict
     :param properties: The properties to store on the entity.
     """
-    # TODO: Is this the right method name?
-    # TODO: How do you delete properties? Set them to None?
     mutation = self.mutation()
 
     # If the Key is complete, we should upsert
@@ -381,13 +379,10 @@ class Connection(object):
       delete = mutation.delete.add()
       delete.CopyFrom(key_pb)
 
-    # TODO: Make this return value be a True/False (or something more useful).
     if self.transaction():
       return True
     else:
       return self.commit(dataset_id, mutation)
 
   def delete_entity(self, dataset_id, key_pb):
-    # TODO: Is this the right way to handle deleting
-    #       (single and multiple as separate methods)?
     return self.delete_entities(dataset_id, [key_pb])

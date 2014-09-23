@@ -149,13 +149,9 @@ class Bucket(object):
 
     :raises: :class:`gcloud.storage.exceptions.NotFoundError`
     """
-
-    # TODO: Make sure the proper exceptions are raised.
-
     return self.connection.delete_bucket(self.name, force=force)
 
   def delete_key(self, key):
-    # TODO: Should we accept a 'silent' param here to not raise an exception?
     """Deletes a key from the current bucket.
 
     If the key isn't found,
@@ -189,7 +185,6 @@ class Bucket(object):
     return key
 
   def delete_keys(self, keys):
-    # TODO: What should be the return value here?
     # NOTE: boto returns a MultiDeleteResult instance.
     for key in keys:
       self.delete_key(key)
@@ -198,7 +193,6 @@ class Bucket(object):
     raise NotImplementedError
 
   def upload_file(self, filename, key=None):
-    # TODO: What do we do about overwriting data?
     """Shortcut method to upload a file into this bucket.
 
     Use this method to quickly put a local file in Cloud Storage.
@@ -392,7 +386,6 @@ class Bucket(object):
     return self
 
   def get_acl(self):
-    # TODO: This might be a VERY long list. Use the specific API endpoint.
     """Get ACL metadata as a :class:`gcloud.storage.acl.BucketACL` object.
 
     :rtype: :class:`gcloud.storage.acl.BucketACL`

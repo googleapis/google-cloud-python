@@ -217,14 +217,12 @@ class Connection(connection.Connection):
     response, content = self.make_request(
         method=method, url=url, data=data, content_type=content_type)
 
-    # TODO: Add better error handling.
     if response.status == 404:
       raise exceptions.NotFoundError(response, content)
     elif not 200 <= response.status < 300:
       raise exceptions.ConnectionError(response, content)
 
     if content and expect_json:
-      # TODO: Better checking on this header for JSON.
       content_type = response.get('content-type', '')
       if not content_type.startswith('application/json'):
         raise TypeError('Expected JSON, got %s' % content_type)
@@ -282,8 +280,6 @@ class Connection(connection.Connection):
     :returns: The bucket matching the name provided.
     :raises: :class:`gcloud.storage.exceptions.NotFoundError`
     """
-
-    # TODO: URL-encode the bucket name to be safe?
     bucket = self.new_bucket(bucket_name)
     response = self.api_request(method='GET', path=bucket.path)
     return Bucket.from_dict(response, connection=self)
@@ -317,7 +313,6 @@ class Connection(connection.Connection):
       return None
 
   def create_bucket(self, bucket, *args, **kwargs):
-    # TODO: Which exceptions will this raise?
     """Create a new bucket.
 
     For example::
