@@ -112,7 +112,7 @@ class ACL(object):
       else:
         return '{self.type}-{self.identifier}'.format(self=self)
 
-    def __repr__(self):
+    def __repr__(self): #pragma NO COVER
       return '<ACL Entity: {self} ({roles})>'.format(
         self=self, roles=', '.join(self.roles))
 
@@ -223,7 +223,7 @@ class ACL(object):
       entity = self.entity(type=type, identifier=identifier)
 
     if not isinstance(entity, ACL.Entity):
-      raise ValueError('Invalid dictionary: %s' % acl_dict)
+      raise ValueError('Invalid dictionary: %s' % entity_dict)
 
     return entity.grant(role)
 
@@ -352,7 +352,7 @@ class ACL(object):
 
     return self.entities.values()
 
-  def save(self):
+  def save(self): #pragma NO COVER
     """A method to be overridden by subclasses.
 
     :raises: NotImplementedError

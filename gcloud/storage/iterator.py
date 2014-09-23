@@ -109,7 +109,7 @@ class Iterator(object):
     self.page_number = 0
     self.next_page_token = None
 
-  def get_items_from_response(self, response):
+  def get_items_from_response(self, response): #pragma NO COVER
     """Factory method called while iterating. This should be overriden.
 
     This method should be overridden by a subclass.
