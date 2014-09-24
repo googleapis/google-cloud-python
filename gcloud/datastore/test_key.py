@@ -339,6 +339,14 @@ class TestKey(unittest2.TestCase):
         key = self._makeOne(path=_PATH)
         self.assertEqual(key.id_or_name(), _NAME)
 
-    def _ugh(self):
-        protokey = key.to_protobuf()
-        self.assertEqual(protokey.partition_id.dataset_id, _DATASET)
+    def test_parent_default(self):
+        key = self._makeOne()
+        self.assertEqual(key.parent(), None)
+
+    def test_parent_explicit_top_level(self):
+        key = self._getTargetClass().from_path('abc', 'def')
+        self.assertEqual(key.parent(), None)
+
+    def test_parent_explicit_nested(self):
+        key = self._getTargetClass().from_path('abc', 'def', 'ghi', 123)
+        self.assertEqual(key.parent().path(), [{'kind': 'abc', 'name': 'def'}])

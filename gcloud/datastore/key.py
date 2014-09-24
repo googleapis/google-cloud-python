@@ -268,7 +268,9 @@ class Key(object):
     :returns: a new `Key` instance, whose path consists of all but the last
     element of self's path.  If self has only one path element, return None.
     """
-    raise NotImplementedError
+    if len(self._path) <= 1:
+        return None
+    return self.path(self.path()[:-1])
 
   def __repr__(self): #pragma NO COVER
     return '<Key%s>' % self.path()
