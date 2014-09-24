@@ -165,23 +165,20 @@ class Connection(object):
 
     return response.transaction
 
-  def rollback_transaction(self, dataset_id, transaction_id):
-    """Rollback an existing transaction.
+  def rollback_transaction(self, dataset_id):
+    """Rollback the connection's existing transaction.
 
     Raises a ``ValueError``
     if the connection isn't currently in a transaction.
 
     :type dataset_id: string
     :param dataset_id: The dataset to which the transaction belongs.
-
-    :type transaction_id: string
-    :param transaction_id: The ID of the transaction to roll back.
     """
     if not self.transaction() or not self.transaction().id():
       raise ValueError('No transaction to rollback.')
 
     request = datastore_pb.RollbackRequest()
-    request.transaction = transaction_id
+    request.transaction = self.transaction().id()
     # Nothing to do with this response, so just execute the method.
     self._rpc(dataset_id, 'rollback', request,
               datastore_pb.RollbackResponse)
