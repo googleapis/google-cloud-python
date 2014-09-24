@@ -212,7 +212,7 @@ class Connection(object):
     Under the hood this is doing...
 
     >>> connection.run_query('dataset-id', query.to_protobuf())
-    [<list of Entity Protobufs>]
+    [<list of Entity Protobufs>], cursor, more_results, skipped_results
 
     :type dataset_id: string
     :param dataset_id: The ID of the dataset over which to run the query.
@@ -230,7 +230,7 @@ class Connection(object):
 
     request.query.CopyFrom(query_pb)
     response = self._rpc(dataset_id, 'runQuery', request, datastore_pb.RunQueryResponse)
-    return [e.entity for e in response.batch.entity_result]
+    return ([e.entity for e in response.batch.entity_result], response.batch.end_cursor, response.batch.more_results, response.batch.skipped_results)
 
   def lookup(self, dataset_id, key_pbs):
     """Lookup keys from a dataset in the Cloud Datastore.

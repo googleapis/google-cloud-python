@@ -4,6 +4,7 @@ from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
+import base64
 
 
 class Query(object):
@@ -53,6 +54,7 @@ class Query(object):
   def __init__(self, kind=None, dataset=None):
     self._dataset = dataset
     self._pb = datastore_pb.Query()
+    self._cursor = None
 
     if kind:
       self._pb.kind.add().name = kind
@@ -303,8 +305,66 @@ class Query(object):
     if limit:
       clone = self.limit(limit)
 
-    entity_pbs = self.dataset().connection().run_query(
+    entity_pbs, end_cursor, more_results, skipped_results = self.dataset().connection().run_query(
         query_pb=clone.to_protobuf(), dataset_id=self.dataset().id())
 
+    self._cursor = end_cursor
     return [Entity.from_protobuf(entity, dataset=self.dataset())
             for entity in entity_pbs]
+
+  def cursor(self):
+    """Returns a base64-encoded cursor string denoting the position in the query's result
+    set following the last result retrieved.
+
+    .. Caution:: Invoking this method on a query that has not yet has been
+      executed will raise an AssertionError exception.
+
+    :rtype: string
+    :returns: The lastest end_cursor for query
+    """
+    assert self._cursor
+    return base64.b64encode(self._cursor)
+
+  def with_cursor(self, start_cursor, end_cursor=None):
+    """Specifies the starting and (optionally) ending positions within a query's
+    result set from which to retrieve results.
+
+    :type start_cursor: bytes
+    :param start_cursor: Base64-encoded cursor string specifying where to start the query.
+
+    :type end_cursor: bytes
+    :param end_cursor: Base64-encoded cursor string specifying where to end the query.
+
+    """
+    if start_cursor:
+      self._pb.start_cursor = base64.b64decode(start_cursor)
+    if end_cursor:
+      self._pb.end_cursor = base64.b64decode(end_cursor)
+
+  def order(self, *properties):
+    """Adds a sort order to the query. If more than one sort order is added,
+    they will be applied in the order specified.
+
+    :type properties: string
+    :param properties: String giving the name of the property on which to sort,
+    optionally preceded by a hyphen (-) to specify descending order.
+    Omitting the hyphen specifies ascending order by default.
+
+    :rtype: :class:`Query`
+    :returns: A Query order by properties.
+    """
+    clone = self._clone()
+
+    for p in properties:
+      property_order = clone._pb.order.add()
+
+      if p.startswith('-'):
+        property_order.property.name = p[1:]
+        property_order.direct = property_order.DESCENDING
+      else:
+        property_order.property.name = p
+        property_order.direction = property_order.ASCENDING
+
+    return clone
+
+
