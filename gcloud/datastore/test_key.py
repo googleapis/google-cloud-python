@@ -164,12 +164,11 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(key.path(), [{'kind': ''}])
 
     def test_from_path_single_element(self):
-        # See https://github.com/GoogleCloudPlatform/gcloud-python/issues/134
-        key = self._getTargetClass().from_path('abc')
-        self.assertEqual(key.dataset(), None)
-        self.assertEqual(key.namespace(), None)
-        self.assertEqual(key.kind(), '') # XXX s.b. 'abc'?
-        self.assertEqual(key.path(), [{'kind': ''}]) # XXX s.b. 'abc'?
+        self.assertRaises(ValueError, self._getTargetClass().from_path, 'abc')
+
+    def test_from_path_three_elements(self):
+        self.assertRaises(ValueError, self._getTargetClass().from_path,
+                                                    'abc', 'def', 'ghi')
 
     def test_from_path_two_elements_second_string(self):
         key = self._getTargetClass().from_path('abc', 'def')
