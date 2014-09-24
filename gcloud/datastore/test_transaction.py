@@ -110,7 +110,6 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.id(), None)
 
     def test_context_manager_w_raise(self):
-        # See https://github.com/GoogleCloudPlatform/gcloud-python/issues/136
         class Foo(Exception):
             pass
         _DATASET = 'DATASET'
@@ -125,13 +124,10 @@ class TestTransaction(unittest2.TestCase):
                 self.assertTrue(connection._xact is xact)
                 raise Foo()
         except Foo:
-            pass # XXX
-            #self.assertEqual(xact.id(), None)
-            #self.assertEqual(connection._rolled_back, (_DATASET, 234))
-            #self.assertEqual(connection._xact, None)
-        # XXX should *not* have committed
-        self.assertEqual(connection._committed, (_DATASET, mutation))
-        #self.assertEqual(connection._committed, None)
+            self.assertEqual(xact.id(), None)
+            self.assertEqual(connection._rolled_back, (_DATASET, 234))
+            self.assertEqual(connection._xact, None)
+        self.assertEqual(connection._committed, None)
         self.assertTrue(connection._xact is None)
         self.assertEqual(xact.id(), None)
 
