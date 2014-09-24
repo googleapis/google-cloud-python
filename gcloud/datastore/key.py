@@ -42,8 +42,11 @@ class Key(object):
 
     if not dataset:
       dataset = Dataset(id=pb.partition_id.dataset_id)
+      namespace = pb.partition_id.namespace
+    else:
+      namespace = None
 
-    return cls(path=path, dataset=dataset)
+    return cls(dataset, namespace, path)
 
   def to_protobuf(self):
     key = datastore_pb.Key()
