@@ -78,8 +78,9 @@ def get_value_from_protobuf(pb):
 
   if pb.value.HasField('timestamp_microseconds_value'):
     microseconds = pb.value.timestamp_microseconds_value
-    return (datetime.utcfromtimestamp(0) +
-            timedelta(microseconds=microseconds))
+    naive = (datetime.utcfromtimestamp(0) +
+             timedelta(microseconds=microseconds))
+    return naive.replace(tzinfo=pytz.utc)
 
   elif pb.value.HasField('key_value'):
     return Key.from_protobuf(pb.value.key_value)
