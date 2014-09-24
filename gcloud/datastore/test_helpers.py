@@ -56,10 +56,18 @@ class Test_get_protobuf_attribute_and_value(unittest2.TestCase):
         self.assertEqual(value, 42)
 
     def test_long(self):
-        must_be_long = 1 << 63
+        must_be_long = (1 << 63) - 1
         name, value = self._callFUT(must_be_long)
         self.assertEqual(name, 'integer_value')
         self.assertEqual(value, must_be_long)
+
+    def test_long_too_small(self):
+        too_small = -(1 << 63) - 1
+        self.assertRaises(ValueError, self._callFUT, too_small)
+
+    def test_long_too_large(self):
+        too_large = 1 << 63
+        self.assertRaises(ValueError, self._callFUT, too_large)
 
     def test_native_str(self):
         name, value = self._callFUT('str')
