@@ -2,9 +2,13 @@
 import calendar
 from datetime import datetime, timedelta
 
+from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
 
 from gcloud.datastore.key import Key
+
+
+INT64 = Int64ValueChecker().CheckValue
 
 
 def get_protobuf_attribute_and_value(val):
@@ -53,7 +57,7 @@ def get_protobuf_attribute_and_value(val):
   elif isinstance(val, float):
     name, value = 'double', val
   elif isinstance(val, (int, long)):
-    name, value = 'integer', val
+    name, value = 'integer', INT64(val)
   elif isinstance(val, basestring):
     name, value = 'string', val
 
