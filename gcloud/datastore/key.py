@@ -40,7 +40,7 @@ class Key(object):
 
   @classmethod
   def from_protobuf(cls, pb, dataset=None):
-    """Factory method for creating an key based on a protobuf.
+    """Factory method for creating a key based on a protobuf.
 
     The protobuf should be one returned from the Cloud Datastore Protobuf API.
 
@@ -108,7 +108,7 @@ class Key(object):
 
   @classmethod
   def from_path(cls, *args, **kwargs):
-    """Factory method for creating an key based on a path.
+    """Factory method for creating a key based on a path.
 
     :type args: :class:`tuple
     :param args: sequence of even length, where the first of each
@@ -140,10 +140,10 @@ class Key(object):
     return cls(**kwargs)
 
   def is_partial(self):
-    """Boolen test:  is the key fully mapped onto a backend entity?
+    """Boolean test: is the key fully mapped onto a backend entity?
 
     :rtype: :class:`bool`
-    :returns: True if the last element of the key's path has either an 'id'
+    :returns: True if the last element of the key's path has neither an 'id'
     or a 'name'.
     """
     return (self.id_or_name() is None)
@@ -155,7 +155,7 @@ class Key(object):
     :param dataset: A dataset instance for the key.
 
     :rtype: :class:`Key` (for setter); or
-             :class:`gcloud.datastore.dataset.Dataset` (for getter)
+            :class:`gcloud.datastore.dataset.Dataset` (for getter)
     :returns: a new key, cloned from self., with the given dataset (setter);
              or self's dataset (getter).
     """
