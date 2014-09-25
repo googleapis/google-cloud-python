@@ -262,7 +262,7 @@ class Key(object):
     return self.id() or self.name()
 
   def parent(self):#pragma NO COVER
-    """Getter:  return a new key for the next highest elemen in path.
+    """Getter:  return a new key for the next highest element in path.
 
     :rtype: :class:`gcloud.datastore.key.Key`
     :returns: a new `Key` instance, whose path consists of all but the last
