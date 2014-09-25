@@ -140,7 +140,7 @@ class Key(object):
     """Boolean test: is the key fully mapped onto a backend entity?
 
     :rtype: :class:`bool`
-    :returns: True if the last element of the key's path has neither an 'id'
+    :returns: True if the last element of the key's path does not have an 'id'
     or a 'name'.
     """
     return (self.id_or_name() is None)
