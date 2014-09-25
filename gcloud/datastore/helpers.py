@@ -10,6 +10,7 @@ from gcloud.datastore.key import Key
 
 INT64 = Int64ValueChecker().CheckValue
 
+
 def get_protobuf_attribute_and_value(val):
   """Given a value, return the protobuf attribute name and proper value.
 
