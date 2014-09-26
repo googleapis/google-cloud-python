@@ -100,9 +100,7 @@ class Test_get_value_from_protobuf(unittest2.TestCase):
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
         micros = (calendar.timegm(utc.timetuple()) * 1000000) + 4375
         pb = self._makePB('timestamp_microseconds_value', micros)
-        # self.assertEqual(self._callFUT(pb), utc) XXX
-        # see https://github.com/GoogleCloudPlatform/gcloud-python/issues/131
-        self.assertEqual(self._callFUT(pb), naive)
+        self.assertEqual(self._callFUT(pb), utc)
 
     def test_key(self):
         from gcloud.datastore.datastore_v1_pb2 import Property
