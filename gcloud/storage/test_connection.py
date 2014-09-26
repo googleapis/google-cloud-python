@@ -203,38 +203,16 @@ class TestConnection(unittest2.TestCase):
 
     def test_api_request_defaults(self):
         PROJECT = 'project'
+        PATH = '/path/required'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([conn.API_BASE_URL,
                         'storage',
                         conn.API_VERSION,
-                        # see https://github.com/GoogleCloudPlatform/
-                        #          gcloud-python/issues/140
-                        #'?project=%s' % PROJECT,
-                       ]) + 'None?project=%s' % PROJECT # XXX
+                       ]) + '%s?project=%s' % (PATH, PROJECT)
         http = conn._http = Http({'status': '200',
                                   'content-type': 'application/json',
                                  }, '{}')
-        self.assertEqual(conn.api_request('GET'), {})
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-        self.assertEqual(http._called_with['body'], None)
-        self.assertEqual(http._called_with['headers'],
-                         {'Accept-Encoding': 'gzip',
-                          'Content-Length':  0,
-                         })
-
-    def test_api_request_w_path(self):
-        PROJECT = 'project'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        '?project=%s' % PROJECT,
-                       ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                 }, '{}')
-        self.assertEqual(conn.api_request('GET', '/'), {})
+        self.assertEqual(conn.api_request('GET', PATH), {})
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], None)

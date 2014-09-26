@@ -162,7 +162,7 @@ class Connection(connection.Connection):
     return self.http.request(uri=url, method=method, headers=headers,
                                body=data)
 
-  def api_request(self, method, path=None, query_params=None,
+  def api_request(self, method, path, query_params=None,
                   data=None, content_type=None,
                   api_base_url=None, api_version=None,
                   expect_json=True):
@@ -174,32 +174,40 @@ class Connection(connection.Connection):
 
     :type method: string
     :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).
+                   Required.
 
     :type path: string
     :param path: The path to the resource (ie, ``'/b/bucket-name'``).
+                 Required.
 
     :type query_params: dict
     :param query_params: A dictionary of keys and values to insert into
-                         the query string of the URL.
+                         the query string of the URL.  Default is empty dict.
 
     :type data: string
-    :param data: The data to send as the body of the request.
+    :param data: The data to send as the body of the request. Default is the
+                 empty string.
 
     :type content_type: string
-    :param content_type: The proper MIME type of the data provided.
+    :param content_type: The proper MIME type of the data provided. Default
+                         is None.
 
     :type api_base_url: string
     :param api_base_url: The base URL for the API endpoint.
                          Typically you won't have to provide this.
+                         Default is the standard API base URL.
 
     :type api_version: string
     :param api_version: The version of the API to call.
                         Typically you shouldn't provide this and instead
                         use the default for the library.
+                        Default is the latest API version supported by
+                        gcloud-python.
 
     :type expect_json: bool
     :param expect_json: If True, this method will try to parse the response
                         as JSON and raise an exception if that cannot be done.
+                        Default is True.
 
     :raises: Exception if the response code is not 200 OK.
     """
