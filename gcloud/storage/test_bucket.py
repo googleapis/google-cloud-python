@@ -628,52 +628,69 @@ class Test_Bucket(unittest2.TestCase):
     def test_save_default_object_acl_existing_set_none_passed(self):
         NAME = 'name'
         connection = _Connection({'foo': 'Foo', 'acl': []})
+        connection = _Connection({'foo': 'Foo', 'acl': []},
+                                 {'foo': 'Foo', 'acl': [],
+                                    'defaultObjectAcl': []},
+                                )
         metadata = {'defaultObjectAcl': []}
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_default_object_acl()
         self.assertTrue(bucket.save_default_object_acl() is bucket)
         kw = connection._requested
-        self.assertEqual(len(kw), 1)
+        self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], metadata)
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[1]['method'], 'GET')
+        self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
 
     def test_save_default_object_acl_existing_set_new_passed(self):
         NAME = 'name'
         ROLE = 'role'
         new_acl = [{'entity': 'allUsers', 'role': ROLE}]
-        connection = _Connection({'foo': 'Foo', 'acl': new_acl})
+        connection = _Connection({'foo': 'Foo', 'acl': new_acl},
+                                 {'foo': 'Foo', 'acl': new_acl,
+                                    'defaultObjectAcl': new_acl},
+                                )
         metadata = {'defaultObjectAcl': []}
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_default_object_acl()
         self.assertTrue(bucket.save_default_object_acl(new_acl) is bucket)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/139
-        #self.assertEqual(list(bucket.default_object_acl), new_acl)
+        self.assertEqual(list(bucket.default_object_acl), new_acl)
         kw = connection._requested
-        self.assertEqual(len(kw), 1)
+        self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], {'defaultObjectAcl': new_acl})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[1]['method'], 'GET')
+        self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
 
     def test_clear_default_object_acl(self):
         NAME = 'name'
         ROLE = 'role'
         old_acl = [{'entity': 'allUsers', 'role': ROLE}]
-        connection = _Connection({'foo': 'Foo', 'acl': []})
+        connection = _Connection({'foo': 'Foo', 'acl': []},
+                                 {'foo': 'Foo', 'acl': [],
+                                    'defaultObjectAcl': []},
+                                )
         metadata = {'defaultObjectAcl': old_acl}
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_default_object_acl()
         self.assertTrue(bucket.clear_default_object_acl() is bucket)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/139
-        #self.assertEqual(list(bucket.default_object_acl), [])
+        self.assertEqual(list(bucket.default_object_acl), [])
         kw = connection._requested
-        self.assertEqual(len(kw), 1)
+        self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        #self.assertEqual(kw[0]['data'], {'defaultObjectAcl': []})
+        self.assertEqual(kw[0]['data'], {'defaultObjectAcl': []})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[1]['method'], 'GET')
+        self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
 
     def test_make_public_defaults(self):
         from gcloud.storage.acl import ACL
