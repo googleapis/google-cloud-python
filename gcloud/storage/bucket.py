@@ -443,7 +443,9 @@ class Bucket(object):
     if acl is None:
       return self
 
-    return self.patch_metadata({'acl': list(acl)})
+    self.patch_metadata({'acl': list(acl)})
+    self.reload_acl()
+    return self
 
   def clear_acl(self):
     """Remove all ACL rules from the bucket.

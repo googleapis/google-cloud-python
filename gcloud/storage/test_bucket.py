@@ -532,8 +532,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_acl()
         self.assertTrue(bucket.save_acl(new_acl) is bucket)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/138
-        #self.assertEqual(list(bucket.acl), new_acl)
+        self.assertEqual(list(bucket.acl), new_acl)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -550,8 +549,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_acl()
         self.assertTrue(bucket.clear_acl() is bucket)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/138
-        #self.assertEqual(list(bucket.acl), [])
+        self.assertEqual(list(bucket.acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
