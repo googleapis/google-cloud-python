@@ -246,8 +246,22 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'DELETE')
         self.assertEqual(kw[1]['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
-    # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/137
-    #def test_upload_file_default_key(self):
+    def test_upload_file_default_key(self):
+        from gcloud.test_credentials import _Monkey
+        from gcloud.storage import bucket as MUT
+        BASENAME = 'file.ext'
+        FILENAME = '/path/to/%s' % BASENAME
+        _uploaded = []
+        class _Key(object):
+            def __init__(self, bucket, name):
+                self._bucket = bucket
+                self._name = name
+            def set_contents_from_filename(self, filename):
+                _uploaded.append((self._bucket, self._name, filename))
+        bucket = self._makeOne()
+        with _Monkey(MUT, Key=_Key):
+            bucket.upload_file(FILENAME)
+        self.assertEqual(_uploaded, [(bucket, BASENAME, FILENAME)])
 
     def test_upload_file_explicit_key(self):
         from gcloud.test_credentials import _Monkey
