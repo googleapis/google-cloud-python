@@ -244,31 +244,27 @@ class TestConnection(unittest2.TestCase):
 
     def test_rollback_transaction_wo_existing_transaction(self):
         DATASET_ID = 'DATASET'
-        TRANSACTION_ID = 'TRANSACTION'
         conn = self._makeOne()
         self.assertRaises(ValueError,
-                          conn.rollback_transaction, DATASET_ID, TRANSACTION_ID)
+                          conn.rollback_transaction, DATASET_ID)
 
     def test_rollback_transaction_w_existing_transaction_no_id(self):
         class Xact(object):
             def id(self):
                 return None
         DATASET_ID = 'DATASET'
-        TRANSACTION_ID = 'TRANSACTION'
         conn = self._makeOne()
         conn.transaction(Xact())
         self.assertRaises(ValueError,
-                          conn.rollback_transaction, DATASET_ID, TRANSACTION_ID)
+                          conn.rollback_transaction, DATASET_ID)
 
     def test_rollback_transaction_ok(self):
         from gcloud.datastore.connection import datastore_pb
+        DATASET_ID = 'DATASET'
+        TRANSACTION = 'xact'
         class Xact(object):
             def id(self):
-                return 'xact'
-        xact = object()
-
-        DATASET_ID = 'DATASET'
-        TRANSACTION = 'TRANSACTION'
+                return TRANSACTION
         rsp_pb = datastore_pb.RollbackResponse()
         conn = self._makeOne()
         conn.transaction(Xact())
@@ -280,14 +276,13 @@ class TestConnection(unittest2.TestCase):
                         'rollback',
                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.rollback_transaction(DATASET_ID, TRANSACTION),
-                         None)
+        self.assertEqual(conn.rollback_transaction(DATASET_ID), None)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                             {'Content-Type': 'application/x-protobuf',
-                             'Content-Length': '13',
+                             'Content-Length': '6',
                             })
         rq_class = datastore_pb.RollbackRequest
         request = rq_class()
