@@ -90,10 +90,10 @@ class ACL(object):
     outside of using the factor methods on the :class:`ACL` object.
     """
 
-    def __init__(self, type, identifier=None):
+    def __init__(self, entity_type, identifier=None):
       """
-      :type type: string
-      :param type: The type of entity (ie, 'group' or 'user').
+      :type entity_type: string
+      :param entity_type: The type of entity (ie, 'group' or 'user').
 
       :type identifier: string
       :param identifier: The ID or e-mail of the entity.
@@ -103,7 +103,7 @@ class ACL(object):
 
       self.identifier = identifier
       self.roles = set([])
-      self.type = type
+      self.type = entity_type
 
     def __str__(self):
       if not self.identifier:
@@ -218,8 +218,8 @@ class ACL(object):
       entity = self.all_authenticated()
 
     elif '-' in entity:
-      type, identifier = entity.split('-', 1)
-      entity = self.entity(type=type, identifier=identifier)
+      entity_type, identifier = entity.split('-', 1)
+      entity = self.entity(entity_type=entity_type, identifier=identifier)
 
     if not isinstance(entity, ACL.Entity):
       raise ValueError('Invalid dictionary: %s' % entity_dict)
@@ -262,7 +262,7 @@ class ACL(object):
 
     self.entities[str(entity)] = entity
 
-  def entity(self, type, identifier=None):
+  def entity(self, entity_type, identifier=None):
     """Factory method for creating an Entity.
 
     If an entity with the same type and identifier already exists,
@@ -270,8 +270,9 @@ class ACL(object):
     If not, it will create a new one and add it to the list
     of known entities for this ACL.
 
-    :type type: string
-    :param type: The type of entity to create (ie, ``user``, ``group``, etc)
+    :type entity_type: string
+    :param entity_type: The type of entity to create
+                        (ie, ``user``, ``group``, etc)
 
     :type identifier: string
     :param identifier: The ID of the entity (if applicable).
@@ -281,7 +282,7 @@ class ACL(object):
     :returns: A new Entity or a refernece to an existing identical entity.
     """
 
-    entity = ACL.Entity(type=type, identifier=identifier)
+    entity = ACL.Entity(entity_type=entity_type, identifier=identifier)
     if self.has_entity(entity):
       entity = self.get_entity(entity)
     else:
