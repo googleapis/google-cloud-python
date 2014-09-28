@@ -10,5 +10,5 @@ PRIVATE_KEY_PATH = os.path.join(os.path.dirname(__file__), 'demo.key')
 PROJECT = 'gcloud-storage-demo'
 
 
-def get_connection(): #pragma NO COVER
+def get_connection():  # pragma NO COVER.
   return storage.get_connection(PROJECT, CLIENT_EMAIL, PRIVATE_KEY_PATH)

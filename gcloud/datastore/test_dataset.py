@@ -1,7 +1,6 @@
 import unittest2
 
 
-
 class TestDataset(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -119,8 +118,10 @@ class TestDataset(unittest2.TestCase):
 
 class _Connection(object):
     _called_with = None
+
     def __init__(self, *result):
         self._result = list(result)
+
     def lookup(self, **kw):
         self._called_with = kw
         return self._result

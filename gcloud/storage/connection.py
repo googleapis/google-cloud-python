@@ -160,7 +160,7 @@ class Connection(connection.Connection):
       headers['Content-Type'] = content_type
 
     return self.http.request(uri=url, method=method, headers=headers,
-                               body=data)
+                             body=data)
 
   def api_request(self, method, path, query_params=None,
                   data=None, content_type=None,
@@ -415,7 +415,7 @@ class Connection(connection.Connection):
     # Support Python 2 and 3.
     try:
       string_type = basestring
-    except NameError: #pragma NO COVER PY3k
+    except NameError:  # pragma NO COVER PY3k
       string_type = str
 
     if isinstance(bucket, string_type):
@@ -423,7 +423,9 @@ class Connection(connection.Connection):
 
     raise TypeError('Invalid bucket: %s' % bucket)
 
-  def generate_signed_url(self, resource, expiration, method='GET', content_md5=None, content_type=None): #pragma NO COVER UGH
+  def generate_signed_url(self, resource, expiration,
+                          method='GET', content_md5=None,
+                          content_type=None):  # pragma NO COVER UGH
     """Generate a signed URL to provide query-string authentication to a resource.
 
     :type resource: string
@@ -475,11 +477,11 @@ class Connection(connection.Connection):
 
     # Generate the string to sign.
     signature_string = '\n'.join([
-      method,
-      content_md5 or '',
-      content_type or '',
-      str(expiration),
-      resource])
+        method,
+        content_md5 or '',
+        content_type or '',
+        str(expiration),
+        resource])
 
     # Take our PKCS12 (.p12) key and make it into a RSA key we can use...
     pkcs12 = crypto.load_pkcs12(base64.b64decode(self.credentials.private_key), 'notasecret')

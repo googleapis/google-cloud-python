@@ -271,10 +271,13 @@ class Test_Bucket(unittest2.TestCase):
         FILENAME = '/path/to/file'
         KEY = 'key'
         _uploaded = []
+
         class _Key(object):
+
             def __init__(self, bucket, name):
                 self._bucket = bucket
                 self._name = name
+
             def set_contents_from_filename(self, filename):
                 _uploaded.append((self._bucket, self._name, filename))
         bucket = self._makeOne()
@@ -792,19 +795,26 @@ class Test_Bucket(unittest2.TestCase):
         from gcloud.storage import iterator
         from gcloud.storage import bucket as MUT
         _saved = []
+
         class _Key(object):
             _granted = False
+
             def __init__(self, bucket, name):
                 self._bucket = bucket
                 self._name = name
+
             def get_acl(self):
                 return self
+
             def all(self):
                 return self
+
             def grant_read(self):
                 self._granted = True
+
             def save_acl(self):
                 _saved.append((self._bucket, self._name, self._granted))
+
         class _KeyIterator(iterator.KeyIterator):
             def get_items_from_response(self, response):
                 for item in response.get('items', []):
@@ -835,19 +845,23 @@ class Test_Bucket(unittest2.TestCase):
 
 class _Connection(object):
     _delete_ok = False
+
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
         self._deleted = []
+
     def api_request(self, **kw):
         from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
+
         try:
             response, self._responses = self._responses[0], self._responses[1:]
         except:
             raise NotFoundError('miss', None)
         else:
             return response
+
     def delete_bucket(self, bucket, force=False):
         from gcloud.storage.exceptions import NotFoundError
         self._deleted.append((bucket, force))

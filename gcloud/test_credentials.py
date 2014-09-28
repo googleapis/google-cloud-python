@@ -1,5 +1,6 @@
 import unittest2
 
+
 class TestCredentials(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -22,8 +23,7 @@ class TestCredentials(unittest2.TestCase):
         self.assertEqual(client._called_with,
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
-                          'scope': None,
-                         })
+                          'scope': None, })
 
     def test_get_for_service_account_w_scope(self):
         from tempfile import NamedTemporaryFile
@@ -37,23 +37,28 @@ class TestCredentials(unittest2.TestCase):
             with NamedTemporaryFile() as f:
                 f.write(PRIVATE_KEY)
                 f.flush()
-                found = cls.get_for_service_account(CLIENT_EMAIL, f.name, SCOPE)
+                found = cls.get_for_service_account(CLIENT_EMAIL, f.name,
+                                                    SCOPE)
         self.assertTrue(found is client._signed)
         self.assertEqual(client._called_with,
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
-                          'scope': SCOPE,
-                         })
+                          'scope': SCOPE, })
+
 
 class _Client(object):
+
     def __init__(self):
         self._signed = object()
+
     def SignedJwtAssertionCredentials(self, **kw):
         self._called_with = kw
         return self._signed
 
+
 class _Monkey(object):
     # context-manager for replacing module names in the scope of a test.
+
     def __init__(self, module, **kw):
         self.module = module
         self.to_restore = dict([(key, getattr(module, key)) for key in kw])

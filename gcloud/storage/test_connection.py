@@ -39,6 +39,7 @@ class TestConnection(unittest2.TestCase):
         from httplib2 import Http
         PROJECT = 'project'
         authorized = object()
+
         class Creds(object):
             def authorize(self, http):
                 self._called_with = http
@@ -462,15 +463,21 @@ class TestConnection(unittest2.TestCase):
 
     def test_delete_bucket_defaults_miss(self):
         _deleted_keys = []
+
         class _Key(object):
+
             def __init__(self, name):
                 self._name = name
+
             def delete(self):
                 _deleted_keys.append(self._name)
+
         class _Bucket(object):
+
             def __init__(self, name):
                 self._name = name
                 self.path = '/b/' + name
+
             def __iter__(self):
                 return iter([_Key(x) for x in ('foo', 'bar')])
         PROJECT = 'project'

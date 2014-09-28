@@ -5,6 +5,7 @@ class TestTransaction(unittest2.TestCase):
 
     def _getTargetClass(self):
         from gcloud.datastore.transaction import Transaction
+
         return Transaction
 
     def _makeOne(self, dataset=None):
@@ -12,6 +13,7 @@ class TestTransaction(unittest2.TestCase):
 
     def test_ctor(self):
         from gcloud.datastore.datastore_v1_pb2 import Mutation
+
         _DATASET = 'DATASET'
         connection = _Connection()
         dataset = _Dataset(_DATASET, connection)
@@ -89,7 +91,7 @@ class TestTransaction(unittest2.TestCase):
         xact = self._makeOne(dataset)
         xact._mutation = mutation = object()
         xact.begin()
-        connection.transaction(()) # simulate previous commit via false-ish
+        connection.transaction(())  # Simulate previous commit via false-ish.
         xact.commit()
         self.assertEqual(connection._committed, None)
         self.assertTrue(connection._xact is None)
@@ -125,18 +127,20 @@ class TestTransaction(unittest2.TestCase):
                 self.assertTrue(connection._xact is xact)
                 raise Foo()
         except Foo:
-            pass # XXX
-            #self.assertEqual(xact.id(), None)
-            #self.assertEqual(connection._rolled_back, _DATASET))
-            #self.assertEqual(connection._xact, None)
+            pass  # XXX
+            # self.assertEqual(xact.id(), None)
+            # self.assertEqual(connection._rolled_back, _DATASET))
+            # self.assertEqual(connection._xact, None)
         # XXX should *not* have committed
         self.assertEqual(connection._committed, (_DATASET, mutation))
-        #self.assertEqual(connection._committed, None)
+        # self.assertEqual(connection._committed, None)
         self.assertTrue(connection._xact is None)
         self.assertEqual(xact.id(), None)
 
+
 def _makeKey(kind, id):
     from gcloud.datastore.datastore_v1_pb2 import Key
+
     key = Key()
     elem = key.path_element.add()
     elem.kind = kind
@@ -145,11 +149,14 @@ def _makeKey(kind, id):
 
 
 class _Dataset(object):
+
     def __init__(self, id, connection=None):
         self._id = id
         self._connection = connection
+
     def id(self):
         return self._id
+
     def connection(self):
         return self._connection
 
@@ -157,30 +164,37 @@ class _Dataset(object):
 class _Connection(object):
     _marker = object()
     _begun = _rolled_back = _committed = _xact = None
+
     def __init__(self, xact_id=123):
         self._xact_id = xact_id
         self._commit_result = _CommitResult()
+
     def transaction(self, xact=_marker):
         if xact is self._marker:
             return self._xact
         self._xact = xact
+
     def begin_transaction(self, dataset_id):
         self._begun = dataset_id
         return self._xact_id
+
     def rollback_transaction(self, dataset_id):
         self._rolled_back = dataset_id
+
     def commit(self, dataset_id, mutation):
         self._committed = (dataset_id, mutation)
         return self._commit_result
 
 
 class _CommitResult(object):
+
     def __init__(self, *new_keys):
         self.insert_auto_id_key = new_keys
 
 
 class _Key(object):
     _path = None
+
     def path(self, path):
         self._path = path
         return self
@@ -188,8 +202,10 @@ class _Key(object):
 
 class _Entity(object):
     _marker = object()
+
     def __init__(self):
         self._key = _Key()
+
     def key(self, key=_marker):
         if key is self._marker:
             return self._key

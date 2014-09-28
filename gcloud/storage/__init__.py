@@ -69,6 +69,7 @@ def get_connection(project, client_email, private_key_path):
       client_email, private_key_path, scope=SCOPE)
   return Connection(project=project, credentials=credentials)
 
+
 def get_bucket(bucket_name, project, client_email, private_key_path):
   """Shortcut method to establish a connection to a particular bucket.
 

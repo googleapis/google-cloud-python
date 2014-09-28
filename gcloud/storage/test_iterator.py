@@ -25,6 +25,7 @@ class TestIterator(unittest2.TestCase):
         KEY2 = 'key2'
         ITEM1, ITEM2 = object(), object()
         ITEMS = {KEY1: ITEM1, KEY2: ITEM2}
+
         def _get_items(response):
             for item in response.get('items', []):
                 yield ITEMS[item['name']]
@@ -356,10 +357,13 @@ class _Response(dict):
     def status(self):
         return self['status']
 
+
 class _Connection(object):
+
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
+
     def make_request(self, **kw):
         from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
@@ -369,6 +373,7 @@ class _Connection(object):
             raise NotFoundError('miss', None)
         else:
             return response
+
     def api_request(self, **kw):
         from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
@@ -378,19 +383,24 @@ class _Connection(object):
             raise NotFoundError('miss', None)
         else:
             return response
+
     def build_api_url(self, path, query_params=None):
         from urllib import urlencode
         from urlparse import urlunsplit
         qs = urlencode(query_params or {})
         return urlunsplit(('http', 'example.com', path, qs, ''))
 
+
 class _Bucket(object):
     path = '/b/name'
+
     def __init__(self, connection):
         self.connection = connection
+
 
 class _Key(object):
     CHUNK_SIZE = 10
     path = '/b/name/o/key'
+
     def __init__(self, connection):
         self.connection = connection

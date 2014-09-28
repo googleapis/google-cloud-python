@@ -41,4 +41,3 @@ class Connection(object):
       if self._credentials:
         self._http = self._credentials.authorize(self._http)
     return self._http
-

@@ -5,13 +5,15 @@ class Test_get_protobuf_attribute_and_value(unittest2.TestCase):
 
     def _callFUT(self, val):
         from gcloud.datastore.helpers import get_protobuf_attribute_and_value
+
         return get_protobuf_attribute_and_value(val)
 
     def test_datetime_naive(self):
         import calendar
         import datetime
         import pytz
-        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375) # no zone
+
+        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375)  # No zone.
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
         name, value = self._callFUT(naive)
         self.assertEqual(name, 'timestamp_microseconds_value')
@@ -22,6 +24,7 @@ class Test_get_protobuf_attribute_and_value(unittest2.TestCase):
         import calendar
         import datetime
         import pytz
+
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
         name, value = self._callFUT(utc)
         self.assertEqual(name, 'timestamp_microseconds_value')
@@ -31,6 +34,7 @@ class Test_get_protobuf_attribute_and_value(unittest2.TestCase):
     def test_key(self):
         from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
+
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
@@ -84,10 +88,12 @@ class Test_get_value_from_protobuf(unittest2.TestCase):
 
     def _callFUT(self, pb):
         from gcloud.datastore.helpers import get_value_from_protobuf
+
         return get_value_from_protobuf(pb)
 
     def _makePB(self, attr_name, value):
         from gcloud.datastore.datastore_v1_pb2 import Property
+
         prop = Property()
         setattr(prop.value, attr_name, value)
         return prop
@@ -96,7 +102,8 @@ class Test_get_value_from_protobuf(unittest2.TestCase):
         import calendar
         import datetime
         import pytz
-        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375) # no zone
+
+        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375)  # No zone.
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
         micros = (calendar.timegm(utc.timetuple()) * 1000000) + 4375
         pb = self._makePB('timestamp_microseconds_value', micros)
@@ -106,6 +113,7 @@ class Test_get_value_from_protobuf(unittest2.TestCase):
         from gcloud.datastore.datastore_v1_pb2 import Property
         from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
+
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
@@ -139,4 +147,4 @@ class Test_get_value_from_protobuf(unittest2.TestCase):
     def test_unknown(self):
         from gcloud.datastore.datastore_v1_pb2 import Property
         pb = Property()
-        self.assertEqual(self._callFUT(pb), None) # XXX desirable?
+        self.assertEqual(self._callFUT(pb), None)  # XXX desirable?
