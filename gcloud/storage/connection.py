@@ -472,8 +472,8 @@ class Connection(connection.Connection):
       expiration = int(time.mktime(expiration.timetuple()))
 
     if not isinstance(expiration, (int, long)):
-      raise ValueError('Expected an integer timestamp, datetime, or timedelta. '
-                       'Got %s' % type(expiration))
+      raise ValueError('Expected an integer timestamp, datetime, or '
+                       'timedelta. Got %s' % type(expiration))
 
     # Generate the string to sign.
     signature_string = '\n'.join([
@@ -484,7 +484,8 @@ class Connection(connection.Connection):
         resource])
 
     # Take our PKCS12 (.p12) key and make it into a RSA key we can use...
-    pkcs12 = crypto.load_pkcs12(base64.b64decode(self.credentials.private_key), 'notasecret')
+    pkcs12 = crypto.load_pkcs12(base64.b64decode(self.credentials.private_key),
+                                'notasecret')
     pem = crypto.dump_privatekey(crypto.FILETYPE_PEM, pkcs12.get_privatekey())
     pem_key = RSA.importKey(pem)
 

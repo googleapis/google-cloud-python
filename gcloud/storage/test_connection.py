@@ -198,7 +198,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], None)
         self.assertEqual(http._called_with['headers'],
                          {'Accept-Encoding': 'gzip',
-                          'Content-Length':  0,
+                          'Content-Length': 0,
                           'X-Foo': 'foo',
                          })
 

@@ -379,7 +379,8 @@ class BucketACL(ACL):
 
 
 class DefaultObjectACL(BucketACL):
-  """A subclass of BucketACL representing the default object ACL for a bucket."""
+  """A subclass of BucketACL representing the
+     default object ACL for a bucket."""
 
   def save(self):
     """Save this ACL as the default object ACL for the current bucket."""

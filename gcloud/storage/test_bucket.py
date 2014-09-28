@@ -401,7 +401,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_get_metadata_none_set_defaultObjectAcl_miss_explicit_default(self):
+    def test_get_metadata_none_set_defaultObjectAcl_miss_clear_default(self):
         NAME = 'name'
         after = {'bar': 'Bar'}
         connection = _Connection(after)

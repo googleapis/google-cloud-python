@@ -48,8 +48,7 @@ class Connection(connection.Connection):
     """
     headers = {
         'Content-Type': 'application/x-protobuf',
-        'Content-Length': str(len(data)),
-        }
+        'Content-Length': str(len(data)), }
     headers, content = self.http.request(
         uri=self.build_api_url(dataset_id=dataset_id, method=method),
         method='POST', headers=headers, body=data)
@@ -75,7 +74,7 @@ class Connection(connection.Connection):
 
     :type dataset_id: string
     :param dataset_id: The ID of the dataset to connect to.
-                       This is usually your project name in the cloud console.
+    This is usually your project name in the cloud console.
 
     :type method: string
     :param method: The API method to call (ie, runQuery, lookup, ...).
@@ -110,7 +109,7 @@ class Connection(connection.Connection):
     """Factory method for Dataset objects.
 
     :param args: All args and kwargs will be passed along to the
-                 :class:`gcloud.datastore.dataset.Dataset` initializer.
+    :class:`gcloud.datastore.dataset.Dataset` initializer.
 
     :rtype: :class:`gcloud.datastore.dataset.Dataset`
     :returns: A dataset object that will use this connection as its transport.
@@ -132,7 +131,8 @@ class Connection(connection.Connection):
     request = datastore_pb.BeginTransactionRequest()
 
     if serializable:
-      request.isolation_level = datastore_pb.BeginTransactionRequest.SERIALIZABLE
+      request.isolation_level = (
+          datastore_pb.BeginTransactionRequest.SERIALIZABLE)
     else:
       request.isolation_level = datastore_pb.BeginTransactionRequest.SNAPSHOT
 
@@ -202,7 +202,8 @@ class Connection(connection.Connection):
       request.partition_id.namespace = namespace
 
     request.query.CopyFrom(query_pb)
-    response = self._rpc(dataset_id, 'runQuery', request, datastore_pb.RunQueryResponse)
+    response = self._rpc(dataset_id, 'runQuery', request,
+                         datastore_pb.RunQueryResponse)
     return [e.entity for e in response.batch.entity_result]
 
   def lookup(self, dataset_id, key_pbs):

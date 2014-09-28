@@ -95,7 +95,8 @@ class Key(object):
     return '{storage_base_url}/{self.bucket.name}/{self.name}'.format(
         storage_base_url='http://commondatastorage.googleapis.com', self=self)
 
-  def generate_signed_url(self, expiration, method='GET'):  # pragma NO COVER UGH
+  def generate_signed_url(self, expiration,
+                          method='GET'):  # pragma NO COVER UGH
     """Generates a signed URL for this key.
 
     If you have a key that you want to allow access to
@@ -207,8 +208,7 @@ class Key(object):
     # Set up a resumable upload session.
     headers = {
         'X-Upload-Content-Type': content_type or 'application/unknown',
-        'X-Upload-Content-Length': total_bytes
-        }
+        'X-Upload-Content-Length': total_bytes}
 
     upload_url = self.connection.build_api_url(
         path=self.bucket.path + '/o',
@@ -231,8 +231,7 @@ class Key(object):
       end = bytes_uploaded + chunk_size - 1
 
       headers = {
-          'Content-Range': 'bytes %d-%d/%d' % (start, end, total_bytes),
-          }
+          'Content-Range': 'bytes %d-%d/%d' % (start, end, total_bytes), }
 
       response, content = self.connection.make_request(
           content_type='text/plain',

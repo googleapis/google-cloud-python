@@ -104,7 +104,8 @@ class Bucket(object):
     return list(self)
 
   def new_key(self, key):
-    """Given a path name (or a Key), return a :class:`gcloud.storage.key.Key` object.
+    """Given a path name (or a Key), return a :class:`gcloud.storage.key.Key`
+       object.
 
     This is really useful when you're not sure
     if you have a Key object or a string path name.
