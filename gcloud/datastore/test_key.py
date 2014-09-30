@@ -80,12 +80,20 @@ class TestKey(unittest2.TestCase):
         key = self._getTargetClass().from_protobuf(pb)
         self.assertEqual(key.dataset().id(), _DATASET)
 
-    def test_from_protobuf_w_namespace_in_pb(self):
+    def test_from_protobuf_w_namespace_in_pb_wo_dataset_passed(self):
         _NAMESPACE = 'NAMESPACE'
         pb = self._makePB(namespace=_NAMESPACE)
         key = self._getTargetClass().from_protobuf(pb)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/133
-        # self.assertEqual(key.namespace(), _NAMESPACE)  XXX
+        self.assertEqual(key.namespace(), _NAMESPACE)
+
+    def test_from_protobuf_w_namespace_in_pb_w_dataset_passed(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
+        dataset = Dataset(_DATASET)
+        pb = self._makePB(namespace=_NAMESPACE)
+        key = self._getTargetClass().from_protobuf(pb, dataset)
+        self.assertEqual(key.namespace(), None)
 
     def test_from_protobuf_w_path_in_pb(self):
         _DATASET = 'DATASET'
