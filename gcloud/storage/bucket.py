@@ -568,12 +568,15 @@ class Bucket(object):
                 and save that.
     """
 
-    acl = acl or self.default_object_acl
+    if acl is None:
+        acl = self.default_object_acl
 
     if acl is None:
       return self
 
-    return self.patch_metadata({'defaultObjectAcl': list(acl)})
+    self.patch_metadata({'defaultObjectAcl': list(acl)})
+    self.reload_default_object_acl()
+    return self
 
   def clear_default_object_acl(self):
     """Remove the Default Object ACL from this bucket."""
