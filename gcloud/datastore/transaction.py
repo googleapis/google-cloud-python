@@ -21,7 +21,7 @@ class Transaction(object):
     ...   entity1.save()
     ...   entity2.save()
 
-  By derault, the transaction is rolled back is an error::
+  By default, the transaction is rolled back is an error::
 
     >>> from gcloud import datastore
     >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
