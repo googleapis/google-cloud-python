@@ -509,8 +509,7 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(bucket, KEY, metadata)
         key.reload_acl()
         self.assertTrue(key.save_acl(new_acl) is key)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/138
-        #self.assertEqual(list(bucket.acl), new_acl)
+        self.assertEqual(list(key.acl), new_acl)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -528,8 +527,7 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(bucket, KEY, metadata)
         key.reload_acl()
         self.assertTrue(key.clear_acl() is key)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/138
-        #self.assertEqual(list(key.acl), [])
+        self.assertEqual(list(key.acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
