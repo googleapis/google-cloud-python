@@ -142,7 +142,7 @@ class TestConnection(unittest2.TestCase):
                         'storage',
                         conn.API_VERSION,
                         'foo'
-                       ])
+                        ])
         uri = conn.build_api_url('/foo', {'bar': 'baz'})
         scheme, netloc, path, qs, frag = urlsplit(uri)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
@@ -217,13 +217,11 @@ class TestConnection(unittest2.TestCase):
         URI = '/'.join([conn.API_BASE_URL,
                         'storage',
                         conn.API_VERSION,
-                        '%s?project=%s' % (PATH, PROJECT)
-                        ])
+                        ]) + '%s?project=%s' % (PATH, PROJECT)
         http = conn._http = Http({'status': '200',
                                   'content-type': 'application/json',
-                                  },
-                                 '{}')
-        self.assertEqual(conn.api_request('GET', '/'), {})
+                                  }, '{}')
+        self.assertEqual(conn.api_request('GET', PATH), {})
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], None)

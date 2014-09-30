@@ -212,7 +212,7 @@ class TestKeyDataIterator(unittest2.TestCase):
         response2['content-range'] = '10-14/15'
         connection = _Connection((response1, '0123456789'),
                                  (response2, '01234'),
-                                )
+                                 )
         key = _Key(connection)
         iterator = self._makeOne(key)
         chunks = list(iterator)
