@@ -33,6 +33,9 @@ class Key(object):
     We make a shallow copy of the :class:`gcloud.datastore.dataset.Dataset`
     because it holds a reference an authenticated connection,
     which we don't want to lose.
+
+    :rtype: :class:`gcloud.datastore.key.Key`
+    :returns: a new `Key` instance
     """
     clone = copy.deepcopy(self)
     clone._dataset = self._dataset  # Make a shallow copy of the Dataset.
@@ -265,8 +268,15 @@ class Key(object):
     return self.id() or self.name()
 
   def parent(self):#pragma NO COVER
-    # See https://github.com/GoogleCloudPlatform/gcloud-python/issues/135
-    raise NotImplementedError
+    """Getter:  return a new key for the next highest element in path.
+
+    :rtype: :class:`gcloud.datastore.key.Key`
+    :returns: a new `Key` instance, whose path consists of all but the last
+    element of self's path.  If self has only one path element, return None.
+    """
+    if len(self._path) <= 1:
+        return None
+    return self.path(self.path()[:-1])
 
   def __repr__(self): #pragma NO COVER
     return '<Key%s>' % self.path()
