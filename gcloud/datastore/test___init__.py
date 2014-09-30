@@ -29,8 +29,7 @@ class Test_get_connection(unittest2.TestCase):
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
                           'scope': SCOPE,
-                          }
-                         )
+                          })
 
 
 class Test_get_dataset(unittest2.TestCase):
@@ -64,5 +63,4 @@ class Test_get_dataset(unittest2.TestCase):
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
                           'scope': SCOPE,
-                          }
-                         )
+                          })

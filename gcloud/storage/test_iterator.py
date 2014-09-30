@@ -207,7 +207,7 @@ class TestKeyDataIterator(unittest2.TestCase):
 
     def test__iter__(self):
         response1 = _Response(status=200)
-        response1['content-range'] = '0-10/15'
+        response1['content-range'] = '0-9/15'
         response2 = _Response(status=200)
         response2['content-range'] = '10-14/15'
         connection = _Connection((response1, '0123456789'),

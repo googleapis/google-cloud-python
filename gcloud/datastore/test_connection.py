@@ -56,7 +56,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        METHOD, ])
+                        METHOD,
+                        ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
         self.assertEqual(conn._request(DATASET_ID, METHOD, DATA), 'CONTENT')
         self.assertEqual(http._called_with,
@@ -66,8 +67,7 @@ class TestConnection(unittest2.TestCase):
                                       'Content-Length': '4',
                                       },
                           'body': DATA,
-                          }
-                         )
+                          })
 
     def test__request_not_200(self):
         DATASET_ID = 'DATASET'
@@ -143,7 +143,8 @@ class TestConnection(unittest2.TestCase):
                         VER,
                         'datasets',
                         DATASET_ID,
-                        METHOD, ])
+                        METHOD,
+                        ])
         self.assertEqual(klass.build_api_url(DATASET_ID, METHOD, BASE, VER),
                          URI)
 
@@ -386,7 +387,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'lookup', ])
+                        'lookup',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.lookup(DATASET_ID, key_pb), None)
         cw = http._called_with
@@ -458,7 +460,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'lookup', ])
+                        'lookup',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.lookup(DATASET_ID, [key_pb1, key_pb2]), [])
         cw = http._called_with
