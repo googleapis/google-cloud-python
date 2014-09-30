@@ -211,7 +211,7 @@ class KeyDataIterator(object):
 
   def get_headers(self):
     start = self._bytes_written
-    end = self._bytes_written + self.key.CHUNK_SIZE
+    end = self._bytes_written + self.key.CHUNK_SIZE - 1
 
     if self._total_bytes and end > self._total_bytes:
       end = ''

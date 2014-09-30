@@ -206,29 +206,29 @@ class TestKeyDataIterator(unittest2.TestCase):
 
     def test__iter__(self):
         response1 = _Response(status=200)
-        response1['content-range'] = '0-10/15'
+        response1['content-range'] = '0-9/15'
         response2 = _Response(status=200)
-        response2['content-range'] = '11-14/15'
-        connection = _Connection((response1, '01234567890'),
-                                 (response2, '1234'),
+        response2['content-range'] = '10-14/15'
+        connection = _Connection((response1, '0123456789'),
+                                 (response2, '01234'),
                                 )
         key = _Key(connection)
         iterator = self._makeOne(key)
         chunks = list(iterator)
         self.assertEqual(len(chunks), 2)
-        self.assertEqual(chunks[0], '01234567890')
-        self.assertEqual(chunks[1], '1234')
+        self.assertEqual(chunks[0], '0123456789')
+        self.assertEqual(chunks[1], '01234')
         self.assertEqual(iterator._bytes_written, 15)
         self.assertEqual(iterator._total_bytes, 15)
         kws = connection._requested
         self.assertEqual(kws[0]['method'], 'GET')
-        self.assertEqual(kws[0]['url'], 
+        self.assertEqual(kws[0]['url'],
                          'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kws[0]['headers'], {'Range': 'bytes=0-10'})
+        self.assertEqual(kws[0]['headers'], {'Range': 'bytes=0-9'})
         self.assertEqual(kws[1]['method'], 'GET')
-        self.assertEqual(kws[1]['url'], 
+        self.assertEqual(kws[1]['url'],
                          'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kws[1]['headers'], {'Range': 'bytes=11-'})
+        self.assertEqual(kws[1]['headers'], {'Range': 'bytes=10-'})
 
     def test_reset(self):
         connection = _Connection()
@@ -275,7 +275,7 @@ class TestKeyDataIterator(unittest2.TestCase):
         iterator = self._makeOne(key)
         headers = iterator.get_headers()
         self.assertEqual(len(headers), 1)
-        self.assertEqual(headers['Range'], 'bytes=0-10')
+        self.assertEqual(headers['Range'], 'bytes=0-9')
 
     def test_get_headers_ok(self):
         connection = _Connection()
@@ -285,7 +285,7 @@ class TestKeyDataIterator(unittest2.TestCase):
         iterator._total_bytes = 1000
         headers = iterator.get_headers()
         self.assertEqual(len(headers), 1)
-        self.assertEqual(headers['Range'], 'bytes=10-20')
+        self.assertEqual(headers['Range'], 'bytes=10-19')
 
     def test_get_headers_off_end(self):
         connection = _Connection()
@@ -313,7 +313,7 @@ class TestKeyDataIterator(unittest2.TestCase):
 
     def test_get_next_chunk_200(self):
         response = _Response(status=200)
-        response['content-range'] = '0-10/100'
+        response['content-range'] = '0-9/100'
         connection = _Connection((response, 'CHUNK'))
         key = _Key(connection)
         iterator = self._makeOne(key)
@@ -323,9 +323,9 @@ class TestKeyDataIterator(unittest2.TestCase):
         self.assertEqual(iterator._total_bytes, 100)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['url'], 
+        self.assertEqual(kw['url'],
                          'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kw['headers'], {'Range': 'bytes=0-10'})
+        self.assertEqual(kw['headers'], {'Range': 'bytes=0-9'})
 
     def test_get_next_chunk_206(self):
         response = _Response(status=206)
@@ -338,9 +338,9 @@ class TestKeyDataIterator(unittest2.TestCase):
         self.assertEqual(iterator._bytes_written, len(chunk))
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['url'], 
+        self.assertEqual(kw['url'],
                          'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kw['headers'], {'Range': 'bytes=0-10'})
+        self.assertEqual(kw['headers'], {'Range': 'bytes=0-9'})
 
     def test_get_next_chunk_416(self):
         response = _Response(status=416)
