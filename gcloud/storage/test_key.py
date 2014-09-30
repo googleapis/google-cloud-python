@@ -162,7 +162,7 @@ class Test_Key(unittest2.TestCase):
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
-                                )
+                                 )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
@@ -207,7 +207,7 @@ class Test_Key(unittest2.TestCase):
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
-                                )
+                                 )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5

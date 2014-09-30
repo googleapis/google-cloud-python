@@ -193,7 +193,7 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(key.kind(), 'ghi')
         self.assertEqual(key.path(), [{'kind': 'abc', 'name': 'def'},
                                       {'kind': 'ghi', 'id': 123},
-                                     ])
+                                      ])
 
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne()

@@ -146,8 +146,7 @@ class BucketIterator(Iterator):
     super(BucketIterator, self).__init__(connection=connection, path='/b')
 
   def get_items_from_response(self, response):
-    """Factory method which yields :class:`gcloud.storage.bucket.Bucket`
-       items from a response.
+    """Factory method which yields :class:`gcloud.storage.bucket.Bucket` items from a response.
 
     :type response: dict
     :param response: The JSON API response for a page of buckets.
@@ -175,8 +174,7 @@ class KeyIterator(Iterator):
         connection=bucket.connection, path=bucket.path + '/o')
 
   def get_items_from_response(self, response):
-    """Factory method which yields :class:`gcloud.storage.key.Key`
-       items from a response.
+    """Factory method which yields :class:`gcloud.storage.key.Key` items from a response.
 
     :type response: dict
     :param response: The JSON API response for a page of keys.

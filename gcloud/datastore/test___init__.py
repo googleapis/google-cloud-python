@@ -28,7 +28,9 @@ class Test_get_connection(unittest2.TestCase):
         self.assertEqual(client._called_with,
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
-                          'scope': SCOPE, })
+                          'scope': SCOPE,
+                          }
+                         )
 
 
 class Test_get_dataset(unittest2.TestCase):
@@ -61,4 +63,6 @@ class Test_get_dataset(unittest2.TestCase):
         self.assertEqual(client._called_with,
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
-                          'scope': SCOPE, })
+                          'scope': SCOPE,
+                          }
+                         )

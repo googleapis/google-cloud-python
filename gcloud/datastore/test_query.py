@@ -197,7 +197,8 @@ class TestQuery(unittest2.TestCase):
                          [{'kind': _KIND, 'id': _ID}])
         self.assertEqual(connection._called_with,
                          {'dataset_id': _DATASET,
-                          'query_pb': query.to_protobuf(), })
+                          'query_pb': query.to_protobuf(),
+                          })
 
     def test_fetch_explicit_limit(self):
         from gcloud.datastore.datastore_v1_pb2 import Entity
@@ -221,7 +222,8 @@ class TestQuery(unittest2.TestCase):
                          [{'kind': _KIND, 'id': _ID}])
         self.assertEqual(connection._called_with,
                          {'dataset_id': _DATASET,
-                          'query_pb': limited.to_protobuf(), })
+                          'query_pb': limited.to_protobuf(),
+                          })
 
 
 class _Dataset(object):

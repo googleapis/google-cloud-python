@@ -104,8 +104,7 @@ class Bucket(object):
     return list(self)
 
   def new_key(self, key):
-    """Given a path name (or a Key), return a :class:`gcloud.storage.key.Key`
-       object.
+    """Given a path name (or a Key), return a :class:`gcloud.storage.key.Key` object.
 
     This is really useful when you're not sure
     if you have a Key object or a string path name.
@@ -404,7 +403,9 @@ class Bucket(object):
     """
 
     data = {'website': {'mainPageSuffix': main_page_suffix,
-                        'notFoundPage': not_found_page, }}
+                        'notFoundPage': not_found_page,
+                        }
+            }
     return self.patch_metadata(data)
 
   def disable_website(self):

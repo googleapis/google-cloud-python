@@ -63,8 +63,11 @@ class TestConnection(unittest2.TestCase):
                          {'uri': URI,
                           'method': 'POST',
                           'headers': {'Content-Type': 'application/x-protobuf',
-                                      'Content-Length': '4', },
-                          'body': DATA, })
+                                      'Content-Length': '4',
+                                      },
+                          'body': DATA,
+                          }
+                         )
 
     def test__request_not_200(self):
         DATASET_ID = 'DATASET'
@@ -101,7 +104,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        METHOD, ])
+                        METHOD,
+                        ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
         response = conn._rpc(DATASET_ID, METHOD, ReqPB(), RspPB)
         self.assertTrue(isinstance(response, RspPB))
@@ -110,8 +114,10 @@ class TestConnection(unittest2.TestCase):
                          {'uri': URI,
                           'method': 'POST',
                           'headers': {'Content-Type': 'application/x-protobuf',
-                                      'Content-Length': '5', },
-                          'body': b'REQPB', })
+                                      'Content-Length': '5',
+                                      },
+                          'body': b'REQPB',
+                          })
 
     def test_build_api_url_w_default_base_version(self):
         DATASET_ID = 'DATASET'
@@ -122,7 +128,8 @@ class TestConnection(unittest2.TestCase):
                         klass.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        METHOD, ])
+                        METHOD,
+                        ])
         self.assertEqual(klass.build_api_url(DATASET_ID, METHOD), URI)
 
     def test_build_api_url_w_explicit_base_version(self):
@@ -200,7 +207,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'beginTransaction', ])
+                        'beginTransaction',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(DATASET_ID), TRANSACTION)
         cw = http._called_with
@@ -208,7 +216,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '2', })
+                          'Content-Length': '2',
+                          })
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -228,7 +237,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'beginTransaction', ])
+                        'beginTransaction',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(DATASET_ID, True), TRANSACTION)
         cw = http._called_with
@@ -236,7 +246,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '2', })
+                          'Content-Length': '2',
+                          })
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -277,7 +288,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'rollback', ])
+                        'rollback',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.rollback_transaction(DATASET_ID), None)
         cw = http._called_with
@@ -285,7 +297,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '6', })
+                          'Content-Length': '6',
+                          })
         rq_class = datastore_pb.RollbackRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -305,7 +318,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'runQuery', ])
+                        'runQuery',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.run_query(DATASET_ID, q_pb), [])
         cw = http._called_with
@@ -313,7 +327,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '14', })
+                          'Content-Length': '14',
+                          })
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -338,7 +353,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'runQuery', ])
+                        'runQuery',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.run_query(DATASET_ID, q_pb, 'NS')
         returned, = result  # One entity.
@@ -347,7 +363,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '16', })
+                          'Content-Length': '16',
+                          })
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -377,7 +394,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '26', })
+                          'Content-Length': '26',
+                          })
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -403,7 +421,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'lookup', ])
+                        'lookup',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found = conn.lookup(DATASET_ID, key_pb)
         self.assertEqual(found.key.path_element[0].kind, 'Kind')
@@ -413,7 +432,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '26', })
+                          'Content-Length': '26',
+                          })
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -446,7 +466,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '52', })
+                          'Content-Length': '52',
+                          })
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -476,7 +497,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'commit', ])
+                        'commit',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.commit(DATASET_ID, mutation)
         self.assertEqual(result.index_updates, 0)
@@ -486,7 +508,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '47', })
+                          'Content-Length': '47',
+                          })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -519,7 +542,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'commit', ])
+                        'commit',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.commit(DATASET_ID, mutation)
         self.assertEqual(result.index_updates, 0)
@@ -529,7 +553,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '53', })
+                          'Content-Length': '53',
+                          })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -552,7 +577,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'commit', ])
+                        'commit',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
         self.assertEqual(result, True)
@@ -561,7 +587,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '47', })
+                          'Content-Length': '47',
+                          })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -600,7 +627,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'commit', ])
+                        'commit',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
         self.assertEqual(result, updated_key_pb)
@@ -609,7 +637,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '44', })
+                          'Content-Length': '44',
+                          })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -653,7 +682,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'commit', ])
+                        'commit',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
         self.assertEqual(result, True)
@@ -686,7 +716,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '30', })
+                          'Content-Length': '30',
+                          })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -725,7 +756,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'commit', ])
+                        'commit',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entities(DATASET_ID, [key_pb])
         self.assertEqual(result, True)
@@ -748,7 +780,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'commit', ])
+                        'commit',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entity(DATASET_ID, key_pb)
         self.assertEqual(result.index_updates, 0)
@@ -758,7 +791,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '30', })
+                          'Content-Length': '30',
+                          })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -797,7 +831,8 @@ class TestConnection(unittest2.TestCase):
                         conn.API_VERSION,
                         'datasets',
                         DATASET_ID,
-                        'commit', ])
+                        'commit',
+                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entity(DATASET_ID, key_pb)
         self.assertEqual(result, True)

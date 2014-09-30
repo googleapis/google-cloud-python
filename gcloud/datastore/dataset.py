@@ -91,7 +91,8 @@ class Dataset(object):
 
     entity_pbs = self.connection().lookup(
         dataset_id=self.id(),
-        key_pbs=[k.to_protobuf() for k in keys])
+        key_pbs=[k.to_protobuf() for k in keys]
+    )
 
     entities = []
     for entity_pb in entity_pbs:

@@ -23,7 +23,8 @@ class TestCredentials(unittest2.TestCase):
         self.assertEqual(client._called_with,
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
-                          'scope': None, })
+                          'scope': None,
+                          })
 
     def test_get_for_service_account_w_scope(self):
         from tempfile import NamedTemporaryFile
@@ -43,7 +44,8 @@ class TestCredentials(unittest2.TestCase):
         self.assertEqual(client._called_with,
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
-                          'scope': SCOPE, })
+                          'scope': SCOPE,
+                          })
 
 
 class _Client(object):
