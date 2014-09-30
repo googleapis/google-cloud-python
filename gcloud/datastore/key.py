@@ -125,6 +125,9 @@ class Key(object):
     :rtype: :class:`gcloud.datastore.key.Key`
     :returns: a new `Key` instance
     """
+    if len(args) % 2:
+        raise ValueError('Must pass an even number of args.')
+
     path = []
     items = iter(args)
 
