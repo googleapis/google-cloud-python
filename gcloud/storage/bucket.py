@@ -232,6 +232,8 @@ class Bucket(object):
                 to the root of the bucket
                 with the same name as on your local file system.
     """
+    if key is None:
+        key = os.path.basename(filename)
     key = self.new_key(key)
     return key.set_contents_from_filename(filename)
 
