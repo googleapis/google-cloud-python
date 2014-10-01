@@ -328,7 +328,7 @@ class Query(object):
 
       if p.startswith('-'):
         property_order.property.name = p[1:]
-        property_order.direct = property_order.DESCENDING
+        property_order.direction = property_order.DESCENDING
       else:
         property_order.property.name = p
         property_order.direction = property_order.ASCENDING
