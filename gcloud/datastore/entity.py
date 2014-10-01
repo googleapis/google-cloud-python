@@ -44,7 +44,7 @@ class Entity(dict):
     <Entity[{'kind': 'MyEntityKind'}] {}>
 
   - :func:`gcloud.datastore.dataset.Dataset.get_entity`
-          to retrive an existing entity.
+    to retrieve an existing entity.
 
     >>> dataset.get_entity(key)
     <Entity[{'kind': 'EntityKind', id: 1234}] {'property': 'value'}>
@@ -137,7 +137,7 @@ class Entity(dict):
     The protobuf should be one returned from the Cloud Datastore Protobuf API.
 
     :type key: :class:`gcloud.datastore.datastore_v1_pb2.Entity`
-               :param key: The Protobuf representing the entity.
+    :param key: The Protobuf representing the entity.
 
     :returns: The :class:`Entity` derived from the
               :class:`gcloud.datastore.datastore_v1_pb2.Entity`.

@@ -21,7 +21,7 @@ class Key(object):
 
     :type path: sequence of dicts
     :param path: Each dict must have keys 'kind' (a string) and optionally
-    'name' (a string) or 'id' (an integer).
+                 'name' (a string) or 'id' (an integer).
     """
     self._dataset = dataset
     self._namespace = namespace
