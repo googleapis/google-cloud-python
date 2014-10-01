@@ -21,18 +21,15 @@ class Transaction(object):
     ...   entity1.save()
     ...   entity2.save()
 
-  To rollback a transaction if there is an error::
+  By default, the transaction is rolled back is an error::
 
     >>> from gcloud import datastore
     >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
     >>> with dataset.transaction() as t:
-    ...   try:
-    ...     do_some_work()
-    ...     entity1.save()
-    ...   except:
-    ...     t.rollback()
+    ...   do_some_work()
+    ...   raise Exception() # rolls back
 
-  If the transaction isn't rolled back,
+  If the transaction block exists without an exception,
   it will commit by default.
 
   .. warning::
@@ -249,4 +246,7 @@ class Transaction(object):
     return self
 
   def __exit__(self, exc_type, exc_val, exc_tb):
-    self.commit()
+    if exc_type is None:
+      self.commit()
+    else:
+      self.rollback()
