@@ -15,13 +15,11 @@ with extras built in that allow you to
 delete or persist the data stored on the entity.
 """
 
-from datetime import datetime
-
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.key import Key
 
 
-class Entity(dict):
+class Entity(dict):  # pylint: disable=too-many-public-methods
     """
     :type dataset: :class:`gcloud.datastore.dataset.Dataset`
     :param dataset: The dataset in which this entity belongs.
@@ -65,6 +63,7 @@ class Entity(dict):
     """
 
     def __init__(self, dataset=None, kind=None):
+        super(Entity, self).__init__()
         if dataset and kind:
             self._key = Key(dataset=dataset).kind(kind)
         else:
@@ -100,7 +99,7 @@ class Entity(dict):
         <Key[{'kind': 'OtherKeyKind', 'id': 1234}]>
         """
 
-        if key:
+        if key is not None:
             self._key = key
             return self
         else:
@@ -135,14 +134,14 @@ class Entity(dict):
         return cls().key(key)
 
     @classmethod
-    def from_protobuf(cls, pb, dataset=None):
+    def from_protobuf(cls, pb, dataset=None):  # pylint: disable=invalid-name
         """Factory method for creating an entity based on a protobuf.
 
         The protobuf should be one returned from the Cloud Datastore
         Protobuf API.
 
-        :type key: :class:`gcloud.datastore.datastore_v1_pb2.Entity`
-        :param key: The Protobuf representing the entity.
+        :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Entity`
+        :param pb: The Protobuf representing the entity.
 
         :returns: The :class:`Entity` derived from the
                   :class:`gcloud.datastore.datastore_v1_pb2.Entity`.
@@ -174,7 +173,9 @@ class Entity(dict):
         """
 
         # Note that you must have a valid key, otherwise this makes no sense.
+        # pylint: disable=maybe-no-member
         entity = self.dataset().get_entity(self.key().to_protobuf())
+        # pylint: enable=maybe-no-member
 
         if entity:
             self.update(entity)
@@ -186,20 +187,26 @@ class Entity(dict):
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: The entity with a possibly updated Key.
         """
+        # pylint: disable=maybe-no-member
         key_pb = self.dataset().connection().save_entity(
             dataset_id=self.dataset().id(),
             key_pb=self.key().to_protobuf(), properties=dict(self))
+        # pylint: enable=maybe-no-member
 
         # If we are in a transaction and the current entity needs an
         # automatically assigned ID, tell the transaction where to put that.
         transaction = self.dataset().connection().transaction()
+        # pylint: disable=maybe-no-member
         if transaction and self.key().is_partial():
             transaction.add_auto_id_entity(self)
+        # pylint: enable=maybe-no-member
 
         if isinstance(key_pb, datastore_pb.Key):
             updated_key = Key.from_protobuf(key_pb)
             # Update the path (which may have been altered).
+            # pylint: disable=maybe-no-member
             key = self.key().path(updated_key.path())
+            # pylint: enable=maybe-no-member
             self.key(key)
 
         return self
@@ -212,13 +219,20 @@ class Entity(dict):
           set on the entity. Whatever is stored remotely using the key on the
           entity will be deleted.
         """
+        # NOTE: pylint thinks key() is an Entity, hence key().to_protobuf()
+        #       is not defined. This is because one branch of the return
+        #       in the key() definition returns self.
+        # pylint: disable=maybe-no-member
         self.dataset().connection().delete_entity(
             dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf())
+        # pylint: enable=maybe-no-member
 
     def __repr__(self):  # pragma NO COVER
         # An entity should have a key all the time (even if it's partial).
         if self.key():
+            # pylint: disable=maybe-no-member
             return '<Entity%s %s>' % (self.key().path(),
                                       super(Entity, self).__repr__())
+            # pylint: enable=maybe-no-member
         else:
             return '<Entity %s>' % (super(Entity, self).__repr__())
