@@ -25,6 +25,7 @@ class TestIterator(unittest2.TestCase):
         KEY2 = 'key2'
         ITEM1, ITEM2 = object(), object()
         ITEMS = {KEY1: ITEM1, KEY2: ITEM2}
+
         def _get_items(response):
             for item in response.get('items', []):
                 yield ITEMS[item['name']]
@@ -73,7 +74,7 @@ class TestIterator(unittest2.TestCase):
         iterator.next_page_token = TOKEN
         self.assertEqual(iterator.get_query_params(),
                          {'pageToken': TOKEN,
-                         })
+                          })
 
     def test_get_next_page_response_new_no_token_in_response(self):
         PATH = '/foo'
@@ -206,29 +207,29 @@ class TestKeyDataIterator(unittest2.TestCase):
 
     def test__iter__(self):
         response1 = _Response(status=200)
-        response1['content-range'] = '0-10/15'
+        response1['content-range'] = '0-9/15'
         response2 = _Response(status=200)
-        response2['content-range'] = '11-14/15'
-        connection = _Connection((response1, '01234567890'),
-                                 (response2, '1234'),
-                                )
+        response2['content-range'] = '10-14/15'
+        connection = _Connection((response1, '0123456789'),
+                                 (response2, '01234'),
+                                 )
         key = _Key(connection)
         iterator = self._makeOne(key)
         chunks = list(iterator)
         self.assertEqual(len(chunks), 2)
-        self.assertEqual(chunks[0], '01234567890')
-        self.assertEqual(chunks[1], '1234')
+        self.assertEqual(chunks[0], '0123456789')
+        self.assertEqual(chunks[1], '01234')
         self.assertEqual(iterator._bytes_written, 15)
         self.assertEqual(iterator._total_bytes, 15)
         kws = connection._requested
         self.assertEqual(kws[0]['method'], 'GET')
-        self.assertEqual(kws[0]['url'], 
+        self.assertEqual(kws[0]['url'],
                          'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kws[0]['headers'], {'Range': 'bytes=0-10'})
+        self.assertEqual(kws[0]['headers'], {'Range': 'bytes=0-9'})
         self.assertEqual(kws[1]['method'], 'GET')
-        self.assertEqual(kws[1]['url'], 
+        self.assertEqual(kws[1]['url'],
                          'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kws[1]['headers'], {'Range': 'bytes=11-'})
+        self.assertEqual(kws[1]['headers'], {'Range': 'bytes=10-'})
 
     def test_reset(self):
         connection = _Connection()
@@ -250,7 +251,7 @@ class TestKeyDataIterator(unittest2.TestCase):
         connection = _Connection()
         key = _Key(connection)
         iterator = self._makeOne(key)
-        iterator._bytes_written = 10 # no _total_bytes
+        iterator._bytes_written = 10  # no _total_bytes.
         self.assertRaises(ValueError, iterator.has_more_data)
 
     def test_has_more_data_true(self):
@@ -275,7 +276,7 @@ class TestKeyDataIterator(unittest2.TestCase):
         iterator = self._makeOne(key)
         headers = iterator.get_headers()
         self.assertEqual(len(headers), 1)
-        self.assertEqual(headers['Range'], 'bytes=0-10')
+        self.assertEqual(headers['Range'], 'bytes=0-9')
 
     def test_get_headers_ok(self):
         connection = _Connection()
@@ -285,7 +286,7 @@ class TestKeyDataIterator(unittest2.TestCase):
         iterator._total_bytes = 1000
         headers = iterator.get_headers()
         self.assertEqual(len(headers), 1)
-        self.assertEqual(headers['Range'], 'bytes=10-20')
+        self.assertEqual(headers['Range'], 'bytes=10-19')
 
     def test_get_headers_off_end(self):
         connection = _Connection()
@@ -313,7 +314,7 @@ class TestKeyDataIterator(unittest2.TestCase):
 
     def test_get_next_chunk_200(self):
         response = _Response(status=200)
-        response['content-range'] = '0-10/100'
+        response['content-range'] = '0-9/100'
         connection = _Connection((response, 'CHUNK'))
         key = _Key(connection)
         iterator = self._makeOne(key)
@@ -323,9 +324,9 @@ class TestKeyDataIterator(unittest2.TestCase):
         self.assertEqual(iterator._total_bytes, 100)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['url'], 
+        self.assertEqual(kw['url'],
                          'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kw['headers'], {'Range': 'bytes=0-10'})
+        self.assertEqual(kw['headers'], {'Range': 'bytes=0-9'})
 
     def test_get_next_chunk_206(self):
         response = _Response(status=206)
@@ -338,9 +339,9 @@ class TestKeyDataIterator(unittest2.TestCase):
         self.assertEqual(iterator._bytes_written, len(chunk))
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['url'], 
+        self.assertEqual(kw['url'],
                          'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kw['headers'], {'Range': 'bytes=0-10'})
+        self.assertEqual(kw['headers'], {'Range': 'bytes=0-9'})
 
     def test_get_next_chunk_416(self):
         response = _Response(status=416)
@@ -356,10 +357,13 @@ class _Response(dict):
     def status(self):
         return self['status']
 
+
 class _Connection(object):
+
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
+
     def make_request(self, **kw):
         from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
@@ -369,6 +373,7 @@ class _Connection(object):
             raise NotFoundError('miss', None)
         else:
             return response
+
     def api_request(self, **kw):
         from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
@@ -378,19 +383,24 @@ class _Connection(object):
             raise NotFoundError('miss', None)
         else:
             return response
+
     def build_api_url(self, path, query_params=None):
         from urllib import urlencode
         from urlparse import urlunsplit
         qs = urlencode(query_params or {})
         return urlunsplit(('http', 'example.com', path, qs, ''))
 
+
 class _Bucket(object):
     path = '/b/name'
+
     def __init__(self, connection):
         self.connection = connection
+
 
 class _Key(object):
     CHUNK_SIZE = 10
     path = '/b/name/o/key'
+
     def __init__(self, connection):
         self.connection = connection

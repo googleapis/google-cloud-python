@@ -2,9 +2,13 @@
 import calendar
 from datetime import datetime, timedelta
 
+from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
 
 from gcloud.datastore.key import Key
+
+
+INT64 = Int64ValueChecker().CheckValue
 
 
 def get_protobuf_attribute_and_value(val):
@@ -53,7 +57,7 @@ def get_protobuf_attribute_and_value(val):
   elif isinstance(val, float):
     name, value = 'double', val
   elif isinstance(val, (int, long)):
-    name, value = 'integer', val
+    name, value = 'integer', INT64(val)
   elif isinstance(val, basestring):
     name, value = 'string', val
 
@@ -78,8 +82,9 @@ def get_value_from_protobuf(pb):
 
   if pb.value.HasField('timestamp_microseconds_value'):
     microseconds = pb.value.timestamp_microseconds_value
-    return (datetime.utcfromtimestamp(0) +
-            timedelta(microseconds=microseconds))
+    naive = (datetime.utcfromtimestamp(0) +
+             timedelta(microseconds=microseconds))
+    return naive.replace(tzinfo=pytz.utc)
 
   elif pb.value.HasField('key_value'):
     return Key.from_protobuf(pb.value.key_value)

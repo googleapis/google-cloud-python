@@ -1,5 +1,6 @@
 import unittest2
 
+
 class TestConnection(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -30,8 +31,11 @@ class TestConnection(unittest2.TestCase):
 
     def test_http_w_creds(self):
         from httplib2 import Http
+
         authorized = object()
+
         class Creds(object):
+
             def authorize(self, http):
                 self._called_with = http
                 return authorized

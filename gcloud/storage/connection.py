@@ -160,9 +160,9 @@ class Connection(connection.Connection):
       headers['Content-Type'] = content_type
 
     return self.http.request(uri=url, method=method, headers=headers,
-                               body=data)
+                             body=data)
 
-  def api_request(self, method, path=None, query_params=None,
+  def api_request(self, method, path, query_params=None,
                   data=None, content_type=None,
                   api_base_url=None, api_version=None,
                   expect_json=True):
@@ -174,32 +174,40 @@ class Connection(connection.Connection):
 
     :type method: string
     :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).
+                   Required.
 
     :type path: string
     :param path: The path to the resource (ie, ``'/b/bucket-name'``).
+                 Required.
 
     :type query_params: dict
     :param query_params: A dictionary of keys and values to insert into
-                         the query string of the URL.
+                         the query string of the URL.  Default is empty dict.
 
     :type data: string
-    :param data: The data to send as the body of the request.
+    :param data: The data to send as the body of the request. Default is the
+                 empty string.
 
     :type content_type: string
-    :param content_type: The proper MIME type of the data provided.
+    :param content_type: The proper MIME type of the data provided. Default
+                         is None.
 
     :type api_base_url: string
     :param api_base_url: The base URL for the API endpoint.
                          Typically you won't have to provide this.
+                         Default is the standard API base URL.
 
     :type api_version: string
     :param api_version: The version of the API to call.
                         Typically you shouldn't provide this and instead
                         use the default for the library.
+                        Default is the latest API version supported by
+                        gcloud-python.
 
     :type expect_json: bool
     :param expect_json: If True, this method will try to parse the response
                         as JSON and raise an exception if that cannot be done.
+                        Default is True.
 
     :raises: Exception if the response code is not 200 OK.
     """
@@ -230,7 +238,7 @@ class Connection(connection.Connection):
 
     return content
 
-  def get_all_buckets(self, *args, **kwargs):
+  def get_all_buckets(self):
     """Get all buckets in the project.
 
     This will not populate the list of keys available
@@ -253,7 +261,7 @@ class Connection(connection.Connection):
 
     return list(self)
 
-  def get_bucket(self, bucket_name, *args, **kwargs):
+  def get_bucket(self, bucket_name):
     """Get a bucket by name.
 
     If the bucket isn't found,
@@ -312,7 +320,7 @@ class Connection(connection.Connection):
     except exceptions.NotFoundError:
       return None
 
-  def create_bucket(self, bucket, *args, **kwargs):
+  def create_bucket(self, bucket):
     """Create a new bucket.
 
     For example::
@@ -335,7 +343,7 @@ class Connection(connection.Connection):
                                 data={'name': bucket.name})
     return Bucket.from_dict(response, connection=self)
 
-  def delete_bucket(self, bucket, force=False, *args, **kwargs):
+  def delete_bucket(self, bucket, force=False):
     """Delete a bucket.
 
     You can use this method to delete a bucket by name,
@@ -407,7 +415,7 @@ class Connection(connection.Connection):
     # Support Python 2 and 3.
     try:
       string_type = basestring
-    except NameError: #pragma NO COVER PY3k
+    except NameError:  # pragma NO COVER PY3k
       string_type = str
 
     if isinstance(bucket, string_type):
@@ -415,7 +423,9 @@ class Connection(connection.Connection):
 
     raise TypeError('Invalid bucket: %s' % bucket)
 
-  def generate_signed_url(self, resource, expiration, method='GET', content_md5=None, content_type=None): #pragma NO COVER UGH
+  def generate_signed_url(self, resource, expiration,
+                          method='GET', content_md5=None,
+                          content_type=None):  # pragma NO COVER UGH
     """Generate a signed URL to provide query-string authentication to a resource.
 
     :type resource: string
@@ -462,19 +472,20 @@ class Connection(connection.Connection):
       expiration = int(time.mktime(expiration.timetuple()))
 
     if not isinstance(expiration, (int, long)):
-      raise ValueError('Expected an integer timestamp, datetime, or timedelta. '
-                       'Got %s' % type(expiration))
+      raise ValueError('Expected an integer timestamp, datetime, or '
+                       'timedelta. Got %s' % type(expiration))
 
     # Generate the string to sign.
     signature_string = '\n'.join([
-      method,
-      content_md5 or '',
-      content_type or '',
-      str(expiration),
-      resource])
+        method,
+        content_md5 or '',
+        content_type or '',
+        str(expiration),
+        resource])
 
     # Take our PKCS12 (.p12) key and make it into a RSA key we can use...
-    pkcs12 = crypto.load_pkcs12(base64.b64decode(self.credentials.private_key), 'notasecret')
+    pkcs12 = crypto.load_pkcs12(base64.b64decode(self.credentials.private_key),
+                                'notasecret')
     pem = crypto.dump_privatekey(crypto.FILETYPE_PEM, pkcs12.get_privatekey())
     pem_key = RSA.importKey(pem)
 

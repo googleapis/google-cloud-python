@@ -1,12 +1,13 @@
 import httplib2
 
+from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.dataset import Dataset
 from gcloud.datastore.transaction import Transaction
 
 
-class Connection(object):
+class Connection(connection.Connection):
   """A connection to the Google Cloud Datastore via the Protobuf API.
 
   This class should understand only the basic types (and protobufs)
@@ -16,9 +17,6 @@ class Connection(object):
   :param credentials: The OAuth2 Credentials to use for this connection.
   """
 
-  API_BASE_URL = 'https://www.googleapis.com'
-  """The base of the API call URL."""
-
   API_VERSION = 'v1beta2'
   """The version of the API, used in building the API call's URL."""
 
@@ -26,31 +24,9 @@ class Connection(object):
                       '/datasets/{dataset_id}/{method}')
   """A template used to craft the URL pointing toward a particular API call."""
 
-  _EMPTY = object()
-  """A pointer to represent an empty value for default arguments."""
-
   def __init__(self, credentials=None):
     self._credentials = credentials
     self._current_transaction = None
-    self._http = None
-
-  @property
-  def credentials(self):
-    return self._credentials
-
-  @property
-  def http(self):
-    """A getter for the HTTP transport used in talking to the API.
-
-    :rtype: :class:`httplib2.Http`
-    :returns: A Http object used to transport data.
-    """
-
-    if not self._http:
-      self._http = httplib2.Http()
-      if self._credentials:
-        self._http = self._credentials.authorize(self._http)
-    return self._http
 
   def _request(self, dataset_id, method, data):
     """Make a request over the Http transport to the Cloud Datastore API.
@@ -73,7 +49,7 @@ class Connection(object):
     headers = {
         'Content-Type': 'application/x-protobuf',
         'Content-Length': str(len(data)),
-        }
+    }
     headers, content = self.http.request(
         uri=self.build_api_url(dataset_id=dataset_id, method=method),
         method='POST', headers=headers, body=data)
@@ -117,7 +93,7 @@ class Connection(object):
         api_version=(api_version or cls.API_VERSION),
         dataset_id=dataset_id, method=method)
 
-  def transaction(self, transaction=_EMPTY):
+  def transaction(self, transaction=connection.Connection._EMPTY):
     if transaction is self._EMPTY:
       return self._current_transaction
     else:
@@ -156,7 +132,8 @@ class Connection(object):
     request = datastore_pb.BeginTransactionRequest()
 
     if serializable:
-      request.isolation_level = datastore_pb.BeginTransactionRequest.SERIALIZABLE
+      request.isolation_level = (
+          datastore_pb.BeginTransactionRequest.SERIALIZABLE)
     else:
       request.isolation_level = datastore_pb.BeginTransactionRequest.SNAPSHOT
 
@@ -165,23 +142,20 @@ class Connection(object):
 
     return response.transaction
 
-  def rollback_transaction(self, dataset_id, transaction_id):
-    """Rollback an existing transaction.
+  def rollback_transaction(self, dataset_id):
+    """Rollback the connection's existing transaction.
 
     Raises a ``ValueError``
     if the connection isn't currently in a transaction.
 
     :type dataset_id: string
     :param dataset_id: The dataset to which the transaction belongs.
-
-    :type transaction_id: string
-    :param transaction_id: The ID of the transaction to roll back.
     """
     if not self.transaction() or not self.transaction().id():
       raise ValueError('No transaction to rollback.')
 
     request = datastore_pb.RollbackRequest()
-    request.transaction = transaction_id
+    request.transaction = self.transaction().id()
     # Nothing to do with this response, so just execute the method.
     self._rpc(dataset_id, 'rollback', request,
               datastore_pb.RollbackResponse)
@@ -229,7 +203,8 @@ class Connection(object):
       request.partition_id.namespace = namespace
 
     request.query.CopyFrom(query_pb)
-    response = self._rpc(dataset_id, 'runQuery', request, datastore_pb.RunQueryResponse)
+    response = self._rpc(dataset_id, 'runQuery', request,
+                         datastore_pb.RunQueryResponse)
     return [e.entity for e in response.batch.entity_result]
 
   def lookup(self, dataset_id, key_pbs):

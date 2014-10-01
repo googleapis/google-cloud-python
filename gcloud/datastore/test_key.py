@@ -80,12 +80,20 @@ class TestKey(unittest2.TestCase):
         key = self._getTargetClass().from_protobuf(pb)
         self.assertEqual(key.dataset().id(), _DATASET)
 
-    def test_from_protobuf_w_namespace_in_pb(self):
+    def test_from_protobuf_w_namespace_in_pb_wo_dataset_passed(self):
         _NAMESPACE = 'NAMESPACE'
         pb = self._makePB(namespace=_NAMESPACE)
         key = self._getTargetClass().from_protobuf(pb)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/133
-        # self.assertEqual(key.namespace(), _NAMESPACE)  XXX
+        self.assertEqual(key.namespace(), _NAMESPACE)
+
+    def test_from_protobuf_w_namespace_in_pb_w_dataset_passed(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
+        dataset = Dataset(_DATASET)
+        pb = self._makePB(namespace=_NAMESPACE)
+        key = self._getTargetClass().from_protobuf(pb, dataset)
+        self.assertEqual(key.namespace(), None)
 
     def test_from_protobuf_w_path_in_pb(self):
         _DATASET = 'DATASET'
@@ -164,12 +172,11 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(key.path(), [{'kind': ''}])
 
     def test_from_path_single_element(self):
-        # See https://github.com/GoogleCloudPlatform/gcloud-python/issues/134
-        key = self._getTargetClass().from_path('abc')
-        self.assertEqual(key.dataset(), None)
-        self.assertEqual(key.namespace(), None)
-        self.assertEqual(key.kind(), '') # XXX s.b. 'abc'?
-        self.assertEqual(key.path(), [{'kind': ''}]) # XXX s.b. 'abc'?
+        self.assertRaises(ValueError, self._getTargetClass().from_path, 'abc')
+
+    def test_from_path_three_elements(self):
+        self.assertRaises(ValueError, self._getTargetClass().from_path,
+                          'abc', 'def', 'ghi')
 
     def test_from_path_two_elements_second_string(self):
         key = self._getTargetClass().from_path('abc', 'def')
@@ -184,9 +191,10 @@ class TestKey(unittest2.TestCase):
     def test_from_path_nested(self):
         key = self._getTargetClass().from_path('abc', 'def', 'ghi', 123)
         self.assertEqual(key.kind(), 'ghi')
-        self.assertEqual(key.path(), [{'kind': 'abc', 'name': 'def'},
-                                      {'kind': 'ghi', 'id': 123},
-                                     ])
+        self.assertEqual(key.path(),
+                         [{'kind': 'abc', 'name': 'def'},
+                          {'kind': 'ghi', 'id': 123},
+                          ])
 
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne()
@@ -339,6 +347,14 @@ class TestKey(unittest2.TestCase):
         key = self._makeOne(path=_PATH)
         self.assertEqual(key.id_or_name(), _NAME)
 
-    def _ugh(self):
-        protokey = key.to_protobuf()
-        self.assertEqual(protokey.partition_id.dataset_id, _DATASET)
+    def test_parent_default(self):
+        key = self._makeOne()
+        self.assertEqual(key.parent(), None)
+
+    def test_parent_explicit_top_level(self):
+        key = self._getTargetClass().from_path('abc', 'def')
+        self.assertEqual(key.parent(), None)
+
+    def test_parent_explicit_nested(self):
+        key = self._getTargetClass().from_path('abc', 'def', 'ghi', 123)
+        self.assertEqual(key.parent().path(), [{'kind': 'abc', 'name': 'def'}])

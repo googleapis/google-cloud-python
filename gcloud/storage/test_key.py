@@ -77,7 +77,8 @@ class Test_Key(unittest2.TestCase):
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         self.assertEqual(key.public_url,
-                    'http://commondatastorage.googleapis.com/name/%s' % KEY)
+                         'http://commondatastorage.googleapis.com/name/%s' %
+                         KEY)
 
     def test_exists_miss(self):
         NONESUCH = 'nonesuch'
@@ -116,7 +117,7 @@ class Test_Key(unittest2.TestCase):
         with _Monkey(MUT, KeyDataIterator=lambda self: iter(_CHUNKS)):
             key.get_contents_to_file(fh)
         self.assertEqual(fh.getvalue(), ''.join(_CHUNKS))
-            
+
     def test_get_contents_to_filename(self):
         from tempfile import NamedTemporaryFile
         from StringIO import StringIO
@@ -161,7 +162,7 @@ class Test_Key(unittest2.TestCase):
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
-                                )
+                                 )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
@@ -206,7 +207,7 @@ class Test_Key(unittest2.TestCase):
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
-                                )
+                                 )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
@@ -250,7 +251,7 @@ class Test_Key(unittest2.TestCase):
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
-                                )
+                                 )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
@@ -509,8 +510,7 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(bucket, KEY, metadata)
         key.reload_acl()
         self.assertTrue(key.save_acl(new_acl) is key)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/138
-        #self.assertEqual(list(bucket.acl), new_acl)
+        self.assertEqual(list(key.acl), new_acl)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -528,8 +528,7 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(bucket, KEY, metadata)
         key.reload_acl()
         self.assertTrue(key.clear_acl() is key)
-        # See: https://github.com/GoogleCloudPlatform/gcloud-python/issues/138
-        #self.assertEqual(list(key.acl), [])
+        self.assertEqual(list(key.acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -562,11 +561,14 @@ class _Response(dict):
     def status(self):
         return self.get('status', 200)
 
+
 class _Connection(object):
     API_BASE_URL = 'http://example.com'
+
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
+
     def make_request(self, **kw):
         from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
@@ -576,6 +578,7 @@ class _Connection(object):
             raise NotFoundError('miss', None)
         else:
             return response
+
     def api_request(self, **kw):
         from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
@@ -585,7 +588,9 @@ class _Connection(object):
             raise NotFoundError('miss', None)
         else:
             return response
-    def build_api_url(self, path, query_params=None, api_base_url=API_BASE_URL):
+
+    def build_api_url(self, path, query_params=None,
+                      api_base_url=API_BASE_URL):
         from urllib import urlencode
         from urlparse import urlsplit
         from urlparse import urlunsplit
@@ -593,13 +598,17 @@ class _Connection(object):
         scheme, netloc, _, _, _ = urlsplit(api_base_url)
         return urlunsplit((scheme, netloc, path, qs, ''))
 
+
 class _Bucket(object):
     path = '/b/name'
     name = 'name'
+
     def __init__(self, connection):
         self.connection = connection
         self._keys = {}
+
     def get_key(self, key):
-        return self._keys.get(key) #XXX s.b. 'key.name'?
+        return self._keys.get(key)  # XXX s.b. 'key.name'?
+
     def delete_key(self, key):
-        del self._keys[key.name] #XXX s.b. 'key'?
+        del self._keys[key.name]  # XXX s.b. 'key'?

@@ -43,19 +43,22 @@ class Entity(dict):
     >>> dataset.entity('MyEntityKind')
     <Entity[{'kind': 'MyEntityKind'}] {}>
 
-  - :func:`gcloud.datastore.dataset.Dataset.get_entity` to retrive an existing entity.
+  - :func:`gcloud.datastore.dataset.Dataset.get_entity`
+    to retrieve an existing entity.
 
     >>> dataset.get_entity(key)
     <Entity[{'kind': 'EntityKind', id: 1234}] {'property': 'value'}>
 
-  You can the set values on the entity just like you would on any other dictionary.
+  You can the set values on the entity
+  just like you would on any other dictionary.
 
   >>> entity['age'] = 20
   >>> entity['name'] = 'JJ'
   >>> entity
   <Entity[{'kind': 'EntityKind', id: 1234}] {'age': 20, 'name': 'JJ'}>
 
-  And you can cast an entity to a regular Python dictionary with the `dict` builtin:
+  And you can cast an entity to a regular Python dictionary
+  with the `dict` builtin:
 
   >>> dict(entity)
   {'age': 20, 'name': 'JJ'}
@@ -68,7 +71,7 @@ class Entity(dict):
       self._key = None
 
   def dataset(self):
-    """Get the :class:`gcloud.datastore.dataset.Dataset` in which this entity belonds.
+    """Get the :class:`gcloud.datastore.dataset.Dataset` in which this entity belongs.
 
     .. note::
       This is based on the :class:`gcloud.datastore.key.Key` set on the entity.
@@ -121,7 +124,8 @@ class Entity(dict):
     :type key: :class:`gcloud.datastore.key.Key`
     :param key: The key for the entity.
 
-    :returns: The :class:`Entity` derived from the :class:`gcloud.datastore.key.Key`.
+    :returns: The :class:`Entity` derived from the
+              :class:`gcloud.datastore.key.Key`.
     """
 
     return cls().key(key)
@@ -135,7 +139,8 @@ class Entity(dict):
     :type key: :class:`gcloud.datastore.datastore_v1_pb2.Entity`
     :param key: The Protobuf representing the entity.
 
-    :returns: The :class:`Entity` derived from the :class:`gcloud.datastore.datastore_v1_pb2.Entity`.
+    :returns: The :class:`Entity` derived from the
+              :class:`gcloud.datastore.datastore_v1_pb2.Entity`.
     """
 
     # This is here to avoid circular imports.
@@ -205,9 +210,10 @@ class Entity(dict):
     self.dataset().connection().delete_entity(
         dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf())
 
-  def __repr__(self): #pragma NO COVER
+  def __repr__(self):  # pragma NO COVER
     # An entity should have a key all the time (even if it's partial).
     if self.key():
-      return '<Entity%s %s>' % (self.key().path(), super(Entity, self).__repr__())
+      return '<Entity%s %s>' % (self.key().path(),
+                                super(Entity, self).__repr__())
     else:
       return '<Entity %s>' % (super(Entity, self).__repr__())

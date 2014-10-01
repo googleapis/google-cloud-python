@@ -47,7 +47,7 @@ class Query(object):
       '>': datastore_pb.PropertyFilter.GREATER_THAN,
       '>=': datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL,
       '=': datastore_pb.PropertyFilter.EQUAL,
-      }
+  }
   """Mapping of operator strings and their protobuf equivalents."""
 
   def __init__(self, kind=None, dataset=None):

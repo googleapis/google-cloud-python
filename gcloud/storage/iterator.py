@@ -109,7 +109,7 @@ class Iterator(object):
     self.page_number = 0
     self.next_page_token = None
 
-  def get_items_from_response(self, response): #pragma NO COVER
+  def get_items_from_response(self, response):  # pragma NO COVER
     """Factory method called while iterating. This should be overriden.
 
     This method should be overridden by a subclass.
@@ -211,7 +211,7 @@ class KeyDataIterator(object):
 
   def get_headers(self):
     start = self._bytes_written
-    end = self._bytes_written + self.key.CHUNK_SIZE
+    end = self._bytes_written + self.key.CHUNK_SIZE - 1
 
     if self._total_bytes and end > self._total_bytes:
       end = ''

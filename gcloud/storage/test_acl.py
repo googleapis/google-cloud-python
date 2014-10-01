@@ -192,7 +192,7 @@ class Test_ACL(unittest2.TestCase):
         acl = self._makeOne()
         self.assertRaises(ValueError,
                           acl.entity_from_dict,
-                                {'entity': 'bogus', 'role': ROLE})
+                          {'entity': 'bogus', 'role': ROLE})
         self.assertEqual(list(acl.get_entities()), [])
 
     def test_has_entity_miss_str(self):

@@ -1,3 +1,5 @@
+import os
+
 from gcloud.storage import exceptions
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
@@ -38,7 +40,7 @@ class Bucket(object):
     return cls(connection=connection, name=bucket_dict['name'],
                metadata=bucket_dict)
 
-  def __repr__(self): #pragma NO COVER
+  def __repr__(self):  # pragma NO COVER
     return '<Bucket: %s>' % self.name
 
   def __iter__(self):
@@ -122,7 +124,7 @@ class Bucket(object):
     # Support Python 2 and 3.
     try:
       string_type = basestring
-    except NameError: #pragma NO COVER PY3k
+    except NameError:  # pragma NO COVER PY3k
       string_type = str
 
     if isinstance(key, string_type):
@@ -189,7 +191,7 @@ class Bucket(object):
     for key in keys:
       self.delete_key(key)
 
-  def copy_key(self): #pragma NO COVER
+  def copy_key(self):  # pragma NO COVER
     raise NotImplementedError
 
   def upload_file(self, filename, key=None):
@@ -230,8 +232,55 @@ class Bucket(object):
                 to the root of the bucket
                 with the same name as on your local file system.
     """
+    if key is None:
+        key = os.path.basename(filename)
     key = self.new_key(key)
     return key.set_contents_from_filename(filename)
+
+  def upload_file_object(self, fh, key=None):
+    # TODO: What do we do about overwriting data?
+    """Shortcut method to upload a file into this bucket.
+
+    Use this method to quickly put a local file in Cloud Storage.
+
+    For example::
+
+      >>> from gcloud import storage
+      >>> connection = storage.get_connection(project, email, key_path)
+      >>> bucket = connection.get_bucket('my-bucket')
+      >>> bucket.upload_file(open('~/my-file.txt'), 'remote-text-file.txt')
+      >>> print bucket.get_all_keys()
+      [<Key: my-bucket, remote-text-file.txt>]
+
+    If you don't provide a key value,
+    we will try to upload the file using the local filename
+    as the key
+    (**not** the complete path)::
+
+      >>> from gcloud import storage
+      >>> connection = storage.get_connection(project, email, key_path)
+      >>> bucket = connection.get_bucket('my-bucket')
+      >>> bucket.upload_file(open('~/my-file.txt'))
+      >>> print bucket.get_all_keys()
+      [<Key: my-bucket, my-file.txt>]
+
+    :type fh: file
+    :param fh: A file handle open for reading.
+
+    :type key: string or :class:`gcloud.storage.key.Key`
+    :param key: The key (either an object or a remote path)
+                of where to put the file.
+
+                If this is blank,
+                we will try to upload the file
+                to the root of the bucket
+                with the same name as on your local file system.
+    """
+    if key:
+      key = self.new_key(key)
+    else:
+      key = self.new_key(os.path.basename(fh.name))
+    return key.set_contents_from_file(fh)
 
   def has_metadata(self, field=None):
     """Check if metadata is available locally.
@@ -353,12 +402,10 @@ class Bucket(object):
     :param not_found_page: The file to use when a page isn't found.
     """
 
-    data = {
-        'website': {
-          'mainPageSuffix': main_page_suffix,
-          'notFoundPage': not_found_page,
-          }
-        }
+    data = {'website': {'mainPageSuffix': main_page_suffix,
+                        'notFoundPage': not_found_page,
+                        }
+            }
     return self.patch_metadata(data)
 
   def disable_website(self):
@@ -443,7 +490,9 @@ class Bucket(object):
     if acl is None:
       return self
 
-    return self.patch_metadata({'acl': list(acl)})
+    self.patch_metadata({'acl': list(acl)})
+    self.reload_acl()
+    return self
 
   def clear_acl(self):
     """Remove all ACL rules from the bucket.
@@ -517,12 +566,15 @@ class Bucket(object):
                 and save that.
     """
 
-    acl = acl or self.default_object_acl
+    if acl is None:
+        acl = self.default_object_acl
 
     if acl is None:
       return self
 
-    return self.patch_metadata({'defaultObjectAcl': list(acl)})
+    self.patch_metadata({'defaultObjectAcl': list(acl)})
+    self.reload_default_object_acl()
+    return self
 
   def clear_default_object_acl(self):
     """Remove the Default Object ACL from this bucket."""

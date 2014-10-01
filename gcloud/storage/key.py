@@ -56,7 +56,7 @@ class Key(object):
 
     return cls(bucket=bucket, name=key_dict['name'], metadata=key_dict)
 
-  def __repr__(self): #pragma NO COVER
+  def __repr__(self):  # pragma NO COVER
     if self.bucket:
       bucket_name = self.bucket.name
     else:
@@ -95,7 +95,8 @@ class Key(object):
     return '{storage_base_url}/{self.bucket.name}/{self.name}'.format(
         storage_base_url='http://commondatastorage.googleapis.com', self=self)
 
-  def generate_signed_url(self, expiration, method='GET'): #pragma NO COVER UGH
+  def generate_signed_url(self, expiration,
+                          method='GET'):  # pragma NO COVER UGH
     """Generates a signed URL for this key.
 
     If you have a key that you want to allow access to
@@ -151,7 +152,7 @@ class Key(object):
     for chunk in KeyDataIterator(self):
       try:
         fh.write(chunk)
-      except IOError, e: #pragma NO COVER
+      except IOError, e:  # pragma NO COVER
         if e.errno == errno.ENOSPC:
           raise Exception('No space left on device.')
 
@@ -208,7 +209,7 @@ class Key(object):
     headers = {
         'X-Upload-Content-Type': content_type or 'application/unknown',
         'X-Upload-Content-Length': total_bytes
-        }
+    }
 
     upload_url = self.connection.build_api_url(
         path=self.bucket.path + '/o',
@@ -232,9 +233,10 @@ class Key(object):
 
       headers = {
           'Content-Range': 'bytes %d-%d/%d' % (start, end, total_bytes),
-          }
+      }
 
-      response, content = self.connection.make_request(content_type='text/plain',
+      response, content = self.connection.make_request(
+          content_type='text/plain',
           method='POST', url=upload_url, headers=headers, data=data)
 
       bytes_uploaded += chunk_size
@@ -404,7 +406,9 @@ class Key(object):
     if acl is None:
       return self
 
-    return self.patch_metadata({'acl': list(acl)})
+    self.patch_metadata({'acl': list(acl)})
+    self.reload_acl()
+    return self
 
   def clear_acl(self):
     """Remove all ACL rules from the key.
