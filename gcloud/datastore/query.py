@@ -313,13 +313,14 @@ class Query(object):
     """Adds a sort order to the query. If more than one sort order is added,
     they will be applied in the order specified.
 
-    :type properties: string
-    :param properties: String giving the name of the property on which to sort,
-    optionally preceded by a hyphen (-) to specify descending order.
-    Omitting the hyphen specifies ascending order by default.
+    :type properties: sequence of strings
+    :param properties: Each value is a string giving the name of the property
+                       on which to sort, optionally preceded by a hyphen
+                       (-) to specify descending order.
+                       Omitting the hyphen implies ascending order.
 
     :rtype: :class:`Query`
-    :returns: A Query order by properties.
+    :returns: A new Query instance, ordered as specified.
     """
     clone = self._clone()
 
