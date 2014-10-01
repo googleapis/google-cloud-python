@@ -22,7 +22,7 @@ from gcloud.datastore.key import Key
 
 
 class Entity(dict):
-  """
+    """
   :type dataset: :class:`gcloud.datastore.dataset.Dataset`
   :param dataset: The dataset in which this entity belongs.
 
@@ -64,14 +64,14 @@ class Entity(dict):
   {'age': 20, 'name': 'JJ'}
   """
 
-  def __init__(self, dataset=None, kind=None):
-    if dataset and kind:
-      self._key = Key(dataset=dataset).kind(kind)
-    else:
-      self._key = None
+    def __init__(self, dataset=None, kind=None):
+        if dataset and kind:
+            self._key = Key(dataset=dataset).kind(kind)
+        else:
+            self._key = None
 
-  def dataset(self):
-    """Get the :class:`gcloud.datastore.dataset.Dataset` in which this entity belongs.
+    def dataset(self):
+        """Get the :class:`gcloud.datastore.dataset.Dataset` in which this entity belongs.
 
     .. note::
       This is based on the :class:`gcloud.datastore.key.Key` set on the entity.
@@ -79,11 +79,11 @@ class Entity(dict):
       It also means that if you change the key on the entity, this will refer
       to that key's dataset.
     """
-    if self.key():
-      return self.key().dataset()
+        if self.key():
+            return self.key().dataset()
 
-  def key(self, key=None):
-    """Get or set the :class:`gcloud.datastore.key.Key` on the current entity.
+    def key(self, key=None):
+        """Get or set the :class:`gcloud.datastore.key.Key` on the current entity.
 
     :type key: :class:`glcouddatastore.key.Key`
     :param key: The key you want to set on the entity.
@@ -96,14 +96,14 @@ class Entity(dict):
     <Key[{'kind': 'OtherKeyKind', 'id': 1234}]>
     """
 
-    if key:
-      self._key = key
-      return self
-    else:
-      return self._key
+        if key:
+            self._key = key
+            return self
+        else:
+            return self._key
 
-  def kind(self):
-    """Get the kind of the current entity.
+    def kind(self):
+        """Get the kind of the current entity.
 
     .. note::
       This relies entirely on
@@ -114,12 +114,12 @@ class Entity(dict):
       which knows its Kind.
     """
 
-    if self.key():
-      return self.key().kind()
+        if self.key():
+            return self.key().kind()
 
-  @classmethod
-  def from_key(cls, key):
-    """Factory method for creating an entity based on the :class:`gcloud.datastore.key.Key`.
+    @classmethod
+    def from_key(cls, key):
+        """Factory method for creating an entity based on the :class:`gcloud.datastore.key.Key`.
 
     :type key: :class:`gcloud.datastore.key.Key`
     :param key: The key for the entity.
@@ -128,11 +128,11 @@ class Entity(dict):
               :class:`gcloud.datastore.key.Key`.
     """
 
-    return cls().key(key)
+        return cls().key(key)
 
-  @classmethod
-  def from_protobuf(cls, pb, dataset=None):
-    """Factory method for creating an entity based on a protobuf.
+    @classmethod
+    def from_protobuf(cls, pb, dataset=None):
+        """Factory method for creating an entity based on a protobuf.
 
     The protobuf should be one returned from the Cloud Datastore Protobuf API.
 
@@ -143,20 +143,20 @@ class Entity(dict):
               :class:`gcloud.datastore.datastore_v1_pb2.Entity`.
     """
 
-    # This is here to avoid circular imports.
-    from gcloud.datastore import helpers
+        # This is here to avoid circular imports.
+        from gcloud.datastore import helpers
 
-    key = Key.from_protobuf(pb.key, dataset=dataset)
-    entity = cls.from_key(key)
+        key = Key.from_protobuf(pb.key, dataset=dataset)
+        entity = cls.from_key(key)
 
-    for property_pb in pb.property:
-      value = helpers.get_value_from_protobuf(property_pb)
-      entity[property_pb.name] = value
+        for property_pb in pb.property:
+            value = helpers.get_value_from_protobuf(property_pb)
+            entity[property_pb.name] = value
 
-    return entity
+        return entity
 
-  def reload(self):
-    """Reloads the contents of this entity from the datastore.
+    def reload(self):
+        """Reloads the contents of this entity from the datastore.
 
     This method takes the :class:`gcloud.datastore.key.Key`, loads all
     properties from the Cloud Datastore, and sets the updated properties on
@@ -168,52 +168,48 @@ class Entity(dict):
       only locally.
     """
 
-    # Note that you must have a valid key, otherwise this makes no sense.
-    entity = self.dataset().get_entity(self.key().to_protobuf())
+        # Note that you must have a valid key, otherwise this makes no sense.
+        entity = self.dataset().get_entity(self.key().to_protobuf())
 
-    if entity:
-      self.update(entity)
-    return self
+        if entity:
+            self.update(entity)
+        return self
 
-  def save(self):
-    """Save the entity in the Cloud Datastore.
+    def save(self):
+        """Save the entity in the Cloud Datastore.
 
     :rtype: :class:`gcloud.datastore.entity.Entity`
     :returns: The entity with a possibly updated Key.
     """
-    key_pb = self.dataset().connection().save_entity(
-        dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf(),
-        properties=dict(self))
+        key_pb = self.dataset().connection().save_entity(dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf(), properties=dict(self))
 
-    # If we are in a transaction and the current entity needs an
-    # automatically assigned ID, tell the transaction where to put that.
-    transaction = self.dataset().connection().transaction()
-    if transaction and self.key().is_partial():
-      transaction.add_auto_id_entity(self)
+        # If we are in a transaction and the current entity needs an
+        # automatically assigned ID, tell the transaction where to put that.
+        transaction = self.dataset().connection().transaction()
+        if transaction and self.key().is_partial():
+            transaction.add_auto_id_entity(self)
 
-    if isinstance(key_pb, datastore_pb.Key):
-      updated_key = Key.from_protobuf(key_pb)
-      # Update the path (which may have been altered).
-      key = self.key().path(updated_key.path())
-      self.key(key)
+        if isinstance(key_pb, datastore_pb.Key):
+            updated_key = Key.from_protobuf(key_pb)
+            # Update the path (which may have been altered).
+            key = self.key().path(updated_key.path())
+            self.key(key)
 
-    return self
+        return self
 
-  def delete(self):
-    """Delete the entity in the Cloud Datastore.
+    def delete(self):
+        """Delete the entity in the Cloud Datastore.
 
     .. note::
       This is based entirely off of the :class:`gcloud.datastore.key.Key` set
       on the entity. Whatever is stored remotely using the key on the entity
       will be deleted.
     """
-    self.dataset().connection().delete_entity(
-        dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf())
+        self.dataset().connection().delete_entity(dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf())
 
-  def __repr__(self):  # pragma NO COVER
-    # An entity should have a key all the time (even if it's partial).
-    if self.key():
-      return '<Entity%s %s>' % (self.key().path(),
-                                super(Entity, self).__repr__())
-    else:
-      return '<Entity %s>' % (super(Entity, self).__repr__())
+    def __repr__(self):  # pragma NO COVER
+        # An entity should have a key all the time (even if it's partial).
+        if self.key():
+            return '<Entity%s %s>' % (self.key().path(), super(Entity, self).__repr__())
+        else:
+            return '<Entity %s>' % (super(Entity, self).__repr__())
