@@ -148,7 +148,7 @@ class Query(object):
       >>> query = dataset.query('Person')
       >>> filtered_query = query.ancestor(['Person', '1'])
 
-    Each call to ``.ancestor()`` returns a cloned :class:`Query:,
+    Each call to ``.ancestor()`` returns a cloned :class:`Query`,
     however a query may only have one ancestor at a time.
 
     :type ancestor: :class:`gcloud.datastore.key.Key` or list

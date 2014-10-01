@@ -8,6 +8,8 @@ from gcloud.datastore.dataset import Dataset
 class Key(object):
   """
   An immutable representation of a datastore Key.
+
+  .. automethod:: __init__
   """
 
   def __init__(self, dataset=None, namespace=None, path=None):
@@ -52,7 +54,7 @@ class Key(object):
 
     :type dataset: :class:`gcloud.datastore.dataset.Dataset`
     :param dataset: A dataset instance.  If not passed, defaults to an
-    instance whose ID is derived from pb.
+                    instance whose ID is derived from pb.
 
     :rtype: :class:`gcloud.datastore.key.Key`
     :returns: a new `Key` instance
@@ -116,17 +118,18 @@ class Key(object):
   def from_path(cls, *args, **kwargs):
     """Factory method for creating a key based on a path.
 
-    :type args: :class:`tuple
-    :param args: sequence of even length, where the first of each
-    pair is a string representing the 'kind' of the path element, and the
-    second of the pair is either a string (for the path element's name)
-    or an integer (for its id).
+    :type args: :class:`tuple`
+    :param args: sequence of even length, where the first of each pair is a
+                 string representing the 'kind' of the path element, and the
+                 second of the pair is either a string (for the path
+                 element's name) or an integer (for its id).
 
     :type kwargs: :class:`dict`
-    :param kwargs: Other named parameters which can be passed to `__init__()`.
+    :param kwargs: Other named parameters which can be passed to
+                   :func:`Key.__init__`.
 
     :rtype: :class:`gcloud.datastore.key.Key`
-    :returns: a new `Key` instance
+    :returns: a new :class:`Key` instance
     """
     if len(args) % 2:
         raise ValueError('Must pass an even number of args.')
@@ -150,7 +153,7 @@ class Key(object):
 
     :rtype: :class:`bool`
     :returns: True if the last element of the key's path does not have an 'id'
-    or a 'name'.
+              or a 'name'.
     """
     return (self.id_or_name() is None)
 
@@ -194,11 +197,11 @@ class Key(object):
 
     :type path: sequence of dicts
     :param path: Each dict must have keys 'kind' (a string) and optionally
-    'name' (a string) or 'id' (an integer).
+                 'name' (a string) or 'id' (an integer).
 
     :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
     :returns: a new key, cloned from self., with the given path (setter);
-             or self's path (getter).
+              or self's path (getter).
     """
     if path:
       clone = self._clone()
@@ -263,7 +266,7 @@ class Key(object):
 
     :rtype: :class:`int` (if 'id' is set); or :class:`str` (the 'name')
     :returns: True if the last element of the key's path has either an 'id'
-    or a 'name'.
+              or a 'name'.
     """
     return self.id() or self.name()
 
@@ -272,7 +275,8 @@ class Key(object):
 
     :rtype: :class:`gcloud.datastore.key.Key`
     :returns: a new `Key` instance, whose path consists of all but the last
-    element of self's path.  If self has only one path element, return None.
+              element of self's path.  If self has only one path element,
+              return None.
     """
     if len(self._path) <= 1:
         return None
