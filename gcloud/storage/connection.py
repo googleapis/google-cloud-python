@@ -159,6 +159,8 @@ class Connection(connection.Connection):
         if content_type:
             headers['Content-Type'] = content_type
 
+        headers['User-Agent'] = self.USER_AGENT
+
         return self.http.request(uri=url, method=method, headers=headers,
                                  body=data)
 

@@ -170,6 +170,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['headers'],
                          {'Accept-Encoding': 'gzip',
                           'Content-Length': 0,
+                          'User-Agent': conn.USER_AGENT,
                           })
 
     def test_make_request_w_data_no_extra_headers(self):
@@ -189,6 +190,7 @@ class TestConnection(unittest2.TestCase):
                          {'Accept-Encoding': 'gzip',
                           'Content-Length': 0,
                           'Content-Type': 'application/json',
+                          'User-Agent': conn.USER_AGENT,
                           })
 
     def test_make_request_w_extra_headers(self):
@@ -208,6 +210,7 @@ class TestConnection(unittest2.TestCase):
                          {'Accept-Encoding': 'gzip',
                           'Content-Length': 0,
                           'X-Foo': 'foo',
+                          'User-Agent': conn.USER_AGENT,
                           })
 
     def test_api_request_defaults(self):
@@ -228,6 +231,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['headers'],
                          {'Accept-Encoding': 'gzip',
                           'Content-Length': 0,
+                          'User-Agent': conn.USER_AGENT,
                           })
 
     def test_api_request_w_non_json_response(self):
@@ -287,6 +291,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['headers'],
                          {'Accept-Encoding': 'gzip',
                           'Content-Length': 0,
+                          'User-Agent': conn.USER_AGENT,
                           })
 
     def test_api_request_w_data(self):
@@ -312,6 +317,7 @@ class TestConnection(unittest2.TestCase):
                          {'Accept-Encoding': 'gzip',
                           'Content-Length': len(DATAJ),
                           'Content-Type': 'application/json',
+                          'User-Agent': conn.USER_AGENT,
                           })
 
     def test_api_request_w_404(self):
