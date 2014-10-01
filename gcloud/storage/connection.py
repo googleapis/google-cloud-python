@@ -238,7 +238,7 @@ class Connection(connection.Connection):
 
     return content
 
-  def get_all_buckets(self, *args, **kwargs):
+  def get_all_buckets(self):
     """Get all buckets in the project.
 
     This will not populate the list of keys available
@@ -261,7 +261,7 @@ class Connection(connection.Connection):
 
     return list(self)
 
-  def get_bucket(self, bucket_name, *args, **kwargs):
+  def get_bucket(self, bucket_name):
     """Get a bucket by name.
 
     If the bucket isn't found,
@@ -320,7 +320,7 @@ class Connection(connection.Connection):
     except exceptions.NotFoundError:
       return None
 
-  def create_bucket(self, bucket, *args, **kwargs):
+  def create_bucket(self, bucket):
     """Create a new bucket.
 
     For example::
@@ -343,7 +343,7 @@ class Connection(connection.Connection):
                                 data={'name': bucket.name})
     return Bucket.from_dict(response, connection=self)
 
-  def delete_bucket(self, bucket, force=False, *args, **kwargs):
+  def delete_bucket(self, bucket, force=False):
     """Delete a bucket.
 
     You can use this method to delete a bucket by name,
