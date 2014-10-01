@@ -40,7 +40,7 @@ class Bucket(object):
     return cls(connection=connection, name=bucket_dict['name'],
                metadata=bucket_dict)
 
-  def __repr__(self): #pragma NO COVER
+  def __repr__(self):  # pragma NO COVER
     return '<Bucket: %s>' % self.name
 
   def __iter__(self):
@@ -124,7 +124,7 @@ class Bucket(object):
     # Support Python 2 and 3.
     try:
       string_type = basestring
-    except NameError: #pragma NO COVER PY3k
+    except NameError:  # pragma NO COVER PY3k
       string_type = str
 
     if isinstance(key, string_type):
@@ -191,7 +191,7 @@ class Bucket(object):
     for key in keys:
       self.delete_key(key)
 
-  def copy_key(self): #pragma NO COVER
+  def copy_key(self):  # pragma NO COVER
     raise NotImplementedError
 
   def upload_file(self, filename, key=None):
@@ -402,12 +402,10 @@ class Bucket(object):
     :param not_found_page: The file to use when a page isn't found.
     """
 
-    data = {
-        'website': {
-          'mainPageSuffix': main_page_suffix,
-          'notFoundPage': not_found_page,
-          }
-        }
+    data = {'website': {'mainPageSuffix': main_page_suffix,
+                        'notFoundPage': not_found_page,
+                        }
+            }
     return self.patch_metadata(data)
 
   def disable_website(self):

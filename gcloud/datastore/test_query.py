@@ -5,6 +5,7 @@ class TestQuery(unittest2.TestCase):
 
     def _getTargetClass(self):
         from gcloud.datastore.query import Query
+
         return Query
 
     def _makeOne(self, kind=None, dataset=None):
@@ -18,6 +19,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_ctor_explicit(self):
         from gcloud.datastore.dataset import Dataset
+
         _DATASET = 'DATASET'
         _NAMESPACE = 'NAMESPACE'
         _KIND = 'KIND'
@@ -29,6 +31,7 @@ class TestQuery(unittest2.TestCase):
 
     def test__clone(self):
         from gcloud.datastore.dataset import Dataset
+
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         dataset = Dataset(_DATASET)
@@ -63,7 +66,7 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.filter.composite_filter.operator, 1) # AND
+        self.assertEqual(q_pb.filter.composite_filter.operator, 1)  # AND
         f_pb, = list(q_pb.filter.composite_filter.filter)
         p_pb = f_pb.property_filter
         self.assertEqual(p_pb.property.name, 'firstname')
@@ -84,7 +87,7 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.filter.composite_filter.operator, 1) # AND
+        self.assertEqual(q_pb.filter.composite_filter.operator, 1)  # AND
         f_pb, = list(q_pb.filter.composite_filter.filter)
         p_pb = f_pb.property_filter
         self.assertEqual(p_pb.property.name, '__key__')
@@ -100,7 +103,7 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.filter.composite_filter.operator, 1) # AND
+        self.assertEqual(q_pb.filter.composite_filter.operator, 1)  # AND
         f_pb, = list(q_pb.filter.composite_filter.filter)
         p_pb = f_pb.property_filter
         self.assertEqual(p_pb.property.name, '__key__')
@@ -141,7 +144,7 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         self.assertTrue(after.dataset() is dataset)
-        kq_pb1, kq_pb2= list(after.kind())
+        kq_pb1, kq_pb2 = list(after.kind())
         self.assertEqual(kq_pb1.name, _KIND_BEFORE)
         self.assertEqual(kq_pb2.name, _KIND_AFTER)
 
@@ -195,7 +198,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(connection._called_with,
                          {'dataset_id': _DATASET,
                           'query_pb': query.to_protobuf(),
-                         })
+                          })
 
     def test_fetch_explicit_limit(self):
         from gcloud.datastore.datastore_v1_pb2 import Entity
@@ -220,23 +223,28 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(connection._called_with,
                          {'dataset_id': _DATASET,
                           'query_pb': limited.to_protobuf(),
-                         })
+                          })
 
 
 class _Dataset(object):
+
     def __init__(self, id, connection):
         self._id = id
         self._connection = connection
+
     def id(self):
         return self._id
+
     def connection(self):
         return self._connection
 
 
 class _Connection(object):
     _called_with = None
+
     def __init__(self, *result):
         self._result = list(result)
+
     def run_query(self, **kw):
         self._called_with = kw
         return self._result

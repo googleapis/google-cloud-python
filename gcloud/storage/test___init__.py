@@ -30,26 +30,31 @@ class Test_get_connection(unittest2.TestCase):
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
                           'scope': SCOPE,
-                         })
+                          })
 
 
 class Test_get_bucket(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud.storage import get_bucket
+
         return get_bucket(*args, **kw)
 
     def test_it(self):
         from tempfile import NamedTemporaryFile
         from gcloud import storage
         from gcloud.test_credentials import _Monkey
+
         bucket = object()
+
         class _Connection(object):
+
             def get_bucket(self, bucket_name):
                 self._called_With = bucket_name
                 return bucket
         connection = _Connection()
         _called_With = []
+
         def get_connection(*args, **kw):
             _called_With.append((args, kw))
             return connection
@@ -64,6 +69,5 @@ class Test_get_bucket(unittest2.TestCase):
                 found = self._callFUT(BUCKET, PROJECT, CLIENT_EMAIL, f.name)
         self.assertTrue(found is bucket)
         self.assertEqual(_called_With,
-                        [((PROJECT, CLIENT_EMAIL, f.name), {})])
+                         [((PROJECT, CLIENT_EMAIL, f.name), {})])
         self.assertEqual(connection._called_With, BUCKET)
-

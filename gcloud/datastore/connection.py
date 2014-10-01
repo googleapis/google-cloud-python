@@ -49,7 +49,7 @@ class Connection(connection.Connection):
     headers = {
         'Content-Type': 'application/x-protobuf',
         'Content-Length': str(len(data)),
-        }
+    }
     headers, content = self.http.request(
         uri=self.build_api_url(dataset_id=dataset_id, method=method),
         method='POST', headers=headers, body=data)
@@ -132,7 +132,8 @@ class Connection(connection.Connection):
     request = datastore_pb.BeginTransactionRequest()
 
     if serializable:
-      request.isolation_level = datastore_pb.BeginTransactionRequest.SERIALIZABLE
+      request.isolation_level = (
+          datastore_pb.BeginTransactionRequest.SERIALIZABLE)
     else:
       request.isolation_level = datastore_pb.BeginTransactionRequest.SNAPSHOT
 
@@ -202,7 +203,8 @@ class Connection(connection.Connection):
       request.partition_id.namespace = namespace
 
     request.query.CopyFrom(query_pb)
-    response = self._rpc(dataset_id, 'runQuery', request, datastore_pb.RunQueryResponse)
+    response = self._rpc(dataset_id, 'runQuery', request,
+                         datastore_pb.RunQueryResponse)
     return [e.entity for e in response.batch.entity_result]
 
   def lookup(self, dataset_id, key_pbs):

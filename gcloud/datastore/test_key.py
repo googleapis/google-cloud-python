@@ -176,7 +176,7 @@ class TestKey(unittest2.TestCase):
 
     def test_from_path_three_elements(self):
         self.assertRaises(ValueError, self._getTargetClass().from_path,
-                                                    'abc', 'def', 'ghi')
+                          'abc', 'def', 'ghi')
 
     def test_from_path_two_elements_second_string(self):
         key = self._getTargetClass().from_path('abc', 'def')
@@ -191,9 +191,10 @@ class TestKey(unittest2.TestCase):
     def test_from_path_nested(self):
         key = self._getTargetClass().from_path('abc', 'def', 'ghi', 123)
         self.assertEqual(key.kind(), 'ghi')
-        self.assertEqual(key.path(), [{'kind': 'abc', 'name': 'def'},
-                                      {'kind': 'ghi', 'id': 123},
-                                     ])
+        self.assertEqual(key.path(),
+                         [{'kind': 'abc', 'name': 'def'},
+                          {'kind': 'ghi', 'id': 123},
+                          ])
 
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne()

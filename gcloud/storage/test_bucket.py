@@ -254,10 +254,13 @@ class Test_Bucket(unittest2.TestCase):
         BASENAME = 'file.ext'
         FILENAME = '/path/to/%s' % BASENAME
         _uploaded = []
+
         class _Key(object):
+
             def __init__(self, bucket, name):
                 self._bucket = bucket
                 self._name = name
+
             def set_contents_from_filename(self, filename):
                 _uploaded.append((self._bucket, self._name, filename))
         bucket = self._makeOne()
@@ -271,10 +274,13 @@ class Test_Bucket(unittest2.TestCase):
         FILENAME = '/path/to/file'
         KEY = 'key'
         _uploaded = []
+
         class _Key(object):
+
             def __init__(self, bucket, name):
                 self._bucket = bucket
                 self._name = name
+
             def set_contents_from_filename(self, filename):
                 _uploaded.append((self._bucket, self._name, filename))
         bucket = self._makeOne()
@@ -288,10 +294,13 @@ class Test_Bucket(unittest2.TestCase):
         FILENAME = 'file.txt'
         FILEOBJECT = MockFile(FILENAME)
         _uploaded = []
+
         class _Key(object):
+
             def __init__(self, bucket, name):
                 self._bucket = bucket
                 self._name = name
+
             def set_contents_from_file(self, fh):
                 _uploaded.append((self._bucket, self._name, fh))
         bucket = self._makeOne()
@@ -306,10 +315,13 @@ class Test_Bucket(unittest2.TestCase):
         FILEOBJECT = MockFile(FILENAME)
         KEY = 'key'
         _uploaded = []
+
         class _Key(object):
+
             def __init__(self, bucket, name):
                 self._bucket = bucket
                 self._name = name
+
             def set_contents_from_file(self, fh):
                 _uploaded.append((self._bucket, self._name, fh))
         bucket = self._makeOne()
@@ -398,7 +410,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_get_metadata_none_set_defaultObjectAcl_miss_explicit_default(self):
+    def test_get_metadata_none_set_defaultObjectAcl_miss_clear_default(self):
         NAME = 'name'
         after = {'bar': 'Bar'}
         connection = _Connection(after)
@@ -679,8 +691,8 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection({'foo': 'Foo', 'acl': []})
         connection = _Connection({'foo': 'Foo', 'acl': []},
                                  {'foo': 'Foo', 'acl': [],
-                                    'defaultObjectAcl': []},
-                                )
+                                  'defaultObjectAcl': []},
+                                 )
         metadata = {'defaultObjectAcl': []}
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_default_object_acl()
@@ -701,8 +713,8 @@ class Test_Bucket(unittest2.TestCase):
         new_acl = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'foo': 'Foo', 'acl': new_acl},
                                  {'foo': 'Foo', 'acl': new_acl,
-                                    'defaultObjectAcl': new_acl},
-                                )
+                                  'defaultObjectAcl': new_acl},
+                                 )
         metadata = {'defaultObjectAcl': []}
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_default_object_acl()
@@ -724,8 +736,8 @@ class Test_Bucket(unittest2.TestCase):
         old_acl = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'foo': 'Foo', 'acl': []},
                                  {'foo': 'Foo', 'acl': [],
-                                    'defaultObjectAcl': []},
-                                )
+                                  'defaultObjectAcl': []},
+                                 )
         metadata = {'defaultObjectAcl': old_acl}
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_default_object_acl()
@@ -792,19 +804,26 @@ class Test_Bucket(unittest2.TestCase):
         from gcloud.storage import iterator
         from gcloud.storage import bucket as MUT
         _saved = []
+
         class _Key(object):
             _granted = False
+
             def __init__(self, bucket, name):
                 self._bucket = bucket
                 self._name = name
+
             def get_acl(self):
                 return self
+
             def all(self):
                 return self
+
             def grant_read(self):
                 self._granted = True
+
             def save_acl(self):
                 _saved.append((self._bucket, self._name, self._granted))
+
         class _KeyIterator(iterator.KeyIterator):
             def get_items_from_response(self, response):
                 for item in response.get('items', []):
@@ -835,19 +854,23 @@ class Test_Bucket(unittest2.TestCase):
 
 class _Connection(object):
     _delete_ok = False
+
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
         self._deleted = []
+
     def api_request(self, **kw):
         from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
+
         try:
             response, self._responses = self._responses[0], self._responses[1:]
         except:
             raise NotFoundError('miss', None)
         else:
             return response
+
     def delete_bucket(self, bucket, force=False):
         from gcloud.storage.exceptions import NotFoundError
         self._deleted.append((bucket, force))
@@ -858,6 +881,7 @@ class _Connection(object):
 
 class MockFile(io.StringIO):
     name = None
-    def __init__(self, name, buffer_ = None):
+
+    def __init__(self, name, buffer_=None):
         super(MockFile, self).__init__(buffer_)
         self.name = name

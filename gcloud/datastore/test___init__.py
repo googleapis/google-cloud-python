@@ -1,5 +1,6 @@
 import unittest2
 
+
 class Test_get_connection(unittest2.TestCase):
 
     def _callFUT(self, client_email, private_key_path):
@@ -13,6 +14,7 @@ class Test_get_connection(unittest2.TestCase):
         from gcloud.datastore.connection import Connection
         from gcloud.test_credentials import _Client
         from gcloud.test_credentials import _Monkey
+
         CLIENT_EMAIL = 'phred@example.com'
         PRIVATE_KEY = 'SEEkR1t'
         client = _Client()
@@ -27,7 +29,8 @@ class Test_get_connection(unittest2.TestCase):
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
                           'scope': SCOPE,
-                         })
+                          })
+
 
 class Test_get_dataset(unittest2.TestCase):
 
@@ -43,6 +46,7 @@ class Test_get_dataset(unittest2.TestCase):
         from gcloud.datastore.dataset import Dataset
         from gcloud.test_credentials import _Client
         from gcloud.test_credentials import _Monkey
+
         CLIENT_EMAIL = 'phred@example.com'
         PRIVATE_KEY = 'SEEkR1t'
         DATASET_ID = 'DATASET'
@@ -59,4 +63,4 @@ class Test_get_dataset(unittest2.TestCase):
                          {'service_account_name': CLIENT_EMAIL,
                           'private_key': PRIVATE_KEY,
                           'scope': SCOPE,
-                         })
+                          })

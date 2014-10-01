@@ -72,6 +72,7 @@ This list of tuples can be used as the ``entity`` and ``role``
 fields when sending metadata for ACLs to the API.
 """
 
+
 class ACL(object):
   """Container class representing a list of access controls."""
 
@@ -81,7 +82,6 @@ class ACL(object):
     Reader = 'READER'
     Writer = 'WRITER'
     Owner = 'OWNER'
-
 
   class Entity(object):
     """Class representing a set of roles for an entity.
@@ -111,9 +111,9 @@ class ACL(object):
       else:
         return '{self.type}-{self.identifier}'.format(self=self)
 
-    def __repr__(self): #pragma NO COVER
+    def __repr__(self):  # pragma NO COVER
       return '<ACL Entity: {self} ({roles})>'.format(
-        self=self, roles=', '.join(self.roles))
+          self=self, roles=', '.join(self.roles))
 
     def get_roles(self):
       """Get the list of roles permitted by this entity.
@@ -180,7 +180,6 @@ class ACL(object):
       """Revoke owner access from the current entity."""
 
       return self.revoke(ACL.Role.Owner)
-
 
   def __init__(self):
     self.entities = {}
@@ -352,7 +351,7 @@ class ACL(object):
 
     return self.entities.values()
 
-  def save(self): #pragma NO COVER
+  def save(self):  # pragma NO COVER
     """A method to be overridden by subclasses.
 
     :raises: NotImplementedError

@@ -11,10 +11,12 @@ class TestEntity(unittest2.TestCase):
 
     def _getTargetClass(self):
         from gcloud.datastore.entity import Entity
+
         return Entity
 
     def _makeOne(self, dataset=_MARKER, kind=_KIND):
         from gcloud.datastore.dataset import Dataset
+
         klass = self._getTargetClass()
         if dataset is _MARKER:
             dataset = Dataset(_DATASET_ID)
@@ -31,12 +33,14 @@ class TestEntity(unittest2.TestCase):
 
     def test_ctor_explicit(self):
         from gcloud.datastore.dataset import Dataset
+
         dataset = Dataset(_DATASET_ID)
         entity = self._makeOne(dataset, _KIND)
         self.assertTrue(entity.dataset() is dataset)
 
     def test_key_getter(self):
         from gcloud.datastore.key import Key
+
         entity = self._makeOne()
         key = entity.key()
         self.assertIsInstance(key, Key)
@@ -52,6 +56,7 @@ class TestEntity(unittest2.TestCase):
     def test_from_key(self):
         from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
+
         klass = self._getTargetClass()
         dataset = Dataset(_DATASET_ID)
         key = Key(dataset=dataset).kind(_KIND).id(_ID)
@@ -65,6 +70,7 @@ class TestEntity(unittest2.TestCase):
     def test_from_protobuf(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         from gcloud.datastore.dataset import Dataset
+
         entity_pb = datastore_pb.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
@@ -88,7 +94,7 @@ class TestEntity(unittest2.TestCase):
         entity = self._makeOne()
         entity.key(key)
         entity['foo'] = 'Foo'
-        # does not raise, does not update on miss
+        # Does not raise, does not update on miss.
         self.assertTrue(entity.reload() is entity)
         self.assertEqual(entity['foo'], 'Foo')
 
@@ -179,44 +185,61 @@ class _Key(object):
     _key = 'KEY'
     _partial = False
     _path = None
+
     def __init__(self, dataset):
         self._dataset = dataset
+
     def dataset(self):
         return self._dataset
+
     def to_protobuf(self):
         return self._key
+
     def is_partial(self):
         return self._partial
+
     def path(self, path):
         self._path = path
+
 
 class _Dataset(dict):
     def __init__(self, connection=None):
         self._connection = connection
+
     def id(self):
         return _DATASET_ID
+
     def connection(self):
         return self._connection
+
     def get_entity(self, key):
         return self.get(key)
+
     def get_entities(self, keys):
         return [self.get(x) for x in keys]
+
 
 class _Connection(object):
     _transaction = _saved = _deleted = None
     _save_result = True
+
     def transaction(self):
         return self._transaction
+
     def save_entity(self, dataset_id, key_pb, properties):
         self._saved = (dataset_id, key_pb, properties)
         return self._save_result
+
     def delete_entity(self, dataset_id, key_pb):
         self._deleted = (dataset_id, key_pb)
 
+
 class _Transaction(object):
     _added = ()
+
     def __nonzero__(self):
         return True
     __bool__ = __nonzero__
+
     def add_auto_id_entity(self, entity):
         self._added += (entity,)

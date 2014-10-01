@@ -21,7 +21,7 @@ class Key(object):
 
     :type path: sequence of dicts
     :param path: Each dict must have keys 'kind' (a string) and optionally
-    'name' (a string) or 'id' (an integer).
+                 'name' (a string) or 'id' (an integer).
     """
     self._dataset = dataset
     self._namespace = namespace
@@ -267,7 +267,7 @@ class Key(object):
     """
     return self.id() or self.name()
 
-  def parent(self):#pragma NO COVER
+  def parent(self):  # pragma NO COVER
     """Getter:  return a new key for the next highest element in path.
 
     :rtype: :class:`gcloud.datastore.key.Key`
@@ -278,5 +278,5 @@ class Key(object):
         return None
     return self.path(self.path()[:-1])
 
-  def __repr__(self): #pragma NO COVER
+  def __repr__(self):  # pragma NO COVER
     return '<Key%s>' % self.path()
