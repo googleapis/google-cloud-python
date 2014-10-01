@@ -4,6 +4,7 @@ from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
+import base64
 
 
 class Query(object):
@@ -53,6 +54,7 @@ class Query(object):
   def __init__(self, kind=None, dataset=None):
     self._dataset = dataset
     self._pb = datastore_pb.Query()
+    self._cursor = None
 
     if kind:
       self._pb.kind.add().name = kind
@@ -303,8 +305,51 @@ class Query(object):
     if limit:
       clone = self.limit(limit)
 
-    entity_pbs = self.dataset().connection().run_query(
+    (entity_pbs,
+     end_cursor,
+     more_results,
+     skipped_results) = self.dataset().connection().run_query(
         query_pb=clone.to_protobuf(), dataset_id=self.dataset().id())
 
+    self._cursor = end_cursor
     return [Entity.from_protobuf(entity, dataset=self.dataset())
             for entity in entity_pbs]
+
+  def cursor(self):
+    """Returns cursor ID
+
+    .. Caution:: Invoking this method on a query that has not yet has been
+      executed will raise a RuntimeError.
+
+    :rtype: string
+    :returns: base64-encoded cursor ID string denoting the last position
+              consumed in the query's result set.
+    """
+    if not self._cursor:
+        raise RuntimeError('No cursor')
+    return base64.b64encode(self._cursor)
+
+  def with_cursor(self, start_cursor, end_cursor=None):
+    """Specifies the starting / ending positions in a query's result set.
+
+    :type start_cursor: bytes
+    :param start_cursor: Base64-encoded cursor string specifying where to
+                         start reading query results.
+
+    :type end_cursor: bytes
+    :param end_cursor: Base64-encoded cursor string specifying where to stop
+                       reading query results.
+
+    :rtype: :class:`Query`
+    :returns: If neither cursor is passed, returns self;  else, returns a
+              clone of the :class:`Query`, with cursors updated.
+
+    """
+    clone = self
+    if start_cursor or end_cursor:
+      clone = self._clone()
+    if start_cursor:
+      clone._pb.start_cursor = base64.b64decode(start_cursor)
+    if end_cursor:
+      clone._pb.end_cursor = base64.b64decode(end_cursor)
+    return clone
