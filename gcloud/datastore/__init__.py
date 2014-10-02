@@ -32,7 +32,6 @@ The main concepts with this API are:
   which represents a lookup or search over the rows in the datastore.
 """
 
-
 __version__ = '0.1.2'
 
 SCOPE = ('https://www.googleapis.com/auth/datastore ',
@@ -41,65 +40,65 @@ SCOPE = ('https://www.googleapis.com/auth/datastore ',
 
 
 def get_connection(client_email, private_key_path):
-  """Shortcut method to establish a connection to the Cloud Datastore.
+    """Shortcut method to establish a connection to the Cloud Datastore.
 
-  Use this if you are going to access several datasets
-  with the same set of credentials (unlikely):
+    Use this if you are going to access several datasets
+    with the same set of credentials (unlikely):
 
-  >>> from gcloud import datastore
-  >>> connection = datastore.get_connection(email, key_path)
-  >>> dataset1 = connection.dataset('dataset1')
-  >>> dataset2 = connection.dataset('dataset2')
+    >>> from gcloud import datastore
+    >>> connection = datastore.get_connection(email, key_path)
+    >>> dataset1 = connection.dataset('dataset1')
+    >>> dataset2 = connection.dataset('dataset2')
 
-  :type client_email: string
-  :param client_email: The e-mail attached to the service account.
+    :type client_email: string
+    :param client_email: The e-mail attached to the service account.
 
-  :type private_key_path: string
-  :param private_key_path: The path to a private key file (this file was
-                           given to you when you created the service
-                           account).
+    :type private_key_path: string
+    :param private_key_path: The path to a private key file (this file was
+                             given to you when you created the service
+                             account).
 
-  :rtype: :class:`gcloud.datastore.connection.Connection`
-  :returns: A connection defined with the proper credentials.
-  """
-  from gcloud.credentials import Credentials
-  from gcloud.datastore.connection import Connection
+    :rtype: :class:`gcloud.datastore.connection.Connection`
+    :returns: A connection defined with the proper credentials.
+    """
+    from gcloud.credentials import Credentials
+    from gcloud.datastore.connection import Connection
 
-  credentials = Credentials.get_for_service_account(
-      client_email, private_key_path, scope=SCOPE)
-  return Connection(credentials=credentials)
+    credentials = Credentials.get_for_service_account(
+        client_email, private_key_path, scope=SCOPE)
+    return Connection(credentials=credentials)
 
 
 def get_dataset(dataset_id, client_email, private_key_path):
-  """Establish a connection to a particular dataset in the Cloud Datastore.
+    """Establish a connection to a particular dataset in the Cloud Datastore.
 
-  This is a shortcut method for creating a connection and using it
-  to connect to a dataset.
+    This is a shortcut method for creating a connection and using it
+    to connect to a dataset.
 
-  You'll generally use this as the first call to working with the API:
+    You'll generally use this as the first call to working with the API:
 
-  >>> from gcloud import datastore
-  >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
-  >>> # Now you can do things with the dataset.
-  >>> dataset.query().kind('TestKind').fetch()
-  [...]
+    >>> from gcloud import datastore
+    >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
+    >>> # Now you can do things with the dataset.
+    >>> dataset.query().kind('TestKind').fetch()
+    [...]
 
-  :type dataset_id: string
-  :param dataset_id: The id of the dataset you want to use.
-                     This is akin to a database name
-                     and is usually the same as your Cloud Datastore project
-                     name.
+    :type dataset_id: string
+    :param dataset_id: The id of the dataset you want to use.
+                       This is akin to a database name
+                       and is usually the same as your Cloud Datastore project
+                       name.
 
-  :type client_email: string
-  :param client_email: The e-mail attached to the service account.
+    :type client_email: string
+    :param client_email: The e-mail attached to the service account.
 
-  :type private_key_path: string
-  :param private_key_path: The path to a private key file (this file was
-                           given to you when you created the service
-                           account).
+    :type private_key_path: string
+    :param private_key_path: The path to a private key file (this file was
+                             given to you when you created the service
+                             account).
 
-  :rtype: :class:`gcloud.datastore.dataset.Dataset`
-  :returns: A dataset with a connection using the provided credentials.
-  """
-  connection = get_connection(client_email, private_key_path)
-  return connection.dataset(dataset_id)
+    :rtype: :class:`gcloud.datastore.dataset.Dataset`
+    :returns: A dataset with a connection using the provided credentials.
+    """
+    connection = get_connection(client_email, private_key_path)
+    return connection.dataset(dataset_id)

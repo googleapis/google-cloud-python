@@ -20,8 +20,7 @@ from gcloud.datastore.key import Key
 
 
 class Entity(dict):  # pylint: disable=too-many-public-methods
-    """
-    :type dataset: :class:`gcloud.datastore.dataset.Dataset`
+    """:type dataset: :class:`gcloud.datastore.dataset.Dataset`
     :param dataset: The dataset in which this entity belongs.
 
     :type kind: string
@@ -60,6 +59,7 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
 
     >>> dict(entity)
     {'age': 20, 'name': 'JJ'}
+
     """
 
     def __init__(self, dataset=None, kind=None):

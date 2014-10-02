@@ -40,29 +40,29 @@ print query.filter('name =', 'Computer').filter('age =', 10).fetch()
 # You can also work inside a transaction.
 # (Check the official docs for explanations of what's happening here.)
 with dataset.transaction():
-  print 'Creating and savng an entity...'
-  thing = dataset.entity('Thing')
-  thing.key(thing.key().name('foo'))
-  thing['age'] = 10
-  thing.save()
+    print 'Creating and savng an entity...'
+    thing = dataset.entity('Thing')
+    thing.key(thing.key().name('foo'))
+    thing['age'] = 10
+    thing.save()
 
-  print 'Creating and saving another entity...'
-  thing2 = dataset.entity('Thing')
-  thing2.key(thing2.key().name('bar'))
-  thing2['age'] = 15
-  thing2.save()
+    print 'Creating and saving another entity...'
+    thing2 = dataset.entity('Thing')
+    thing2.key(thing2.key().name('bar'))
+    thing2['age'] = 15
+    thing2.save()
 
-  print 'Committing the transaction...'
+    print 'Committing the transaction...'
 
 # Now that the transaction is commited, let's delete the entities.
 print thing.delete(), thing2.delete()
 
 # To rollback a transaction, just call .rollback()
 with dataset.transaction() as t:
-  thing = dataset.entity('Thing')
-  thing.key(thing.key().name('another'))
-  thing.save()
-  t.rollback()
+    thing = dataset.entity('Thing')
+    thing.key(thing.key().name('another'))
+    thing.save()
+    t.rollback()
 
 # Let's check if the entity was actually created:
 created = dataset.get_entities([thing.key()])
@@ -71,9 +71,9 @@ print 'yes' if created else 'no'
 # Remember, a key won't be complete until the transaction is commited.
 # That is, while inside the transaction block, thing.key() will be incomplete.
 with dataset.transaction():
-  thing = dataset.entity('Thing')
-  thing.save()
-  print thing.key()  # This will be partial
+    thing = dataset.entity('Thing')
+    thing.save()
+    print thing.key()  # This will be partial
 
 print thing.key()  # This will be complete
 
