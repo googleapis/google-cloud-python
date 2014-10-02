@@ -318,8 +318,8 @@ class Query(object):
   def cursor(self):
     """Returns cursor ID
 
-    .. Caution:: Invoking this method on a query that has not yet has been
-      executed will raise a RuntimeError.
+    .. Caution:: Invoking this method on a query that has not yet been
+       executed will raise a RuntimeError.
 
     :rtype: string
     :returns: base64-encoded cursor ID string denoting the last position
