@@ -20,8 +20,6 @@ class TestEntity(unittest2.TestCase):
         klass = self._getTargetClass()
         if dataset is _MARKER:
             dataset = Dataset(_DATASET_ID)
-        if kind is _MARKER:
-            kind = _KIND
         return klass(dataset, kind)
 
     def test_ctor_defaults(self):
@@ -214,9 +212,6 @@ class _Dataset(dict):
 
     def get_entity(self, key):
         return self.get(key)
-
-    def get_entities(self, keys):
-        return [self.get(x) for x in keys]
 
 
 class _Connection(object):

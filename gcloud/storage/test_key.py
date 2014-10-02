@@ -557,9 +557,7 @@ class Test_Key(unittest2.TestCase):
 
 
 class _Response(dict):
-    @property
-    def status(self):
-        return self.get('status', 200)
+    pass
 
 
 class _Connection(object):
@@ -570,24 +568,14 @@ class _Connection(object):
         self._requested = []
 
     def make_request(self, **kw):
-        from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:
-            raise NotFoundError('miss', None)
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
 
     def api_request(self, **kw):
-        from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:
-            raise NotFoundError('miss', None)
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
 
     def build_api_url(self, path, query_params=None,
                       api_base_url=API_BASE_URL):
