@@ -322,7 +322,11 @@ class TestConnection(unittest2.TestCase):
                         'runQuery',
                         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.run_query(DATASET_ID, q_pb), [])
+        pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb)
+        self.assertEqual(pbs, [])
+        self.assertEqual(end, '')
+        self.assertTrue(more)
+        self.assertEqual(skipped, 0)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
@@ -357,8 +361,8 @@ class TestConnection(unittest2.TestCase):
                         'runQuery',
                         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.run_query(DATASET_ID, q_pb, 'NS')
-        returned, = result  # One entity.
+        pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb, 'NS')
+        returned, = pbs,  # One entity.
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')

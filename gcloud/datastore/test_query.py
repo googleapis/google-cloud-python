@@ -202,6 +202,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_fetch_explicit_limit(self):
         from gcloud.datastore.datastore_v1_pb2 import Entity
+        _CURSOR = 'CURSOR'
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 123
@@ -213,10 +214,12 @@ class TestQuery(unittest2.TestCase):
         prop.name = 'foo'
         prop.value.string_value = 'Foo'
         connection = _Connection(entity_pb)
+        connection._cursor = _CURSOR
         dataset = _Dataset(_DATASET, connection)
         query = self._makeOne(_KIND, dataset)
         limited = query.limit(13)
         entities = query.fetch(13)
+        self.assertEqual(query._cursor, _CURSOR)
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].key().path(),
                          [{'kind': _KIND, 'id': _ID}])
@@ -224,6 +227,80 @@ class TestQuery(unittest2.TestCase):
                          {'dataset_id': _DATASET,
                           'query_pb': limited.to_protobuf(),
                           })
+
+    def test_cursor_not_fetched(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        connection = _Connection()
+        dataset = _Dataset(_DATASET, connection)
+        query = self._makeOne(_KIND, dataset)
+        self.assertRaises(RuntimeError, query.cursor)
+
+    def test_cursor_fetched(self):
+        import base64
+        _CURSOR = 'CURSOR'
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        connection = _Connection()
+        dataset = _Dataset(_DATASET, connection)
+        query = self._makeOne(_KIND, dataset)
+        query._cursor = _CURSOR
+        self.assertEqual(query.cursor(), base64.b64encode(_CURSOR))
+
+    def test_with_cursor_neither(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        connection = _Connection()
+        dataset = _Dataset(_DATASET, connection)
+        query = self._makeOne(_KIND, dataset)
+        self.assertTrue(query.with_cursor(None) is query)
+
+    def test_with_cursor_w_start(self):
+        import base64
+        _CURSOR = 'CURSOR'
+        _CURSOR_B64 = base64.b64encode(_CURSOR)
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        connection = _Connection()
+        dataset = _Dataset(_DATASET, connection)
+        query = self._makeOne(_KIND, dataset)
+        after = query.with_cursor(_CURSOR_B64)
+        self.assertFalse(after is query)
+        q_pb = after.to_protobuf()
+        self.assertEqual(q_pb.start_cursor, _CURSOR)
+        self.assertEqual(q_pb.end_cursor, '')
+
+    def test_with_cursor_w_end(self):
+        import base64
+        _CURSOR = 'CURSOR'
+        _CURSOR_B64 = base64.b64encode(_CURSOR)
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        connection = _Connection()
+        dataset = _Dataset(_DATASET, connection)
+        query = self._makeOne(_KIND, dataset)
+        after = query.with_cursor(None, _CURSOR_B64)
+        self.assertFalse(after is query)
+        q_pb = after.to_protobuf()
+        self.assertEqual(q_pb.start_cursor, '')
+        self.assertEqual(q_pb.end_cursor, _CURSOR)
+
+    def test_with_cursor_w_both(self):
+        import base64
+        _START = 'START'
+        _START_B64 = base64.b64encode(_START)
+        _END = 'CURSOR'
+        _END_B64 = base64.b64encode(_END)
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        connection = _Connection()
+        dataset = _Dataset(_DATASET, connection)
+        query = self._makeOne(_KIND, dataset)
+        after = query.with_cursor(_START_B64, _END_B64)
+        self.assertFalse(after is query)
+        q_pb = after.to_protobuf()
+        self.assertEqual(q_pb.start_cursor, _START)
+        self.assertEqual(q_pb.end_cursor, _END)
 
     def test_order_empty(self):
         _KIND = 'KIND'
@@ -285,10 +362,13 @@ class _Dataset(object):
 
 class _Connection(object):
     _called_with = None
+    _cursor = ''
+    _more = True
+    _skipped = 0
 
     def __init__(self, *result):
         self._result = list(result)
 
     def run_query(self, **kw):
         self._called_with = kw
-        return self._result
+        return self._result, self._cursor, self._more, self._skipped
