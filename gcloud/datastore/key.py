@@ -6,281 +6,281 @@ from gcloud.datastore.dataset import Dataset
 
 
 class Key(object):
-  """
-  An immutable representation of a datastore Key.
+    """An immutable representation of a datastore Key.
 
-  .. automethod:: __init__
-  """
-
-  def __init__(self, dataset=None, namespace=None, path=None):
-    """Constructor / initializer for a key.
-
-    :type dataset: :class:`gcloud.datastore.dataset.Dataset`
-    :param dataset: A dataset instance for the key.
-
-    :type namespace: :class:`str`
-    :param namespace: A namespace identifier for the key.
-
-    :type path: sequence of dicts
-    :param path: Each dict must have keys 'kind' (a string) and optionally
-                 'name' (a string) or 'id' (an integer).
+    .. automethod:: __init__
     """
-    self._dataset = dataset
-    self._namespace = namespace
-    self._path = path or [{'kind': ''}]
 
-  def _clone(self):
-    """Duplicates the Key.
+    def __init__(self, dataset=None, namespace=None, path=None):
+        """Constructor / initializer for a key.
 
-    We make a shallow copy of the :class:`gcloud.datastore.dataset.Dataset`
-    because it holds a reference an authenticated connection,
-    which we don't want to lose.
+        :type dataset: :class:`gcloud.datastore.dataset.Dataset`
+        :param dataset: A dataset instance for the key.
 
-    :rtype: :class:`gcloud.datastore.key.Key`
-    :returns: a new `Key` instance
-    """
-    clone = copy.deepcopy(self)
-    clone._dataset = self._dataset  # Make a shallow copy of the Dataset.
-    return clone
+        :type namespace: :class:`str`
+        :param namespace: A namespace identifier for the key.
 
-  @classmethod
-  def from_protobuf(cls, pb, dataset=None):
-    """Factory method for creating a key based on a protobuf.
+        :type path: sequence of dicts
+        :param path: Each dict must have keys 'kind' (a string) and optionally
+                     'name' (a string) or 'id' (an integer).
+        """
+        self._dataset = dataset
+        self._namespace = namespace
+        self._path = path or [{'kind': ''}]
 
-    The protobuf should be one returned from the Cloud Datastore Protobuf API.
+    def _clone(self):
+        """Duplicates the Key.
 
-    :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
-    :param pb: The Protobuf representing the key.
+        We make a shallow copy of the :class:`gcloud.datastore.dataset.Dataset`
+        because it holds a reference an authenticated connection,
+        which we don't want to lose.
 
-    :type dataset: :class:`gcloud.datastore.dataset.Dataset`
-    :param dataset: A dataset instance.  If not passed, defaults to an
-                    instance whose ID is derived from pb.
+        :rtype: :class:`gcloud.datastore.key.Key`
+        :returns: a new `Key` instance
+        """
+        clone = copy.deepcopy(self)
+        clone._dataset = self._dataset  # Make a shallow copy of the Dataset.
+        return clone
 
-    :rtype: :class:`gcloud.datastore.key.Key`
-    :returns: a new `Key` instance
-    """
-    path = []
-    for element in pb.path_element:
-      element_dict = {'kind': element.kind}
+    @classmethod
+    def from_protobuf(cls, pb, dataset=None):
+        """Factory method for creating a key based on a protobuf.
 
-      if element.HasField('id'):
-        element_dict['id'] = element.id
+        The protobuf should be one returned from the Cloud Datastore
+        Protobuf API.
 
-      elif element.HasField('name'):
-        element_dict['name'] = element.name
+        :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :param pb: The Protobuf representing the key.
 
-      path.append(element_dict)
+        :type dataset: :class:`gcloud.datastore.dataset.Dataset`
+        :param dataset: A dataset instance.  If not passed, defaults to an
+                        instance whose ID is derived from pb.
 
-    if not dataset:
-      dataset = Dataset(id=pb.partition_id.dataset_id)
-      namespace = pb.partition_id.namespace
-    else:
-      namespace = None
+        :rtype: :class:`gcloud.datastore.key.Key`
+        :returns: a new `Key` instance
+        """
+        path = []
+        for element in pb.path_element:
+            element_dict = {'kind': element.kind}
 
-    return cls(dataset, namespace, path)
+            if element.HasField('id'):
+                element_dict['id'] = element.id
 
-  def to_protobuf(self):
-    """Return a protobuf corresponding to the key.
+            elif element.HasField('name'):
+                element_dict['name'] = element.name
 
-    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Key`
-    :returns: The Protobuf representing the key.
-    """
-    key = datastore_pb.Key()
+            path.append(element_dict)
 
-    # Technically a dataset is required to do anything with the key,
-    # but we shouldn't throw a cryptic error if one isn't provided
-    # in the initializer.
-    if self.dataset():
-      # Apparently 's~' is a prefix for High-Replication and is necessary here.
-      # Another valid preflix is 'e~' indicating EU datacenters.
-      dataset_id = self.dataset().id()
-      if dataset_id:
-        if dataset_id[:2] not in ['s~', 'e~']:
-          dataset_id = 's~' + dataset_id
+        if not dataset:
+            dataset = Dataset(id=pb.partition_id.dataset_id)
+            namespace = pb.partition_id.namespace
+        else:
+            namespace = None
 
-        key.partition_id.dataset_id = dataset_id
+        return cls(dataset, namespace, path)
 
-    if self._namespace:
-      key.partition_id.namespace = self._namespace
+    def to_protobuf(self):
+        """Return a protobuf corresponding to the key.
 
-    for item in self.path():
-      element = key.path_element.add()
-      if 'kind' in item:
-        element.kind = item['kind']
-      if 'id' in item:
-        element.id = item['id']
-      if 'name' in item:
-        element.name = item['name']
+        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :returns: The Protobuf representing the key.
+        """
+        key = datastore_pb.Key()
 
-    return key
+        # Technically a dataset is required to do anything with the key,
+        # but we shouldn't throw a cryptic error if one isn't provided
+        # in the initializer.
+        if self.dataset():
+            # Apparently 's~' is a prefix for High-Replication and is necessary
+            # here. Another valid preflix is 'e~' indicating EU datacenters.
+            dataset_id = self.dataset().id()
+            if dataset_id:
+                if dataset_id[:2] not in ['s~', 'e~']:
+                    dataset_id = 's~' + dataset_id
 
-  @classmethod
-  def from_path(cls, *args, **kwargs):
-    """Factory method for creating a key based on a path.
+                key.partition_id.dataset_id = dataset_id
 
-    :type args: :class:`tuple`
-    :param args: sequence of even length, where the first of each pair is a
-                 string representing the 'kind' of the path element, and the
-                 second of the pair is either a string (for the path
-                 element's name) or an integer (for its id).
+        if self._namespace:
+            key.partition_id.namespace = self._namespace
 
-    :type kwargs: :class:`dict`
-    :param kwargs: Other named parameters which can be passed to
-                   :func:`Key.__init__`.
+        for item in self.path():
+            element = key.path_element.add()
+            if 'kind' in item:
+                element.kind = item['kind']
+            if 'id' in item:
+                element.id = item['id']
+            if 'name' in item:
+                element.name = item['name']
 
-    :rtype: :class:`gcloud.datastore.key.Key`
-    :returns: a new :class:`Key` instance
-    """
-    if len(args) % 2:
-        raise ValueError('Must pass an even number of args.')
+        return key
 
-    path = []
-    items = iter(args)
+    @classmethod
+    def from_path(cls, *args, **kwargs):
+        """Factory method for creating a key based on a path.
 
-    for kind, id_or_name in izip(items, items):
-      entry = {'kind': kind}
-      if isinstance(id_or_name, basestring):
-        entry['name'] = id_or_name
-      else:
-        entry['id'] = id_or_name
-      path.append(entry)
+        :type args: :class:`tuple`
+        :param args: sequence of even length, where the first of each pair is a
+                     string representing the 'kind' of the path element, and
+                     the second of the pair is either a string (for the path
+                     element's name) or an integer (for its id).
 
-    kwargs['path'] = path
-    return cls(**kwargs)
+        :type kwargs: :class:`dict`
+        :param kwargs: Other named parameters which can be passed to
+                       :func:`Key.__init__`.
 
-  def is_partial(self):
-    """Boolean test: is the key fully mapped onto a backend entity?
+        :rtype: :class:`gcloud.datastore.key.Key`
+        :returns: a new :class:`Key` instance
+        """
+        if len(args) % 2:
+            raise ValueError('Must pass an even number of args.')
 
-    :rtype: :class:`bool`
-    :returns: True if the last element of the key's path does not have an 'id'
-              or a 'name'.
-    """
-    return (self.id_or_name() is None)
+        path = []
+        items = iter(args)
 
-  def dataset(self, dataset=None):
-    """Setter / getter.
+        for kind, id_or_name in izip(items, items):
+            entry = {'kind': kind}
+            if isinstance(id_or_name, basestring):
+                entry['name'] = id_or_name
+            else:
+                entry['id'] = id_or_name
+            path.append(entry)
 
-    :type dataset: :class:`gcloud.datastore.dataset.Dataset`
-    :param dataset: A dataset instance for the key.
+        kwargs['path'] = path
+        return cls(**kwargs)
 
-    :rtype: :class:`Key` (for setter); or
-            :class:`gcloud.datastore.dataset.Dataset` (for getter)
-    :returns: a new key, cloned from self., with the given dataset (setter);
-             or self's dataset (getter).
-    """
-    if dataset:
-      clone = self._clone()
-      clone._dataset = dataset
-      return clone
-    else:
-      return self._dataset
+    def is_partial(self):
+        """Boolean test: is the key fully mapped onto a backend entity?
 
-  def namespace(self, namespace=None):
-    """Setter / getter.
+        :rtype: :class:`bool`
+        :returns: True if the last element of the key's path does not have
+                  an 'id' or a 'name'.
+        """
+        return (self.id_or_name() is None)
 
-    :type namespace: :class:`str`
-    :param namespace: A namespace identifier for the key.
+    def dataset(self, dataset=None):
+        """Dataset setter / getter.
 
-    :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
-    :returns: a new key, cloned from self., with the given namespace (setter);
-             or self's namespace (getter).
-    """
-    if namespace:
-      clone = self._clone()
-      clone._namespace = namespace
-      return clone
-    else:
-      return self._namespace
+        :type dataset: :class:`gcloud.datastore.dataset.Dataset`
+        :param dataset: A dataset instance for the key.
 
-  def path(self, path=None):
-    """Setter / getter.
+        :rtype: :class:`Key` (for setter); or
+                :class:`gcloud.datastore.dataset.Dataset` (for getter)
+        :returns: a new key, cloned from self., with the given dataset
+                  (setter); or self's dataset (getter).
+        """
+        if dataset:
+            clone = self._clone()
+            clone._dataset = dataset
+            return clone
+        else:
+            return self._dataset
 
-    :type path: sequence of dicts
-    :param path: Each dict must have keys 'kind' (a string) and optionally
-                 'name' (a string) or 'id' (an integer).
+    def namespace(self, namespace=None):
+        """Namespace setter / getter.
 
-    :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
-    :returns: a new key, cloned from self., with the given path (setter);
-              or self's path (getter).
-    """
-    if path:
-      clone = self._clone()
-      clone._path = path
-      return clone
-    else:
-      return self._path
+        :type namespace: :class:`str`
+        :param namespace: A namespace identifier for the key.
 
-  def kind(self, kind=None):
-    """Setter / getter.  Based on the last element of path.
+        :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
+        :returns: a new key, cloned from self., with the given namespace
+                  (setter); or self's namespace (getter).
+        """
+        if namespace:
+            clone = self._clone()
+            clone._namespace = namespace
+            return clone
+        else:
+            return self._namespace
 
-    :type kind: :class:`str`
-    :param kind: The new kind for the key.
+    def path(self, path=None):
+        """Path setter / getter.
 
-    :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
-    :returns: a new key, cloned from self., with the given kind (setter);
-             or self's kind (getter).
-    """
-    if kind:
-      clone = self._clone()
-      clone._path[-1]['kind'] = kind
-      return clone
-    elif self.path():
-      return self._path[-1]['kind']
+        :type path: sequence of dicts
+        :param path: Each dict must have keys 'kind' (a string) and optionally
+        'name' (a string) or 'id' (an integer).
 
-  def id(self, id=None):
-    """Setter / getter.  Based on the last element of path.
+        :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
+        :returns: a new key, cloned from self., with the given path (setter);
+                 or self's path (getter).
+        """
+        if path:
+            clone = self._clone()
+            clone._path = path
+            return clone
+        else:
+            return self._path
 
-    :type kind: :class:`str`
-    :param kind: The new kind for the key.
+    def kind(self, kind=None):
+        """Kind setter / getter.  Based on the last element of path.
 
-    :rtype: :class:`Key` (for setter); or :class:`int` (for getter)
-    :returns: a new key, cloned from self., with the given id (setter);
-             or self's id (getter).
-    """
-    if id:
-      clone = self._clone()
-      clone._path[-1]['id'] = id
-      return clone
-    elif self.path():
-      return self._path[-1].get('id')
+        :type kind: :class:`str`
+        :param kind: The new kind for the key.
 
-  def name(self, name=None):
-    """Setter / getter.  Based on the last element of path.
+        :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
+        :returns: a new key, cloned from self., with the given kind (setter);
+                 or self's kind (getter).
+        """
+        if kind:
+            clone = self._clone()
+            clone._path[-1]['kind'] = kind
+            return clone
+        elif self.path():
+            return self._path[-1]['kind']
 
-    :type kind: :class:`str`
-    :param kind: The new name for the key.
+    def id(self, id=None):
+        """ID setter / getter.  Based on the last element of path.
 
-    :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
-    :returns: a new key, cloned from self., with the given name (setter);
-             or self's name (getter).
-    """
-    if name:
-      clone = self._clone()
-      clone._path[-1]['name'] = name
-      return clone
-    elif self.path():
-      return self._path[-1].get('name')
+        :type kind: :class:`str`
+        :param kind: The new kind for the key.
 
-  def id_or_name(self):
-    """Getter.  Based on the last element of path.
+        :rtype: :class:`Key` (for setter); or :class:`int` (for getter)
+        :returns: a new key, cloned from self., with the given id (setter);
+                 or self's id (getter).
+        """
+        if id:
+            clone = self._clone()
+            clone._path[-1]['id'] = id
+            return clone
+        elif self.path():
+            return self._path[-1].get('id')
 
-    :rtype: :class:`int` (if 'id' is set); or :class:`str` (the 'name')
-    :returns: True if the last element of the key's path has either an 'id'
-              or a 'name'.
-    """
-    return self.id() or self.name()
+    def name(self, name=None):
+        """Name setter / getter.  Based on the last element of path.
 
-  def parent(self):  # pragma NO COVER
-    """Getter:  return a new key for the next highest element in path.
+        :type kind: :class:`str`
+        :param kind: The new name for the key.
 
-    :rtype: :class:`gcloud.datastore.key.Key`
-    :returns: a new `Key` instance, whose path consists of all but the last
-              element of self's path.  If self has only one path element,
-              return None.
-    """
-    if len(self._path) <= 1:
-        return None
-    return self.path(self.path()[:-1])
+        :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
+        :returns: a new key, cloned from self., with the given name (setter);
+                 or self's name (getter).
+        """
+        if name:
+            clone = self._clone()
+            clone._path[-1]['name'] = name
+            return clone
+        elif self.path():
+            return self._path[-1].get('name')
 
-  def __repr__(self):  # pragma NO COVER
-    return '<Key%s>' % self.path()
+    def id_or_name(self):
+        """Getter.  Based on the last element of path.
+
+        :rtype: :class:`int` (if 'id' is set); or :class:`str` (the 'name')
+        :returns: True if the last element of the key's path has either an 'id'
+        or a 'name'.
+        """
+        return self.id() or self.name()
+
+    def parent(self):  # pragma NO COVER
+        """Getter:  return a new key for the next highest element in path.
+
+        :rtype: :class:`gcloud.datastore.key.Key`
+        :returns: a new `Key` instance, whose path consists of all but the last
+                  element of self's path.  If self has only one path element,
+                  return None.
+        """
+        if len(self._path) <= 1:
+            return None
+        return self.path(self.path()[:-1])
+
+    def __repr__(self):  # pragma NO COVER
+        return '<Key%s>' % self.path()

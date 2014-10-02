@@ -1,6 +1,5 @@
 import unittest2
 
-
 _MARKER = object()
 _DATASET_ID = 'DATASET'
 _KIND = 'KIND'
@@ -149,7 +148,7 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(entity['foo'], 'Foo')
         self.assertEqual(connection._saved,
                          (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
-        self.assertEqual(transaction._added, (entity,))
+        self.assertEqual(transaction._added, (entity, ))
         self.assertEqual(key._path, None)
 
     def test_save_w_returned_key(self):
@@ -242,4 +241,4 @@ class _Transaction(object):
     __bool__ = __nonzero__
 
     def add_auto_id_entity(self, entity):
-        self._added += (entity,)
+        self._added += (entity, )

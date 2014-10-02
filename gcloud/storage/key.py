@@ -9,428 +9,431 @@ from gcloud.storage.iterator import KeyDataIterator
 
 
 class Key(object):
-  """A wrapper around Cloud Storage's concept of an ``Object``."""
+    """A wrapper around Cloud Storage's concept of an ``Object``."""
 
-  CHUNK_SIZE = 1024 * 1024  # 1 MB.
-  """The size of a chunk of data whenever iterating (1 MB).
+    CHUNK_SIZE = 1024 * 1024  # 1 MB.
+    """The size of a chunk of data whenever iterating (1 MB).
 
   This must be a multiple of 256 KB per the API specification.
   """
 
-  def __init__(self, bucket=None, name=None, metadata=None):
-    """
-    :type bucket: :class:`gcloud.storage.bucket.Bucket`
-    :param bucket: The bucket to which this key belongs.
+    def __init__(self, bucket=None, name=None, metadata=None):
+        """Key constructor.
 
-    :type name: string
-    :param name: The name of the key.
-                 This corresponds to the unique path of the object
-                 in the bucket.
+        :type bucket: :class:`gcloud.storage.bucket.Bucket`
+        :param bucket: The bucket to which this key belongs.
 
-    :type metadata: dict
-    :param metadata: All the other data provided by Cloud Storage.
-    """
+        :type name: string
+        :param name: The name of the key.
+                     This corresponds to the unique path of the object
+                     in the bucket.
 
-    self.bucket = bucket
-    self.name = name
-    self.metadata = metadata or {}
+        :type metadata: dict
+        :param metadata: All the other data provided by Cloud Storage.
+        """
 
-    # Lazily get the ACL information.
-    self.acl = None
+        self.bucket = bucket
+        self.name = name
+        self.metadata = metadata or {}
 
-  @classmethod
-  def from_dict(cls, key_dict, bucket=None):
-    """Instantiate a :class:`Key` from data returned by the JSON API.
+        # Lazily get the ACL information.
+        self.acl = None
 
-    :type key_dict: dict
-    :param key_dict: A dictionary of data returned from
-                     getting an Cloud Storage object.
+    @classmethod
+    def from_dict(cls, key_dict, bucket=None):
+        """Instantiate a :class:`Key` from data returned by the JSON API.
 
-    :type bucket: :class:`gcloud.storage.bucket.Bucket`
-    :param bucket: The bucket to which this key belongs
-                   (and by proxy, which connection to use).
+        :type key_dict: dict
+        :param key_dict: A dictionary of data returned from
+                         getting an Cloud Storage object.
 
-    :rtype: :class:`Key`
-    :returns: A key based on the data provided.
-    """
+        :type bucket: :class:`gcloud.storage.bucket.Bucket`
+        :param bucket: The bucket to which this key belongs
+                       (and by proxy, which connection to use).
 
-    return cls(bucket=bucket, name=key_dict['name'], metadata=key_dict)
+        :rtype: :class:`Key`
+        :returns: A key based on the data provided.
+        """
 
-  def __repr__(self):  # pragma NO COVER
-    if self.bucket:
-      bucket_name = self.bucket.name
-    else:
-      bucket_name = None
+        return cls(bucket=bucket, name=key_dict['name'], metadata=key_dict)
 
-    return '<Key: %s, %s>' % (bucket_name, self.name)
+    def __repr__(self):  # pragma NO COVER
+        if self.bucket:
+            bucket_name = self.bucket.name
+        else:
+            bucket_name = None
 
-  @property
-  def connection(self):
-    """Getter property for the connection to use with this Key.
+        return '<Key: %s, %s>' % (bucket_name, self.name)
 
-    :rtype: :class:`gcloud.storage.connection.Connection` or None
-    :returns: The connection to use, or None if no connection is set.
-    """
+    @property
+    def connection(self):
+        """Getter property for the connection to use with this Key.
 
-    if self.bucket and self.bucket.connection:
-      return self.bucket.connection
+        :rtype: :class:`gcloud.storage.connection.Connection` or None
+        :returns: The connection to use, or None if no connection is set.
+        """
 
-  @property
-  def path(self):
-    """Getter property for the URL path to this Key.
+        if self.bucket and self.bucket.connection:
+            return self.bucket.connection
 
-    :rtype: string
-    :returns: The URL path to this Key.
-    """
+    @property
+    def path(self):
+        """Getter property for the URL path to this Key.
 
-    if not self.bucket:
-      raise ValueError('Cannot determine path without a bucket defined.')
-    elif not self.name:
-      raise ValueError('Cannot determine path without a key name.')
+        :rtype: string
+        :returns: The URL path to this Key.
+        """
 
-    return self.bucket.path + '/o/' + self.name
+        if not self.bucket:
+            raise ValueError('Cannot determine path without a bucket defined.')
+        elif not self.name:
+            raise ValueError('Cannot determine path without a key name.')
 
-  @property
-  def public_url(self):
-    return '{storage_base_url}/{self.bucket.name}/{self.name}'.format(
-        storage_base_url='http://commondatastorage.googleapis.com', self=self)
+        return self.bucket.path + '/o/' + self.name
 
-  def generate_signed_url(self, expiration,
-                          method='GET'):  # pragma NO COVER UGH
-    """Generates a signed URL for this key.
+    @property
+    def public_url(self):
+        return '{storage_base_url}/{self.bucket.name}/{self.name}'.format(
+            storage_base_url='http://commondatastorage.googleapis.com',
+            self=self)
 
-    If you have a key that you want to allow access to
-    for a set amount of time,
-    you can use this method to generate a URL
-    that is only valid within a certain time period.
+    def generate_signed_url(self, expiration,
+                            method='GET'):  # pragma NO COVER
+        """Generates a signed URL for this key.
 
-    This is particularly useful if you don't want publicly accessible keys,
-    but don't want to require users to explicitly log in.
+        If you have a key that you want to allow access to
+        for a set amount of time,
+        you can use this method to generate a URL
+        that is only valid within a certain time period.
 
-    :type expiration: int, long, datetime.datetime, datetime.timedelta
-    :param expiration: When the signed URL should expire.
+        This is particularly useful if you don't want publicly accessible keys,
+        but don't want to require users to explicitly log in.
 
-    :type method: string
-    :param method: The HTTP verb that will be used when requesting the URL.
+        :type expiration: int, long, datetime.datetime, datetime.timedelta
+        :param expiration: When the signed URL should expire.
 
-    :rtype: string
-    :returns: A signed URL you can use to access the resource until expiration.
-    """
+        :type method: string
+        :param method: The HTTP verb that will be used when requesting the URL.
 
-    resource = '/{self.bucket.name}/{self.name}'.format(self=self)
-    return self.connection.generate_signed_url(resource=resource,
-                                               expiration=expiration,
-                                               method=method)
+        :rtype: string
+        :returns: A signed URL you can use to access the resource
+                  until expiration.
+        """
 
-  def exists(self):
-    """Determines whether or not this key exists.
+        resource = '/{self.bucket.name}/{self.name}'.format(self=self)
+        return self.connection.generate_signed_url(resource=resource,
+                                                   expiration=expiration,
+                                                   method=method)
 
-    :rtype: bool
-    :returns: True if the key exists in Cloud Storage.
-    """
+    def exists(self):
+        """Determines whether or not this key exists.
 
-    return self.bucket.get_key(self.name) is not None
+        :rtype: bool
+        :returns: True if the key exists in Cloud Storage.
+        """
 
-  def delete(self):
-    """Deletes a key from Cloud Storage.
+        return self.bucket.get_key(self.name) is not None
 
-    :rtype: :class:`Key`
-    :returns: The key that was just deleted.
-    """
+    def delete(self):
+        """Deletes a key from Cloud Storage.
 
-    return self.bucket.delete_key(self)
+        :rtype: :class:`Key`
+        :returns: The key that was just deleted.
+        """
 
-  def get_contents_to_file(self, fh):
-    """Gets the contents of this key to a file-like object.
+        return self.bucket.delete_key(self)
 
-    :type fh: file
-    :param fh: A file handle to which to write the key's data.
+    def get_contents_to_file(self, fh):
+        """Gets the contents of this key to a file-like object.
 
-    :raises: :class:`gcloud.storage.exceptions.NotFoundError`
-    """
+        :type fh: file
+        :param fh: A file handle to which to write the key's data.
 
-    for chunk in KeyDataIterator(self):
-      try:
-        fh.write(chunk)
-      except IOError, e:  # pragma NO COVER
-        if e.errno == errno.ENOSPC:
-          raise Exception('No space left on device.')
+        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        """
 
-  def get_contents_to_filename(self, filename):
-    """Get the contents of this key to a file by name.
+        for chunk in KeyDataIterator(self):
+            try:
+                fh.write(chunk)
+            except IOError, e:  # pragma NO COVER
+                if e.errno == errno.ENOSPC:
+                    raise Exception('No space left on device.')
 
-    :type filename: string
-    :param filename: A filename to be passed to ``open``.
+    def get_contents_to_filename(self, filename):
+        """Get the contents of this key to a file by name.
 
-    :raises: :class:`gcloud.storage.exceptions.NotFoundError`
-    """
+        :type filename: string
+        :param filename: A filename to be passed to ``open``.
 
-    with open(filename, 'wb') as fh:
-      self.get_contents_to_file(fh)
+        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        """
 
-  def get_contents_as_string(self):
-    """Gets the data stored on this Key as a string.
+        with open(filename, 'wb') as fh:
+            self.get_contents_to_file(fh)
 
-    :rtype: string
-    :returns: The data stored in this key.
-    :raises: :class:`gcloud.storage.exceptions.NotFoundError`
-    """
+    def get_contents_as_string(self):
+        """Gets the data stored on this Key as a string.
 
-    string_buffer = StringIO()
-    self.get_contents_to_file(string_buffer)
-    return string_buffer.getvalue()
+        :rtype: string
+        :returns: The data stored in this key.
+        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        """
 
-  def set_contents_from_file(self, fh, rewind=False, size=None,
-                             content_type=None):
-    """Set the contents of this key to the contents of a file handle.
+        string_buffer = StringIO()
+        self.get_contents_to_file(string_buffer)
+        return string_buffer.getvalue()
 
-    :type fh: file
-    :param fh: A file handle open for reading.
+    def set_contents_from_file(self, fh, rewind=False, size=None,
+                               content_type=None):
+        """Set the contents of this key to the contents of a file handle.
 
-    :type rewind: bool
-    :param rewind: If True, seek to the beginning of the file handle before
-                   writing the file to Cloud Storage.
+        :type fh: file
+        :param fh: A file handle open for reading.
 
-    :type size: int
-    :param size: The number of bytes to read from the file handle.
-                 If not provided, we'll try to guess the size using
-                 :func:`os.fstat`
-    """
+        :type rewind: bool
+        :param rewind: If True, seek to the beginning of the file handle before
+                       writing the file to Cloud Storage.
 
-    # Rewind the file if desired.
-    if rewind:
-      fh.seek(0, os.SEEK_SET)
+        :type size: int
+        :param size: The number of bytes to read from the file handle.
+                     If not provided, we'll try to guess the size using
+                     :func:`os.fstat`
+        """
 
-    # Get the basic stats about the file.
-    total_bytes = size or os.fstat(fh.fileno()).st_size
-    bytes_uploaded = 0
+        # Rewind the file if desired.
+        if rewind:
+            fh.seek(0, os.SEEK_SET)
 
-    # Set up a resumable upload session.
-    headers = {
-        'X-Upload-Content-Type': content_type or 'application/unknown',
-        'X-Upload-Content-Length': total_bytes
-    }
+        # Get the basic stats about the file.
+        total_bytes = size or os.fstat(fh.fileno()).st_size
+        bytes_uploaded = 0
 
-    upload_url = self.connection.build_api_url(
-        path=self.bucket.path + '/o',
-        query_params={'uploadType': 'resumable', 'name': self.name},
-        api_base_url=self.connection.API_BASE_URL + '/upload')
+        # Set up a resumable upload session.
+        headers = {
+            'X-Upload-Content-Type': content_type or 'application/unknown',
+            'X-Upload-Content-Length': total_bytes,
+        }
 
-    response, content = self.connection.make_request(
-        method='POST', url=upload_url,
-        headers=headers)
+        upload_url = self.connection.build_api_url(
+            path=self.bucket.path + '/o',
+            query_params={'uploadType': 'resumable', 'name': self.name},
+            api_base_url=self.connection.API_BASE_URL + '/upload')
 
-    # Get the resumable upload URL.
-    upload_url = response['location']
+        response, content = self.connection.make_request(
+            method='POST', url=upload_url,
+            headers=headers)
 
-    while bytes_uploaded < total_bytes:
-      # Construct the range header.
-      data = fh.read(self.CHUNK_SIZE)
-      chunk_size = len(data)
+        # Get the resumable upload URL.
+        upload_url = response['location']
 
-      start = bytes_uploaded
-      end = bytes_uploaded + chunk_size - 1
+        while bytes_uploaded < total_bytes:
+            # Construct the range header.
+            data = fh.read(self.CHUNK_SIZE)
+            chunk_size = len(data)
 
-      headers = {
-          'Content-Range': 'bytes %d-%d/%d' % (start, end, total_bytes),
-      }
+            start = bytes_uploaded
+            end = bytes_uploaded + chunk_size - 1
 
-      response, content = self.connection.make_request(
-          content_type='text/plain',
-          method='POST', url=upload_url, headers=headers, data=data)
+            headers = {
+                'Content-Range': 'bytes %d-%d/%d' % (start, end, total_bytes),
+            }
 
-      bytes_uploaded += chunk_size
+            response, content = self.connection.make_request(
+                content_type='text/plain',
+                method='POST', url=upload_url, headers=headers, data=data)
 
-  def set_contents_from_filename(self, filename):
-    """Open a path and set this key's contents to the content of that file.
+            bytes_uploaded += chunk_size
 
-    :type filename: string
-    :param filename: The path to the file.
-    """
+    def set_contents_from_filename(self, filename):
+        """Open a path and set this key's contents to the content of that file.
 
-    content_type, _ = mimetypes.guess_type(filename)
+        :type filename: string
+        :param filename: The path to the file.
+        """
 
-    with open(filename, 'rb') as fh:
-      self.set_contents_from_file(fh, content_type=content_type)
+        content_type, _ = mimetypes.guess_type(filename)
 
-  def set_contents_from_string(self, data, content_type='text/plain'):
-    """Sets the contents of this key to the provided string.
+        with open(filename, 'rb') as fh:
+            self.set_contents_from_file(fh, content_type=content_type)
 
-    You can use this method to quickly set the value of a key::
+    def set_contents_from_string(self, data, content_type='text/plain'):
+        """Sets the contents of this key to the provided string.
 
-      >>> from gcloud import storage
-      >>> connection = storage.get_connection(project, email, key_path)
-      >>> bucket = connection.get_bucket(bucket_name)
-      >>> key = bucket.new_key('my_text_file.txt')
-      >>> key.set_contents_from_string('This is the contents of my file!')
+        You can use this method to quickly set the value of a key::
 
-    Under the hood this is using a string buffer
-    and calling :func:`gcloud.storage.key.Key.set_contents_from_file`.
+          >>> from gcloud import storage
+          >>> connection = storage.get_connection(project, email, key_path)
+          >>> bucket = connection.get_bucket(bucket_name)
+          >>> key = bucket.new_key('my_text_file.txt')
+          >>> key.set_contents_from_string('This is the contents of my file!')
 
-    :type data: string
-    :param data: The data to store in this key.
+        Under the hood this is using a string buffer
+        and calling :func:`gcloud.storage.key.Key.set_contents_from_file`.
 
-    :rtype: :class:`Key`
-    :returns: The updated Key object.
-    """
+        :type data: string
+        :param data: The data to store in this key.
 
-    string_buffer = StringIO()
-    string_buffer.write(data)
-    self.set_contents_from_file(fh=string_buffer, rewind=True,
-                                size=string_buffer.len,
-                                content_type=content_type)
-    return self
+        :rtype: :class:`Key`
+        :returns: The updated Key object.
+        """
 
-  def has_metadata(self, field=None):
-    """Check if metadata is available locally.
+        string_buffer = StringIO()
+        string_buffer.write(data)
+        self.set_contents_from_file(fh=string_buffer, rewind=True,
+                                    size=string_buffer.len,
+                                    content_type=content_type)
+        return self
 
-    :type field: string
-    :param field: (optional) the particular field to check for.
+    def has_metadata(self, field=None):
+        """Check if metadata is available locally.
 
-    :rtype: bool
-    :returns: Whether metadata is available locally.
-    """
+        :type field: string
+        :param field: (optional) the particular field to check for.
 
-    if not self.metadata:
-      return False
-    elif field and field not in self.metadata:
-      return False
-    else:
-      return True
+        :rtype: bool
+        :returns: Whether metadata is available locally.
+        """
 
-  def reload_metadata(self, full=False):
-    """Reload metadata from Cloud Storage.
+        if not self.metadata:
+            return False
+        elif field and field not in self.metadata:
+            return False
+        else:
+            return True
 
-    :type full: bool
-    :param full: If True, loads all data (include ACL data).
+    def reload_metadata(self, full=False):
+        """Reload metadata from Cloud Storage.
 
-    :rtype: :class:`Key`
-    :returns: The key you just reloaded data for.
-    """
+        :type full: bool
+        :param full: If True, loads all data (include ACL data).
 
-    projection = 'full' if full else 'noAcl'
-    query_params = {'projection': projection}
-    self.metadata = self.connection.api_request(
-        method='GET', path=self.path, query_params=query_params)
-    return self
+        :rtype: :class:`Key`
+        :returns: The key you just reloaded data for.
+        """
 
-  def get_metadata(self, field=None, default=None):
-    """Get all metadata or a specific field.
+        projection = 'full' if full else 'noAcl'
+        query_params = {'projection': projection}
+        self.metadata = self.connection.api_request(
+            method='GET', path=self.path, query_params=query_params)
+        return self
 
-    If you request a field that isn't available,
-    and that field can be retrieved by refreshing data
-    from Cloud Storage,
-    this method will reload the data using
-    :func:`Key.reload_metadata`.
+    def get_metadata(self, field=None, default=None):
+        """Get all metadata or a specific field.
 
-    :type field: string
-    :param field: (optional) A particular field to retrieve from metadata.
+        If you request a field that isn't available,
+        and that field can be retrieved by refreshing data
+        from Cloud Storage,
+        this method will reload the data using
+        :func:`Key.reload_metadata`.
 
-    :type default: anything
-    :param default: The value to return if the field provided wasn't found.
+        :type field: string
+        :param field: (optional) A particular field to retrieve from metadata.
 
-    :rtype: dict or anything
-    :returns: All metadata or the value of the specific field.
-    """
+        :type default: anything
+        :param default: The value to return if the field provided wasn't found.
 
-    if not self.has_metadata(field=field):
-      full = (field and field == 'acl')
-      self.reload_metadata(full=full)
+        :rtype: dict or anything
+        :returns: All metadata or the value of the specific field.
+        """
 
-    if field:
-      return self.metadata.get(field, default)
-    else:
-      return self.metadata
+        if not self.has_metadata(field=field):
+            full = (field and field == 'acl')
+            self.reload_metadata(full=full)
 
-  def patch_metadata(self, metadata):
-    """Update particular fields of this key's metadata.
+        if field:
+            return self.metadata.get(field, default)
+        else:
+            return self.metadata
 
-    This method will only update the fields provided
-    and will not touch the other fields.
+    def patch_metadata(self, metadata):
+        """Update particular fields of this key's metadata.
 
-    It will also reload the metadata locally
-    based on the servers response.
+        This method will only update the fields provided
+        and will not touch the other fields.
 
-    :type metadata: dict
-    :param metadata: The dictionary of values to update.
+        It will also reload the metadata locally
+        based on the servers response.
 
-    :rtype: :class:`Key`
-    :returns: The current key.
-    """
+        :type metadata: dict
+        :param metadata: The dictionary of values to update.
 
-    self.metadata = self.connection.api_request(
-        method='PATCH', path=self.path, data=metadata,
-        query_params={'projection': 'full'})
-    return self
+        :rtype: :class:`Key`
+        :returns: The current key.
+        """
 
-  def reload_acl(self):
-    """Reload the ACL data from Cloud Storage.
+        self.metadata = self.connection.api_request(
+            method='PATCH', path=self.path, data=metadata,
+            query_params={'projection': 'full'})
+        return self
 
-    :rtype: :class:`Key`
-    :returns: The current key.
-    """
+    def reload_acl(self):
+        """Reload the ACL data from Cloud Storage.
 
-    self.acl = ObjectACL(key=self)
+        :rtype: :class:`Key`
+        :returns: The current key.
+        """
 
-    for entry in self.get_metadata('acl', []):
-      entity = self.acl.entity_from_dict(entry)
-      self.acl.add_entity(entity)
+        self.acl = ObjectACL(key=self)
 
-    return self
+        for entry in self.get_metadata('acl', []):
+            entity = self.acl.entity_from_dict(entry)
+            self.acl.add_entity(entity)
 
-  def get_acl(self):
-    """Get ACL metadata as a :class:`gcloud.storage.acl.ObjectACL` object.
+        return self
 
-    :rtype: :class:`gcloud.storage.acl.ObjectACL`
-    :returns: An ACL object for the current key.
-    """
+    def get_acl(self):
+        """Get ACL metadata as a :class:`gcloud.storage.acl.ObjectACL` object.
 
-    if not self.acl:
-      self.reload_acl()
-    return self.acl
+        :rtype: :class:`gcloud.storage.acl.ObjectACL`
+        :returns: An ACL object for the current key.
+        """
 
-  def save_acl(self, acl=None):
-    """Save the ACL data for this key.
+        if not self.acl:
+            self.reload_acl()
+        return self.acl
 
-    :type acl: :class:`gcloud.storage.acl.ACL`
-    :param acl: The ACL object to save.
-                If left blank, this will save the ACL
-                set locally on the key.
-    """
+    def save_acl(self, acl=None):
+        """Save the ACL data for this key.
 
-    # We do things in this weird way because [] and None
-    # both evaluate to False, but mean very different things.
-    if acl is None:
-      acl = self.acl
+        :type acl: :class:`gcloud.storage.acl.ACL`
+        :param acl: The ACL object to save.
+                    If left blank, this will save the ACL
+                    set locally on the key.
+        """
 
-    if acl is None:
-      return self
+        # We do things in this weird way because [] and None
+        # both evaluate to False, but mean very different things.
+        if acl is None:
+            acl = self.acl
 
-    self.patch_metadata({'acl': list(acl)})
-    self.reload_acl()
-    return self
+        if acl is None:
+            return self
 
-  def clear_acl(self):
-    """Remove all ACL rules from the key.
+        self.patch_metadata({'acl': list(acl)})
+        self.reload_acl()
+        return self
 
-    Note that this won't actually remove *ALL* the rules,
-    but it will remove all the non-default rules.
-    In short,
-    you'll still have access
-    to a key that you created
-    even after you clear ACL rules
-    with this method.
-    """
+    def clear_acl(self):
+        """Remove all ACL rules from the key.
 
-    return self.save_acl(acl=[])
+        Note that this won't actually remove *ALL* the rules,
+        but it will remove all the non-default rules.
+        In short,
+        you'll still have access
+        to a key that you created
+        even after you clear ACL rules
+        with this method.
+        """
 
-  def make_public(self):
-    """Make this key public giving all users read access.
+        return self.save_acl(acl=[])
 
-    :rtype: :class:`Key`
-    :returns: The current key.
-    """
+    def make_public(self):
+        """Make this key public giving all users read access.
 
-    self.get_acl().all().grant_read()
-    self.save_acl()
-    return self
+        :rtype: :class:`Key`
+        :returns: The current key.
+        """
+
+        self.get_acl().all().grant_read()
+        self.save_acl()
+        return self
