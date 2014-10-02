@@ -156,9 +156,9 @@ class Test_Key(unittest2.TestCase):
         KEY = 'key'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
-        loc_response = _Response(location=UPLOAD_URL)
-        chunk1_response = _Response()
-        chunk2_response = _Response()
+        loc_response = {'location': UPLOAD_URL}
+        chunk1_response = {}
+        chunk2_response = {}
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
@@ -201,9 +201,9 @@ class Test_Key(unittest2.TestCase):
         KEY = 'key'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
-        loc_response = _Response(location=UPLOAD_URL)
-        chunk1_response = _Response()
-        chunk2_response = _Response()
+        loc_response = {'location': UPLOAD_URL}
+        chunk1_response = {}
+        chunk2_response = {}
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
@@ -245,9 +245,9 @@ class Test_Key(unittest2.TestCase):
         KEY = 'key'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
-        loc_response = _Response(location=UPLOAD_URL)
-        chunk1_response = _Response()
-        chunk2_response = _Response()
+        loc_response = {'location': UPLOAD_URL}
+        chunk1_response = {}
+        chunk2_response = {}
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
@@ -556,12 +556,6 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
-class _Response(dict):
-    @property
-    def status(self):
-        return self.get('status', 200)
-
-
 class _Connection(object):
     API_BASE_URL = 'http://example.com'
 
@@ -570,24 +564,14 @@ class _Connection(object):
         self._requested = []
 
     def make_request(self, **kw):
-        from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:
-            raise NotFoundError('miss', None)
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
 
     def api_request(self, **kw):
-        from gcloud.storage.exceptions import NotFoundError
         self._requested.append(kw)
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:
-            raise NotFoundError('miss', None)
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
 
     def build_api_url(self, path, query_params=None,
                       api_base_url=API_BASE_URL):

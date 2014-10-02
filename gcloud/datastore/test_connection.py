@@ -672,10 +672,6 @@ class TestConnection(unittest2.TestCase):
         mutation = datastore_pb.Mutation()
 
         class Xact(object):
-
-            def id(self):
-                return 'xact'
-
             def mutation(self):
                 return mutation
         DATASET_ID = 'DATASET'
@@ -746,10 +742,6 @@ class TestConnection(unittest2.TestCase):
         mutation = datastore_pb.Mutation()
 
         class Xact(object):
-
-            def id(self):
-                return 'xact'
-
             def mutation(self):
                 return mutation
         DATASET_ID = 'DATASET'
@@ -821,10 +813,6 @@ class TestConnection(unittest2.TestCase):
         mutation = datastore_pb.Mutation()
 
         class Xact(object):
-
-            def id(self):
-                return 'xact'
-
             def mutation(self):
                 return mutation
         DATASET_ID = 'DATASET'
