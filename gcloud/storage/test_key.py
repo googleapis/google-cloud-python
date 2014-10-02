@@ -156,9 +156,9 @@ class Test_Key(unittest2.TestCase):
         KEY = 'key'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
-        loc_response = _Response(location=UPLOAD_URL)
-        chunk1_response = _Response()
-        chunk2_response = _Response()
+        loc_response = {'location': UPLOAD_URL}
+        chunk1_response = {}
+        chunk2_response = {}
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
@@ -201,9 +201,9 @@ class Test_Key(unittest2.TestCase):
         KEY = 'key'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
-        loc_response = _Response(location=UPLOAD_URL)
-        chunk1_response = _Response()
-        chunk2_response = _Response()
+        loc_response = {'location': UPLOAD_URL}
+        chunk1_response = {}
+        chunk2_response = {}
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
@@ -245,9 +245,9 @@ class Test_Key(unittest2.TestCase):
         KEY = 'key'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
-        loc_response = _Response(location=UPLOAD_URL)
-        chunk1_response = _Response()
-        chunk2_response = _Response()
+        loc_response = {'location': UPLOAD_URL}
+        chunk1_response = {}
+        chunk2_response = {}
         connection = _Connection((loc_response, ''),
                                  (chunk1_response, ''),
                                  (chunk2_response, ''),
@@ -554,10 +554,6 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
         self.assertEqual(kw[0]['data'], {'acl': after['acl']})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-
-
-class _Response(dict):
-    pass
 
 
 class _Connection(object):
