@@ -65,9 +65,9 @@ class Query(object):
     return clone
 
   def to_protobuf(self):
-    """Convert the :class:`Query` instance to a :class:`gcloud.datastore.datastore_v1_pb2.Query`.
+    """Convert :class:`Query` instance to :class:`.datastore_v1_pb2.Query`.
 
-    :rtype: :class:`gclouddatstore.datastore_v1_pb2.Query`
+    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Query`
     :returns: A Query protobuf that can be sent to the protobuf API.
     """
     return self._pb
@@ -150,7 +150,7 @@ class Query(object):
       >>> query = dataset.query('Person')
       >>> filtered_query = query.ancestor(['Person', '1'])
 
-    Each call to ``.ancestor()`` returns a cloned :class:`Query:,
+    Each call to ``.ancestor()`` returns a cloned :class:`Query`,
     however a query may only have one ancestor at a time.
 
     :type ancestor: :class:`gcloud.datastore.key.Key` or list
@@ -352,4 +352,32 @@ class Query(object):
       clone._pb.start_cursor = base64.b64decode(start_cursor)
     if end_cursor:
       clone._pb.end_cursor = base64.b64decode(end_cursor)
+    return clone
+
+  def order(self, *properties):
+    """Adds a sort order to the query.
+    
+    Sort fields will be applied in the order specified.
+
+    :type properties: sequence of strings
+    :param properties: Each value is a string giving the name of the property
+                       on which to sort, optionally preceded by a hyphen
+                       (-) to specify descending order.
+                       Omitting the hyphen implies ascending order.
+
+    :rtype: :class:`Query`
+    :returns: A new Query instance, ordered as specified.
+    """
+    clone = self._clone()
+
+    for p in properties:
+      property_order = clone._pb.order.add()
+
+      if p.startswith('-'):
+        property_order.property.name = p[1:]
+        property_order.direction = property_order.DESCENDING
+      else:
+        property_order.property.name = p
+        property_order.direction = property_order.ASCENDING
+
     return clone

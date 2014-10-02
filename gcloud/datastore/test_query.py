@@ -302,6 +302,49 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(q_pb.start_cursor, _START)
         self.assertEqual(q_pb.end_cursor, _END)
 
+    def test_order_empty(self):
+        _KIND = 'KIND'
+        before = self._makeOne(_KIND)
+        after = before.order()
+        self.assertFalse(after is before)
+        self.assertTrue(isinstance(after, self._getTargetClass()))
+        self.assertEqual(before.to_protobuf(), after.to_protobuf())
+
+    def test_order_single_asc(self):
+        _KIND = 'KIND'
+        before = self._makeOne(_KIND)
+        after = before.order('field')
+        after_pb = after.to_protobuf()
+        order_pb = list(after_pb.order)
+        self.assertEqual(len(order_pb), 1)
+        prop_pb = order_pb[0]
+        self.assertEqual(prop_pb.property.name, 'field')
+        self.assertEqual(prop_pb.direction, prop_pb.ASCENDING)
+
+    def test_order_single_desc(self):
+        _KIND = 'KIND'
+        before = self._makeOne(_KIND)
+        after = before.order('-field')
+        after_pb = after.to_protobuf()
+        order_pb = list(after_pb.order)
+        self.assertEqual(len(order_pb), 1)
+        prop_pb = order_pb[0]
+        self.assertEqual(prop_pb.property.name, 'field')
+        self.assertEqual(prop_pb.direction, prop_pb.DESCENDING)
+
+    def test_order_multiple(self):
+        _KIND = 'KIND'
+        before = self._makeOne(_KIND)
+        after = before.order('foo', '-bar')
+        after_pb = after.to_protobuf()
+        order_pb = list(after_pb.order)
+        self.assertEqual(len(order_pb), 2)
+        prop_pb = order_pb[0]
+        self.assertEqual(prop_pb.property.name, 'foo')
+        self.assertEqual(prop_pb.direction, prop_pb.ASCENDING)
+        prop_pb = order_pb[1]
+        self.assertEqual(prop_pb.property.name, 'bar')
+        self.assertEqual(prop_pb.direction, prop_pb.DESCENDING)
 
 
 class _Dataset(object):

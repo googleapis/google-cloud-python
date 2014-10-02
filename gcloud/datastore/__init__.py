@@ -71,7 +71,10 @@ def get_connection(client_email, private_key_path):
 
 
 def get_dataset(dataset_id, client_email, private_key_path):
-  """Shortcut method to establish a connection to a particular dataset in the Cloud Datastore.
+  """Establish a connection to a particular dataset in the Cloud Datastore.
+
+  This is a shortcut method for creating a connection and using it
+  to connect to a dataset.
 
   You'll generally use this as the first call to working with the API:
 

@@ -4,6 +4,7 @@ You'll typically use these to get started with the API:
 
 >>> import gcloud.storage
 >>> bucket = gcloud.storage.get_bucket('bucket-id-here',
+                                       'project-id',
                                        'long-email@googleapis.com',
                                        '/path/to/private.key')
 >>> # Then do other things...
