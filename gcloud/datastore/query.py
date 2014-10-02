@@ -1,10 +1,10 @@
+import base64
 import copy
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
-import base64
 
 
 class Query(object):
@@ -341,8 +341,8 @@ class Query(object):
                              start reading query results.
 
         :type end_cursor: bytes
-        :param end_cursor: Base64-encoded cursor string specifying where to stop
-                           reading query results.
+        :param end_cursor: Base64-encoded cursor string specifying where to
+                           stop reading query results.
 
         :rtype: :class:`Query`
         :returns: If neither cursor is passed, returns self;  else, returns a
