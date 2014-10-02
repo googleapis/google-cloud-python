@@ -63,9 +63,9 @@ class Query(object):
     return clone
 
   def to_protobuf(self):
-    """Convert the :class:`Query` instance to a :class:`gcloud.datastore.datastore_v1_pb2.Query`.
+    """Convert :class:`Query` instance to :class:`.datastore_v1_pb2.Query`.
 
-    :rtype: :class:`gclouddatstore.datastore_v1_pb2.Query`
+    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Query`
     :returns: A Query protobuf that can be sent to the protobuf API.
     """
     return self._pb
