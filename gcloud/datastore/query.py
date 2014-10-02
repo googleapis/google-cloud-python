@@ -310,8 +310,9 @@ class Query(object):
             for entity in entity_pbs]
 
   def order(self, *properties):
-    """Adds a sort order to the query. If more than one sort order is added,
-    they will be applied in the order specified.
+    """Adds a sort order to the query.
+    
+    Sort fields will be applied in the order specified.
 
     :type properties: sequence of strings
     :param properties: Each value is a string giving the name of the property
