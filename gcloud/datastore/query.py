@@ -308,3 +308,31 @@ class Query(object):
 
     return [Entity.from_protobuf(entity, dataset=self.dataset())
             for entity in entity_pbs]
+
+  def order(self, *properties):
+    """Adds a sort order to the query.
+    
+    Sort fields will be applied in the order specified.
+
+    :type properties: sequence of strings
+    :param properties: Each value is a string giving the name of the property
+                       on which to sort, optionally preceded by a hyphen
+                       (-) to specify descending order.
+                       Omitting the hyphen implies ascending order.
+
+    :rtype: :class:`Query`
+    :returns: A new Query instance, ordered as specified.
+    """
+    clone = self._clone()
+
+    for p in properties:
+      property_order = clone._pb.order.add()
+
+      if p.startswith('-'):
+        property_order.property.name = p[1:]
+        property_order.direction = property_order.DESCENDING
+      else:
+        property_order.property.name = p
+        property_order.direction = property_order.ASCENDING
+
+    return clone
