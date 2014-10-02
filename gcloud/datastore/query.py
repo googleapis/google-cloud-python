@@ -63,9 +63,9 @@ class Query(object):
     return clone
 
   def to_protobuf(self):
-    """Convert the :class:`Query` instance to a :class:`gcloud.datastore.datastore_v1_pb2.Query`.
+    """Convert :class:`Query` instance to :class:`.datastore_v1_pb2.Query`.
 
-    :rtype: :class:`gclouddatstore.datastore_v1_pb2.Query`
+    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Query`
     :returns: A Query protobuf that can be sent to the protobuf API.
     """
     return self._pb
@@ -148,7 +148,7 @@ class Query(object):
       >>> query = dataset.query('Person')
       >>> filtered_query = query.ancestor(['Person', '1'])
 
-    Each call to ``.ancestor()`` returns a cloned :class:`Query:,
+    Each call to ``.ancestor()`` returns a cloned :class:`Query`,
     however a query may only have one ancestor at a time.
 
     :type ancestor: :class:`gcloud.datastore.key.Key` or list

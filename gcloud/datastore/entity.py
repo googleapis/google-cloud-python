@@ -70,7 +70,7 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
             self._key = None
 
     def dataset(self):
-        """Get the :class:`gcloud.datastore.dataset.Dataset` in which this entity belongs.
+        """Get the :class:`.dataset.Dataset` in which this entity belongs.
 
         :rtype: :class:`gcloud.datastore.dataset.Dataset`
         :returns: The Dataset containing the entity if there is a key,
@@ -86,7 +86,7 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
             return self.key().dataset()
 
     def key(self, key=None):
-        """Get or set the :class:`gcloud.datastore.key.Key` on the current entity.
+        """Get or set the :class:`.datastore.key.Key` on the current entity.
 
         :type key: :class:`glcouddatastore.key.Key`
         :param key: The key you want to set on the entity.
@@ -122,7 +122,10 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
 
     @classmethod
     def from_key(cls, key):
-        """Factory method for creating an entity based on the :class:`gcloud.datastore.key.Key`.
+        """Create entity based on :class:`.datastore.key.Key`.
+
+        .. note::
+          This is a factory method.
 
         :type key: :class:`gcloud.datastore.key.Key`
         :param key: The key for the entity.

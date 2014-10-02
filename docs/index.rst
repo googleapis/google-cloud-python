@@ -3,9 +3,15 @@
 .. toctree::
   :hidden:
 
-  datastore-api
-  storage-api
   common-api
+  datastore-api
+  datastore-getting-started
+  datastore-quickstart
+  getting-started
+  storage-api
+  storage-getting-started
+  storage-quickstart
+
 
 Google Cloud Python API
 =======================
