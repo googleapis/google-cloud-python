@@ -19,7 +19,7 @@ using a Git checkout:
 
 - Clone your fork of gcloud-python from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as "hack-on-gcloud".
+  as "hack-on-gcloud".  E.g.::
 
    $ cd ~
    $ git clone git@github.com:USERNAME/gcloud-python.git hack-on-gcloud
@@ -34,7 +34,7 @@ using a Git checkout:
 Now your local repo is set up such that you will push changes to your GitHub
 repo, from which you can submit a pull request.
 
-- Create a virtualenv in which to install gcloud-python:
+- Create a virtualenv in which to install gcloud-python::
 
    $ cd ~/hack-on-gcloud
    $ virtualenv -ppython2.7 env
@@ -54,7 +54,7 @@ repo, from which you can submit a pull request.
 
 - Install gcloud-python from the checkout into the virtualenv using
   ``setup.py develop``.  Running ``setup.py develop`` *must* be done while
-  the current working directory is the ``gcloud-python`` checkout directory:
+  the current working directory is the ``gcloud-python`` checkout directory::
 
    $ cd ~/hack-on-gcloud
    $ $VENV/bin/python setup.py develop
@@ -126,13 +126,13 @@ To build and review docs (where ``$VENV`` refers to the virtualenv you're
 using to develop gcloud-python):
 
 1. After following the steps above in "Using a Development Checkout", install
-   Sphinx and all development requirements in your virtualenv:
+   Sphinx and all development requirements in your virtualenv::
 
      $ cd ~/hack-on-gcloud
      $ $VENV/bin/pip install Sphinx
 
 2. Change into the ``docs`` directory within your gcloud-python checkout and
-   execute the ``make`` command with some flags:
+   execute the ``make`` command with some flags::
 
      $ cd ~/hack-on-gcloud/gcloud-python/docs
      $ make clean html SPHINXBUILD=$VENV/bin/sphinx-build
