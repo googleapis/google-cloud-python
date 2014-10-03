@@ -3,7 +3,7 @@
 from oauth2client import client
 
 
-class Credentials(object):
+class Credentials(object):  # pylint: disable=too-few-public-methods
     """An object used to simplify the OAuth2 credentials library.
 
     .. note::

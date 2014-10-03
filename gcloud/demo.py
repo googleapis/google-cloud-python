@@ -1,3 +1,5 @@
+# This is demo code, globally disable docstrings.
+# pylint: disable=missing-docstring
 from code import interact
 import itertools
 import os.path
@@ -34,7 +36,8 @@ class DemoRunner(object):
 
         interact('(Hit CTRL-D to exit...)', local=self.LOCALS)
 
-    def wait(self):
+    @staticmethod
+    def wait():
         raw_input()
 
     @classmethod
@@ -106,4 +109,6 @@ class DemoRunner(object):
             self.wait()
 
             # Yes, this is crazy unsafe... but it's demo code.
+            # pylint: disable=exec-used
             exec('\n'.join(lines), self.GLOBALS, self.LOCALS)
+            # pylint: enable=exec-used
