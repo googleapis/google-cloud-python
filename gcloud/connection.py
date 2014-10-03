@@ -21,7 +21,9 @@ class Connection(object):
     _EMPTY = object()
     """A pointer to represent an empty value for default arguments."""
 
+    # pylint: disable=maybe-no-member
     USER_AGENT = "gcloud-python/{0}".format(get_distribution('gcloud').version)
+    # pylint: enable=maybe-no-member
     """The user agent for gcloud-python requests."""
 
     def __init__(self, credentials=None):

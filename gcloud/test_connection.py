@@ -52,7 +52,9 @@ class TestConnection(unittest2.TestCase):  # pylint: disable=R0904
 
     def test_user_agent_format(self):
         from pkg_resources import get_distribution
+        # pylint: disable=maybe-no-member
         expected_ua = 'gcloud-python/{0}'.format(
             get_distribution('gcloud').version)
+        # pylint: enable=maybe-no-member
         conn = self._makeOne()
         self.assertEqual(conn.USER_AGENT, expected_ua)
