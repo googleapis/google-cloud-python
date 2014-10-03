@@ -4,8 +4,9 @@ Google Cloud Python Client
 The goal of this project is to make it really simple and Pythonic
 to use Google Cloud Platform services.
 
-.. image:: https://travis-ci.org/GoogleCloudPlatform/gcloud-python.svg?branch=master
-    :target: https://travis-ci.org/GoogleCloudPlatform/gcloud-python
+------------------
+|build| |coverage|
+------------------
 
 Quickstart
 ----------
@@ -79,3 +80,8 @@ primarily a Contributor License Agreement (CLA):
 
 You can sign these electronically (just scroll to the bottom).
 After that, we'll be able to accept your pull requests.
+
+.. |build| image:: https://travis-ci.org/GoogleCloudPlatform/gcloud-python.svg?branch=master
+    :target: https://travis-ci.org/GoogleCloudPlatform/gcloud-python
+.. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/gcloud-python/badge.png?branch=master
+    :target: https://coveralls.io/r/GoogleCloudPlatform/gcloud-python?branch=master
