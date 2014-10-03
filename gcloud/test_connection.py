@@ -5,7 +5,8 @@ import unittest2
 
 class TestConnection(unittest2.TestCase):  # pylint: disable=R0904
 
-    def _getTargetClass(self):  # pylint: disable=invalid-name,no-self-use
+    @staticmethod
+    def _getTargetClass():  # pylint: disable=invalid-name
         from gcloud.connection import Connection
         return Connection
 

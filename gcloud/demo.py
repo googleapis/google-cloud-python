@@ -36,7 +36,8 @@ class DemoRunner(object):
 
         interact('(Hit CTRL-D to exit...)', local=self.LOCALS)
 
-    def wait(self):  # pylint: disable=no-self-use
+    @staticmethod
+    def wait():
         raw_input()
 
     @classmethod
