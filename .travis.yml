@@ -9,4 +9,5 @@ script:
   - tox -e py27
 after_success:
   - tox -e cover
+  - tox -e lint
   - coveralls
