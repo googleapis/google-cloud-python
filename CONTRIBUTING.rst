@@ -83,6 +83,12 @@ Coding Style
 
    $ tox -e lint
 
+Exceptions to PEP8:
+
+- Many unit tests use a helper method, ``_callFUT`` ("FUT" is short for
+  "Function-Under-Test"), which is PEP8-incompliant, but more readable.
+  Some also use a local variable, ``MUT`` (short for "Module-Under-Test").
+
 Running Tests
 --------------
 
