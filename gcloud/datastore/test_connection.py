@@ -65,6 +65,7 @@ class TestConnection(unittest2.TestCase):
                           'method': 'POST',
                           'headers': {'Content-Type': 'application/x-protobuf',
                                       'Content-Length': '4',
+                                      'User-Agent': conn.USER_AGENT,
                                       },
                           'body': DATA,
                           })
@@ -115,6 +116,7 @@ class TestConnection(unittest2.TestCase):
                           'method': 'POST',
                           'headers': {'Content-Type': 'application/x-protobuf',
                                       'Content-Length': '5',
+                                      'User-Agent': conn.USER_AGENT,
                                       },
                           'body': b'REQPB',
                           })
@@ -218,6 +220,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '2',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
@@ -248,6 +251,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '2',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
@@ -299,6 +303,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '6',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.RollbackRequest
         request = rq_class()
@@ -333,6 +338,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '14',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
@@ -369,6 +375,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '16',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
@@ -401,6 +408,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '26',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
@@ -439,6 +447,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '26',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
@@ -474,6 +483,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '52',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
@@ -516,6 +526,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '47',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
@@ -561,6 +572,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '53',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
@@ -595,6 +607,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '47',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
@@ -645,6 +658,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '44',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
@@ -720,6 +734,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '30',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
@@ -791,6 +806,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers'],
                          {'Content-Type': 'application/x-protobuf',
                           'Content-Length': '30',
+                          'User-Agent': conn.USER_AGENT,
                           })
         rq_class = datastore_pb.CommitRequest
         request = rq_class()

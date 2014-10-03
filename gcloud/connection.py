@@ -1,3 +1,4 @@
+from pkg_resources import get_distribution
 import httplib2
 
 
@@ -16,6 +17,9 @@ class Connection(object):
 
     _EMPTY = object()
     """A pointer to represent an empty value for default arguments."""
+
+    USER_AGENT = "gcloud-python/{0}".format(get_distribution('gcloud').version)
+    """The user agent for gcloud-python requests."""
 
     def __init__(self, credentials=None):
         """:type credentials: :class:`gcloud.credentials.Credentials`
