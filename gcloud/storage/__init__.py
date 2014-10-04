@@ -62,12 +62,12 @@ def get_connection(project, client_email, private_key_path):
     :returns: A connection defined with the proper credentials.
     """
 
-    from gcloud.credentials import Credentials
+    from gcloud import credentials
     from gcloud.storage.connection import Connection
 
-    credentials = Credentials.get_for_service_account(
+    svc_account_credentials = credentials.get_for_service_account(
         client_email, private_key_path, scope=SCOPE)
-    return Connection(project=project, credentials=credentials)
+    return Connection(project=project, credentials=svc_account_credentials)
 
 
 def get_bucket(bucket_name, project, client_email, private_key_path):

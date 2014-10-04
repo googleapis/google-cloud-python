@@ -10,7 +10,7 @@ class Connection(connection.Connection):
     This class should understand only the basic types (and protobufs)
     in method arguments, however should be capable of returning advanced types.
 
-    :type credentials: :class:`gcloud.credentials.Credentials`
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: The OAuth2 Credentials to use for this connection.
     """
 
