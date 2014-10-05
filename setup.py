@@ -16,7 +16,7 @@ if sys.version_info <= (2, 4):
 REQUIREMENTS = [
     'httplib2',
     'oauth2client',
-    'protobuf',
+    'protobuf >= 2.5.0',
     'pycrypto',
     'pyopenssl',
     'pytz',
