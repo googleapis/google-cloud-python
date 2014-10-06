@@ -7,7 +7,7 @@ import pytz
 
 from gcloud.datastore.key import Key
 
-check_int64_value = Int64ValueChecker().CheckValue
+INT_VALUE_CHECKER = Int64ValueChecker()
 
 
 def get_protobuf_attribute_and_value(val):
@@ -56,7 +56,7 @@ def get_protobuf_attribute_and_value(val):
     elif isinstance(val, float):
         name, value = 'double', val
     elif isinstance(val, (int, long)):
-        check_int64_value(val)  # This will raise an exception if invalid.
+        INT_VALUE_CHECKER.CheckValue(val)  # This will raise an exception if invalid.
         name, value = 'integer', val
     elif isinstance(val, basestring):
         name, value = 'string', val
