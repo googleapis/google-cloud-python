@@ -66,6 +66,8 @@ class Key(object):
             if element.HasField('id'):
                 element_dict['id'] = element.id
 
+            # This is safe: we expect proto objects returned will only have
+            # one of `name` or `id` set.
             if element.HasField('name'):
                 element_dict['name'] = element.name
 
