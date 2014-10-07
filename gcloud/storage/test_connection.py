@@ -123,7 +123,6 @@ class TestConnection(unittest2.TestCase):
 
     def test_build_api_url_no_extra_query_params(self):
         PROJECT = 'project'
-        KEY = 'key'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([conn.API_BASE_URL,
                         'storage',
@@ -136,13 +135,7 @@ class TestConnection(unittest2.TestCase):
         from urlparse import parse_qsl
         from urlparse import urlsplit
         PROJECT = 'project'
-        KEY = 'key'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'foo'
-                        ])
         uri = conn.build_api_url('/foo', {'bar': 'baz'})
         scheme, netloc, path, qs, frag = urlsplit(uri)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
@@ -237,29 +230,19 @@ class TestConnection(unittest2.TestCase):
     def test_api_request_w_non_json_response(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        '?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'text/plain',
-                                  },
-                                 'CONTENT')
+        conn._http = Http({'status': '200',
+                           'content-type': 'text/plain',
+                           },
+                          'CONTENT')
         self.assertRaises(TypeError, conn.api_request, 'GET', '/')
 
     def test_api_request_wo_json_expected(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        '?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'text/plain',
-                                  },
-                                 'CONTENT')
+        conn._http = Http({'status': '200',
+                           'content-type': 'text/plain',
+                           },
+                          'CONTENT')
         self.assertEqual(conn.api_request('GET', '/', expect_json=False),
                          'CONTENT')
 
@@ -268,11 +251,6 @@ class TestConnection(unittest2.TestCase):
         from urlparse import urlsplit
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        '?project=%s&foo=bar' % PROJECT,
-                        ])
         http = conn._http = Http({'status': '200',
                                   'content-type': 'application/json',
                                   },
@@ -324,30 +302,20 @@ class TestConnection(unittest2.TestCase):
         from gcloud.storage.exceptions import NotFoundError
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        '?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '404',
-                                  'content-type': 'text/plain',
-                                  },
-                                 '')
+        conn._http = Http({'status': '404',
+                           'content-type': 'text/plain',
+                           },
+                          '')
         self.assertRaises(NotFoundError, conn.api_request, 'GET', '/')
 
     def test_api_request_w_500(self):
         from gcloud.storage.exceptions import ConnectionError
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        '?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '500',
-                                  'content-type': 'text/plain',
-                                  },
-                                 '')
+        conn._http = Http({'status': '500',
+                           'content-type': 'text/plain',
+                           },
+                          '')
         self.assertRaises(ConnectionError, conn.api_request, 'GET', '/')
 
     def test_get_all_buckets_empty(self):

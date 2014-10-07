@@ -216,7 +216,6 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_delete_keys_empty(self):
         NAME = 'name'
-        NONESUCH = 'nonesuch'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
         bucket.delete_keys([])
@@ -509,7 +508,6 @@ class Test_Bucket(unittest2.TestCase):
     def test_reload_acl_eager_empty(self):
         from gcloud.storage.acl import BucketACL
         metadata = {'acl': []}
-        connection = _Connection()
         bucket = self._makeOne(metadata=metadata)
         self.assertTrue(bucket.reload_acl() is bucket)
         self.assertTrue(isinstance(bucket.acl, BucketACL))
@@ -519,7 +517,6 @@ class Test_Bucket(unittest2.TestCase):
         from gcloud.storage.acl import BucketACL
         ROLE = 'role'
         metadata = {'acl': [{'entity': 'allUsers', 'role': ROLE}]}
-        connection = _Connection()
         bucket = self._makeOne(metadata=metadata)
         self.assertTrue(bucket.reload_acl() is bucket)
         self.assertTrue(isinstance(bucket.acl, BucketACL))
@@ -623,7 +620,6 @@ class Test_Bucket(unittest2.TestCase):
     def test_reload_default_object_acl_eager_empty(self):
         from gcloud.storage.acl import BucketACL
         metadata = {'defaultObjectAcl': []}
-        connection = _Connection()
         bucket = self._makeOne(metadata=metadata)
         self.assertTrue(bucket.reload_default_object_acl() is bucket)
         self.assertTrue(isinstance(bucket.default_object_acl, BucketACL))
@@ -633,7 +629,6 @@ class Test_Bucket(unittest2.TestCase):
         from gcloud.storage.acl import BucketACL
         ROLE = 'role'
         metadata = {'defaultObjectAcl': [{'entity': 'allUsers', 'role': ROLE}]}
-        connection = _Connection()
         bucket = self._makeOne(metadata=metadata)
         self.assertTrue(bucket.reload_default_object_acl() is bucket)
         self.assertTrue(isinstance(bucket.default_object_acl, BucketACL))

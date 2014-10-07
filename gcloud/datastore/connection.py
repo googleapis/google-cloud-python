@@ -1,10 +1,7 @@
-import httplib2
-
 from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.dataset import Dataset
-from gcloud.datastore.transaction import Transaction
 
 
 class Connection(connection.Connection):

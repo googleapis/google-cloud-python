@@ -140,7 +140,7 @@ class Test_ACL(unittest2.TestCase):
         TYPE = 'type'
         ID = 'id'
         acl = self._makeOne()
-        entity = acl.entity(TYPE, ID)
+        acl.entity(TYPE, ID)
         self.assertEqual(list(acl), [])
 
     def test___iter___non_empty_w_roles(self):

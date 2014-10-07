@@ -1,6 +1,5 @@
 import base64
 import datetime
-import httplib2
 import json
 import time
 import urllib
@@ -390,7 +389,7 @@ class Connection(connection.Connection):
             for key in bucket:
                 key.delete()
 
-        response = self.api_request(method='DELETE', path=bucket.path)
+        self.api_request(method='DELETE', path=bucket.path)
         return True
 
     def new_bucket(self, bucket):

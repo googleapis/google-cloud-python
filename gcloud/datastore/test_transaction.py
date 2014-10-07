@@ -89,7 +89,7 @@ class TestTransaction(unittest2.TestCase):
         connection = _Connection(234)
         dataset = _Dataset(_DATASET, connection)
         xact = self._makeOne(dataset)
-        xact._mutation = mutation = object()
+        xact._mutation = object()
         xact.begin()
         connection.transaction(())  # Simulate previous commit via false-ish.
         xact.commit()
@@ -118,7 +118,7 @@ class TestTransaction(unittest2.TestCase):
         connection = _Connection(234)
         dataset = _Dataset(_DATASET, connection)
         xact = self._makeOne(dataset)
-        xact._mutation = mutation = object()
+        xact._mutation = object()
         try:
             with xact:
                 self.assertEqual(xact.id(), 234)
