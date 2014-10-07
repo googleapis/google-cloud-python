@@ -127,6 +127,13 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(elem.name, '')
         self.assertEqual(elem.id, 0)
 
+    def test_to_protobuf_w_explicit_dataset_empty_id(self):
+        from gcloud.datastore.dataset import Dataset
+        dataset = Dataset('')
+        key = self._makeOne(dataset)
+        pb = key.to_protobuf()
+        self.assertEqual(pb.partition_id.dataset_id, '')
+
     def test_to_protobuf_w_explicit_dataset_no_prefix(self):
         from gcloud.datastore.dataset import Dataset
         _DATASET = 'DATASET'
