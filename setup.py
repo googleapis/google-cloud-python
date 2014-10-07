@@ -37,7 +37,6 @@ setup(
                        'gcloud/storage/demo.key']},
     include_package_data=True,
     zip_safe=False,
-    setup_requires=REQUIREMENTS,
     install_requires=REQUIREMENTS,
     classifiers=[
         'Development Status :: 1 - Planning',
