@@ -146,7 +146,9 @@ class Key(object):
         :rtype: :class:`Key`
         :returns: The newly-copied key.
         """
-        return self.bucket.copy_key(self, self.bucket, new_name)
+        new_key = self.bucket.copy_key(self, self.bucket, new_name)
+        self.bucket.delete_key(self)
+        return new_key
 
     def delete(self):
         """Deletes a key from Cloud Storage.
