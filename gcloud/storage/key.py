@@ -134,6 +134,20 @@ class Key(object):
 
         return self.bucket.get_key(self.name) is not None
 
+    def rename(self, new_name):
+        """Renames this key.
+
+        Effectively, copies key to the same bucket with a new name, then
+        deletes the key.
+
+        :type new_name: string
+        :param new_name: The new name for this key.
+
+        :rtype: :class:`Key`
+        :returns: The newly-copied key.
+        """
+        return self.bucket.copy_key(self, self.bucket, new_name)
+
     def delete(self):
         """Deletes a key from Cloud Storage.
 
