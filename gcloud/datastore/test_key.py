@@ -101,9 +101,16 @@ class TestKey(unittest2.TestCase):
         pb = self._makePB(_DATASET, _NAMESPACE)
         _PARENT = 'PARENT'
         _CHILD = 'CHILD'
+        _GRANDCHILD = 'GRANDCHILD'
         _ID = 1234
+        _ID2 = 5678
         _NAME = 'NAME'
-        _PATH = [{'kind': _PARENT, 'name': _NAME}, {'kind': _CHILD, 'id': _ID}]
+        _NAME2 = 'NAME2'
+        _PATH = [
+            {'kind': _PARENT, 'name': _NAME},
+            {'kind': _CHILD, 'id': _ID},
+            {'kind': _GRANDCHILD, 'id': _ID2, 'name': _NAME2},
+        ]
         pb = self._makePB(path=_PATH)
         key = self._getTargetClass().from_protobuf(pb)
         self.assertEqual(key.path(), _PATH)

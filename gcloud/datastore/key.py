@@ -66,7 +66,7 @@ class Key(object):
             if element.HasField('id'):
                 element_dict['id'] = element.id
 
-            elif element.HasField('name'):
+            if element.HasField('name'):
                 element_dict['name'] = element.name
 
             path.append(element_dict)
