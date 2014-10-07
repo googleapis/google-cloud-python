@@ -21,7 +21,6 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore.dataset import Dataset
 
         _DATASET = 'DATASET'
-        _NAMESPACE = 'NAMESPACE'
         _KIND = 'KIND'
         dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND, dataset)

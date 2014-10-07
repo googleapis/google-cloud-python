@@ -75,7 +75,7 @@ class TestConnection(unittest2.TestCase):
         METHOD = 'METHOD'
         DATA = 'DATA'
         conn = self._makeOne()
-        http = conn._http = Http({'status': '400'}, 'Bad Request')
+        conn._http = Http({'status': '400'}, 'Bad Request')
         with self.assertRaises(Exception) as e:
             conn._request(DATASET_ID, METHOD, DATA)
         self.assertEqual(str(e.exception),
@@ -199,7 +199,6 @@ class TestConnection(unittest2.TestCase):
     def test_begin_transaction_default_serialize(self):
         from gcloud.datastore.connection import datastore_pb
 
-        xact = object()
         DATASET_ID = 'DATASET'
         TRANSACTION = 'TRANSACTION'
         rsp_pb = datastore_pb.BeginTransactionResponse()
@@ -230,7 +229,6 @@ class TestConnection(unittest2.TestCase):
     def test_begin_transaction_explicit_serialize(self):
         from gcloud.datastore.connection import datastore_pb
 
-        xact = object()
         DATASET_ID = 'DATASET'
         TRANSACTION = 'TRANSACTION'
         rsp_pb = datastore_pb.BeginTransactionResponse()
@@ -368,7 +366,7 @@ class TestConnection(unittest2.TestCase):
                         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb, 'NS')
-        returned, = pbs,  # One entity.
+        self.assertEqual(len(pbs), 1)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
@@ -694,13 +692,6 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
         conn.transaction(Xact())
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'commit',
-                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
         self.assertEqual(result, True)
@@ -765,13 +756,6 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
         conn.transaction(Xact())
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'commit',
-                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entities(DATASET_ID, [key_pb])
         self.assertEqual(result, True)
@@ -837,13 +821,6 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
         conn.transaction(Xact())
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'commit',
-                        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entity(DATASET_ID, key_pb)
         self.assertEqual(result, True)

@@ -1,5 +1,4 @@
 import errno
-import json
 import mimetypes
 import os
 from StringIO import StringIO

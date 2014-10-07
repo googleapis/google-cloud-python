@@ -103,7 +103,6 @@ class Test_get_value_from_protobuf(unittest2.TestCase):
         import datetime
         import pytz
 
-        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375)  # No zone.
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
         micros = (calendar.timegm(utc.timetuple()) * 1000000) + 4375
         pb = self._makePB('timestamp_microseconds_value', micros)

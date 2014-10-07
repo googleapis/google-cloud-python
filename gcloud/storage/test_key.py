@@ -120,7 +120,6 @@ class Test_Key(unittest2.TestCase):
 
     def test_get_contents_to_filename(self):
         from tempfile import NamedTemporaryFile
-        from StringIO import StringIO
         from gcloud.test_credentials import _Monkey
         from gcloud.storage import key as MUT
         _CHUNKS = ['abc', 'def']
@@ -128,7 +127,6 @@ class Test_Key(unittest2.TestCase):
         connection = _Connection()
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
-        fh = StringIO()
         with _Monkey(MUT, KeyDataIterator=lambda self: iter(_CHUNKS)):
             with NamedTemporaryFile() as f:
                 key.get_contents_to_filename(f.name)
@@ -423,8 +421,6 @@ class Test_Key(unittest2.TestCase):
     def test_reload_acl_eager_empty(self):
         from gcloud.storage.acl import ObjectACL
         metadata = {'acl': []}
-        connection = _Connection()
-        bucket = _Bucket(connection)
         key = self._makeOne(metadata=metadata)
         self.assertTrue(key.reload_acl() is key)
         self.assertTrue(isinstance(key.acl, ObjectACL))
@@ -434,8 +430,6 @@ class Test_Key(unittest2.TestCase):
         from gcloud.storage.acl import ObjectACL
         ROLE = 'role'
         metadata = {'acl': [{'entity': 'allUsers', 'role': ROLE}]}
-        connection = _Connection()
-        bucket = _Bucket(connection)
         key = self._makeOne(metadata=metadata)
         self.assertTrue(key.reload_acl() is key)
         self.assertTrue(isinstance(key.acl, ObjectACL))
