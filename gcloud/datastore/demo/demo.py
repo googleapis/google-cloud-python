@@ -1,3 +1,4 @@
+# pragma NO COVER
 # Welcome to the gCloud Datastore Demo! (hit enter)
 
 # We're going to walk through some of the basics...

@@ -1,3 +1,4 @@
+# pragma NO COVER
 from gcloud import demo
 from gcloud import datastore
 
