@@ -95,6 +95,21 @@ class Test_Key(unittest2.TestCase):
         bucket._keys[KEY] = 1
         self.assertTrue(key.exists())
 
+    def test_rename(self):
+        KEY = 'key'
+        NEW_NAME = 'new-name'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        bucket._keys[KEY] = 1
+        orig_key_path = key.path
+        new_key = key.rename(NEW_NAME)
+        self.assertEqual(key.name, KEY)
+        self.assertEqual(new_key.name, NEW_NAME)
+        self.assertFalse(KEY in bucket._keys)
+        self.assertTrue(KEY in bucket._deleted)
+        self.assertTrue(NEW_NAME in bucket._keys)
+
     def test_delete(self):
         KEY = 'key'
         connection = _Connection()
@@ -584,9 +599,15 @@ class _Bucket(object):
     def __init__(self, connection):
         self.connection = connection
         self._keys = {}
+        self._deleted = []
 
     def get_key(self, key):
         return self._keys.get(key)  # XXX s.b. 'key.name'?
 
+    def copy_key(self, key, destination_bucket, new_name):
+        destination_bucket._keys[new_name] = self._keys[key.name]
+        return key.from_dict({'name': new_name}, bucket=destination_bucket)
+
     def delete_key(self, key):
         del self._keys[key.name]  # XXX s.b. 'key'?
+        self._deleted.append(key.name)

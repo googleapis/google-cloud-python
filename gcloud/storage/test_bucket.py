@@ -247,6 +247,50 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'DELETE')
         self.assertEqual(kw[1]['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
+    def test_copy_keys_wo_name(self):
+        SOURCE = 'source'
+        DEST = 'dest'
+        KEY = 'key'
+
+        class _Key(object):
+            name = KEY
+            path = '/b/%s/o/%s' % (SOURCE, KEY)
+
+        connection = _Connection({})
+        source = self._makeOne(connection, SOURCE)
+        dest = self._makeOne(connection, DEST)
+        key = _Key()
+        new_key = source.copy_key(key, dest)
+        self.assertTrue(new_key.bucket is dest)
+        self.assertEqual(new_key.name, KEY)
+        kw, = connection._requested
+        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, KEY, DEST, KEY)
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], COPY_PATH)
+
+    def test_copy_keys_w_name(self):
+        SOURCE = 'source'
+        DEST = 'dest'
+        KEY = 'key'
+        NEW_NAME = 'new_name'
+
+        class _Key(object):
+            name = KEY
+            path = '/b/%s/o/%s' % (SOURCE, KEY)
+
+        connection = _Connection({})
+        source = self._makeOne(connection, SOURCE)
+        dest = self._makeOne(connection, DEST)
+        key = _Key()
+        new_key = source.copy_key(key, dest, NEW_NAME)
+        self.assertTrue(new_key.bucket is dest)
+        self.assertEqual(new_key.name, NEW_NAME)
+        kw, = connection._requested
+        COPY_PATH = (
+            '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, KEY, DEST, NEW_NAME))
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], COPY_PATH)
+
     def test_upload_file_default_key(self):
         from gcloud.test_credentials import _Monkey
         from gcloud.storage import bucket as MUT
