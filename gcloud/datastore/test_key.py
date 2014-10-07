@@ -169,14 +169,22 @@ class TestKey(unittest2.TestCase):
         _CHILD = 'CHILD'
         _ID = 1234
         _NAME = 'NAME'
-        _PATH = [{'kind': _PARENT, 'name': _NAME}, {'kind': _CHILD, 'id': _ID}]
+        _PATH = [
+            {'kind': _PARENT, 'name': _NAME},
+            {'kind': _CHILD, 'id': _ID},
+            {},
+        ]
         key = self._makeOne(path=_PATH)
         pb = key.to_protobuf()
         elems = list(pb.path_element)
+        self.assertEqual(len(elems), len(_PATH))
         self.assertEqual(elems[0].kind, _PARENT)
         self.assertEqual(elems[0].name, _NAME)
         self.assertEqual(elems[1].kind, _CHILD)
         self.assertEqual(elems[1].id, _ID)
+        self.assertEqual(elems[2].kind, '')
+        self.assertEqual(elems[2].name, '')
+        self.assertEqual(elems[2].id, 0)
 
     def test_from_path_empty(self):
         key = self._getTargetClass().from_path()
