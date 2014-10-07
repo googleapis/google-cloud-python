@@ -289,7 +289,7 @@ class TestKey(unittest2.TestCase):
         _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
         key = self._makeOne(dataset, _NAMESPACE)
-        key._path = () # edge case
+        key._path = ()  # edge case
         self.assertEqual(key.kind(), None)
 
     def test_kind_setter(self):
@@ -315,7 +315,7 @@ class TestKey(unittest2.TestCase):
         _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
         key = self._makeOne(dataset, _NAMESPACE)
-        key._path = () # edge case
+        key._path = ()  # edge case
         self.assertEqual(key.id(), None)
 
     def test_id_setter(self):
@@ -341,7 +341,7 @@ class TestKey(unittest2.TestCase):
         _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
         key = self._makeOne(dataset, _NAMESPACE)
-        key._path = () # edge case
+        key._path = ()  # edge case
         self.assertEqual(key.name(), None)
 
     def test_name_setter(self):
