@@ -284,6 +284,15 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(after.namespace(), _NAMESPACE)
         self.assertEqual(after.path(), _PATH)
 
+    def test_kind_getter_empty_path(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
+        dataset = Dataset(_DATASET)
+        key = self._makeOne(dataset, _NAMESPACE)
+        key._path = () # edge case
+        self.assertEqual(key.kind(), None)
+
     def test_kind_setter(self):
         from gcloud.datastore.dataset import Dataset
         _DATASET = 'DATASET'
@@ -301,22 +310,14 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(after.namespace(), _NAMESPACE)
         self.assertEqual(after.path(), [{'kind': _KIND_AFTER, 'name': _NAME}])
 
-    def test_name_setter(self):
+    def test_id_getter_empty_path(self):
         from gcloud.datastore.dataset import Dataset
         _DATASET = 'DATASET'
         _NAMESPACE = 'NAMESPACE'
-        _KIND = 'KIND'
-        _NAME_BEFORE = 'NAME_BEFORE'
-        _NAME_AFTER = 'NAME_AFTER'
-        _PATH = [{'kind': _KIND, 'name': _NAME_BEFORE}]
         dataset = Dataset(_DATASET)
-        key = self._makeOne(dataset, _NAMESPACE, _PATH)
-        after = key.name(_NAME_AFTER)
-        self.assertFalse(after is key)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        self.assertTrue(after.dataset() is dataset)
-        self.assertEqual(after.namespace(), _NAMESPACE)
-        self.assertEqual(after.path(), [{'kind': _KIND, 'name': _NAME_AFTER}])
+        key = self._makeOne(dataset, _NAMESPACE)
+        key._path = () # edge case
+        self.assertEqual(key.id(), None)
 
     def test_id_setter(self):
         from gcloud.datastore.dataset import Dataset
@@ -334,6 +335,32 @@ class TestKey(unittest2.TestCase):
         self.assertTrue(after.dataset() is dataset)
         self.assertEqual(after.namespace(), _NAMESPACE)
         self.assertEqual(after.path(), [{'kind': _KIND, 'id': _ID_AFTER}])
+
+    def test_name_getter_empty_path(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
+        dataset = Dataset(_DATASET)
+        key = self._makeOne(dataset, _NAMESPACE)
+        key._path = () # edge case
+        self.assertEqual(key.name(), None)
+
+    def test_name_setter(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
+        _KIND = 'KIND'
+        _NAME_BEFORE = 'NAME_BEFORE'
+        _NAME_AFTER = 'NAME_AFTER'
+        _PATH = [{'kind': _KIND, 'name': _NAME_BEFORE}]
+        dataset = Dataset(_DATASET)
+        key = self._makeOne(dataset, _NAMESPACE, _PATH)
+        after = key.name(_NAME_AFTER)
+        self.assertFalse(after is key)
+        self.assertTrue(isinstance(after, self._getTargetClass()))
+        self.assertTrue(after.dataset() is dataset)
+        self.assertEqual(after.namespace(), _NAMESPACE)
+        self.assertEqual(after.path(), [{'kind': _KIND, 'name': _NAME_AFTER}])
 
     def test_id_or_name_no_name_or_id(self):
         key = self._makeOne()
