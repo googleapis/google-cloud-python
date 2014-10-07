@@ -56,7 +56,7 @@ def get_protobuf_attribute_and_value(val):
     elif isinstance(val, float):
         name, value = 'double', val
     elif isinstance(val, (int, long)):
-        INT_VALUE_CHECKER.CheckValue(val)  # This will raise an exception if invalid.
+        INT_VALUE_CHECKER.CheckValue(val)   # Raise an exception if invalid.
         name, value = 'integer', long(val)  # Always cast to a long.
     elif isinstance(val, basestring):
         name, value = 'string', val
