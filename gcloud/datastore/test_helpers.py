@@ -84,9 +84,7 @@ class Test_get_protobuf_attribute_and_value(unittest2.TestCase):
         self.assertEqual(value, u'str')
 
     def test_object(self):
-        class _Foo(object):
-            pass
-        self.assertRaises(ValueError, self._callFUT, _Foo())
+        self.assertRaises(ValueError, self._callFUT, object())
 
 
 class Test_get_value_from_protobuf(unittest2.TestCase):
