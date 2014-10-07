@@ -197,7 +197,7 @@ class Key(object):
 
         :type path: sequence of dicts
         :param path: Each dict must have keys 'kind' (a string) and optionally
-        'name' (a string) or 'id' (an integer).
+                     'name' (a string) or 'id' (an integer).
 
         :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
         :returns: a new key, cloned from self., with the given path (setter);
@@ -266,7 +266,7 @@ class Key(object):
 
         :rtype: :class:`int` (if 'id' is set); or :class:`str` (the 'name')
         :returns: True if the last element of the key's path has either an 'id'
-        or a 'name'.
+                  or a 'name'.
         """
         return self.id() or self.name()
 
