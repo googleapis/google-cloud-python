@@ -19,8 +19,7 @@ class TestKey(unittest2.TestCase):
             pb.partition_id.namespace = namespace
         for elem in path:
             added = pb.path_element.add()
-            if 'kind' in elem:
-                added.kind = elem['kind']
+            added.kind = elem['kind']
             if 'id' in elem:
                 added.id = elem['id']
             if 'name' in elem:
