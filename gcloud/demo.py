@@ -1,3 +1,4 @@
+# pragma NO COVER
 from code import interact
 import itertools
 import os.path

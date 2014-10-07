@@ -1,3 +1,4 @@
+# pragma NO COVER
 import os
 from gcloud import storage
 
