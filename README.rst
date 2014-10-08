@@ -1,85 +1,101 @@
 Google Cloud Python Client
 ==========================
 
-The goal of this project is to make it really simple and Pythonic
-to use Google Cloud Platform services.
+    Python idiomatic client for Google Cloud Platform services.
 
-------------------
 |build| |coverage|
 ------------------
+
+-  `Homepage <https://googlecloudplatform.github.io/gcloud-python/>`__
+
+This client supports the following Google Cloud Platform services:
+
+-  `Google Cloud
+   Datastore <https://cloud.google.com/products/cloud-datastore/>`__
+-  `Google Cloud
+   Storage <https://cloud.google.com/products/cloud-storage/>`__
+
+If you need support for other Google APIs, check out the `Google APIs
+Python Client
+library <https://github.com/google/google-api-python-client>`__.
 
 Quickstart
 ----------
 
-The library is ``pip``-installable::
+::
 
-  $ pip install gcloud
-  $ python -m gcloud.storage.demo  # Runs the storage demo!
+    $ pip install gcloud
 
-Documentation
--------------
+Google Cloud Datastore
+----------------------
 
-- `gcloud docs (browse all services, quick-starts, walk-throughs) <http://GoogleCloudPlatform.github.io/gcloud-python/>`_
-- `gcloud.datastore API docs <http://googlecloudplatform.github.io/gcloud-python/datastore-api.html>`_
-- `gcloud.storage API docs <http://googlecloudplatform.github.io/gcloud-python/storage-api.html>`_
-- gcloud.bigquery API docs (*coming soon)*
-- gcloud.compute API docs *(coming soon)*
-- gcloud.dns API docs *(coming soon)*
-- gcloud.sql API docs *(coming soon)*
+`Google Cloud Datastore <https://developers.google.com/datastore/>`__ is
+a fully managed, schemaless database for storing non-relational data.
+Cloud Datastore automatically scales with your users and supports ACID
+transactions, high availability of reads and writes, strong consistency
+for reads and ancestor queries, and eventual consistency for all other
+queries.
 
-I'm getting weird errors... Can you help?
------------------------------------------
+See the `Google Cloud Datastore
+docs <https://developers.google.com/datastore/docs/activate>`__ for more
+details on how to activate Cloud Datastore for your project.
 
-Chances are you have some dependency problems...
-If you're on Ubuntu,
-try installing the pre-compiled packages::
+See `the gcloud-python API
+documentation <https://googlecloudplatform.github.io/gcloud-python/datastore-api.html>`__
+to learn how to interact with the Cloud Datastore using this Client
+Library.
 
-  $ sudo apt-get install python-crypto python-openssl libffi-dev
+.. code:: python
 
-or try installing the development packages
-(that have the header files included)
-and then ``pip install`` the dependencies again::
+    from gcloud import datastore
+    dataset = datastore.get_dataset('dataset-id-here',
+                                    'long-email@googleapis.com',
+                                    '/path/to/private.key')
+    # Then do other things...
+    query = dataset.query().kind('EntityKind')
+    entity = dataset.entity('EntityKind')
 
-  $ sudo apt-get install python-dev libssl-dev libffi-dev
-  $ pip install gcloud
+Google Cloud Storage
+--------------------
 
-How do I build the docs?
-------------------------
+`Google Cloud Storage <https://developers.google.com/storage/>`__ allows
+you to store data on Google infrastructure with very high reliability,
+performance and availability, and can be used to distribute large data
+objects to users via direct download.
 
-Make sure you have ``sphinx`` installed and::
+You need to create a Google Cloud Storage bucket to use this client
+library. Follow the steps on the `Google Cloud Storage
+docs <https://developers.google.com/storage/docs/cloud-console#_creatingbuckets>`__
+to learn how to create a bucket.
 
-  $ git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
-  $ pip install sphinx
-  $ cd gcloud-python/docs
-  $ make html
+See `the gcloud-python API
+documentation <https://googlecloudplatform.github.io/gcloud-python/storage-api.html>`__
+to learn how to connect to the Cloud Storage using this Client Library.
 
-How do I run the tests?
------------------------
+.. code:: python
 
-Make sure you have ``nose`` installed and::
+    import gcloud.storage
+    bucket = gcloud.storage.get_bucket('bucket-id-here',
+                                        'long-email@googleapis.com',
+                                        '/path/to/private.key')
+    # Then do other things...
+    key = bucket.get_key('/remote/path/to/file.txt')
+    print key.get_contents_as_string()
+    key.set_contents_from_string('New contents!')
+    bucket.upload_file('/remote/path/storage.txt', '/local/path.txt')
 
-  $ git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
-  $ pip install unittest2 nose
-  $ cd gcloud-python
-  $ nosetests
+Contributing
+------------
 
-How can I contribute?
----------------------
+Contributions to this library are always welcome and highly encouraged.
 
-Before we can accept any pull requests
-we have to jump through a couple of legal hurdles,
-primarily a Contributor License Agreement (CLA):
+See `CONTRIBUTING <CONTRIBUTING.rst>`__ for more information on how to
+get started.
 
-- **If you are an individual writing original source code**
-  and you're sure you own the intellectual property,
-  then you'll need to sign an `individual CLA
-  <http://code.google.com/legal/individual-cla-v1.0.html>`_.
-- **If you work for a company that wants to allow you to contribute your work**,
-  then you'll need to sign a `corporate CLA
-  <http://code.google.com/legal/corporate-cla-v1.0.html>`_.
+License
+-------
 
-You can sign these electronically (just scroll to the bottom).
-After that, we'll be able to accept your pull requests.
+Apache 2.0 - See `LICENSE <LICENSE>`__ for more information.
 
 .. |build| image:: https://travis-ci.org/GoogleCloudPlatform/gcloud-python.svg?branch=master
     :target: https://travis-ci.org/GoogleCloudPlatform/gcloud-python

@@ -1,5 +1,10 @@
-Hacking on ``gcloud-python``
+Contributing
 ============================
+
+#. **Please sign one of the contributor license agreements below.**
+#. Fork the repo, develop and test your code changes, add docs.
+#. Make sure that your commit messages clearly describe the changes. 
+#. Send a pull request.
 
 Here are some guidelines for hacking on gcloud-python.
 
@@ -58,6 +63,22 @@ repo, from which you can submit a pull request.
 
    $ cd ~/hack-on-gcloud
    $ $VENV/bin/python setup.py develop
+
+I'm getting weird errors... Can you help?
+-----------------------------------------
+
+Chances are you have some dependency problems...
+If you're on Ubuntu,
+try installing the pre-compiled packages::
+
+  $ sudo apt-get install python-crypto python-openssl libffi-dev
+
+or try installing the development packages
+(that have the header files included)
+and then ``pip install`` the dependencies again::
+
+  $ sudo apt-get install python-dev libssl-dev libffi-dev
+  $ pip install gcloud
 
 Adding Features
 ---------------
@@ -155,10 +176,12 @@ can build the docs via::
 
    $ tox -e docs
 
-Change Log
-----------
+Contributor License Agreements
+------------------------------
 
-- Feature additions and bugfixes must be added to the ``CHANGES.txt``
-  file in the prevailing style.  Changelog entries should be long and
-  descriptive, not cryptic.  Other developers should be able to know
-  what your changelog entry means.
+Before we can accept your pull requests you'll need to sign a Contributor License Agreement (CLA):
+
+- **If you are an individual writing original source code** and **you own the intellectual property**, then you'll need to sign an `individual CLA <https://developers.google.com/open-source/cla/individual>`__.
+- **If you work for a company that wants to allow you to contribute your work**, then you'll need to sign a `corporate CLA <https://developers.google.com/open-source/cla/corporate>`__.
+
+You can sign these electronically (just scroll to the bottom). After that, we'll be able to accept your pull requests.
