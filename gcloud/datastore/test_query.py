@@ -76,6 +76,26 @@ class TestQuery(unittest2.TestCase):
         # XXX s.b. ValueError
         self.assertRaises(TypeError, query.ancestor, object())
 
+    def test_ancester_wo_existing_ancestor_query_w_key_and_propfilter(self):
+        from gcloud.datastore.key import Key
+        _KIND = 'KIND'
+        _ID = 123
+        _NAME = 'NAME'
+        key = Key(path=[{'kind': _KIND, 'id': _ID}])
+        query = self._makeOne().filter('name =', _NAME)
+        after = query.ancestor(key)
+        self.assertFalse(after is query)
+        self.assertTrue(isinstance(after, self._getTargetClass()))
+        q_pb = after.to_protobuf()
+        self.assertEqual(q_pb.filter.composite_filter.operator, 1)  # AND
+        n_pb, f_pb, = list(q_pb.filter.composite_filter.filter)
+        p_pb = n_pb.property_filter
+        self.assertEqual(p_pb.property.name, 'name')
+        self.assertEqual(p_pb.value.string_value, _NAME)
+        p_pb = f_pb.property_filter
+        self.assertEqual(p_pb.property.name, '__key__')
+        self.assertEqual(p_pb.value.key_value, key.to_protobuf())
+
     def test_ancester_wo_existing_ancestor_query_w_key(self):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
@@ -108,7 +128,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.property.name, '__key__')
         self.assertEqual(p_pb.value.key_value, key.to_protobuf())
 
-    def test_ancester_clears_existing_ancestor_query(self):
+    def test_ancester_clears_existing_ancestor_query_w_only(self):
         _KIND = 'KIND'
         _ID = 123
         query = self._makeOne()
@@ -118,6 +138,21 @@ class TestQuery(unittest2.TestCase):
         self.assertTrue(isinstance(after, self._getTargetClass()))
         q_pb = after.to_protobuf()
         self.assertEqual(list(q_pb.filter.composite_filter.filter), [])
+
+    def test_ancester_clears_existing_ancestor_query_w_others(self):
+        _KIND = 'KIND'
+        _ID = 123
+        _NAME = 'NAME'
+        query = self._makeOne().filter('name =', _NAME)
+        between = query.ancestor([_KIND, _ID])
+        after = between.ancestor(None)
+        self.assertFalse(after is query)
+        self.assertTrue(isinstance(after, self._getTargetClass()))
+        q_pb = after.to_protobuf()
+        n_pb, = list(q_pb.filter.composite_filter.filter)
+        p_pb = n_pb.property_filter
+        self.assertEqual(p_pb.property.name, 'name')
+        self.assertEqual(p_pb.value.string_value, _NAME)
 
     def test_kind_setter_wo_existing(self):
         from gcloud.datastore.dataset import Dataset
