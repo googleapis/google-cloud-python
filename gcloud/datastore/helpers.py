@@ -11,7 +11,7 @@ from gcloud.datastore.key import Key
 INT_VALUE_CHECKER = Int64ValueChecker()
 
 
-def get_protobuf_attribute_and_value(val):
+def _get_protobuf_attribute_and_value(val):
     """Given a value, return the protobuf attribute name and proper value.
 
     The Protobuf API uses different attribute names
@@ -28,9 +28,9 @@ def get_protobuf_attribute_and_value(val):
 
     For example:
 
-    >>> get_protobuf_attribute_and_value(1234)
+    >>> _get_protobuf_attribute_and_value(1234)
     ('integer_value', 1234)
-    >>> get_protobuf_attribute_and_value('my_string')
+    >>> _get_protobuf_attribute_and_value('my_string')
     ('string_value', 'my_string')
 
     :type val: `datetime.datetime`, :class:`gcloud.datastore.key.Key`,
@@ -69,7 +69,7 @@ def get_protobuf_attribute_and_value(val):
     return name + '_value', value
 
 
-def get_value_from_protobuf(pb):
+def _get_value_from_protobuf(pb):
     """Given a protobuf for a Property, get the correct value.
 
     The Cloud Datastore Protobuf API returns a Property Protobuf
@@ -113,7 +113,7 @@ def get_value_from_protobuf(pb):
         return None
 
 
-def set_protobuf_value(value_pb, val):
+def _set_protobuf_value(value_pb, val):
     """Assign 'val' to the correct subfield of 'value_pb'.
 
     The Protobuf API uses different attribute names
@@ -130,7 +130,7 @@ def set_protobuf_value(value_pb, val):
                :class:`gcloud.datastore.entity.Entity`,
     :param val: The value to be assigned.
     """
-    attr, val = get_protobuf_attribute_and_value(val)
+    attr, val = _get_protobuf_attribute_and_value(val)
     if attr == 'key_value':
         value_pb.key_value.CopyFrom(val)
     elif attr == 'entity_value':
@@ -142,6 +142,6 @@ def set_protobuf_value(value_pb, val):
         for k, v in val.items():
             p_pb = e_pb.property.add()
             p_pb.name = k
-            set_protobuf_value(p_pb.value, v)
+            _set_protobuf_value(p_pb.value, v)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)

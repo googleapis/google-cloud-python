@@ -1,12 +1,12 @@
 import unittest2
 
 
-class Test_get_protobuf_attribute_and_value(unittest2.TestCase):
+class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
 
     def _callFUT(self, val):
-        from gcloud.datastore.helpers import get_protobuf_attribute_and_value
+        from gcloud.datastore.helpers import _get_protobuf_attribute_and_value
 
-        return get_protobuf_attribute_and_value(val)
+        return _get_protobuf_attribute_and_value(val)
 
     def test_datetime_naive(self):
         import calendar
@@ -94,12 +94,12 @@ class Test_get_protobuf_attribute_and_value(unittest2.TestCase):
         self.assertRaises(ValueError, self._callFUT, object())
 
 
-class Test_get_value_from_protobuf(unittest2.TestCase):
+class Test__get_value_from_protobuf(unittest2.TestCase):
 
     def _callFUT(self, pb):
-        from gcloud.datastore.helpers import get_value_from_protobuf
+        from gcloud.datastore.helpers import _get_value_from_protobuf
 
-        return get_value_from_protobuf(pb)
+        return _get_value_from_protobuf(pb)
 
     def _makePB(self, attr_name, value):
         from gcloud.datastore.datastore_v1_pb2 import Property
@@ -176,9 +176,9 @@ class Test_get_value_from_protobuf(unittest2.TestCase):
 class Test_set_protobuf_value(unittest2.TestCase):
 
     def _callFUT(self, value_pb, val):
-        from gcloud.datastore.helpers import set_protobuf_value
+        from gcloud.datastore.helpers import _set_protobuf_value
 
-        return set_protobuf_value(value_pb, val)
+        return _set_protobuf_value(value_pb, val)
 
     def _makePB(self):
         from gcloud.datastore.datastore_v1_pb2 import Value
