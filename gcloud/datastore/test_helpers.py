@@ -250,13 +250,12 @@ class Test_set_protobuf_value(unittest2.TestCase):
 
     def test_entity_empty_wo_key(self):
         from gcloud.datastore.entity import Entity
-        from gcloud.datastore.key import Key
 
         pb = self._makePB()
         entity = Entity()
         self._callFUT(pb, entity)
         value = pb.entity_value
-        self.assertEqual(value.key, Key().to_protobuf())
+        self.assertEqual(value.key.SerializeToString(), '')
         props = list(value.property)
         self.assertEqual(len(props), 0)
 

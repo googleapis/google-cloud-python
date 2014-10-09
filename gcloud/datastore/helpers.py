@@ -137,9 +137,7 @@ def set_protobuf_value(value_pb, val):
         e_pb = value_pb.entity_value
         e_pb.Clear()
         key = val.key()
-        if key is None:
-            e_pb.key.CopyFrom(Key().to_protobuf())
-        else:
+        if key is not None:
             e_pb.key.CopyFrom(key.to_protobuf())
         for k, v in val.items():
             p_pb = e_pb.property.add()
