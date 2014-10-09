@@ -1,4 +1,7 @@
-"""Helper methods for dealing with Cloud Datastore's Protobuf API."""
+"""Helper functions for dealing with Cloud Datastore's Protobuf API.
+
+These functions are *not* part of the API.
+"""
 import calendar
 from datetime import datetime, timedelta
 
@@ -16,7 +19,7 @@ def _get_protobuf_attribute_and_value(val):
 
     The Protobuf API uses different attribute names
     based on value types rather than inferring the type.
-    This method simply determines the proper attribute name
+    This function simply determines the proper attribute name
     based on the type of the value provided
     and returns the attribute name
     as well as a properly formatted value.
@@ -24,7 +27,7 @@ def _get_protobuf_attribute_and_value(val):
     Certain value types need to be coerced into a different type (such as a
     `datetime.datetime` into an integer timestamp, or a
     `gcloud.datastore.key.Key` into a Protobuf representation.
-    This method handles that for you.
+    This function handles that for you.
 
     For example:
 
@@ -74,7 +77,7 @@ def _get_value_from_protobuf(pb):
 
     The Cloud Datastore Protobuf API returns a Property Protobuf
     which has one value set and the rest blank.
-    This method retrieves the the one value provided.
+    This function retrieves the the one value provided.
 
     Some work is done to coerce the return value into a more useful type
     (particularly in the case of a timestamp value, or a key value).
