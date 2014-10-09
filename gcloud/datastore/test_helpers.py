@@ -83,6 +83,13 @@ class Test_get_protobuf_attribute_and_value(unittest2.TestCase):
         self.assertEqual(name, 'string_value')
         self.assertEqual(value, u'str')
 
+    def test_entity(self):
+        from gcloud.datastore.entity import Entity
+        entity = Entity()
+        name, value = self._callFUT(entity)
+        self.assertEqual(name, 'entity_value')
+        self.assertTrue(value is entity)
+
     def test_object(self):
         self.assertRaises(ValueError, self._callFUT, object())
 
@@ -145,6 +152,22 @@ class Test_get_value_from_protobuf(unittest2.TestCase):
     def test_unicode(self):
         pb = self._makePB('string_value', u'str')
         self.assertEqual(self._callFUT(pb), u'str')
+
+    def test_entity(self):
+        from gcloud.datastore.datastore_v1_pb2 import Property
+        from gcloud.datastore.entity import Entity
+
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _ID = 1234
+        pb = Property()
+        entity_pb = pb.value.entity_value
+        prop_pb = entity_pb.property.add()
+        prop_pb.name = 'foo'
+        prop_pb.value.string_value = 'Foo'
+        entity = self._callFUT(pb)
+        self.assertTrue(isinstance(entity, Entity))
+        self.assertEqual(entity['foo'], 'Foo')
 
     def test_unknown(self):
         from gcloud.datastore.datastore_v1_pb2 import Property

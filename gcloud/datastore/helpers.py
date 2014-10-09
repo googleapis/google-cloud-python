@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
 
+from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
 INT_VALUE_CHECKER = Int64ValueChecker()
@@ -60,6 +61,8 @@ def get_protobuf_attribute_and_value(val):
         name, value = 'integer', long(val)  # Always cast to a long.
     elif isinstance(val, basestring):
         name, value = 'string', val
+    elif isinstance(val, Entity):
+        name, value = 'entity', val
     else:
         raise ValueError("Unknown protobuf attr type %s" % type(val))
 
@@ -102,6 +105,9 @@ def get_value_from_protobuf(pb):
 
     elif pb.value.HasField('string_value'):
         return pb.value.string_value
+
+    elif pb.value.HasField('entity_value'):
+        return Entity.from_protobuf(pb.value.entity_value) # dataset?
 
     else:
         return None
