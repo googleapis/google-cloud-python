@@ -111,3 +111,39 @@ def get_value_from_protobuf(pb):
 
     else:
         return None
+
+
+def set_protobuf_value(value_pb, val):
+    """Assign 'val' to the correct subfield of 'value_pb'.
+
+    The Protobuf API uses different attribute names
+    based on value types rather than inferring the type.
+
+    Some value types (entities, keys, lists) cannot be directly assigned;
+    this function handles them correctly.
+
+    :type value_pb: :class:`gcloud.datastore.datastore_v1_pb2.Value`
+    :param value: The value protobuf to which the value is being assigned.
+
+    :type val: `datetime.datetime`, bool, float, integer, string
+               :class:`gcloud.datastore.key.Key`,
+               :class:`gcloud.datastore.entity.Entity`,
+    :param val: The value to be assigned.
+    """
+    attr, val = get_protobuf_attribute_and_value(val)
+    if attr == 'key_value':
+        value_pb.key_value.CopyFrom(val)
+    elif attr == 'entity_value':
+        e_pb = value_pb.entity_value
+        e_pb.Clear()
+        key = val.key()
+        if key is None:
+            e_pb.key.CopyFrom(Key().to_protobuf())
+        else:
+            e_pb.key.CopyFrom(key.to_protobuf())
+        for k, v in val.items():
+            p_pb = e_pb.property.add()
+            p_pb.name = k
+            set_protobuf_value(p_pb.value, v)
+    else:  # scalar, just assign
+        setattr(value_pb, attr, val)
