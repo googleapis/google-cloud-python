@@ -71,6 +71,29 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.property.name, 'firstname')
         self.assertEqual(p_pb.value.string_value, 'John')
 
+    def test_filter_w_known_operator_and_entity(self):
+        import operator
+        from gcloud.datastore.entity import Entity
+        query = self._makeOne()
+        other = Entity()
+        other['firstname'] = 'John'
+        other['lastname'] = 'Smith'
+        after = query.filter('other =', other)
+        self.assertFalse(after is query)
+        self.assertTrue(isinstance(after, self._getTargetClass()))
+        q_pb = after.to_protobuf()
+        self.assertEqual(q_pb.filter.composite_filter.operator, 1)  # AND
+        f_pb, = list(q_pb.filter.composite_filter.filter)
+        p_pb = f_pb.property_filter
+        self.assertEqual(p_pb.property.name, 'other')
+        other_pb = p_pb.value.entity_value
+        props = sorted(other_pb.property, key=operator.attrgetter('name'))
+        self.assertEqual(len(props), 2)
+        self.assertEqual(props[0].name, 'firstname')
+        self.assertEqual(props[0].value.string_value, 'John')
+        self.assertEqual(props[1].name, 'lastname')
+        self.assertEqual(props[1].value.string_value, 'Smith')
+
     def test_ancestor_w_non_key_non_list(self):
         query = self._makeOne()
         # XXX s.b. ValueError

@@ -131,8 +131,7 @@ class Query(object):
         property_filter.operator = operator
 
         # Set the value to filter on based on the type.
-        attr_name, pb_value = helpers.get_protobuf_attribute_and_value(value)
-        setattr(property_filter.value, attr_name, pb_value)
+        helpers.set_protobuf_value(property_filter.value, value)
         return clone
 
     def ancestor(self, ancestor):

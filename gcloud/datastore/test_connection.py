@@ -699,6 +699,32 @@ class TestConnection(unittest2.TestCase):
         mutation = conn.mutation()
         self.assertEqual(len(mutation.upsert), 1)
 
+    def test_save_entity_w_transaction_nested_entity(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.entity import Entity
+        from gcloud.datastore.key import Key
+
+        mutation = datastore_pb.Mutation()
+
+        class Xact(object):
+            def mutation(self):
+                return mutation
+        DATASET_ID = 'DATASET'
+        nested = Entity()
+        nested['bar'] = 'Bar'
+        key_pb = Key(dataset=Dataset(DATASET_ID),
+                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.CommitResponse()
+        conn = self._makeOne()
+        conn.transaction(Xact())
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': nested})
+        self.assertEqual(result, True)
+        self.assertEqual(http._called_with, None)
+        mutation = conn.mutation()
+        self.assertEqual(len(mutation.upsert), 1)
+
     def test_delete_entities_wo_transaction(self):
         from gcloud.datastore.connection import datastore_pb
         from gcloud.datastore.dataset import Dataset

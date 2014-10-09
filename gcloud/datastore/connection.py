@@ -323,8 +323,7 @@ class Connection(connection.Connection):
             prop.name = name
 
             # Set the appropriate value.
-            pb_attr, pb_value = helpers.get_protobuf_attribute_and_value(value)
-            setattr(prop.value, pb_attr, pb_value)
+            helpers.set_protobuf_value(prop.value, value)
 
         # If this is in a transaction, we should just return True. The
         # transaction will handle assigning any keys as necessary.
