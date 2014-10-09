@@ -10,7 +10,7 @@ setup(
     install_requires=[
         'gcloud',
     ],
-    entry_points = {
+    entry_points={
         'console_scripts': [
             'submit_expenses = expenses.scripts.submit_expenses:main',
             'review_expenses = expenses.scripts.review_expenses:main',

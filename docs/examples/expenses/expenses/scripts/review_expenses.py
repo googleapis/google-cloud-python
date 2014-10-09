@@ -12,6 +12,7 @@ class InvalidCommandLine(ValueError):
 class NotACommand(object):
     def __init__(self, bogus):
         self.bogus = bogus
+
     def __call__(self):
         raise InvalidCommandLine('Not a command: %s' % self.bogus)
 
@@ -21,8 +22,7 @@ def _get_csv(args):
         csv_file, = args
     except:
         raise InvalidCommandLine('Specify one CSV file')
-    csv_file = os.path.abspath(
-                os.path.normpath(csv_file))
+    csv_file = os.path.abspath(os.path.normpath(csv_file))
     if not os.path.exists(csv_file):
         raise InvalidCommandLine('Invalid CSV file: %s' % csv_file)
     with open(csv_file) as f:
@@ -76,7 +76,7 @@ class ListReports(object):
         ]
 
     def __call__(self):
-        fieldnames = ["Report ID","Description","Status","Memo"]
+        fieldnames = ["Report ID", "Description", "Status", "Memo"]
         writer = csv.DictWriter(sys.stdout, fieldnames)
         writer.writerow(dict(zip(fieldnames, fieldnames)))
         for report in self.list_reports():
@@ -195,7 +195,7 @@ def get_description(command):
 
 
 class ReviewExpenses(object):
-    """ Driver for the :command:`review_expenses` command-line script. 
+    """ Driver for the :command:`review_expenses` command-line script.
     """
     def __init__(self, argv=None, logger=None):
         self.commands = []
@@ -281,7 +281,7 @@ class ReviewExpenses(object):
         for command in self.commands:
             command()
 
-    def _print(self, text): # pragma NO COVERAGE
+    def _print(self, text):  # pragma NO COVERAGE
         print(text)
 
     def error(self, text):
@@ -295,6 +295,6 @@ class ReviewExpenses(object):
 def main(argv=sys.argv[1:]):
     try:
         ReviewExpenses(argv)()
-    except InvalidCommandLine as e: #pragma NO COVERAGE
+    except InvalidCommandLine as e:  # pragma NO COVERAGE
         print(str(e))
         sys.exit(1)
