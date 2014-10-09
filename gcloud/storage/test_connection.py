@@ -460,12 +460,7 @@ class TestConnection(unittest2.TestCase):
         _deleted_keys = []
 
         class _Key(object):
-
-            def __init__(self, name):
-                self._name = name
-
-            def delete(self):
-                _deleted_keys.append(self._name)
+            pass
 
         class _Bucket(object):
 
@@ -473,8 +468,6 @@ class TestConnection(unittest2.TestCase):
                 self._name = name
                 self.path = '/b/' + name
 
-            def __iter__(self):
-                return iter([_Key(x) for x in ('foo', 'bar')])
         PROJECT = 'project'
         KEY = 'key'
         conn = self._makeOne(PROJECT)
@@ -491,6 +484,50 @@ class TestConnection(unittest2.TestCase):
 
         def _new_bucket(name):
             return _Bucket(name)
+
+        conn.new_bucket = _new_bucket
+        self.assertEqual(conn.delete_bucket(KEY), True)
+        self.assertEqual(_deleted_keys, [])
+        self.assertEqual(http._called_with['method'], 'DELETE')
+        self.assertEqual(http._called_with['uri'], URI)
+
+    def test_delete_bucket_force_True(self):
+        _deleted_keys = []
+
+        class _Key(object):
+
+            def __init__(self, name):
+                self._name = name
+
+            def delete(self):
+                _deleted_keys.append(self._name)
+
+        class _Bucket(object):
+
+            def __init__(self, name):
+                self._name = name
+                self.path = '/b/' + name
+
+            def __iter__(self):
+                return iter([_Key(x) for x in ('foo', 'bar')])
+
+        PROJECT = 'project'
+        KEY = 'key'
+        conn = self._makeOne(PROJECT)
+        URI = '/'.join([conn.API_BASE_URL,
+                        'storage',
+                        conn.API_VERSION,
+                        'b',
+                        'key?project=%s' % PROJECT,
+                        ])
+        http = conn._http = Http({'status': '200',
+                                  'content-type': 'application/json',
+                                  },
+                                 '{}')
+
+        def _new_bucket(name):
+            return _Bucket(name)
+
         conn.new_bucket = _new_bucket
         self.assertEqual(conn.delete_bucket(KEY, True), True)
         self.assertEqual(_deleted_keys, ['foo', 'bar'])

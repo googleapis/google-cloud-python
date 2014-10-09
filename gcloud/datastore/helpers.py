@@ -60,6 +60,8 @@ def get_protobuf_attribute_and_value(val):
         name, value = 'integer', long(val)  # Always cast to a long.
     elif isinstance(val, basestring):
         name, value = 'string', val
+    else:
+        raise ValueError("Unknown protobuf attr type %s" % type(val))
 
     return name + '_value', value
 

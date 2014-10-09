@@ -19,8 +19,7 @@ class TestKey(unittest2.TestCase):
             pb.partition_id.namespace = namespace
         for elem in path:
             added = pb.path_element.add()
-            if 'kind' in elem:
-                added.kind = elem['kind']
+            added.kind = elem['kind']
             if 'id' in elem:
                 added.id = elem['id']
             if 'name' in elem:
@@ -101,9 +100,16 @@ class TestKey(unittest2.TestCase):
         pb = self._makePB(_DATASET, _NAMESPACE)
         _PARENT = 'PARENT'
         _CHILD = 'CHILD'
+        _GRANDCHILD = 'GRANDCHILD'
         _ID = 1234
+        _ID2 = 5678
         _NAME = 'NAME'
-        _PATH = [{'kind': _PARENT, 'name': _NAME}, {'kind': _CHILD, 'id': _ID}]
+        _NAME2 = 'NAME2'
+        _PATH = [
+            {'kind': _PARENT, 'name': _NAME},
+            {'kind': _CHILD, 'id': _ID},
+            {'kind': _GRANDCHILD, 'id': _ID2, 'name': _NAME2},
+        ]
         pb = self._makePB(path=_PATH)
         key = self._getTargetClass().from_protobuf(pb)
         self.assertEqual(key.path(), _PATH)
@@ -119,6 +125,13 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(elem.kind, '')
         self.assertEqual(elem.name, '')
         self.assertEqual(elem.id, 0)
+
+    def test_to_protobuf_w_explicit_dataset_empty_id(self):
+        from gcloud.datastore.dataset import Dataset
+        dataset = Dataset('')
+        key = self._makeOne(dataset)
+        pb = key.to_protobuf()
+        self.assertEqual(pb.partition_id.dataset_id, '')
 
     def test_to_protobuf_w_explicit_dataset_no_prefix(self):
         from gcloud.datastore.dataset import Dataset
@@ -155,14 +168,22 @@ class TestKey(unittest2.TestCase):
         _CHILD = 'CHILD'
         _ID = 1234
         _NAME = 'NAME'
-        _PATH = [{'kind': _PARENT, 'name': _NAME}, {'kind': _CHILD, 'id': _ID}]
+        _PATH = [
+            {'kind': _PARENT, 'name': _NAME},
+            {'kind': _CHILD, 'id': _ID},
+            {},
+        ]
         key = self._makeOne(path=_PATH)
         pb = key.to_protobuf()
         elems = list(pb.path_element)
+        self.assertEqual(len(elems), len(_PATH))
         self.assertEqual(elems[0].kind, _PARENT)
         self.assertEqual(elems[0].name, _NAME)
         self.assertEqual(elems[1].kind, _CHILD)
         self.assertEqual(elems[1].id, _ID)
+        self.assertEqual(elems[2].kind, '')
+        self.assertEqual(elems[2].name, '')
+        self.assertEqual(elems[2].id, 0)
 
     def test_from_path_empty(self):
         key = self._getTargetClass().from_path()
@@ -262,6 +283,15 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(after.namespace(), _NAMESPACE)
         self.assertEqual(after.path(), _PATH)
 
+    def test_kind_getter_empty_path(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
+        dataset = Dataset(_DATASET)
+        key = self._makeOne(dataset, _NAMESPACE)
+        key._path = ()  # edge case
+        self.assertEqual(key.kind(), None)
+
     def test_kind_setter(self):
         from gcloud.datastore.dataset import Dataset
         _DATASET = 'DATASET'
@@ -279,22 +309,14 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(after.namespace(), _NAMESPACE)
         self.assertEqual(after.path(), [{'kind': _KIND_AFTER, 'name': _NAME}])
 
-    def test_name_setter(self):
+    def test_id_getter_empty_path(self):
         from gcloud.datastore.dataset import Dataset
         _DATASET = 'DATASET'
         _NAMESPACE = 'NAMESPACE'
-        _KIND = 'KIND'
-        _NAME_BEFORE = 'NAME_BEFORE'
-        _NAME_AFTER = 'NAME_AFTER'
-        _PATH = [{'kind': _KIND, 'name': _NAME_BEFORE}]
         dataset = Dataset(_DATASET)
-        key = self._makeOne(dataset, _NAMESPACE, _PATH)
-        after = key.name(_NAME_AFTER)
-        self.assertFalse(after is key)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        self.assertTrue(after.dataset() is dataset)
-        self.assertEqual(after.namespace(), _NAMESPACE)
-        self.assertEqual(after.path(), [{'kind': _KIND, 'name': _NAME_AFTER}])
+        key = self._makeOne(dataset, _NAMESPACE)
+        key._path = ()  # edge case
+        self.assertEqual(key.id(), None)
 
     def test_id_setter(self):
         from gcloud.datastore.dataset import Dataset
@@ -312,6 +334,32 @@ class TestKey(unittest2.TestCase):
         self.assertTrue(after.dataset() is dataset)
         self.assertEqual(after.namespace(), _NAMESPACE)
         self.assertEqual(after.path(), [{'kind': _KIND, 'id': _ID_AFTER}])
+
+    def test_name_getter_empty_path(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
+        dataset = Dataset(_DATASET)
+        key = self._makeOne(dataset, _NAMESPACE)
+        key._path = ()  # edge case
+        self.assertEqual(key.name(), None)
+
+    def test_name_setter(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
+        _KIND = 'KIND'
+        _NAME_BEFORE = 'NAME_BEFORE'
+        _NAME_AFTER = 'NAME_AFTER'
+        _PATH = [{'kind': _KIND, 'name': _NAME_BEFORE}]
+        dataset = Dataset(_DATASET)
+        key = self._makeOne(dataset, _NAMESPACE, _PATH)
+        after = key.name(_NAME_AFTER)
+        self.assertFalse(after is key)
+        self.assertTrue(isinstance(after, self._getTargetClass()))
+        self.assertTrue(after.dataset() is dataset)
+        self.assertEqual(after.namespace(), _NAMESPACE)
+        self.assertEqual(after.path(), [{'kind': _KIND, 'name': _NAME_AFTER}])
 
     def test_id_or_name_no_name_or_id(self):
         key = self._makeOne()

@@ -153,6 +153,14 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(list(acl),
                          [{'entity': '%s-%s' % (TYPE, ID), 'role': ROLE}])
 
+    def test___iter___non_empty_w_empty_role(self):
+        TYPE = 'type'
+        ID = 'id'
+        acl = self._makeOne()
+        entity = acl.entity(TYPE, ID)
+        entity.grant('')
+        self.assertEqual(list(acl), [])
+
     def test_entity_from_dict_allUsers(self):
         ROLE = 'role'
         acl = self._makeOne()
