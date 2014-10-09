@@ -151,13 +151,13 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
         """
 
         # This is here to avoid circular imports.
-        from gcloud.datastore import helpers
+        from gcloud.datastore import _helpers
 
         key = Key.from_protobuf(pb.key, dataset=dataset)
         entity = cls.from_key(key)
 
         for property_pb in pb.property:
-            value = helpers.get_value_from_protobuf(property_pb)
+            value = _helpers._get_value_from_protobuf(property_pb)
             entity[property_pb.name] = value
 
         return entity

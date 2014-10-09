@@ -2,7 +2,7 @@ import base64
 import copy
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-from gcloud.datastore import helpers
+from gcloud.datastore import _helpers
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
@@ -131,8 +131,7 @@ class Query(object):
         property_filter.operator = operator
 
         # Set the value to filter on based on the type.
-        attr_name, pb_value = helpers.get_protobuf_attribute_and_value(value)
-        setattr(property_filter.value, attr_name, pb_value)
+        _helpers._set_protobuf_value(property_filter.value, value)
         return clone
 
     def ancestor(self, ancestor):
