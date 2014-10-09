@@ -107,7 +107,7 @@ def get_value_from_protobuf(pb):
         return pb.value.string_value
 
     elif pb.value.HasField('entity_value'):
-        return Entity.from_protobuf(pb.value.entity_value) # dataset?
+        return Entity.from_protobuf(pb.value.entity_value)  # XXX dataset?
 
     else:
         return None

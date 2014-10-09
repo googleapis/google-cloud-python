@@ -157,9 +157,6 @@ class Test_get_value_from_protobuf(unittest2.TestCase):
         from gcloud.datastore.datastore_v1_pb2 import Property
         from gcloud.datastore.entity import Entity
 
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        _ID = 1234
         pb = Property()
         entity_pb = pb.value.entity_value
         prop_pb = entity_pb.property.add()
