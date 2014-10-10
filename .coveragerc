@@ -1,0 +1,4 @@
+[report]
+omit =
+	*/demo/*
+	*/demo.py
