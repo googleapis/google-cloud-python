@@ -258,7 +258,6 @@ class Bucket(object):
         return key.set_contents_from_filename(filename)
 
     def upload_file_object(self, fh, key=None):
-        # TODO: What do we do about overwriting data?
         """Shortcut method to upload a file object into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
