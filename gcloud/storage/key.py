@@ -134,17 +134,10 @@ class Key(object):
         return self.bucket.get_key(self.name) is not None
 
     def rename(self, new_name):
-        """Renames this key using copy and delete operations.
+        """Renames this key.
 
         Effectively, copies key to the same bucket with a new name, then
         deletes the key.
-        
-        .. warning::
-          This method will first duplicate the data
-          and then delete the old key.
-          This means that with very large objects
-          renaming could be a very (temporarily) costly
-          or a very slow operation.
 
         :type new_name: string
         :param new_name: The new name for this key.
