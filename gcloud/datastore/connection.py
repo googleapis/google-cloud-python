@@ -1,3 +1,5 @@
+"""Connections to gcloud datastore API servers.
+"""
 from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import _helpers
@@ -59,6 +61,22 @@ class Connection(connection.Connection):
         return content
 
     def _rpc(self, dataset_id, method, request_pb, response_pb_cls):
+        """ Make an protobuf RPC request.
+
+        :type dataset_id: string
+        :param dataset_id: The ID of the dataset to connect to. This is
+                           usually your project name in the cloud console.
+
+        :type method: string
+        :param method: The name of the method to invoke.
+
+        :type request_pb: :class:`google.protobuf.message.Message` instance
+        :param method: the protobuf instance representing the request.
+
+        :type response_pb_cls: a :class:`google.protobuf.message.Message'
+                               subclass.
+        :param method: The class used to unmarshall the response protobuf.
+        """
         response = self._request(dataset_id=dataset_id, method=method,
                                  data=request_pb.SerializeToString())
         return response_pb_cls.FromString(response)
@@ -94,6 +112,16 @@ class Connection(connection.Connection):
             dataset_id=dataset_id, method=method)
 
     def transaction(self, transaction=connection.Connection._EMPTY):
+        """Getter/setter for the connection's transaction object.
+
+        :type transaction: :class:`gcloud.datastore.transaction.Transaction`,
+                           (setting), or omitted (getting).
+        :param transaction: The new transaction (if passed).
+
+        :rtype: :class:`gcloud.datastore.transaction.Transaction`, (getting)
+                or :class:`gcloud.datastore.connection.Connection' (setting)
+        :returns: the current transaction (getting) or self (setting).
+        """
         if transaction is self._EMPTY:
             return self._current_transaction
         else:
@@ -101,6 +129,12 @@ class Connection(connection.Connection):
             return self
 
     def mutation(self):
+        """Getter for mutation usable with current connection.
+
+        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.
+        :returns: the mutation instance associated with the current transaction
+                  (if one exists) or or a new mutation instance.
+        """
         if self.transaction():
             return self.transaction().mutation()
         else:
@@ -278,6 +312,17 @@ class Connection(connection.Connection):
         return results
 
     def commit(self, dataset_id, mutation_pb):
+        """Commit dataset mutations in context of current transation (if any).
+
+        :type dataset_id: string
+        :param dataset_id: The dataset in which to perform the changes.
+
+        :type mutation_pb: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.
+        :param mutation_pb: The protobuf for the mutations being saved.
+
+        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
+        :returns': the result protobuf for the mutation.
+        """
         request = datastore_pb.CommitRequest()
 
         if self.transaction():
@@ -350,8 +395,11 @@ class Connection(connection.Connection):
         :param dataset_id: The dataset from which to delete the keys.
 
         :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
-                       (or a single Key)
-        :param key_pbs: The key (or keys) to delete from the datastore.
+        :param key_pbs: The keys to delete from the datastore.
+
+        :rtype: boolean (if in a transaction) or else
+                :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
+        :returns: True (if in a transaction) or else a mutation result protobuf.
         """
         mutation = self.mutation()
 
@@ -365,4 +413,22 @@ class Connection(connection.Connection):
             return self.commit(dataset_id, mutation)
 
     def delete_entity(self, dataset_id, key_pb):
+        """Delete a single key from a dataset in the Cloud Datastore.
+
+        This method deals only with
+        :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs
+        and not with any of the other abstractions.
+        For example, it's used under the hood in the
+        :func:`gcloud.datastore.entity.Entity.delete` method.
+
+        :type dataset_id: string
+        :param dataset_id: The dataset from which to delete the key.
+
+        :type key_pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :param key_pb: The key to delete from the datastore.
+
+        :rtype: boolean (if in a transaction) or else
+                :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
+        :returns: True (if in a transaction) or else a mutation result protobuf.
+        """
         return self.delete_entities(dataset_id, [key_pb])

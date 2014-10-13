@@ -1,3 +1,6 @@
+"""Wrapper for gcloud datastore keys.
+"""
+
 import copy
 from itertools import izip
 

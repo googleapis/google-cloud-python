@@ -1,3 +1,5 @@
+""" Shared implementation of connections to API servers.
+"""
 from pkg_resources import get_distribution
 
 import httplib2
@@ -31,6 +33,10 @@ class Connection(object):
 
     @property
     def credentials(self):
+        """
+        :rtype: :class:`oauth2client.client.OAuth2Credentials`, or None
+        :returns: The credentials object associated with this connection.
+        """
         return self._credentials
 
     @property

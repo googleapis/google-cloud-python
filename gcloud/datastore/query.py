@@ -1,3 +1,6 @@
+"""Wrapper for gcloud datastore queries.
+"""
+
 import base64
 import copy
 
@@ -60,6 +63,11 @@ class Query(object):
             self._pb.kind.add().name = kind
 
     def _clone(self):
+        """Create a new Query, copying self.
+
+        :rtype: :class:`gcloud.datastore.query.Query`
+        :returns: a copy of 'self'.
+        """
         clone = copy.deepcopy(self)
         clone._dataset = self._dataset  # Shallow copy the dataset.
         return clone
