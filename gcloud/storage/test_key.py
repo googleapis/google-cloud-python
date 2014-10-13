@@ -102,7 +102,6 @@ class Test_Key(unittest2.TestCase):
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         bucket._keys[KEY] = 1
-        orig_key_path = key.path
         new_key = key.rename(NEW_NAME)
         self.assertEqual(key.name, KEY)
         self.assertEqual(new_key.name, NEW_NAME)
