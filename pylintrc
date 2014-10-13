@@ -1,0 +1,10 @@
+[FORMAT]
+no-space-check=
+[MASTER]
+load-plugins=pylint_unittest_checker
+[MESSAGES CONTROL]
+disable=I,protected-access
+[REPORTS]
+reports=no
+[VARIABLES]
+dummy-variables-rgx=_$|dummy|^unused_

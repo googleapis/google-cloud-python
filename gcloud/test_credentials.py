@@ -3,7 +3,8 @@ import unittest2
 
 class TestCredentials(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.credentials import Credentials
         return Credentials
 
@@ -15,16 +16,16 @@ class TestCredentials(unittest2.TestCase):
         cls = self._getTargetClass()
         client = _Client()
         with _Monkey(credentials, client=client):
-            with NamedTemporaryFile() as f:
-                f.write(PRIVATE_KEY)
-                f.flush()
-                found = cls.get_for_service_account(CLIENT_EMAIL, f.name)
+            with NamedTemporaryFile() as file_obj:
+                file_obj.write(PRIVATE_KEY)
+                file_obj.flush()
+                found = cls.get_for_service_account(CLIENT_EMAIL,
+                                                    file_obj.name)
         self.assertTrue(found is client._signed)
-        self.assertEqual(client._called_with,
-                         {'service_account_name': CLIENT_EMAIL,
-                          'private_key': PRIVATE_KEY,
-                          'scope': None,
-                          })
+        expected_called_with = {'service_account_name': CLIENT_EMAIL,
+                                'private_key': PRIVATE_KEY,
+                                'scope': None}
+        self.assertEqual(client._called_with, expected_called_with)
 
     def test_get_for_service_account_w_scope(self):
         from tempfile import NamedTemporaryFile
@@ -35,21 +36,19 @@ class TestCredentials(unittest2.TestCase):
         cls = self._getTargetClass()
         client = _Client()
         with _Monkey(credentials, client=client):
-            with NamedTemporaryFile() as f:
-                f.write(PRIVATE_KEY)
-                f.flush()
-                found = cls.get_for_service_account(CLIENT_EMAIL, f.name,
-                                                    SCOPE)
+            with NamedTemporaryFile() as file_obj:
+                file_obj.write(PRIVATE_KEY)
+                file_obj.flush()
+                found = cls.get_for_service_account(CLIENT_EMAIL,
+                                                    file_obj.name, SCOPE)
         self.assertTrue(found is client._signed)
-        self.assertEqual(client._called_with,
-                         {'service_account_name': CLIENT_EMAIL,
-                          'private_key': PRIVATE_KEY,
-                          'scope': SCOPE,
-                          })
+        expected_called_with = {'service_account_name': CLIENT_EMAIL,
+                                'private_key': PRIVATE_KEY,
+                                'scope': SCOPE}
+        self.assertEqual(client._called_with, expected_called_with)
 
 
 class _Client(object):
-
     def __init__(self):
         self._signed = object()
 
@@ -59,6 +58,7 @@ class _Client(object):
 
 
 class _Monkey(object):
+
     # context-manager for replacing module names in the scope of a test.
 
     def __init__(self, module, **kw):
