@@ -7,7 +7,7 @@ def get_for_service_account(client_email, private_key_path, scope=None):
     """Gets the credentials for a service account.
 
     .. note::
-      You should not need to use this method directly.
+      You should not need to use this function directly.
       Instead, use the helper methods provided in
       :func:`gcloud.datastore.__init__.get_connection`
       and
