@@ -1,5 +1,4 @@
-"""Create / interact with gcloud datastore queries.
-"""
+"""Create / interact with gcloud datastore queries."""
 
 import base64
 import copy

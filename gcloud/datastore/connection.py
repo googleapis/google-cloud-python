@@ -1,5 +1,4 @@
-"""Connections to gcloud datastore API servers.
-"""
+"""Connections to gcloud datastore API servers."""
 from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import _helpers

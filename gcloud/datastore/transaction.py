@@ -1,5 +1,4 @@
-"""Create / interact with gcloud datastore transactions.
-"""
+"""Create / interact with gcloud datastore transactions."""
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.key import Key
