@@ -48,7 +48,7 @@ Sally can review a submitted expense report using the its ID:
 
 .. code-block:: bash
 
-   $ review_expenses show --report-id=sally/expenses-2014-09-01
+   $ review_expenses show --employee-id=sally --report-idexpenses-2014-09-01
    Report-ID: sally/expenses-2014-09-01
    Report-Status: Pending
    Employee-ID: sally
@@ -63,7 +63,7 @@ While in "Pending" status, Sally can edit the CSV and resubmit it:
 
 .. code-block:: bash
 
-   $ submit_expenses update --report-id=sally/expenses-2014-09-01 expenses-20140901-amended.csv
+   $ submit_expenses update --employee-id=sally --report-idexpenses-2014-09-01 expenses-20140901-amended.csv
    Processed 15 rows.
    Updated, report ID: sally/expenses-2014-09-01
 
@@ -73,20 +73,20 @@ Sally's boss, Pat, can review all open expense reports:
 
    $ review_expenses list --status=Pending
 
-   "Report ID","Description","Status","Memo"
-   "sally/2014-09-01","Frotz project kickoff, San Jose","Pending",""
+   "Employee ID","Report ID","Description","Status","Memo"
+   "sally","2014-09-01","Frotz project kickoff, San Jose","Pending",""
 
 and download the expenses just as above.  Pat can approve Sally's expense
 report:
 
 .. code-block:: bash
 
-   $ review_expenses approve --report-id=sally/expenses-2014-09-01 --check-number=4093
+   $ review_expenses approve --employee-id=sally --report-idexpenses-2014-09-01 --check-number=4093
    Approved, report ID: sally/expenses-2014-09-01, check #4093
 
 or reject it:
 
 .. code-block:: bash
 
-   $ review_expenses reject --report-id=sally/expenses-2014-09-01 --reason="Travel not authorized by client"
+   $ review_expenses reject --employee-id=sally --report-idexpenses-2014-09-01 --reason="Travel not authorized by client"
    Rejected, report ID: sally/expenses-2014-09-01, reason: Travel not authorized by client
