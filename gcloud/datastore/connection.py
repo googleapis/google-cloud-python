@@ -61,7 +61,7 @@ class Connection(connection.Connection):
         return content
 
     def _rpc(self, dataset_id, method, request_pb, response_pb_cls):
-        """ Make an protobuf RPC request.
+        """ Make a protobuf RPC request.
 
         :type dataset_id: string
         :param dataset_id: The ID of the dataset to connect to. This is
