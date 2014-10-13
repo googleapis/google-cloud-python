@@ -1,3 +1,5 @@
+"""Create / interact with gcloud storage buckets."""
+
 import os
 
 from gcloud.storage import exceptions
@@ -187,6 +189,13 @@ class Bucket(object):
         return key
 
     def delete_keys(self, keys):
+        """Deletes a list of keys from the current bucket.
+
+        Uses :func:`Bucket.delete_key` to delete each individual key.
+
+        :type keys: list of string or :class:`gcloud.storage.key.Key`
+        :param key: A list of key names or Key objects to delete.
+        """
         # NOTE: boto returns a MultiDeleteResult instance.
         for key in keys:
             self.delete_key(key)

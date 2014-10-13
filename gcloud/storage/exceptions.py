@@ -1,8 +1,12 @@
+"""Custom exceptions for gcloud.storage package."""
+
+
 class StorageError(Exception):
-    pass
+    """Base error class for gcloud errors."""
 
 
 class ConnectionError(StorageError):
+    """Exception corresponding to a bad HTTP/RPC connection."""
 
     def __init__(self, response, content):
         message = str(response) + content
@@ -12,10 +16,7 @@ class ConnectionError(StorageError):
 
 
 class NotFoundError(ConnectionError):
+    """Exception corresponding to a 404 not found bad connection."""
 
     def __init__(self, response, content):
         self.message = 'Request returned a 404. Headers: %s' % (response)
-
-
-class StorageDataError(StorageError):
-    pass
