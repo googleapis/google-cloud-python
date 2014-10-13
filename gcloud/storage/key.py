@@ -138,7 +138,7 @@ class Key(object):
 
         Effectively, copies key to the same bucket with a new name, then
         deletes the key.
-        
+
         .. warning::
           This method will first duplicate the data
           and then delete the old key.
