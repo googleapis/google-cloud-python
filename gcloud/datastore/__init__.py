@@ -61,12 +61,12 @@ def get_connection(client_email, private_key_path):
     :rtype: :class:`gcloud.datastore.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    from gcloud.credentials import Credentials
+    from gcloud import credentials
     from gcloud.datastore.connection import Connection
 
-    credentials = Credentials.get_for_service_account(
+    svc_account_credentials = credentials.get_for_service_account(
         client_email, private_key_path, scope=SCOPE)
-    return Connection(credentials=credentials)
+    return Connection(credentials=svc_account_credentials)
 
 
 def get_dataset(dataset_id, client_email, private_key_path):

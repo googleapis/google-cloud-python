@@ -1,4 +1,5 @@
 from pkg_resources import get_distribution
+
 import httplib2
 
 
@@ -22,11 +23,10 @@ class Connection(object):
     """The user agent for gcloud-python requests."""
 
     def __init__(self, credentials=None):
-        """:type credentials: :class:`gcloud.credentials.Credentials`
-        :param credentials: The OAuth2 Credentials to use for this connection.
-
         """
-
+        :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+        :param credentials: The OAuth2 Credentials to use for this connection.
+        """
         self._credentials = credentials
 
     @property

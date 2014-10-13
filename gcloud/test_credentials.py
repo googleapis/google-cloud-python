@@ -3,22 +3,18 @@ import unittest2
 
 class TestCredentials(unittest2.TestCase):
 
-    def _getTargetClass(self):
-        from gcloud.credentials import Credentials
-        return Credentials
-
     def test_get_for_service_account_wo_scope(self):
         from tempfile import NamedTemporaryFile
         from gcloud import credentials
         CLIENT_EMAIL = 'phred@example.com'
         PRIVATE_KEY = 'SEEkR1t'
-        cls = self._getTargetClass()
         client = _Client()
         with _Monkey(credentials, client=client):
             with NamedTemporaryFile() as f:
                 f.write(PRIVATE_KEY)
                 f.flush()
-                found = cls.get_for_service_account(CLIENT_EMAIL, f.name)
+                found = credentials.get_for_service_account(
+                    CLIENT_EMAIL, f.name)
         self.assertTrue(found is client._signed)
         self.assertEqual(client._called_with,
                          {'service_account_name': CLIENT_EMAIL,
@@ -32,14 +28,13 @@ class TestCredentials(unittest2.TestCase):
         CLIENT_EMAIL = 'phred@example.com'
         PRIVATE_KEY = 'SEEkR1t'
         SCOPE = 'SCOPE'
-        cls = self._getTargetClass()
         client = _Client()
         with _Monkey(credentials, client=client):
             with NamedTemporaryFile() as f:
                 f.write(PRIVATE_KEY)
                 f.flush()
-                found = cls.get_for_service_account(CLIENT_EMAIL, f.name,
-                                                    SCOPE)
+                found = credentials.get_for_service_account(
+                    CLIENT_EMAIL, f.name, SCOPE)
         self.assertTrue(found is client._signed)
         self.assertEqual(client._called_with,
                          {'service_account_name': CLIENT_EMAIL,
