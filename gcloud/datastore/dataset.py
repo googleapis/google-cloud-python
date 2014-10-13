@@ -1,4 +1,4 @@
-"""Wrapper for gcloud datastore datasets.
+"""Create / interact with gcloud datastore datasets.
 """
 
 class Dataset(object):

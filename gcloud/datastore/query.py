@@ -1,4 +1,4 @@
-"""Wrapper for gcloud datastore queries.
+"""Create / interact with gcloud datastore queries.
 """
 
 import base64

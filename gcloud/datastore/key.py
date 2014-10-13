@@ -1,4 +1,4 @@
-"""Wrapper for gcloud datastore keys.
+"""Create / interact with gcloud datastore keys.
 """
 
 import copy
