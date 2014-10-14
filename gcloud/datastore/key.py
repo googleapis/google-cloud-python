@@ -1,3 +1,5 @@
+"""Create / interact with gcloud datastore keys."""
+
 import copy
 from itertools import izip
 
