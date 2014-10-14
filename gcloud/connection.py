@@ -1,5 +1,4 @@
-""" Shared implementation of connections to API servers.
-"""
+""" Shared implementation of connections to API servers."""
 from pkg_resources import get_distribution
 
 import httplib2
