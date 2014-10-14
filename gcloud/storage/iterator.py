@@ -40,6 +40,9 @@ if you find what you're looking for
 """
 
 
+from gcloud.storage.exceptions import StorageError
+
+
 class Iterator(object):
     """A generic class for iterating through Cloud Storage list responses.
 
@@ -186,6 +189,15 @@ class KeyIterator(Iterator):
 
 
 class KeyDataIterator(object):
+    """An iterator listing data stored in a key.
+
+    You shouldn't have to use this directly,
+    but instead should use the helper methods
+    on :class:`gcloud.storage.key.Key` objects.
+
+    :type key: :class:`gcloud.storage.key.Key`
+    :param key: The key from which to list data..
+    """
 
     def __init__(self, key):
         self.key = key
@@ -196,20 +208,33 @@ class KeyDataIterator(object):
             yield self.get_next_chunk()
 
     def reset(self):
+        """Resets the iterator to the beginning."""
         self._bytes_written = 0
         self._total_bytes = None
 
     def has_more_data(self):
+        """Determines whether or not this iterator has more data to read.
+
+        :rtype: bool
+        :returns: Whether the iterator has more data or not.
+        """
+
         if self._bytes_written == 0:
             return True
         elif not self._total_bytes:
             # self._total_bytes **should** be set by this point.
             # If it isn't, something is wrong.
-            raise ValueError('Size of object is unknown... This is bad.')
+            raise ValueError('Size of object is unknown.')
         else:
             return (self._bytes_written < self._total_bytes)
 
     def get_headers(self):
+        """Gets range header(s) for next chunk of data.
+
+        :rtype: dict
+        :returns: A dictionary of query parameters.
+        """
+
         start = self._bytes_written
         end = self._bytes_written + self.key.CHUNK_SIZE - 1
 
@@ -219,10 +244,25 @@ class KeyDataIterator(object):
         return {'Range': 'bytes=%s-%s' % (start, end)}
 
     def get_url(self):
+        """Gets URL to read next chunk of data.
+
+        :rtype: string
+        :returns: A URL.
+        """
         return self.key.connection.build_api_url(
             path=self.key.path, query_params={'alt': 'media'})
 
     def get_next_chunk(self):
+        """Gets the next chunk of data.
+
+        Uses CHUNK_SIZE to determine how much data to get.
+
+        :rtype: string
+        :returns: The chunk of data read from the key.
+        :raises: :class:`RuntimeError` if no more data or
+                 :class:`gcloud.storage.exceptions.StorageError` in the
+                 case of an unexpected response status code.
+        """
         if not self.has_more_data():
             raise RuntimeError('No more data in this iterator. Try resetting.')
 
@@ -238,5 +278,5 @@ class KeyDataIterator(object):
 
             return content
 
-        # Expected a 200 or a 206... Got something else, which is bad.
-        raise Exception(response)
+        # Expected a 200 or a 206. Got something else, which is unknown.
+        raise StorageError(response)

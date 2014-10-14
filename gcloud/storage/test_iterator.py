@@ -344,12 +344,13 @@ class TestKeyDataIterator(unittest2.TestCase):
         self.assertEqual(kw['headers'], {'Range': 'bytes=0-9'})
 
     def test_get_next_chunk_416(self):
+        from gcloud.storage.exceptions import StorageError
         response = _Response(status=416)
         connection = _Connection((response, ''))
         key = _Key(connection)
         iterator = self._makeOne(key)
         iterator._total_bytes = 1000
-        self.assertRaises(Exception, iterator.get_next_chunk)
+        self.assertRaises(StorageError, iterator.get_next_chunk)
 
 
 class _Response(dict):

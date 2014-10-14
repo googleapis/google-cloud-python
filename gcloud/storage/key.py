@@ -1,3 +1,5 @@
+"""Create / interact with gcloud storage keys."""
+
 import errno
 import mimetypes
 import os
@@ -92,6 +94,10 @@ class Key(object):
 
     @property
     def public_url(self):
+        """
+        :rtype: `string`
+        :returns: The public URL for this key.
+        """
         return '{storage_base_url}/{self.bucket.name}/{self.name}'.format(
             storage_base_url='http://commondatastorage.googleapis.com',
             self=self)
