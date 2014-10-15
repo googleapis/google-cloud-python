@@ -12,7 +12,7 @@ You can install the library quickly with ``pip``::
   $ pip install gcloud
 
 Run the
-`example script <https://github.com/jgeewax/gcloud/blob/master/gcloud/storage/demo.py>`_
+`example script <https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/gcloud/storage/demo/demo.py>`_
 included in the package::
 
   $ python -m gcloud.storage.demo
@@ -50,6 +50,7 @@ you can create buckets and keys::
   'this is test content!'
   >>> print bucket.get_all_keys()
   [<Key: my-new-bucket, my-test-file.txt>]
+  >>> key.delete()
   >>> bucket.delete()
 
 .. note::

@@ -4,7 +4,7 @@
  *
  * Sphinx stylesheet -- basic theme.
  *
- * :copyright: Copyright 2007-2013 by the Sphinx team, see AUTHORS.
+ * :copyright: Copyright 2007-2014 by the Sphinx team, see AUTHORS.
  * :license: BSD, see LICENSE for details.
  *
  */
@@ -197,7 +197,10 @@ h3:hover > a.headerlink,
 h4:hover > a.headerlink,
 h5:hover > a.headerlink,
 h6:hover > a.headerlink,
-dt:hover > a.headerlink {
+dt:hover > a.headerlink,
+caption:hover > a.headerlink,
+p.caption:hover > a.headerlink,
+div.code-block-caption:hover > a.headerlink {
     visibility: visible;
 }
 
@@ -406,6 +409,10 @@ dl.glossary dt {
     font-size: 1.3em;
 }
 
+.sig-paren {
+    font-size: larger;
+}
+
 .versionmodified {
     font-style: italic;
 }
@@ -471,22 +478,35 @@ table.highlighttable td {
     padding: 0 0.5em 0 0.5em;
 }
 
-tt.descname {
+div.code-block-caption {
+    padding: 2px 5px;
+    font-size: small;
+}
+
+div.code-block-filename code {
+    background-color: transparent;
+}
+
+div.code-block-caption + div > div.highlight > pre {
+    margin-top: 0;
+}
+
+code.descname {
     background-color: transparent;
     font-weight: bold;
     font-size: 1.2em;
 }
 
-tt.descclassname {
+code.descclassname {
     background-color: transparent;
 }
 
-tt.xref, a tt {
+code.xref, a code {
     background-color: transparent;
     font-weight: bold;
 }
 
-h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
+h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
     background-color: transparent;
 }
 

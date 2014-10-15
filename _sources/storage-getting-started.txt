@@ -20,7 +20,7 @@ Enabling the API
 ----------------
 
 Now that you created a project,
-you need to **turn on** the Cloud Datastore API.
+you need to **turn on** the Google Cloud Storage API.
 This is sort of like telling Google
 which services you intend to use for this project.
 
@@ -217,10 +217,7 @@ otherwise you'll get an error.
 
 If you have a full bucket, you can delete it this way::
 
-  >>> bucket = connection.get_bucket('my-bucket')
-  >>> for key in bucket:
-  ...   key.delete()
-  >>> bucket.delete()
+  >>> bucket = connection.delete_bucket('my-bucket', force=True)
 
 Listing available buckets
 -------------------------

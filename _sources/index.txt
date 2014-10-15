@@ -3,16 +3,22 @@
 .. toctree::
   :hidden:
 
-  datastore-api
-  storage-api
   common-api
+  datastore-api
+  datastore-getting-started
+  datastore-quickstart
+  getting-started
+  storage-api
+  storage-getting-started
+  storage-quickstart
+
 
 Google Cloud Python API
 =======================
 
 .. warning::
   This library is **still under construction**
-  and is **not** the official Google Python API client library.
+  and is **not** the official Google Cloud Python API client library.
 
 Getting started
 ---------------

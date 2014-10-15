@@ -26,7 +26,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/sidebar.js"></script>
-    <link rel="top" title="gcloud 0.1 documentation" href="index.html" /> 
+    <link rel="top" title="gcloud 0.1 documentation" href="index.html" />
+    <link rel="next" title="Getting started with gcloud" href="getting-started.html" />
+    <link rel="prev" title="Getting started with Cloud Datastore" href="datastore-getting-started.html" /> 
   </head>
   <body role="document" class="two-column docs"><a href="https://github.com/GoogleCloudPlatform/gcloud-python"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="_static/forkme.png" alt="Fork me on GitHub"></a>
     <div id="sandbar">
@@ -74,10 +76,15 @@
 
             <h3>All API Docs</h3>
             <nav class="gc-toc">
-            <ul>
-<li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Cloud Storage</a></li>
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="common-api.html">Cloud Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-getting-started.html">Getting started with Cloud Datastore</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Cloud Datastore in 10 seconds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started with gcloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-getting-started.html">Getting started with Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-quickstart.html">Cloud Storage in 10 seconds</a></li>
 </ul>
 
             </nav>
@@ -109,12 +116,12 @@ instructions in the
 <p>The source code for the library
 (and demo code)
 lives on GitHub,
-You can install the library quickly with <tt class="docutils literal"><span class="pre">pip</span></tt>:</p>
+You can install the library quickly with <code class="docutils literal"><span class="pre">pip</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ pip install gcloud
 </pre></div>
 </div>
 <p>Run the
-<a class="reference external" href="https://github.com/jgeewax/gcloud/blob/master/gcloud/datastore/demo.py">example script</a>
+<a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/gcloud/datastore/demo/demo.py">example script</a>
 included in the package:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ python -m gcloud.datastore.demo
 </pre></div>
@@ -147,7 +154,7 @@ you can create entities and save them:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The <tt class="docutils literal"><span class="pre">get_dataset</span></tt> method is just a shortcut for:</p>
+<p>The <code class="docutils literal"><span class="pre">get_dataset</span></code> method is just a shortcut for:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">demo</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span>
@@ -177,7 +184,7 @@ the <a class="reference internal" href="datastore-api.html"><em>Cloud Datastore<
     <footer id="gc-footer" class="footer" role="contentinfo">
     <div id="gc-copyright">
         &copy; Copyright 2014, JJ Geewax.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
       </div>
     </footer>
   </body>

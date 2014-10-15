@@ -22,7 +22,7 @@ You can install the library quickly with ``pip``::
   $ pip install gcloud
 
 Run the
-`example script <https://github.com/jgeewax/gcloud/blob/master/gcloud/datastore/demo.py>`_
+`example script <https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/gcloud/datastore/demo/demo.py>`_
 included in the package::
 
   $ python -m gcloud.datastore.demo

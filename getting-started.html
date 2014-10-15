@@ -26,7 +26,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/sidebar.js"></script>
-    <link rel="top" title="gcloud 0.1 documentation" href="index.html" /> 
+    <link rel="top" title="gcloud 0.1 documentation" href="index.html" />
+    <link rel="next" title="Cloud Storage" href="storage-api.html" />
+    <link rel="prev" title="Cloud Datastore in 10 seconds" href="datastore-quickstart.html" /> 
   </head>
   <body role="document" class="two-column docs"><a href="https://github.com/GoogleCloudPlatform/gcloud-python"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="_static/forkme.png" alt="Fork me on GitHub"></a>
     <div id="sandbar">
@@ -72,10 +74,15 @@
 
             <h3>All API Docs</h3>
             <nav class="gc-toc">
-            <ul>
-<li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Cloud Storage</a></li>
+            <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="common-api.html">Cloud Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-getting-started.html">Getting started with Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-quickstart.html">Cloud Datastore in 10 seconds</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Getting started with gcloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-getting-started.html">Getting started with Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-quickstart.html">Cloud Storage in 10 seconds</a></li>
 </ul>
 
             </nav>
@@ -93,19 +100,19 @@
 <h1>Getting started with gcloud<a class="headerlink" href="#getting-started-with-gcloud" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="installing-gcloud">
 <h2>Installing gcloud<a class="headerlink" href="#installing-gcloud" title="Permalink to this headline">¶</a></h2>
-<p>The <tt class="docutils literal"><span class="pre">gcloud</span></tt> library is <tt class="docutils literal"><span class="pre">pip</span></tt> install-able:</p>
+<p>The <code class="docutils literal"><span class="pre">gcloud</span></code> library is <code class="docutils literal"><span class="pre">pip</span></code> install-able:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ pip install gcloud
 </pre></div>
 </div>
 <p>If you have trouble installing
-<tt class="docutils literal"><span class="pre">pycrypto</span></tt> or <tt class="docutils literal"><span class="pre">pyopenssl</span></tt>
+<code class="docutils literal"><span class="pre">pycrypto</span></code> or <code class="docutils literal"><span class="pre">pyopenssl</span></code>
 (and you&#8217;re on Ubuntu),
 you can try install the precompiled packages:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ sudo apt-get install python-crypto python-openssl
 </pre></div>
 </div>
-<p>If you want to install everything with <tt class="docutils literal"><span class="pre">pip</span></tt>,
-try installing the <tt class="docutils literal"><span class="pre">dev</span></tt> packages beforehand:</p>
+<p>If you want to install everything with <code class="docutils literal"><span class="pre">pip</span></code>,
+try installing the <code class="docutils literal"><span class="pre">dev</span></code> packages beforehand:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ sudo apt-get install python-dev libssl-dev
 </pre></div>
 </div>
@@ -130,7 +137,7 @@ $ python setup.py install
     <footer id="gc-footer" class="footer" role="contentinfo">
     <div id="gc-copyright">
         &copy; Copyright 2014, JJ Geewax.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
       </div>
     </footer>
   </body>

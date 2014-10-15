@@ -64,9 +64,14 @@
             <h3>All API Docs</h3>
             <nav class="gc-toc">
             <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Cloud Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../common-api.html">Cloud Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-getting-started.html">Getting started with Cloud Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-quickstart.html">Cloud Datastore in 10 seconds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started.html">Getting started with gcloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-getting-started.html">Getting started with Cloud Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-quickstart.html">Cloud Storage in 10 seconds</a></li>
 </ul>
 
             </nav>
@@ -81,9 +86,10 @@
           <div class="body" role="main" id="gc-content">
             
   <h1>Source code for gcloud.storage.connection</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;Create / interact with gcloud storage connections.&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">httplib2</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
@@ -101,477 +107,501 @@
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
-  <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Storage via the JSON REST API.</span>
+    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Storage via the JSON REST API.</span>
 
-<span class="sd">  This class should understand only the basic types (and protobufs)</span>
-<span class="sd">  in method arguments, however should be capable of returning advanced types.</span>
+<span class="sd">    This class should understand only the basic types (and protobufs)</span>
+<span class="sd">    in method arguments, however should be capable of returning advanced types.</span>
 
-<span class="sd">  See :class:`gcloud.connection.Connection` for a full list of parameters.</span>
-<span class="sd">  :class:`Connection` differs only in needing a project name</span>
-<span class="sd">  (which you specify when creating a project in the Cloud Console).</span>
+<span class="sd">    See :class:`gcloud.connection.Connection` for a full list of parameters.</span>
+<span class="sd">    :class:`Connection` differs only in needing a project name</span>
+<span class="sd">    (which you specify when creating a project in the Cloud Console).</span>
 
-<span class="sd">  A typical use of this is to operate on</span>
-<span class="sd">  :class:`gcloud.storage.bucket.Bucket` objects::</span>
-
-<span class="sd">    &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">    &gt;&gt;&gt; connection = storage.get_connection(project_name, email, key_path)</span>
-<span class="sd">    &gt;&gt;&gt; bucket = connection.create_bucket(&#39;my-bucket-name&#39;)</span>
-
-<span class="sd">  You can then delete this bucket::</span>
-
-<span class="sd">    &gt;&gt;&gt; bucket.delete()</span>
-<span class="sd">    &gt;&gt;&gt; # or</span>
-<span class="sd">    &gt;&gt;&gt; connection.delete_bucket(bucket)</span>
-
-<span class="sd">  If you want to access an existing bucket::</span>
-
-<span class="sd">    &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket-name&#39;)</span>
-
-<span class="sd">  A :class:`Connection` is actually iterable</span>
-<span class="sd">  and will return the :class:`gcloud.storage.bucket.Bucket` objects</span>
-<span class="sd">  inside the project::</span>
-
-<span class="sd">    &gt;&gt;&gt; for bucket in connection:</span>
-<span class="sd">    &gt;&gt;&gt;   print bucket</span>
-<span class="sd">    &lt;Bucket: my-bucket-name&gt;</span>
-
-<span class="sd">  In that same way, you can check for whether a bucket exists</span>
-<span class="sd">  inside the project using Python&#39;s ``in`` operator::</span>
-
-<span class="sd">    &gt;&gt;&gt; print &#39;my-bucket-name&#39; in connection</span>
-<span class="sd">    True</span>
-<span class="sd">  &quot;&quot;&quot;</span>
-
-  <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1beta2&#39;</span>
-  <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
-
-  <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/storage/{api_version}{path}&#39;</span>
-  <span class="sd">&quot;&quot;&quot;A template used to craft the URL pointing toward a particular API call.&quot;&quot;&quot;</span>
-
-  <span class="n">API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://storage.googleapis.com&#39;</span>
-
-  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    :type project_name: string</span>
-<span class="sd">    :param project_name: The project name to connect to.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span> <span class="o">=</span> <span class="n">project_name</span>
-
-  <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">BucketIterator</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
-
-  <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
-
-<div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.build_api_url">[docs]</a>  <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                    <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Construct an API url given a few components, some optional.</span>
-
-<span class="sd">    Typically, you shouldn&#39;t need to use this method.</span>
-
-<span class="sd">    :type path: string</span>
-<span class="sd">    :param path: The path to the resource (ie, ``&#39;/b/bucket-name&#39;``).</span>
-
-<span class="sd">    :type query_params: dict</span>
-<span class="sd">    :param query_params: A dictionary of keys and values to insert into</span>
-<span class="sd">                         the query string of the URL.</span>
-
-<span class="sd">    :type api_base_url: string</span>
-<span class="sd">    :param api_base_url: The base URL for the API endpoint.</span>
-<span class="sd">                         Typically you won&#39;t have to provide this.</span>
-
-<span class="sd">    :type api_version: string</span>
-<span class="sd">    :param api_version: The version of the API to call.</span>
-<span class="sd">                        Typically you shouldn&#39;t provide this and instead</span>
-<span class="sd">                        use the default for the library.</span>
-
-<span class="sd">    :rtype: string</span>
-<span class="sd">    :returns: The URL assembled from the pieces provided.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">api_base_url</span><span class="o">=</span><span class="p">(</span><span class="n">api_base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_BASE_URL</span><span class="p">),</span>
-        <span class="n">api_version</span><span class="o">=</span><span class="p">(</span><span class="n">api_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">),</span>
-        <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-
-    <span class="n">query_params</span> <span class="o">=</span> <span class="n">query_params</span> <span class="ow">or</span> <span class="p">{}</span>
-    <span class="n">query_params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;project&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">})</span>
-    <span class="n">url</span> <span class="o">+=</span> <span class="s">&#39;?&#39;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">url</span>
-</div>
-<div class="viewcode-block" id="Connection.make_request"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.make_request">[docs]</a>  <span class="k">def</span> <span class="nf">make_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                   <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A low level method to send a request to the API.</span>
-
-<span class="sd">    Typically, you shouldn&#39;t need to use this method.</span>
-
-<span class="sd">    :type method: string</span>
-<span class="sd">    :param method: The HTTP method to use in the request.</span>
-
-<span class="sd">    :type url: string</span>
-<span class="sd">    :param url: The URL to send the request to.</span>
-
-<span class="sd">    :type data: string</span>
-<span class="sd">    :param data: The data to send as the body of the request.</span>
-
-<span class="sd">    :type content_type: string</span>
-<span class="sd">    :param content_type: The proper MIME type of the data provided.</span>
-
-<span class="sd">    :type headers: dict</span>
-<span class="sd">    :param headers: A dictionary of HTTP headers to send with the request.</span>
-
-<span class="sd">    :rtype: tuple of ``response`` (a dictionary of sorts)</span>
-<span class="sd">            and ``content`` (a string).</span>
-<span class="sd">    :returns: The HTTP response object and the content of the response.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="p">{}</span>
-    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Accept-Encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;gzip&#39;</span>
-
-    <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-      <span class="n">content_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="n">content_length</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Content-Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_length</span>
-
-    <span class="k">if</span> <span class="n">content_type</span><span class="p">:</span>
-      <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_type</span>
-
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-                               <span class="n">body</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.api_request"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.api_request">[docs]</a>  <span class="k">def</span> <span class="nf">api_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">expect_json</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Make a request over the HTTP transport to the Cloud Storage API.</span>
-
-<span class="sd">    You shouldn&#39;t need to use this method,</span>
-<span class="sd">    but if you plan to interact with the API using these primitives,</span>
-<span class="sd">    this is the correct one to use...</span>
-
-<span class="sd">    :type method: string</span>
-<span class="sd">    :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).</span>
-
-<span class="sd">    :type path: string</span>
-<span class="sd">    :param path: The path to the resource (ie, ``&#39;/b/bucket-name&#39;``).</span>
-
-<span class="sd">    :type query_params: dict</span>
-<span class="sd">    :param query_params: A dictionary of keys and values to insert into</span>
-<span class="sd">                         the query string of the URL.</span>
-
-<span class="sd">    :type data: string</span>
-<span class="sd">    :param data: The data to send as the body of the request.</span>
-
-<span class="sd">    :type content_type: string</span>
-<span class="sd">    :param content_type: The proper MIME type of the data provided.</span>
-
-<span class="sd">    :type api_base_url: string</span>
-<span class="sd">    :param api_base_url: The base URL for the API endpoint.</span>
-<span class="sd">                         Typically you won&#39;t have to provide this.</span>
-
-<span class="sd">    :type api_version: string</span>
-<span class="sd">    :param api_version: The version of the API to call.</span>
-<span class="sd">                        Typically you shouldn&#39;t provide this and instead</span>
-<span class="sd">                        use the default for the library.</span>
-
-<span class="sd">    :type expect_json: bool</span>
-<span class="sd">    :param expect_json: If True, this method will try to parse the response</span>
-<span class="sd">                        as JSON and raise an exception if that cannot be done.</span>
-
-<span class="sd">    :raises: Exception if the response code is not 200 OK.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-                             <span class="n">api_base_url</span><span class="o">=</span><span class="n">api_base_url</span><span class="p">,</span>
-                             <span class="n">api_version</span><span class="o">=</span><span class="n">api_version</span><span class="p">)</span>
-
-    <span class="c"># Making the executive decision that any dictionary</span>
-    <span class="c"># data will be sent properly as JSON.</span>
-    <span class="k">if</span> <span class="n">data</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-      <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-      <span class="n">content_type</span> <span class="o">=</span> <span class="s">&#39;application/json&#39;</span>
-
-    <span class="n">response</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
-        <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
-
-    <span class="c"># TODO: Add better error handling.</span>
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-      <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="ow">not</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
-      <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">content</span> <span class="ow">and</span> <span class="n">expect_json</span><span class="p">:</span>
-      <span class="c"># TODO: Better checking on this header for JSON.</span>
-      <span class="n">content_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;content-type&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
-      <span class="k">if</span> <span class="ow">not</span> <span class="n">content_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;application/json&#39;</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected JSON, got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">content_type</span><span class="p">)</span>
-      <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">content</span>
-</div>
-<div class="viewcode-block" id="Connection.get_all_buckets"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_all_buckets">[docs]</a>  <span class="k">def</span> <span class="nf">get_all_buckets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get all buckets in the project.</span>
-
-<span class="sd">    This will not populate the list of keys available</span>
-<span class="sd">    in each bucket.</span>
-
-<span class="sd">    You can also iterate over the connection object,</span>
-<span class="sd">    so these two operations are identical::</span>
+<span class="sd">    A typical use of this is to operate on</span>
+<span class="sd">    :class:`gcloud.storage.bucket.Bucket` objects::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, key_path)</span>
-<span class="sd">      &gt;&gt;&gt; for bucket in connection.get_all_buckets():</span>
-<span class="sd">      &gt;&gt;&gt;   print bucket</span>
-<span class="sd">      &gt;&gt;&gt; # ... is the same as ...</span>
+<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; bucket = connection.create_bucket(&#39;my-bucket-name&#39;)</span>
+
+<span class="sd">    You can then delete this bucket::</span>
+
+<span class="sd">      &gt;&gt;&gt; bucket.delete()</span>
+<span class="sd">      &gt;&gt;&gt; # or</span>
+<span class="sd">      &gt;&gt;&gt; connection.delete_bucket(bucket)</span>
+
+<span class="sd">    If you want to access an existing bucket::</span>
+
+<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket-name&#39;)</span>
+
+<span class="sd">    A :class:`Connection` is actually iterable</span>
+<span class="sd">    and will return the :class:`gcloud.storage.bucket.Bucket` objects</span>
+<span class="sd">    inside the project::</span>
+
 <span class="sd">      &gt;&gt;&gt; for bucket in connection:</span>
 <span class="sd">      &gt;&gt;&gt;   print bucket</span>
+<span class="sd">      &lt;Bucket: my-bucket-name&gt;</span>
 
-<span class="sd">    :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.</span>
-<span class="sd">    :returns: All buckets belonging to this project.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    In that same way, you can check for whether a bucket exists</span>
+<span class="sd">    inside the project using Python&#39;s ``in`` operator::</span>
 
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.get_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_bucket">[docs]</a>  <span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get a bucket by name.</span>
-
-<span class="sd">    If the bucket isn&#39;t found,</span>
-<span class="sd">    this will raise a :class:`gcloud.storage.exceptions.NotFoundError`.</span>
-<span class="sd">    If you would rather get a bucket by name,</span>
-<span class="sd">    and return ``None`` if the bucket isn&#39;t found</span>
-<span class="sd">    (like ``{}.get(&#39;...&#39;)``)</span>
-<span class="sd">    then use :func:`Connection.lookup`.</span>
-
-<span class="sd">    For example::</span>
-
-<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">      &gt;&gt;&gt; from gcloud.storage import exceptions</span>
-<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, key_path)</span>
-<span class="sd">      &gt;&gt;&gt; try:</span>
-<span class="sd">      &gt;&gt;&gt;   bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; except exceptions.NotFoundError:</span>
-<span class="sd">      &gt;&gt;&gt;   print &#39;Sorry, that bucket does not exist!&#39;</span>
-
-<span class="sd">    :type bucket_name: string</span>
-<span class="sd">    :param bucket_name: The name of the bucket to get.</span>
-
-<span class="sd">    :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">    :returns: The bucket matching the name provided.</span>
-<span class="sd">    :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c"># TODO: URL-encode the bucket name to be safe?</span>
-    <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Bucket</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.lookup">[docs]</a>  <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get a bucket by name, returning None if not found.</span>
-
-<span class="sd">    You can use this if you would rather</span>
-<span class="sd">    checking for a None value</span>
-<span class="sd">    than catching an exception::</span>
-
-<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, key_path)</span>
-<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;doesnt-exist&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; print bucket</span>
-<span class="sd">      None</span>
-<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; print bucket</span>
-<span class="sd">      &lt;Bucket: my-bucket&gt;</span>
-
-<span class="sd">    :type bucket_name: string</span>
-<span class="sd">    :param bucket_name: The name of the bucket to get.</span>
-
-<span class="sd">    :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">    :returns: The bucket matching the name provided or None if not found.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">try</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-    <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">:</span>
-      <span class="k">return</span> <span class="bp">None</span>
-</div>
-<div class="viewcode-block" id="Connection.create_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.create_bucket">[docs]</a>  <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="c"># TODO: Which exceptions will this raise?</span>
-    <span class="sd">&quot;&quot;&quot;Create a new bucket.</span>
-
-<span class="sd">    For example::</span>
-
-<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, client, key_path)</span>
-<span class="sd">      &gt;&gt;&gt; bucket = connection.create_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; print bucket</span>
-<span class="sd">      &lt;Bucket: my-bucket&gt;</span>
-
-<span class="sd">    :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">    :param bucket: The bucket name (or bucket object) to create.</span>
-
-<span class="sd">    :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">    :returns: The newly created bucket.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span>
-                                <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
-    <span class="k">return</span> <span class="n">Bucket</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.delete_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.delete_bucket">[docs]</a>  <span class="k">def</span> <span class="nf">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Delete a bucket.</span>
-
-<span class="sd">    You can use this method to delete a bucket by name,</span>
-<span class="sd">    or to delete a bucket object::</span>
-
-<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project_name, email, key_path)</span>
-<span class="sd">      &gt;&gt;&gt; connection.delete_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; print &#39;my-bucket-name&#39; in connection</span>
 <span class="sd">      True</span>
-
-<span class="sd">    You can also delete pass in the bucket object::</span>
-
-<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;other-bucket&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; connection.delete_bucket(bucket)</span>
-<span class="sd">      True</span>
-
-<span class="sd">    If the bucket doesn&#39;t exist,</span>
-<span class="sd">    this will raise a :class:`gcloud.storage.exceptions.NotFoundError`::</span>
-
-<span class="sd">      &gt;&gt;&gt; from gcloud.storage import exceptions</span>
-<span class="sd">      &gt;&gt;&gt; try:</span>
-<span class="sd">      &gt;&gt;&gt;   connection.delete_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; except exceptions.NotFoundError:</span>
-<span class="sd">      &gt;&gt;&gt;   print &#39;That bucket does not exist!&#39;</span>
-
-<span class="sd">    :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">    :param bucket: The bucket name (or bucket object) to create.</span>
-
-<span class="sd">    :rtype: bool</span>
-<span class="sd">    :returns: True if the bucket was deleted.</span>
-<span class="sd">    :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">True</span>
+    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1beta2&#39;</span>
+    <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
+
+    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/storage/{api_version}{path}&#39;</span>
+    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
+
+    <span class="n">API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://storage.googleapis.com&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;:type project: string</span>
+<span class="sd">        :param project: The project name to connect to.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">BucketIterator</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                      <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct an API url given a few components, some optional.</span>
+
+<span class="sd">        Typically, you shouldn&#39;t need to use this method.</span>
+
+<span class="sd">        :type path: string</span>
+<span class="sd">        :param path: The path to the resource (ie, ``&#39;/b/bucket-name&#39;``).</span>
+
+<span class="sd">        :type query_params: dict</span>
+<span class="sd">        :param query_params: A dictionary of keys and values to insert into</span>
+<span class="sd">                             the query string of the URL.</span>
+
+<span class="sd">        :type api_base_url: string</span>
+<span class="sd">        :param api_base_url: The base URL for the API endpoint.</span>
+<span class="sd">                             Typically you won&#39;t have to provide this.</span>
+
+<span class="sd">        :type api_version: string</span>
+<span class="sd">        :param api_version: The version of the API to call.</span>
+<span class="sd">                            Typically you shouldn&#39;t provide this and instead</span>
+<span class="sd">                            use the default for the library.</span>
+
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: The URL assembled from the pieces provided.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">api_base_url</span><span class="o">=</span><span class="p">(</span><span class="n">api_base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_BASE_URL</span><span class="p">),</span>
+            <span class="n">api_version</span><span class="o">=</span><span class="p">(</span><span class="n">api_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">),</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="n">query_params</span> <span class="o">=</span> <span class="n">query_params</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">query_params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;project&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">})</span>
+        <span class="n">url</span> <span class="o">+=</span> <span class="s">&#39;?&#39;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">url</span>
 </div>
-<div class="viewcode-block" id="Connection.new_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.new_bucket">[docs]</a>  <span class="k">def</span> <span class="nf">new_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Factory method for creating a new (unsaved) bucket object.</span>
+<div class="viewcode-block" id="Connection.make_request"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.make_request">[docs]</a>    <span class="k">def</span> <span class="nf">make_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A low level method to send a request to the API.</span>
 
-<span class="sd">    This method is really useful when you&#39;re not sure whether</span>
-<span class="sd">    you have an actual :class:`gcloud.storage.bucket.Bucket` object</span>
-<span class="sd">    or just a name of a bucket.</span>
-<span class="sd">    It always returns the object::</span>
+<span class="sd">        Typically, you shouldn&#39;t need to use this method.</span>
 
-<span class="sd">       &gt;&gt;&gt; bucket = connection.new_bucket(&#39;bucket&#39;)</span>
-<span class="sd">       &gt;&gt;&gt; print bucket</span>
-<span class="sd">       &lt;Bucket: bucket&gt;</span>
-<span class="sd">       &gt;&gt;&gt; bucket = connection.new_bucket(bucket)</span>
-<span class="sd">       &gt;&gt;&gt; print bucket</span>
-<span class="sd">       &lt;Bucket: bucket&gt;</span>
+<span class="sd">        :type method: string</span>
+<span class="sd">        :param method: The HTTP method to use in the request.</span>
 
-<span class="sd">    :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">    :param bucket: A name of a bucket or an existing Bucket object.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        :type url: string</span>
+<span class="sd">        :param url: The URL to send the request to.</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">):</span>
-      <span class="k">return</span> <span class="n">bucket</span>
+<span class="sd">        :type data: string</span>
+<span class="sd">        :param data: The data to send as the body of the request.</span>
 
-    <span class="c"># Support Python 2 and 3.</span>
-    <span class="k">try</span><span class="p">:</span>
-      <span class="n">string_type</span> <span class="o">=</span> <span class="nb">basestring</span>
-    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-      <span class="n">string_type</span> <span class="o">=</span> <span class="nb">str</span>
+<span class="sd">        :type content_type: string</span>
+<span class="sd">        :param content_type: The proper MIME type of the data provided.</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
-      <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
+<span class="sd">        :type headers: dict</span>
+<span class="sd">        :param headers: A dictionary of HTTP headers to send with the request.</span>
 
-    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Invalid bucket: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">bucket</span><span class="p">)</span>
+<span class="sd">        :rtype: tuple of ``response`` (a dictionary of sorts)</span>
+<span class="sd">                and ``content`` (a string).</span>
+<span class="sd">        :returns: The HTTP response object and the content of the response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Accept-Encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;gzip&#39;</span>
+
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">content_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content_length</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Content-Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_length</span>
+
+        <span class="k">if</span> <span class="n">content_type</span><span class="p">:</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">content_type</span>
+
+        <span class="n">headers</span><span class="p">[</span><span class="s">&#39;User-Agent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">USER_AGENT</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                                 <span class="n">body</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Connection.generate_signed_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.generate_signed_url">[docs]</a>  <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">content_md5</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate a signed URL to provide query-string authentication to a resource.</span>
+<div class="viewcode-block" id="Connection.api_request"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.api_request">[docs]</a>    <span class="k">def</span> <span class="nf">api_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="n">expect_json</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make a request over the HTTP transport to the Cloud Storage API.</span>
 
-<span class="sd">    :type resource: string</span>
-<span class="sd">    :param resource: A pointer to a specific resource</span>
-<span class="sd">                     (typically, ``/bucket-name/path/to/key.txt``).</span>
+<span class="sd">        You shouldn&#39;t need to use this method,</span>
+<span class="sd">        but if you plan to interact with the API using these primitives,</span>
+<span class="sd">        this is the correct one to use...</span>
 
-<span class="sd">    :type expiration: int, long, datetime.datetime, datetime.timedelta</span>
-<span class="sd">    :param expiration: When the signed URL should expire.</span>
+<span class="sd">        :type method: string</span>
+<span class="sd">        :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).</span>
+<span class="sd">                       Required.</span>
 
-<span class="sd">    :type method: string</span>
-<span class="sd">    :param method: The HTTP verb that will be used when requesting the URL.</span>
+<span class="sd">        :type path: string</span>
+<span class="sd">        :param path: The path to the resource (ie, ``&#39;/b/bucket-name&#39;``).</span>
+<span class="sd">                     Required.</span>
 
-<span class="sd">    :type content_md5: string</span>
-<span class="sd">    :param content_md5: The MD5 hash of the object referenced by ``resource``.</span>
+<span class="sd">        :type query_params: dict</span>
+<span class="sd">        :param query_params: A dictionary of keys and values to insert into</span>
+<span class="sd">                             the query string of the URL.</span>
+<span class="sd">                             Default is empty dict.</span>
 
-<span class="sd">    :type content_type: string</span>
-<span class="sd">    :param content_type: The content type of the object referenced by</span>
-<span class="sd">                         ``resource``.</span>
+<span class="sd">        :type data: string</span>
+<span class="sd">        :param data: The data to send as the body of the request. Default is</span>
+<span class="sd">                     the empty string.</span>
 
-<span class="sd">    :rtype: string</span>
-<span class="sd">    :returns: A signed URL you can use to access the resource until expiration.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        :type content_type: string</span>
+<span class="sd">        :param content_type: The proper MIME type of the data provided. Default</span>
+<span class="sd">                             is None.</span>
 
-    <span class="c"># expiration can be an absolute timestamp (int, long),</span>
-    <span class="c"># an absolute time (datetime.datetime),</span>
-    <span class="c"># or a relative time (datetime.timedelta).</span>
-    <span class="c"># We should convert all of these into an absolute timestamp.</span>
+<span class="sd">        :type api_base_url: string</span>
+<span class="sd">        :param api_base_url: The base URL for the API endpoint.</span>
+<span class="sd">                             Typically you won&#39;t have to provide this.</span>
+<span class="sd">                             Default is the standard API base URL.</span>
 
-    <span class="c"># If it&#39;s a timedelta, add it to `now` in UTC.</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">):</span>
-      <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-      <span class="n">expiration</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="n">expiration</span>
+<span class="sd">        :type api_version: string</span>
+<span class="sd">        :param api_version: The version of the API to call.</span>
+<span class="sd">                            Typically you shouldn&#39;t provide this and instead</span>
+<span class="sd">                            use the default for the library.</span>
+<span class="sd">                            Default is the latest API version supported by</span>
+<span class="sd">                            gcloud-python.</span>
 
-    <span class="c"># If it&#39;s a datetime, convert to a timestamp.</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
-      <span class="c"># Make sure the timezone on the value is UTC</span>
-      <span class="c"># (either by converting or replacing the value).</span>
-      <span class="k">if</span> <span class="n">expiration</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span>
-        <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-      <span class="k">else</span><span class="p">:</span>
-        <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+<span class="sd">        :type expect_json: bool</span>
+<span class="sd">        :param expect_json: If True, this method will try to parse the response</span>
+<span class="sd">                            as JSON and raise an exception if that cannot</span>
+<span class="sd">                            be done.  Default is True.</span>
 
-      <span class="c"># Turn the datetime into a timestamp (seconds, not microseconds).</span>
-      <span class="n">expiration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">expiration</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()))</span>
+<span class="sd">        :raises: Exception if the response code is not 200 OK.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">)):</span>
-      <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Expected an integer timestamp, datetime, or timedelta. &#39;</span>
-                       <span class="s">&#39;Got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">expiration</span><span class="p">))</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+                                 <span class="n">api_base_url</span><span class="o">=</span><span class="n">api_base_url</span><span class="p">,</span>
+                                 <span class="n">api_version</span><span class="o">=</span><span class="n">api_version</span><span class="p">)</span>
 
-    <span class="c"># Generate the string to sign.</span>
-    <span class="n">signature_string</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-      <span class="n">method</span><span class="p">,</span>
-      <span class="n">content_md5</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
-      <span class="n">content_type</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
-      <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
-      <span class="n">resource</span><span class="p">])</span>
+        <span class="c"># Making the executive decision that any dictionary</span>
+        <span class="c"># data will be sent properly as JSON.</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">content_type</span> <span class="o">=</span> <span class="s">&#39;application/json&#39;</span>
 
-    <span class="c"># Take our PKCS12 (.p12) key and make it into a RSA key we can use...</span>
-    <span class="n">pkcs12</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">load_pkcs12</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">private_key</span><span class="p">),</span> <span class="s">&#39;notasecret&#39;</span><span class="p">)</span>
-    <span class="n">pem</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">dump_privatekey</span><span class="p">(</span><span class="n">crypto</span><span class="o">.</span><span class="n">FILETYPE_PEM</span><span class="p">,</span> <span class="n">pkcs12</span><span class="o">.</span><span class="n">get_privatekey</span><span class="p">())</span>
-    <span class="n">pem_key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">importKey</span><span class="p">(</span><span class="n">pem</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
 
-    <span class="c"># Sign the string with the RSA key.</span>
-    <span class="n">signer</span> <span class="o">=</span> <span class="n">PKCS1_v1_5</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">pem_key</span><span class="p">)</span>
-    <span class="n">signature_hash</span> <span class="o">=</span> <span class="n">SHA256</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">signature_string</span><span class="p">)</span>
-    <span class="n">signature_bytes</span> <span class="o">=</span> <span class="n">signer</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">signature_hash</span><span class="p">)</span>
-    <span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">signature_bytes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
 
-    <span class="c"># Set the right query parameters.</span>
-    <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;GoogleAccessId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">service_account_name</span><span class="p">,</span>
-                    <span class="s">&#39;Expires&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
-                    <span class="s">&#39;Signature&#39;</span><span class="p">:</span> <span class="n">signature</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">content</span> <span class="ow">and</span> <span class="n">expect_json</span><span class="p">:</span>
+            <span class="n">content_type</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;content-type&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">content_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;application/json&#39;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected JSON, got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">content_type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 
-    <span class="c"># Return the built URL.</span>
-    <span class="k">return</span> <span class="s">&#39;{endpoint}{resource}?{querystring}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">API_ACCESS_ENDPOINT</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-        <span class="n">querystring</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="n">content</span>
+</div>
+<div class="viewcode-block" id="Connection.get_all_buckets"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_all_buckets">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_buckets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get all buckets in the project.</span>
+
+<span class="sd">        This will not populate the list of keys available</span>
+<span class="sd">        in each bucket.</span>
+
+<span class="sd">        You can also iterate over the connection object,</span>
+<span class="sd">        so these two operations are identical::</span>
+
+<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; for bucket in connection.get_all_buckets():</span>
+<span class="sd">          &gt;&gt;&gt;   print bucket</span>
+<span class="sd">          &gt;&gt;&gt; # ... is the same as ...</span>
+<span class="sd">          &gt;&gt;&gt; for bucket in connection:</span>
+<span class="sd">          &gt;&gt;&gt;   print bucket</span>
+
+<span class="sd">        :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.</span>
+<span class="sd">        :returns: All buckets belonging to this project.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Connection.get_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a bucket by name.</span>
+
+<span class="sd">        If the bucket isn&#39;t found,</span>
+<span class="sd">        this will raise a :class:`gcloud.storage.exceptions.NotFoundError`.</span>
+<span class="sd">        If you would rather get a bucket by name,</span>
+<span class="sd">        and return ``None`` if the bucket isn&#39;t found</span>
+<span class="sd">        (like ``{}.get(&#39;...&#39;)``)</span>
+<span class="sd">        then use :func:`Connection.lookup`.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">          &gt;&gt;&gt; from gcloud.storage import exceptions</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; try:</span>
+<span class="sd">          &gt;&gt;&gt;   bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; except exceptions.NotFoundError:</span>
+<span class="sd">          &gt;&gt;&gt;   print &#39;Sorry, that bucket does not exist!&#39;</span>
+
+<span class="sd">        :type bucket_name: string</span>
+<span class="sd">        :param bucket_name: The name of the bucket to get.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">        :returns: The bucket matching the name provided.</span>
+<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Bucket</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a bucket by name, returning None if not found.</span>
+
+<span class="sd">        You can use this if you would rather</span>
+<span class="sd">        checking for a None value</span>
+<span class="sd">        than catching an exception::</span>
+
+<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;doesnt-exist&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; print bucket</span>
+<span class="sd">          None</span>
+<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; print bucket</span>
+<span class="sd">          &lt;Bucket: my-bucket&gt;</span>
+
+<span class="sd">        :type bucket_name: string</span>
+<span class="sd">        :param bucket_name: The name of the bucket to get.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">        :returns: The bucket matching the name provided or None if not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="Connection.create_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.create_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new bucket.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, client, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; bucket = connection.create_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; print bucket</span>
+<span class="sd">          &lt;Bucket: my-bucket&gt;</span>
+
+<span class="sd">        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">        :param bucket: The bucket name (or bucket object) to create.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">        :returns: The newly created bucket.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span>
+                                    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">Bucket</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Connection.delete_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.delete_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete a bucket.</span>
+
+<span class="sd">        You can use this method to delete a bucket by name,</span>
+<span class="sd">        or to delete a bucket object::</span>
+
+<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection.delete_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          True</span>
+
+<span class="sd">        You can also delete pass in the bucket object::</span>
+
+<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;other-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; connection.delete_bucket(bucket)</span>
+<span class="sd">          True</span>
+
+<span class="sd">        If the bucket doesn&#39;t exist,</span>
+<span class="sd">        this will raise a :class:`gcloud.storage.exceptions.NotFoundError`::</span>
+
+<span class="sd">          &gt;&gt;&gt; from gcloud.storage import exceptions</span>
+<span class="sd">          &gt;&gt;&gt; try:</span>
+<span class="sd">          &gt;&gt;&gt;   connection.delete_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; except exceptions.NotFoundError:</span>
+<span class="sd">          &gt;&gt;&gt;   print &#39;That bucket does not exist!&#39;</span>
+
+<span class="sd">        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">        :param bucket: The bucket name (or bucket object) to create.</span>
+
+<span class="sd">        :type force: bool</span>
+<span class="sd">        :param full: If True, empties the bucket&#39;s objects then deletes it.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: True if the bucket was deleted.</span>
+<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
+
+        <span class="c"># This force delete operation is slow.</span>
+        <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">:</span>
+                <span class="n">key</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Connection.new_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.new_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">new_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory method for creating a new (unsaved) bucket object.</span>
+
+<span class="sd">        This method is really useful when you&#39;re not sure whether</span>
+<span class="sd">        you have an actual :class:`gcloud.storage.bucket.Bucket` object</span>
+<span class="sd">        or just a name of a bucket.</span>
+<span class="sd">        It always returns the object::</span>
+
+<span class="sd">           &gt;&gt;&gt; bucket = connection.new_bucket(&#39;bucket&#39;)</span>
+<span class="sd">           &gt;&gt;&gt; print bucket</span>
+<span class="sd">           &lt;Bucket: bucket&gt;</span>
+<span class="sd">           &gt;&gt;&gt; bucket = connection.new_bucket(bucket)</span>
+<span class="sd">           &gt;&gt;&gt; print bucket</span>
+<span class="sd">           &lt;Bucket: bucket&gt;</span>
+
+<span class="sd">        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">        :param bucket: A name of a bucket or an existing Bucket object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">bucket</span>
+
+        <span class="c"># Support Python 2 and 3.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">string_type</span> <span class="o">=</span> <span class="nb">basestring</span>
+        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>  <span class="c"># pragma NO COVER PY3k</span>
+            <span class="n">string_type</span> <span class="o">=</span> <span class="nb">str</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Invalid bucket: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">bucket</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Connection.generate_signed_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span>
+                            <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">content_md5</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                            <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>  <span class="c"># pragma NO COVER</span>
+        <span class="sd">&quot;&quot;&quot;Generate signed URL to provide query-string auth&#39;n to a resource.</span>
+
+<span class="sd">        :type resource: string</span>
+<span class="sd">        :param resource: A pointer to a specific resource</span>
+<span class="sd">                         (typically, ``/bucket-name/path/to/key.txt``).</span>
+
+<span class="sd">        :type expiration: int, long, datetime.datetime, datetime.timedelta</span>
+<span class="sd">        :param expiration: When the signed URL should expire.</span>
+
+<span class="sd">        :type method: string</span>
+<span class="sd">        :param method: The HTTP verb that will be used when requesting the URL.</span>
+
+<span class="sd">        :type content_md5: string</span>
+<span class="sd">        :param content_md5: The MD5 hash of the object referenced by</span>
+<span class="sd">                            ``resource``.</span>
+
+<span class="sd">        :type content_type: string</span>
+<span class="sd">        :param content_type: The content type of the object referenced by</span>
+<span class="sd">                             ``resource``.</span>
+
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: A signed URL you can use to access the resource</span>
+<span class="sd">                  until expiration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c"># expiration can be an absolute timestamp (int, long),</span>
+        <span class="c"># an absolute time (datetime.datetime),</span>
+        <span class="c"># or a relative time (datetime.timedelta).</span>
+        <span class="c"># We should convert all of these into an absolute timestamp.</span>
+
+        <span class="c"># If it&#39;s a timedelta, add it to `now` in UTC.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">):</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+            <span class="n">expiration</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="n">expiration</span>
+
+        <span class="c"># If it&#39;s a datetime, convert to a timestamp.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+            <span class="c"># Make sure the timezone on the value is UTC</span>
+            <span class="c"># (either by converting or replacing the value).</span>
+            <span class="k">if</span> <span class="n">expiration</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span>
+                <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+            <span class="c"># Turn the datetime into a timestamp (seconds, not microseconds).</span>
+            <span class="n">expiration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">expiration</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Expected an integer timestamp, datetime, or &#39;</span>
+                             <span class="s">&#39;timedelta. Got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">expiration</span><span class="p">))</span>
+
+        <span class="c"># Generate the string to sign.</span>
+        <span class="n">signature_string</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="n">method</span><span class="p">,</span>
+            <span class="n">content_md5</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="n">content_type</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
+            <span class="n">resource</span><span class="p">])</span>
+
+        <span class="c"># Take our PKCS12 (.p12) key and make it into a RSA key we can use...</span>
+        <span class="n">pkcs12</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">load_pkcs12</span><span class="p">(</span>
+            <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">private_key</span><span class="p">),</span>
+            <span class="s">&#39;notasecret&#39;</span><span class="p">)</span>
+        <span class="n">pem</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">dump_privatekey</span><span class="p">(</span>
+            <span class="n">crypto</span><span class="o">.</span><span class="n">FILETYPE_PEM</span><span class="p">,</span> <span class="n">pkcs12</span><span class="o">.</span><span class="n">get_privatekey</span><span class="p">())</span>
+        <span class="n">pem_key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">importKey</span><span class="p">(</span><span class="n">pem</span><span class="p">)</span>
+
+        <span class="c"># Sign the string with the RSA key.</span>
+        <span class="n">signer</span> <span class="o">=</span> <span class="n">PKCS1_v1_5</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">pem_key</span><span class="p">)</span>
+        <span class="n">signature_hash</span> <span class="o">=</span> <span class="n">SHA256</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">signature_string</span><span class="p">)</span>
+        <span class="n">signature_bytes</span> <span class="o">=</span> <span class="n">signer</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">signature_hash</span><span class="p">)</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">signature_bytes</span><span class="p">)</span>
+
+        <span class="c"># Set the right query parameters.</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;GoogleAccessId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">service_account_name</span><span class="p">,</span>
+            <span class="s">&#39;Expires&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
+            <span class="s">&#39;Signature&#39;</span><span class="p">:</span> <span class="n">signature</span>
+        <span class="p">}</span>
+
+        <span class="c"># Return the built URL.</span>
+        <span class="k">return</span> <span class="s">&#39;{endpoint}{resource}?{querystring}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">API_ACCESS_ENDPOINT</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
+            <span class="n">querystring</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">))</span></div></div>
 </pre></div>
 
           </div>
@@ -584,7 +614,7 @@
     <footer id="gc-footer" class="footer" role="contentinfo">
     <div id="gc-copyright">
         &copy; Copyright 2014, JJ Geewax.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
       </div>
     </footer>
   </body>
