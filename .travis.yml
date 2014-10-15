@@ -11,3 +11,4 @@ after_success:
   - tox -e cover
   - tox -e lint
   - coveralls
+  - scripts/merge.sh
