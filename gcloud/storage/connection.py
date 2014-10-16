@@ -1,9 +1,9 @@
 """Create / interact with gcloud storage connections."""
 
 import base64
+import calendar
 import datetime
 import json
-import time
 import urllib
 
 from Crypto.Hash import SHA256
@@ -16,6 +16,17 @@ from gcloud import connection
 from gcloud.storage import exceptions
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import BucketIterator
+
+
+_UTCNOW = None
+def _utcnow():
+    """Returns current time as UTC datetime.
+
+    NOTE: on the module namespace so tests can replace it.
+    """
+    if _UTCNOW is not None:
+        return _UTCNOW
+    return datetime.datetime.utcnow()  # pragma NO COVER
 
 
 class Connection(connection.Connection):
@@ -429,7 +440,7 @@ class Connection(connection.Connection):
 
     def generate_signed_url(self, resource, expiration,
                             method='GET', content_md5=None,
-                            content_type=None):  # pragma NO COVER
+                            content_type=None):
         """Generate signed URL to provide query-string auth'n to a resource.
 
         :type resource: string
@@ -455,31 +466,7 @@ class Connection(connection.Connection):
                   until expiration.
         """
 
-        # expiration can be an absolute timestamp (int, long),
-        # an absolute time (datetime.datetime),
-        # or a relative time (datetime.timedelta).
-        # We should convert all of these into an absolute timestamp.
-
-        # If it's a timedelta, add it to `now` in UTC.
-        if isinstance(expiration, datetime.timedelta):
-            now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
-            expiration = now + expiration
-
-        # If it's a datetime, convert to a timestamp.
-        if isinstance(expiration, datetime.datetime):
-            # Make sure the timezone on the value is UTC
-            # (either by converting or replacing the value).
-            if expiration.tzinfo:
-                expiration = expiration.astimezone(pytz.utc)
-            else:
-                expiration = expiration.replace(tzinfo=pytz.utc)
-
-            # Turn the datetime into a timestamp (seconds, not microseconds).
-            expiration = int(time.mktime(expiration.timetuple()))
-
-        if not isinstance(expiration, (int, long)):
-            raise ValueError('Expected an integer timestamp, datetime, or '
-                             'timedelta. Got %s' % type(expiration))
+        expiration = _get_expiration_seconds(expiration)
 
         # Generate the string to sign.
         signature_string = '\n'.join([
@@ -514,3 +501,38 @@ class Connection(connection.Connection):
         return '{endpoint}{resource}?{querystring}'.format(
             endpoint=self.API_ACCESS_ENDPOINT, resource=resource,
             querystring=urllib.urlencode(query_params))
+
+
+def _get_expiration_seconds(expiration):
+    """Convert 'expiration' to a number of seconds in the future.
+
+    :type expiration: int, long, datetime.datetime, datetime.timedelta
+    :param expiration: When the signed URL should expire.
+    """
+
+    # expiration can be an absolute timestamp (int, long),
+    # an absolute time (datetime.datetime),
+    # or a relative time (datetime.timedelta).
+    # We should convert all of these into an absolute timestamp.
+
+    # If it's a timedelta, add it to `now` in UTC.
+    if isinstance(expiration, datetime.timedelta):
+        now = _utcnow().replace(tzinfo=pytz.utc)
+        expiration = now + expiration
+
+    # If it's a datetime, convert to a timestamp.
+    if isinstance(expiration, datetime.datetime):
+        # Make sure the timezone on the value is UTC
+        # (either by converting or replacing the value).
+        if expiration.tzinfo:
+            expiration = expiration.astimezone(pytz.utc)
+        else:
+            expiration = expiration.replace(tzinfo=pytz.utc)
+
+        # Turn the datetime into a timestamp (seconds, not microseconds).
+        expiration = int(calendar.timegm(expiration.timetuple()))
+
+    if not isinstance(expiration, (int, long)):
+        raise TypeError('Expected an integer timestamp, datetime, or '
+                            'timedelta. Got %s' % type(expiration))
+    return expiration
