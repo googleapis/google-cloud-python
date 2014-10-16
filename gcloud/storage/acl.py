@@ -110,7 +110,7 @@ class ACL(object):
             else:
                 return '{self.type}-{self.identifier}'.format(self=self)
 
-        def __repr__(self):  # pragma NO COVER
+        def __repr__(self):
             return '<ACL Entity: {self} ({roles})>'.format(
                 self=self, roles=', '.join(self.roles))
 

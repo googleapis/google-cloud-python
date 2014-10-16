@@ -58,7 +58,7 @@ class Key(object):
 
         return cls(bucket=bucket, name=key_dict['name'], metadata=key_dict)
 
-    def __repr__(self):  # pragma NO COVER
+    def __repr__(self):
         if self.bucket:
             bucket_name = self.bucket.name
         else:

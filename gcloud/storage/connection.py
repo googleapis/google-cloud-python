@@ -26,7 +26,7 @@ def _utcnow():
     """
     if _UTCNOW is not None:
         return _UTCNOW
-    return datetime.datetime.utcnow()  # pragma NO COVER
+    return datetime.datetime.utcnow()  # pragma: NO COVER
 
 
 class Connection(connection.Connection):
@@ -430,7 +430,7 @@ class Connection(connection.Connection):
         # Support Python 2 and 3.
         try:
             string_type = basestring
-        except NameError:  # pragma NO COVER PY3k
+        except NameError:  # pragma: NO COVER PY3k
             string_type = str
 
         if isinstance(bucket, string_type):

@@ -286,5 +286,5 @@ class Key(object):
             return None
         return self.path(self.path()[:-1])
 
-    def __repr__(self):  # pragma NO COVER
+    def __repr__(self):
         return '<Key%s>' % self.path()
