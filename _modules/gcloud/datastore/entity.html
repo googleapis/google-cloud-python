@@ -245,7 +245,7 @@
         <span class="n">entity</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">property_pb</span> <span class="ow">in</span> <span class="n">pb</span><span class="o">.</span><span class="n">property</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_value_from_protobuf</span><span class="p">(</span><span class="n">property_pb</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_value_from_property_pb</span><span class="p">(</span><span class="n">property_pb</span><span class="p">)</span>
             <span class="n">entity</span><span class="p">[</span><span class="n">property_pb</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
         <span class="k">return</span> <span class="n">entity</span>
