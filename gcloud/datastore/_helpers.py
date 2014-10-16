@@ -112,6 +112,9 @@ def _get_value_from_value_pb(value_pb):
     elif value_pb.HasField('entity_value'):
         return Entity.from_protobuf(value_pb.entity_value)
 
+    elif value_pb.list_value:
+        return [_get_value_from_value_pb(x) for x in value_pb.list_value]
+
     else:
         return None
 

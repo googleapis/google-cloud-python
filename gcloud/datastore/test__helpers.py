@@ -166,6 +166,18 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertTrue(isinstance(entity, Entity))
         self.assertEqual(entity['foo'], 'Foo')
 
+    def test_list(self):
+        from gcloud.datastore.datastore_v1_pb2 import Value
+
+        pb = Value()
+        list_pb = pb.list_value
+        item_pb = list_pb.add()
+        item_pb.string_value = 'Foo'
+        item_pb = list_pb.add()
+        item_pb.string_value = 'Bar'
+        items = self._callFUT(pb)
+        self.assertEqual(items, ['Foo', 'Bar'])
+
     def test_unknown(self):
         from gcloud.datastore.datastore_v1_pb2 import Value
 
