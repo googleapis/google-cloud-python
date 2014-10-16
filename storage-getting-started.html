@@ -249,6 +249,13 @@ in a single bucket.</p>
 <span class="go">  &quot;message&quot;: &quot;Sorry, that name is not available. Please try a different one.&quot;</span>
 <span class="go"> }</span>
 <span class="go">}</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+  File <span class="nb">&quot;gcloud/storage/connection.py&quot;</span>, line <span class="m">340</span>, in <span class="n">create_bucket</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+  File <span class="nb">&quot;gcloud/storage/connection.py&quot;</span>, line <span class="m">224</span>, in <span class="n">api_request</span>
+    <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+<span class="gr">gcloud.storage.exceptions.ConnectionError</span>: <span class="n">{&#39;status&#39;: &#39;409&#39;, &#39;alternate-protocol&#39;: &#39;443:quic&#39;, &#39;content-length&#39;: &#39;271&#39;, &#39;x-xss-protection&#39;: &#39;1; mode=block&#39;, &#39;x-content-type-options&#39;: &#39;nosniff&#39;, &#39;expires&#39;: &#39;Sat, 15 Mar 2014 19:19:47 GMT&#39;, &#39;server&#39;: &#39;GSE&#39;, &#39;-content-encoding&#39;: &#39;gzip&#39;, &#39;cache-control&#39;: &#39;private, max-age=0&#39;, &#39;date&#39;: &#39;Sat, 15 Mar 2014 19:19:47 GMT&#39;, &#39;x-frame-options&#39;: &#39;SAMEORIGIN&#39;, &#39;content-type&#39;: &#39;application/json; charset=UTF-8&#39;}{</span>
 </pre></div>
 </div>
 <p><strong>Whoops!</strong>

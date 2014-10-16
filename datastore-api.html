@@ -353,7 +353,8 @@ For example, it&#8217;s used under the hood in the
 <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.MutationResult</span></code>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True (if in a transaction) or else a mutation result protobuf.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True (if in a transaction) or else a mutation result
+protobuf.</p>
 </td>
 </tr>
 </tbody>
@@ -383,7 +384,8 @@ For example, it&#8217;s used under the hood in the
 <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.MutationResult</span></code>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True (if in a transaction) or else a mutation result protobuf.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True (if in a transaction) or else a mutation result
+protobuf.</p>
 </td>
 </tr>
 </tbody>
@@ -539,7 +541,7 @@ uses this method to fetch data:</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f5633696260&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7ffc862dc240&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -549,7 +551,7 @@ uses this method to fetch data:</p>
 (setting), or omitted (getting).) &#8211; The new transaction (if passed).</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>, (getting)
-or :class:<a href="#id1"><span class="problematic" id="id2">`</span></a>gcloud.datastore.connection.Connection&#8217; (setting)</td>
+or <a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a> (setting)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the current transaction (getting) or self (setting).</td>
 </tr>
@@ -1286,7 +1288,7 @@ without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'=': 5, '&lt;': 1, '&gt;': 3, '&gt;=': 4, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'&gt;': 3, '&lt;': 1, '=': 5, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 

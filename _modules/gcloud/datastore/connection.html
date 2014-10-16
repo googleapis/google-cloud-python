@@ -206,7 +206,7 @@
 <span class="sd">        :param transaction: The new transaction (if passed).</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.transaction.Transaction`, (getting)</span>
-<span class="sd">                or :class:`gcloud.datastore.connection.Connection&#39; (setting)</span>
+<span class="sd">                or :class:`gcloud.datastore.connection.Connection` (setting)</span>
 <span class="sd">        :returns: the current transaction (getting) or self (setting).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">transaction</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_EMPTY</span><span class="p">:</span>
@@ -486,7 +486,8 @@
 
 <span class="sd">        :rtype: boolean (if in a transaction) or else</span>
 <span class="sd">                :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.</span>
-<span class="sd">        :returns: True (if in a transaction) or else a mutation result protobuf.</span>
+<span class="sd">        :returns: True (if in a transaction) or else a mutation result</span>
+<span class="sd">                  protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
 
@@ -516,7 +517,8 @@
 
 <span class="sd">        :rtype: boolean (if in a transaction) or else</span>
 <span class="sd">                :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.</span>
-<span class="sd">        :returns: True (if in a transaction) or else a mutation result protobuf.</span>
+<span class="sd">        :returns: True (if in a transaction) or else a mutation result</span>
+<span class="sd">                  protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_entities</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="p">[</span><span class="n">key_pb</span><span class="p">])</span></div></div>
 </pre></div>
