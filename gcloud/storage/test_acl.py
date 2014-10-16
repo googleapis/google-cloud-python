@@ -387,6 +387,10 @@ class Test_ACL(unittest2.TestCase):
         entity = acl.entity(TYPE, ID)
         self.assertEqual(acl.get_entities(), [entity])
 
+    def test_save_raises_NotImplementedError(self):
+        acl = self._makeOne()
+        self.assertRaises(NotImplementedError, acl.save)
+
 
 class Test_BucketACL(unittest2.TestCase):
 
