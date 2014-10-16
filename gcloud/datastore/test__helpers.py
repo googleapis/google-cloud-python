@@ -94,19 +94,19 @@ class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
         self.assertRaises(ValueError, self._callFUT, object())
 
 
-class Test__get_value_from_property_pb(unittest2.TestCase):
+class Test__get_value_from_value_pb(unittest2.TestCase):
 
     def _callFUT(self, pb):
-        from gcloud.datastore._helpers import _get_value_from_property_pb
+        from gcloud.datastore._helpers import _get_value_from_value_pb
 
-        return _get_value_from_property_pb(pb)
+        return _get_value_from_value_pb(pb)
 
     def _makePB(self, attr_name, value):
-        from gcloud.datastore.datastore_v1_pb2 import Property
+        from gcloud.datastore.datastore_v1_pb2 import Value
 
-        prop = Property()
-        setattr(prop.value, attr_name, value)
-        return prop
+        pb = Value()
+        setattr(pb, attr_name, value)
+        return pb
 
     def test_datetime(self):
         import calendar
@@ -119,7 +119,7 @@ class Test__get_value_from_property_pb(unittest2.TestCase):
         self.assertEqual(self._callFUT(pb), utc)
 
     def test_key(self):
-        from gcloud.datastore.datastore_v1_pb2 import Property
+        from gcloud.datastore.datastore_v1_pb2 import Value
         from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
@@ -127,9 +127,9 @@ class Test__get_value_from_property_pb(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 1234
         _PATH = [{'kind': _KIND, 'id': _ID}]
-        pb = Property()
+        pb = Value()
         expected = Key(dataset=Dataset(_DATASET), path=_PATH).to_protobuf()
-        pb.value.key_value.CopyFrom(expected)
+        pb.key_value.CopyFrom(expected)
         found = self._callFUT(pb)
         self.assertEqual(found.to_protobuf(), expected)
 
@@ -154,11 +154,11 @@ class Test__get_value_from_property_pb(unittest2.TestCase):
         self.assertEqual(self._callFUT(pb), u'str')
 
     def test_entity(self):
-        from gcloud.datastore.datastore_v1_pb2 import Property
+        from gcloud.datastore.datastore_v1_pb2 import Value
         from gcloud.datastore.entity import Entity
 
-        pb = Property()
-        entity_pb = pb.value.entity_value
+        pb = Value()
+        entity_pb = pb.entity_value
         prop_pb = entity_pb.property.add()
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
@@ -167,10 +167,25 @@ class Test__get_value_from_property_pb(unittest2.TestCase):
         self.assertEqual(entity['foo'], 'Foo')
 
     def test_unknown(self):
+        from gcloud.datastore.datastore_v1_pb2 import Value
+
+        pb = Value()
+        self.assertEqual(self._callFUT(pb), None)  # XXX desirable?
+
+
+class Test__get_value_from_property_pb(unittest2.TestCase):
+
+    def _callFUT(self, pb):
+        from gcloud.datastore._helpers import _get_value_from_property_pb
+
+        return _get_value_from_property_pb(pb)
+
+    def test_it(self):
         from gcloud.datastore.datastore_v1_pb2 import Property
 
         pb = Property()
-        self.assertEqual(self._callFUT(pb), None)  # XXX desirable?
+        pb.value.string_value = 'value'
+        self.assertEqual(self._callFUT(pb), 'value')
 
 
 class Test_set_protobuf_value(unittest2.TestCase):
