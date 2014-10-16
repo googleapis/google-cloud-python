@@ -18,16 +18,12 @@ from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import BucketIterator
 
 
-_UTCNOW = None
-def _utcnow():
+def _utcnow():  # pragma: NO COVER testing replaces
     """Returns current time as UTC datetime.
 
     NOTE: on the module namespace so tests can replace it.
     """
-    if _UTCNOW is not None:
-        return _UTCNOW
-    # Tests take the prior path, so we don't cover the normal one.
-    return datetime.datetime.utcnow()  # pragma: NO COVER
+    return datetime.datetime.utcnow()
 
 
 class Connection(connection.Connection):
