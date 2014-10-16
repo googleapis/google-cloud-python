@@ -181,11 +181,7 @@ class Key(object):
         """
 
         for chunk in KeyDataIterator(self):
-            try:
-                fh.write(chunk)
-            except IOError, e:  # pragma NO COVER
-                if e.errno == errno.ENOSPC:
-                    raise Exception('No space left on device.')
+            fh.write(chunk)
 
     def get_contents_to_filename(self, filename):
         """Get the contents of this key to a file by name.
