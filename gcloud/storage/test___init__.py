@@ -13,7 +13,7 @@ class Test_get_connection(unittest2.TestCase):
         from gcloud.storage import SCOPE
         from gcloud.storage.connection import Connection
         from gcloud.test_credentials import _Client
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         PROJECT = 'project'
         CLIENT_EMAIL = 'phred@example.com'
         PRIVATE_KEY = 'SEEkR1t'
@@ -43,7 +43,7 @@ class Test_get_bucket(unittest2.TestCase):
     def test_it(self):
         from tempfile import NamedTemporaryFile
         from gcloud import storage
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
 
         bucket = object()
 
