@@ -72,7 +72,54 @@ def _get_protobuf_attribute_and_value(val):
     return name + '_value', value
 
 
-def _get_value_from_protobuf(pb):
+def _get_value_from_value_pb(value_pb):
+    """Given a protobuf for a Value, get the correct value.
+
+    The Cloud Datastore Protobuf API returns a Property Protobuf
+    which has one value set and the rest blank.
+    This function retrieves the the one value provided.
+
+    Some work is done to coerce the return value into a more useful type
+    (particularly in the case of a timestamp value, or a key value).
+
+    :type value_pb: :class:`gcloud.datastore.datastore_v1_pb2.Value`
+    :param value_pb: The Value Protobuf.
+
+    :returns: The value provided by the Protobuf.
+    """
+
+    result = None
+    if value_pb.HasField('timestamp_microseconds_value'):
+        microseconds = value_pb.timestamp_microseconds_value
+        naive = (datetime.utcfromtimestamp(0) +
+                 timedelta(microseconds=microseconds))
+        result = naive.replace(tzinfo=pytz.utc)
+
+    elif value_pb.HasField('key_value'):
+        result = Key.from_protobuf(value_pb.key_value)
+
+    elif value_pb.HasField('boolean_value'):
+        result = value_pb.boolean_value
+
+    elif value_pb.HasField('double_value'):
+        result = value_pb.double_value
+
+    elif value_pb.HasField('integer_value'):
+        result = value_pb.integer_value
+
+    elif value_pb.HasField('string_value'):
+        result = value_pb.string_value
+
+    elif value_pb.HasField('entity_value'):
+        result = Entity.from_protobuf(value_pb.entity_value)
+
+    elif value_pb.list_value:
+        result = [_get_value_from_value_pb(x) for x in value_pb.list_value]
+
+    return result
+
+
+def _get_value_from_property_pb(property_pb):
     """Given a protobuf for a Property, get the correct value.
 
     The Cloud Datastore Protobuf API returns a Property Protobuf
@@ -82,38 +129,12 @@ def _get_value_from_protobuf(pb):
     Some work is done to coerce the return value into a more useful type
     (particularly in the case of a timestamp value, or a key value).
 
-    :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Property`
-    :param pb: The Property Protobuf.
+    :type property_pb: :class:`gcloud.datastore.datastore_v1_pb2.Property`
+    :param property_pb: The Property Protobuf.
 
     :returns: The value provided by the Protobuf.
     """
-
-    if pb.value.HasField('timestamp_microseconds_value'):
-        microseconds = pb.value.timestamp_microseconds_value
-        naive = (datetime.utcfromtimestamp(0) +
-                 timedelta(microseconds=microseconds))
-        return naive.replace(tzinfo=pytz.utc)
-
-    elif pb.value.HasField('key_value'):
-        return Key.from_protobuf(pb.value.key_value)
-
-    elif pb.value.HasField('boolean_value'):
-        return pb.value.boolean_value
-
-    elif pb.value.HasField('double_value'):
-        return pb.value.double_value
-
-    elif pb.value.HasField('integer_value'):
-        return pb.value.integer_value
-
-    elif pb.value.HasField('string_value'):
-        return pb.value.string_value
-
-    elif pb.value.HasField('entity_value'):
-        return Entity.from_protobuf(pb.value.entity_value)
-
-    else:
-        return None
+    return _get_value_from_value_pb(property_pb.value)
 
 
 def _set_protobuf_value(value_pb, val):
