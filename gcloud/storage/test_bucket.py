@@ -292,7 +292,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['path'], COPY_PATH)
 
     def test_upload_file_default_key(self):
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         BASENAME = 'file.ext'
         FILENAME = '/path/to/%s' % BASENAME
@@ -312,7 +312,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(_uploaded, [(bucket, BASENAME, FILENAME)])
 
     def test_upload_file_explicit_key(self):
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         FILENAME = '/path/to/file'
         KEY = 'key'
@@ -332,7 +332,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(_uploaded, [(bucket, KEY, FILENAME)])
 
     def test_upload_file_object_no_key(self):
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         FILENAME = 'file.txt'
         FILEOBJECT = MockFile(FILENAME)
@@ -352,7 +352,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(_uploaded, [(bucket, FILENAME, FILEOBJECT)])
 
     def test_upload_file_object_explicit_key(self):
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         FILENAME = 'file.txt'
         FILEOBJECT = MockFile(FILENAME)
@@ -839,7 +839,7 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_make_public_recursive(self):
         from gcloud.storage.acl import ACL
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         from gcloud.storage import iterator
         from gcloud.storage import bucket as MUT
         _saved = []

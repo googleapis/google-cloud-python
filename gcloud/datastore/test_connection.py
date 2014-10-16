@@ -161,6 +161,7 @@ class TestConnection(unittest2.TestCase):
         self.assertTrue(conn.transaction() is xact)
 
     def test_mutation_wo_transaction(self):
+        from gcloud._testing import _Monkey
         from gcloud.datastore.connection import datastore_pb
 
         class Mutation(object):
@@ -866,20 +867,3 @@ class Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._headers, self._content
-
-
-class _Monkey(object):
-
-    # context-manager for replacing module names in the scope of a test.
-    def __init__(self, module, **kw):
-        self.module = module
-        self.to_restore = dict([(key, getattr(module, key)) for key in kw])
-        for key, value in kw.items():
-            setattr(module, key, value)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        for key, value in self.to_restore.items():
-            setattr(self.module, key, value)
