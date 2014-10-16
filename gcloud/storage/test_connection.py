@@ -614,7 +614,7 @@ class Test__get_expiration_seconds(unittest2.TestCase):
     def test__get_expiration_seconds_w_long(self):
         try:
             long
-        except NameError: #pragma NO COVER Py3K
+        except NameError: #pragma: NO COVER Py3K
             pass
         else:
             self.assertEqual(self._callFUT(long(123)), 123)
