@@ -398,7 +398,8 @@ class Connection(connection.Connection):
 
         :rtype: boolean (if in a transaction) or else
                 :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
-        :returns: True (if in a transaction) or else a mutation result protobuf.
+        :returns: True (if in a transaction) or else a mutation result
+                  protobuf.
         """
         mutation = self.mutation()
 
@@ -428,6 +429,7 @@ class Connection(connection.Connection):
 
         :rtype: boolean (if in a transaction) or else
                 :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
-        :returns: True (if in a transaction) or else a mutation result protobuf.
+        :returns: True (if in a transaction) or else a mutation result
+                  protobuf.
         """
         return self.delete_entities(dataset_id, [key_pb])
