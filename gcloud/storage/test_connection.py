@@ -614,7 +614,7 @@ class Test__get_expiration_seconds(unittest2.TestCase):
     def test__get_expiration_seconds_w_long(self):
         try:
             long
-        except NameError: #pragma: NO COVER Py3K
+        except NameError:  # pragma: NO COVER Py3K
             pass
         else:
             self.assertEqual(self._callFUT(long(123)), 123)
@@ -641,7 +641,7 @@ class Test__get_expiration_seconds(unittest2.TestCase):
         zone = pytz.timezone('CET')
         expiration_other = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, zone)
         utc_seconds = self._utc_seconds(expiration_other)
-        cet_seconds = utc_seconds - (60 * 60) # CET is one hour earlier than UTC
+        cet_seconds = utc_seconds - (60 * 60)  # CET one hour earlier than UTC
         self.assertEqual(self._callFUT(expiration_other), cet_seconds)
 
     def test__get_expiration_seconds_w_timedelta_seconds(self):

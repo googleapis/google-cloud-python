@@ -529,5 +529,5 @@ def _get_expiration_seconds(expiration):
 
     if not isinstance(expiration, (int, long)):
         raise TypeError('Expected an integer timestamp, datetime, or '
-                            'timedelta. Got %s' % type(expiration))
+                        'timedelta. Got %s' % type(expiration))
     return expiration
