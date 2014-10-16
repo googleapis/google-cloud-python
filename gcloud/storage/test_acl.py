@@ -376,6 +376,17 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(list(acl),
                          [{'entity': 'allAuthenticatedUsers', 'role': ROLE}])
 
+    def test_get_entities_empty(self):
+        acl = self._makeOne()
+        self.assertEqual(acl.get_entities(), [])
+
+    def test_get_entities_nonempty(self):
+        TYPE = 'type'
+        ID = 'id'
+        acl = self._makeOne()
+        entity = acl.entity(TYPE, ID)
+        self.assertEqual(acl.get_entities(), [entity])
+
 
 class Test_BucketACL(unittest2.TestCase):
 
