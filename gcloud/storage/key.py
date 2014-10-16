@@ -102,8 +102,7 @@ class Key(object):
             storage_base_url='http://commondatastorage.googleapis.com',
             self=self)
 
-    def generate_signed_url(self, expiration,
-                            method='GET'):  # pragma NO COVER
+    def generate_signed_url(self, expiration, method='GET'):
         """Generates a signed URL for this key.
 
         If you have a key that you want to allow access to

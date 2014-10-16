@@ -80,6 +80,30 @@ class Test_Key(unittest2.TestCase):
                          'http://commondatastorage.googleapis.com/name/%s' %
                          KEY)
 
+    def test_generate_signed_url_w_default_method(self):
+        KEY = 'key'
+        EXPIRATION = '2014-10-16T20:34:37Z'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        self.assertEqual(key.generate_signed_url(EXPIRATION),
+                         'http://example.com/abucket/akey?Signature=DEADBEEF'
+                         '&Expiration=2014-10-16T20:34:37Z')
+        self.assertEqual(connection._signed,
+                         [('/name/key', EXPIRATION, {'method': 'GET'})])
+
+    def test_generate_signed_url_w_explicit_method(self):
+        KEY = 'key'
+        EXPIRATION = '2014-10-16T20:34:37Z'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        self.assertEqual(key.generate_signed_url(EXPIRATION, method='POST'),
+                         'http://example.com/abucket/akey?Signature=DEADBEEF'
+                         '&Expiration=2014-10-16T20:34:37Z')
+        self.assertEqual(connection._signed,
+                         [('/name/key', EXPIRATION, {'method': 'POST'})])
+
     def test_exists_miss(self):
         NONESUCH = 'nonesuch'
         connection = _Connection()
@@ -571,6 +595,7 @@ class _Connection(object):
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
+        self._signed = []
 
     def make_request(self, **kw):
         self._requested.append(kw)
@@ -590,6 +615,11 @@ class _Connection(object):
         qs = urlencode(query_params or {})
         scheme, netloc, _, _, _ = urlsplit(api_base_url)
         return urlunsplit((scheme, netloc, path, qs, ''))
+
+    def generate_signed_url(self, resource, expiration, **kw):
+        self._signed.append((resource, expiration, kw))
+        return ('http://example.com/abucket/akey?Signature=DEADBEEF'
+                '&Expiration=%s' % expiration)
 
 
 class _Bucket(object):
