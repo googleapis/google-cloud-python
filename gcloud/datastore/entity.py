@@ -157,7 +157,7 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
         entity = cls.from_key(key)
 
         for property_pb in pb.property:
-            value = _helpers._get_value_from_protobuf(property_pb)
+            value = _helpers._get_value_from_property_pb(property_pb)
             entity[property_pb.name] = value
 
         return entity

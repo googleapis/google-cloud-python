@@ -72,7 +72,7 @@ def _get_protobuf_attribute_and_value(val):
     return name + '_value', value
 
 
-def _get_value_from_protobuf(pb):
+def _get_value_from_property_pb(pb):
     """Given a protobuf for a Property, get the correct value.
 
     The Cloud Datastore Protobuf API returns a Property Protobuf

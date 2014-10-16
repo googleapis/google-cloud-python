@@ -94,12 +94,12 @@ class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
         self.assertRaises(ValueError, self._callFUT, object())
 
 
-class Test__get_value_from_protobuf(unittest2.TestCase):
+class Test__get_value_from_property_pb(unittest2.TestCase):
 
     def _callFUT(self, pb):
-        from gcloud.datastore._helpers import _get_value_from_protobuf
+        from gcloud.datastore._helpers import _get_value_from_property_pb
 
-        return _get_value_from_protobuf(pb)
+        return _get_value_from_property_pb(pb)
 
     def _makePB(self, attr_name, value):
         from gcloud.datastore.datastore_v1_pb2 import Property
