@@ -26,6 +26,7 @@ def _utcnow():
     """
     if _UTCNOW is not None:
         return _UTCNOW
+    # Tests take the prior path, so we don't cover the normal one.
     return datetime.datetime.utcnow()  # pragma: NO COVER
 
 
