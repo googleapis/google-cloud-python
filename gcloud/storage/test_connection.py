@@ -563,7 +563,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.test_credentials import _Monkey
         from gcloud.storage import connection as MUT
 
-        ENDPPOINT = 'http://api.example.com'
+        ENDPOINT = 'http://api.example.com'
         RESOURCE = '/name/key'
         PROJECT = 'project'
         KEY = 'key'
@@ -573,7 +573,7 @@ class TestConnection(unittest2.TestCase):
         pkcs_v1_5 = _PKCS1_v1_5()
         sha256 = _SHA256()
         conn = self._makeOne(PROJECT, _Credentials())
-        conn.API_ACCESS_ENDPOINT = ENDPPOINT
+        conn.API_ACCESS_ENDPOINT = ENDPOINT
 
         with _Monkey(MUT, crypto=crypto, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
                      SHA256=sha256):
