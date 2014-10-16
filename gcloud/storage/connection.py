@@ -509,12 +509,10 @@ def _get_expiration_seconds(expiration):
 
     :type expiration: int, long, datetime.datetime, datetime.timedelta
     :param expiration: When the signed URL should expire.
-    """
 
-    # expiration can be an absolute timestamp (int, long),
-    # an absolute time (datetime.datetime),
-    # or a relative time (datetime.timedelta).
-    # We should convert all of these into an absolute timestamp.
+    :rtype: int
+    :returns: a timestamp as an absolute number of seconds.
+    """
 
     # If it's a timedelta, add it to `now` in UTC.
     if isinstance(expiration, datetime.timedelta):
