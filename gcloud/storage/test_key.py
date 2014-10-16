@@ -121,7 +121,7 @@ class Test_Key(unittest2.TestCase):
 
     def test_get_contents_to_file(self):
         from StringIO import StringIO
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         from gcloud.storage import key as MUT
         _CHUNKS = ['abc', 'def']
         KEY = 'key'
@@ -135,7 +135,7 @@ class Test_Key(unittest2.TestCase):
 
     def test_get_contents_to_filename(self):
         from tempfile import NamedTemporaryFile
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         from gcloud.storage import key as MUT
         _CHUNKS = ['abc', 'def']
         KEY = 'key'
@@ -151,7 +151,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(wrote, ''.join(_CHUNKS))
 
     def test_get_contents_as_string(self):
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         from gcloud.storage import key as MUT
         _CHUNKS = ['abc', 'def']
         KEY = 'key'
