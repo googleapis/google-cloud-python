@@ -88,35 +88,35 @@ def _get_value_from_value_pb(value_pb):
     :returns: The value provided by the Protobuf.
     """
 
+    result = None
     if value_pb.HasField('timestamp_microseconds_value'):
         microseconds = value_pb.timestamp_microseconds_value
         naive = (datetime.utcfromtimestamp(0) +
                  timedelta(microseconds=microseconds))
-        return naive.replace(tzinfo=pytz.utc)
+        result = naive.replace(tzinfo=pytz.utc)
 
     elif value_pb.HasField('key_value'):
-        return Key.from_protobuf(value_pb.key_value)
+        result = Key.from_protobuf(value_pb.key_value)
 
     elif value_pb.HasField('boolean_value'):
-        return value_pb.boolean_value
+        result = value_pb.boolean_value
 
     elif value_pb.HasField('double_value'):
-        return value_pb.double_value
+        result = value_pb.double_value
 
     elif value_pb.HasField('integer_value'):
-        return value_pb.integer_value
+        result = value_pb.integer_value
 
     elif value_pb.HasField('string_value'):
-        return value_pb.string_value
+        result = value_pb.string_value
 
     elif value_pb.HasField('entity_value'):
-        return Entity.from_protobuf(value_pb.entity_value)
+        result = Entity.from_protobuf(value_pb.entity_value)
 
     elif value_pb.list_value:
-        return [_get_value_from_value_pb(x) for x in value_pb.list_value]
+        result = [_get_value_from_value_pb(x) for x in value_pb.list_value]
 
-    else:
-        return None
+    return result
 
 
 def _get_value_from_property_pb(property_pb):
