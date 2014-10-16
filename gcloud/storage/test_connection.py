@@ -584,11 +584,11 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(netloc, 'api.example.com')
         self.assertEqual(path, RESOURCE)
         params = urlparse.parse_qs(qs)
-        self.assertEqual(params,
-                        {'Signature': [SIGNED],
-                         'Expires': ['1000'],
-                         'GoogleAccessId': [_Credentials.service_account_name],
-                        })
+        self.assertEqual(len(params), 3)
+        self.assertEqual(params['Signature'], [SIGNED])
+        self.assertEqual(params['Expires'], ['1000'])
+        self.assertEqual(params['GoogleAccessId'],
+                         [_Credentials.service_account_name])
         self.assertEqual(frag, '')
 
 
