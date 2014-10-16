@@ -118,7 +118,7 @@ class Connection(connection.Connection):
         :param transaction: The new transaction (if passed).
 
         :rtype: :class:`gcloud.datastore.transaction.Transaction`, (getting)
-                or :class:`gcloud.datastore.connection.Connection' (setting)
+                or :class:`gcloud.datastore.connection.Connection` (setting)
         :returns: the current transaction (getting) or self (setting).
         """
         if transaction is self._EMPTY:
