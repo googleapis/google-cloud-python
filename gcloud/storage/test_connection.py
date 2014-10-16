@@ -560,7 +560,7 @@ class TestConnection(unittest2.TestCase):
     def test_generate_signed_url_w_expiration_int(self):
         import base64
         import urlparse
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
         from gcloud.storage import connection as MUT
 
         ENDPOINT = 'http://api.example.com'
@@ -647,7 +647,7 @@ class Test__get_expiration_seconds(unittest2.TestCase):
     def test__get_expiration_seconds_w_timedelta_seconds(self):
         import datetime
         from gcloud.storage import connection
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
 
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
         utc_seconds = self._utc_seconds(dummy_utcnow)
@@ -661,7 +661,7 @@ class Test__get_expiration_seconds(unittest2.TestCase):
     def test__get_expiration_seconds_w_timedelta_days(self):
         import datetime
         from gcloud.storage import connection
-        from gcloud.test_credentials import _Monkey
+        from gcloud._testing import _Monkey
 
         dummy_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
         utc_seconds = self._utc_seconds(dummy_utcnow)
