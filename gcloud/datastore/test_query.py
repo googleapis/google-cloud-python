@@ -3,7 +3,8 @@ import unittest2
 
 class TestQuery(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.datastore.query import Query
 
         return Query
@@ -99,7 +100,6 @@ class TestQuery(unittest2.TestCase):
 
     def test_ancestor_w_non_key_non_list(self):
         query = self._makeOne()
-        # XXX s.b. ValueError
         self.assertRaises(TypeError, query.ancestor, object())
 
     def test_ancester_wo_existing_ancestor_query_w_key_and_propfilter(self):
@@ -255,10 +255,11 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].key().path(),
                          [{'kind': _KIND, 'id': _ID}])
-        self.assertEqual(connection._called_with,
-                         {'dataset_id': _DATASET,
-                          'query_pb': query.to_protobuf(),
-                          })
+        expected_called_with = {
+            'dataset_id': _DATASET,
+            'query_pb': query.to_protobuf(),
+        }
+        self.assertEqual(connection._called_with, expected_called_with)
 
     def test_fetch_explicit_limit(self):
         from gcloud.datastore.datastore_v1_pb2 import Entity
@@ -283,10 +284,11 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].key().path(),
                          [{'kind': _KIND, 'id': _ID}])
-        self.assertEqual(connection._called_with,
-                         {'dataset_id': _DATASET,
-                          'query_pb': limited.to_protobuf(),
-                          })
+        expected_called_with = {
+            'dataset_id': _DATASET,
+            'query_pb': limited.to_protobuf(),
+        }
+        self.assertEqual(connection._called_with, expected_called_with)
 
     def test_cursor_not_fetched(self):
         _DATASET = 'DATASET'

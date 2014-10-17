@@ -15,8 +15,10 @@ class ConnectionError(StorageError):
         self.message = message
 
 
-class NotFoundError(ConnectionError):
+class NotFoundError(StorageError):
     """Exception corresponding to a 404 not found bad connection."""
 
-    def __init__(self, response, content):
-        self.message = 'Request returned a 404. Headers: %s' % (response)
+    def __init__(self, response):
+        super(NotFoundError, self).__init__('')
+        # suppress deprecation warning under 2.6.x
+        self.message = 'Request returned a 404. Headers: %s' % (response,)

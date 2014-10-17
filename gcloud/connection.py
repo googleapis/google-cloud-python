@@ -1,4 +1,5 @@
 """ Shared implementation of connections to API servers."""
+
 from pkg_resources import get_distribution
 
 import httplib2
@@ -28,6 +29,7 @@ class Connection(object):
         :type credentials: :class:`oauth2client.client.OAuth2Credentials`
         :param credentials: The OAuth2 Credentials to use for this connection.
         """
+        self._http = None
         self._credentials = credentials
 
     @property
@@ -45,7 +47,7 @@ class Connection(object):
         :rtype: :class:`httplib2.Http`
         :returns: A Http object used to transport data.
         """
-        if not hasattr(self, '_http'):
+        if self._http is None:
             self._http = httplib2.Http()
             if self._credentials:
                 self._http = self._credentials.authorize(self._http)

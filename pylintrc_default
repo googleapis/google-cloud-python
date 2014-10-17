@@ -1,0 +1,37 @@
+# This config is intended to be used for library
+# and other production code.
+
+[BASIC]
+good-names = i, j, k, ex, Run, _, pb, id,
+             _get_protobuf_attribute_and_value
+
+[DESIGN]
+max-args = 10
+max-public-methods = 30
+
+[FORMAT]
+# NOTE: By default pylint ignores the "dict-separator" check
+#       for cases like {1:2} and the "trailing-comma" check for
+#       cases like {1: 2, }. By setting "no-space-check" to empty
+#       both of these checks with occur.
+no-space-check =
+
+[MASTER]
+# NOTE: This path must be relative due to the use of
+#       os.walk in astroid.modutils.get_module_files.
+ignore = datastore_v1_pb2.py
+
+[MESSAGES CONTROL]
+disable = I, protected-access, maybe-no-member, no-member,
+          redefined-builtin, star-args, missing-format-attribute,
+          similarities, cyclic-import, arguments-differ,
+
+
+
+
+
+[REPORTS]
+reports = no
+
+[VARIABLES]
+dummy-variables-rgx = _$|dummy|^unused_

@@ -3,7 +3,8 @@ import unittest2
 
 class TestIterator(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.storage.iterator import Iterator
         return Iterator
 
@@ -73,8 +74,7 @@ class TestIterator(unittest2.TestCase):
         iterator = self._makeOne(connection, PATH)
         iterator.next_page_token = TOKEN
         self.assertEqual(iterator.get_query_params(),
-                         {'pageToken': TOKEN,
-                          })
+                         {'pageToken': TOKEN})
 
     def test_get_next_page_response_new_no_token_in_response(self):
         PATH = '/foo'
@@ -121,7 +121,8 @@ class TestIterator(unittest2.TestCase):
 
 class TestBucketIterator(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.storage.iterator import BucketIterator
         return BucketIterator
 
@@ -157,7 +158,8 @@ class TestBucketIterator(unittest2.TestCase):
 
 class TestKeyIterator(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.storage.iterator import KeyIterator
         return KeyIterator
 
@@ -197,7 +199,8 @@ class TestKeyIterator(unittest2.TestCase):
 
 class TestKeyDataIterator(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.storage.iterator import KeyDataIterator
         return KeyDataIterator
 
@@ -217,9 +220,10 @@ class TestKeyDataIterator(unittest2.TestCase):
         response1['content-range'] = '0-9/15'
         response2 = _Response(status=200)
         response2['content-range'] = '10-14/15'
-        connection = _Connection((response1, '0123456789'),
-                                 (response2, '01234'),
-                                 )
+        connection = _Connection(
+            (response1, '0123456789'),
+            (response2, '01234'),
+        )
         key = _Key(connection)
         iterator = self._makeOne(key)
         chunks = list(iterator)
@@ -382,7 +386,8 @@ class _Connection(object):
         response, self._responses = self._responses[0], self._responses[1:]
         return response
 
-    def build_api_url(self, path, query_params=None):
+    @staticmethod
+    def build_api_url(path, query_params=None):
         from urllib import urlencode
         from urlparse import urlunsplit
         qs = urlencode(query_params or {})

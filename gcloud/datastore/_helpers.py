@@ -3,7 +3,7 @@
 These functions are *not* part of the API.
 """
 import calendar
-from datetime import datetime, timedelta
+import datetime
 
 from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
@@ -43,7 +43,7 @@ def _get_protobuf_attribute_and_value(val):
     :returns: A tuple of the attribute name and proper value type.
     """
 
-    if isinstance(val, datetime):
+    if isinstance(val, datetime.datetime):
         name = 'timestamp_microseconds'
         # If the datetime is naive (no timezone), consider that it was
         # intended to be UTC and replace the tzinfo to that effect.
@@ -91,8 +91,8 @@ def _get_value_from_value_pb(value_pb):
     result = None
     if value_pb.HasField('timestamp_microseconds_value'):
         microseconds = value_pb.timestamp_microseconds_value
-        naive = (datetime.utcfromtimestamp(0) +
-                 timedelta(microseconds=microseconds))
+        naive = (datetime.datetime.utcfromtimestamp(0) +
+                 datetime.timedelta(microseconds=microseconds))
         result = naive.replace(tzinfo=pytz.utc)
 
     elif value_pb.HasField('key_value'):
@@ -163,9 +163,9 @@ def _set_protobuf_value(value_pb, val):
         key = val.key()
         if key is not None:
             e_pb.key.CopyFrom(key.to_protobuf())
-        for k, v in val.items():
+        for item_key, value in val.iteritems():
             p_pb = e_pb.property.add()
-            p_pb.name = k
-            _set_protobuf_value(p_pb.value, v)
+            p_pb.name = item_key
+            _set_protobuf_value(p_pb.value, value)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)

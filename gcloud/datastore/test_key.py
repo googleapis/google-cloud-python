@@ -3,14 +3,16 @@ import unittest2
 
 class TestKey(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.datastore.key import Key
         return Key
 
     def _makeOne(self, dataset=None, namespace=None, path=None):
         return self._getTargetClass()(dataset, namespace, path)
 
-    def _makePB(self, dataset_id=None, namespace=None, path=()):
+    @staticmethod
+    def _makePB(dataset_id=None, namespace=None, path=()):
         from gcloud.datastore.datastore_v1_pb2 import Key
         pb = Key()
         if dataset_id is not None:
@@ -212,10 +214,11 @@ class TestKey(unittest2.TestCase):
     def test_from_path_nested(self):
         key = self._getTargetClass().from_path('abc', 'def', 'ghi', 123)
         self.assertEqual(key.kind(), 'ghi')
-        self.assertEqual(key.path(),
-                         [{'kind': 'abc', 'name': 'def'},
-                          {'kind': 'ghi', 'id': 123},
-                          ])
+        expected_path = [
+            {'kind': 'abc', 'name': 'def'},
+            {'kind': 'ghi', 'id': 123},
+        ]
+        self.assertEqual(key.path(), expected_path)
 
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne()

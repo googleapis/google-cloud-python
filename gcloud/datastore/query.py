@@ -315,11 +315,9 @@ class Query(object):
         if limit:
             clone = self.limit(limit)
 
-        (entity_pbs,
-         end_cursor,
-         more_results,
-         skipped_results) = self.dataset().connection().run_query(
+        query_results = self.dataset().connection().run_query(
             query_pb=clone.to_protobuf(), dataset_id=self.dataset().id())
+        entity_pbs, end_cursor = query_results[:2]
 
         self._cursor = end_cursor
         return [Entity.from_protobuf(entity, dataset=self.dataset())
@@ -379,14 +377,14 @@ class Query(object):
         """
         clone = self._clone()
 
-        for p in properties:
+        for prop in properties:
             property_order = clone._pb.order.add()
 
-            if p.startswith('-'):
-                property_order.property.name = p[1:]
+            if prop.startswith('-'):
+                property_order.property.name = prop[1:]
                 property_order.direction = property_order.DESCENDING
             else:
-                property_order.property.name = p
+                property_order.property.name = prop
                 property_order.direction = property_order.ASCENDING
 
         return clone

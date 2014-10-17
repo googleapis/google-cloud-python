@@ -238,7 +238,7 @@ class Connection(connection.Connection):
             method=method, url=url, data=data, content_type=content_type)
 
         if response.status == 404:
-            raise exceptions.NotFoundError(response, content)
+            raise exceptions.NotFoundError(response)
         elif not 200 <= response.status < 300:
             raise exceptions.ConnectionError(response, content)
 
@@ -491,7 +491,7 @@ class Connection(connection.Connection):
         query_params = {
             'GoogleAccessId': self.credentials.service_account_name,
             'Expires': str(expiration),
-            'Signature': signature
+            'Signature': signature,
         }
 
         # Return the built URL.

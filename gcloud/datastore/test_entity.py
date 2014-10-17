@@ -8,7 +8,8 @@ _ID = 1234
 
 class TestEntity(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.datastore.entity import Entity
 
         return Entity
@@ -160,7 +161,7 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(entity['foo'], 'Foo')
         self.assertEqual(connection._saved,
                          (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
-        self.assertEqual(transaction._added, (entity, ))
+        self.assertEqual(transaction._added, (entity,))
         self.assertEqual(key._path, None)
 
     def test_save_w_returned_key(self):
@@ -238,10 +239,13 @@ class _Key(object):
 
 
 class _Dataset(dict):
+
     def __init__(self, connection=None):
+        super(_Dataset, self).__init__()
         self._connection = connection
 
-    def id(self):
+    @staticmethod
+    def id():
         return _DATASET_ID
 
     def connection(self):
@@ -274,4 +278,4 @@ class _Transaction(object):
     __bool__ = __nonzero__
 
     def add_auto_id_entity(self, entity):
-        self._added += (entity, )
+        self._added += (entity,)

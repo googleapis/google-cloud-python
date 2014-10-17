@@ -3,7 +3,8 @@ import unittest2
 
 class TestConnection(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.connection import Connection
         return Connection
 
@@ -35,7 +36,6 @@ class TestConnection(unittest2.TestCase):
         authorized = object()
 
         class Creds(object):
-
             def authorize(self, http):
                 self._called_with = http
                 return authorized

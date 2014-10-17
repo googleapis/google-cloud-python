@@ -3,7 +3,8 @@ import unittest2
 
 class Test_get_connection(unittest2.TestCase):
 
-    def _callFUT(self, *args, **kw):
+    @staticmethod
+    def _callFUT(*args, **kw):
         from gcloud.storage import get_connection
         return get_connection(*args, **kw)
 
@@ -26,16 +27,18 @@ class Test_get_connection(unittest2.TestCase):
         self.assertTrue(isinstance(found, Connection))
         self.assertEqual(found.project, PROJECT)
         self.assertTrue(found._credentials is client._signed)
-        self.assertEqual(client._called_with,
-                         {'service_account_name': CLIENT_EMAIL,
-                          'private_key': PRIVATE_KEY,
-                          'scope': SCOPE,
-                          })
+        expected_called_with = {
+            'service_account_name': CLIENT_EMAIL,
+            'private_key': PRIVATE_KEY,
+            'scope': SCOPE,
+        }
+        self.assertEqual(client._called_with, expected_called_with)
 
 
 class Test_get_bucket(unittest2.TestCase):
 
-    def _callFUT(self, *args, **kw):
+    @staticmethod
+    def _callFUT(*args, **kw):
         from gcloud.storage import get_bucket
 
         return get_bucket(*args, **kw)

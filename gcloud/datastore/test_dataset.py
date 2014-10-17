@@ -3,7 +3,8 @@ import unittest2
 
 class TestDataset(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.datastore.dataset import Dataset
         return Dataset
 

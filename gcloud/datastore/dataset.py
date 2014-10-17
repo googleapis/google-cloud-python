@@ -70,6 +70,7 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.query.Query`
         :returns: a new Query instance, bound to this dataset.
         """
+        # This import is here to avoid circular references.
         from gcloud.datastore.query import Query
         kwargs['dataset'] = self
         return Query(*args, **kwargs)
@@ -83,6 +84,7 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: a new Entity instance, bound to this dataset.
         """
+        # This import is here to avoid circular references.
         from gcloud.datastore.entity import Entity
         return Entity(dataset=self, kind=kind)
 
@@ -96,6 +98,7 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.transaction.Transaction`
         :returns: a new Transaction instance, bound to this dataset.
         """
+        # This import is here to avoid circular references.
         from gcloud.datastore.transaction import Transaction
         kwargs['dataset'] = self
         return Transaction(*args, **kwargs)

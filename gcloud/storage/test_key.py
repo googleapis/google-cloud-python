@@ -3,7 +3,8 @@ import unittest2
 
 class Test_Key(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    @staticmethod
+    def _getTargetClass():
         from gcloud.storage.key import Key
         return Key
 
@@ -126,7 +127,6 @@ class Test_Key(unittest2.TestCase):
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         bucket._keys[KEY] = 1
-        orig_key_path = key.path
         new_key = key.rename(NEW_NAME)
         self.assertEqual(key.name, KEY)
         self.assertEqual(new_key.name, NEW_NAME)
@@ -196,10 +196,11 @@ class Test_Key(unittest2.TestCase):
         loc_response = {'location': UPLOAD_URL}
         chunk1_response = {}
         chunk2_response = {}
-        connection = _Connection((loc_response, ''),
-                                 (chunk1_response, ''),
-                                 (chunk2_response, ''),
-                                 )
+        connection = _Connection(
+            (loc_response, ''),
+            (chunk1_response, ''),
+            (chunk2_response, ''),
+        )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
@@ -211,7 +212,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['url']
-        scheme, netloc, path, qs, frag = urlsplit(uri)
+        scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
@@ -241,10 +242,11 @@ class Test_Key(unittest2.TestCase):
         loc_response = {'location': UPLOAD_URL}
         chunk1_response = {}
         chunk2_response = {}
-        connection = _Connection((loc_response, ''),
-                                 (chunk1_response, ''),
-                                 (chunk2_response, ''),
-                                 )
+        connection = _Connection(
+            (loc_response, ''),
+            (chunk1_response, ''),
+            (chunk2_response, ''),
+        )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
@@ -256,7 +258,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['url']
-        scheme, netloc, path, qs, frag = urlsplit(uri)
+        scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
@@ -285,10 +287,11 @@ class Test_Key(unittest2.TestCase):
         loc_response = {'location': UPLOAD_URL}
         chunk1_response = {}
         chunk2_response = {}
-        connection = _Connection((loc_response, ''),
-                                 (chunk1_response, ''),
-                                 (chunk2_response, ''),
-                                 )
+        connection = _Connection(
+            (loc_response, ''),
+            (chunk1_response, ''),
+            (chunk2_response, ''),
+        )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
@@ -297,7 +300,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['url']
-        scheme, netloc, path, qs, frag = urlsplit(uri)
+        scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
@@ -573,7 +576,7 @@ class Test_Key(unittest2.TestCase):
         from gcloud.storage.acl import ACL
         KEY = 'key'
         before = {'acl': []}
-        permissive = [{'entity': 'allUsers', 'role': ACL.Role.Reader}]
+        permissive = [{'entity': 'allUsers', 'role': ACL.READER_ROLE}]
         after = {'acl': permissive}
         connection = _Connection(after)
         bucket = _Bucket(connection)
@@ -607,7 +610,8 @@ class _Connection(object):
         response, self._responses = self._responses[0], self._responses[1:]
         return response
 
-    def build_api_url(self, path, query_params=None,
+    @staticmethod
+    def build_api_url(path, query_params=None,
                       api_base_url=API_BASE_URL):
         from urllib import urlencode
         from urlparse import urlsplit
@@ -632,12 +636,12 @@ class _Bucket(object):
         self._deleted = []
 
     def get_key(self, key):
-        return self._keys.get(key)  # XXX s.b. 'key.name'?
+        return self._keys.get(key)
 
     def copy_key(self, key, destination_bucket, new_name):
         destination_bucket._keys[new_name] = self._keys[key.name]
         return key.from_dict({'name': new_name}, bucket=destination_bucket)
 
     def delete_key(self, key):
-        del self._keys[key.name]  # XXX s.b. 'key'?
+        del self._keys[key.name]
         self._deleted.append(key.name)

@@ -201,6 +201,9 @@ class KeyDataIterator(object):
 
     def __init__(self, key):
         self.key = key
+        # NOTE: These variables will be initialized by reset().
+        self._bytes_written = None
+        self._total_bytes = None
         self.reset()
 
     def __iter__(self):
@@ -226,7 +229,7 @@ class KeyDataIterator(object):
             # If it isn't, something is wrong.
             raise ValueError('Size of object is unknown.')
         else:
-            return (self._bytes_written < self._total_bytes)
+            return self._bytes_written < self._total_bytes
 
     def get_headers(self):
         """Gets range header(s) for next chunk of data.
