@@ -33,14 +33,17 @@ class TestQuery(unittest2.TestCase):
 
         _DATASET = 'DATASET'
         _KIND = 'KIND'
+        _CURSOR = 'DEADBEEF'
         dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND, dataset)
+        query._cursor = _CURSOR
         clone = query._clone()
         self.assertFalse(clone is query)
         self.assertTrue(isinstance(clone, self._getTargetClass()))
         self.assertTrue(clone.dataset() is dataset)
         kq_pb, = list(clone.kind())
         self.assertEqual(kq_pb.name, _KIND)
+        self.assertEqual(clone._cursor, _CURSOR)
 
     def test_to_protobuf_empty(self):
         query = self._makeOne()
