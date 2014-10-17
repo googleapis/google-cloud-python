@@ -8,25 +8,28 @@ class TestQuery(unittest2.TestCase):
 
         return Query
 
-    def _makeOne(self, kind=None, dataset=None):
-        return self._getTargetClass()(kind, dataset)
+    def _makeOne(self, kind=None, dataset=None, namespace=None):
+        return self._getTargetClass()(kind, dataset, namespace)
 
     def test_ctor_defaults(self):
         query = self._getTargetClass()()
         self.assertEqual(query.dataset(), None)
         self.assertEqual(list(query.kind()), [])
         self.assertEqual(query.limit(), 0)
+        self.assertEqual(query.namespace(), None)
 
     def test_ctor_explicit(self):
         from gcloud.datastore.dataset import Dataset
 
         _DATASET = 'DATASET'
         _KIND = 'KIND'
+        _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(_KIND, dataset, _NAMESPACE)
         self.assertTrue(query.dataset() is dataset)
         kq_pb, = list(query.kind())
         self.assertEqual(kq_pb.name, _KIND)
+        self.assertEqual(query.namespace(), _NAMESPACE)
 
     def test__clone(self):
         from gcloud.datastore.dataset import Dataset
@@ -34,13 +37,15 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _CURSOR = 'DEADBEEF'
+        _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(_KIND, dataset, _NAMESPACE)
         query._cursor = _CURSOR
         clone = query._clone()
         self.assertFalse(clone is query)
         self.assertTrue(isinstance(clone, self._getTargetClass()))
         self.assertTrue(clone.dataset() is dataset)
+        self.assertEqual(clone.namespace(), _NAMESPACE)
         kq_pb, = list(clone.kind())
         self.assertEqual(kq_pb.name, _KIND)
         self.assertEqual(clone._cursor, _CURSOR)

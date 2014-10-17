@@ -41,6 +41,9 @@ class Query(object):
 
     :type dataset: :class:`gcloud.datastore.dataset.Dataset`
     :param dataset: The dataset to query.
+
+    :type namespace: string or None
+    :param dataset: The namespace to which to restrict results.
     """
 
     OPERATORS = {
@@ -52,8 +55,9 @@ class Query(object):
     }
     """Mapping of operator strings and their protobuf equivalents."""
 
-    def __init__(self, kind=None, dataset=None):
+    def __init__(self, kind=None, dataset=None, namespace=None):
         self._dataset = dataset
+        self._namespace = namespace
         self._pb = datastore_pb.Query()
         self._cursor = None
 
@@ -66,10 +70,19 @@ class Query(object):
         :rtype: :class:`gcloud.datastore.query.Query`
         :returns: a copy of 'self'.
         """
-        clone = self.__class__(dataset=self._dataset)
+        clone = self.__class__(dataset=self._dataset,
+                               namespace=self._namespace)
         clone._pb.CopyFrom(self._pb)
         clone._cursor = self._cursor
         return clone
+
+    def namespace(self):
+        """This query's namespace
+
+        :rtype: string or None
+        :returns: the namespace assigned to this query
+        """
+        return self._namespace
 
     def to_protobuf(self):
         """Convert :class:`Query` instance to :class:`.datastore_v1_pb2.Query`.
