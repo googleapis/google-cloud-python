@@ -168,7 +168,7 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
 
     @property
     def _must_key(self):
-        """Return our key.
+        """Return our key, or raise NoKey if not set.
 
         :rtype: :class:`gcloud.datastore.key.Key`.
         :returns: our key
