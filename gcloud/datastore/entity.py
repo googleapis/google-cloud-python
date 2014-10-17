@@ -20,7 +20,7 @@ from gcloud.datastore.key import Key
 
 
 class NoKey(RuntimeError):
-    pass
+    """Exception raised by Entity methods which require a key."""
 
 
 class Entity(dict):  # pylint: disable=too-many-public-methods
