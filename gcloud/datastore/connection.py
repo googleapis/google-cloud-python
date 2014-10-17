@@ -405,8 +405,7 @@ class Connection(connection.Connection):
 
         :rtype: boolean (if in a transaction) or else
                 :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
-        :returns: True (if in a transaction) or else a mutation result
-                  protobuf.
+        :returns: True
         """
         mutation = self.mutation()
 
@@ -414,7 +413,7 @@ class Connection(connection.Connection):
             delete = mutation.delete.add()
             delete.CopyFrom(key_pb)
 
-        if self.transaction():
-            return True
-        else:
-            return self.commit(dataset_id, mutation)
+        if not self.transaction():
+            self.commit(dataset_id, mutation)
+
+        return True

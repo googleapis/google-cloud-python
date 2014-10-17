@@ -778,8 +778,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entities(DATASET_ID, [key_pb])
-        self.assertEqual(result.index_updates, 0)
-        self.assertEqual(list(result.insert_auto_id_key), [])
+        self.assertEqual(result, True)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
