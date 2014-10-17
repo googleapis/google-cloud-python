@@ -426,6 +426,11 @@
 <div class="viewcode-block" id="Connection.save_entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.save_entity">[docs]</a>    <span class="k">def</span> <span class="nf">save_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pb</span><span class="p">,</span> <span class="n">properties</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save an entity to the Cloud Datastore with the provided properties.</span>
 
+<span class="sd">        .. note::</span>
+<span class="sd">           Any existing properties for the entity identified by &#39;key_pb&#39;</span>
+<span class="sd">           will be replaced by those passed in &#39;properties&#39;;  properties</span>
+<span class="sd">           not passed in &#39;properties&#39; no longer be set for the entity.</span>
+
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset_id: The dataset in which to save the entity.</span>
 

@@ -275,6 +275,12 @@
 <div class="viewcode-block" id="Entity.save"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the entity in the Cloud Datastore.</span>
 
+<span class="sd">        .. note::</span>
+<span class="sd">           Any existing properties for the entity will be replaced by those</span>
+<span class="sd">           currently set on this instance.  Already-stored properties which do</span>
+<span class="sd">           not correspond to keys set on this instance will be removed from</span>
+<span class="sd">           the datastore.</span>
+
 <span class="sd">        :rtype: :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">        :returns: The entity with a possibly updated Key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

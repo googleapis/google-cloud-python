@@ -524,6 +524,12 @@ uses this method to fetch data:</p>
 <dt id="gcloud.datastore.connection.Connection.save_entity">
 <code class="descname">save_entity</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pb</em>, <em>properties</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.save_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.save_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an entity to the Cloud Datastore with the provided properties.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Any existing properties for the entity identified by &#8216;key_pb&#8217;
+will be replaced by those passed in &#8216;properties&#8217;;  properties
+not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -541,7 +547,7 @@ uses this method to fetch data:</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f537d00a240&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f5c001b1240&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -942,6 +948,13 @@ exist only locally.</p>
 <dt id="gcloud.datastore.entity.Entity.save">
 <code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the entity in the Cloud Datastore.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Any existing properties for the entity will be replaced by those
+currently set on this instance.  Already-stored properties which do
+not correspond to keys set on this instance will be removed from
+the datastore.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1288,7 +1301,7 @@ without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&gt;=': 4, '&lt;': 1, '&gt;': 3, '&lt;=': 2, '=': 5}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'&lt;': 1, '&gt;=': 4, '&gt;': 3, '&lt;=': 2, '=': 5}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
