@@ -418,25 +418,3 @@ class Connection(connection.Connection):
             return True
         else:
             return self.commit(dataset_id, mutation)
-
-    def delete_entity(self, dataset_id, key_pb):
-        """Delete a single key from a dataset in the Cloud Datastore.
-
-        This method deals only with
-        :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs
-        and not with any of the other abstractions.
-        For example, it's used under the hood in the
-        :func:`gcloud.datastore.entity.Entity.delete` method.
-
-        :type dataset_id: string
-        :param dataset_id: The dataset from which to delete the key.
-
-        :type key_pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
-        :param key_pb: The key to delete from the datastore.
-
-        :rtype: boolean (if in a transaction) or else
-                :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
-        :returns: True (if in a transaction) or else a mutation result
-                  protobuf.
-        """
-        return self.delete_entities(dataset_id, [key_pb])
