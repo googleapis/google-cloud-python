@@ -238,7 +238,6 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
             dataset_id=dataset.id(), key_pb=key.to_protobuf())
 
     def __repr__(self):
-        # An entity should have a key all the time (even if it's partial).
         if self._key:
             return '<Entity%s %s>' % (self._key.path(),
                                       super(Entity, self).__repr__())
