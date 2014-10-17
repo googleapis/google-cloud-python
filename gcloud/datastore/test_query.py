@@ -12,7 +12,7 @@ class TestQuery(unittest2.TestCase):
         return self._getTargetClass()(kind, dataset)
 
     def test_ctor_defaults(self):
-        query = self._makeOne()
+        query = self._getTargetClass()()
         self.assertEqual(query.dataset(), None)
         self.assertEqual(list(query.kind()), [])
         self.assertEqual(query.limit(), 0)
