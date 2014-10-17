@@ -338,6 +338,10 @@ class Connection(connection.Connection):
     def save_entity(self, dataset_id, key_pb, properties):
         """Save an entity to the Cloud Datastore with the provided properties.
 
+        .. note::
+           Any existing properties for the entity will be cleared before
+           applying those passed in 'properties'.
+
         :type dataset_id: string
         :param dataset_id: The dataset in which to save the entity.
 
