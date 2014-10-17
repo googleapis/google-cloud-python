@@ -196,7 +196,7 @@ class TestEntity(unittest2.TestCase):
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertTrue(entity.delete() is None)
-        self.assertEqual(connection._deleted, (_DATASET_ID, 'KEY'))
+        self.assertEqual(connection._deleted, (_DATASET_ID, ['KEY']))
 
     def test___repr___no_key_empty(self):
         entity = self._makeOne(None, None)
@@ -262,8 +262,8 @@ class _Connection(object):
         self._saved = (dataset_id, key_pb, properties)
         return self._save_result
 
-    def delete_entity(self, dataset_id, key_pb):
-        self._deleted = (dataset_id, key_pb)
+    def delete_entities(self, dataset_id, key_pbs):
+        self._deleted = (dataset_id, key_pbs)
 
 
 class _Transaction(object):
