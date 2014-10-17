@@ -130,7 +130,7 @@
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span>
                    <span class="n">metadata</span><span class="o">=</span><span class="n">bucket_dict</span><span class="p">)</span>
 </div>
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c"># pragma NO COVER</span>
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;&lt;Bucket: </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -214,7 +214,7 @@
         <span class="c"># Support Python 2 and 3.</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">string_type</span> <span class="o">=</span> <span class="nb">basestring</span>
-        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>  <span class="c"># pragma NO COVER PY3k</span>
+        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>  <span class="c"># pragma: NO COVER PY3k</span>
             <span class="n">string_type</span> <span class="o">=</span> <span class="nb">str</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>

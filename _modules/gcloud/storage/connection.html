@@ -89,9 +89,9 @@
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud storage connections.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">calendar</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
 
 <span class="kn">from</span> <span class="nn">Crypto.Hash</span> <span class="kn">import</span> <span class="n">SHA256</span>
@@ -104,6 +104,14 @@
 <span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">BucketIterator</span>
+
+
+<span class="k">def</span> <span class="nf">_utcnow</span><span class="p">():</span>  <span class="c"># pragma: NO COVER testing replaces</span>
+    <span class="sd">&quot;&quot;&quot;Returns current time as UTC datetime.</span>
+
+<span class="sd">    NOTE: on the module namespace so tests can replace it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
@@ -507,7 +515,7 @@
         <span class="c"># Support Python 2 and 3.</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">string_type</span> <span class="o">=</span> <span class="nb">basestring</span>
-        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>  <span class="c"># pragma NO COVER PY3k</span>
+        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>  <span class="c"># pragma: NO COVER PY3k</span>
             <span class="n">string_type</span> <span class="o">=</span> <span class="nb">str</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
@@ -517,7 +525,7 @@
 </div>
 <div class="viewcode-block" id="Connection.generate_signed_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span>
                             <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">content_md5</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                            <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>  <span class="c"># pragma NO COVER</span>
+                            <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate signed URL to provide query-string auth&#39;n to a resource.</span>
 
 <span class="sd">        :type resource: string</span>
@@ -543,31 +551,7 @@
 <span class="sd">                  until expiration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c"># expiration can be an absolute timestamp (int, long),</span>
-        <span class="c"># an absolute time (datetime.datetime),</span>
-        <span class="c"># or a relative time (datetime.timedelta).</span>
-        <span class="c"># We should convert all of these into an absolute timestamp.</span>
-
-        <span class="c"># If it&#39;s a timedelta, add it to `now` in UTC.</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">):</span>
-            <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-            <span class="n">expiration</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="n">expiration</span>
-
-        <span class="c"># If it&#39;s a datetime, convert to a timestamp.</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
-            <span class="c"># Make sure the timezone on the value is UTC</span>
-            <span class="c"># (either by converting or replacing the value).</span>
-            <span class="k">if</span> <span class="n">expiration</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span>
-                <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-
-            <span class="c"># Turn the datetime into a timestamp (seconds, not microseconds).</span>
-            <span class="n">expiration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">expiration</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()))</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Expected an integer timestamp, datetime, or &#39;</span>
-                             <span class="s">&#39;timedelta. Got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">expiration</span><span class="p">))</span>
+        <span class="n">expiration</span> <span class="o">=</span> <span class="n">_get_expiration_seconds</span><span class="p">(</span><span class="n">expiration</span><span class="p">)</span>
 
         <span class="c"># Generate the string to sign.</span>
         <span class="n">signature_string</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
@@ -601,7 +585,40 @@
         <span class="c"># Return the built URL.</span>
         <span class="k">return</span> <span class="s">&#39;{endpoint}{resource}?{querystring}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">API_ACCESS_ENDPOINT</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-            <span class="n">querystring</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">))</span></div></div>
+            <span class="n">querystring</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">))</span>
+
+</div></div>
+<span class="k">def</span> <span class="nf">_get_expiration_seconds</span><span class="p">(</span><span class="n">expiration</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert &#39;expiration&#39; to a number of seconds in the future.</span>
+
+<span class="sd">    :type expiration: int, long, datetime.datetime, datetime.timedelta</span>
+<span class="sd">    :param expiration: When the signed URL should expire.</span>
+
+<span class="sd">    :rtype: int</span>
+<span class="sd">    :returns: a timestamp as an absolute number of seconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># If it&#39;s a timedelta, add it to `now` in UTC.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">):</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">_utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="n">expiration</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="n">expiration</span>
+
+    <span class="c"># If it&#39;s a datetime, convert to a timestamp.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+        <span class="c"># Make sure the timezone on the value is UTC</span>
+        <span class="c"># (either by converting or replacing the value).</span>
+        <span class="k">if</span> <span class="n">expiration</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span>
+            <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+        <span class="c"># Turn the datetime into a timestamp (seconds, not microseconds).</span>
+        <span class="n">expiration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">expiration</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected an integer timestamp, datetime, or &#39;</span>
+                        <span class="s">&#39;timedelta. Got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">expiration</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">expiration</span>
 </pre></div>
 
           </div>
