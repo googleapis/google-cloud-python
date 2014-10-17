@@ -42,7 +42,7 @@ class Bucket(object):
         return cls(connection=connection, name=bucket_dict['name'],
                    metadata=bucket_dict)
 
-    def __repr__(self):  # pragma NO COVER
+    def __repr__(self):
         return '<Bucket: %s>' % self.name
 
     def __iter__(self):
@@ -126,7 +126,7 @@ class Bucket(object):
         # Support Python 2 and 3.
         try:
             string_type = basestring
-        except NameError:  # pragma NO COVER PY3k
+        except NameError:  # pragma: NO COVER PY3k
             string_type = str
 
         if isinstance(key, string_type):

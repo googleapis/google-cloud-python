@@ -110,7 +110,7 @@ class ACL(object):
             else:
                 return '{self.type}-{self.identifier}'.format(self=self)
 
-        def __repr__(self):  # pragma NO COVER
+        def __repr__(self):
             return '<ACL Entity: {self} ({roles})>'.format(
                 self=self, roles=', '.join(self.roles))
 
@@ -353,7 +353,7 @@ class ACL(object):
 
         return self.entities.values()
 
-    def save(self):  # pragma NO COVER
+    def save(self):
         """A method to be overridden by subclasses.
 
         :raises: NotImplementedError

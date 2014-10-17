@@ -230,7 +230,7 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
             dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf())
         # pylint: enable=maybe-no-member
 
-    def __repr__(self):  # pragma NO COVER
+    def __repr__(self):
         # An entity should have a key all the time (even if it's partial).
         if self.key():
             # pylint: disable=maybe-no-member

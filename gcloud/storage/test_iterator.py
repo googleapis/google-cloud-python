@@ -111,6 +111,13 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, None)
 
+    def test_get_items_from_response_raises_NotImplementedError(self):
+        PATH = '/foo'
+        connection = _Connection()
+        iterator = self._makeOne(connection, PATH)
+        self.assertRaises(NotImplementedError,
+                          iterator.get_items_from_response, object())
+
 
 class TestBucketIterator(unittest2.TestCase):
 
