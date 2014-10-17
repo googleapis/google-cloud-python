@@ -425,7 +425,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         expected_headers = {
             'Content-Type': 'application/x-protobuf',
-            'Content-Length': '26',
+            'Content-Length': '24',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(cw['headers'], expected_headers)
@@ -466,7 +466,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         expected_headers = {
             'Content-Type': 'application/x-protobuf',
-            'Content-Length': '26',
+            'Content-Length': '24',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(cw['headers'], expected_headers)
@@ -504,7 +504,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         expected_headers = {
             'Content-Type': 'application/x-protobuf',
-            'Content-Length': '52',
+            'Content-Length': '48',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(cw['headers'], expected_headers)
@@ -549,7 +549,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         expected_headers = {
             'Content-Type': 'application/x-protobuf',
-            'Content-Length': '47',
+            'Content-Length': '45',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(cw['headers'], expected_headers)
@@ -597,7 +597,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         expected_headers = {
             'Content-Type': 'application/x-protobuf',
-            'Content-Length': '53',
+            'Content-Length': '51',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(cw['headers'], expected_headers)
@@ -634,7 +634,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         expected_headers = {
             'Content-Type': 'application/x-protobuf',
-            'Content-Length': '47',
+            'Content-Length': '45',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(cw['headers'], expected_headers)
@@ -687,7 +687,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         expected_headers = {
             'Content-Type': 'application/x-protobuf',
-            'Content-Length': '44',
+            'Content-Length': '42',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(cw['headers'], expected_headers)
@@ -784,7 +784,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         expected_headers = {
             'Content-Type': 'application/x-protobuf',
-            'Content-Length': '30',
+            'Content-Length': '28',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(cw['headers'], expected_headers)
