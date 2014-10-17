@@ -85,6 +85,13 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(key.kind(), _KIND)
         self.assertEqual(key.id(), _ID)
 
+    def test_reload_no_key(self):
+        from gcloud.datastore.entity import NoKey
+
+        entity = self._makeOne(None, None)
+        entity['foo'] = 'Foo'
+        self.assertRaises(NoKey, entity.reload)
+
     def test_reload_miss(self):
         dataset = _Dataset()
         key = _Key(dataset)
@@ -104,6 +111,13 @@ class TestEntity(unittest2.TestCase):
         entity['foo'] = 'Foo'
         self.assertTrue(entity.reload() is entity)
         self.assertEqual(entity['foo'], 'Bar')
+
+    def test_save_no_key(self):
+        from gcloud.datastore.entity import NoKey
+
+        entity = self._makeOne(None, None)
+        entity['foo'] = 'Foo'
+        self.assertRaises(NoKey, entity.save)
 
     def test_save_wo_transaction_wo_auto_id_wo_returned_key(self):
         connection = _Connection()
@@ -167,6 +181,13 @@ class TestEntity(unittest2.TestCase):
                          (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
         self.assertEqual(key._path, [{'kind': _KIND, 'id': _ID}])
 
+    def test_delete_no_key(self):
+        from gcloud.datastore.entity import NoKey
+
+        entity = self._makeOne(None, None)
+        entity['foo'] = 'Foo'
+        self.assertRaises(NoKey, entity.delete)
+
     def test_delete(self):
         connection = _Connection()
         dataset = _Dataset(connection)
@@ -177,8 +198,23 @@ class TestEntity(unittest2.TestCase):
         self.assertTrue(entity.delete() is None)
         self.assertEqual(connection._deleted, (_DATASET_ID, 'KEY'))
 
+    def test___repr___no_key_empty(self):
+        entity = self._makeOne(None, None)
+        self.assertEqual(repr(entity), '<Entity {}>')
+
+    def test___repr___w_key_non_empty(self):
+        connection = _Connection()
+        dataset = _Dataset(connection)
+        key = _Key(dataset)
+        key.path('/bar/baz')
+        entity = self._makeOne()
+        entity.key(key)
+        entity['foo'] = 'Foo'
+        self.assertEqual(repr(entity), "<Entity/bar/baz {'foo': 'Foo'}>")
+
 
 class _Key(object):
+    _MARKER = object()
     _key = 'KEY'
     _partial = False
     _path = None
@@ -195,7 +231,9 @@ class _Key(object):
     def is_partial(self):
         return self._partial
 
-    def path(self, path):
+    def path(self, path=_MARKER):
+        if path is self._MARKER:
+            return self._path
         self._path = path
 
 
