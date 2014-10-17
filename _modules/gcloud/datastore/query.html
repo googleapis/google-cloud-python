@@ -89,7 +89,6 @@
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud datastore queries.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">import</span> <span class="nn">copy</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_helpers</span>
@@ -155,8 +154,9 @@
 <span class="sd">        :rtype: :class:`gcloud.datastore.query.Query`</span>
 <span class="sd">        :returns: a copy of &#39;self&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">clone</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">clone</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>  <span class="c"># Shallow copy the dataset.</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="p">)</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="p">)</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span>
         <span class="k">return</span> <span class="n">clone</span>
 
 <div class="viewcode-block" id="Query.to_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.query.Query.to_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
