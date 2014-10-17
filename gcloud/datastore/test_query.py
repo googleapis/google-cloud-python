@@ -3,8 +3,7 @@ import unittest2
 
 class TestQuery(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.datastore.query import Query
 
         return Query

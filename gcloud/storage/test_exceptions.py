@@ -3,8 +3,7 @@ import unittest2
 
 class TestConnectionError(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.storage.exceptions import ConnectionError
         return ConnectionError
 
@@ -19,8 +18,7 @@ class TestConnectionError(unittest2.TestCase):
 
 class TestNotFoundError(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.storage.exceptions import NotFoundError
         return NotFoundError
 

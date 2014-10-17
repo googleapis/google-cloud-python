@@ -8,8 +8,7 @@ _ID = 1234
 
 class TestEntity(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.datastore.entity import Entity
 
         return Entity
@@ -244,8 +243,7 @@ class _Dataset(dict):
         super(_Dataset, self).__init__()
         self._connection = connection
 
-    @staticmethod
-    def id():
+    def id(self):
         return _DATASET_ID
 
     def connection(self):

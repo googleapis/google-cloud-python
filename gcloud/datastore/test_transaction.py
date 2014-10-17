@@ -3,8 +3,7 @@ import unittest2
 
 class TestTransaction(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.datastore.transaction import Transaction
 
         return Transaction

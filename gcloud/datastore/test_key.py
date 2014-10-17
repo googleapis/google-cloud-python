@@ -3,16 +3,14 @@ import unittest2
 
 class TestKey(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.datastore.key import Key
         return Key
 
     def _makeOne(self, dataset=None, namespace=None, path=None):
         return self._getTargetClass()(dataset, namespace, path)
 
-    @staticmethod
-    def _makePB(dataset_id=None, namespace=None, path=()):
+    def _makePB(self, dataset_id=None, namespace=None, path=()):
         from gcloud.datastore.datastore_v1_pb2 import Key
         pb = Key()
         if dataset_id is not None:

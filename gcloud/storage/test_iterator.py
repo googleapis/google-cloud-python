@@ -3,8 +3,7 @@ import unittest2
 
 class TestIterator(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.storage.iterator import Iterator
         return Iterator
 
@@ -121,8 +120,7 @@ class TestIterator(unittest2.TestCase):
 
 class TestBucketIterator(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.storage.iterator import BucketIterator
         return BucketIterator
 
@@ -158,8 +156,7 @@ class TestBucketIterator(unittest2.TestCase):
 
 class TestKeyIterator(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.storage.iterator import KeyIterator
         return KeyIterator
 
@@ -199,8 +196,7 @@ class TestKeyIterator(unittest2.TestCase):
 
 class TestKeyDataIterator(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.storage.iterator import KeyDataIterator
         return KeyDataIterator
 
@@ -386,8 +382,7 @@ class _Connection(object):
         response, self._responses = self._responses[0], self._responses[1:]
         return response
 
-    @staticmethod
-    def build_api_url(path, query_params=None):
+    def build_api_url(self, path, query_params=None):
         from urllib import urlencode
         from urlparse import urlunsplit
         qs = urlencode(query_params or {})

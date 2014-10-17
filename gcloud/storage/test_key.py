@@ -3,8 +3,7 @@ import unittest2
 
 class Test_Key(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.storage.key import Key
         return Key
 
@@ -610,8 +609,7 @@ class _Connection(object):
         response, self._responses = self._responses[0], self._responses[1:]
         return response
 
-    @staticmethod
-    def build_api_url(path, query_params=None,
+    def build_api_url(self, path, query_params=None,
                       api_base_url=API_BASE_URL):
         from urllib import urlencode
         from urlparse import urlsplit

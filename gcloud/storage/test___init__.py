@@ -3,8 +3,7 @@ import unittest2
 
 class Test_get_connection(unittest2.TestCase):
 
-    @staticmethod
-    def _callFUT(*args, **kw):
+    def _callFUT(self, *args, **kw):
         from gcloud.storage import get_connection
         return get_connection(*args, **kw)
 
@@ -37,8 +36,7 @@ class Test_get_connection(unittest2.TestCase):
 
 class Test_get_bucket(unittest2.TestCase):
 
-    @staticmethod
-    def _callFUT(*args, **kw):
+    def _callFUT(self, *args, **kw):
         from gcloud.storage import get_bucket
 
         return get_bucket(*args, **kw)

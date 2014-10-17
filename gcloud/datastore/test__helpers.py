@@ -3,8 +3,7 @@ import unittest2
 
 class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
 
-    @staticmethod
-    def _callFUT(val):
+    def _callFUT(self, val):
         from gcloud.datastore._helpers import _get_protobuf_attribute_and_value
 
         return _get_protobuf_attribute_and_value(val)
@@ -97,14 +96,12 @@ class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
 
 class Test__get_value_from_value_pb(unittest2.TestCase):
 
-    @staticmethod
-    def _callFUT(pb):
+    def _callFUT(self, pb):
         from gcloud.datastore._helpers import _get_value_from_value_pb
 
         return _get_value_from_value_pb(pb)
 
-    @staticmethod
-    def _makePB(attr_name, value):
+    def _makePB(self, attr_name, value):
         from gcloud.datastore.datastore_v1_pb2 import Value
 
         pb = Value()
@@ -190,8 +187,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
 
 class Test__get_value_from_property_pb(unittest2.TestCase):
 
-    @staticmethod
-    def _callFUT(pb):
+    def _callFUT(self, pb):
         from gcloud.datastore._helpers import _get_value_from_property_pb
 
         return _get_value_from_property_pb(pb)
@@ -206,14 +202,12 @@ class Test__get_value_from_property_pb(unittest2.TestCase):
 
 class Test_set_protobuf_value(unittest2.TestCase):
 
-    @staticmethod
-    def _callFUT(value_pb, val):
+    def _callFUT(self, value_pb, val):
         from gcloud.datastore._helpers import _set_protobuf_value
 
         return _set_protobuf_value(value_pb, val)
 
-    @staticmethod
-    def _makePB():
+    def _makePB(self):
         from gcloud.datastore.datastore_v1_pb2 import Value
 
         return Value()

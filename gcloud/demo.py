@@ -35,8 +35,7 @@ class DemoRunner(object):
 
         interact('(Hit CTRL-D to exit...)', local=self.LOCALS)
 
-    @staticmethod
-    def wait():
+    def wait(self):
         raw_input()
 
     @classmethod
@@ -46,8 +45,7 @@ class DemoRunner(object):
         else:
             return cls.CODE
 
-    @staticmethod
-    def get_indent_level(line):
+    def get_indent_level(self, line):
         if not line.strip():
             return None
         return len(line) - len(line.lstrip())

@@ -3,8 +3,7 @@ import unittest2
 
 class TestConnection(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.connection import Connection
         return Connection
 

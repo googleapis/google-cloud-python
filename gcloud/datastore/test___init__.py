@@ -3,8 +3,7 @@ import unittest2
 
 class Test_get_connection(unittest2.TestCase):
 
-    @staticmethod
-    def _callFUT(client_email, private_key_path):
+    def _callFUT(self, client_email, private_key_path):
         from gcloud.datastore import get_connection
         return get_connection(client_email, private_key_path)
 
@@ -36,8 +35,7 @@ class Test_get_connection(unittest2.TestCase):
 
 class Test_get_dataset(unittest2.TestCase):
 
-    @staticmethod
-    def _callFUT(dataset_id, client_email, private_key_path):
+    def _callFUT(self, dataset_id, client_email, private_key_path):
         from gcloud.datastore import get_dataset
         return get_dataset(dataset_id, client_email, private_key_path)
 

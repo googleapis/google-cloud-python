@@ -3,8 +3,7 @@ import unittest2
 
 class TestConnection(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.storage.connection import Connection
         return Connection
 
@@ -613,14 +612,12 @@ class TestConnection(unittest2.TestCase):
 
 class Test__get_expiration_seconds(unittest2.TestCase):
 
-    @staticmethod
-    def _callFUT(expiration):
+    def _callFUT(self, expiration):
         from gcloud.storage.connection import _get_expiration_seconds
 
         return _get_expiration_seconds(expiration)
 
-    @staticmethod
-    def _utc_seconds(when):
+    def _utc_seconds(self, when):
         import calendar
 
         return int(calendar.timegm(when.timetuple()))
@@ -711,8 +708,11 @@ class Http(object):
 class _Credentials(object):
 
     service_account_name = 'testing@example.com'
-    # Base64 encoded 'SEEKRIT'.
-    private_key = 'U0VFS1JJVA=='
+
+    @property
+    def private_key(self):
+        import base64
+        return base64.b64encode('SEEKRIT')
 
 
 class _Crypto(object):
@@ -724,8 +724,7 @@ class _Crypto(object):
         self._loaded = (buffer, passphrase)
         return self
 
-    @staticmethod
-    def get_privatekey():
+    def get_privatekey(self):
         return '__PKCS12__'
 
     def dump_privatekey(self, type, pkey, cipher=None, passphrase=None):

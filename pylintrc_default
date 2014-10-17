@@ -10,10 +10,10 @@ max-args = 10
 max-public-methods = 30
 
 [FORMAT]
-# NOTE: By default pylint ignores the "dict-separator" check
-#       for cases like {1:2} and the "trailing-comma" check for
-#       cases like {1: 2, }. By setting "no-space-check" to empty
-#       both of these checks with occur.
+# NOTE: By default pylint ignores whitespace checks around the
+#       constructs "dict-separator" (cases like {1:2}) and "trailing-comma"
+#       (cases like {1: 2, }). By setting "no-space-check" to empty
+#       whitespace checks will be enforced around both constructs.
 no-space-check =
 
 [MASTER]

@@ -3,8 +3,7 @@ import unittest2
 
 class TestConnection(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.datastore.connection import Connection
 
         return Connection
@@ -89,8 +88,7 @@ class TestConnection(unittest2.TestCase):
 
         class ReqPB(object):
 
-            @staticmethod
-            def SerializeToString():
+            def SerializeToString(self):
                 return b'REQPB'
 
         class RspPB(object):
@@ -187,8 +185,7 @@ class TestConnection(unittest2.TestCase):
             pass
 
         class Xact(object):
-            @staticmethod
-            def mutation():
+            def mutation(self):
                 return Mutation()
         conn = self._makeOne()
         conn.transaction(Xact())
@@ -282,8 +279,7 @@ class TestConnection(unittest2.TestCase):
 
         class Xact(object):
 
-            @staticmethod
-            def id():
+            def id(self):
                 return None
         DATASET_ID = 'DATASET'
         conn = self._makeOne()
@@ -298,8 +294,7 @@ class TestConnection(unittest2.TestCase):
 
         class Xact(object):
 
-            @staticmethod
-            def id():
+            def id(self):
                 return TRANSACTION
         rsp_pb = datastore_pb.RollbackResponse()
         conn = self._makeOne()
@@ -571,8 +566,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore.key import Key
 
         class Xact(object):
-            @staticmethod
-            def id():
+            def id(self):
                 return 'xact'
         DATASET_ID = 'DATASET'
         key_pb = Key(dataset=Dataset(DATASET_ID),
@@ -723,8 +717,7 @@ class TestConnection(unittest2.TestCase):
         mutation = datastore_pb.Mutation()
 
         class Xact(object):
-            @staticmethod
-            def mutation():
+            def mutation(self):
                 return mutation
         DATASET_ID = 'DATASET'
         key_pb = Key(dataset=Dataset(DATASET_ID),
@@ -748,8 +741,7 @@ class TestConnection(unittest2.TestCase):
         mutation = datastore_pb.Mutation()
 
         class Xact(object):
-            @staticmethod
-            def mutation():
+            def mutation(self):
                 return mutation
         DATASET_ID = 'DATASET'
         nested = Entity()
@@ -818,8 +810,7 @@ class TestConnection(unittest2.TestCase):
         mutation = datastore_pb.Mutation()
 
         class Xact(object):
-            @staticmethod
-            def mutation():
+            def mutation(self):
                 return mutation
         DATASET_ID = 'DATASET'
         key_pb = Key(dataset=Dataset(DATASET_ID),
@@ -886,8 +877,7 @@ class TestConnection(unittest2.TestCase):
         mutation = datastore_pb.Mutation()
 
         class Xact(object):
-            @staticmethod
-            def mutation():
+            def mutation(self):
                 return mutation
         DATASET_ID = 'DATASET'
         key_pb = Key(dataset=Dataset(DATASET_ID),

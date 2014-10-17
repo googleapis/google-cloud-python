@@ -4,28 +4,18 @@ import mimetypes
 import os
 from StringIO import StringIO
 
-from gcloud.storage._helpers import _MetadataMixin
 from gcloud.storage.acl import ObjectACL
 from gcloud.storage.iterator import KeyDataIterator
 
 
-class Key(_MetadataMixin):
+class Key(object):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
-
-    LOAD_FULL_FIELDS = ('acl',)
-    """Tuple of metadata fields pertaining to key ACLs."""
-
-    ACL_CLASS = ObjectACL
-    """Class which holds ACL data for keys."""
-
-    ACL_KEYWORD = 'key'
-    """Keyword for ObjectACL constructor to pass a key in."""
 
     CHUNK_SIZE = 1024 * 1024  # 1 MB.
     """The size of a chunk of data whenever iterating (1 MB).
 
-  This must be a multiple of 256 KB per the API specification.
-  """
+    This must be a multiple of 256 KB per the API specification.
+    """
 
     def __init__(self, bucket=None, name=None, metadata=None):
         """Key constructor.
@@ -41,7 +31,6 @@ class Key(_MetadataMixin):
         :type metadata: dict
         :param metadata: All the other data provided by Cloud Storage.
         """
-        super(Key, self).__init__()
 
         self.bucket = bucket
         self.name = name
@@ -315,4 +304,158 @@ class Key(_MetadataMixin):
         self.set_contents_from_file(file_obj=string_buffer, rewind=True,
                                     size=string_buffer.len,
                                     content_type=content_type)
+        return self
+
+    def has_metadata(self, field=None):
+        """Check if metadata is available locally.
+
+        :type field: string
+        :param field: (optional) the particular field to check for.
+
+        :rtype: bool
+        :returns: Whether metadata is available locally.
+        """
+
+        if not self.metadata:
+            return False
+        elif field and field not in self.metadata:
+            return False
+        else:
+            return True
+
+    def reload_metadata(self, full=False):
+        """Reload metadata from Cloud Storage.
+
+        :type full: bool
+        :param full: If True, loads all data (include ACL data).
+
+        :rtype: :class:`Key`
+        :returns: The key you just reloaded data for.
+        """
+
+        projection = 'full' if full else 'noAcl'
+        query_params = {'projection': projection}
+        self.metadata = self.connection.api_request(
+            method='GET', path=self.path, query_params=query_params)
+        return self
+
+    def get_metadata(self, field=None, default=None):
+        """Get all metadata or a specific field.
+
+        If you request a field that isn't available,
+        and that field can be retrieved by refreshing data
+        from Cloud Storage,
+        this method will reload the data using
+        :func:`Key.reload_metadata`.
+
+        :type field: string
+        :param field: (optional) A particular field to retrieve from metadata.
+
+        :type default: anything
+        :param default: The value to return if the field provided wasn't found.
+
+        :rtype: dict or anything
+        :returns: All metadata or the value of the specific field.
+        """
+
+        if not self.has_metadata(field=field):
+            full = (field and field == 'acl')
+            self.reload_metadata(full=full)
+
+        if field:
+            return self.metadata.get(field, default)
+        else:
+            return self.metadata
+
+    def patch_metadata(self, metadata):
+        """Update particular fields of this key's metadata.
+
+        This method will only update the fields provided
+        and will not touch the other fields.
+
+        It will also reload the metadata locally
+        based on the servers response.
+
+        :type metadata: dict
+        :param metadata: The dictionary of values to update.
+
+        :rtype: :class:`Key`
+        :returns: The current key.
+        """
+
+        self.metadata = self.connection.api_request(
+            method='PATCH', path=self.path, data=metadata,
+            query_params={'projection': 'full'})
+        return self
+
+    def reload_acl(self):
+        """Reload the ACL data from Cloud Storage.
+
+        :rtype: :class:`Key`
+        :returns: The current key.
+        """
+
+        self.acl = ObjectACL(key=self)
+
+        for entry in self.get_metadata('acl', []):
+            entity = self.acl.entity_from_dict(entry)
+            self.acl.add_entity(entity)
+
+        return self
+
+    def get_acl(self):
+        """Get ACL metadata as a :class:`gcloud.storage.acl.ObjectACL` object.
+
+        :rtype: :class:`gcloud.storage.acl.ObjectACL`
+        :returns: An ACL object for the current key.
+        """
+
+        if not self.acl:
+            self.reload_acl()
+        return self.acl
+
+    def save_acl(self, acl=None):
+        """Save the ACL data for this key.
+
+        :type acl: :class:`gcloud.storage.acl.ACL`
+        :param acl: The ACL object to save.
+                    If left blank, this will save the ACL
+                    set locally on the key.
+        """
+
+        # We do things in this weird way because [] and None
+        # both evaluate to False, but mean very different things.
+        if acl is None:
+            acl = self.acl
+
+        if acl is None:
+            return self
+
+        self.patch_metadata({'acl': list(acl)})
+        self.reload_acl()
+        return self
+
+    def clear_acl(self):
+        """Remove all ACL rules from the key.
+
+        Note that this won't actually remove *ALL* the rules,
+        but it will remove all the non-default rules.
+        In short,
+        you'll still have access
+        to a key that you created
+        even after you clear ACL rules
+        with this method.
+        """
+
+        return self.save_acl(acl=[])
+
+    def make_public(self):
+        """Make this key public giving all users read access.
+
+        :rtype: :class:`Key`
+        :returns: The current key.
+        """
+
+        self.get_acl().all().grant_read()
+        self.save_acl()
         return self

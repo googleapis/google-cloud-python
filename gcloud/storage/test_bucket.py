@@ -5,8 +5,7 @@ import unittest2
 
 class Test_Bucket(unittest2.TestCase):
 
-    @staticmethod
-    def _getTargetClass():
+    def _getTargetClass(self):
         from gcloud.storage.bucket import Bucket
         return Bucket
 
