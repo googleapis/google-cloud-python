@@ -262,6 +262,7 @@ class TestQuery(unittest2.TestCase):
         expected_called_with = {
             'dataset_id': _DATASET,
             'query_pb': query.to_protobuf(),
+            'namespace': None,
         }
         self.assertEqual(connection._called_with, expected_called_with)
 
@@ -271,6 +272,7 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 123
+        _NAMESPACE = 'NAMESPACE'
         entity_pb = Entity()
         path_element = entity_pb.key.path_element.add()
         path_element.kind = _KIND
@@ -281,7 +283,7 @@ class TestQuery(unittest2.TestCase):
         connection = _Connection(entity_pb)
         connection._cursor = _CURSOR
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(_KIND, dataset, _NAMESPACE)
         limited = query.limit(13)
         entities = query.fetch(13)
         self.assertEqual(query._cursor, _CURSOR)
@@ -291,6 +293,7 @@ class TestQuery(unittest2.TestCase):
         expected_called_with = {
             'dataset_id': _DATASET,
             'query_pb': limited.to_protobuf(),
+            'namespace': _NAMESPACE,
         }
         self.assertEqual(connection._called_with, expected_called_with)
 

@@ -329,7 +329,10 @@ class Query(object):
             clone = self.limit(limit)
 
         query_results = self.dataset().connection().run_query(
-            query_pb=clone.to_protobuf(), dataset_id=self.dataset().id())
+            query_pb=clone.to_protobuf(),
+            dataset_id=self.dataset().id(),
+            namespace=self._namespace,
+            )
         entity_pbs, end_cursor = query_results[:2]
 
         self._cursor = end_cursor
