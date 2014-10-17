@@ -106,7 +106,7 @@ class TestQuery(unittest2.TestCase):
         query = self._makeOne()
         self.assertRaises(TypeError, query.ancestor, object())
 
-    def test_ancester_wo_existing_ancestor_query_w_key_and_propfilter(self):
+    def test_ancestor_wo_existing_ancestor_query_w_key_and_propfilter(self):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
@@ -126,7 +126,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.property.name, '__key__')
         self.assertEqual(p_pb.value.key_value, key.to_protobuf())
 
-    def test_ancester_wo_existing_ancestor_query_w_key(self):
+    def test_ancestor_wo_existing_ancestor_query_w_key(self):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
@@ -142,7 +142,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.property.name, '__key__')
         self.assertEqual(p_pb.value.key_value, key.to_protobuf())
 
-    def test_ancester_wo_existing_ancestor_query_w_list(self):
+    def test_ancestor_wo_existing_ancestor_query_w_list(self):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
@@ -158,7 +158,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.property.name, '__key__')
         self.assertEqual(p_pb.value.key_value, key.to_protobuf())
 
-    def test_ancester_clears_existing_ancestor_query_w_only(self):
+    def test_ancestor_clears_existing_ancestor_query_w_only(self):
         _KIND = 'KIND'
         _ID = 123
         query = self._makeOne()
@@ -169,7 +169,7 @@ class TestQuery(unittest2.TestCase):
         q_pb = after.to_protobuf()
         self.assertEqual(list(q_pb.filter.composite_filter.filter), [])
 
-    def test_ancester_clears_existing_ancestor_query_w_others(self):
+    def test_ancestor_clears_existing_ancestor_query_w_others(self):
         _KIND = 'KIND'
         _ID = 123
         _NAME = 'NAME'
