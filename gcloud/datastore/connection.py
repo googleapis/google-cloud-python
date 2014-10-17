@@ -339,8 +339,9 @@ class Connection(connection.Connection):
         """Save an entity to the Cloud Datastore with the provided properties.
 
         .. note::
-           Any existing properties for the entity will be cleared before
-           applying those passed in 'properties'.
+           Any existing properties for the entity identified by 'key_pb'
+           will be replaced by those passed in 'properties';  properties
+           not passed in 'properties' no longer be set for the entity.
 
         :type dataset_id: string
         :param dataset_id: The dataset in which to save the entity.
