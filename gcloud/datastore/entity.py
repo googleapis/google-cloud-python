@@ -187,6 +187,12 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
     def save(self):
         """Save the entity in the Cloud Datastore.
 
+        .. note::
+           Any existing properties for the entity will be replaced by those
+           currently set on this instance.  Already-stored properties which do
+           not correspond to keys set on this instance will be removed from
+           the datastore.
+
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: The entity with a possibly updated Key.
         """
