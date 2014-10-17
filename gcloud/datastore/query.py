@@ -67,8 +67,9 @@ class Query(object):
         :rtype: :class:`gcloud.datastore.query.Query`
         :returns: a copy of 'self'.
         """
-        clone = copy.deepcopy(self)
-        clone._dataset = self._dataset  # Shallow copy the dataset.
+        clone = self.__class__(dataset=self._dataset)
+        clone._pb.CopyFrom(self._pb)
+        clone._cursor = self._cursor
         return clone
 
     def to_protobuf(self):
