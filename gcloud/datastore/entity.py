@@ -19,6 +19,10 @@ from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.key import Key
 
 
+class NoKey(RuntimeError):
+    pass
+
+
 class Entity(dict):  # pylint: disable=too-many-public-methods
     """:type dataset: :class:`gcloud.datastore.dataset.Dataset`
     :param dataset: The dataset in which this entity belongs.
@@ -82,8 +86,8 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
           be `None`. It also means that if you change the key on the entity,
           this will refer to that key's dataset.
         """
-        if self.key():
-            return self.key().dataset()
+        if self._key:
+            return self._key.dataset()
 
     def key(self, key=None):
         """Get or set the :class:`.datastore.key.Key` on the current entity.
@@ -117,8 +121,8 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
           which knows its Kind.
         """
 
-        if self.key():
-            return self.key().kind()
+        if self._key:
+            return self._key.kind()
 
     @classmethod
     def from_key(cls, key):
@@ -162,6 +166,18 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
 
         return entity
 
+    @property
+    def _must_key(self):
+        """Return our key.
+
+        :rtype: :class:`gcloud.datastore.key.Key`.
+        :returns: our key
+        :raises: NoKey if key is None
+        """
+        if self._key is None:
+            raise NoKey('no key')
+        return self._key
+
     def reload(self):
         """Reloads the contents of this entity from the datastore.
 
@@ -174,11 +190,8 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
           exists remotely, however it will *not* override any properties that
           exist only locally.
         """
-
-        # Note that you must have a valid key, otherwise this makes no sense.
-        # pylint: disable=maybe-no-member
-        entity = self.dataset().get_entity(self.key().to_protobuf())
-        # pylint: enable=maybe-no-member
+        key = self._must_key
+        entity = key.dataset().get_entity(key.to_protobuf())
 
         if entity:
             self.update(entity)
@@ -190,27 +203,24 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: The entity with a possibly updated Key.
         """
-        # pylint: disable=maybe-no-member
-        key_pb = self.dataset().connection().save_entity(
-            dataset_id=self.dataset().id(),
-            key_pb=self.key().to_protobuf(), properties=dict(self))
-        # pylint: enable=maybe-no-member
+        key = self._must_key
+        dataset = key.dataset()
+        connection = dataset.connection()
+        key_pb = connection.save_entity(
+            dataset_id=dataset.id(),
+            key_pb=key.to_protobuf(),
+            properties=dict(self))
 
         # If we are in a transaction and the current entity needs an
         # automatically assigned ID, tell the transaction where to put that.
-        transaction = self.dataset().connection().transaction()
-        # pylint: disable=maybe-no-member
-        if transaction and self.key().is_partial():
+        transaction = connection.transaction()
+        if transaction and key.is_partial():
             transaction.add_auto_id_entity(self)
-        # pylint: enable=maybe-no-member
 
         if isinstance(key_pb, datastore_pb.Key):
             updated_key = Key.from_protobuf(key_pb)
             # Update the path (which may have been altered).
-            # pylint: disable=maybe-no-member
-            key = self.key().path(updated_key.path())
-            # pylint: enable=maybe-no-member
-            self.key(key)
+            self._key = key.path(updated_key.path())
 
         return self
 
@@ -222,20 +232,15 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
           set on the entity. Whatever is stored remotely using the key on the
           entity will be deleted.
         """
-        # NOTE: pylint thinks key() is an Entity, hence key().to_protobuf()
-        #       is not defined. This is because one branch of the return
-        #       in the key() definition returns self.
-        # pylint: disable=maybe-no-member
-        self.dataset().connection().delete_entity(
-            dataset_id=self.dataset().id(), key_pb=self.key().to_protobuf())
-        # pylint: enable=maybe-no-member
+        key = self._must_key
+        dataset = key.dataset()
+        dataset.connection().delete_entity(
+            dataset_id=dataset.id(), key_pb=key.to_protobuf())
 
     def __repr__(self):
         # An entity should have a key all the time (even if it's partial).
-        if self.key():
-            # pylint: disable=maybe-no-member
-            return '<Entity%s %s>' % (self.key().path(),
+        if self._key:
+            return '<Entity%s %s>' % (self._key.path(),
                                       super(Entity, self).__repr__())
-            # pylint: enable=maybe-no-member
         else:
             return '<Entity %s>' % (super(Entity, self).__repr__())

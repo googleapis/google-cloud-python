@@ -85,6 +85,14 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(key.kind(), _KIND)
         self.assertEqual(key.id(), _ID)
 
+    def test_reload_no_key(self):
+        from gcloud.datastore.entity import NoKey
+
+        dataset = _Dataset()
+        entity = self._makeOne(None, None)
+        entity['foo'] = 'Foo'
+        self.assertRaises(NoKey, entity.reload)
+
     def test_reload_miss(self):
         dataset = _Dataset()
         key = _Key(dataset)
@@ -104,6 +112,14 @@ class TestEntity(unittest2.TestCase):
         entity['foo'] = 'Foo'
         self.assertTrue(entity.reload() is entity)
         self.assertEqual(entity['foo'], 'Bar')
+
+    def test_save_no_key(self):
+        from gcloud.datastore.entity import NoKey
+
+        dataset = _Dataset()
+        entity = self._makeOne(None, None)
+        entity['foo'] = 'Foo'
+        self.assertRaises(NoKey, entity.save)
 
     def test_save_wo_transaction_wo_auto_id_wo_returned_key(self):
         connection = _Connection()
@@ -166,6 +182,14 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(connection._saved,
                          (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
         self.assertEqual(key._path, [{'kind': _KIND, 'id': _ID}])
+
+    def test_delete_no_key(self):
+        from gcloud.datastore.entity import NoKey
+
+        dataset = _Dataset()
+        entity = self._makeOne(None, None)
+        entity['foo'] = 'Foo'
+        self.assertRaises(NoKey, entity.delete)
 
     def test_delete(self):
         connection = _Connection()
