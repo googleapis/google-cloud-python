@@ -29,6 +29,11 @@ def _get_protobuf_attribute_and_value(val):
     `gcloud.datastore.key.Key` into a Protobuf representation.
     This function handles that for you.
 
+    .. note::
+       Values which are "text" ('unicode' in Python2, 'str' in Python3) map
+       to 'string_value' in the datastore;  values which are "bytes"
+       ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
+
     For example:
 
     >>> _get_protobuf_attribute_and_value(1234)
