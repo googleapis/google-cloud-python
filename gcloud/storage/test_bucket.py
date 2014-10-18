@@ -793,10 +793,10 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
 
     def test_make_public_defaults(self):
-        from gcloud.storage.acl import ACL
+        from gcloud.storage.acl import _ACLEntity
         NAME = 'name'
         before = {'acl': [], 'defaultObjectAcl': []}
-        permissive = [{'entity': 'allUsers', 'role': ACL.READER_ROLE}]
+        permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
         connection = _Connection(after)
         bucket = self._makeOne(connection, NAME, before)
@@ -812,10 +812,10 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_make_public_w_future(self):
-        from gcloud.storage.acl import ACL
+        from gcloud.storage.acl import _ACLEntity
         NAME = 'name'
         before = {'acl': [], 'defaultObjectAcl': []}
-        permissive = [{'entity': 'allUsers', 'role': ACL.READER_ROLE}]
+        permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after1 = {'acl': permissive, 'defaultObjectAcl': []}
         after2 = {'acl': permissive, 'defaultObjectAcl': permissive}
         connection = _Connection(after1, after2)
@@ -838,7 +838,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
 
     def test_make_public_recursive(self):
-        from gcloud.storage.acl import ACL
+        from gcloud.storage.acl import _ACLEntity
         from gcloud._testing import _Monkey
         from gcloud.storage import iterator
         from gcloud.storage import bucket as MUT
@@ -867,10 +867,11 @@ class Test_Bucket(unittest2.TestCase):
             def get_items_from_response(self, response):
                 for item in response.get('items', []):
                     yield _Key(self.bucket, item['name'])
+
         NAME = 'name'
         KEY = 'key'
         before = {'acl': [], 'defaultObjectAcl': []}
-        permissive = [{'entity': 'allUsers', 'role': ACL.READER_ROLE}]
+        permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
         connection = _Connection(after, {'items': [{'name': KEY}]})
         bucket = self._makeOne(connection, NAME, before)

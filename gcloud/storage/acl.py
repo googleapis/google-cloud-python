@@ -28,14 +28,14 @@ Adding and removing permissions can be done with the following methods
 And you are able to ``grant`` and ``revoke`` the following roles:
 
 - **Reading**:
-  :func:`ACL.Entity.grant_read` and :func:`ACL.Entity.revoke_read`
+  :func:`_ACLEntity.grant_read` and :func:`_ACLEntity.revoke_read`
 - **Writing**:
-  :func:`ACL.Entity.grant_write` and :func:`ACL.Entity.revoke_write`
+  :func:`_ACLEntity.grant_write` and :func:`_ACLEntity.revoke_write`
 - **Owning**:
-  :func:`ACL.Entity.grant_owner` and :func:`ACL.Entity.revoke_owner`
+  :func:`_ACLEntity.grant_owner` and :func:`_ACLEntity.revoke_owner`
 
 You can use any of these like any other factory method
-(these happen to be :class:`ACL.Entity` factories)::
+(these happen to be :class:`_ACLEntity` factories)::
 
   >>> acl.user('me@example.org').grant_read()
   >>> acl.all_authenticated().grant_write()
@@ -72,110 +72,110 @@ fields when sending metadata for ACLs to the API.
 """
 
 
-class ACL(object):
-    """Container class representing a list of access controls."""
+class _ACLEntity(object):
+    """Class representing a set of roles for an entity.
+
+    This is a helper class that you likely won't ever construct
+    outside of using the factor methods on the :class:`ACL` object.
+    """
 
     READER_ROLE = 'READER'
     WRITER_ROLE = 'WRITER'
     OWNER_ROLE = 'OWNER'
 
-    class Entity(object):
-        """Class representing a set of roles for an entity.
+    def __init__(self, entity_type, identifier=None):
+        """Entity constructor.
 
-        This is a helper class that you likely won't ever construct
-        outside of using the factor methods on the :class:`ACL` object.
+        :type entity_type: string
+        :param entity_type: The type of entity (ie, 'group' or 'user').
+
+        :type identifier: string
+        :param identifier: The ID or e-mail of the entity. For the special
+                           entity types (like 'allUsers') this is optional.
+        """
+        self.identifier = identifier
+        self.roles = set([])
+        self.type = entity_type
+
+    def __str__(self):
+        if not self.identifier:
+            return str(self.type)
+        else:
+            return '{self.type}-{self.identifier}'.format(self=self)
+
+    def __repr__(self):
+        return '<ACL Entity: {self} ({roles})>'.format(
+            self=self, roles=', '.join(self.roles))
+
+    def get_roles(self):
+        """Get the list of roles permitted by this entity.
+
+        :rtype: list of strings
+        :returns: The list of roles associated with this entity.
         """
 
-        def __init__(self, entity_type, identifier=None):
-            """Entity constructor.
+        return self.roles
 
-            :type entity_type: string
-            :param entity_type: The type of entity (ie, 'group' or 'user').
+    def grant(self, role):
+        """Add a role to the entity.
 
-            :type identifier: string
-            :param identifier: The ID or e-mail of the entity. For the special
-                               entity types (like 'allUsers') this is optional.
-            """
+        :type role: string
+        :param role: The role to add to the entity.
 
-            self.identifier = identifier
-            self.roles = set([])
-            self.type = entity_type
+        :rtype: :class:`_ACLEntity`
+        :returns: The entity class.
+        """
 
-        def __str__(self):
-            if not self.identifier:
-                return str(self.type)
-            else:
-                return '{self.type}-{self.identifier}'.format(self=self)
+        self.roles.add(role)
+        return self
 
-        def __repr__(self):
-            return '<ACL Entity: {self} ({roles})>'.format(
-                self=self, roles=', '.join(self.roles))
+    def revoke(self, role):
+        """Remove a role from the entity.
 
-        def get_roles(self):
-            """Get the list of roles permitted by this entity.
+        :type role: string
+        :param role: The role to remove from the entity.
 
-            :rtype: list of strings
-            :returns: The list of roles associated with this entity.
-            """
+        :rtype: :class:`_ACLEntity`
+        :returns: The entity class.
+        """
 
-            return self.roles
+        if role in self.roles:
+            self.roles.remove(role)
+        return self
 
-        def grant(self, role):
-            """Add a role to the entity.
+    def grant_read(self):
+        """Grant read access to the current entity."""
 
-            :type role: string
-            :param role: The role to add to the entity.
+        return self.grant(_ACLEntity.READER_ROLE)
 
-            :rtype: :class:`ACL.Entity`
-            :returns: The entity class.
-            """
+    def grant_write(self):
+        """Grant write access to the current entity."""
 
-            self.roles.add(role)
-            return self
+        return self.grant(_ACLEntity.WRITER_ROLE)
 
-        def revoke(self, role):
-            """Remove a role from the entity.
+    def grant_owner(self):
+        """Grant owner access to the current entity."""
 
-            :type role: string
-            :param role: The role to remove from the entity.
+        return self.grant(_ACLEntity.OWNER_ROLE)
 
-            :rtype: :class:`ACL.Entity`
-            :returns: The entity class.
-            """
+    def revoke_read(self):
+        """Revoke read access from the current entity."""
 
-            if role in self.roles:
-                self.roles.remove(role)
-            return self
+        return self.revoke(_ACLEntity.READER_ROLE)
 
-        def grant_read(self):
-            """Grant read access to the current entity."""
+    def revoke_write(self):
+        """Revoke write access from the current entity."""
 
-            return self.grant(ACL.READER_ROLE)
+        return self.revoke(_ACLEntity.WRITER_ROLE)
 
-        def grant_write(self):
-            """Grant write access to the current entity."""
+    def revoke_owner(self):
+        """Revoke owner access from the current entity."""
 
-            return self.grant(ACL.WRITER_ROLE)
+        return self.revoke(_ACLEntity.OWNER_ROLE)
 
-        def grant_owner(self):
-            """Grant owner access to the current entity."""
 
-            return self.grant(ACL.OWNER_ROLE)
-
-        def revoke_read(self):
-            """Revoke read access from the current entity."""
-
-            return self.revoke(ACL.READER_ROLE)
-
-        def revoke_write(self):
-            """Revoke write access from the current entity."""
-
-            return self.revoke(ACL.WRITER_ROLE)
-
-        def revoke_owner(self):
-            """Revoke owner access from the current entity."""
-
-            return self.revoke(ACL.OWNER_ROLE)
+class ACL(object):
+    """Container class representing a list of access controls."""
 
     def __init__(self):
         self.entities = {}
@@ -187,7 +187,7 @@ class ACL(object):
                     yield {'entity': str(entity), 'role': role}
 
     def entity_from_dict(self, entity_dict):
-        """Build an ACL.Entity object from a dictionary of data.
+        """Build an _ACLEntity object from a dictionary of data.
 
         An entity is a mutable object
         that represents a list of roles
@@ -199,7 +199,7 @@ class ACL(object):
         :type entity_dict: dict
         :param entity_dict: Dictionary full of data from an ACL lookup.
 
-        :rtype: :class:`ACL.Entity`
+        :rtype: :class:`_ACLEntity`
         :returns: An Entity constructed from the dictionary.
         """
 
@@ -217,7 +217,7 @@ class ACL(object):
             entity = self.entity(entity_type=entity_type,
                                  identifier=identifier)
 
-        if not isinstance(entity, ACL.Entity):
+        if not isinstance(entity, _ACLEntity):
             raise ValueError('Invalid dictionary: %s' % entity_dict)
 
         return entity.grant(role)
@@ -225,7 +225,7 @@ class ACL(object):
     def has_entity(self, entity):
         """Returns whether or not this ACL has any entries for an entity.
 
-        :type entity: :class:`ACL.Entity`
+        :type entity: :class:`_ACLEntity`
         :param entity: The entity to check for existence in this ACL.
 
         :rtype: bool
@@ -237,14 +237,14 @@ class ACL(object):
     def get_entity(self, entity, default=None):
         """Gets an entity object from the ACL.
 
-        :type entity: :class:`ACL.Entity` or string
+        :type entity: :class:`_ACLEntity` or string
         :param entity: The entity to get lookup in the ACL.
 
         :type default: anything
         :param default: This value will be returned if the entity
                         doesn't exist.
 
-        :rtype: :class:`ACL.Entity`
+        :rtype: :class:`_ACLEntity`
         :returns: The corresponding entity or the value provided
                   to ``default``.
         """
@@ -254,7 +254,7 @@ class ACL(object):
     def add_entity(self, entity):
         """Add an entity to the ACL.
 
-        :type entity: :class:`ACL.Entity`
+        :type entity: :class:`_ACLEntity`
         :param entity: The entity to add to this ACL.
         """
 
@@ -276,11 +276,11 @@ class ACL(object):
         :param identifier: The ID of the entity (if applicable).
                            This can be either an ID or an e-mail address.
 
-        :rtype: :class:`ACL.Entity`
-        :returns: A new Entity or a refernece to an existing identical entity.
+        :rtype: :class:`_ACLEntity`
+        :returns: A new Entity or a reference to an existing identical entity.
         """
 
-        entity = ACL.Entity(entity_type=entity_type, identifier=identifier)
+        entity = _ACLEntity(entity_type=entity_type, identifier=identifier)
         if self.has_entity(entity):
             entity = self.get_entity(entity)
         else:
@@ -293,7 +293,7 @@ class ACL(object):
         :type identifier: string
         :param identifier: An id or e-mail for this particular user.
 
-        :rtype: :class:`ACL.Entity`
+        :rtype: :class:`_ACLEntity`
         :returns: An Entity corresponding to this user.
         """
 
@@ -305,7 +305,7 @@ class ACL(object):
         :type identifier: string
         :param identifier: An id or e-mail for this particular group.
 
-        :rtype: :class:`ACL.Entity`
+        :rtype: :class:`_ACLEntity`
         :returns: An Entity corresponding to this group.
         """
 
@@ -317,7 +317,7 @@ class ACL(object):
         :type domain: string
         :param domain: The domain for this entity.
 
-        :rtype: :class:`ACL.Entity`
+        :rtype: :class:`_ACLEntity`
         :returns: An entity corresponding to this domain.
         """
 
@@ -326,7 +326,7 @@ class ACL(object):
     def all(self):
         """Factory method for an Entity representing all users.
 
-        :rtype: :class:`ACL.Entity`
+        :rtype: :class:`_ACLEntity`
         :returns: An entity representing all users.
         """
 
@@ -335,7 +335,7 @@ class ACL(object):
     def all_authenticated(self):
         """Factory method for an Entity representing all authenticated users.
 
-        :rtype: :class:`ACL.Entity`
+        :rtype: :class:`_ACLEntity`
         :returns: An entity representing all authenticated users.
         """
 
@@ -344,7 +344,7 @@ class ACL(object):
     def get_entities(self):
         """Get a list of all Entity objects.
 
-        :rtype: list of :class:`ACL.Entity` objects
+        :rtype: list of :class:`_ACLEntity` objects
         :returns: A list of all Entity objects.
         """
 
