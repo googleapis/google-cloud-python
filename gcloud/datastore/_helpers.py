@@ -62,8 +62,10 @@ def _get_protobuf_attribute_and_value(val):
     elif isinstance(val, (int, long)):
         INT_VALUE_CHECKER.CheckValue(val)   # Raise an exception if invalid.
         name, value = 'integer', long(val)  # Always cast to a long.
-    elif isinstance(val, basestring):
+    elif isinstance(val, unicode):
         name, value = 'string', val
+    elif isinstance(val, (bytes, str)):
+        name, value = 'blob', val
     elif isinstance(val, Entity):
         name, value = 'entity', val
     elif isinstance(val, list):

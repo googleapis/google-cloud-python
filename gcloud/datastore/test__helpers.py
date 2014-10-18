@@ -75,8 +75,13 @@ class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
 
     def test_native_str(self):
         name, value = self._callFUT('str')
-        self.assertEqual(name, 'string_value')
+        self.assertEqual(name, 'blob_value')
         self.assertEqual(value, 'str')
+
+    def test_bytes(self):
+        name, value = self._callFUT(b'bytes')
+        self.assertEqual(name, 'blob_value')
+        self.assertEqual(value, b'bytes')
 
     def test_unicode(self):
         name, value = self._callFUT(u'str')
@@ -272,8 +277,14 @@ class Test_set_protobuf_value(unittest2.TestCase):
     def test_native_str(self):
         pb = self._makePB()
         self._callFUT(pb, 'str')
-        value = pb.string_value
+        value = pb.blob_value
         self.assertEqual(value, 'str')
+
+    def test_bytes(self):
+        pb = self._makePB()
+        self._callFUT(pb, b'str')
+        value = pb.blob_value
+        self.assertEqual(value, b'str')
 
     def test_unicode(self):
         pb = self._makePB()
@@ -299,18 +310,18 @@ class Test_set_protobuf_value(unittest2.TestCase):
         pb = self._makePB()
         key = Key(path=[{'kind': 'KIND', 'id': 123}])
         entity = Entity().key(key)
-        entity['foo'] = 'Foo'
+        entity['foo'] = u'Foo'
         self._callFUT(pb, entity)
         value = pb.entity_value
         self.assertEqual(value.key, key.to_protobuf())
         props = list(value.property)
         self.assertEqual(len(props), 1)
         self.assertEqual(props[0].name, 'foo')
-        self.assertEqual(props[0].value.string_value, 'Foo')
+        self.assertEqual(props[0].value.string_value, u'Foo')
 
     def test_list(self):
         pb = self._makePB()
-        values = ['a', 0, 3.14]
+        values = [u'a', 0, 3.14]
         self._callFUT(pb, values)
         marshalled = pb.list_value
         self.assertEqual(len(marshalled), len(values))
