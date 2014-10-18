@@ -90,6 +90,12 @@ class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
         self.assertEqual(name, 'entity_value')
         self.assertTrue(value is entity)
 
+    def test_list(self):
+        values = ['a', 0, 3.14]
+        name, value = self._callFUT(values)
+        self.assertEqual(name, 'list_value')
+        self.assertTrue(value is values)
+
     def test_object(self):
         self.assertRaises(ValueError, self._callFUT, object())
 
@@ -301,3 +307,13 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(len(props), 1)
         self.assertEqual(props[0].name, 'foo')
         self.assertEqual(props[0].value.string_value, 'Foo')
+
+    def test_list(self):
+        pb = self._makePB()
+        values = ['a', 0, 3.14]
+        self._callFUT(pb, values)
+        marshalled = pb.list_value
+        self.assertEqual(len(marshalled), len(values))
+        self.assertEqual(marshalled[0].string_value, values[0])
+        self.assertEqual(marshalled[1].integer_value, values[1])
+        self.assertEqual(marshalled[2].double_value, values[2])
