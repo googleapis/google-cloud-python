@@ -247,7 +247,7 @@
 <span class="sd">        :returns: True if the last element of the key&#39;s path does not have</span>
 <span class="sd">                  an &#39;id&#39; or a &#39;name&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_or_name</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_or_name</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span>
 </div>
 <div class="viewcode-block" id="Key.dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Dataset setter / getter.</span>
@@ -319,19 +319,19 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;kind&#39;</span><span class="p">]</span>
 </div>
-<div class="viewcode-block" id="Key.id"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.id"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_to_set</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ID setter / getter.  Based on the last element of path.</span>
 
-<span class="sd">        :type kind: :class:`str`</span>
-<span class="sd">        :param kind: The new kind for the key.</span>
+<span class="sd">        :type id_to_set: :class:`int`</span>
+<span class="sd">        :param id_to_set: The new ID for the key.</span>
 
 <span class="sd">        :rtype: :class:`Key` (for setter); or :class:`int` (for getter)</span>
 <span class="sd">        :returns: a new key, cloned from self., with the given id (setter);</span>
-<span class="sd">                 or self&#39;s id (getter).</span>
+<span class="sd">                  or self&#39;s id (getter).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">id</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">id_to_set</span><span class="p">:</span>
             <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
-            <span class="n">clone</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="n">clone</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_to_set</span>
             <span class="k">return</span> <span class="n">clone</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>

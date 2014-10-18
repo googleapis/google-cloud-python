@@ -403,11 +403,9 @@
         <span class="k">if</span> <span class="n">limit</span><span class="p">:</span>
             <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
 
-        <span class="p">(</span><span class="n">entity_pbs</span><span class="p">,</span>
-         <span class="n">end_cursor</span><span class="p">,</span>
-         <span class="n">more_results</span><span class="p">,</span>
-         <span class="n">skipped_results</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span>
+        <span class="n">query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span>
             <span class="n">query_pb</span><span class="o">=</span><span class="n">clone</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">(),</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">())</span>
+        <span class="n">entity_pbs</span><span class="p">,</span> <span class="n">end_cursor</span> <span class="o">=</span> <span class="n">query_results</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="n">end_cursor</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">Entity</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">())</span>
@@ -467,14 +465,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
             <span class="n">property_order</span> <span class="o">=</span> <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">order</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
 
-            <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">):</span>
-                <span class="n">property_order</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">):</span>
+                <span class="n">property_order</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
                 <span class="n">property_order</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">property_order</span><span class="o">.</span><span class="n">DESCENDING</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">property_order</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">p</span>
+                <span class="n">property_order</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">prop</span>
                 <span class="n">property_order</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">property_order</span><span class="o">.</span><span class="n">ASCENDING</span>
 
         <span class="k">return</span> <span class="n">clone</span></div></div>

@@ -289,6 +289,9 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="c"># NOTE: These variables will be initialized by reset().</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -314,7 +317,7 @@
             <span class="c"># If it isn&#39;t, something is wrong.</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Size of object is unknown.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span>
 </div>
 <div class="viewcode-block" id="KeyDataIterator.get_headers"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyDataIterator.get_headers">[docs]</a>    <span class="k">def</span> <span class="nf">get_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets range header(s) for next chunk of data.</span>

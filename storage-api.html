@@ -1206,7 +1206,7 @@ with the same name as on your local file system.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.upload_file_object">
-<code class="descname">upload_file_object</code><span class="sig-paren">(</span><em>fh</em>, <em>key=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.upload_file_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.upload_file_object" title="Permalink to this definition">¶</a></dt>
+<code class="descname">upload_file_object</code><span class="sig-paren">(</span><em>file_obj</em>, <em>key=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.upload_file_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.upload_file_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to upload a file object into this bucket.</p>
 <p>Use this method to quickly put a local file in Cloud Storage.</p>
 <p>For example:</p>
@@ -1235,7 +1235,7 @@ as the key
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>fh</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
+<li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
 <li><strong>key</strong> (string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></code></a>) &#8211; <p>The key (either an object or a remote path)
 of where to put the file.</p>
 <p>If this is blank,
@@ -1438,13 +1438,13 @@ until expiration.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.get_contents_to_file">
-<code class="descname">get_contents_to_file</code><span class="sig-paren">(</span><em>fh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.get_contents_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_to_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_contents_to_file</code><span class="sig-paren">(</span><em>file_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.get_contents_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_to_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the contents of this key to a file-like object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fh</strong> (<em>file</em>) &#8211; A file handle to which to write the key&#8217;s data.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle to which to write the key&#8217;s data.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></code></a></td>
 </tr>
@@ -1664,14 +1664,14 @@ set locally on the key.</td>
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.set_contents_from_file">
-<code class="descname">set_contents_from_file</code><span class="sig-paren">(</span><em>fh</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.set_contents_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_contents_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.set_contents_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the contents of this key to the contents of a file handle.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>fh</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
+<li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
 <li><strong>rewind</strong> (<em>bool</em>) &#8211; If True, seek to the beginning of the file handle before
 writing the file to Cloud Storage.</li>
 <li><strong>size</strong> (<em>int</em>) &#8211; The number of bytes to read from the file handle.
@@ -1917,27 +1917,20 @@ entity types (like &#8216;allUsers&#8217;) this is optional.</li>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="gcloud.storage.acl.ACL.Role">
-<em class="property">class </em><code class="descclassname">ACL.</code><code class="descname">Role</code><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Role"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Role" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Enum style class for role-type constants.</p>
 <dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.Role.Owner">
-<code class="descname">Owner</code><em class="property"> = 'OWNER'</em><a class="headerlink" href="#gcloud.storage.acl.ACL.Role.Owner" title="Permalink to this definition">¶</a></dt>
+<dt id="gcloud.storage.acl.ACL.OWNER_ROLE">
+<code class="descclassname">ACL.</code><code class="descname">OWNER_ROLE</code><em class="property"> = 'OWNER'</em><a class="headerlink" href="#gcloud.storage.acl.ACL.OWNER_ROLE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.Role.Reader">
-<code class="descname">Reader</code><em class="property"> = 'READER'</em><a class="headerlink" href="#gcloud.storage.acl.ACL.Role.Reader" title="Permalink to this definition">¶</a></dt>
+<dt id="gcloud.storage.acl.ACL.READER_ROLE">
+<code class="descclassname">ACL.</code><code class="descname">READER_ROLE</code><em class="property"> = 'READER'</em><a class="headerlink" href="#gcloud.storage.acl.ACL.READER_ROLE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.Role.Writer">
-<code class="descname">Writer</code><em class="property"> = 'WRITER'</em><a class="headerlink" href="#gcloud.storage.acl.ACL.Role.Writer" title="Permalink to this definition">¶</a></dt>
+<dt id="gcloud.storage.acl.ACL.WRITER_ROLE">
+<code class="descclassname">ACL.</code><code class="descname">WRITER_ROLE</code><em class="property"> = 'WRITER'</em><a class="headerlink" href="#gcloud.storage.acl.ACL.WRITER_ROLE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-</dd></dl>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.add_entity">
@@ -2542,8 +2535,8 @@ on <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.st
 
 <dl class="exception">
 <dt id="gcloud.storage.exceptions.NotFoundError">
-<em class="property">exception </em><code class="descclassname">gcloud.storage.exceptions.</code><code class="descname">NotFoundError</code><span class="sig-paren">(</span><em>response</em>, <em>content</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#NotFoundError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.NotFoundError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ConnectionError" title="gcloud.storage.exceptions.ConnectionError"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ConnectionError</span></code></a></p>
+<em class="property">exception </em><code class="descclassname">gcloud.storage.exceptions.</code><code class="descname">NotFoundError</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#NotFoundError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.NotFoundError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.StorageError" title="gcloud.storage.exceptions.StorageError"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.StorageError</span></code></a></p>
 <p>Exception corresponding to a 404 not found bad connection.</p>
 </dd></dl>
 

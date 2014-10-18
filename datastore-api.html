@@ -547,7 +547,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f42106c3230&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f3c0daa1230&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -902,7 +902,10 @@ Protobuf API.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<code class="xref py py-class docutils literal"><span class="pre">glcouddatastore.key.Key</span></code>) &#8211; The key you want to set on the entity.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Either the current key or the <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a> or <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Either the current key (on get) or the current
+object (on set).</td>
 </tr>
 </tbody>
 </table>
@@ -1097,13 +1100,13 @@ instance whose ID is derived from pb.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.id">
-<code class="descname">id</code><span class="sig-paren">(</span><em>id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id" title="Permalink to this definition">¶</a></dt>
+<code class="descname">id</code><span class="sig-paren">(</span><em>id_to_set=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id" title="Permalink to this definition">¶</a></dt>
 <dd><p>ID setter / getter.  Based on the last element of path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) &#8211; The new kind for the key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_to_set</strong> (<code class="xref py py-class docutils literal"><span class="pre">int</span></code>) &#8211; The new ID for the key.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> (for setter); or <code class="xref py py-class docutils literal"><span class="pre">int</span></code> (for getter)</td>
 </tr>
@@ -1308,7 +1311,7 @@ without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&gt;': 3, '=': 5, '&lt;': 1, '&gt;=': 4, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'=': 5, '&lt;': 1, '&lt;=': 2, '&gt;': 3, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 

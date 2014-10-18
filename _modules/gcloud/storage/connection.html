@@ -326,7 +326,7 @@
             <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">404</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
 
@@ -579,7 +579,7 @@
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s">&#39;GoogleAccessId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">service_account_name</span><span class="p">,</span>
             <span class="s">&#39;Expires&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
-            <span class="s">&#39;Signature&#39;</span><span class="p">:</span> <span class="n">signature</span>
+            <span class="s">&#39;Signature&#39;</span><span class="p">:</span> <span class="n">signature</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="c"># Return the built URL.</span>

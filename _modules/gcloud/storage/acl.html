@@ -163,13 +163,10 @@
 <div class="viewcode-block" id="ACL"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL">[docs]</a><span class="k">class</span> <span class="nc">ACL</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Container class representing a list of access controls.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ACL.Role"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Role">[docs]</a>    <span class="k">class</span> <span class="nc">Role</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Enum style class for role-type constants.&quot;&quot;&quot;</span>
+    <span class="n">READER_ROLE</span> <span class="o">=</span> <span class="s">&#39;READER&#39;</span>
+    <span class="n">WRITER_ROLE</span> <span class="o">=</span> <span class="s">&#39;WRITER&#39;</span>
+    <span class="n">OWNER_ROLE</span> <span class="o">=</span> <span class="s">&#39;OWNER&#39;</span>
 
-        <span class="n">Reader</span> <span class="o">=</span> <span class="s">&#39;READER&#39;</span>
-        <span class="n">Writer</span> <span class="o">=</span> <span class="s">&#39;WRITER&#39;</span>
-        <span class="n">Owner</span> <span class="o">=</span> <span class="s">&#39;OWNER&#39;</span>
-</div>
 <div class="viewcode-block" id="ACL.Entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity">[docs]</a>    <span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Class representing a set of roles for an entity.</span>
 
@@ -241,32 +238,32 @@
 <div class="viewcode-block" id="ACL.Entity.grant_read"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.grant_read">[docs]</a>        <span class="k">def</span> <span class="nf">grant_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Grant read access to the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">Role</span><span class="o">.</span><span class="n">Reader</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.Entity.grant_write"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.grant_write">[docs]</a>        <span class="k">def</span> <span class="nf">grant_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Grant write access to the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">Role</span><span class="o">.</span><span class="n">Writer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.Entity.grant_owner"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.grant_owner">[docs]</a>        <span class="k">def</span> <span class="nf">grant_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Grant owner access to the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">Role</span><span class="o">.</span><span class="n">Owner</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.Entity.revoke_read"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.revoke_read">[docs]</a>        <span class="k">def</span> <span class="nf">revoke_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Revoke read access from the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">Role</span><span class="o">.</span><span class="n">Reader</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.Entity.revoke_write"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.revoke_write">[docs]</a>        <span class="k">def</span> <span class="nf">revoke_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Revoke write access from the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">Role</span><span class="o">.</span><span class="n">Writer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.Entity.revoke_owner"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.revoke_owner">[docs]</a>        <span class="k">def</span> <span class="nf">revoke_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Revoke owner access from the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">Role</span><span class="o">.</span><span class="n">Owner</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
 </div></div>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span> <span class="o">=</span> <span class="p">{}</span>

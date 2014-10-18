@@ -87,6 +87,7 @@
             
   <h1>Source code for gcloud.datastore.connection</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Connections to gcloud datastore API servers.&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_helpers</span>
@@ -111,7 +112,7 @@
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_transaction</span> <span class="o">=</span> <span class="bp">None</span>
 
     <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
@@ -328,11 +329,12 @@
         <span class="n">request</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">query_pb</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="s">&#39;runQuery&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                              <span class="n">datastore_pb</span><span class="o">.</span><span class="n">RunQueryResponse</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">([</span><span class="n">e</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">entity_result</span><span class="p">],</span>
-                <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">end_cursor</span><span class="p">,</span>
-                <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">more_results</span><span class="p">,</span>
-                <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">skipped_results</span><span class="p">,</span>
-                <span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">entity_result</span><span class="p">],</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">end_cursor</span><span class="p">,</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">more_results</span><span class="p">,</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">skipped_results</span><span class="p">,</span>
+        <span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Lookup keys from a dataset in the Cloud Datastore.</span>

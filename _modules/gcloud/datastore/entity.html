@@ -111,7 +111,7 @@
     <span class="sd">&quot;&quot;&quot;Exception raised by Entity methods which require a key.&quot;&quot;&quot;</span>
 
 </div>
-<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>  <span class="c"># pylint: disable=too-many-public-methods</span>
+<div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;:type dataset: :class:`gcloud.datastore.dataset.Dataset`</span>
 <span class="sd">    :param dataset: The dataset in which this entity belongs.</span>
 
@@ -183,7 +183,9 @@
 <span class="sd">        :type key: :class:`glcouddatastore.key.Key`</span>
 <span class="sd">        :param key: The key you want to set on the entity.</span>
 
-<span class="sd">        :returns: Either the current key or the :class:`Entity`.</span>
+<span class="sd">        :rtype: :class:`gcloud.datastore.key.Key` or :class:`Entity`.</span>
+<span class="sd">        :returns: Either the current key (on get) or the current</span>
+<span class="sd">                  object (on set).</span>
 
 <span class="sd">        &gt;&gt;&gt; entity.key(my_other_key)  # This returns the original entity.</span>
 <span class="sd">        &lt;Entity[{&#39;kind&#39;: &#39;OtherKeyKind&#39;, &#39;id&#39;: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
@@ -229,7 +231,7 @@
         <span class="k">return</span> <span class="n">cls</span><span class="p">()</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 </div>
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Entity.from_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.from_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">from_protobuf</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>  <span class="c"># pylint: disable=invalid-name</span>
+<div class="viewcode-block" id="Entity.from_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.from_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">from_protobuf</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for creating an entity based on a protobuf.</span>
 
 <span class="sd">        The protobuf should be one returned from the Cloud Datastore</span>

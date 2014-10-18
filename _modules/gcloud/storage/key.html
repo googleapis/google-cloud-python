@@ -88,7 +88,6 @@
   <h1>Source code for gcloud.storage.key</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud storage keys.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">errno</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
@@ -103,8 +102,8 @@
     <span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c"># 1 MB.</span>
     <span class="sd">&quot;&quot;&quot;The size of a chunk of data whenever iterating (1 MB).</span>
 
-<span class="sd">  This must be a multiple of 256 KB per the API specification.</span>
-<span class="sd">  &quot;&quot;&quot;</span>
+<span class="sd">    This must be a multiple of 256 KB per the API specification.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Key constructor.</span>
@@ -258,17 +257,17 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Key.get_contents_to_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_contents_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.get_contents_to_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_contents_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the contents of this key to a file-like object.</span>
 
-<span class="sd">        :type fh: file</span>
-<span class="sd">        :param fh: A file handle to which to write the key&#39;s data.</span>
+<span class="sd">        :type file_obj: file</span>
+<span class="sd">        :param file_obj: A file handle to which to write the key&#39;s data.</span>
 
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">KeyDataIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="n">file_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Key.get_contents_to_filename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_contents_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the contents of this key to a file by name.</span>
@@ -279,8 +278,8 @@
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_contents_to_file</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_contents_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Key.get_contents_as_string"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_contents_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the data stored on this Key as a string.</span>
@@ -294,12 +293,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">get_contents_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="Key.set_contents_from_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.set_contents_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">set_contents_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Key.set_contents_from_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.set_contents_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">set_contents_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                                <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the contents of this key to the contents of a file handle.</span>
 
-<span class="sd">        :type fh: file</span>
-<span class="sd">        :param fh: A file handle open for reading.</span>
+<span class="sd">        :type file_obj: file</span>
+<span class="sd">        :param file_obj: A file handle open for reading.</span>
 
 <span class="sd">        :type rewind: bool</span>
 <span class="sd">        :param rewind: If True, seek to the beginning of the file handle before</span>
@@ -313,10 +312,10 @@
 
         <span class="c"># Rewind the file if desired.</span>
         <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
-            <span class="n">fh</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
+            <span class="n">file_obj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
 
         <span class="c"># Get the basic stats about the file.</span>
-        <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">size</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span><span class="o">.</span><span class="n">st_size</span>
+        <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">size</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span><span class="o">.</span><span class="n">st_size</span>
         <span class="n">bytes_uploaded</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c"># Set up a resumable upload session.</span>
@@ -330,7 +329,7 @@
             <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;uploadType&#39;</span><span class="p">:</span> <span class="s">&#39;resumable&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
             <span class="n">api_base_url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s">&#39;/upload&#39;</span><span class="p">)</span>
 
-        <span class="n">response</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
+        <span class="n">response</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">upload_url</span><span class="p">,</span>
             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
@@ -339,7 +338,7 @@
 
         <span class="k">while</span> <span class="n">bytes_uploaded</span> <span class="o">&lt;</span> <span class="n">total_bytes</span><span class="p">:</span>
             <span class="c"># Construct the range header.</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">file_obj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
             <span class="n">chunk_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
             <span class="n">start</span> <span class="o">=</span> <span class="n">bytes_uploaded</span>
@@ -349,7 +348,7 @@
                 <span class="s">&#39;Content-Range&#39;</span><span class="p">:</span> <span class="s">&#39;bytes </span><span class="si">%d</span><span class="s">-</span><span class="si">%d</span><span class="s">/</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">),</span>
             <span class="p">}</span>
 
-            <span class="n">response</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
+            <span class="n">response</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
                 <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;text/plain&#39;</span><span class="p">,</span>
                 <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
@@ -364,8 +363,8 @@
 
         <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Key.set_contents_from_string"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.set_contents_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">set_contents_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;text/plain&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets the contents of this key to the provided string.</span>
@@ -390,7 +389,7 @@
 
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
         <span class="n">string_buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">fh</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
                                     <span class="n">size</span><span class="o">=</span><span class="n">string_buffer</span><span class="o">.</span><span class="n">len</span><span class="p">,</span>
                                     <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>

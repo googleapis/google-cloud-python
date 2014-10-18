@@ -354,7 +354,7 @@
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.upload_file_object"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.upload_file_object">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fh</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.upload_file_object"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.upload_file_object">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Shortcut method to upload a file object into this bucket.</span>
 
 <span class="sd">        Use this method to quickly put a local file in Cloud Storage.</span>
@@ -380,8 +380,8 @@
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_keys()</span>
 <span class="sd">          [&lt;Key: my-bucket, my-file.txt&gt;]</span>
 
-<span class="sd">        :type fh: file</span>
-<span class="sd">        :param fh: A file handle open for reading.</span>
+<span class="sd">        :type file_obj: file</span>
+<span class="sd">        :param file_obj: A file handle open for reading.</span>
 
 <span class="sd">        :type key: string or :class:`gcloud.storage.key.Key`</span>
 <span class="sd">        :param key: The key (either an object or a remote path)</span>
@@ -395,8 +395,8 @@
         <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.has_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.has_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">has_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if metadata is available locally.</span>
@@ -520,10 +520,12 @@
 <span class="sd">        :param not_found_page: The file to use when a page isn&#39;t found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;website&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;mainPageSuffix&#39;</span><span class="p">:</span> <span class="n">main_page_suffix</span><span class="p">,</span>
-                            <span class="s">&#39;notFoundPage&#39;</span><span class="p">:</span> <span class="n">not_found_page</span><span class="p">,</span>
-                            <span class="p">}</span>
-                <span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;website&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;mainPageSuffix&#39;</span><span class="p">:</span> <span class="n">main_page_suffix</span><span class="p">,</span>
+                <span class="s">&#39;notFoundPage&#39;</span><span class="p">:</span> <span class="n">not_found_page</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_metadata</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.disable_website"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.disable_website">[docs]</a>    <span class="k">def</span> <span class="nf">disable_website</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
