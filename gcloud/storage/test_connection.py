@@ -30,13 +30,13 @@ class TestConnection(unittest2.TestCase):
         self.assertTrue(conn.http is http)
 
     def test_http_wo_creds(self):
-        from httplib2 import Http
+        import httplib2
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        self.assertTrue(isinstance(conn.http, Http))
+        self.assertTrue(isinstance(conn.http, httplib2.Http))
 
     def test_http_w_creds(self):
-        from httplib2 import Http
+        import httplib2
         PROJECT = 'project'
         authorized = object()
 
@@ -47,20 +47,21 @@ class TestConnection(unittest2.TestCase):
         creds = Creds()
         conn = self._makeOne(PROJECT, creds)
         self.assertTrue(conn.http is authorized)
-        self.assertTrue(isinstance(creds._called_with, Http))
+        self.assertTrue(isinstance(creds._called_with, httplib2.Http))
 
     def test___iter___empty(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{}')
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{}',
+        )
         keys = list(conn)
         self.assertEqual(len(keys), 0)
         self.assertEqual(http._called_with['method'], 'GET')
@@ -70,15 +71,16 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         KEY = 'key'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{"items": [{"name": "%s"}]}' % KEY)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{"items": [{"name": "%s"}]}' % KEY,
+        )
         keys = list(conn)
         self.assertEqual(len(keys), 1)
         self.assertEqual(keys[0].name, KEY)
@@ -89,16 +91,17 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         NONESUCH = 'nonesuch'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b',
-                        'nonesuch?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '404',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{}')
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b',
+            'nonesuch?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '404', 'content-type': 'application/json'},
+            '{}',
+        )
         self.assertFalse(NONESUCH in conn)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -107,16 +110,17 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         KEY = 'key'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b',
-                        'key?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{"name": "%s"}' % KEY)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b',
+            'key?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{"name": "%s"}' % KEY,
+        )
         self.assertTrue(KEY in conn)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -124,11 +128,12 @@ class TestConnection(unittest2.TestCase):
     def test_build_api_url_no_extra_query_params(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'foo?project=%s' % PROJECT,
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'foo?project=%s' % PROJECT,
+        ])
         self.assertEqual(conn.build_api_url('/foo'), URI)
 
     def test_build_api_url_w_extra_query_params(self):
@@ -137,7 +142,7 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         uri = conn.build_api_url('/foo', {'bar': 'baz'})
-        scheme, netloc, path, qs, frag = urlsplit(uri)
+        scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
         self.assertEqual(path,
                          '/'.join(['', 'storage', conn.API_VERSION, 'foo']))
@@ -149,10 +154,10 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'text/plain',
-                                  },
-                                 '')
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'text/plain'},
+            '',
+        )
         headers, content = conn.make_request('GET', URI)
         self.assertEqual(headers['status'], '200')
         self.assertEqual(headers['content-type'], 'text/plain')
@@ -160,89 +165,94 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], None)
-        self.assertEqual(http._called_with['headers'],
-                         {'Accept-Encoding': 'gzip',
-                          'Content-Length': 0,
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Accept-Encoding': 'gzip',
+            'Content-Length': 0,
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_make_request_w_data_no_extra_headers(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'text/plain',
-                                  },
-                                 '')
-        headers, content = conn.make_request('GET', URI, {},
-                                             'application/json')
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'text/plain'},
+            '',
+        )
+        conn.make_request('GET', URI, {}, 'application/json')
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], {})
-        self.assertEqual(http._called_with['headers'],
-                         {'Accept-Encoding': 'gzip',
-                          'Content-Length': 0,
-                          'Content-Type': 'application/json',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Accept-Encoding': 'gzip',
+            'Content-Length': 0,
+            'Content-Type': 'application/json',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_make_request_w_extra_headers(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'text/plain',
-                                  },
-                                 '')
-        headers, content = conn.make_request('GET', URI,
-                                             headers={'X-Foo': 'foo'})
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'text/plain'},
+            '',
+        )
+        conn.make_request('GET', URI, headers={'X-Foo': 'foo'})
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], None)
-        self.assertEqual(http._called_with['headers'],
-                         {'Accept-Encoding': 'gzip',
-                          'Content-Length': 0,
-                          'X-Foo': 'foo',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Accept-Encoding': 'gzip',
+            'Content-Length': 0,
+            'X-Foo': 'foo',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_api_request_defaults(self):
         PROJECT = 'project'
         PATH = '/path/required'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        ]) + '%s?project=%s' % (PATH, PROJECT)
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  }, '{}')
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            '%s%s?project=%s' % (conn.API_VERSION, PATH, PROJECT),
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{}',
+        )
         self.assertEqual(conn.api_request('GET', PATH), {})
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], None)
-        self.assertEqual(http._called_with['headers'],
-                         {'Accept-Encoding': 'gzip',
-                          'Content-Length': 0,
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Accept-Encoding': 'gzip',
+            'Content-Length': 0,
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_api_request_w_non_json_response(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        conn._http = Http({'status': '200',
-                           'content-type': 'text/plain',
-                           },
-                          'CONTENT')
+        conn._http = Http(
+            {'status': '200', 'content-type': 'text/plain'},
+            'CONTENT',
+        )
+
         self.assertRaises(TypeError, conn.api_request, 'GET', '/')
 
     def test_api_request_wo_json_expected(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        conn._http = Http({'status': '200',
-                           'content-type': 'text/plain',
-                           },
-                          'CONTENT')
+        conn._http = Http(
+            {'status': '200', 'content-type': 'text/plain'},
+            'CONTENT',
+        )
         self.assertEqual(conn.api_request('GET', '/', expect_json=False),
                          'CONTENT')
 
@@ -251,14 +261,14 @@ class TestConnection(unittest2.TestCase):
         from urlparse import urlsplit
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{}')
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{}',
+        )
         self.assertEqual(conn.api_request('GET', '/', {'foo': 'bar'}), {})
         self.assertEqual(http._called_with['method'], 'GET')
         uri = http._called_with['uri']
-        scheme, netloc, path, qs, frag = urlsplit(uri)
+        scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
         self.assertEqual(path,
                          '/'.join(['', 'storage', conn.API_VERSION, '']))
@@ -266,11 +276,12 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(parms['project'], PROJECT)
         self.assertEqual(parms['foo'], 'bar')
         self.assertEqual(http._called_with['body'], None)
-        self.assertEqual(http._called_with['headers'],
-                         {'Accept-Encoding': 'gzip',
-                          'Content-Length': 0,
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Accept-Encoding': 'gzip',
+            'Content-Length': 0,
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_api_request_w_data(self):
         import json
@@ -278,58 +289,61 @@ class TestConnection(unittest2.TestCase):
         DATA = {'foo': 'bar'}
         DATAJ = json.dumps(DATA)
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        '?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{}')
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            '?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{}',
+        )
         self.assertEqual(conn.api_request('POST', '/', data=DATA), {})
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], DATAJ)
-        self.assertEqual(http._called_with['headers'],
-                         {'Accept-Encoding': 'gzip',
-                          'Content-Length': len(DATAJ),
-                          'Content-Type': 'application/json',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Accept-Encoding': 'gzip',
+            'Content-Length': len(DATAJ),
+            'Content-Type': 'application/json',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_api_request_w_404(self):
         from gcloud.storage.exceptions import NotFoundError
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        conn._http = Http({'status': '404',
-                           'content-type': 'text/plain',
-                           },
-                          '')
+        conn._http = Http(
+            {'status': '404', 'content-type': 'text/plain'},
+            '',
+        )
         self.assertRaises(NotFoundError, conn.api_request, 'GET', '/')
 
     def test_api_request_w_500(self):
         from gcloud.storage.exceptions import ConnectionError
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        conn._http = Http({'status': '500',
-                           'content-type': 'text/plain',
-                           },
-                          '')
+        conn._http = Http(
+            {'status': '500', 'content-type': 'text/plain'},
+            '',
+        )
         self.assertRaises(ConnectionError, conn.api_request, 'GET', '/')
 
     def test_get_all_buckets_empty(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{}')
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{}',
+        )
         keys = conn.get_all_buckets()
         self.assertEqual(len(keys), 0)
         self.assertEqual(http._called_with['method'], 'GET')
@@ -339,15 +353,16 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         KEY = 'key'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{"items": [{"name": "%s"}]}' % KEY)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{"items": [{"name": "%s"}]}' % KEY,
+        )
         keys = conn.get_all_buckets()
         self.assertEqual(len(keys), 1)
         self.assertEqual(keys[0].name, KEY)
@@ -359,16 +374,17 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         NONESUCH = 'nonesuch'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b',
-                        'nonesuch?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '404',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{}')
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b',
+            'nonesuch?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '404', 'content-type': 'application/json'},
+            '{}',
+        )
         self.assertRaises(NotFoundError, conn.get_bucket, NONESUCH)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -378,16 +394,17 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         KEY = 'key'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b',
-                        'key?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{"name": "%s"}' % KEY)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b',
+            'key?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{"name": "%s"}' % KEY,
+        )
         bucket = conn.get_bucket(KEY)
         self.assertTrue(isinstance(bucket, Bucket))
         self.assertTrue(bucket.connection is conn)
@@ -399,16 +416,17 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         NONESUCH = 'nonesuch'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b',
-                        'nonesuch?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '404',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{}')
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b',
+            'nonesuch?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '404', 'content-type': 'application/json'},
+            '{}',
+        )
         self.assertEqual(conn.lookup(NONESUCH), None)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -418,16 +436,17 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         KEY = 'key'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b',
-                        'key?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{"name": "%s"}' % KEY)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b',
+            'key?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{"name": "%s"}' % KEY,
+        )
         bucket = conn.lookup(KEY)
         self.assertTrue(isinstance(bucket, Bucket))
         self.assertTrue(bucket.connection is conn)
@@ -440,15 +459,16 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         KEY = 'key'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{"name": "%s"}' % KEY)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b?project=%s' % PROJECT,
+            ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{"name": "%s"}' % KEY,
+        )
         bucket = conn.create_bucket(KEY)
         self.assertTrue(isinstance(bucket, Bucket))
         self.assertTrue(bucket.connection is conn)
@@ -459,9 +479,6 @@ class TestConnection(unittest2.TestCase):
     def test_delete_bucket_defaults_miss(self):
         _deleted_keys = []
 
-        class _Key(object):
-            pass
-
         class _Bucket(object):
 
             def __init__(self, name):
@@ -471,16 +488,17 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         KEY = 'key'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b',
-                        'key?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{}')
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b',
+            'key?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{}',
+        )
 
         def _new_bucket(name):
             return _Bucket(name)
@@ -514,16 +532,17 @@ class TestConnection(unittest2.TestCase):
         PROJECT = 'project'
         KEY = 'key'
         conn = self._makeOne(PROJECT)
-        URI = '/'.join([conn.API_BASE_URL,
-                        'storage',
-                        conn.API_VERSION,
-                        'b',
-                        'key?project=%s' % PROJECT,
-                        ])
-        http = conn._http = Http({'status': '200',
-                                  'content-type': 'application/json',
-                                  },
-                                 '{}')
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b',
+            'key?project=%s' % PROJECT,
+        ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{}',
+        )
 
         def _new_bucket(name):
             return _Bucket(name)
@@ -566,7 +585,6 @@ class TestConnection(unittest2.TestCase):
         ENDPOINT = 'http://api.example.com'
         RESOURCE = '/name/key'
         PROJECT = 'project'
-        KEY = 'key'
         SIGNED = base64.b64encode('DEADBEEF')
         crypto = _Crypto()
         rsa = _RSA()

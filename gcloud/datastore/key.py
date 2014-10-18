@@ -159,7 +159,7 @@ class Key(object):
         :returns: True if the last element of the key's path does not have
                   an 'id' or a 'name'.
         """
-        return (self.id_or_name() is None)
+        return self.id_or_name() is None
 
     def dataset(self, dataset=None):
         """Dataset setter / getter.
@@ -231,19 +231,19 @@ class Key(object):
         elif self.path():
             return self._path[-1]['kind']
 
-    def id(self, id=None):
+    def id(self, id_to_set=None):
         """ID setter / getter.  Based on the last element of path.
 
-        :type kind: :class:`str`
-        :param kind: The new kind for the key.
+        :type id_to_set: :class:`int`
+        :param id_to_set: The new ID for the key.
 
         :rtype: :class:`Key` (for setter); or :class:`int` (for getter)
         :returns: a new key, cloned from self., with the given id (setter);
-                 or self's id (getter).
+                  or self's id (getter).
         """
-        if id:
+        if id_to_set:
             clone = self._clone()
-            clone._path[-1]['id'] = id
+            clone._path[-1]['id'] = id_to_set
             return clone
         elif self.path():
             return self._path[-1].get('id')

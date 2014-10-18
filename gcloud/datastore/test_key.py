@@ -212,10 +212,11 @@ class TestKey(unittest2.TestCase):
     def test_from_path_nested(self):
         key = self._getTargetClass().from_path('abc', 'def', 'ghi', 123)
         self.assertEqual(key.kind(), 'ghi')
-        self.assertEqual(key.path(),
-                         [{'kind': 'abc', 'name': 'def'},
-                          {'kind': 'ghi', 'id': 123},
-                          ])
+        expected_path = [
+            {'kind': 'abc', 'name': 'def'},
+            {'kind': 'ghi', 'id': 123},
+        ]
+        self.assertEqual(key.path(), expected_path)
 
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne()

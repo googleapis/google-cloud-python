@@ -35,7 +35,6 @@ class TestConnection(unittest2.TestCase):
         authorized = object()
 
         class Creds(object):
-
             def authorize(self, http):
                 self._called_with = http
                 return authorized

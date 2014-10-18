@@ -45,8 +45,7 @@ class DemoRunner(object):
         else:
             return cls.CODE
 
-    @staticmethod
-    def get_indent_level(line):
+    def get_indent_level(self, line):
         if not line.strip():
             return None
         return len(line) - len(line.lstrip())

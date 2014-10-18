@@ -1,4 +1,5 @@
 """Connections to gcloud datastore API servers."""
+
 from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import _helpers
@@ -23,7 +24,7 @@ class Connection(connection.Connection):
     """A template for the URL of a particular API call."""
 
     def __init__(self, credentials=None):
-        self._credentials = credentials
+        super(Connection, self).__init__(credentials=credentials)
         self._current_transaction = None
 
     def _request(self, dataset_id, method, data):
@@ -240,11 +241,12 @@ class Connection(connection.Connection):
         request.query.CopyFrom(query_pb)
         response = self._rpc(dataset_id, 'runQuery', request,
                              datastore_pb.RunQueryResponse)
-        return ([e.entity for e in response.batch.entity_result],
-                response.batch.end_cursor,
-                response.batch.more_results,
-                response.batch.skipped_results,
-                )
+        return (
+            [e.entity for e in response.batch.entity_result],
+            response.batch.end_cursor,
+            response.batch.more_results,
+            response.batch.skipped_results,
+        )
 
     def lookup(self, dataset_id, key_pbs):
         """Lookup keys from a dataset in the Cloud Datastore.

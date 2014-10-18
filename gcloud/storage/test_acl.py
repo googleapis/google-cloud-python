@@ -77,27 +77,27 @@ class Test_ACL_Entity(unittest2.TestCase):
         TYPE = 'type'
         entity = self._makeOne(TYPE)
         entity.grant_read()
-        self.assertEqual(entity.get_roles(), set([ACL.Role.Reader]))
+        self.assertEqual(entity.get_roles(), set([ACL.READER_ROLE]))
 
     def test_grant_write(self):
         from gcloud.storage.acl import ACL
         TYPE = 'type'
         entity = self._makeOne(TYPE)
         entity.grant_write()
-        self.assertEqual(entity.get_roles(), set([ACL.Role.Writer]))
+        self.assertEqual(entity.get_roles(), set([ACL.WRITER_ROLE]))
 
     def test_grant_owner(self):
         from gcloud.storage.acl import ACL
         TYPE = 'type'
         entity = self._makeOne(TYPE)
         entity.grant_owner()
-        self.assertEqual(entity.get_roles(), set([ACL.Role.Owner]))
+        self.assertEqual(entity.get_roles(), set([ACL.OWNER_ROLE]))
 
     def test_revoke_read(self):
         from gcloud.storage.acl import ACL
         TYPE = 'type'
         entity = self._makeOne(TYPE)
-        entity.grant(ACL.Role.Reader)
+        entity.grant(ACL.READER_ROLE)
         entity.revoke_read()
         self.assertEqual(entity.get_roles(), set())
 
@@ -105,7 +105,7 @@ class Test_ACL_Entity(unittest2.TestCase):
         from gcloud.storage.acl import ACL
         TYPE = 'type'
         entity = self._makeOne(TYPE)
-        entity.grant(ACL.Role.Writer)
+        entity.grant(ACL.WRITER_ROLE)
         entity.revoke_write()
         self.assertEqual(entity.get_roles(), set())
 
@@ -113,7 +113,7 @@ class Test_ACL_Entity(unittest2.TestCase):
         from gcloud.storage.acl import ACL
         TYPE = 'type'
         entity = self._makeOne(TYPE)
-        entity.grant(ACL.Role.Owner)
+        entity.grant(ACL.OWNER_ROLE)
         entity.revoke_owner()
         self.assertEqual(entity.get_roles(), set())
 

@@ -73,8 +73,7 @@ class TestIterator(unittest2.TestCase):
         iterator = self._makeOne(connection, PATH)
         iterator.next_page_token = TOKEN
         self.assertEqual(iterator.get_query_params(),
-                         {'pageToken': TOKEN,
-                          })
+                         {'pageToken': TOKEN})
 
     def test_get_next_page_response_new_no_token_in_response(self):
         PATH = '/foo'
@@ -217,9 +216,10 @@ class TestKeyDataIterator(unittest2.TestCase):
         response1['content-range'] = '0-9/15'
         response2 = _Response(status=200)
         response2['content-range'] = '10-14/15'
-        connection = _Connection((response1, '0123456789'),
-                                 (response2, '01234'),
-                                 )
+        connection = _Connection(
+            (response1, '0123456789'),
+            (response2, '01234'),
+        )
         key = _Key(connection)
         iterator = self._makeOne(key)
         chunks = list(iterator)

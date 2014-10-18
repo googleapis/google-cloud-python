@@ -23,7 +23,7 @@ class NoKey(RuntimeError):
     """Exception raised by Entity methods which require a key."""
 
 
-class Entity(dict):  # pylint: disable=too-many-public-methods
+class Entity(dict):
     """:type dataset: :class:`gcloud.datastore.dataset.Dataset`
     :param dataset: The dataset in which this entity belongs.
 
@@ -95,7 +95,9 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
         :type key: :class:`glcouddatastore.key.Key`
         :param key: The key you want to set on the entity.
 
-        :returns: Either the current key or the :class:`Entity`.
+        :rtype: :class:`gcloud.datastore.key.Key` or :class:`Entity`.
+        :returns: Either the current key (on get) or the current
+                  object (on set).
 
         >>> entity.key(my_other_key)  # This returns the original entity.
         <Entity[{'kind': 'OtherKeyKind', 'id': 1234}] {'property': 'value'}>
@@ -141,7 +143,7 @@ class Entity(dict):  # pylint: disable=too-many-public-methods
         return cls().key(key)
 
     @classmethod
-    def from_protobuf(cls, pb, dataset=None):  # pylint: disable=invalid-name
+    def from_protobuf(cls, pb, dataset=None):
         """Factory method for creating an entity based on a protobuf.
 
         The protobuf should be one returned from the Cloud Datastore

@@ -26,6 +26,6 @@ class TestNotFoundError(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_no_headers(self):
-        e = self._makeOne({}, None)
+        e = self._makeOne({})
         self.assertEqual(str(e), '')
         self.assertEqual(e.message, 'Request returned a 404. Headers: {}')

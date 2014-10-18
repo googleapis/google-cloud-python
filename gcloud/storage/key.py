@@ -1,6 +1,5 @@
 """Create / interact with gcloud storage keys."""
 
-import errno
 import mimetypes
 import os
 from StringIO import StringIO
@@ -15,8 +14,8 @@ class Key(object):
     CHUNK_SIZE = 1024 * 1024  # 1 MB.
     """The size of a chunk of data whenever iterating (1 MB).
 
-  This must be a multiple of 256 KB per the API specification.
-  """
+    This must be a multiple of 256 KB per the API specification.
+    """
 
     def __init__(self, bucket=None, name=None, metadata=None):
         """Key constructor.
@@ -170,17 +169,17 @@ class Key(object):
 
         return self.bucket.delete_key(self)
 
-    def get_contents_to_file(self, fh):
+    def get_contents_to_file(self, file_obj):
         """Gets the contents of this key to a file-like object.
 
-        :type fh: file
-        :param fh: A file handle to which to write the key's data.
+        :type file_obj: file
+        :param file_obj: A file handle to which to write the key's data.
 
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
 
         for chunk in KeyDataIterator(self):
-            fh.write(chunk)
+            file_obj.write(chunk)
 
     def get_contents_to_filename(self, filename):
         """Get the contents of this key to a file by name.
@@ -191,8 +190,8 @@ class Key(object):
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
 
-        with open(filename, 'wb') as fh:
-            self.get_contents_to_file(fh)
+        with open(filename, 'wb') as file_obj:
+            self.get_contents_to_file(file_obj)
 
     def get_contents_as_string(self):
         """Gets the data stored on this Key as a string.
@@ -206,12 +205,12 @@ class Key(object):
         self.get_contents_to_file(string_buffer)
         return string_buffer.getvalue()
 
-    def set_contents_from_file(self, fh, rewind=False, size=None,
+    def set_contents_from_file(self, file_obj, rewind=False, size=None,
                                content_type=None):
         """Set the contents of this key to the contents of a file handle.
 
-        :type fh: file
-        :param fh: A file handle open for reading.
+        :type file_obj: file
+        :param file_obj: A file handle open for reading.
 
         :type rewind: bool
         :param rewind: If True, seek to the beginning of the file handle before
@@ -225,10 +224,10 @@ class Key(object):
 
         # Rewind the file if desired.
         if rewind:
-            fh.seek(0, os.SEEK_SET)
+            file_obj.seek(0, os.SEEK_SET)
 
         # Get the basic stats about the file.
-        total_bytes = size or os.fstat(fh.fileno()).st_size
+        total_bytes = size or os.fstat(file_obj.fileno()).st_size
         bytes_uploaded = 0
 
         # Set up a resumable upload session.
@@ -242,7 +241,7 @@ class Key(object):
             query_params={'uploadType': 'resumable', 'name': self.name},
             api_base_url=self.connection.API_BASE_URL + '/upload')
 
-        response, content = self.connection.make_request(
+        response, _ = self.connection.make_request(
             method='POST', url=upload_url,
             headers=headers)
 
@@ -251,7 +250,7 @@ class Key(object):
 
         while bytes_uploaded < total_bytes:
             # Construct the range header.
-            data = fh.read(self.CHUNK_SIZE)
+            data = file_obj.read(self.CHUNK_SIZE)
             chunk_size = len(data)
 
             start = bytes_uploaded
@@ -261,7 +260,7 @@ class Key(object):
                 'Content-Range': 'bytes %d-%d/%d' % (start, end, total_bytes),
             }
 
-            response, content = self.connection.make_request(
+            response, _ = self.connection.make_request(
                 content_type='text/plain',
                 method='POST', url=upload_url, headers=headers, data=data)
 
@@ -276,8 +275,8 @@ class Key(object):
 
         content_type, _ = mimetypes.guess_type(filename)
 
-        with open(filename, 'rb') as fh:
-            self.set_contents_from_file(fh, content_type=content_type)
+        with open(filename, 'rb') as file_obj:
+            self.set_contents_from_file(file_obj, content_type=content_type)
 
     def set_contents_from_string(self, data, content_type='text/plain'):
         """Sets the contents of this key to the provided string.
@@ -302,7 +301,7 @@ class Key(object):
 
         string_buffer = StringIO()
         string_buffer.write(data)
-        self.set_contents_from_file(fh=string_buffer, rewind=True,
+        self.set_contents_from_file(file_obj=string_buffer, rewind=True,
                                     size=string_buffer.len,
                                     content_type=content_type)
         return self

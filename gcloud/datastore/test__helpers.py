@@ -182,7 +182,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         from gcloud.datastore.datastore_v1_pb2 import Value
 
         pb = Value()
-        self.assertEqual(self._callFUT(pb), None)  # XXX desirable?
+        self.assertEqual(self._callFUT(pb), None)
 
 
 class Test__get_value_from_property_pb(unittest2.TestCase):

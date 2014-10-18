@@ -728,10 +728,10 @@ class Test_Bucket(unittest2.TestCase):
     def test_save_default_object_acl_existing_set_none_passed(self):
         NAME = 'name'
         connection = _Connection({'foo': 'Foo', 'acl': []})
-        connection = _Connection({'foo': 'Foo', 'acl': []},
-                                 {'foo': 'Foo', 'acl': [],
-                                  'defaultObjectAcl': []},
-                                 )
+        connection = _Connection(
+            {'foo': 'Foo', 'acl': []},
+            {'foo': 'Foo', 'acl': [], 'defaultObjectAcl': []},
+        )
         metadata = {'defaultObjectAcl': []}
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_default_object_acl()
@@ -750,10 +750,10 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         ROLE = 'role'
         new_acl = [{'entity': 'allUsers', 'role': ROLE}]
-        connection = _Connection({'foo': 'Foo', 'acl': new_acl},
-                                 {'foo': 'Foo', 'acl': new_acl,
-                                  'defaultObjectAcl': new_acl},
-                                 )
+        connection = _Connection(
+            {'foo': 'Foo', 'acl': new_acl},
+            {'foo': 'Foo', 'acl': new_acl, 'defaultObjectAcl': new_acl},
+        )
         metadata = {'defaultObjectAcl': []}
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_default_object_acl()
@@ -773,10 +773,10 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         ROLE = 'role'
         old_acl = [{'entity': 'allUsers', 'role': ROLE}]
-        connection = _Connection({'foo': 'Foo', 'acl': []},
-                                 {'foo': 'Foo', 'acl': [],
-                                  'defaultObjectAcl': []},
-                                 )
+        connection = _Connection(
+            {'foo': 'Foo', 'acl': []},
+            {'foo': 'Foo', 'acl': [], 'defaultObjectAcl': []},
+        )
         metadata = {'defaultObjectAcl': old_acl}
         bucket = self._makeOne(connection, NAME, metadata)
         bucket.reload_default_object_acl()
@@ -796,7 +796,7 @@ class Test_Bucket(unittest2.TestCase):
         from gcloud.storage.acl import ACL
         NAME = 'name'
         before = {'acl': [], 'defaultObjectAcl': []}
-        permissive = [{'entity': 'allUsers', 'role': ACL.Role.Reader}]
+        permissive = [{'entity': 'allUsers', 'role': ACL.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
         connection = _Connection(after)
         bucket = self._makeOne(connection, NAME, before)
@@ -815,7 +815,7 @@ class Test_Bucket(unittest2.TestCase):
         from gcloud.storage.acl import ACL
         NAME = 'name'
         before = {'acl': [], 'defaultObjectAcl': []}
-        permissive = [{'entity': 'allUsers', 'role': ACL.Role.Reader}]
+        permissive = [{'entity': 'allUsers', 'role': ACL.READER_ROLE}]
         after1 = {'acl': permissive, 'defaultObjectAcl': []}
         after2 = {'acl': permissive, 'defaultObjectAcl': permissive}
         connection = _Connection(after1, after2)
@@ -870,7 +870,7 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         KEY = 'key'
         before = {'acl': [], 'defaultObjectAcl': []}
-        permissive = [{'entity': 'allUsers', 'role': ACL.Role.Reader}]
+        permissive = [{'entity': 'allUsers', 'role': ACL.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
         connection = _Connection(after, {'items': [{'name': KEY}]})
         bucket = self._makeOne(connection, NAME, before)
@@ -906,7 +906,7 @@ class _Connection(object):
         try:
             response, self._responses = self._responses[0], self._responses[1:]
         except:
-            raise NotFoundError('miss', None)
+            raise NotFoundError('miss')
         else:
             return response
 
@@ -914,7 +914,7 @@ class _Connection(object):
         from gcloud.storage.exceptions import NotFoundError
         self._deleted.append((bucket, force))
         if not self._delete_ok:
-            raise NotFoundError('miss', None)
+            raise NotFoundError('miss')
         return True
 
 

@@ -266,7 +266,7 @@ class Bucket(object):
         key = self.new_key(key)
         return key.set_contents_from_filename(filename)
 
-    def upload_file_object(self, fh, key=None):
+    def upload_file_object(self, file_obj, key=None):
         """Shortcut method to upload a file object into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -292,8 +292,8 @@ class Bucket(object):
           >>> print bucket.get_all_keys()
           [<Key: my-bucket, my-file.txt>]
 
-        :type fh: file
-        :param fh: A file handle open for reading.
+        :type file_obj: file
+        :param file_obj: A file handle open for reading.
 
         :type key: string or :class:`gcloud.storage.key.Key`
         :param key: The key (either an object or a remote path)
@@ -307,8 +307,8 @@ class Bucket(object):
         if key:
             key = self.new_key(key)
         else:
-            key = self.new_key(os.path.basename(fh.name))
-        return key.set_contents_from_file(fh)
+            key = self.new_key(os.path.basename(file_obj.name))
+        return key.set_contents_from_file(file_obj)
 
     def has_metadata(self, field=None):
         """Check if metadata is available locally.
@@ -432,10 +432,12 @@ class Bucket(object):
         :param not_found_page: The file to use when a page isn't found.
         """
 
-        data = {'website': {'mainPageSuffix': main_page_suffix,
-                            'notFoundPage': not_found_page,
-                            }
-                }
+        data = {
+            'website': {
+                'mainPageSuffix': main_page_suffix,
+                'notFoundPage': not_found_page,
+            },
+        }
         return self.patch_metadata(data)
 
     def disable_website(self):

@@ -26,13 +26,13 @@ class TestConnection(unittest2.TestCase):
         self.assertTrue(conn.http is http)
 
     def test_http_wo_creds(self):
-        from httplib2 import Http
+        import httplib2
 
         conn = self._makeOne()
-        self.assertTrue(isinstance(conn.http, Http))
+        self.assertTrue(isinstance(conn.http, httplib2.Http))
 
     def test_http_w_creds(self):
-        from httplib2 import Http
+        import httplib2
 
         authorized = object()
 
@@ -44,31 +44,34 @@ class TestConnection(unittest2.TestCase):
         creds = Creds()
         conn = self._makeOne(creds)
         self.assertTrue(conn.http is authorized)
-        self.assertTrue(isinstance(creds._called_with, Http))
+        self.assertTrue(isinstance(creds._called_with, httplib2.Http))
 
     def test__request_w_200(self):
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
         DATA = b'DATA'
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        METHOD,
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            METHOD,
+        ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
         self.assertEqual(conn._request(DATASET_ID, METHOD, DATA), 'CONTENT')
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers': {'Content-Type': 'application/x-protobuf',
-                                      'Content-Length': '4',
-                                      'User-Agent': conn.USER_AGENT,
-                                      },
-                          'body': DATA,
-                          })
+        expected_called_with = {
+            'uri': URI,
+            'method': 'POST',
+            'headers': {
+                'Content-Type': 'application/x-protobuf',
+                'Content-Length': '4',
+                'User-Agent': conn.USER_AGENT,
+            },
+            'body': DATA,
+        }
+        self.assertEqual(http._called_with, expected_called_with)
 
     def test__request_not_200(self):
         DATASET_ID = 'DATASET'
@@ -100,38 +103,42 @@ class TestConnection(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        METHOD,
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            METHOD,
+        ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
         response = conn._rpc(DATASET_ID, METHOD, ReqPB(), RspPB)
         self.assertTrue(isinstance(response, RspPB))
         self.assertEqual(response._pb, 'CONTENT')
-        self.assertEqual(http._called_with,
-                         {'uri': URI,
-                          'method': 'POST',
-                          'headers': {'Content-Type': 'application/x-protobuf',
-                                      'Content-Length': '5',
-                                      'User-Agent': conn.USER_AGENT,
-                                      },
-                          'body': b'REQPB',
-                          })
+        expected_called_with = {
+            'uri': URI,
+            'method': 'POST',
+            'headers': {
+                'Content-Type': 'application/x-protobuf',
+                'Content-Length': '5',
+                'User-Agent': conn.USER_AGENT,
+            },
+            'body': b'REQPB',
+        }
+        self.assertEqual(http._called_with, expected_called_with)
 
     def test_build_api_url_w_default_base_version(self):
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
         klass = self._getTargetClass()
-        URI = '/'.join([klass.API_BASE_URL,
-                        'datastore',
-                        klass.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        METHOD,
-                        ])
+        URI = '/'.join([
+            klass.API_BASE_URL,
+            'datastore',
+            klass.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            METHOD,
+        ])
         self.assertEqual(klass.build_api_url(DATASET_ID, METHOD), URI)
 
     def test_build_api_url_w_explicit_base_version(self):
@@ -140,13 +147,14 @@ class TestConnection(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
         klass = self._getTargetClass()
-        URI = '/'.join([BASE,
-                        'datastore',
-                        VER,
-                        'datasets',
-                        DATASET_ID,
-                        METHOD,
-                        ])
+        URI = '/'.join([
+            BASE,
+            'datastore',
+            VER,
+            'datasets',
+            DATASET_ID,
+            METHOD,
+        ])
         self.assertEqual(klass.build_api_url(DATASET_ID, METHOD, BASE, VER),
                          URI)
 
@@ -205,23 +213,25 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.BeginTransactionResponse()
         rsp_pb.transaction = TRANSACTION
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'beginTransaction',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'beginTransaction',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(DATASET_ID), TRANSACTION)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '2',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '2',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -235,23 +245,25 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.BeginTransactionResponse()
         rsp_pb.transaction = TRANSACTION
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'beginTransaction',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'beginTransaction',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(DATASET_ID, True), TRANSACTION)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '2',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '2',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -287,23 +299,25 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.RollbackResponse()
         conn = self._makeOne()
         conn.transaction(Xact())
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'rollback',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'rollback',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.rollback_transaction(DATASET_ID), None)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '6',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '6',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.RollbackRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -318,13 +332,14 @@ class TestConnection(unittest2.TestCase):
         q_pb = Query(KIND, DATASET_ID).to_protobuf()
         rsp_pb = datastore_pb.RunQueryResponse()
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'runQuery',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'runQuery',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb)
         self.assertEqual(pbs, [])
@@ -334,11 +349,12 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '14',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '14',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -358,24 +374,26 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.entity_result_type = 1  # FULL
         rsp_pb.batch.more_results = 3  # NO_MORE_RESULTS
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'runQuery',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'runQuery',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb, 'NS')
+        pbs = conn.run_query(DATASET_ID, q_pb, 'NS')[0]
         self.assertEqual(len(pbs), 1)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '16',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '16',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -392,23 +410,25 @@ class TestConnection(unittest2.TestCase):
                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'lookup',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.lookup(DATASET_ID, key_pb), None)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '26',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '26',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -429,13 +449,14 @@ class TestConnection(unittest2.TestCase):
         entity.key.CopyFrom(key_pb)
         rsp_pb.found.add(entity=entity)
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'lookup',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found = conn.lookup(DATASET_ID, key_pb)
         self.assertEqual(found.key.path_element[0].kind, 'Kind')
@@ -443,11 +464,12 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '26',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '26',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -467,23 +489,25 @@ class TestConnection(unittest2.TestCase):
                       path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'lookup',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.lookup(DATASET_ID, [key_pb1, key_pb2]), [])
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '52',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '52',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -508,13 +532,14 @@ class TestConnection(unittest2.TestCase):
         prop.name = 'foo'
         prop.value.string_value = 'Foo'
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'commit',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'commit',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.commit(DATASET_ID, mutation)
         self.assertEqual(result.index_updates, 0)
@@ -522,11 +547,12 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '47',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '47',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -554,13 +580,14 @@ class TestConnection(unittest2.TestCase):
         prop.value.string_value = 'Foo'
         conn = self._makeOne()
         conn.transaction(Xact())
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'commit',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'commit',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.commit(DATASET_ID, mutation)
         self.assertEqual(result.index_updates, 0)
@@ -568,11 +595,12 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '53',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '53',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -590,24 +618,26 @@ class TestConnection(unittest2.TestCase):
                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'commit',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'commit',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
         self.assertEqual(result, True)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '47',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '47',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -641,24 +671,26 @@ class TestConnection(unittest2.TestCase):
         iaik_pb = mr_pb.insert_auto_id_key.add()
         iaik_pb.CopyFrom(updated_key_pb)
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'commit',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'commit',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
         self.assertEqual(result, updated_key_pb)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '44',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '44',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -736,12 +768,14 @@ class TestConnection(unittest2.TestCase):
                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'commit', ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'commit',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entities(DATASET_ID, [key_pb])
         self.assertEqual(result.index_updates, 0)
@@ -749,11 +783,12 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '30',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '30',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -800,13 +835,14 @@ class TestConnection(unittest2.TestCase):
                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
-        URI = '/'.join([conn.API_BASE_URL,
-                        'datastore',
-                        conn.API_VERSION,
-                        'datasets',
-                        DATASET_ID,
-                        'commit',
-                        ])
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'commit',
+        ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entity(DATASET_ID, key_pb)
         self.assertEqual(result.index_updates, 0)
@@ -814,11 +850,12 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers'],
-                         {'Content-Type': 'application/x-protobuf',
-                          'Content-Length': '30',
-                          'User-Agent': conn.USER_AGENT,
-                          })
+        expected_headers = {
+            'Content-Type': 'application/x-protobuf',
+            'Content-Length': '30',
+            'User-Agent': conn.USER_AGENT,
+        }
+        self.assertEqual(cw['headers'], expected_headers)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])

@@ -75,12 +75,9 @@ fields when sending metadata for ACLs to the API.
 class ACL(object):
     """Container class representing a list of access controls."""
 
-    class Role(object):
-        """Enum style class for role-type constants."""
-
-        Reader = 'READER'
-        Writer = 'WRITER'
-        Owner = 'OWNER'
+    READER_ROLE = 'READER'
+    WRITER_ROLE = 'WRITER'
+    OWNER_ROLE = 'OWNER'
 
     class Entity(object):
         """Class representing a set of roles for an entity.
@@ -153,32 +150,32 @@ class ACL(object):
         def grant_read(self):
             """Grant read access to the current entity."""
 
-            return self.grant(ACL.Role.Reader)
+            return self.grant(ACL.READER_ROLE)
 
         def grant_write(self):
             """Grant write access to the current entity."""
 
-            return self.grant(ACL.Role.Writer)
+            return self.grant(ACL.WRITER_ROLE)
 
         def grant_owner(self):
             """Grant owner access to the current entity."""
 
-            return self.grant(ACL.Role.Owner)
+            return self.grant(ACL.OWNER_ROLE)
 
         def revoke_read(self):
             """Revoke read access from the current entity."""
 
-            return self.revoke(ACL.Role.Reader)
+            return self.revoke(ACL.READER_ROLE)
 
         def revoke_write(self):
             """Revoke write access from the current entity."""
 
-            return self.revoke(ACL.Role.Writer)
+            return self.revoke(ACL.WRITER_ROLE)
 
         def revoke_owner(self):
             """Revoke owner access from the current entity."""
 
-            return self.revoke(ACL.Role.Owner)
+            return self.revoke(ACL.OWNER_ROLE)
 
     def __init__(self):
         self.entities = {}
