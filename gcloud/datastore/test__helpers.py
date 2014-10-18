@@ -156,9 +156,9 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         pb = self._makePB('integer_value', 42)
         self.assertEqual(self._callFUT(pb), 42)
 
-    def test_native_str(self):
-        pb = self._makePB('string_value', 'str')
-        self.assertEqual(self._callFUT(pb), 'str')
+    def test_bytes(self):
+        pb = self._makePB('blob_value', b'str')
+        self.assertEqual(self._callFUT(pb), b'str')
 
     def test_unicode(self):
         pb = self._makePB('string_value', u'str')

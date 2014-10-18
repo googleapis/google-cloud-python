@@ -114,6 +114,9 @@ def _get_value_from_value_pb(value_pb):
     elif value_pb.HasField('string_value'):
         result = value_pb.string_value
 
+    elif value_pb.HasField('blob_value'):
+        result = value_pb.blob_value
+
     elif value_pb.HasField('entity_value'):
         result = Entity.from_protobuf(value_pb.entity_value)
 
