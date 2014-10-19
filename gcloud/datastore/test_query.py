@@ -69,7 +69,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_filter_w_known_operator(self):
         query = self._makeOne()
-        after = query.filter('firstname =', 'John')
+        after = query.filter('firstname =', u'John')
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         q_pb = after.to_protobuf()
@@ -77,15 +77,15 @@ class TestQuery(unittest2.TestCase):
         f_pb, = list(q_pb.filter.composite_filter.filter)
         p_pb = f_pb.property_filter
         self.assertEqual(p_pb.property.name, 'firstname')
-        self.assertEqual(p_pb.value.string_value, 'John')
+        self.assertEqual(p_pb.value.string_value, u'John')
 
     def test_filter_w_known_operator_and_entity(self):
         import operator
         from gcloud.datastore.entity import Entity
         query = self._makeOne()
         other = Entity()
-        other['firstname'] = 'John'
-        other['lastname'] = 'Smith'
+        other['firstname'] = u'John'
+        other['lastname'] = u'Smith'
         after = query.filter('other =', other)
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
@@ -98,9 +98,9 @@ class TestQuery(unittest2.TestCase):
         props = sorted(other_pb.property, key=operator.attrgetter('name'))
         self.assertEqual(len(props), 2)
         self.assertEqual(props[0].name, 'firstname')
-        self.assertEqual(props[0].value.string_value, 'John')
+        self.assertEqual(props[0].value.string_value, u'John')
         self.assertEqual(props[1].name, 'lastname')
-        self.assertEqual(props[1].value.string_value, 'Smith')
+        self.assertEqual(props[1].value.string_value, u'Smith')
 
     def test_ancestor_w_non_key_non_list(self):
         query = self._makeOne()
@@ -110,7 +110,7 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
-        _NAME = 'NAME'
+        _NAME = u'NAME'
         key = Key(path=[{'kind': _KIND, 'id': _ID}])
         query = self._makeOne().filter('name =', _NAME)
         after = query.ancestor(key)
@@ -172,7 +172,7 @@ class TestQuery(unittest2.TestCase):
     def test_ancestor_clears_existing_ancestor_query_w_others(self):
         _KIND = 'KIND'
         _ID = 123
-        _NAME = 'NAME'
+        _NAME = u'NAME'
         query = self._makeOne().filter('name =', _NAME)
         between = query.ancestor([_KIND, _ID])
         after = between.ancestor(None)
@@ -251,7 +251,7 @@ class TestQuery(unittest2.TestCase):
         path_element.id = _ID
         prop = entity_pb.property.add()
         prop.name = 'foo'
-        prop.value.string_value = 'Foo'
+        prop.value.string_value = u'Foo'
         connection = _Connection(entity_pb)
         dataset = _Dataset(_DATASET, connection)
         query = self._makeOne(_KIND, dataset)
@@ -279,7 +279,7 @@ class TestQuery(unittest2.TestCase):
         path_element.id = _ID
         prop = entity_pb.property.add()
         prop.name = 'foo'
-        prop.value.string_value = 'Foo'
+        prop.value.string_value = u'Foo'
         connection = _Connection(entity_pb)
         connection._cursor = _CURSOR
         dataset = _Dataset(_DATASET, connection)

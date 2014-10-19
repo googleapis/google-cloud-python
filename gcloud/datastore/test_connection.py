@@ -530,7 +530,7 @@ class TestConnection(unittest2.TestCase):
         insert.key.CopyFrom(key_pb)
         prop = insert.property.add()
         prop.name = 'foo'
-        prop.value.string_value = 'Foo'
+        prop.value.string_value = u'Foo'
         conn = self._makeOne()
         URI = '/'.join([
             conn.API_BASE_URL,
@@ -577,7 +577,7 @@ class TestConnection(unittest2.TestCase):
         insert.key.CopyFrom(key_pb)
         prop = insert.property.add()
         prop.name = 'foo'
-        prop.value.string_value = 'Foo'
+        prop.value.string_value = u'Foo'
         conn = self._makeOne()
         conn.transaction(Xact())
         URI = '/'.join([
@@ -627,7 +627,7 @@ class TestConnection(unittest2.TestCase):
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
         self.assertEqual(result, True)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
@@ -651,7 +651,7 @@ class TestConnection(unittest2.TestCase):
         props = list(upsert.property)
         self.assertEqual(len(props), 1)
         self.assertEqual(props[0].name, 'foo')
-        self.assertEqual(props[0].value.string_value, 'Foo')
+        self.assertEqual(props[0].value.string_value, u'Foo')
         self.assertEqual(len(mutation.delete), 0)
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
@@ -680,7 +680,7 @@ class TestConnection(unittest2.TestCase):
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
         self.assertEqual(result, updated_key_pb)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
@@ -702,7 +702,7 @@ class TestConnection(unittest2.TestCase):
         props = list(insert.property)
         self.assertEqual(len(props), 1)
         self.assertEqual(props[0].name, 'foo')
-        self.assertEqual(props[0].value.string_value, 'Foo')
+        self.assertEqual(props[0].value.string_value, u'Foo')
         self.assertEqual(len(inserts), 1)
         upserts = list(mutation.upsert)
         self.assertEqual(len(upserts), 0)
@@ -726,7 +726,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         conn.transaction(Xact())
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': 'Foo'})
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
         self.assertEqual(result, True)
         self.assertEqual(http._called_with, None)
         mutation = conn.mutation()
@@ -745,7 +745,7 @@ class TestConnection(unittest2.TestCase):
                 return mutation
         DATASET_ID = 'DATASET'
         nested = Entity()
-        nested['bar'] = 'Bar'
+        nested['bar'] = u'Bar'
         key_pb = Key(dataset=Dataset(DATASET_ID),
                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()

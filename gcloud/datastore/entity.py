@@ -208,6 +208,11 @@ class Entity(dict):
            not correspond to keys set on this instance will be removed from
            the datastore.
 
+        .. note::
+           Property values which are "text" ('unicode' in Python2, 'str' in
+           Python3) map to 'string_value' in the datastore;  values which are
+           "bytes" ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
+
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: The entity with a possibly updated Key.
         """

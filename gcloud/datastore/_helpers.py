@@ -29,6 +29,11 @@ def _get_protobuf_attribute_and_value(val):
     `gcloud.datastore.key.Key` into a Protobuf representation.
     This function handles that for you.
 
+    .. note::
+       Values which are "text" ('unicode' in Python2, 'str' in Python3) map
+       to 'string_value' in the datastore;  values which are "bytes"
+       ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
+
     For example:
 
     >>> _get_protobuf_attribute_and_value(1234)
@@ -62,8 +67,10 @@ def _get_protobuf_attribute_and_value(val):
     elif isinstance(val, (int, long)):
         INT_VALUE_CHECKER.CheckValue(val)   # Raise an exception if invalid.
         name, value = 'integer', long(val)  # Always cast to a long.
-    elif isinstance(val, basestring):
+    elif isinstance(val, unicode):
         name, value = 'string', val
+    elif isinstance(val, (bytes, str)):
+        name, value = 'blob', val
     elif isinstance(val, Entity):
         name, value = 'entity', val
     elif isinstance(val, list):
@@ -111,6 +118,9 @@ def _get_value_from_value_pb(value_pb):
 
     elif value_pb.HasField('string_value'):
         result = value_pb.string_value
+
+    elif value_pb.HasField('blob_value'):
+        result = value_pb.blob_value
 
     elif value_pb.HasField('entity_value'):
         result = Entity.from_protobuf(value_pb.entity_value)
