@@ -8,25 +8,28 @@ class TestQuery(unittest2.TestCase):
 
         return Query
 
-    def _makeOne(self, kind=None, dataset=None):
-        return self._getTargetClass()(kind, dataset)
+    def _makeOne(self, kind=None, dataset=None, namespace=None):
+        return self._getTargetClass()(kind, dataset, namespace)
 
     def test_ctor_defaults(self):
-        query = self._makeOne()
+        query = self._getTargetClass()()
         self.assertEqual(query.dataset(), None)
         self.assertEqual(list(query.kind()), [])
         self.assertEqual(query.limit(), 0)
+        self.assertEqual(query.namespace(), None)
 
     def test_ctor_explicit(self):
         from gcloud.datastore.dataset import Dataset
 
         _DATASET = 'DATASET'
         _KIND = 'KIND'
+        _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(_KIND, dataset, _NAMESPACE)
         self.assertTrue(query.dataset() is dataset)
         kq_pb, = list(query.kind())
         self.assertEqual(kq_pb.name, _KIND)
+        self.assertEqual(query.namespace(), _NAMESPACE)
 
     def test__clone(self):
         from gcloud.datastore.dataset import Dataset
@@ -34,13 +37,15 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _CURSOR = 'DEADBEEF'
+        _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(_KIND, dataset, _NAMESPACE)
         query._cursor = _CURSOR
         clone = query._clone()
         self.assertFalse(clone is query)
         self.assertTrue(isinstance(clone, self._getTargetClass()))
         self.assertTrue(clone.dataset() is dataset)
+        self.assertEqual(clone.namespace(), _NAMESPACE)
         kq_pb, = list(clone.kind())
         self.assertEqual(kq_pb.name, _KIND)
         self.assertEqual(clone._cursor, _CURSOR)
@@ -101,7 +106,7 @@ class TestQuery(unittest2.TestCase):
         query = self._makeOne()
         self.assertRaises(TypeError, query.ancestor, object())
 
-    def test_ancester_wo_existing_ancestor_query_w_key_and_propfilter(self):
+    def test_ancestor_wo_existing_ancestor_query_w_key_and_propfilter(self):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
@@ -121,7 +126,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.property.name, '__key__')
         self.assertEqual(p_pb.value.key_value, key.to_protobuf())
 
-    def test_ancester_wo_existing_ancestor_query_w_key(self):
+    def test_ancestor_wo_existing_ancestor_query_w_key(self):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
@@ -137,7 +142,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.property.name, '__key__')
         self.assertEqual(p_pb.value.key_value, key.to_protobuf())
 
-    def test_ancester_wo_existing_ancestor_query_w_list(self):
+    def test_ancestor_wo_existing_ancestor_query_w_list(self):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
@@ -153,7 +158,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.property.name, '__key__')
         self.assertEqual(p_pb.value.key_value, key.to_protobuf())
 
-    def test_ancester_clears_existing_ancestor_query_w_only(self):
+    def test_ancestor_clears_existing_ancestor_query_w_only(self):
         _KIND = 'KIND'
         _ID = 123
         query = self._makeOne()
@@ -164,7 +169,7 @@ class TestQuery(unittest2.TestCase):
         q_pb = after.to_protobuf()
         self.assertEqual(list(q_pb.filter.composite_filter.filter), [])
 
-    def test_ancester_clears_existing_ancestor_query_w_others(self):
+    def test_ancestor_clears_existing_ancestor_query_w_others(self):
         _KIND = 'KIND'
         _ID = 123
         _NAME = 'NAME'
@@ -257,6 +262,7 @@ class TestQuery(unittest2.TestCase):
         expected_called_with = {
             'dataset_id': _DATASET,
             'query_pb': query.to_protobuf(),
+            'namespace': None,
         }
         self.assertEqual(connection._called_with, expected_called_with)
 
@@ -266,6 +272,7 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 123
+        _NAMESPACE = 'NAMESPACE'
         entity_pb = Entity()
         path_element = entity_pb.key.path_element.add()
         path_element.kind = _KIND
@@ -276,7 +283,7 @@ class TestQuery(unittest2.TestCase):
         connection = _Connection(entity_pb)
         connection._cursor = _CURSOR
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(_KIND, dataset, _NAMESPACE)
         limited = query.limit(13)
         entities = query.fetch(13)
         self.assertEqual(query._cursor, _CURSOR)
@@ -286,6 +293,7 @@ class TestQuery(unittest2.TestCase):
         expected_called_with = {
             'dataset_id': _DATASET,
             'query_pb': limited.to_protobuf(),
+            'namespace': _NAMESPACE,
         }
         self.assertEqual(connection._called_with, expected_called_with)
 
