@@ -330,8 +330,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_key</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">delete_entity</span><span class="p">(</span>
-            <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span> <span class="n">key_pb</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">delete_entities</span><span class="p">(</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
+            <span class="n">key_pbs</span><span class="o">=</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()],</span>
+            <span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>

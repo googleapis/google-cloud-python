@@ -353,39 +353,7 @@ For example, it&#8217;s used under the hood in the
 <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.MutationResult</span></code>.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True (if in a transaction) or else a mutation result
-protobuf.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.connection.Connection.delete_entity">
-<code class="descname">delete_entity</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.delete_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.delete_entity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Delete a single key from a dataset in the Cloud Datastore.</p>
-<p>This method deals only with
-<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code> protobufs
-and not with any of the other abstractions.
-For example, it&#8217;s used under the hood in the
-<a class="reference internal" href="#gcloud.datastore.entity.Entity.delete" title="gcloud.datastore.entity.Entity.delete"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.entity.Entity.delete()</span></code></a> method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset from which to delete the key.</li>
-<li><strong>key_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>) &#8211; The key to delete from the datastore.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">boolean (if in a transaction) or else
-<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.MutationResult</span></code>.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True (if in a transaction) or else a mutation result
-protobuf.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True</p>
 </td>
 </tr>
 </tbody>
@@ -547,7 +515,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f31fe630170&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f720a147230&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1311,7 +1279,7 @@ without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&gt;': 3, '&gt;=': 4, '&lt;=': 2, '=': 5, '&lt;': 1}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'&gt;=': 4, '&gt;': 3, '=': 5, '&lt;': 1, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 

@@ -493,8 +493,7 @@
 
 <span class="sd">        :rtype: boolean (if in a transaction) or else</span>
 <span class="sd">                :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.</span>
-<span class="sd">        :returns: True (if in a transaction) or else a mutation result</span>
-<span class="sd">                  protobuf.</span>
+<span class="sd">        :returns: True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
 
@@ -502,32 +501,10 @@
             <span class="n">delete</span> <span class="o">=</span> <span class="n">mutation</span><span class="o">.</span><span class="n">delete</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
             <span class="n">delete</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-            <span class="k">return</span> <span class="bp">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">mutation</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.delete_entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.delete_entity">[docs]</a>    <span class="k">def</span> <span class="nf">delete_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pb</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Delete a single key from a dataset in the Cloud Datastore.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">mutation</span><span class="p">)</span>
 
-<span class="sd">        This method deals only with</span>
-<span class="sd">        :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs</span>
-<span class="sd">        and not with any of the other abstractions.</span>
-<span class="sd">        For example, it&#39;s used under the hood in the</span>
-<span class="sd">        :func:`gcloud.datastore.entity.Entity.delete` method.</span>
-
-<span class="sd">        :type dataset_id: string</span>
-<span class="sd">        :param dataset_id: The dataset from which to delete the key.</span>
-
-<span class="sd">        :type key_pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
-<span class="sd">        :param key_pb: The key to delete from the datastore.</span>
-
-<span class="sd">        :rtype: boolean (if in a transaction) or else</span>
-<span class="sd">                :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.</span>
-<span class="sd">        :returns: True (if in a transaction) or else a mutation result</span>
-<span class="sd">                  protobuf.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_entities</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="p">[</span><span class="n">key_pb</span><span class="p">])</span></div></div>
+        <span class="k">return</span> <span class="bp">True</span></div></div>
 </pre></div>
 
           </div>
