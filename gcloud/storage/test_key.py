@@ -572,10 +572,10 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_make_public(self):
-        from gcloud.storage.acl import ACL
+        from gcloud.storage.acl import _ACLEntity
         KEY = 'key'
         before = {'acl': []}
-        permissive = [{'entity': 'allUsers', 'role': ACL.READER_ROLE}]
+        permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive}
         connection = _Connection(after)
         bucket = _Bucket(connection)
