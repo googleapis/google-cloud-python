@@ -66,6 +66,8 @@ def _get_protobuf_attribute_and_value(val):
         name, value = 'string', val
     elif isinstance(val, Entity):
         name, value = 'entity', val
+    elif isinstance(val, list):
+        name, value = 'list', val
     else:
         raise ValueError("Unknown protobuf attr type %s" % type(val))
 
@@ -167,5 +169,10 @@ def _set_protobuf_value(value_pb, val):
             p_pb = e_pb.property.add()
             p_pb.name = item_key
             _set_protobuf_value(p_pb.value, value)
+    elif attr == 'list_value':
+        l_pb = value_pb.list_value
+        for item in val:
+            i_pb = l_pb.add()
+            _set_protobuf_value(i_pb, item)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)
