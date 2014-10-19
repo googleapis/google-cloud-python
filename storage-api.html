@@ -1760,14 +1760,14 @@ per user basis (either by ID or e-mail address).</li>
 <p>And you are able to <code class="docutils literal"><span class="pre">grant</span></code> and <code class="docutils literal"><span class="pre">revoke</span></code> the following roles:</p>
 <ul class="simple">
 <li><strong>Reading</strong>:
-<a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.grant_read" title="gcloud.storage.acl.ACL.Entity.grant_read"><code class="xref py py-func docutils literal"><span class="pre">ACL.Entity.grant_read()</span></code></a> and <a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.revoke_read" title="gcloud.storage.acl.ACL.Entity.revoke_read"><code class="xref py py-func docutils literal"><span class="pre">ACL.Entity.revoke_read()</span></code></a></li>
+<code class="xref py py-func docutils literal"><span class="pre">_ACLEntity.grant_read()</span></code> and <code class="xref py py-func docutils literal"><span class="pre">_ACLEntity.revoke_read()</span></code></li>
 <li><strong>Writing</strong>:
-<a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.grant_write" title="gcloud.storage.acl.ACL.Entity.grant_write"><code class="xref py py-func docutils literal"><span class="pre">ACL.Entity.grant_write()</span></code></a> and <a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.revoke_write" title="gcloud.storage.acl.ACL.Entity.revoke_write"><code class="xref py py-func docutils literal"><span class="pre">ACL.Entity.revoke_write()</span></code></a></li>
+<code class="xref py py-func docutils literal"><span class="pre">_ACLEntity.grant_write()</span></code> and <code class="xref py py-func docutils literal"><span class="pre">_ACLEntity.revoke_write()</span></code></li>
 <li><strong>Owning</strong>:
-<a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.grant_owner" title="gcloud.storage.acl.ACL.Entity.grant_owner"><code class="xref py py-func docutils literal"><span class="pre">ACL.Entity.grant_owner()</span></code></a> and <a class="reference internal" href="#gcloud.storage.acl.ACL.Entity.revoke_owner" title="gcloud.storage.acl.ACL.Entity.revoke_owner"><code class="xref py py-func docutils literal"><span class="pre">ACL.Entity.revoke_owner()</span></code></a></li>
+<code class="xref py py-func docutils literal"><span class="pre">_ACLEntity.grant_owner()</span></code> and <code class="xref py py-func docutils literal"><span class="pre">_ACLEntity.revoke_owner()</span></code></li>
 </ul>
 <p>You can use any of these like any other factory method
-(these happen to be <a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a> factories):</p>
+(these happen to be <code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code> factories):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s">&#39;me@example.org&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">all_authenticated</span><span class="p">()</span><span class="o">.</span><span class="n">grant_write</span><span class="p">()</span>
 </pre></div>
@@ -1806,141 +1806,15 @@ fields when sending metadata for ACLs to the API.</p>
 <em class="property">class </em><code class="descclassname">gcloud.storage.acl.</code><code class="descname">ACL</code><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Container class representing a list of access controls.</p>
-<dl class="class">
-<dt id="gcloud.storage.acl.ACL.Entity">
-<em class="property">class </em><code class="descname">Entity</code><span class="sig-paren">(</span><em>entity_type</em>, <em>identifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Class representing a set of roles for an entity.</p>
-<p>This is a helper class that you likely won&#8217;t ever construct
-outside of using the factor methods on the <a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><code class="xref py py-class docutils literal"><span class="pre">ACL</span></code></a> object.</p>
-<p>Entity constructor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>entity_type</strong> (<em>string</em>) &#8211; The type of entity (ie, &#8216;group&#8217; or &#8216;user&#8217;).</li>
-<li><strong>identifier</strong> (<em>string</em>) &#8211; The ID or e-mail of the entity. For the special
-entity types (like &#8216;allUsers&#8217;) this is optional.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="gcloud.storage.acl.ACL.Entity.get_roles">
-<code class="descname">get_roles</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity.get_roles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity.get_roles" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the list of roles permitted by this entity.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of strings</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of roles associated with this entity.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.acl.ACL.Entity.grant">
-<code class="descname">grant</code><span class="sig-paren">(</span><em>role</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity.grant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity.grant" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a role to the entity.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>role</strong> (<em>string</em>) &#8211; The role to add to the entity.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The entity class.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.acl.ACL.Entity.grant_owner">
-<code class="descname">grant_owner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity.grant_owner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity.grant_owner" title="Permalink to this definition">¶</a></dt>
-<dd><p>Grant owner access to the current entity.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.acl.ACL.Entity.grant_read">
-<code class="descname">grant_read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity.grant_read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity.grant_read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Grant read access to the current entity.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.acl.ACL.Entity.grant_write">
-<code class="descname">grant_write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity.grant_write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity.grant_write" title="Permalink to this definition">¶</a></dt>
-<dd><p>Grant write access to the current entity.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.acl.ACL.Entity.revoke">
-<code class="descname">revoke</code><span class="sig-paren">(</span><em>role</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity.revoke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity.revoke" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a role from the entity.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>role</strong> (<em>string</em>) &#8211; The role to remove from the entity.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The entity class.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.acl.ACL.Entity.revoke_owner">
-<code class="descname">revoke_owner</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity.revoke_owner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity.revoke_owner" title="Permalink to this definition">¶</a></dt>
-<dd><p>Revoke owner access from the current entity.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.acl.ACL.Entity.revoke_read">
-<code class="descname">revoke_read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity.revoke_read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity.revoke_read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Revoke read access from the current entity.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.acl.ACL.Entity.revoke_write">
-<code class="descname">revoke_write</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.Entity.revoke_write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.Entity.revoke_write" title="Permalink to this definition">¶</a></dt>
-<dd><p>Revoke write access from the current entity.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.OWNER_ROLE">
-<code class="descclassname">ACL.</code><code class="descname">OWNER_ROLE</code><em class="property"> = 'OWNER'</em><a class="headerlink" href="#gcloud.storage.acl.ACL.OWNER_ROLE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.READER_ROLE">
-<code class="descclassname">ACL.</code><code class="descname">READER_ROLE</code><em class="property"> = 'READER'</em><a class="headerlink" href="#gcloud.storage.acl.ACL.READER_ROLE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.WRITER_ROLE">
-<code class="descclassname">ACL.</code><code class="descname">WRITER_ROLE</code><em class="property"> = 'WRITER'</em><a class="headerlink" href="#gcloud.storage.acl.ACL.WRITER_ROLE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.add_entity">
-<code class="descclassname">ACL.</code><code class="descname">add_entity</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.add_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.add_entity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_entity</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.add_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.add_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an entity to the ACL.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a>) &#8211; The entity to add to this ACL.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code>) &#8211; The entity to add to this ACL.</td>
 </tr>
 </tbody>
 </table>
@@ -1948,13 +1822,13 @@ entity types (like &#8216;allUsers&#8217;) this is optional.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.all">
-<code class="descclassname">ACL.</code><code class="descname">all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.all" title="Permalink to this definition">¶</a></dt>
+<code class="descname">all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for an Entity representing all users.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An entity representing all users.</td>
 </tr>
@@ -1964,13 +1838,13 @@ entity types (like &#8216;allUsers&#8217;) this is optional.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.all_authenticated">
-<code class="descclassname">ACL.</code><code class="descname">all_authenticated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.all_authenticated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.all_authenticated" title="Permalink to this definition">¶</a></dt>
+<code class="descname">all_authenticated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.all_authenticated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.all_authenticated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for an Entity representing all authenticated users.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An entity representing all authenticated users.</td>
 </tr>
@@ -1980,7 +1854,7 @@ entity types (like &#8216;allUsers&#8217;) this is optional.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.domain">
-<code class="descclassname">ACL.</code><code class="descname">domain</code><span class="sig-paren">(</span><em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.domain" title="Permalink to this definition">¶</a></dt>
+<code class="descname">domain</code><span class="sig-paren">(</span><em>domain</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for a domain Entity.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1988,7 +1862,7 @@ entity types (like &#8216;allUsers&#8217;) this is optional.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>domain</strong> (<em>string</em>) &#8211; The domain for this entity.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An entity corresponding to this domain.</td>
 </tr>
@@ -1998,7 +1872,7 @@ entity types (like &#8216;allUsers&#8217;) this is optional.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.entity">
-<code class="descclassname">ACL.</code><code class="descname">entity</code><span class="sig-paren">(</span><em>entity_type</em>, <em>identifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.entity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">entity</code><span class="sig-paren">(</span><em>entity_type</em>, <em>identifier=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for creating an Entity.</p>
 <p>If an entity with the same type and identifier already exists,
 this will return a reference to that entity.
@@ -2016,10 +1890,10 @@ This can be either an ID or an e-mail address.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new Entity or a refernece to an existing identical entity.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new Entity or a reference to an existing identical entity.</p>
 </td>
 </tr>
 </tbody>
@@ -2028,8 +1902,8 @@ This can be either an ID or an e-mail address.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.entity_from_dict">
-<code class="descclassname">ACL.</code><code class="descname">entity_from_dict</code><span class="sig-paren">(</span><em>entity_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.entity_from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.entity_from_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build an ACL.Entity object from a dictionary of data.</p>
+<code class="descname">entity_from_dict</code><span class="sig-paren">(</span><em>entity_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.entity_from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.entity_from_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build an _ACLEntity object from a dictionary of data.</p>
 <p>An entity is a mutable object
 that represents a list of roles
 belonging to either a user or group
@@ -2042,7 +1916,7 @@ and all authenticated users.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity_dict</strong> (<em>dict</em>) &#8211; Dictionary full of data from an ACL lookup.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An Entity constructed from the dictionary.</td>
 </tr>
@@ -2052,13 +1926,13 @@ and all authenticated users.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.get_entities">
-<code class="descclassname">ACL.</code><code class="descname">get_entities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.get_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.get_entities" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_entities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.get_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.get_entities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of all Entity objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a> objects</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code> objects</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of all Entity objects.</td>
 </tr>
@@ -2068,20 +1942,20 @@ and all authenticated users.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.get_entity">
-<code class="descclassname">ACL.</code><code class="descname">get_entity</code><span class="sig-paren">(</span><em>entity</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.get_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.get_entity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_entity</code><span class="sig-paren">(</span><em>entity</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.get_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.get_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets an entity object from the ACL.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>entity</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a> or string) &#8211; The entity to get lookup in the ACL.</li>
+<li><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code> or string) &#8211; The entity to get lookup in the ACL.</li>
 <li><strong>default</strong> (<em>anything</em>) &#8211; This value will be returned if the entity
 doesn&#8217;t exist.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The corresponding entity or the value provided
@@ -2094,7 +1968,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.group">
-<code class="descclassname">ACL.</code><code class="descname">group</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.group" title="Permalink to this definition">¶</a></dt>
+<code class="descname">group</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for a group Entity.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2102,7 +1976,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<em>string</em>) &#8211; An id or e-mail for this particular group.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An Entity corresponding to this group.</td>
 </tr>
@@ -2112,13 +1986,13 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.has_entity">
-<code class="descclassname">ACL.</code><code class="descname">has_entity</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.has_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.has_entity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_entity</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.has_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.has_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether or not this ACL has any entries for an entity.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a>) &#8211; The entity to check for existence in this ACL.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code>) &#8211; The entity to check for existence in this ACL.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
@@ -2130,7 +2004,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.save">
-<code class="descclassname">ACL.</code><code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.save" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>A method to be overridden by subclasses.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2144,7 +2018,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.user">
-<code class="descclassname">ACL.</code><code class="descname">user</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.user" title="Permalink to this definition">¶</a></dt>
+<code class="descname">user</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.user" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for a user Entity.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2152,7 +2026,7 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<em>string</em>) &#8211; An id or e-mail for this particular user.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL.Entity" title="gcloud.storage.acl.ACL.Entity"><code class="xref py py-class docutils literal"><span class="pre">ACL.Entity</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></code></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An Entity corresponding to this user.</td>
 </tr>

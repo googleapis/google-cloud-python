@@ -116,14 +116,14 @@
 <span class="sd">And you are able to ``grant`` and ``revoke`` the following roles:</span>
 
 <span class="sd">- **Reading**:</span>
-<span class="sd">  :func:`ACL.Entity.grant_read` and :func:`ACL.Entity.revoke_read`</span>
+<span class="sd">  :func:`_ACLEntity.grant_read` and :func:`_ACLEntity.revoke_read`</span>
 <span class="sd">- **Writing**:</span>
-<span class="sd">  :func:`ACL.Entity.grant_write` and :func:`ACL.Entity.revoke_write`</span>
+<span class="sd">  :func:`_ACLEntity.grant_write` and :func:`_ACLEntity.revoke_write`</span>
 <span class="sd">- **Owning**:</span>
-<span class="sd">  :func:`ACL.Entity.grant_owner` and :func:`ACL.Entity.revoke_owner`</span>
+<span class="sd">  :func:`_ACLEntity.grant_owner` and :func:`_ACLEntity.revoke_owner`</span>
 
 <span class="sd">You can use any of these like any other factory method</span>
-<span class="sd">(these happen to be :class:`ACL.Entity` factories)::</span>
+<span class="sd">(these happen to be :class:`_ACLEntity` factories)::</span>
 
 <span class="sd">  &gt;&gt;&gt; acl.user(&#39;me@example.org&#39;).grant_read()</span>
 <span class="sd">  &gt;&gt;&gt; acl.all_authenticated().grant_write()</span>
@@ -160,111 +160,111 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="ACL"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL">[docs]</a><span class="k">class</span> <span class="nc">ACL</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Container class representing a list of access controls.&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">_ACLEntity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing a set of roles for an entity.</span>
+
+<span class="sd">    This is a helper class that you likely won&#39;t ever construct</span>
+<span class="sd">    outside of using the factor methods on the :class:`ACL` object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">READER_ROLE</span> <span class="o">=</span> <span class="s">&#39;READER&#39;</span>
     <span class="n">WRITER_ROLE</span> <span class="o">=</span> <span class="s">&#39;WRITER&#39;</span>
     <span class="n">OWNER_ROLE</span> <span class="o">=</span> <span class="s">&#39;OWNER&#39;</span>
 
-<div class="viewcode-block" id="ACL.Entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity">[docs]</a>    <span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Class representing a set of roles for an entity.</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Entity constructor.</span>
 
-<span class="sd">        This is a helper class that you likely won&#39;t ever construct</span>
-<span class="sd">        outside of using the factor methods on the :class:`ACL` object.</span>
+<span class="sd">        :type entity_type: string</span>
+<span class="sd">        :param entity_type: The type of entity (ie, &#39;group&#39; or &#39;user&#39;).</span>
+
+<span class="sd">        :type identifier: string</span>
+<span class="sd">        :param identifier: The ID or e-mail of the entity. For the special</span>
+<span class="sd">                           entity types (like &#39;allUsers&#39;) this is optional.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="n">identifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">entity_type</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;{self.type}-{self.identifier}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;&lt;ACL Entity: {self} ({roles})&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the list of roles permitted by this entity.</span>
+
+<span class="sd">        :rtype: list of strings</span>
+<span class="sd">        :returns: The list of roles associated with this entity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Entity constructor.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span>
 
-<span class="sd">            :type entity_type: string</span>
-<span class="sd">            :param entity_type: The type of entity (ie, &#39;group&#39; or &#39;user&#39;).</span>
+    <span class="k">def</span> <span class="nf">grant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add a role to the entity.</span>
 
-<span class="sd">            :type identifier: string</span>
-<span class="sd">            :param identifier: The ID or e-mail of the entity. For the special</span>
-<span class="sd">                               entity types (like &#39;allUsers&#39;) this is optional.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">        :type role: string</span>
+<span class="sd">        :param role: The role to add to the entity.</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="n">identifier</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">roles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">entity_type</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
+<span class="sd">        :returns: The entity class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s">&#39;{self.type}-{self.identifier}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
 
-        <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s">&#39;&lt;ACL Entity: {self} ({roles})&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">revoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove a role from the entity.</span>
 
-<div class="viewcode-block" id="ACL.Entity.get_roles"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.get_roles">[docs]</a>        <span class="k">def</span> <span class="nf">get_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Get the list of roles permitted by this entity.</span>
+<span class="sd">        :type role: string</span>
+<span class="sd">        :param role: The role to remove from the entity.</span>
 
-<span class="sd">            :rtype: list of strings</span>
-<span class="sd">            :returns: The list of roles associated with this entity.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
+<span class="sd">        :returns: The entity class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span>
-</div>
-<div class="viewcode-block" id="ACL.Entity.grant"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.grant">[docs]</a>        <span class="k">def</span> <span class="nf">grant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Add a role to the entity.</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
 
-<span class="sd">            :type role: string</span>
-<span class="sd">            :param role: The role to add to the entity.</span>
+    <span class="k">def</span> <span class="nf">grant_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Grant read access to the current entity.&quot;&quot;&quot;</span>
 
-<span class="sd">            :rtype: :class:`ACL.Entity`</span>
-<span class="sd">            :returns: The entity class.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span>
-</div>
-<div class="viewcode-block" id="ACL.Entity.revoke"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.revoke">[docs]</a>        <span class="k">def</span> <span class="nf">revoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Remove a role from the entity.</span>
+    <span class="k">def</span> <span class="nf">grant_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Grant write access to the current entity.&quot;&quot;&quot;</span>
 
-<span class="sd">            :type role: string</span>
-<span class="sd">            :param role: The role to remove from the entity.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
 
-<span class="sd">            :rtype: :class:`ACL.Entity`</span>
-<span class="sd">            :returns: The entity class.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">grant_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Grant owner access to the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">if</span> <span class="n">role</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span>
-</div>
-<div class="viewcode-block" id="ACL.Entity.grant_read"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.grant_read">[docs]</a>        <span class="k">def</span> <span class="nf">grant_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Grant read access to the current entity.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="ACL.Entity.grant_write"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.grant_write">[docs]</a>        <span class="k">def</span> <span class="nf">grant_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Grant write access to the current entity.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">revoke_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Revoke read access from the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="ACL.Entity.grant_owner"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.grant_owner">[docs]</a>        <span class="k">def</span> <span class="nf">grant_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Grant owner access to the current entity.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="ACL.Entity.revoke_read"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.revoke_read">[docs]</a>        <span class="k">def</span> <span class="nf">revoke_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Revoke read access from the current entity.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">revoke_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Revoke write access from the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="ACL.Entity.revoke_write"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.revoke_write">[docs]</a>        <span class="k">def</span> <span class="nf">revoke_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Revoke write access from the current entity.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="ACL.Entity.revoke_owner"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.Entity.revoke_owner">[docs]</a>        <span class="k">def</span> <span class="nf">revoke_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot;Revoke owner access from the current entity.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">revoke_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Revoke owner access from the current entity.&quot;&quot;&quot;</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">ACL</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
-</div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ACL"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL">[docs]</a><span class="k">class</span> <span class="nc">ACL</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Container class representing a list of access controls.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -275,7 +275,7 @@
                     <span class="k">yield</span> <span class="p">{</span><span class="s">&#39;entity&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">),</span> <span class="s">&#39;role&#39;</span><span class="p">:</span> <span class="n">role</span><span class="p">}</span>
 
 <div class="viewcode-block" id="ACL.entity_from_dict"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.entity_from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">entity_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_dict</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Build an ACL.Entity object from a dictionary of data.</span>
+        <span class="sd">&quot;&quot;&quot;Build an _ACLEntity object from a dictionary of data.</span>
 
 <span class="sd">        An entity is a mutable object</span>
 <span class="sd">        that represents a list of roles</span>
@@ -287,7 +287,7 @@
 <span class="sd">        :type entity_dict: dict</span>
 <span class="sd">        :param entity_dict: Dictionary full of data from an ACL lookup.</span>
 
-<span class="sd">        :rtype: :class:`ACL.Entity`</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An Entity constructed from the dictionary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -305,7 +305,7 @@
             <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="n">entity_type</span><span class="o">=</span><span class="n">entity_type</span><span class="p">,</span>
                                  <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">ACL</span><span class="o">.</span><span class="n">Entity</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">_ACLEntity</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid dictionary: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">entity_dict</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">entity</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
@@ -313,7 +313,7 @@
 <div class="viewcode-block" id="ACL.has_entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.has_entity">[docs]</a>    <span class="k">def</span> <span class="nf">has_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns whether or not this ACL has any entries for an entity.</span>
 
-<span class="sd">        :type entity: :class:`ACL.Entity`</span>
+<span class="sd">        :type entity: :class:`_ACLEntity`</span>
 <span class="sd">        :param entity: The entity to check for existence in this ACL.</span>
 
 <span class="sd">        :rtype: bool</span>
@@ -325,14 +325,14 @@
 <div class="viewcode-block" id="ACL.get_entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.get_entity">[docs]</a>    <span class="k">def</span> <span class="nf">get_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets an entity object from the ACL.</span>
 
-<span class="sd">        :type entity: :class:`ACL.Entity` or string</span>
+<span class="sd">        :type entity: :class:`_ACLEntity` or string</span>
 <span class="sd">        :param entity: The entity to get lookup in the ACL.</span>
 
 <span class="sd">        :type default: anything</span>
 <span class="sd">        :param default: This value will be returned if the entity</span>
 <span class="sd">                        doesn&#39;t exist.</span>
 
-<span class="sd">        :rtype: :class:`ACL.Entity`</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: The corresponding entity or the value provided</span>
 <span class="sd">                  to ``default``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -342,7 +342,7 @@
 <div class="viewcode-block" id="ACL.add_entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.add_entity">[docs]</a>    <span class="k">def</span> <span class="nf">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add an entity to the ACL.</span>
 
-<span class="sd">        :type entity: :class:`ACL.Entity`</span>
+<span class="sd">        :type entity: :class:`_ACLEntity`</span>
 <span class="sd">        :param entity: The entity to add to this ACL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -364,11 +364,11 @@
 <span class="sd">        :param identifier: The ID of the entity (if applicable).</span>
 <span class="sd">                           This can be either an ID or an e-mail address.</span>
 
-<span class="sd">        :rtype: :class:`ACL.Entity`</span>
-<span class="sd">        :returns: A new Entity or a refernece to an existing identical entity.</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
+<span class="sd">        :returns: A new Entity or a reference to an existing identical entity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">entity</span> <span class="o">=</span> <span class="n">ACL</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">entity_type</span><span class="o">=</span><span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="n">entity</span> <span class="o">=</span> <span class="n">_ACLEntity</span><span class="p">(</span><span class="n">entity_type</span><span class="o">=</span><span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">):</span>
             <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -381,7 +381,7 @@
 <span class="sd">        :type identifier: string</span>
 <span class="sd">        :param identifier: An id or e-mail for this particular user.</span>
 
-<span class="sd">        :rtype: :class:`ACL.Entity`</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An Entity corresponding to this user.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -393,7 +393,7 @@
 <span class="sd">        :type identifier: string</span>
 <span class="sd">        :param identifier: An id or e-mail for this particular group.</span>
 
-<span class="sd">        :rtype: :class:`ACL.Entity`</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An Entity corresponding to this group.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -405,7 +405,7 @@
 <span class="sd">        :type domain: string</span>
 <span class="sd">        :param domain: The domain for this entity.</span>
 
-<span class="sd">        :rtype: :class:`ACL.Entity`</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An entity corresponding to this domain.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -414,7 +414,7 @@
 <div class="viewcode-block" id="ACL.all"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for an Entity representing all users.</span>
 
-<span class="sd">        :rtype: :class:`ACL.Entity`</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An entity representing all users.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -423,7 +423,7 @@
 <div class="viewcode-block" id="ACL.all_authenticated"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.all_authenticated">[docs]</a>    <span class="k">def</span> <span class="nf">all_authenticated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for an Entity representing all authenticated users.</span>
 
-<span class="sd">        :rtype: :class:`ACL.Entity`</span>
+<span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An entity representing all authenticated users.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -432,7 +432,7 @@
 <div class="viewcode-block" id="ACL.get_entities"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.get_entities">[docs]</a>    <span class="k">def</span> <span class="nf">get_entities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a list of all Entity objects.</span>
 
-<span class="sd">        :rtype: list of :class:`ACL.Entity` objects</span>
+<span class="sd">        :rtype: list of :class:`_ACLEntity` objects</span>
 <span class="sd">        :returns: A list of all Entity objects.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
