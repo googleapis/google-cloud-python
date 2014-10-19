@@ -296,6 +296,11 @@
 <span class="sd">           not correspond to keys set on this instance will be removed from</span>
 <span class="sd">           the datastore.</span>
 
+<span class="sd">        .. note::</span>
+<span class="sd">           Property values which are &quot;text&quot; (&#39;unicode&#39; in Python2, &#39;str&#39; in</span>
+<span class="sd">           Python3) map to &#39;string_value&#39; in the datastore;  values which are</span>
+<span class="sd">           &quot;bytes&quot; (&#39;str&#39; in Python2, &#39;bytes&#39; in Python3) map to &#39;blob_value&#39;.</span>
+
 <span class="sd">        :rtype: :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">        :returns: The entity with a possibly updated Key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
