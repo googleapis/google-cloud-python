@@ -778,8 +778,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entities(DATASET_ID, [key_pb])
-        self.assertEqual(result.index_updates, 0)
-        self.assertEqual(list(result.insert_auto_id_key), [])
+        self.assertEqual(result, True)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
@@ -820,73 +819,6 @@ class TestConnection(unittest2.TestCase):
         conn.transaction(Xact())
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.delete_entities(DATASET_ID, [key_pb])
-        self.assertEqual(result, True)
-        self.assertEqual(http._called_with, None)
-        mutation = conn.mutation()
-        self.assertEqual(len(mutation.delete), 1)
-
-    def test_delete_entity_wo_transaction(self):
-        from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
-        from gcloud.datastore.key import Key
-
-        DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'datastore',
-            conn.API_VERSION,
-            'datasets',
-            DATASET_ID,
-            'commit',
-        ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.delete_entity(DATASET_ID, key_pb)
-        self.assertEqual(result.index_updates, 0)
-        self.assertEqual(list(result.insert_auto_id_key), [])
-        cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '30',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
-        rq_class = datastore_pb.CommitRequest
-        request = rq_class()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, '')
-        mutation = request.mutation
-        self.assertEqual(len(mutation.insert_auto_id), 0)
-        self.assertEqual(len(mutation.upsert), 0)
-        deletes = list(mutation.delete)
-        self.assertEqual(len(deletes), 1)
-        delete = deletes[0]
-        self.assertEqual(delete, key_pb)
-        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
-
-    def test_delete_entity_w_transaction(self):
-        from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
-        from gcloud.datastore.key import Key
-
-        mutation = datastore_pb.Mutation()
-
-        class Xact(object):
-            def mutation(self):
-                return mutation
-        DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        conn.transaction(Xact())
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.delete_entity(DATASET_ID, key_pb)
         self.assertEqual(result, True)
         self.assertEqual(http._called_with, None)
         mutation = conn.mutation()

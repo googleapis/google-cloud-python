@@ -242,8 +242,10 @@ class Entity(dict):
         """
         key = self._must_key
         dataset = key.dataset()
-        dataset.connection().delete_entity(
-            dataset_id=dataset.id(), key_pb=key.to_protobuf())
+        dataset.connection().delete_entities(
+            dataset_id=dataset.id(),
+            key_pbs=[key.to_protobuf()],
+            )
 
     def __repr__(self):
         if self._key:
