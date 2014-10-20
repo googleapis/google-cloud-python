@@ -183,13 +183,8 @@
         <span class="c"># but we shouldn&#39;t throw a cryptic error if one isn&#39;t provided</span>
         <span class="c"># in the initializer.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">():</span>
-            <span class="c"># Apparently &#39;s~&#39; is a prefix for High-Replication and is necessary</span>
-            <span class="c"># here. Another valid preflix is &#39;e~&#39; indicating EU datacenters.</span>
             <span class="n">dataset_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">dataset_id</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">dataset_id</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;s~&#39;</span><span class="p">,</span> <span class="s">&#39;e~&#39;</span><span class="p">]:</span>
-                    <span class="n">dataset_id</span> <span class="o">=</span> <span class="s">&#39;s~&#39;</span> <span class="o">+</span> <span class="n">dataset_id</span>
-
                 <span class="n">key</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
