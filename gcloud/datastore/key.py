@@ -95,13 +95,8 @@ class Key(object):
         # but we shouldn't throw a cryptic error if one isn't provided
         # in the initializer.
         if self.dataset():
-            # Apparently 's~' is a prefix for High-Replication and is necessary
-            # here. Another valid preflix is 'e~' indicating EU datacenters.
             dataset_id = self.dataset().id()
             if dataset_id:
-                if dataset_id[:2] not in ['s~', 'e~']:
-                    dataset_id = 's~' + dataset_id
-
                 key.partition_id.dataset_id = dataset_id
 
         if self._namespace:
