@@ -14,6 +14,27 @@ from gcloud.datastore.key import Key
 INT_VALUE_CHECKER = Int64ValueChecker()
 
 
+class DuplicateFactory(Exception):
+    """Conflicting factory registration."""
+
+
+class InvalidFactory(Exception):
+    """Unknown factory invocation."""
+
+
+_factories = {}  # registry: name -> callable
+
+def _register_factory(name, factory):
+    if _factories.get(name) not in (None, factory):
+        raise DuplicateFactory(name)
+    _factories[name] = factory
+
+def _invoke_factory(name, *args, **kw):
+    factory = _factories.get(name)
+    if factory is None:
+        raise InvalidFactory(name)
+    return factory(*args, **kw)
+
 def _get_protobuf_attribute_and_value(val):
     """Given a value, return the protobuf attribute name and proper value.
 

@@ -1,6 +1,96 @@
 import unittest2
 
 
+class _FactoryBase(object):
+
+    def setUp(self):
+        from gcloud.datastore._helpers import _factories
+
+        self._before = _factories.copy()
+
+    def tearDown(self):
+        from gcloud.datastore._helpers import _factories
+
+        _factories.clear()
+        _factories.update(self._before)
+
+
+class Test__register_factory(_FactoryBase, unittest2.TestCase):
+
+    def _callFUT(self, name, factory):
+        from gcloud.datastore._helpers import _register_factory
+
+        return _register_factory(name, factory)
+
+    def test_it(self):
+        from gcloud.datastore._helpers import _factories
+
+        class _Foo(object):
+            pass
+
+        self._callFUT('Foo', _Foo)
+        self.assertTrue(_factories['Foo'] is _Foo)
+
+    def test_duplicate_exact(self):
+        from gcloud.datastore._helpers import _factories
+
+        class _Foo(object):
+            pass
+
+        self._callFUT('Foo', _Foo)
+        self._callFUT('Foo', _Foo)
+        self.assertTrue(_factories['Foo'] is _Foo)
+
+    def test_duplicate_conflict(self):
+        from gcloud.datastore._helpers import DuplicateFactory
+
+        class _Foo(object):
+            pass
+
+        class _Bar(object):
+            pass
+
+        self._callFUT('Foo', _Foo)
+        self.assertRaises(DuplicateFactory, self._callFUT, 'Foo', _Bar)
+
+
+class Test__invoke_factory(_FactoryBase, unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._helpers import _factories
+
+        super(Test__invoke_factory, self).setUp()
+        self._called_with = []
+        self._widget = object()
+        _factories['Widget'] = self._factory
+
+    def _callFUT(self, name, *args, **kw):
+        from gcloud.datastore._helpers import _invoke_factory
+
+        return _invoke_factory(name, *args, **kw)
+
+    def _factory(self, *args, **kw):
+        self._called_with.append((args, kw))
+        return self._widget
+
+    def test_missing_registration(self):
+        from gcloud.datastore._helpers import InvalidFactory
+
+        self.assertRaises(InvalidFactory, self._callFUT, 'Nonesuch')
+
+    def test_wo_args_or_kw(self):
+        self.assertTrue(self._callFUT('Widget') is self._widget)
+        self.assertEqual(self._called_with, [((), {})])
+
+    def test_w_args(self):
+        self.assertTrue(self._callFUT('Widget', 'foo', 42) is self._widget)
+        self.assertEqual(self._called_with, [(('foo', 42), {})])
+
+    def test_w_kw(self):
+        self.assertTrue(self._callFUT('Widget', foo=42) is self._widget)
+        self.assertEqual(self._called_with, [((), {'foo': 42})])
+
+
 class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
 
     def _callFUT(self, val):
