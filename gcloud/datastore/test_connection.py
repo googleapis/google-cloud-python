@@ -313,7 +313,7 @@ class TestConnection(unittest2.TestCase):
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
-        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        q_pb = Query(kind=KIND).to_protobuf()
         rsp_pb = datastore_pb.RunQueryResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -349,7 +349,7 @@ class TestConnection(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
         entity = datastore_pb.Entity()
-        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        q_pb = Query(kind=KIND).to_protobuf()
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.entity_result.add(entity=entity)
         rsp_pb.batch.entity_result_type = 1  # FULL

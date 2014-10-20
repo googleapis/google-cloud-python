@@ -42,7 +42,7 @@ class Query(object):
     }
     """Mapping of operator strings and their protobuf equivalents."""
 
-    def __init__(self, kind=None, dataset=None, namespace=None):
+    def __init__(self, dataset=None, kind=None, namespace=None):
         self._dataset = dataset
         self._namespace = namespace
         self._pb = datastore_pb.Query()

@@ -29,7 +29,7 @@ print dataset.get_entities([toy.key()])
 
 # Now let's try a more advanced query.
 # We'll start by look at all Thing entities:
-query = Query('Thing', dataset)
+query = Query(dataset, 'Thing')
 
 # Let's look at the first two.
 print query.limit(2).fetch()

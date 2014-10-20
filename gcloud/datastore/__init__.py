@@ -9,7 +9,7 @@ You'll typically use these to get started with the API:
 >>> # Then do other things...
 >>> from gcloud.datastore.entity import Entity
 >>> from gcloud.datastore.query import Query
->>> query = Query('EntityKind', dataset)
+>>> query = Query(dataset, 'EntityKind')
 >>> entity = Entity(dataset, 'EntityKind')
 
 The main concepts with this API are:
@@ -90,7 +90,7 @@ def get_dataset(dataset_id, client_email, private_key_path):
     >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
     >>> # Now you can do things with the dataset.
     >>> from gcloud.datastore.query import Query
-    >>> query = Query('TestKind', dataset)
+    >>> query = Query(dataset, 'TestKind')
     >>> query.fetch()
     [...]
 

@@ -8,8 +8,8 @@ class TestQuery(unittest2.TestCase):
 
         return Query
 
-    def _makeOne(self, kind=None, dataset=None, namespace=None):
-        return self._getTargetClass()(kind, dataset, namespace)
+    def _makeOne(self, dataset=None, kind=None, namespace=None):
+        return self._getTargetClass()(dataset, kind, namespace)
 
     def test_ctor_defaults(self):
         query = self._getTargetClass()()
@@ -25,7 +25,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset, _NAMESPACE)
+        query = self._makeOne(dataset, _KIND, _NAMESPACE)
         self.assertTrue(query.dataset() is dataset)
         kq_pb, = list(query.kind())
         self.assertEqual(kq_pb.name, _KIND)
@@ -39,7 +39,7 @@ class TestQuery(unittest2.TestCase):
         _CURSOR = 'DEADBEEF'
         _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset, _NAMESPACE)
+        query = self._makeOne(dataset, _KIND, _NAMESPACE)
         query._cursor = _CURSOR
         clone = query._clone()
         self.assertFalse(clone is query)
@@ -58,7 +58,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_to_protobuf_w_kind(self):
         _KIND = 'KIND'
-        query = self._makeOne(_KIND)
+        query = self._makeOne(kind=_KIND)
         q_pb = query.to_protobuf()
         kq_pb, = list(q_pb.kind)
         self.assertEqual(kq_pb.name, _KIND)
@@ -189,7 +189,7 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(dataset=dataset)
+        query = self._makeOne(dataset)
         after = query.kind(_KIND)
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
@@ -203,7 +203,7 @@ class TestQuery(unittest2.TestCase):
         _KIND_BEFORE = 'KIND_BEFORE'
         _KIND_AFTER = 'KIND_AFTER'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND_BEFORE, dataset)
+        query = self._makeOne(dataset, _KIND_BEFORE)
         after = query.kind(_KIND_AFTER)
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
@@ -218,7 +218,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         _LIMIT = 42
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(dataset, _KIND)
         after = query.limit(_LIMIT)
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
@@ -232,7 +232,7 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND)
+        query = self._makeOne(kind=_KIND)
         after = query.dataset(dataset)
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
@@ -254,7 +254,7 @@ class TestQuery(unittest2.TestCase):
         prop.value.string_value = u'Foo'
         connection = _Connection(entity_pb)
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(dataset, _KIND)
         entities = query.fetch()
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].key().path(),
@@ -283,7 +283,7 @@ class TestQuery(unittest2.TestCase):
         connection = _Connection(entity_pb)
         connection._cursor = _CURSOR
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset, _NAMESPACE)
+        query = self._makeOne(dataset, _KIND, _NAMESPACE)
         limited = query.limit(13)
         entities = query.fetch(13)
         self.assertEqual(query._cursor, _CURSOR)
@@ -302,7 +302,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         connection = _Connection()
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(dataset, _KIND)
         self.assertRaises(RuntimeError, query.cursor)
 
     def test_cursor_fetched(self):
@@ -312,7 +312,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         connection = _Connection()
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(dataset, _KIND)
         query._cursor = _CURSOR
         self.assertEqual(query.cursor(), base64.b64encode(_CURSOR))
 
@@ -321,7 +321,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         connection = _Connection()
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(dataset, _KIND)
         self.assertTrue(query.with_cursor(None) is query)
 
     def test_with_cursor_w_start(self):
@@ -332,7 +332,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         connection = _Connection()
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(dataset, _KIND)
         after = query.with_cursor(_CURSOR_B64)
         self.assertFalse(after is query)
         q_pb = after.to_protobuf()
@@ -347,7 +347,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         connection = _Connection()
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(dataset, _KIND)
         after = query.with_cursor(None, _CURSOR_B64)
         self.assertFalse(after is query)
         q_pb = after.to_protobuf()
@@ -364,7 +364,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         connection = _Connection()
         dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
+        query = self._makeOne(dataset, _KIND)
         after = query.with_cursor(_START_B64, _END_B64)
         self.assertFalse(after is query)
         q_pb = after.to_protobuf()
@@ -373,7 +373,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_order_empty(self):
         _KIND = 'KIND'
-        before = self._makeOne(_KIND)
+        before = self._makeOne(kind=_KIND)
         after = before.order()
         self.assertFalse(after is before)
         self.assertTrue(isinstance(after, self._getTargetClass()))
@@ -381,7 +381,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_order_single_asc(self):
         _KIND = 'KIND'
-        before = self._makeOne(_KIND)
+        before = self._makeOne(kind=_KIND)
         after = before.order('field')
         after_pb = after.to_protobuf()
         order_pb = list(after_pb.order)
@@ -392,7 +392,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_order_single_desc(self):
         _KIND = 'KIND'
-        before = self._makeOne(_KIND)
+        before = self._makeOne(kind=_KIND)
         after = before.order('-field')
         after_pb = after.to_protobuf()
         order_pb = list(after_pb.order)
@@ -403,7 +403,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_order_multiple(self):
         _KIND = 'KIND'
-        before = self._makeOne(_KIND)
+        before = self._makeOne(kind=_KIND)
         after = before.order('foo', '-bar')
         after_pb = after.to_protobuf()
         order_pb = list(after_pb.order)

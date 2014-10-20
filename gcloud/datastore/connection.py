@@ -213,7 +213,7 @@ class Connection(connection.Connection):
         >>> from gcloud.datastore.query import Query
         >>> connection = datastore.get_connection(email, key_path)
         >>> dataset = connection.dataset('dataset-id')
-        >>> query = Query('MyKind', dataset).filter('property =', 'val')
+        >>> query = Query(dataset, 'MyKind').filter('property =', 'val')
 
         Using the `fetch`` method...
 
