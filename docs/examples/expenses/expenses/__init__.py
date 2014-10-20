@@ -1,16 +1,17 @@
 # package
 import os
 
-from gcloud import dataset
-from gcloud.dataset.key import Key
-from gcloud.dataset.query import Query
+from gcloud import datastore
+from gcloud.datastore.key import Key
+from gcloud.datastore.entity import Entity
+from gcloud.datastore.query import Query
 
 def get_dataset():
     client_email = os.environ['EXPENSES_CLIENT_EMAIL']
     private_key_path = os.environ['EXPENSES_PRIVATE_KEY_PATH']
     dataset_id = os.environ['EXPENSES_DATASET_ID']
-    conn = dataset.get_connection(client_email, private_key_path)
-    return conn.dataset_id(dataset_id)
+    conn = datastore.get_connection(client_email, private_key_path)
+    return conn.dataset(dataset_id)
 
 def get_employee(dataset, employee_id):
     key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id}])
@@ -36,15 +37,16 @@ def upsert_report(employee_id, report_id, rows):
     with dataset.transaction():
         employee = get_employee(dataset, employee_id)
         report = get_report(dataset, employee_id, report_id)
-        query = Query('Expense Item', dataset.connection())
+        query = Query('Expense Item', dataset)
         # Delete any existing items.
         for existing in query.ancestor(report.key()).fetch():
             existing.delete()
         # Add items based on rows.
+        report_path = report.key().path()
         for i, row in enumerate(rows):
-            path = report.key.path() + [{'kind': 'Expense Item', 'id': i}]
+            path = report_path + [{'kind': 'Expense Item', 'id': i + 1}]
             key = Key(dataset, path=path)
-            item = dataset.entity('Expense Item').key(key)
-            for k, v in rows.items():
+            item = Entity(dataset, 'Expense Item').key(key)
+            for k, v in row.items():
                 item[k] = v
             item.save()

@@ -5,6 +5,9 @@ import textwrap
 import sys
 
 
+from .. import upsert_report
+
+
 class InvalidCommandLine(ValueError):
     pass
 
@@ -67,13 +70,14 @@ class _Command(object):
         if self.report_id is None:
             fn = os.path.basename(self.filename)
             base, ext = os.path.splitext(fn)
-            self.report_id = "%s/%s" % (self.employee_id, base)
+            self.report_id = base
 
 
 class CreateReport(_Command):
     """Create an expense report from a CSV file.
     """
     def __call__(self):
+        upsert_report(self.employee_id, self.report_id, self.rows)
         self.submitter.blather("Processed %d rows." % len(self.rows))
         self.submitter.blather("Created, report ID: %s" % self.report_id)
 
