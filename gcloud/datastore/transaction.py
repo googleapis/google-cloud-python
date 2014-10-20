@@ -3,6 +3,8 @@
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.key import Key
 
+from . import _helpers
+
 
 class Transaction(object):
     """An abstraction representing datastore Transactions.
@@ -253,3 +255,6 @@ class Transaction(object):
             self.commit()
         else:
             self.rollback()
+
+
+_helpers._register_factory('Transaction', Transaction)

@@ -5,6 +5,8 @@ from itertools import izip
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
+from . import _helpers
+
 
 class Key(object):
     """An immutable representation of a datastore Key.
@@ -251,3 +253,8 @@ class Key(object):
 
     def __repr__(self):
         return '<Key%s>' % self.path()
+
+
+_helpers._register_factory('Key', Key)
+_helpers._register_factory('Key_from_protobuf', Key.from_protobuf)
+_helpers._register_factory('Key_path', Key.from_path)

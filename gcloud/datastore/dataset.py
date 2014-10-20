@@ -1,5 +1,7 @@
 """Create / interact with gcloud datastore datasets."""
 
+from . import _helpers
+
 
 class Dataset(object):
     """A dataset in the Cloud Datastore.
@@ -70,10 +72,8 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.transaction.Transaction`
         :returns: a new Transaction instance, bound to this dataset.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.transaction import Transaction
         kwargs['dataset'] = self
-        return Transaction(*args, **kwargs)
+        return _helpers._invoke_factory('Transaction', *args, **kwargs)
 
     def get_entity(self, key):
         """Retrieves entity from the dataset, along with its attributes.
@@ -97,9 +97,6 @@ class Dataset(object):
         :rtype: list of :class:`gcloud.datastore.entity.Entity`
         :return: The requested entities.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.entity import Entity
-
         entity_pbs = self.connection().lookup(
             dataset_id=self.id(),
             key_pbs=[k.to_protobuf() for k in keys]
@@ -107,5 +104,9 @@ class Dataset(object):
 
         entities = []
         for entity_pb in entity_pbs:
-            entities.append(Entity.from_protobuf(entity_pb, dataset=self))
+            entities.append(_helpers._invoke_factory('Entity_pb',
+                                                     entity_pb, dataset=self))
         return entities
+
+
+_helpers._register_factory('Dataset', Dataset)

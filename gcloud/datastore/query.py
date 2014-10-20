@@ -3,9 +3,9 @@
 import base64
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-from gcloud.datastore import _helpers
-from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
+
+from . import _helpers
 
 
 class Query(object):
@@ -191,7 +191,7 @@ class Query(object):
 
         # If a list was provided, turn it into a Key.
         if isinstance(ancestor, list):
-            ancestor = Key.from_path(*ancestor)
+            ancestor = _helpers._invoke_factory('Key_path', *ancestor)
 
         # If we don't have a Key value by now, something is wrong.
         if not isinstance(ancestor, Key):
@@ -324,7 +324,8 @@ class Query(object):
         entity_pbs, end_cursor = query_results[:2]
 
         self._cursor = end_cursor
-        return [Entity.from_protobuf(entity, dataset=self.dataset())
+        return [_helpers._invoke_factory('Entity_pb', entity,
+                                         dataset=self.dataset())
                 for entity in entity_pbs]
 
     def cursor(self):
@@ -392,3 +393,6 @@ class Query(object):
                 property_order.direction = property_order.ASCENDING
 
         return clone
+
+
+_helpers._register_factory('Query', Query)

@@ -8,8 +8,6 @@ import datetime
 from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
 
-from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import Key
 
 INT_VALUE_CHECKER = Int64ValueChecker()
 
@@ -22,18 +20,28 @@ class InvalidFactory(Exception):
     """Unknown factory invocation."""
 
 
-_factories = {}  # registry: name -> callable
+_FACTORIES = {}  # registry: name -> callable
+
 
 def _register_factory(name, factory):
-    if _factories.get(name) not in (None, factory):
+    """Register a factory by name."""
+    if _FACTORIES.get(name) not in (None, factory):
         raise DuplicateFactory(name)
-    _factories[name] = factory
+    _FACTORIES[name] = factory
 
-def _invoke_factory(name, *args, **kw):
-    factory = _factories.get(name)
+
+def _query_factory(name):
+    """Look up a factory by name."""
+    factory = _FACTORIES.get(name)
     if factory is None:
         raise InvalidFactory(name)
-    return factory(*args, **kw)
+    return factory
+
+
+def _invoke_factory(name, *args, **kw):
+    """Look up and call a factory by name."""
+    return _query_factory(name)(*args, **kw)
+
 
 def _get_protobuf_attribute_and_value(val):
     """Given a value, return the protobuf attribute name and proper value.
@@ -68,6 +76,8 @@ def _get_protobuf_attribute_and_value(val):
 
     :returns: A tuple of the attribute name and proper value type.
     """
+    key_class = _FACTORIES.get('Key')
+    entity_class = _FACTORIES.get('Entity')
 
     if isinstance(val, datetime.datetime):
         name = 'timestamp_microseconds'
@@ -79,8 +89,6 @@ def _get_protobuf_attribute_and_value(val):
         val = val.astimezone(pytz.utc)
         # Convert the datetime to a microsecond timestamp.
         value = long(calendar.timegm(val.timetuple()) * 1e6) + val.microsecond
-    elif isinstance(val, Key):
-        name, value = 'key', val.to_protobuf()
     elif isinstance(val, bool):
         name, value = 'boolean', val
     elif isinstance(val, float):
@@ -92,10 +100,12 @@ def _get_protobuf_attribute_and_value(val):
         name, value = 'string', val
     elif isinstance(val, (bytes, str)):
         name, value = 'blob', val
-    elif isinstance(val, Entity):
-        name, value = 'entity', val
     elif isinstance(val, list):
         name, value = 'list', val
+    elif key_class and isinstance(val, key_class):
+        name, value = 'key', val.to_protobuf()
+    elif entity_class and isinstance(val, entity_class):
+        name, value = 'entity', val
     else:
         raise ValueError("Unknown protobuf attr type %s" % type(val))
 
@@ -126,7 +136,7 @@ def _get_value_from_value_pb(value_pb):
         result = naive.replace(tzinfo=pytz.utc)
 
     elif value_pb.HasField('key_value'):
-        result = Key.from_protobuf(value_pb.key_value)
+        result = _FACTORIES['Key'].from_protobuf(value_pb.key_value)
 
     elif value_pb.HasField('boolean_value'):
         result = value_pb.boolean_value
@@ -144,7 +154,7 @@ def _get_value_from_value_pb(value_pb):
         result = value_pb.blob_value
 
     elif value_pb.HasField('entity_value'):
-        result = Entity.from_protobuf(value_pb.entity_value)
+        result = _FACTORIES['Entity'].from_protobuf(value_pb.entity_value)
 
     elif value_pb.list_value:
         result = [_get_value_from_value_pb(x) for x in value_pb.list_value]

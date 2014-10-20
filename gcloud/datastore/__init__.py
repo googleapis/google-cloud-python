@@ -34,6 +34,13 @@ The main concepts with this API are:
   which represents a lookup or search over the rows in the datastore.
 """
 
+import gcloud.datastore.connection
+import gcloud.datastore.dataset
+import gcloud.datastore.entity
+import gcloud.datastore.key
+import gcloud.datastore.query
+import gcloud.datastore.transaction
+
 __version__ = '0.1.2'
 
 SCOPE = ('https://www.googleapis.com/auth/datastore ',
