@@ -134,60 +134,6 @@ class Iterator(object):
         raise NotImplementedError
 
 
-class BucketIterator(Iterator):
-    """An iterator listing all buckets.
-
-    You shouldn't have to use this directly,
-    but instead should use the helper methods
-    on :class:`gcloud.storage.connection.Connection` objects.
-
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: The connection to use for querying the list of buckets.
-    """
-
-    def __init__(self, connection):
-        super(BucketIterator, self).__init__(connection=connection, path='/b')
-
-    def get_items_from_response(self, response):
-        """Factory method which yields :class:`.Bucket` items from a response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of buckets.
-        """
-
-        from gcloud.storage.bucket import Bucket
-        for item in response.get('items', []):
-            yield Bucket.from_dict(item, connection=self.connection)
-
-
-class KeyIterator(Iterator):
-    """An iterator listing keys.
-
-    You shouldn't have to use this directly,
-    but instead should use the helper methods
-    on :class:`gcloud.storage.key.Key` objects.
-
-    :type bucket: :class:`gcloud.storage.bucket.Bucket`
-    :param bucket: The bucket from which to list keys.
-    """
-
-    def __init__(self, bucket):
-        self.bucket = bucket
-        super(KeyIterator, self).__init__(
-            connection=bucket.connection, path=bucket.path + '/o')
-
-    def get_items_from_response(self, response):
-        """Factory method, yields :class:`.storage.key.Key` items from response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of keys.
-        """
-
-        from gcloud.storage.key import Key
-        for item in response.get('items', []):
-            yield Key.from_dict(item, bucket=self.bucket)
-
-
 class KeyDataIterator(object):
     """An iterator listing data stored in a key.
 

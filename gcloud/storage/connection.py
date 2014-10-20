@@ -15,7 +15,7 @@ import pytz
 from gcloud import connection
 from gcloud.storage import exceptions
 from gcloud.storage.bucket import Bucket
-from gcloud.storage.iterator import BucketIterator
+from gcloud.storage.bucket import BucketIterator
 
 
 def _utcnow():  # pragma: NO COVER testing replaces

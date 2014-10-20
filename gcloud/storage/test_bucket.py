@@ -840,7 +840,7 @@ class Test_Bucket(unittest2.TestCase):
     def test_make_public_recursive(self):
         from gcloud.storage.acl import _ACLEntity
         from gcloud._testing import _Monkey
-        from gcloud.storage import iterator
+        from gcloud.storage import key
         from gcloud.storage import bucket as MUT
         _saved = []
 
@@ -863,7 +863,7 @@ class Test_Bucket(unittest2.TestCase):
             def save_acl(self):
                 _saved.append((self._bucket, self._name, self._granted))
 
-        class _KeyIterator(iterator.KeyIterator):
+        class _KeyIterator(key.KeyIterator):
             def get_items_from_response(self, response):
                 for item in response.get('items', []):
                     yield _Key(self.bucket, item['name'])
@@ -890,6 +890,42 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw[1]['query_params'], None)
+
+
+class TestBucketIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.bucket import BucketIterator
+        return BucketIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = _Connection()
+        iterator = self._makeOne(connection)
+        self.assertTrue(iterator.connection is connection)
+        self.assertEqual(iterator.path, '/b')
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+
+    def test_get_items_from_response_empty(self):
+        connection = _Connection()
+        iterator = self._makeOne(connection)
+        self.assertEqual(list(iterator.get_items_from_response({})), [])
+
+    def test_get_items_from_response_non_empty(self):
+        from gcloud.storage.bucket import Bucket
+        KEY = 'key'
+        response = {'items': [{'name': KEY}]}
+        connection = _Connection()
+        iterator = self._makeOne(connection)
+        buckets = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(buckets), 1)
+        bucket = buckets[0]
+        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertTrue(bucket.connection is connection)
+        self.assertEqual(bucket.name, KEY)
 
 
 class _Connection(object):

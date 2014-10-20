@@ -5,6 +5,7 @@ import os
 from StringIO import StringIO
 
 from gcloud.storage.acl import ObjectACL
+from gcloud.storage.iterator import Iterator
 from gcloud.storage.iterator import KeyDataIterator
 
 
@@ -459,3 +460,29 @@ class Key(object):
         self.get_acl().all().grant_read()
         self.save_acl()
         return self
+
+
+class KeyIterator(Iterator):
+    """An iterator listing keys.
+
+    You shouldn't have to use this directly,
+    but instead should use the helper methods
+    on :class:`gcloud.storage.key.Key` objects.
+
+    :type bucket: :class:`gcloud.storage.bucket.Bucket`
+    :param bucket: The bucket from which to list keys.
+    """
+
+    def __init__(self, bucket):
+        self.bucket = bucket
+        super(KeyIterator, self).__init__(
+            connection=bucket.connection, path=bucket.path + '/o')
+
+    def get_items_from_response(self, response):
+        """Factory method, yields :class:`.storage.key.Key` items from response.
+
+        :type response: dict
+        :param response: The JSON API response for a page of keys.
+        """
+        for item in response.get('items', []):
+            yield Key.from_dict(item, bucket=self.bucket)
