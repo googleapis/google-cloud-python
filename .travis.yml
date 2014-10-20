@@ -7,8 +7,8 @@ install:
 script:
   - tox -e py26
   - tox -e py27
+  - tox -e lint
 after_success:
   - tox -e cover
-  - tox -e lint
   - coveralls
   - scripts/merge.sh
