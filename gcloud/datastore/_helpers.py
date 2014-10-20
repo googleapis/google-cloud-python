@@ -30,7 +30,7 @@ def _register_factory(name, factory):
     _FACTORIES[name] = factory
 
 
-def _query_factory(name):
+def _get_factory(name):
     """Look up a factory by name."""
     factory = _FACTORIES.get(name)
     if factory is None:
@@ -40,7 +40,7 @@ def _query_factory(name):
 
 def _invoke_factory(name, *args, **kw):
     """Look up and call a factory by name."""
-    return _query_factory(name)(*args, **kw)
+    return _get_factory(name)(*args, **kw)
 
 
 def _get_protobuf_attribute_and_value(val):

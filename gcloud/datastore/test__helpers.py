@@ -54,18 +54,18 @@ class Test__register_factory(_FactoryBase, unittest2.TestCase):
         self.assertRaises(DuplicateFactory, self._callFUT, 'Foo', _Bar)
 
 
-class Test__query_factory(_FactoryBase, unittest2.TestCase):
+class Test__get_factory(_FactoryBase, unittest2.TestCase):
 
     def setUp(self):
         from gcloud.datastore._helpers import _FACTORIES
 
-        super(Test__query_factory, self).setUp()
+        super(Test__get_factory, self).setUp()
         _FACTORIES['Widget'] = self._factory
 
     def _callFUT(self, name, *args, **kw):
-        from gcloud.datastore._helpers import _query_factory
+        from gcloud.datastore._helpers import _get_factory
 
-        return _query_factory(name, *args, **kw)
+        return _get_factory(name, *args, **kw)
 
     @staticmethod
     def _factory(*args, **kw):  # pragma: NO COVER

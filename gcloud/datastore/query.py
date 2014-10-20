@@ -192,7 +192,7 @@ class Query(object):
             ancestor = _helpers._invoke_factory('Key_path', *ancestor)
 
         # If we don't have a Key value by now, something is wrong.
-        if not isinstance(ancestor, _helpers._query_factory('Key')):
+        if not isinstance(ancestor, _helpers._get_factory('Key')):
             raise TypeError('Expected list or Key, got %s.' % type(ancestor))
 
         # Get the composite filter and add a new property filter.
