@@ -39,14 +39,9 @@ class Entity(dict):
     This means you could take an existing entity and change the key
     to duplicate the object.
 
-    This can be used on its own, however it is likely easier to use
-    the shortcut methods provided by :class:`gcloud.datastore.dataset.Dataset`
+    Entities can be constructed directly, or obtained via
+    the "lookup" methods provided by :class:`gcloud.datastore.dataset.Dataset`
     such as:
-
-    - :func:`gcloud.datastore.dataset.Dataset.entity` to create a new entity.
-
-      >>> dataset.entity('MyEntityKind')
-      <Entity[{'kind': 'MyEntityKind'}] {}>
 
     - :func:`gcloud.datastore.dataset.Dataset.get_entity`
       to retrieve an existing entity.

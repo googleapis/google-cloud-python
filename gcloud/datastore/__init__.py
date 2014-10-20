@@ -7,8 +7,10 @@ You'll typically use these to get started with the API:
 ...                                 'long-email@googleapis.com',
 ...                                 '/path/to/private.key')
 >>> # Then do other things...
->>> query = dataset.query().kind('EntityKind')
->>> entity = dataset.entity('EntityKind')
+>>> from gcloud.datastore.entity import Entity
+>>> from gcloud.datastore.query import Query
+>>> query = Query('EntityKind', dataset)
+>>> entity = Entity(dataset, 'EntityKind')
 
 The main concepts with this API are:
 
@@ -80,7 +82,9 @@ def get_dataset(dataset_id, client_email, private_key_path):
     >>> from gcloud import datastore
     >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
     >>> # Now you can do things with the dataset.
-    >>> dataset.query().kind('TestKind').fetch()
+    >>> from gcloud.datastore.query import Query
+    >>> query = Query('TestKind', dataset)
+    >>> query.fetch()
     [...]
 
     :type dataset_id: string

@@ -18,23 +18,12 @@ class Query(object):
     and a clone is returned whenever
     any part of the query is modified::
 
-      >>> query = Query('MyKind')
+      >>> query = Query('MyKind', dataset)
       >>> limited_query = query.limit(10)
       >>> query.limit() == 10
       False
       >>> limited_query.limit() == 10
       True
-
-    You typically won't construct a :class:`Query`
-    by initializing it like ``Query('MyKind', dataset=...)``
-    but instead use the helper
-    :func:`gcloud.datastore.dataset.Dataset.query` method
-    which generates a query that can be executed
-    without any additional work::
-
-      >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
-      >>> query = dataset.query('MyKind')
 
     :type kind: string
     :param kind: The kind to query.
@@ -163,13 +152,12 @@ class Query(object):
         For example::
 
           >>> parent_key = Key.from_path('Person', '1')
-          >>> query = dataset.query('Person')
+          >>> query = Query('Person', dataset)
           >>> filtered_query = query.ancestor(parent_key)
 
         If you don't have a :class:`gcloud.datastore.key.Key` but just
         know the path, you can provide that as well::
 
-          >>> query = dataset.query('Person')
           >>> filtered_query = query.ancestor(['Person', '1'])
 
         Each call to ``.ancestor()`` returns a cloned :class:`Query`,
@@ -306,7 +294,7 @@ class Query(object):
 
           >>> from gcloud import datastore
           >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
-          >>> query = dataset.query('Person').filter('name =', 'Sally')
+          >>> query = Query('Person', dataset).filter('name =', 'Sally')
           >>> query.fetch()
           [<Entity object>, <Entity object>, ...]
           >>> query.fetch(1)

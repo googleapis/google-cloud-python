@@ -42,8 +42,9 @@ class Transaction(object):
       That means,
       if you try::
 
+        >>> from gcloud.datastore.entity import Entity
         >>> with dataset.transaction():
-        ...   entity = dataset.entity('Thing').save()
+        ...   entity = Entity(dataset, 'Thing').save()
 
       ``entity`` won't have a complete Key
       until the transaction is committed.
@@ -53,7 +54,7 @@ class Transaction(object):
       to the entity::
 
         >>> with dataset.transaction():
-        ...   entity = dataset.entity('Thing')
+        ...   entity = Entity(dataset, 'Thing').save()
         ...   entity.save()
         ...   assert entity.key().is_partial()  # There is no ID on this key.
         >>> assert not entity.key().is_partial()  # There *is* an ID.
@@ -75,7 +76,7 @@ class Transaction(object):
       >>> transaction = dataset.transaction()
       >>> transaction.begin()
 
-      >>> entity = dataset.entity('Thing')
+      >>> entity = Entity(dataset, 'Thing')
       >>> entity.save()
 
       >>> if error:
@@ -94,19 +95,17 @@ class Transaction(object):
 
     For example, this is perfectly valid::
 
-      >>> from gcloud import datastore
       >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
       >>> with dataset.transaction():
-      ...   dataset.entity('Thing').save()
+      ...     Entity(dataset, 'Thing').save()
 
     However, this **wouldn't** be acceptable::
 
-      >>> from gcloud import datastore
       >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
       >>> with dataset.transaction():
-      ...   dataset.entity('Thing').save()
-      ...   with dataset.transaction():
-      ...     dataset.entity('Thing').save()
+      ...     Entity(dataset, 'Thing').save()
+      ...     with dataset.transaction():
+      ...         Entity(dataset, 'Thing').save()
 
     Technically, it looks like the Protobuf API supports this type of pattern,
     however it makes the code particularly messy.
@@ -116,9 +115,9 @@ class Transaction(object):
       >>> dataset1 = datastore.get_dataset('dataset-id', email, key_path)
       >>> dataset2 = datastore.get_dataset('dataset-id', email, key_path)
       >>> with dataset1.transaction():
-      ...   dataset1.entity('Thing').save()
-      ...   with dataset2.transaction():
-      ...     dataset2.entity('Thing').save()
+      ...     Entity(dataset1, 'Thing').save()
+      ...     with dataset2.transaction():
+      ...       Entity(dataset2, 'Thing').save()
 
     :type dataset: :class:`gcloud.datastore.dataset.Dataset`
     :param dataset: The dataset to which this :class:`Transaction` belongs.

@@ -210,9 +210,10 @@ class Connection(connection.Connection):
         uses this method to fetch data:
 
         >>> from gcloud import datastore
+        >>> from gcloud.datastore.query import Query
         >>> connection = datastore.get_connection(email, key_path)
         >>> dataset = connection.dataset('dataset-id')
-        >>> query = dataset.query().kind('MyKind').filter('property =', 'val')
+        >>> query = Query('MyKind', dataset).filter('property =', 'val')
 
         Using the `fetch`` method...
 
