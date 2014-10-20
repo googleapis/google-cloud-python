@@ -3,8 +3,8 @@
 import copy
 from itertools import izip
 
+from gcloud.datastore._dataset import _Dataset
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-from gcloud.datastore.dataset import Dataset
 
 
 class Key(object):
@@ -76,7 +76,7 @@ class Key(object):
             path.append(element_dict)
 
         if not dataset:
-            dataset = Dataset(id=pb.partition_id.dataset_id)
+            dataset = _Dataset(id=pb.partition_id.dataset_id)
             namespace = pb.partition_id.namespace
         else:
             namespace = None

@@ -4,6 +4,7 @@ from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import _helpers
 from gcloud.datastore.dataset import Dataset
+from gcloud.datastore.entity import Entity
 
 
 class Connection(connection.Connection):
@@ -374,7 +375,8 @@ class Connection(connection.Connection):
             prop.name = name
 
             # Set the appropriate value.
-            _helpers._set_protobuf_value(prop.value, value)
+            _helpers._set_protobuf_value(prop.value, value,
+                                         entity_class=Entity)
 
         # If this is in a transaction, we should just return True. The
         # transaction will handle assigning any keys as necessary.

@@ -1,7 +1,13 @@
 """Create / interact with gcloud datastore datasets."""
 
 
-class Dataset(object):
+from gcloud.datastore._dataset import _Dataset
+from gcloud.datastore.entity import Entity
+from gcloud.datastore.query import Query
+from gcloud.datastore.transaction import Transaction
+
+
+class Dataset(_Dataset):
     """A dataset in the Cloud Datastore.
 
     This class acts as an abstraction of a single dataset
@@ -30,36 +36,6 @@ class Dataset(object):
     :param connection: The connection to use for executing API calls.
     """
 
-    def __init__(self, id, connection=None):
-        self._connection = connection
-        self._id = id
-
-    def connection(self):
-        """Get the current connection.
-
-          >>> dataset = Dataset('dataset-id', connection=conn)
-          >>> dataset.connection()
-          <Connection object>
-
-        :rtype: :class:`gcloud.datastore.connection.Connection`
-        :returns: Returns the current connection.
-        """
-
-        return self._connection
-
-    def id(self):
-        """Get the current dataset ID.
-
-          >>> dataset = Dataset('dataset-id', connection=conn)
-          >>> dataset.id()
-          'dataset-id'
-
-        :rtype: string
-        :returns: The current dataset ID.
-        """
-
-        return self._id
-
     def query(self, *args, **kwargs):
         """Create a query bound to this dataset.
 
@@ -70,8 +46,6 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.query.Query`
         :returns: a new Query instance, bound to this dataset.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.query import Query
         kwargs['dataset'] = self
         return Query(*args, **kwargs)
 
@@ -84,8 +58,6 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: a new Entity instance, bound to this dataset.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.entity import Entity
         return Entity(dataset=self, kind=kind)
 
     def transaction(self, *args, **kwargs):
@@ -98,8 +70,6 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.transaction.Transaction`
         :returns: a new Transaction instance, bound to this dataset.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.transaction import Transaction
         kwargs['dataset'] = self
         return Transaction(*args, **kwargs)
 
@@ -125,9 +95,6 @@ class Dataset(object):
         :rtype: list of :class:`gcloud.datastore.entity.Entity`
         :return: The requested entities.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.entity import Entity
-
         entity_pbs = self.connection().lookup(
             dataset_id=self.id(),
             key_pbs=[k.to_protobuf() for k in keys]

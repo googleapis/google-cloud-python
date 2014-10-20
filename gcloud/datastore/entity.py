@@ -15,6 +15,7 @@ with extras built in that allow you to
 delete or persist the data stored on the entity.
 """
 
+from gcloud.datastore import _helpers
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.key import Key
 
@@ -155,15 +156,12 @@ class Entity(dict):
         :returns: The :class:`Entity` derived from the
                   :class:`gcloud.datastore.datastore_v1_pb2.Entity`.
         """
-
-        # This is here to avoid circular imports.
-        from gcloud.datastore import _helpers
-
         key = Key.from_protobuf(pb.key, dataset=dataset)
         entity = cls.from_key(key)
 
         for property_pb in pb.property:
-            value = _helpers._get_value_from_property_pb(property_pb)
+            value = _helpers._get_value_from_property_pb(property_pb,
+                                                         entity_class=Entity)
             entity[property_pb.name] = value
 
         return entity

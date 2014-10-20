@@ -313,13 +313,6 @@ class _Connection(object):
         return urlunsplit(('http', 'example.com', path, qs, ''))
 
 
-class _Bucket(object):
-    path = '/b/name'
-
-    def __init__(self, connection):
-        self.connection = connection
-
-
 class _Key(object):
     CHUNK_SIZE = 10
     path = '/b/name/o/key'

@@ -3,10 +3,11 @@ import unittest2
 
 class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
 
-    def _callFUT(self, val):
+    def _callFUT(self, val, entity_class=type(None)):
         from gcloud.datastore._helpers import _get_protobuf_attribute_and_value
 
-        return _get_protobuf_attribute_and_value(val)
+        return _get_protobuf_attribute_and_value(val,
+                                                 entity_class=entity_class)
 
     def test_datetime_naive(self):
         import calendar
@@ -86,7 +87,7 @@ class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
     def test_entity(self):
         from gcloud.datastore.entity import Entity
         entity = Entity()
-        name, value = self._callFUT(entity)
+        name, value = self._callFUT(entity, entity_class=Entity)
         self.assertEqual(name, 'entity_value')
         self.assertTrue(value is entity)
 
@@ -102,10 +103,10 @@ class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
 
 class Test__get_value_from_value_pb(unittest2.TestCase):
 
-    def _callFUT(self, pb):
+    def _callFUT(self, pb, entity_class=type(None)):
         from gcloud.datastore._helpers import _get_value_from_value_pb
 
-        return _get_value_from_value_pb(pb)
+        return _get_value_from_value_pb(pb, entity_class=entity_class)
 
     def _makePB(self, attr_name, value):
         from gcloud.datastore.datastore_v1_pb2 import Value
@@ -168,7 +169,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         prop_pb = entity_pb.property.add()
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
-        entity = self._callFUT(pb)
+        entity = self._callFUT(pb, entity_class=Entity)
         self.assertTrue(isinstance(entity, Entity))
         self.assertEqual(entity['foo'], 'Foo')
 
@@ -208,10 +209,10 @@ class Test__get_value_from_property_pb(unittest2.TestCase):
 
 class Test_set_protobuf_value(unittest2.TestCase):
 
-    def _callFUT(self, value_pb, val):
+    def _callFUT(self, value_pb, val, entity_class=type(None)):
         from gcloud.datastore._helpers import _set_protobuf_value
 
-        return _set_protobuf_value(value_pb, val)
+        return _set_protobuf_value(value_pb, val, entity_class=entity_class)
 
     def _makePB(self):
         from gcloud.datastore.datastore_v1_pb2 import Value
@@ -286,7 +287,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
 
         pb = self._makePB()
         entity = Entity()
-        self._callFUT(pb, entity)
+        self._callFUT(pb, entity, entity_class=Entity)
         value = pb.entity_value
         self.assertEqual(value.key.SerializeToString(), '')
         props = list(value.property)
@@ -300,7 +301,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         key = Key(path=[{'kind': 'KIND', 'id': 123}])
         entity = Entity().key(key)
         entity['foo'] = 'Foo'
-        self._callFUT(pb, entity)
+        self._callFUT(pb, entity, entity_class=Entity)
         value = pb.entity_value
         self.assertEqual(value.key, key.to_protobuf())
         props = list(value.property)

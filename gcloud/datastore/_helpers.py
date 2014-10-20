@@ -8,13 +8,12 @@ import datetime
 from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
 
-from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
 INT_VALUE_CHECKER = Int64ValueChecker()
 
 
-def _get_protobuf_attribute_and_value(val):
+def _get_protobuf_attribute_and_value(val, entity_class=type(None)):
     """Given a value, return the protobuf attribute name and proper value.
 
     The Protobuf API uses different attribute names
@@ -64,7 +63,7 @@ def _get_protobuf_attribute_and_value(val):
         name, value = 'integer', long(val)  # Always cast to a long.
     elif isinstance(val, basestring):
         name, value = 'string', val
-    elif isinstance(val, Entity):
+    elif isinstance(val, entity_class):
         name, value = 'entity', val
     elif isinstance(val, list):
         name, value = 'list', val
@@ -74,7 +73,7 @@ def _get_protobuf_attribute_and_value(val):
     return name + '_value', value
 
 
-def _get_value_from_value_pb(value_pb):
+def _get_value_from_value_pb(value_pb, entity_class=type(None)):
     """Given a protobuf for a Value, get the correct value.
 
     The Cloud Datastore Protobuf API returns a Property Protobuf
@@ -113,15 +112,16 @@ def _get_value_from_value_pb(value_pb):
         result = value_pb.string_value
 
     elif value_pb.HasField('entity_value'):
-        result = Entity.from_protobuf(value_pb.entity_value)
+        result = entity_class.from_protobuf(value_pb.entity_value)
 
     elif value_pb.list_value:
-        result = [_get_value_from_value_pb(x) for x in value_pb.list_value]
+        result = [_get_value_from_value_pb(x, entity_class=entity_class)
+                  for x in value_pb.list_value]
 
     return result
 
 
-def _get_value_from_property_pb(property_pb):
+def _get_value_from_property_pb(property_pb, entity_class=type(None)):
     """Given a protobuf for a Property, get the correct value.
 
     The Cloud Datastore Protobuf API returns a Property Protobuf
@@ -136,10 +136,11 @@ def _get_value_from_property_pb(property_pb):
 
     :returns: The value provided by the Protobuf.
     """
-    return _get_value_from_value_pb(property_pb.value)
+    return _get_value_from_value_pb(property_pb.value,
+                                    entity_class=entity_class)
 
 
-def _set_protobuf_value(value_pb, val):
+def _set_protobuf_value(value_pb, val, entity_class=type(None)):
     """Assign 'val' to the correct subfield of 'value_pb'.
 
     The Protobuf API uses different attribute names
@@ -156,7 +157,8 @@ def _set_protobuf_value(value_pb, val):
                :class:`gcloud.datastore.entity.Entity`,
     :param val: The value to be assigned.
     """
-    attr, val = _get_protobuf_attribute_and_value(val)
+    attr, val = _get_protobuf_attribute_and_value(val,
+                                                  entity_class=entity_class)
     if attr == 'key_value':
         value_pb.key_value.CopyFrom(val)
     elif attr == 'entity_value':
