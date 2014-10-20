@@ -591,6 +591,46 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
+class TestKeyIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.key import KeyIterator
+        return KeyIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        iterator = self._makeOne(bucket)
+        self.assertTrue(iterator.bucket is bucket)
+        self.assertTrue(iterator.connection is connection)
+        self.assertEqual(iterator.path, '%s/o' % bucket.path)
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+
+    def test_get_items_from_response_empty(self):
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        iterator = self._makeOne(bucket)
+        self.assertEqual(list(iterator.get_items_from_response({})), [])
+
+    def test_get_items_from_response_non_empty(self):
+        from gcloud.storage.key import Key
+        KEY = 'key'
+        response = {'items': [{'name': KEY}]}
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        iterator = self._makeOne(bucket)
+        keys = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(keys), 1)
+        key = keys[0]
+        self.assertTrue(isinstance(key, Key))
+        self.assertTrue(key.connection is connection)
+        self.assertEqual(key.name, KEY)
+
+
 class _Connection(object):
     API_BASE_URL = 'http://example.com'
 
