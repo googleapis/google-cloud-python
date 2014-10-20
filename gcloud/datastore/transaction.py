@@ -1,8 +1,6 @@
 """Create / interact with gcloud datastore transactions."""
 
-from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-from gcloud.datastore.key import Key
-
+from . import datastore_v1_pb2 as datastore_pb
 from . import _helpers
 
 
@@ -237,7 +235,9 @@ class Transaction(object):
             # For any of the auto-id entities, make sure we update their keys.
             for i, entity in enumerate(self._auto_id_entities):
                 key_pb = result.insert_auto_id_key[i]
-                key = Key.from_protobuf(key_pb)
+                # We can ignore the 'dataset' parameter ecause we are only
+                # creating a transient instance in order to copy its path.
+                key = _helpers._invoke_factory('Key', key_pb)
                 entity.key(entity.key().path(key.path()))
 
         # Tell the connection that the transaction is over.
