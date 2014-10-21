@@ -33,9 +33,6 @@ class TestDatastore(unittest2.TestCase):
         post_content = post_content or {
             'title': 'How to make the perfect pizza in your grill',
             'tags': ['pizza', 'grill'],
-            # NOTE: We don't support datetime.date, but should.
-            # NOTE: Without a tz, assertEqual fails with
-            #     "can't compare offset-naive and offset-aware datetimes"
             'publishedAt': datetime.datetime(2001, 1, 1, tzinfo=pytz.utc),
             'author': 'Silvano',
             'isDraft': False,
