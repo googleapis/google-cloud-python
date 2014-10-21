@@ -105,7 +105,7 @@ class Dataset(object):
         entities = []
         for entity_pb in entity_pbs:
             entities.append(_helpers._FACTORIES.invoke(
-                'Entity_pb', entity_pb, dataset=self))
+                'Entity_from_protobuf', entity_pb, dataset=self))
         return entities
 
 

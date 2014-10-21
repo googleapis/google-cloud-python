@@ -270,4 +270,4 @@ class Entity(dict):
 
 
 _helpers._FACTORIES.register('Entity', Entity)
-_helpers._FACTORIES.register('Entity_pb', Entity.from_protobuf)
+_helpers._FACTORIES.register('Entity_from_protobuf', Entity.from_protobuf)

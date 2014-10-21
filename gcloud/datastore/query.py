@@ -322,7 +322,7 @@ class Query(object):
         entity_pbs, end_cursor = query_results[:2]
 
         self._cursor = end_cursor
-        return [_helpers._FACTORIES.invoke('Entity_pb', entity,
+        return [_helpers._FACTORIES.invoke('Entity_from_protobuf', entity,
                                            dataset=self.dataset())
                 for entity in entity_pbs]
 

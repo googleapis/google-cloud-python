@@ -166,7 +166,7 @@ def _get_value_from_value_pb(value_pb):
         result = value_pb.blob_value
 
     elif value_pb.HasField('entity_value'):
-        result = _FACTORIES.get('Entity_pb')(value_pb.entity_value)
+        result = _FACTORIES.get('Entity_from_protobuf')(value_pb.entity_value)
 
     elif value_pb.list_value:
         result = [_get_value_from_value_pb(x) for x in value_pb.list_value]
