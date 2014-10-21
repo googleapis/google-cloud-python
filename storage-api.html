@@ -1252,6 +1252,38 @@ with the same name as on your local file system.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="gcloud.storage.bucket.BucketIterator">
+<em class="property">class </em><code class="descclassname">gcloud.storage.bucket.</code><code class="descname">BucketIterator</code><span class="sig-paren">(</span><em>connection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#BucketIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.BucketIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.iterator.Iterator" title="gcloud.storage.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.iterator.Iterator</span></code></a></p>
+<p>An iterator listing all buckets.</p>
+<p>You shouldn&#8217;t have to use this directly,
+but instead should use the helper methods
+on <a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a>) &#8211; The connection to use for querying the list of buckets.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gcloud.storage.bucket.BucketIterator.get_items_from_response">
+<code class="descname">get_items_from_response</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#BucketIterator.get_items_from_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.BucketIterator.get_items_from_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory method which yields <a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">Bucket</span></code></a> items from a response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<em>dict</em>) &#8211; The JSON API response for a page of buckets.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-gcloud.storage.key">
 <span id="keys"></span><h2>Keys<a class="headerlink" href="#module-gcloud.storage.key" title="Permalink to this headline">¶</a></h2>
@@ -1728,6 +1760,38 @@ and calling <a class="reference internal" href="#gcloud.storage.key.Key.set_cont
 
 </dd></dl>
 
+<dl class="class">
+<dt id="gcloud.storage.key.KeyIterator">
+<em class="property">class </em><code class="descclassname">gcloud.storage.key.</code><code class="descname">KeyIterator</code><span class="sig-paren">(</span><em>bucket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/key.html#KeyIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.KeyIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.iterator.Iterator" title="gcloud.storage.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.iterator.Iterator</span></code></a></p>
+<p>An iterator listing keys.</p>
+<p>You shouldn&#8217;t have to use this directly,
+but instead should use the helper methods
+on <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></code></a> objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a>) &#8211; The bucket from which to list keys.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gcloud.storage.key.KeyIterator.get_items_from_response">
+<code class="descname">get_items_from_response</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/key.html#KeyIterator.get_items_from_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.KeyIterator.get_items_from_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory method, yields <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><code class="xref py py-class docutils literal"><span class="pre">storage.key.Key</span></code></a> items from response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<em>dict</em>) &#8211; The JSON API response for a page of keys.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-gcloud.storage.acl">
 <span id="access-control"></span><h2>Access Control<a class="headerlink" href="#module-gcloud.storage.acl" title="Permalink to this headline">¶</a></h2>
@@ -2141,38 +2205,6 @@ if you find what you&#8217;re looking for
 </pre></div>
 </div>
 <dl class="class">
-<dt id="gcloud.storage.iterator.BucketIterator">
-<em class="property">class </em><code class="descclassname">gcloud.storage.iterator.</code><code class="descname">BucketIterator</code><span class="sig-paren">(</span><em>connection</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#BucketIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.BucketIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.iterator.Iterator" title="gcloud.storage.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.iterator.Iterator</span></code></a></p>
-<p>An iterator listing all buckets.</p>
-<p>You shouldn&#8217;t have to use this directly,
-but instead should use the helper methods
-on <a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a>) &#8211; The connection to use for querying the list of buckets.</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="gcloud.storage.iterator.BucketIterator.get_items_from_response">
-<code class="descname">get_items_from_response</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#BucketIterator.get_items_from_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.BucketIterator.get_items_from_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Factory method which yields <a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">Bucket</span></code></a> items from a response.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<em>dict</em>) &#8211; The JSON API response for a page of buckets.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="gcloud.storage.iterator.Iterator">
 <em class="property">class </em><code class="descclassname">gcloud.storage.iterator.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>connection</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
@@ -2360,38 +2392,6 @@ case of an unexpected response status code.</td>
 <dt id="gcloud.storage.iterator.KeyDataIterator.reset">
 <code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#KeyDataIterator.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.KeyDataIterator.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the iterator to the beginning.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="gcloud.storage.iterator.KeyIterator">
-<em class="property">class </em><code class="descclassname">gcloud.storage.iterator.</code><code class="descname">KeyIterator</code><span class="sig-paren">(</span><em>bucket</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#KeyIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.KeyIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.iterator.Iterator" title="gcloud.storage.iterator.Iterator"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.iterator.Iterator</span></code></a></p>
-<p>An iterator listing keys.</p>
-<p>You shouldn&#8217;t have to use this directly,
-but instead should use the helper methods
-on <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></code></a> objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a>) &#8211; The bucket from which to list keys.</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="gcloud.storage.iterator.KeyIterator.get_items_from_response">
-<code class="descname">get_items_from_response</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#KeyIterator.get_items_from_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.KeyIterator.get_items_from_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Factory method, yields <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><code class="xref py py-class docutils literal"><span class="pre">storage.key.Key</span></code></a> items from response.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<em>dict</em>) &#8211; The JSON API response for a page of keys.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </dd></dl>

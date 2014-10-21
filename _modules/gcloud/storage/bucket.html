@@ -93,8 +93,9 @@
 <span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">BucketACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">KeyIterator</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.key</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.key</span> <span class="kn">import</span> <span class="n">KeyIterator</span>
 
 
 <div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -724,7 +725,31 @@
         <span class="k">if</span> <span class="n">recursive</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
                 <span class="n">key</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
-                <span class="n">key</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span></div></div>
+                <span class="n">key</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="BucketIterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.BucketIterator">[docs]</a><span class="k">class</span> <span class="nc">BucketIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An iterator listing all buckets.</span>
+
+<span class="sd">    You shouldn&#39;t have to use this directly,</span>
+<span class="sd">    but instead should use the helper methods</span>
+<span class="sd">    on :class:`gcloud.storage.connection.Connection` objects.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
+<span class="sd">    :param connection: The connection to use for querying the list of buckets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BucketIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BucketIterator.get_items_from_response"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.BucketIterator.get_items_from_response">[docs]</a>    <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory method which yields :class:`.Bucket` items from a response.</span>
+
+<span class="sd">        :type response: dict</span>
+<span class="sd">        :param response: The JSON API response for a page of buckets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="k">yield</span> <span class="n">Bucket</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>
