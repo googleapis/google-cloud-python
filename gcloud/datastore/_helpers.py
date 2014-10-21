@@ -148,7 +148,7 @@ def _get_value_from_value_pb(value_pb):
         result = naive.replace(tzinfo=pytz.utc)
 
     elif value_pb.HasField('key_value'):
-        result = _FACTORIES.get('Key_from_protobuf')(value_pb.key_value)
+        result = _FACTORIES.invoke('Key_from_protobuf', value_pb.key_value)
 
     elif value_pb.HasField('boolean_value'):
         result = value_pb.boolean_value
@@ -166,7 +166,8 @@ def _get_value_from_value_pb(value_pb):
         result = value_pb.blob_value
 
     elif value_pb.HasField('entity_value'):
-        result = _FACTORIES.get('Entity_from_protobuf')(value_pb.entity_value)
+        result = _FACTORIES.invoke(
+            'Entity_from_protobuf', value_pb.entity_value)
 
     elif value_pb.list_value:
         result = [_get_value_from_value_pb(x) for x in value_pb.list_value]
