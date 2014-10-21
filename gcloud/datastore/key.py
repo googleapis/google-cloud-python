@@ -91,18 +91,9 @@ class Key(object):
         """
         key = datastore_pb.Key()
 
-        # Technically a dataset is required to do anything with the key,
-        # but we shouldn't throw a cryptic error if one isn't provided
-        # in the initializer.
-        if self.dataset():
-            # Apparently 's~' is a prefix for High-Replication and is necessary
-            # here. Another valid preflix is 'e~' indicating EU datacenters.
-            dataset_id = self.dataset().id()
-            if dataset_id:
-                if dataset_id[:2] not in ['s~', 'e~']:
-                    dataset_id = 's~' + dataset_id
-
-                key.partition_id.dataset_id = dataset_id
+        # Don't copy the dataset ID to the protobuf:  the backend
+        # already knows the dataset we are working with, and sets
+        # it on returned keys.
 
         if self._namespace:
             key.partition_id.namespace = self._namespace

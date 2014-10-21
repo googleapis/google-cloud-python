@@ -139,7 +139,7 @@ class TestKey(unittest2.TestCase):
         dataset = Dataset(_DATASET)
         key = self._makeOne(dataset)
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.dataset_id, 's~%s' % _DATASET)
+        self.assertEqual(pb.partition_id.dataset_id, '')
 
     def test_to_protobuf_w_explicit_dataset_w_s_prefix(self):
         from gcloud.datastore.dataset import Dataset
@@ -147,7 +147,7 @@ class TestKey(unittest2.TestCase):
         dataset = Dataset(_DATASET)
         key = self._makeOne(dataset)
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.dataset_id, _DATASET)
+        self.assertEqual(pb.partition_id.dataset_id, '')
 
     def test_to_protobuf_w_explicit_dataset_w_e_prefix(self):
         from gcloud.datastore.dataset import Dataset
@@ -155,7 +155,7 @@ class TestKey(unittest2.TestCase):
         dataset = Dataset(_DATASET)
         key = self._makeOne(dataset)
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.dataset_id, _DATASET)
+        self.assertEqual(pb.partition_id.dataset_id, '')
 
     def test_to_protobuf_w_explicit_namespace(self):
         _NAMESPACE = 'NAMESPACE'
