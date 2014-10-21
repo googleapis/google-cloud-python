@@ -42,3 +42,6 @@ docs/_build
 # Virtual environment
 env/
 coverage.xml
+
+# Regression test environment variables.
+regression/local_test_setup
