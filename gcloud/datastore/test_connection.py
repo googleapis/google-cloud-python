@@ -61,17 +61,13 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
         self.assertEqual(conn._request(DATASET_ID, METHOD, DATA), 'CONTENT')
-        expected_called_with = {
-            'uri': URI,
-            'method': 'POST',
-            'headers': {
-                'Content-Type': 'application/x-protobuf',
-                'Content-Length': '4',
-                'User-Agent': conn.USER_AGENT,
-            },
-            'body': DATA,
-        }
-        self.assertEqual(http._called_with, expected_called_with)
+        self.assertEqual(http._called_with['uri'], URI)
+        self.assertEqual(http._called_with['method'], 'POST')
+        self.assertEqual(http._called_with['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(http._called_with['headers']['User-Agent'],
+                         conn.USER_AGENT)
+        self.assertEqual(http._called_with['body'], DATA)
 
     def test__request_not_200(self):
         DATASET_ID = 'DATASET'
@@ -89,7 +85,7 @@ class TestConnection(unittest2.TestCase):
         class ReqPB(object):
 
             def SerializeToString(self):
-                return b'REQPB'
+                return REQPB
 
         class RspPB(object):
 
@@ -100,6 +96,7 @@ class TestConnection(unittest2.TestCase):
             def FromString(cls, pb):
                 return cls(pb)
 
+        REQPB = b'REQPB'
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
         conn = self._makeOne()
@@ -115,17 +112,13 @@ class TestConnection(unittest2.TestCase):
         response = conn._rpc(DATASET_ID, METHOD, ReqPB(), RspPB)
         self.assertTrue(isinstance(response, RspPB))
         self.assertEqual(response._pb, 'CONTENT')
-        expected_called_with = {
-            'uri': URI,
-            'method': 'POST',
-            'headers': {
-                'Content-Type': 'application/x-protobuf',
-                'Content-Length': '5',
-                'User-Agent': conn.USER_AGENT,
-            },
-            'body': b'REQPB',
-        }
-        self.assertEqual(http._called_with, expected_called_with)
+        self.assertEqual(http._called_with['uri'], URI)
+        self.assertEqual(http._called_with['method'], 'POST')
+        self.assertEqual(http._called_with['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(http._called_with['headers']['User-Agent'],
+                         conn.USER_AGENT)
+        self.assertEqual(http._called_with['body'], REQPB)
 
     def test_build_api_url_w_default_base_version(self):
         DATASET_ID = 'DATASET'
@@ -226,12 +219,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '2',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -258,12 +248,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '2',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -312,12 +299,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '6',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.RollbackRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -349,12 +333,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '14',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -388,12 +369,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '16',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -423,12 +401,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '26',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -464,12 +439,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '26',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -502,12 +474,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '52',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -547,12 +516,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '47',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -595,12 +561,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '53',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -632,12 +595,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '47',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -685,12 +645,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '44',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -782,12 +739,9 @@ class TestConnection(unittest2.TestCase):
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
-        expected_headers = {
-            'Content-Type': 'application/x-protobuf',
-            'Content-Length': '30',
-            'User-Agent': conn.USER_AGENT,
-        }
-        self.assertEqual(cw['headers'], expected_headers)
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
