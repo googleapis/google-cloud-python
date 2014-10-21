@@ -1,6 +1,6 @@
 """Create / interact with gcloud datastore datasets."""
 
-from . import _helpers
+from gcloud.datastore import _helpers
 
 
 class Dataset(object):

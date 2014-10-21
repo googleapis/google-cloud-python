@@ -3,8 +3,8 @@
 import copy
 from itertools import izip
 
-from . import datastore_v1_pb2 as datastore_pb
-from . import _helpers
+from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _helpers
 
 
 class Key(object):
