@@ -20,27 +20,39 @@ class InvalidFactory(Exception):
     """Unknown factory invocation."""
 
 
-_FACTORIES = {}  # registry: name -> callable
+class _FactoryRegistry(object):
+    """Single registry for named factories.
+
+    This registry provides an API for modules to instantiate objects from
+    other modules without needing to import them directly, allowing us
+    to break circular import chains.
+    """
+
+    _MARKER = object()
+
+    def __init__(self):
+        self._registered = {}
+
+    def register(self, name, factory):
+        """Register a factory by name."""
+        if self._registered.get(name) not in (None, factory):
+            raise DuplicateFactory(name)
+        self._registered[name] = factory
+
+    def get(self, name, default=_MARKER):
+        """Look up a factory by name."""
+        found = self._registered.get(name, default)
+        if found is self._MARKER:
+            raise InvalidFactory(name)
+        return found
+
+    def invoke(self, name, *args, **kw):
+        """Look up and call a factory by name."""
+        return self.get(name)(*args, **kw)
 
 
-def _register_factory(name, factory):
-    """Register a factory by name."""
-    if _FACTORIES.get(name) not in (None, factory):
-        raise DuplicateFactory(name)
-    _FACTORIES[name] = factory
-
-
-def _get_factory(name):
-    """Look up a factory by name."""
-    factory = _FACTORIES.get(name)
-    if factory is None:
-        raise InvalidFactory(name)
-    return factory
-
-
-def _invoke_factory(name, *args, **kw):
-    """Look up and call a factory by name."""
-    return _get_factory(name)(*args, **kw)
+_FACTORIES = _FactoryRegistry()  # singleton
+del _FactoryRegistry
 
 
 def _get_protobuf_attribute_and_value(val):
@@ -136,7 +148,7 @@ def _get_value_from_value_pb(value_pb):
         result = naive.replace(tzinfo=pytz.utc)
 
     elif value_pb.HasField('key_value'):
-        result = _FACTORIES['Key'].from_protobuf(value_pb.key_value)
+        result = _FACTORIES.get('Key_from_protobuf')(value_pb.key_value)
 
     elif value_pb.HasField('boolean_value'):
         result = value_pb.boolean_value
@@ -154,7 +166,7 @@ def _get_value_from_value_pb(value_pb):
         result = value_pb.blob_value
 
     elif value_pb.HasField('entity_value'):
-        result = _FACTORIES['Entity'].from_protobuf(value_pb.entity_value)
+        result = _FACTORIES.get('Entity_pb')(value_pb.entity_value)
 
     elif value_pb.list_value:
         result = [_get_value_from_value_pb(x) for x in value_pb.list_value]

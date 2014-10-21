@@ -189,10 +189,10 @@ class Query(object):
 
         # If a list was provided, turn it into a Key.
         if isinstance(ancestor, list):
-            ancestor = _helpers._invoke_factory('Key_path', *ancestor)
+            ancestor = _helpers._FACTORIES.invoke('Key_from_path', *ancestor)
 
         # If we don't have a Key value by now, something is wrong.
-        if not isinstance(ancestor, _helpers._get_factory('Key')):
+        if not isinstance(ancestor, _helpers._FACTORIES.get('Key')):
             raise TypeError('Expected list or Key, got %s.' % type(ancestor))
 
         # Get the composite filter and add a new property filter.
@@ -322,8 +322,8 @@ class Query(object):
         entity_pbs, end_cursor = query_results[:2]
 
         self._cursor = end_cursor
-        return [_helpers._invoke_factory('Entity_pb', entity,
-                                         dataset=self.dataset())
+        return [_helpers._FACTORIES.invoke('Entity_pb', entity,
+                                           dataset=self.dataset())
                 for entity in entity_pbs]
 
     def cursor(self):
@@ -393,4 +393,4 @@ class Query(object):
         return clone
 
 
-_helpers._register_factory('Query', Query)
+_helpers._FACTORIES.register('Query', Query)

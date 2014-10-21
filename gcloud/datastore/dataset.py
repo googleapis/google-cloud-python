@@ -73,7 +73,7 @@ class Dataset(object):
         :returns: a new Transaction instance, bound to this dataset.
         """
         kwargs['dataset'] = self
-        return _helpers._invoke_factory('Transaction', *args, **kwargs)
+        return _helpers._FACTORIES.invoke('Transaction', *args, **kwargs)
 
     def get_entity(self, key):
         """Retrieves entity from the dataset, along with its attributes.
@@ -104,9 +104,9 @@ class Dataset(object):
 
         entities = []
         for entity_pb in entity_pbs:
-            entities.append(_helpers._invoke_factory('Entity_pb',
-                                                     entity_pb, dataset=self))
+            entities.append(_helpers._FACTORIES.invoke(
+                'Entity_pb', entity_pb, dataset=self))
         return entities
 
 
-_helpers._register_factory('Dataset', Dataset)
+_helpers._FACTORIES.register('Dataset', Dataset)

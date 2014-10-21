@@ -1,47 +1,40 @@
 import unittest2
 
 
-class _FactoryBase(object):
+class Test_FactoryRegistry(unittest2.TestCase):
 
     def setUp(self):
+        self._widget = object()
+        self._called_with = []
+
+    def _makeOne(self):
         from gcloud.datastore._helpers import _FACTORIES
+        return type(_FACTORIES)()
 
-        self._before = _FACTORIES.copy()
+    def _factory(self, *args, **kw):  # pragma: NO COVER
+        self._called_with.append((args, kw))
+        return self._widget
 
-    def tearDown(self):
-        from gcloud.datastore._helpers import _FACTORIES
-
-        _FACTORIES.clear()
-        _FACTORIES.update(self._before)
-
-
-class Test__register_factory(_FactoryBase, unittest2.TestCase):
-
-    def _callFUT(self, name, factory):
-        from gcloud.datastore._helpers import _register_factory
-
-        return _register_factory(name, factory)
-
-    def test_it(self):
-        from gcloud.datastore._helpers import _FACTORIES
+    def test_register(self):
 
         class _Foo(object):
             pass
 
-        self._callFUT('Foo', _Foo)
-        self.assertTrue(_FACTORIES['Foo'] is _Foo)
+        factories = self._makeOne()
+        factories.register('Foo', _Foo)
+        self.assertTrue(factories.get('Foo') is _Foo)
 
-    def test_duplicate_exact(self):
-        from gcloud.datastore._helpers import _FACTORIES
+    def test_register_duplicate_exact(self):
 
         class _Foo(object):
             pass
 
-        self._callFUT('Foo', _Foo)
-        self._callFUT('Foo', _Foo)
-        self.assertTrue(_FACTORIES['Foo'] is _Foo)
+        factories = self._makeOne()
+        factories.register('Foo', _Foo)
+        factories.register('Foo', _Foo)
+        self.assertTrue(factories.get('Foo') is _Foo)
 
-    def test_duplicate_conflict(self):
+    def test_register_duplicate_conflict(self):
         from gcloud.datastore._helpers import DuplicateFactory
 
         class _Foo(object):
@@ -50,70 +43,48 @@ class Test__register_factory(_FactoryBase, unittest2.TestCase):
         class _Bar(object):
             pass
 
-        self._callFUT('Foo', _Foo)
-        self.assertRaises(DuplicateFactory, self._callFUT, 'Foo', _Bar)
+        factories = self._makeOne()
+        factories.register('Foo', _Foo)
+        self.assertRaises(DuplicateFactory, factories.register, 'Foo', _Bar)
 
-
-class Test__get_factory(_FactoryBase, unittest2.TestCase):
-
-    def setUp(self):
-        from gcloud.datastore._helpers import _FACTORIES
-
-        super(Test__get_factory, self).setUp()
-        _FACTORIES['Widget'] = self._factory
-
-    def _callFUT(self, name, *args, **kw):
-        from gcloud.datastore._helpers import _get_factory
-
-        return _get_factory(name, *args, **kw)
-
-    @staticmethod
-    def _factory(*args, **kw):  # pragma: NO COVER
-        pass
-
-    def test_miss(self):
+    def test_get_miss(self):
         from gcloud.datastore._helpers import InvalidFactory
 
-        self.assertRaises(InvalidFactory, self._callFUT, 'Nonesuch')
+        factories = self._makeOne()
+        self.assertRaises(InvalidFactory, factories.get, 'Nonesuch')
 
-    def test_hit(self):
-        self.assertTrue(self._callFUT('Widget') is self._factory)
+    def test_get_hit(self):
+        factories = self._makeOne()
 
+        # Use a bare function to avoid method wrappers for testing.
+        def _bare_factory():  # pragma: NO COVER
+            pass
 
-class Test__invoke_factory(_FactoryBase, unittest2.TestCase):
+        factories.register('Widget', _bare_factory)
+        self.assertTrue(factories.get('Widget') is _bare_factory)
 
-    def setUp(self):
-        from gcloud.datastore._helpers import _FACTORIES
-
-        super(Test__invoke_factory, self).setUp()
-        self._called_with = []
-        self._widget = object()
-        _FACTORIES['Widget'] = self._factory
-
-    def _callFUT(self, name, *args, **kw):
-        from gcloud.datastore._helpers import _invoke_factory
-
-        return _invoke_factory(name, *args, **kw)
-
-    def _factory(self, *args, **kw):
-        self._called_with.append((args, kw))
-        return self._widget
-
-    def test_missing_registration(self):
+    def test_invoke_miss(self):
         from gcloud.datastore._helpers import InvalidFactory
 
-        self.assertRaises(InvalidFactory, self._callFUT, 'Nonesuch')
+        factories = self._makeOne()
+        self.assertRaises(InvalidFactory, factories.invoke, 'Nonesuch')
 
-    def test_wo_args_or_kw(self):
-        self.assertTrue(self._callFUT('Widget') is self._widget)
+    def test_invoke_wo_args_or_kw(self):
+        factories = self._makeOne()
+        factories.register('Widget', self._factory)
+        self.assertTrue(factories.invoke('Widget') is self._widget)
         self.assertEqual(self._called_with, [((), {})])
 
-    def test_w_args(self):
-        self.assertTrue(self._callFUT('Widget', 'foo', 42) is self._widget)
+    def test_invoke_w_args(self):
+        factories = self._makeOne()
+        factories.register('Widget', self._factory)
+        self.assertTrue(factories.invoke('Widget', 'foo', 42) is self._widget)
         self.assertEqual(self._called_with, [(('foo', 42), {})])
 
-    def test_w_kw(self):
-        self.assertTrue(self._callFUT('Widget', foo=42) is self._widget)
+    def test_invoke_w_kw(self):
+        factories = self._makeOne()
+        factories.register('Widget', self._factory)
+        self.assertTrue(factories.invoke('Widget', foo=42) is self._widget)
         self.assertEqual(self._called_with, [((), {'foo': 42})])
 
 

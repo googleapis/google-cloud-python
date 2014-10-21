@@ -237,7 +237,7 @@ class Transaction(object):
                 key_pb = result.insert_auto_id_key[i]
                 # We can ignore the 'dataset' parameter ecause we are only
                 # creating a transient instance in order to copy its path.
-                key = _helpers._invoke_factory('Key_pb', key_pb)
+                key = _helpers._FACTORIES.invoke('Key_from_protobuf', key_pb)
                 entity.key(entity.key().path(key.path()))
 
         # Tell the connection that the transaction is over.
@@ -257,4 +257,4 @@ class Transaction(object):
             self.rollback()
 
 
-_helpers._register_factory('Transaction', Transaction)
+_helpers._FACTORIES.register('Transaction', Transaction)

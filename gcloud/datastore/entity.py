@@ -69,7 +69,7 @@ class Entity(dict):
         super(Entity, self).__init__()
         self._dataset = dataset
         if kind:
-            self._key = _helpers._invoke_factory('Key').kind(kind)
+            self._key = _helpers._FACTORIES.invoke('Key').kind(kind)
         else:
             self._key = None
 
@@ -154,7 +154,7 @@ class Entity(dict):
         :returns: The :class:`Entity` derived from the
                   :class:`gcloud.datastore.datastore_v1_pb2.Entity`.
         """
-        key = _helpers._invoke_factory('Key_from_protobuf', pb.key)
+        key = _helpers._FACTORIES.invoke('Key_from_protobuf', pb.key)
         entity = cls.from_key(key, dataset)
 
         for property_pb in pb.property:
@@ -239,7 +239,8 @@ class Entity(dict):
             transaction.add_auto_id_entity(self)
 
         if isinstance(key_pb, datastore_pb.Key):
-            updated_key = _helpers._invoke_factory('Key_from_protobuf', key_pb)
+            updated_key = _helpers._FACTORIES.invoke(
+                'Key_from_protobuf', key_pb)
             # Update the path (which may have been altered).
             self._key = key.path(updated_key.path())
 
@@ -268,5 +269,5 @@ class Entity(dict):
             return '<Entity %s>' % (super(Entity, self).__repr__())
 
 
-_helpers._register_factory('Entity', Entity)
-_helpers._register_factory('Entity_pb', Entity.from_protobuf)
+_helpers._FACTORIES.register('Entity', Entity)
+_helpers._FACTORIES.register('Entity_pb', Entity.from_protobuf)

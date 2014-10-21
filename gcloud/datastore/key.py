@@ -254,6 +254,6 @@ class Key(object):
         return '<Key%s>' % self.path()
 
 
-_helpers._register_factory('Key', Key)
-_helpers._register_factory('Key_from_protobuf', Key.from_protobuf)
-_helpers._register_factory('Key_path', Key.from_path)
+_helpers._FACTORIES.register('Key', Key)
+_helpers._FACTORIES.register('Key_from_protobuf', Key.from_protobuf)
+_helpers._FACTORIES.register('Key_from_path', Key.from_path)

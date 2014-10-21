@@ -34,6 +34,7 @@ The main concepts with this API are:
   which represents a lookup or search over the rows in the datastore.
 """
 
+# import submodules which register factories.
 import gcloud.datastore.connection
 import gcloud.datastore.dataset
 import gcloud.datastore.entity
