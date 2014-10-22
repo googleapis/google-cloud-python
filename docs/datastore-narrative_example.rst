@@ -39,10 +39,10 @@ script:
 
    $ review_expenses list --employee-id=sally
 
-   "Report ID","Description","Status","Memo"
-   "sally/2013-11-19","Onsite Training, Mountain View","Paid","Check #3715"
-   "sally/2014-04-19","PyCon 2014, Montreal","Paid","Check #3992"
-   "sally/2014-09-01","Frotz project kickoff, San Jose","Pending",""
+   "Employee ID", "Report ID","Created","Updated","Description","Status","Memo"
+   "sally","expenses-2013-11-19","2013-12-01","2013-12-01","Onsite Training, Mountain View","Paid","Check #3715"
+   "sally","expenses-2014-04-19","2014-04-21","2014-04-22","PyCon 2014, Montreal","Paid","Check #3992"
+   "sally","expenses-2014-09-01","2014-09-04","2014-09-04","Frotz project kickoff, San Jose","Pending",""
 
 Sally can review a submitted expense report using the its ID:
 
@@ -73,8 +73,8 @@ Sally's boss, Pat, can review all open expense reports:
 
    $ review_expenses list --status=Pending
 
-   "Employee ID","Report ID","Description","Status","Memo"
-   "sally","2014-09-01","Frotz project kickoff, San Jose","Pending",""
+   "Employee ID","Report ID","Created","Updated","Description","Status","Memo"
+   "sally","expenses-2014-09-01","2014-09-04","2014-09-04","Frotz project kickoff, San Jose","Pending",""
 
 and download the expenses just as above.  Pat can approve Sally's expense
 report:
@@ -82,11 +82,11 @@ report:
 .. code-block:: bash
 
    $ review_expenses approve --employee-id=sally --report-idexpenses-2014-09-01 --check-number=4093
-   Approved, report ID: sally/expenses-2014-09-01, check #4093
+   Approved, report: sally/expenses-2014-09-01, check #4093
 
 or reject it:
 
 .. code-block:: bash
 
    $ review_expenses reject --employee-id=sally --report-idexpenses-2014-09-01 --reason="Travel not authorized by client"
-   Rejected, report ID: sally/expenses-2014-09-01, reason: Travel not authorized by client
+   Rejected, report: sally/expenses-2014-09-01, reason: Travel not authorized by client

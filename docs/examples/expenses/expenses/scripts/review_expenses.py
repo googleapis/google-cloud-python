@@ -4,6 +4,8 @@ import os
 import textwrap
 import sys
 
+from .. import list_reports
+
 
 class InvalidCommandLine(ValueError):
     pass
@@ -56,31 +58,19 @@ class ListReports(object):
         self.employee_id = options.employee_id
         self.status = options.status
 
-    def list_reports(self):
-        return [
-            {"Report ID": "sally/2013-11-19",
-             "Description": "Onsite Training, Mountain View",
-             "Status": "Paid",
-             "Memo": "Check #3715",
-            },
-            {"Report ID": "sally/2014-04-19",
-             "Description": "PyCon 2014, Montreal",
-             "Status": "Paid",
-             "Memo": "Check #3992",
-            },
-            {"Report ID": "sally/2014-09-01",
-             "Description": "Frotz project kickoff, San Jose",
-             "Status": "Pending",
-             "Memo": "",
-            },
-        ]
-
     def __call__(self):
-        fieldnames = ["Report ID", "Description", "Status", "Memo"]
-        writer = csv.DictWriter(sys.stdout, fieldnames)
-        writer.writerow(dict(zip(fieldnames, fieldnames)))
-        for report in self.list_reports():
-            writer.writerow(report)
+        _cols = [('employee_id', 'Employee ID'),
+                 ('report_id', 'Report ID'),
+                 ('created', 'Created'),
+                 ('updated', 'Updated'),
+                 ('description', 'Description'),
+                 ('status', 'Status'),
+                 ('memo', 'Memo'),
+                ]
+        writer = csv.writer(sys.stdout)
+        writer.writerow([x[1] for x in _cols])
+        for report in list_reports(self.employee_id, self.status):
+            writer.writerow([report[x[0]] for x in _cols])
 
 
 class ShowReport(object):

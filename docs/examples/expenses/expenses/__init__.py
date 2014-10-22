@@ -39,10 +39,9 @@ def get_employee(dataset, employee_id, create=True):
     return employee
 
 def get_report(dataset, employee_id, report_id, create=True):
-    key = Key(dataset,
-              path=[{'kind': 'Employee', 'name': employee_id},
-                    {'kind': 'Expense Report', 'name': report_id},
-                   ])
+    key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id},
+                             {'kind': 'Expense Report', 'name': report_id},
+                             ])
     report = dataset.get_entity(key)
     if report is None and create:
         report = dataset.entity('Report').key(key)
@@ -109,3 +108,34 @@ def delete_report(employee_id, report_id):
         count = _purge_report_items(dataset, report)
         report.delete()
     return count
+
+def list_reports(employee_id=None, status=None):
+    dataset = get_dataset()
+    query = Query('Expense Report', dataset)
+    if employee_id is not None:
+        key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id}])
+        query = query.ancestor(key)
+    if status is not None:
+        query = query.filter('status =', status)
+    for report in query.fetch():
+        path = report.key().path()
+        employee_id = path[0]['name']
+        report_id = path[1]['name']
+        created = report['created'].strftime('%Y-%m-%d')
+        updated = report['updated'].strftime('%Y-%m-%d')
+        status = report['status']
+        if status == 'paid':
+            memo = report['check_number']
+        elif status == 'rejected':
+            memo = report['rejected_reason']
+        else:
+            memo = ''
+        yield {
+            'employee_id': employee_id,
+            'report_id': report_id,
+            'created': created,
+            'updated': updated,
+            'status': status,
+            'description': report.get('description', ''),
+            'memo': memo,
+            }
