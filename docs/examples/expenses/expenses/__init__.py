@@ -23,14 +23,14 @@ class BadReportStatus(InvalidReport):
     """Attempt to update / delete an already-approved/rejected report."""
 
 
-def get_dataset():
+def _get_dataset():
     client_email = os.environ['GCLOUD_TESTS_CLIENT_EMAIL']
     private_key_path = os.environ['GCLOUD_TESTS_KEY_FILE']
     dataset_id = os.environ['GCLOUD_TESTS_DATASET_ID']
     conn = datastore.get_connection(client_email, private_key_path)
     return conn.dataset(dataset_id)
 
-def get_employee(dataset, employee_id, create=True):
+def _get_employee(dataset, employee_id, create=True):
     key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id}])
     employee = dataset.get_entity(key)
     if employee is None and create:
@@ -38,7 +38,7 @@ def get_employee(dataset, employee_id, create=True):
         employee.save()
     return employee
 
-def get_report(dataset, employee_id, report_id, create=True):
+def _get_report(dataset, employee_id, report_id, create=True):
     key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id},
                              {'kind': 'Expense Report', 'name': report_id},
                              ])
@@ -52,66 +52,6 @@ def _fetch_report_items(dataset, report):
     query = Query('Expense Item', dataset)
     for item in query.ancestor(report.key()).fetch():
         yield item
-
-def _purge_report_items(dataset, report):
-    # Delete any existing items belonging to report
-    count = 0
-    for item in _fetch_report_items(dataset, report):
-        item.delete()
-        count += 1
-    return count
-
-def _upsert_report(dataset, employee_id, report_id, rows):
-    employee = get_employee(dataset, employee_id)
-    report = get_report(dataset, employee_id, report_id)
-    _purge_report_items(dataset, report)
-    # Add items based on rows.
-    report_path = report.key().path()
-    for i, row in enumerate(rows):
-        path = report_path + [{'kind': 'Expense Item', 'id': i + 1}]
-        key = Key(dataset, path=path)
-        item = Entity(dataset, 'Expense Item').key(key)
-        for k, v in row.items():
-            item[k] = v
-        item.save()
-    return report
-
-def create_report(employee_id, report_id, rows, description):
-    dataset = get_dataset()
-    if get_report(dataset, employee_id, report_id, False) is not None:
-        raise DuplicateReport()
-    with dataset.transaction():
-        report = _upsert_report(dataset, employee_id, report_id, rows)
-        report['status'] = 'pending'
-        if description is not None:
-            report['description'] = description
-        report['created'] = report['updated'] = datetime.datetime.utcnow()
-        report.save()
-
-def update_report(employee_id, report_id, rows, description):
-    dataset = get_dataset()
-    with dataset.transaction():
-        report = get_report(dataset, employee_id, report_id, False)
-        if report is None:
-            raise InvalidReport()
-        if report['status'] != 'pending':
-            raise BadReportStatus(report['status'])
-        _upsert_report(dataset, employee_id, report_id, rows)
-        if description is not None:
-            report['description'] = description
-        report['updated'] = datetime.datetime.utcnow()
-
-def delete_report(employee_id, report_id):
-    dataset = get_dataset()
-    report = get_report(dataset, employee_id, report_id, False)
-    if report is None:
-        raise NoSuchReport()
-    if report['status'] != 'pending':
-        raise BadReportStatus(report['status'])
-    with dataset.transaction():
-        count = _purge_report_items(dataset, report)
-        report.delete()
-    return count
 
 def _report_info(report):
     path = report.key().path()
@@ -136,8 +76,31 @@ def _report_info(report):
         'memo': memo,
         }
 
+def _purge_report_items(dataset, report):
+    # Delete any existing items belonging to report
+    count = 0
+    for item in _fetch_report_items(dataset, report):
+        item.delete()
+        count += 1
+    return count
+
+def _upsert_report(dataset, employee_id, report_id, rows):
+    employee = _get_employee(dataset, employee_id)
+    report = _get_report(dataset, employee_id, report_id)
+    _purge_report_items(dataset, report)
+    # Add items based on rows.
+    report_path = report.key().path()
+    for i, row in enumerate(rows):
+        path = report_path + [{'kind': 'Expense Item', 'id': i + 1}]
+        key = Key(dataset, path=path)
+        item = Entity(dataset, 'Expense Item').key(key)
+        for k, v in row.items():
+            item[k] = v
+        item.save()
+    return report
+
 def list_reports(employee_id=None, status=None):
-    dataset = get_dataset()
+    dataset = _get_dataset()
     query = Query('Expense Report', dataset)
     if employee_id is not None:
         key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id}])
@@ -168,10 +131,48 @@ def list_reports(employee_id=None, status=None):
             }
 
 def get_report_info(employee_id, report_id):
-    dataset = get_dataset()
-    report = get_report(dataset, employee_id, report_id, False)
+    dataset = _get_dataset()
+    report = _get_report(dataset, employee_id, report_id, False)
     if report is None:
         raise NoSuchReport()
     info = _report_info(report)
     info['items'] = list(_fetch_report_items(dataset, report))
     return info
+
+def create_report(employee_id, report_id, rows, description):
+    dataset = _get_dataset()
+    if _get_report(dataset, employee_id, report_id, False) is not None:
+        raise DuplicateReport()
+    with dataset.transaction():
+        report = _upsert_report(dataset, employee_id, report_id, rows)
+        report['status'] = 'pending'
+        if description is not None:
+            report['description'] = description
+        report['created'] = report['updated'] = datetime.datetime.utcnow()
+        report.save()
+
+def update_report(employee_id, report_id, rows, description):
+    dataset = _get_dataset()
+    with dataset.transaction():
+        report = _get_report(dataset, employee_id, report_id, False)
+        if report is None:
+            raise InvalidReport()
+        if report['status'] != 'pending':
+            raise BadReportStatus(report['status'])
+        _upsert_report(dataset, employee_id, report_id, rows)
+        if description is not None:
+            report['description'] = description
+        report['updated'] = datetime.datetime.utcnow()
+        report.save()
+
+def delete_report(employee_id, report_id):
+    dataset = _get_dataset()
+    report = _get_report(dataset, employee_id, report_id, False)
+    if report is None:
+        raise NoSuchReport()
+    if report['status'] != 'pending':
+        raise BadReportStatus(report['status'])
+    with dataset.transaction():
+        count = _purge_report_items(dataset, report)
+        report.delete()
+    return count
