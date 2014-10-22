@@ -92,7 +92,6 @@
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">izip</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
 
 
 <div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -101,11 +100,8 @@
 <span class="sd">    .. automethod:: __init__</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Key.__init__"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.__init__"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructor / initializer for a key.</span>
-
-<span class="sd">        :type dataset: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">        :param dataset: A dataset instance for the key.</span>
 
 <span class="sd">        :type namespace: :class:`str`</span>
 <span class="sd">        :param namespace: A namespace identifier for the key.</span>
@@ -113,10 +109,14 @@
 <span class="sd">        :type path: sequence of dicts</span>
 <span class="sd">        :param path: Each dict must have keys &#39;kind&#39; (a string) and optionally</span>
 <span class="sd">                     &#39;name&#39; (a string) or &#39;id&#39; (an integer).</span>
+
+<span class="sd">        :type dataset_id: string</span>
+<span class="sd">        :param dataset: The dataset ID assigned by back-end for the key.</span>
+<span class="sd">                        Leave as None for newly-created keys.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span> <span class="ow">or</span> <span class="p">[{</span><span class="s">&#39;kind&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">}]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
 </div>
     <span class="k">def</span> <span class="nf">_clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Duplicates the Key.</span>
@@ -128,12 +128,10 @@
 <span class="sd">        :rtype: :class:`gcloud.datastore.key.Key`</span>
 <span class="sd">        :returns: a new `Key` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">clone</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">clone</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>  <span class="c"># Make a shallow copy of the Dataset.</span>
-        <span class="k">return</span> <span class="n">clone</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Key.from_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.from_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">from_protobuf</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.from_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.from_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">from_protobuf</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for creating a key based on a protobuf.</span>
 
 <span class="sd">        The protobuf should be one returned from the Cloud Datastore</span>
@@ -141,10 +139,6 @@
 
 <span class="sd">        :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
 <span class="sd">        :param pb: The Protobuf representing the key.</span>
-
-<span class="sd">        :type dataset: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">        :param dataset: A dataset instance.  If not passed, defaults to an</span>
-<span class="sd">                        instance whose ID is derived from pb.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.key.Key`</span>
 <span class="sd">        :returns: a new `Key` instance</span>
@@ -163,13 +157,10 @@
 
             <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_dict</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">dataset</span><span class="p">:</span>
-            <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
-            <span class="n">namespace</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">namespace</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">namespace</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">dataset_id</span> <span class="ow">or</span> <span class="bp">None</span>
+        <span class="n">namespace</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">namespace</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Key.to_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.to_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a protobuf corresponding to the key.</span>
@@ -179,18 +170,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Key</span><span class="p">()</span>
 
-        <span class="c"># Technically a dataset is required to do anything with the key,</span>
-        <span class="c"># but we shouldn&#39;t throw a cryptic error if one isn&#39;t provided</span>
-        <span class="c"># in the initializer.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">():</span>
-            <span class="c"># Apparently &#39;s~&#39; is a prefix for High-Replication and is necessary</span>
-            <span class="c"># here. Another valid preflix is &#39;e~&#39; indicating EU datacenters.</span>
-            <span class="n">dataset_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">dataset_id</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">dataset_id</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;s~&#39;</span><span class="p">,</span> <span class="s">&#39;e~&#39;</span><span class="p">]:</span>
-                    <span class="n">dataset_id</span> <span class="o">=</span> <span class="s">&#39;s~&#39;</span> <span class="o">+</span> <span class="n">dataset_id</span>
-
-                <span class="n">key</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">key</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">:</span>
             <span class="n">key</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span>
@@ -248,24 +229,6 @@
 <span class="sd">                  an &#39;id&#39; or a &#39;name&#39;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_or_name</span><span class="p">()</span> <span class="ow">is</span> <span class="bp">None</span>
-</div>
-<div class="viewcode-block" id="Key.dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Dataset setter / getter.</span>
-
-<span class="sd">        :type dataset: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">        :param dataset: A dataset instance for the key.</span>
-
-<span class="sd">        :rtype: :class:`Key` (for setter); or</span>
-<span class="sd">                :class:`gcloud.datastore.dataset.Dataset` (for getter)</span>
-<span class="sd">        :returns: a new key, cloned from self., with the given dataset</span>
-<span class="sd">                  (setter); or self&#39;s dataset (getter).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">dataset</span><span class="p">:</span>
-            <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
-            <span class="n">clone</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
-            <span class="k">return</span> <span class="n">clone</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>
 </div>
 <div class="viewcode-block" id="Key.namespace"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.key.Key.namespace">[docs]</a>    <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Namespace setter / getter.</span>

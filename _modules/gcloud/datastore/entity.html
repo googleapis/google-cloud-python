@@ -111,6 +111,10 @@
     <span class="sd">&quot;&quot;&quot;Exception raised by Entity methods which require a key.&quot;&quot;&quot;</span>
 
 </div>
+<div class="viewcode-block" id="NoDataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.NoDataset">[docs]</a><span class="k">class</span> <span class="nc">NoDataset</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Exception raised by Entity methods which require a dataset.&quot;&quot;&quot;</span>
+
+</div>
 <div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;:type dataset: :class:`gcloud.datastore.dataset.Dataset`</span>
 <span class="sd">    :param dataset: The dataset in which this entity belongs.</span>
@@ -156,8 +160,9 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">dataset</span> <span class="ow">and</span> <span class="n">kind</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="k">if</span> <span class="n">kind</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="bp">None</span>
 
@@ -174,8 +179,7 @@
 <span class="sd">          be `None`. It also means that if you change the key on the entity,</span>
 <span class="sd">          this will refer to that key&#39;s dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>
 </div>
 <div class="viewcode-block" id="Entity.key"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get or set the :class:`.datastore.key.Key` on the current entity.</span>
@@ -215,7 +219,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="o">.</span><span class="n">kind</span><span class="p">()</span>
 </div>
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Entity.from_key"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.from_key">[docs]</a>    <span class="k">def</span> <span class="nf">from_key</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.from_key"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.from_key">[docs]</a>    <span class="k">def</span> <span class="nf">from_key</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create entity based on :class:`.datastore.key.Key`.</span>
 
 <span class="sd">        .. note::</span>
@@ -228,7 +232,7 @@
 <span class="sd">                  :class:`gcloud.datastore.key.Key`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">()</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 </div>
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Entity.from_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.from_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">from_protobuf</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -247,8 +251,8 @@
         <span class="c"># This is here to avoid circular imports.</span>
         <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_helpers</span>
 
-        <span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
-        <span class="n">entity</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">entity</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">property_pb</span> <span class="ow">in</span> <span class="n">pb</span><span class="o">.</span><span class="n">property</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_value_from_property_pb</span><span class="p">(</span><span class="n">property_pb</span><span class="p">)</span>
@@ -265,8 +269,20 @@
 <span class="sd">        :raises: NoKey if key is None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NoKey</span><span class="p">(</span><span class="s">&#39;no key&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NoKey</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_must_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return our dataset, or raise NoDataset if not set.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.datastore.key.Key`.</span>
+<span class="sd">        :returns: our key</span>
+<span class="sd">        :raises: NoDataset if key is None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NoDataset</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>
 
 <div class="viewcode-block" id="Entity.reload"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reloads the contents of this entity from the datastore.</span>
@@ -281,7 +297,8 @@
 <span class="sd">          exist only locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_key</span>
-        <span class="n">entity</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_dataset</span>
+        <span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
 
         <span class="k">if</span> <span class="n">entity</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
@@ -305,7 +322,7 @@
 <span class="sd">        :returns: The entity with a possibly updated Key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_key</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_dataset</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span>
         <span class="n">key_pb</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">save_entity</span><span class="p">(</span>
             <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
@@ -334,7 +351,7 @@
 <span class="sd">          entity will be deleted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_key</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_dataset</span>
         <span class="n">dataset</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">delete_entities</span><span class="p">(</span>
             <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
             <span class="n">key_pbs</span><span class="o">=</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()],</span>

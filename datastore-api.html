@@ -515,7 +515,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7ff29b752240&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f9762211230&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -822,7 +822,7 @@ entity will be deleted.</p>
 
 <dl class="classmethod">
 <dt id="gcloud.datastore.entity.Entity.from_key">
-<em class="property">classmethod </em><code class="descname">from_key</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.from_key" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_key</code><span class="sig-paren">(</span><em>key</em>, <em>dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.from_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create entity based on <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">datastore.key.Key</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -947,6 +947,13 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 </dd></dl>
 
 <dl class="exception">
+<dt id="gcloud.datastore.entity.NoDataset">
+<em class="property">exception </em><code class="descclassname">gcloud.datastore.entity.</code><code class="descname">NoDataset</code><a class="reference internal" href="_modules/gcloud/datastore/entity.html#NoDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.NoDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></code></p>
+<p>Exception raised by Entity methods which require a dataset.</p>
+</dd></dl>
+
+<dl class="exception">
 <dt id="gcloud.datastore.entity.NoKey">
 <em class="property">exception </em><code class="descclassname">gcloud.datastore.entity.</code><code class="descname">NoKey</code><a class="reference internal" href="_modules/gcloud/datastore/entity.html#NoKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.NoKey" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></code></p>
@@ -959,22 +966,23 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 <p>Create / interact with gcloud datastore keys.</p>
 <dl class="class">
 <dt id="gcloud.datastore.key.Key">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.key.</code><code class="descname">Key</code><span class="sig-paren">(</span><em>dataset=None</em>, <em>namespace=None</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.key.</code><code class="descname">Key</code><span class="sig-paren">(</span><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>An immutable representation of a datastore Key.</p>
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>dataset=None</em>, <em>namespace=None</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructor / initializer for a key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>) &#8211; A dataset instance for the key.</li>
 <li><strong>namespace</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) &#8211; A namespace identifier for the key.</li>
 <li><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
 &#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</li>
+<li><strong>dataset</strong> &#8211; The dataset ID assigned by back-end for the key.
+Leave as None for newly-created keys.</li>
 </ul>
 </td>
 </tr>
@@ -988,35 +996,16 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>) &#8211; A dataset instance for the key.</li>
 <li><strong>namespace</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) &#8211; A namespace identifier for the key.</li>
 <li><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
 &#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</li>
+<li><strong>dataset</strong> &#8211; The dataset ID assigned by back-end for the key.
+Leave as None for newly-created keys.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="gcloud.datastore.key.Key.dataset">
-<code class="descname">dataset</code><span class="sig-paren">(</span><em>dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.dataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dataset setter / getter.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>) &#8211; A dataset instance for the key.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> (for setter); or
-<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a> (for getter)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given dataset
-(setter); or self&#8217;s dataset (getter).</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="classmethod">
 <dt id="gcloud.datastore.key.Key.from_path">
 <em class="property">classmethod </em><code class="descname">from_path</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.from_path" title="Permalink to this definition">¶</a></dt>
@@ -1047,7 +1036,7 @@ element&#8217;s name) or an integer (for its id).</li>
 
 <dl class="classmethod">
 <dt id="gcloud.datastore.key.Key.from_protobuf">
-<em class="property">classmethod </em><code class="descname">from_protobuf</code><span class="sig-paren">(</span><em>pb</em>, <em>dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.from_protobuf" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">from_protobuf</code><span class="sig-paren">(</span><em>pb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.from_protobuf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for creating a key based on a protobuf.</p>
 <p>The protobuf should be one returned from the Cloud Datastore
 Protobuf API.</p>
@@ -1055,18 +1044,11 @@ Protobuf API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>) &#8211; The Protobuf representing the key.</li>
-<li><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>) &#8211; A dataset instance.  If not passed, defaults to an
-instance whose ID is derived from pb.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>) &#8211; The Protobuf representing the key.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a></p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <cite>Key</cite> instance</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new <cite>Key</cite> instance</td>
 </tr>
 </tbody>
 </table>
@@ -1286,7 +1268,7 @@ without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&lt;': 1, '=': 5, '&gt;': 3, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'=': 5, '&lt;': 1, '&gt;': 3, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
