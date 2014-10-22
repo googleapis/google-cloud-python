@@ -5,8 +5,10 @@ import textwrap
 import sys
 
 from .. import NoSuchReport
+from .. import approve_report
 from .. import get_report_info
 from .. import list_reports
+from .. import reject_report
 
 
 class InvalidCommandLine(ValueError):
@@ -126,18 +128,18 @@ class ApproveReport(object):
         self.submitter = submitter
         args = list(args)
         parser = optparse.OptionParser(
-            usage="%prog [OPTIONS] REPORT_ID")
+            usage="%prog [OPTIONS] EMPLOYEE_ID REPORT_ID")
 
         parser.add_option(
             '-c', '--check-number',
             action='store',
             dest='check_number',
-            default=None,
+            default='',
             help="Check number issued to pay the expense report")
 
         options, args = parser.parse_args(args)
         try:
-            self.report_id, = args
+            self.employee_id, self.report_id, = args
         except:
             raise InvalidCommandLine('Specify one report ID')
         self.check_number = options.check_number
@@ -145,8 +147,8 @@ class ApproveReport(object):
     def __call__(self):
         memo = ('' if self.check_number is None
                     else ', check #%s' % self.check_number)
-        self.submitter.blather("Approved, report ID: %s%s" %
-                                (self.report_id, memo))
+        self.submitter.blather("Approved, report ID: %s%s (%s)" %
+                                (self.employee_id, self.report_id, memo))
 
 
 class RejectReport(object):

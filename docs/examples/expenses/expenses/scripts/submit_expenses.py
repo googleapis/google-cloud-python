@@ -89,7 +89,7 @@ class CreateReport(_Command):
             self.submitter.blather("Report already exists: %s/%s"
                                    % (self.employee_id, self.report_id))
         else:
-            self.submitter.blather("Created, report ID: %s/%s"
+            self.submitter.blather("Created report: %s/%s"
                                    % (self.employee_id, self.report_id))
             self.submitter.blather("Processed %d rows." % len(self.rows))
 
@@ -109,7 +109,8 @@ class UpdateReport(_Command):
                                    % (self.employee_id, self.report_id,
                                       str(e)))
         else:
-            self.submitter.blather("Updated, report ID: %s" % self.report_id)
+            self.submitter.blather("Updated report: %s/%s"
+                                   % (self.employee_id, self.report_id))
             self.submitter.blather("Processed %d rows." % len(self.rows))
 
 
@@ -130,11 +131,12 @@ class DeleteReport(object):
             help="ID of employee owning the expense report")
 
         options, args = parser.parse_args(args)
-        if len(args) != 1:
-            parser.error('Supply exactly one report ID')
+        try:
+            self.report_id, = args
+        except:
+            raise InvalidCommandLine('Specify one report ID')
 
         self.employee_id = options.employee_id
-        self.report_id, = args
 
     def __call__(self):
         try:
@@ -147,7 +149,8 @@ class DeleteReport(object):
                                    % (self.employee_id, self.report_id,
                                       str(e)))
         else:
-            self.submitter.blather("Deleted, report ID: %s" % self.report_id)
+            self.submitter.blather("Deleted report: %s"
+                                   % (self.employee_id, self.report_id))
             self.submitter.blather("Removed %d items." % count)
 
 

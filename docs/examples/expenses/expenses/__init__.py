@@ -117,7 +117,7 @@ def list_reports(employee_id=None, status=None):
         if status == 'paid':
             memo = report['check_number']
         elif status == 'rejected':
-            memo = report['rejected_reason']
+            memo = report['reason']
         else:
             memo = ''
         yield {
@@ -176,3 +176,29 @@ def delete_report(employee_id, report_id):
         count = _purge_report_items(dataset, report)
         report.delete()
     return count
+
+def approve_report(employee_id, report_id, check_number):
+    dataset = _get_dataset()
+    with dataset.transaction():
+        report = _get_report(dataset, employee_id, report_id, False)
+        if report is None:
+            raise InvalidReport()
+        if report['status'] != 'pending':
+            raise BadReportStatus(report['status'])
+        report['updated'] = datetime.datetime.utcnow()
+        report['status'] = 'paid'
+        report['check_number'] = check_number
+        report.save()
+
+def reject_report(employee_id, report_id, reason):
+    dataset = _get_dataset()
+    with dataset.transaction():
+        report = _get_report(dataset, employee_id, report_id, False)
+        if report is None:
+            raise InvalidReport()
+        if report['status'] != 'pending':
+            raise BadReportStatus(report['status'])
+        report['updated'] = datetime.datetime.utcnow()
+        report['status'] = 'rejected'
+        report['reason'] = reason
+        report.save()
