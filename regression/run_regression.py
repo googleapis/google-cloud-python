@@ -1,6 +1,10 @@
 import argparse
 import unittest2
 
+# This assumes the command is being run via tox hence the
+# repository root is the current directory.
+from regression import regression_utils
+
 
 def get_parser():
     parser = argparse.ArgumentParser(
@@ -21,6 +25,8 @@ def run_module_tests(module_name):
 def main():
     parser = get_parser()
     args = parser.parse_args()
+    # Make sure environ is set before running test.
+    regression_utils.get_environ()
     run_module_tests(args.package)
 
 
