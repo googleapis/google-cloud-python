@@ -11,15 +11,11 @@ class DuplicateReport(Exception):
     """Attempt to create a report which already exists."""
 
 
-class InvalidReport(Exception):
-    """Attempt to update / delete an invalide report."""
-
-
-class NoSuchReport(InvalidReport):
+class NoSuchReport(Exception):
     """Attempt to update / delete a report which does not already exist."""
 
 
-class BadReportStatus(InvalidReport):
+class BadReportStatus(Exception):
     """Attempt to update / delete an already-approved/rejected report."""
 
 
@@ -156,7 +152,7 @@ def update_report(employee_id, report_id, rows, description):
     with dataset.transaction():
         report = _get_report(dataset, employee_id, report_id, False)
         if report is None:
-            raise InvalidReport()
+            raise NoSuchReport()
         if report['status'] != 'pending':
             raise BadReportStatus(report['status'])
         _upsert_report(dataset, employee_id, report_id, rows)
@@ -182,7 +178,7 @@ def approve_report(employee_id, report_id, check_number):
     with dataset.transaction():
         report = _get_report(dataset, employee_id, report_id, False)
         if report is None:
-            raise InvalidReport()
+            raise NoSuchReport()
         if report['status'] != 'pending':
             raise BadReportStatus(report['status'])
         report['updated'] = datetime.datetime.utcnow()
@@ -195,7 +191,7 @@ def reject_report(employee_id, report_id, reason):
     with dataset.transaction():
         report = _get_report(dataset, employee_id, report_id, False)
         if report is None:
-            raise InvalidReport()
+            raise NoSuchReport()
         if report['status'] != 'pending':
             raise BadReportStatus(report['status'])
         report['updated'] = datetime.datetime.utcnow()
