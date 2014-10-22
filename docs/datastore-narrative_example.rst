@@ -16,7 +16,7 @@ Returning from a trip to the Bay Area, Sally creates a CSV file,
 ``expenses-20140901.csv``, containing one row for each line item in her
 expense report:
 
-.. code-block:: csv
+.. code-block:: none
 
    "Date","Vendor","Type","Quantity","Price","Memo"
    "2014-08-26","United Airlines","Travel",1,425.00,"Airfaire, IAD <-> SFO"
