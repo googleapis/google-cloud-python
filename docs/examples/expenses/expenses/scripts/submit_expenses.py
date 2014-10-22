@@ -130,6 +130,13 @@ class DeleteReport(object):
             default=os.getlogin(),
             help="ID of employee owning the expense report")
 
+        parser.add_option(
+            '-f', '--force',
+            action='store_true',
+            dest='force',
+            default=False,
+            help="Delete report even if not in 'pending' status")
+
         options, args = parser.parse_args(args)
         try:
             self.report_id, = args
@@ -137,10 +144,11 @@ class DeleteReport(object):
             raise InvalidCommandLine('Specify one report ID')
 
         self.employee_id = options.employee_id
+        self.force = options.force
 
     def __call__(self):
         try:
-            count = delete_report(self.employee_id, self.report_id)
+            count = delete_report(self.employee_id, self.report_id, self.force)
         except NoSuchReport:
             self.submitter.blather("No such report: %s/%s"
                                    % (self.employee_id, self.report_id))
@@ -149,7 +157,7 @@ class DeleteReport(object):
                                    % (self.employee_id, self.report_id,
                                       str(e)))
         else:
-            self.submitter.blather("Deleted report: %s"
+            self.submitter.blather("Deleted report: %s/%s"
                                    % (self.employee_id, self.report_id))
             self.submitter.blather("Removed %d items." % count)
 

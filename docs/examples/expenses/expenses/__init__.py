@@ -161,12 +161,12 @@ def update_report(employee_id, report_id, rows, description):
         report['updated'] = datetime.datetime.utcnow()
         report.save()
 
-def delete_report(employee_id, report_id):
+def delete_report(employee_id, report_id, force):
     dataset = _get_dataset()
     report = _get_report(dataset, employee_id, report_id, False)
     if report is None:
         raise NoSuchReport()
-    if report['status'] != 'pending':
+    if report['status'] != 'pending' and not force:
         raise BadReportStatus(report['status'])
     with dataset.transaction():
         count = _purge_report_items(dataset, report)

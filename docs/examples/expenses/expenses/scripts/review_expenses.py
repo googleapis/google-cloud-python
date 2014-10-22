@@ -141,13 +141,14 @@ class ApproveReport(object):
         try:
             self.employee_id, self.report_id, = args
         except:
-            raise InvalidCommandLine('Specify one report ID')
+            raise InvalidCommandLine('Specify employee ID, report ID')
         self.check_number = options.check_number
 
     def __call__(self):
+        approve_report(self.employee_id, self.report_id, self.check_number)
         memo = ('' if self.check_number is None
                     else ', check #%s' % self.check_number)
-        self.submitter.blather("Approved, report ID: %s%s (%s)" %
+        self.submitter.blather("Approved report: %s/%s%s" %
                                 (self.employee_id, self.report_id, memo))
 
 
@@ -158,7 +159,7 @@ class RejectReport(object):
         self.submitter = submitter
         args = list(args)
         parser = optparse.OptionParser(
-            usage="%prog [OPTIONS] REPORT_ID")
+            usage="%prog [OPTIONS] EMPLOYEE_ID REPORT_ID")
 
         parser.add_option(
             '-r', '--reason',
@@ -169,16 +170,17 @@ class RejectReport(object):
 
         options, args = parser.parse_args(args)
         try:
-            self.report_id, = args
+            self.employee_id, self.report_id, = args
         except:
-            raise InvalidCommandLine('Specify one report ID')
+            raise InvalidCommandLine('Specify employee ID, report ID')
         self.reason = options.reason
 
     def __call__(self):
+        reject_report(self.employee_id, self.report_id, self.reason)
         memo = ('' if self.reason is None
                     else ', reason: %s' % self.reason)
-        self.submitter.blather("Rejected, report ID: %s%s" %
-                                (self.report_id, memo))
+        self.submitter.blather("Rejected report: %s/%s%s" %
+                                (self.employee_id, self.report_id, memo))
 
 
 _COMMANDS = {
