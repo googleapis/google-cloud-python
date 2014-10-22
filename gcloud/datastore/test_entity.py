@@ -41,7 +41,7 @@ class TestEntity(unittest2.TestCase):
         entity = self._makeOne()
         key = entity.key()
         self.assertIsInstance(key, Key)
-        self.assertEqual(key.dataset().id(), _DATASET_ID)
+        self.assertEqual(key._dataset_id, None)
         self.assertEqual(key.kind(), _KIND)
 
     def test_key_setter(self):
@@ -50,27 +50,60 @@ class TestEntity(unittest2.TestCase):
         entity.key(key)
         self.assertTrue(entity.key() is key)
 
-    def test_from_key(self):
+    def test_from_key_wo_dataset(self):
+        from gcloud.datastore.key import Key
+
+        klass = self._getTargetClass()
+        key = Key().kind(_KIND).id(_ID)
+        entity = klass.from_key(key)
+        self.assertTrue(entity.dataset() is None)
+        self.assertEqual(entity.kind(), _KIND)
+        key = entity.key()
+        self.assertEqual(key.kind(), _KIND)
+        self.assertEqual(key.id(), _ID)
+
+    def test_from_key_w_dataset(self):
         from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         klass = self._getTargetClass()
         dataset = Dataset(_DATASET_ID)
-        key = Key(dataset=dataset).kind(_KIND).id(_ID)
-        entity = klass.from_key(key)
+        key = Key().kind(_KIND).id(_ID)
+        entity = klass.from_key(key, dataset)
         self.assertTrue(entity.dataset() is dataset)
         self.assertEqual(entity.kind(), _KIND)
         key = entity.key()
         self.assertEqual(key.kind(), _KIND)
         self.assertEqual(key.id(), _ID)
 
-    def test_from_protobuf(self):
+    def test_from_protobuf_wo_dataset(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+
+        entity_pb = datastore_pb.Entity()
+        entity_pb.key.partition_id.dataset_id = _DATASET_ID
+        entity_pb.key.path_element.add(kind=_KIND, id=_ID)
+        entity_pb.key.partition_id.dataset_id = _DATASET_ID
+        prop_pb = entity_pb.property.add()
+        prop_pb.name = 'foo'
+        prop_pb.value.string_value = 'Foo'
+        klass = self._getTargetClass()
+        entity = klass.from_protobuf(entity_pb)
+        self.assertTrue(entity.dataset() is None)
+        self.assertEqual(entity.kind(), _KIND)
+        self.assertEqual(entity['foo'], 'Foo')
+        key = entity.key()
+        self.assertEqual(key._dataset_id, _DATASET_ID)
+        self.assertEqual(key.kind(), _KIND)
+        self.assertEqual(key.id(), _ID)
+
+    def test_from_protobuf_w_dataset(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         from gcloud.datastore.dataset import Dataset
 
         entity_pb = datastore_pb.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
+        entity_pb.key.partition_id.dataset_id = _DATASET_ID
         prop_pb = entity_pb.property.add()
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
@@ -81,9 +114,21 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(entity.kind(), _KIND)
         self.assertEqual(entity['foo'], 'Foo')
         key = entity.key()
-        self.assertTrue(key.dataset() is dataset)
+        self.assertEqual(key._dataset_id, _DATASET_ID)
         self.assertEqual(key.kind(), _KIND)
         self.assertEqual(key.id(), _ID)
+
+    def test__must_key_no_key(self):
+        from gcloud.datastore.entity import NoKey
+
+        entity = self._makeOne(None, None)
+        self.assertRaises(NoKey, getattr, entity, '_must_key')
+
+    def test__must_dataset_no_dataset(self):
+        from gcloud.datastore.entity import NoDataset
+
+        entity = self._makeOne(None, None)
+        self.assertRaises(NoDataset, getattr, entity, '_must_dataset')
 
     def test_reload_no_key(self):
         from gcloud.datastore.entity import NoKey
@@ -94,8 +139,8 @@ class TestEntity(unittest2.TestCase):
 
     def test_reload_miss(self):
         dataset = _Dataset()
-        key = _Key(dataset)
-        entity = self._makeOne()
+        key = _Key()
+        entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
         # Does not raise, does not update on miss.
@@ -105,8 +150,8 @@ class TestEntity(unittest2.TestCase):
     def test_reload_hit(self):
         dataset = _Dataset()
         dataset['KEY'] = {'foo': 'Bar'}
-        key = _Key(dataset)
-        entity = self._makeOne()
+        key = _Key()
+        entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertTrue(entity.reload() is entity)
@@ -122,8 +167,8 @@ class TestEntity(unittest2.TestCase):
     def test_save_wo_transaction_wo_auto_id_wo_returned_key(self):
         connection = _Connection()
         dataset = _Dataset(connection)
-        key = _Key(dataset)
-        entity = self._makeOne()
+        key = _Key()
+        entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertTrue(entity.save() is entity)
@@ -136,8 +181,8 @@ class TestEntity(unittest2.TestCase):
         connection = _Connection()
         transaction = connection._transaction = _Transaction()
         dataset = _Dataset(connection)
-        key = _Key(dataset)
-        entity = self._makeOne()
+        key = _Key()
+        entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertTrue(entity.save() is entity)
@@ -151,9 +196,9 @@ class TestEntity(unittest2.TestCase):
         connection = _Connection()
         transaction = connection._transaction = _Transaction()
         dataset = _Dataset(connection)
-        key = _Key(dataset)
+        key = _Key()
         key._partial = True
-        entity = self._makeOne()
+        entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertTrue(entity.save() is entity)
@@ -171,8 +216,8 @@ class TestEntity(unittest2.TestCase):
         connection = _Connection()
         connection._save_result = key_pb
         dataset = _Dataset(connection)
-        key = _Key(dataset)
-        entity = self._makeOne()
+        key = _Key()
+        entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertTrue(entity.save() is entity)
@@ -191,8 +236,8 @@ class TestEntity(unittest2.TestCase):
     def test_delete(self):
         connection = _Connection()
         dataset = _Dataset(connection)
-        key = _Key(dataset)
-        entity = self._makeOne()
+        key = _Key()
+        entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertTrue(entity.delete() is None)
@@ -205,9 +250,9 @@ class TestEntity(unittest2.TestCase):
     def test___repr___w_key_non_empty(self):
         connection = _Connection()
         dataset = _Dataset(connection)
-        key = _Key(dataset)
+        key = _Key()
         key.path('/bar/baz')
-        entity = self._makeOne()
+        entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertEqual(repr(entity), "<Entity/bar/baz {'foo': 'Foo'}>")
@@ -218,12 +263,6 @@ class _Key(object):
     _key = 'KEY'
     _partial = False
     _path = None
-
-    def __init__(self, dataset):
-        self._dataset = dataset
-
-    def dataset(self):
-        return self._dataset
 
     def to_protobuf(self):
         return self._key

@@ -23,6 +23,10 @@ class NoKey(RuntimeError):
     """Exception raised by Entity methods which require a key."""
 
 
+class NoDataset(RuntimeError):
+    """Exception raised by Entity methods which require a dataset."""
+
+
 class Entity(dict):
     """:type dataset: :class:`gcloud.datastore.dataset.Dataset`
     :param dataset: The dataset in which this entity belongs.
@@ -68,8 +72,9 @@ class Entity(dict):
 
     def __init__(self, dataset=None, kind=None):
         super(Entity, self).__init__()
-        if dataset and kind:
-            self._key = Key(dataset=dataset).kind(kind)
+        self._dataset = dataset
+        if kind:
+            self._key = Key().kind(kind)
         else:
             self._key = None
 
@@ -86,8 +91,7 @@ class Entity(dict):
           be `None`. It also means that if you change the key on the entity,
           this will refer to that key's dataset.
         """
-        if self._key:
-            return self._key.dataset()
+        return self._dataset
 
     def key(self, key=None):
         """Get or set the :class:`.datastore.key.Key` on the current entity.
@@ -127,7 +131,7 @@ class Entity(dict):
             return self._key.kind()
 
     @classmethod
-    def from_key(cls, key):
+    def from_key(cls, key, dataset=None):
         """Create entity based on :class:`.datastore.key.Key`.
 
         .. note::
@@ -140,7 +144,7 @@ class Entity(dict):
                   :class:`gcloud.datastore.key.Key`.
         """
 
-        return cls().key(key)
+        return cls(dataset).key(key)
 
     @classmethod
     def from_protobuf(cls, pb, dataset=None):
@@ -159,8 +163,8 @@ class Entity(dict):
         # This is here to avoid circular imports.
         from gcloud.datastore import _helpers
 
-        key = Key.from_protobuf(pb.key, dataset=dataset)
-        entity = cls.from_key(key)
+        key = Key.from_protobuf(pb.key)
+        entity = cls.from_key(key, dataset)
 
         for property_pb in pb.property:
             value = _helpers._get_value_from_property_pb(property_pb)
@@ -177,8 +181,20 @@ class Entity(dict):
         :raises: NoKey if key is None
         """
         if self._key is None:
-            raise NoKey('no key')
+            raise NoKey()
         return self._key
+
+    @property
+    def _must_dataset(self):
+        """Return our dataset, or raise NoDataset if not set.
+
+        :rtype: :class:`gcloud.datastore.key.Key`.
+        :returns: our key
+        :raises: NoDataset if key is None
+        """
+        if self._dataset is None:
+            raise NoDataset()
+        return self._dataset
 
     def reload(self):
         """Reloads the contents of this entity from the datastore.
@@ -193,7 +209,8 @@ class Entity(dict):
           exist only locally.
         """
         key = self._must_key
-        entity = key.dataset().get_entity(key.to_protobuf())
+        dataset = self._must_dataset
+        entity = dataset.get_entity(key.to_protobuf())
 
         if entity:
             self.update(entity)
@@ -217,7 +234,7 @@ class Entity(dict):
         :returns: The entity with a possibly updated Key.
         """
         key = self._must_key
-        dataset = key.dataset()
+        dataset = self._must_dataset
         connection = dataset.connection()
         key_pb = connection.save_entity(
             dataset_id=dataset.id(),
@@ -246,7 +263,7 @@ class Entity(dict):
           entity will be deleted.
         """
         key = self._must_key
-        dataset = key.dataset()
+        dataset = self._must_dataset
         dataset.connection().delete_entities(
             dataset_id=dataset.id(),
             key_pbs=[key.to_protobuf()],
