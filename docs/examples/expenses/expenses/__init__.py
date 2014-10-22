@@ -7,9 +7,9 @@ from gcloud.datastore.entity import Entity
 from gcloud.datastore.query import Query
 
 def get_dataset():
-    client_email = os.environ['EXPENSES_CLIENT_EMAIL']
-    private_key_path = os.environ['EXPENSES_PRIVATE_KEY_PATH']
-    dataset_id = os.environ['EXPENSES_DATASET_ID']
+    client_email = os.environ['GCLOUD_TESTS_CLIENT_EMAIL']
+    private_key_path = os.environ['GCLOUD_TESTS_KEY_FILE']
+    dataset_id = os.environ['GCLOUD_TESTS_DATASET_ID']
     conn = datastore.get_connection(client_email, private_key_path)
     return conn.dataset(dataset_id)
 
