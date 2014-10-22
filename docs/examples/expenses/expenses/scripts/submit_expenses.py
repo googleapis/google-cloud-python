@@ -5,8 +5,9 @@ import textwrap
 import sys
 
 
+from .. import BadReportStatus
 from .. import DuplicateReport
-from .. import InvalidReport
+from .. import NoSuchReport
 from .. import create_report
 from .. import delete_report
 from .. import update_report
@@ -98,9 +99,13 @@ class UpdateReport(_Command):
     def __call__(self):
         try:
             update_report(self.employee_id, self.report_id, self.rows)
-        except InvalidReport:
+        except NoSuchReport:
             self.submitter.blather("No such report: %s/%s"
                                    % (self.employee_id, self.report_id))
+        except BadReportStatus as e:
+            self.submitter.blather("Invalid report status: %s/%s, %s"
+                                   % (self.employee_id, self.report_id,
+                                      str(e)))
         else:
             self.submitter.blather("Updated, report ID: %s" % self.report_id)
             self.submitter.blather("Processed %d rows." % len(self.rows))
@@ -132,9 +137,13 @@ class DeleteReport(object):
     def __call__(self):
         try:
             count = delete_report(self.employee_id, self.report_id)
-        except InvalidReport:
+        except NoSuchReport:
             self.submitter.blather("No such report: %s/%s"
                                    % (self.employee_id, self.report_id))
+        except BadReportStatus as e:
+            self.submitter.blather("Invalid report status: %s/%s, %s"
+                                   % (self.employee_id, self.report_id,
+                                      str(e)))
         else:
             self.submitter.blather("Deleted, report ID: %s" % self.report_id)
             self.submitter.blather("Removed %d items." % count)

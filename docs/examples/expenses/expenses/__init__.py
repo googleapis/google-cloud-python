@@ -12,7 +12,15 @@ class DuplicateReport(Exception):
 
 
 class InvalidReport(Exception):
-    """Attempt to update a report which does not already exist."""
+    """Attempt to update / delete an invalide report."""
+
+
+class NoSuchReport(InvalidReport):
+    """Attempt to update / delete a report which does not already exist."""
+
+
+class BadReportStatus(InvalidReport):
+    """Attempt to update / delete an already-approved/rejected report."""
 
 
 def get_dataset():
@@ -63,18 +71,24 @@ def _upsert_report(dataset, employee_id, report_id, rows):
         for k, v in row.items():
             item[k] = v
         item.save()
+    return report
 
 def create_report(employee_id, report_id, rows):
     dataset = get_dataset()
     if get_report(dataset, employee_id, report_id, False) is not None:
         raise DuplicateReport()
     with dataset.transaction():
-        _upsert_report(dataset, employee_id, report_id, rows)
+        report = _upsert_report(dataset, employee_id, report_id, rows)
+        report['status'] = 'pending'
+        report.save()
 
 def update_report(employee_id, report_id, rows):
     dataset = get_dataset()
-    if get_report(dataset, employee_id, report_id, False) is None:
+    report = get_report(dataset, employee_id, report_id, False)
+    if report is None:
         raise InvalidReport()
+    if report['status'] != 'pending':
+        raise BadReportStatus(report['status'])
     with dataset.transaction():
         _upsert_report(dataset, employee_id, report_id, rows)
 
@@ -82,7 +96,9 @@ def delete_report(employee_id, report_id):
     dataset = get_dataset()
     report = get_report(dataset, employee_id, report_id, False)
     if report is None:
-        raise InvalidReport()
+        raise NoSuchReport()
+    if report['status'] != 'pending':
+        raise BadReportStatus(report['status'])
     with dataset.transaction():
         count = _purge_report_items(dataset, report)
         report.delete()
