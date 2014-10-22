@@ -137,9 +137,9 @@ def get_report_info(employee_id, report_id):
 
 def create_report(employee_id, report_id, rows, description):
     dataset = _get_dataset()
-    if _get_report(dataset, employee_id, report_id, False) is not None:
-        raise DuplicateReport()
     with dataset.transaction():
+        if _get_report(dataset, employee_id, report_id, False) is not None:
+            raise DuplicateReport()
         report = _upsert_report(dataset, employee_id, report_id, rows)
         report['status'] = 'pending'
         if description is not None:

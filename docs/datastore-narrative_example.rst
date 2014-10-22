@@ -143,11 +143,11 @@ In the sample application, the ``create`` subcommand of the
    :linenos:
 
 After connecting to the dataset via :func:`expenses/_get_dataset` (line 2),
-:func:`expenses/create_report` checks that no report exists already for the
-given employee ID and report ID (lines 3-4), raising an exception.  It then
-starts a transaction (line 5) to ensure that all changes are performed
-atomically, and delegates most of the work to the
-:func:`expenses/_upsert_report` utility function (line 6), finally sets
+:func:`expenses/create_report` starts a transaction (line 3) to ensure that
+all changes are performed atomically.  It then checks that no report exists
+already for the given employee ID and report ID, raising an exception if so
+(lines 4-5).  It then  delegates most of the work to the
+:func:`expenses/_upsert_report` utility function (line 6), finally setting
 metadata on the report itself (lines 7-11).
 
 
@@ -203,3 +203,22 @@ a count of the deleted items.
 The :func:`expenses/_purge_report_items` function: performs an "ancestor"
 query (lines 2-3) to find expense item entities contained within a given
 expense report.
+
+Updating an Existing Expense Report
+-----------------------------------
+
+In the sample application, the ``update`` subcommand of the
+:program:`submit_expenses` script drives a function,
+:func:`expenses/update_report`:
+
+.. literalinclude:: examples/expenses/expenses/__init__.py
+   :pyobject: update_report
+   :linenos:
+
+After connecting to the dataset via :func:`expenses/_get_dataset` (line 2),
+:func:`expenses/update_report` starts a transaction (line 3) to ensure that
+all changes are performed atomically.  It then checks that a report *does*
+exist already for the given employee ID and report ID, raising an exception
+if not (lines 3-4).  It then delegates most of the work to the
+:func:`expenses/_upsert_report` utility function (line 6), finally setting
+metadata on the report itself (lines 7-11).
