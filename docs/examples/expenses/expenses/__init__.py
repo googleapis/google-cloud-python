@@ -41,32 +41,49 @@ def get_report(dataset, employee_id, report_id, create=True):
         report.save()
     return report
 
+def _purge_report_items(dataset, report):
+    # Delete any existing items belonging to report
+    query = Query('Expense Item', dataset)
+    count = 0
+    for existing in query.ancestor(report.key()).fetch():
+        existing.delete()
+        count += 1
+    return count
+
 def _upsert_report(dataset, employee_id, report_id, rows):
-    with dataset.transaction():
-        employee = get_employee(dataset, employee_id)
-        report = get_report(dataset, employee_id, report_id)
-        query = Query('Expense Item', dataset)
-        # Delete any existing items.
-        for existing in query.ancestor(report.key()).fetch():
-            existing.delete()
-        # Add items based on rows.
-        report_path = report.key().path()
-        for i, row in enumerate(rows):
-            path = report_path + [{'kind': 'Expense Item', 'id': i + 1}]
-            key = Key(dataset, path=path)
-            item = Entity(dataset, 'Expense Item').key(key)
-            for k, v in row.items():
-                item[k] = v
-            item.save()
+    employee = get_employee(dataset, employee_id)
+    report = get_report(dataset, employee_id, report_id)
+    _purge_report_items(dataset, report)
+    # Add items based on rows.
+    report_path = report.key().path()
+    for i, row in enumerate(rows):
+        path = report_path + [{'kind': 'Expense Item', 'id': i + 1}]
+        key = Key(dataset, path=path)
+        item = Entity(dataset, 'Expense Item').key(key)
+        for k, v in row.items():
+            item[k] = v
+        item.save()
 
 def create_report(employee_id, report_id, rows):
     dataset = get_dataset()
     if get_report(dataset, employee_id, report_id, False) is not None:
         raise DuplicateReport()
-    _upsert_report(dataset, employee_id, report_id, rows)
+    with dataset.transaction():
+        _upsert_report(dataset, employee_id, report_id, rows)
 
 def update_report(employee_id, report_id, rows):
     dataset = get_dataset()
     if get_report(dataset, employee_id, report_id, False) is None:
         raise InvalidReport()
-    _upsert_report(dataset, employee_id, report_id, rows)
+    with dataset.transaction():
+        _upsert_report(dataset, employee_id, report_id, rows)
+
+def delete_report(employee_id, report_id):
+    dataset = get_dataset()
+    report = get_report(dataset, employee_id, report_id, False)
+    if report is None:
+        raise InvalidReport()
+    with dataset.transaction():
+        count = _purge_report_items(dataset, report)
+        report.delete()
+    return count

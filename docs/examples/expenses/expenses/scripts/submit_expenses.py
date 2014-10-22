@@ -8,6 +8,7 @@ import sys
 from .. import DuplicateReport
 from .. import InvalidReport
 from .. import create_report
+from .. import delete_report
 from .. import update_report
 
 
@@ -77,7 +78,7 @@ class _Command(object):
 
 
 class CreateReport(_Command):
-    """Create an expense report from a CSV file.
+    """Create a new expense report from a CSV file.
     """
     def __call__(self):
         try:
@@ -92,7 +93,7 @@ class CreateReport(_Command):
 
 
 class UpdateReport(_Command):
-    """Update an expense report from a CSV file.
+    """Update an existing expense report from a CSV file.
     """
     def __call__(self):
         try:
@@ -105,9 +106,44 @@ class UpdateReport(_Command):
             self.submitter.blather("Processed %d rows." % len(self.rows))
 
 
+class DeleteReport(object):
+    """Delete an existing expense report.
+    """
+    def __init__(self, submitter, *args):
+        self.submitter = submitter
+        args = list(args)
+        parser = optparse.OptionParser(
+            usage="%prog [OPTIONS] REPORT_ID")
+
+        parser.add_option(
+            '-e', '--employee-id',
+            action='store',
+            dest='employee_id',
+            default=os.getlogin(),
+            help="ID of employee owning the expense report")
+
+        options, args = parser.parse_args(args)
+        if len(args) != 1:
+            parser.error('Supply exactly one report ID')
+
+        self.employee_id = options.employee_id
+        self.report_id, = args
+
+    def __call__(self):
+        try:
+            count = delete_report(self.employee_id, self.report_id)
+        except InvalidReport:
+            self.submitter.blather("No such report: %s/%s"
+                                   % (self.employee_id, self.report_id))
+        else:
+            self.submitter.blather("Deleted, report ID: %s" % self.report_id)
+            self.submitter.blather("Removed %d items." % count)
+
+
 _COMMANDS = {
     'create': CreateReport,
     'update': UpdateReport,
+    'delete': DeleteReport,
 }
 
 
