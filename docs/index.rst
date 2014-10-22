@@ -7,6 +7,7 @@
   datastore-api
   datastore-getting-started
   datastore-quickstart
+  datastore-narrative_example
   getting-started
   storage-api
   storage-getting-started
