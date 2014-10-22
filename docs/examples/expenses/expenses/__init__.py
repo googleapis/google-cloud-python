@@ -1,4 +1,4 @@
-# package
+import datetime
 import os
 
 from gcloud import datastore
@@ -73,24 +73,30 @@ def _upsert_report(dataset, employee_id, report_id, rows):
         item.save()
     return report
 
-def create_report(employee_id, report_id, rows):
+def create_report(employee_id, report_id, rows, description):
     dataset = get_dataset()
     if get_report(dataset, employee_id, report_id, False) is not None:
         raise DuplicateReport()
     with dataset.transaction():
         report = _upsert_report(dataset, employee_id, report_id, rows)
         report['status'] = 'pending'
+        if description is not None:
+            report['description'] = description
+        report['created'] = report['updated'] = datetime.datetime.utcnow()
         report.save()
 
-def update_report(employee_id, report_id, rows):
+def update_report(employee_id, report_id, rows, description):
     dataset = get_dataset()
-    report = get_report(dataset, employee_id, report_id, False)
-    if report is None:
-        raise InvalidReport()
-    if report['status'] != 'pending':
-        raise BadReportStatus(report['status'])
     with dataset.transaction():
+        report = get_report(dataset, employee_id, report_id, False)
+        if report is None:
+            raise InvalidReport()
+        if report['status'] != 'pending':
+            raise BadReportStatus(report['status'])
         _upsert_report(dataset, employee_id, report_id, rows)
+        if description is not None:
+            report['description'] = description
+        report['updated'] = datetime.datetime.utcnow()
 
 def delete_report(employee_id, report_id):
     dataset = get_dataset()

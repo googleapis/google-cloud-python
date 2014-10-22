@@ -83,7 +83,8 @@ class CreateReport(_Command):
     """
     def __call__(self):
         try:
-            create_report(self.employee_id, self.report_id, self.rows)
+            create_report(self.employee_id, self.report_id, self.rows,
+                          self.description)
         except DuplicateReport:
             self.submitter.blather("Report already exists: %s/%s"
                                    % (self.employee_id, self.report_id))
@@ -98,7 +99,8 @@ class UpdateReport(_Command):
     """
     def __call__(self):
         try:
-            update_report(self.employee_id, self.report_id, self.rows)
+            update_report(self.employee_id, self.report_id, self.rows,
+                          self.description)
         except NoSuchReport:
             self.submitter.blather("No such report: %s/%s"
                                    % (self.employee_id, self.report_id))
