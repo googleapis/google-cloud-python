@@ -56,7 +56,7 @@ class TestDataset(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         connection = _Connection()
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(dataset=dataset, path=[{'kind': 'Kind', 'id': 1234}])
+        key = Key(path=[{'kind': 'Kind', 'id': 1234}])
         self.assertEqual(dataset.get_entities([key]), [])
 
     def test_get_entities_hit(self):
@@ -67,6 +67,7 @@ class TestDataset(unittest2.TestCase):
         ID = 1234
         PATH = [{'kind': KIND, 'id': ID}]
         entity_pb = datastore_pb.Entity()
+        entity_pb.key.partition_id.dataset_id = DATASET_ID
         path_element = entity_pb.key.path_element.add()
         path_element.kind = KIND
         path_element.id = ID
@@ -75,10 +76,10 @@ class TestDataset(unittest2.TestCase):
         prop.value.string_value = 'Foo'
         connection = _Connection(entity_pb)
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(dataset=dataset, path=PATH)
+        key = Key(path=PATH)
         result, = dataset.get_entities([key])
         key = result.key()
-        self.assertTrue(key.dataset() is dataset)
+        self.assertEqual(key._dataset_id, DATASET_ID)
         self.assertEqual(key.path(), PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
@@ -88,7 +89,7 @@ class TestDataset(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         connection = _Connection()
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(dataset=dataset, path=[{'kind': 'Kind', 'id': 1234}])
+        key = Key(path=[{'kind': 'Kind', 'id': 1234}])
         self.assertEqual(dataset.get_entity(key), None)
 
     def test_get_entity_hit(self):
@@ -99,6 +100,7 @@ class TestDataset(unittest2.TestCase):
         ID = 1234
         PATH = [{'kind': KIND, 'id': ID}]
         entity_pb = datastore_pb.Entity()
+        entity_pb.key.partition_id.dataset_id = DATASET_ID
         path_element = entity_pb.key.path_element.add()
         path_element.kind = KIND
         path_element.id = ID
@@ -107,10 +109,10 @@ class TestDataset(unittest2.TestCase):
         prop.value.string_value = 'Foo'
         connection = _Connection(entity_pb)
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(dataset=dataset, path=PATH)
+        key = Key(path=PATH)
         result = dataset.get_entity(key)
         key = result.key()
-        self.assertTrue(key.dataset() is dataset)
+        self.assertEqual(key._dataset_id, DATASET_ID)
         self.assertEqual(key.path(), PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')

@@ -380,12 +380,10 @@ class TestConnection(unittest2.TestCase):
 
     def test_lookup_single_key_empty_response(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -413,12 +411,10 @@ class TestConnection(unittest2.TestCase):
 
     def test_lookup_single_key_nonempty_response(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.LookupResponse()
         entity = datastore_pb.Entity()
         entity.key.CopyFrom(key_pb)
@@ -451,14 +447,11 @@ class TestConnection(unittest2.TestCase):
 
     def test_lookup_multiple_keys_empty_response(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         DATASET_ID = 'DATASET'
-        key_pb1 = Key(dataset=Dataset(DATASET_ID),
-                      path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
-        key_pb2 = Key(dataset=Dataset(DATASET_ID),
-                      path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -487,12 +480,10 @@ class TestConnection(unittest2.TestCase):
 
     def test_commit_wo_transaction(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         mutation = datastore_pb.Mutation()
         insert = mutation.upsert.add()
@@ -528,15 +519,13 @@ class TestConnection(unittest2.TestCase):
 
     def test_commit_w_transaction(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         class Xact(object):
             def id(self):
                 return 'xact'
         DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         mutation = datastore_pb.Mutation()
         insert = mutation.upsert.add()
@@ -573,12 +562,10 @@ class TestConnection(unittest2.TestCase):
 
     def test_save_entity_wo_transaction_w_upsert(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -617,14 +604,11 @@ class TestConnection(unittest2.TestCase):
 
     def test_save_entity_wo_transaction_w_auto_id(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind'}]).to_protobuf()
-        updated_key_pb = Key(dataset=Dataset(DATASET_ID),
-                             path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind'}]).to_protobuf()
+        updated_key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         mr_pb = rsp_pb.mutation_result
         mr_pb.index_updates = 0
@@ -668,7 +652,6 @@ class TestConnection(unittest2.TestCase):
 
     def test_save_entity_w_transaction(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         mutation = datastore_pb.Mutation()
@@ -677,8 +660,7 @@ class TestConnection(unittest2.TestCase):
             def mutation(self):
                 return mutation
         DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
         conn.transaction(Xact())
@@ -691,7 +673,6 @@ class TestConnection(unittest2.TestCase):
 
     def test_save_entity_w_transaction_nested_entity(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.entity import Entity
         from gcloud.datastore.key import Key
 
@@ -703,8 +684,7 @@ class TestConnection(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         nested = Entity()
         nested['bar'] = u'Bar'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
         conn.transaction(Xact())
@@ -717,12 +697,10 @@ class TestConnection(unittest2.TestCase):
 
     def test_delete_entities_wo_transaction(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -757,7 +735,6 @@ class TestConnection(unittest2.TestCase):
 
     def test_delete_entities_w_transaction(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         mutation = datastore_pb.Mutation()
@@ -766,8 +743,7 @@ class TestConnection(unittest2.TestCase):
             def mutation(self):
                 return mutation
         DATASET_ID = 'DATASET'
-        key_pb = Key(dataset=Dataset(DATASET_ID),
-                     path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.CommitResponse()
         conn = self._makeOne()
         conn.transaction(Xact())

@@ -4,7 +4,6 @@ import copy
 from itertools import izip
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-from gcloud.datastore.dataset import Dataset
 
 
 class Key(object):
@@ -13,11 +12,8 @@ class Key(object):
     .. automethod:: __init__
     """
 
-    def __init__(self, dataset=None, namespace=None, path=None):
+    def __init__(self, path=None, namespace=None, dataset_id=None):
         """Constructor / initializer for a key.
-
-        :type dataset: :class:`gcloud.datastore.dataset.Dataset`
-        :param dataset: A dataset instance for the key.
 
         :type namespace: :class:`str`
         :param namespace: A namespace identifier for the key.
@@ -25,10 +21,14 @@ class Key(object):
         :type path: sequence of dicts
         :param path: Each dict must have keys 'kind' (a string) and optionally
                      'name' (a string) or 'id' (an integer).
+
+        :type dataset_id: string
+        :param dataset: The dataset ID assigned by back-end for the key.
+                        Leave as None for newly-created keys.
         """
-        self._dataset = dataset
-        self._namespace = namespace
         self._path = path or [{'kind': ''}]
+        self._namespace = namespace
+        self._dataset_id = dataset_id
 
     def _clone(self):
         """Duplicates the Key.
@@ -40,12 +40,10 @@ class Key(object):
         :rtype: :class:`gcloud.datastore.key.Key`
         :returns: a new `Key` instance
         """
-        clone = copy.deepcopy(self)
-        clone._dataset = self._dataset  # Make a shallow copy of the Dataset.
-        return clone
+        return copy.deepcopy(self)
 
     @classmethod
-    def from_protobuf(cls, pb, dataset=None):
+    def from_protobuf(cls, pb):
         """Factory method for creating a key based on a protobuf.
 
         The protobuf should be one returned from the Cloud Datastore
@@ -53,10 +51,6 @@ class Key(object):
 
         :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
         :param pb: The Protobuf representing the key.
-
-        :type dataset: :class:`gcloud.datastore.dataset.Dataset`
-        :param dataset: A dataset instance.  If not passed, defaults to an
-                        instance whose ID is derived from pb.
 
         :rtype: :class:`gcloud.datastore.key.Key`
         :returns: a new `Key` instance
@@ -75,13 +69,10 @@ class Key(object):
 
             path.append(element_dict)
 
-        if not dataset:
-            dataset = Dataset(id=pb.partition_id.dataset_id)
-            namespace = pb.partition_id.namespace
-        else:
-            namespace = None
+        dataset_id = pb.partition_id.dataset_id or None
+        namespace = pb.partition_id.namespace
 
-        return cls(dataset, namespace, path)
+        return cls(path, namespace, dataset_id)
 
     def to_protobuf(self):
         """Return a protobuf corresponding to the key.
@@ -91,18 +82,8 @@ class Key(object):
         """
         key = datastore_pb.Key()
 
-        # Technically a dataset is required to do anything with the key,
-        # but we shouldn't throw a cryptic error if one isn't provided
-        # in the initializer.
-        if self.dataset():
-            # Apparently 's~' is a prefix for High-Replication and is necessary
-            # here. Another valid preflix is 'e~' indicating EU datacenters.
-            dataset_id = self.dataset().id()
-            if dataset_id:
-                if dataset_id[:2] not in ['s~', 'e~']:
-                    dataset_id = 's~' + dataset_id
-
-                key.partition_id.dataset_id = dataset_id
+        if self._dataset_id is not None:
+            key.partition_id.dataset_id = self._dataset_id
 
         if self._namespace:
             key.partition_id.namespace = self._namespace
@@ -160,24 +141,6 @@ class Key(object):
                   an 'id' or a 'name'.
         """
         return self.id_or_name() is None
-
-    def dataset(self, dataset=None):
-        """Dataset setter / getter.
-
-        :type dataset: :class:`gcloud.datastore.dataset.Dataset`
-        :param dataset: A dataset instance for the key.
-
-        :rtype: :class:`Key` (for setter); or
-                :class:`gcloud.datastore.dataset.Dataset` (for getter)
-        :returns: a new key, cloned from self., with the given dataset
-                  (setter); or self's dataset (getter).
-        """
-        if dataset:
-            clone = self._clone()
-            clone._dataset = dataset
-            return clone
-        else:
-            return self._dataset
 
     def namespace(self, namespace=None):
         """Namespace setter / getter.

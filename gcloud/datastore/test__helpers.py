@@ -32,14 +32,13 @@ class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
         self.assertEqual(value % 1000000, 4375)
 
     def test_key(self):
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
         _PATH = [{'kind': _KIND, 'id': _ID}]
-        key = Key(dataset=Dataset(_DATASET), path=_PATH)
+        key = Key(dataset_id=_DATASET, path=_PATH)
         name, value = self._callFUT(key)
         self.assertEqual(name, 'key_value')
         self.assertEqual(value, key.to_protobuf())
@@ -131,7 +130,6 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
 
     def test_key(self):
         from gcloud.datastore.datastore_v1_pb2 import Value
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         _DATASET = 'DATASET'
@@ -139,7 +137,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         _ID = 1234
         _PATH = [{'kind': _KIND, 'id': _ID}]
         pb = Value()
-        expected = Key(dataset=Dataset(_DATASET), path=_PATH).to_protobuf()
+        expected = Key(dataset_id=_DATASET, path=_PATH).to_protobuf()
         pb.key_value.CopyFrom(expected)
         found = self._callFUT(pb)
         self.assertEqual(found.to_protobuf(), expected)
@@ -236,7 +234,6 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(value % 1000000, 4375)
 
     def test_key(self):
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
         _DATASET = 'DATASET'
@@ -244,7 +241,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         _ID = 1234
         _PATH = [{'kind': _KIND, 'id': _ID}]
         pb = self._makePB()
-        key = Key(dataset=Dataset(_DATASET), path=_PATH)
+        key = Key(dataset_id=_DATASET, path=_PATH)
         self._callFUT(pb, key)
         value = pb.key_value
         self.assertEqual(value, key.to_protobuf())
