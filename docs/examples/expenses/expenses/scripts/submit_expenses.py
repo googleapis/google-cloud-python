@@ -5,7 +5,10 @@ import textwrap
 import sys
 
 
-from .. import upsert_report
+from .. import DuplicateReport
+from .. import InvalidReport
+from .. import create_report
+from .. import update_report
 
 
 class InvalidCommandLine(ValueError):
@@ -77,17 +80,29 @@ class CreateReport(_Command):
     """Create an expense report from a CSV file.
     """
     def __call__(self):
-        upsert_report(self.employee_id, self.report_id, self.rows)
-        self.submitter.blather("Processed %d rows." % len(self.rows))
-        self.submitter.blather("Created, report ID: %s" % self.report_id)
+        try:
+            create_report(self.employee_id, self.report_id, self.rows)
+        except DuplicateReport:
+            self.submitter.blather("Report already exists: %s/%s"
+                                   % (self.employee_id, self.report_id))
+        else:
+            self.submitter.blather("Created, report ID: %s/%s"
+                                   % (self.employee_id, self.report_id))
+            self.submitter.blather("Processed %d rows." % len(self.rows))
 
 
 class UpdateReport(_Command):
     """Update an expense report from a CSV file.
     """
     def __call__(self):
-        self.submitter.blather("Processed %d rows." % len(self.rows))
-        self.submitter.blather("Updated, report ID: %s" % self.report_id)
+        try:
+            update_report(self.employee_id, self.report_id, self.rows)
+        except InvalidReport:
+            self.submitter.blather("No such report: %s/%s"
+                                   % (self.employee_id, self.report_id))
+        else:
+            self.submitter.blather("Updated, report ID: %s" % self.report_id)
+            self.submitter.blather("Processed %d rows." % len(self.rows))
 
 
 _COMMANDS = {
