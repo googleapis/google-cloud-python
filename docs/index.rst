@@ -36,7 +36,7 @@ Services
   .. image:: /_static/datastore-logo.png
     :target: datastore-api.html
 
-  - Google's `official documentation <https://developers.google.com/datastore/>`_
+  - Google's `official documentation <https://developers.google.com/datastore/>`__
   - :doc:`datastore-quickstart`
   - :doc:`datastore-getting-started`
   - :doc:`Cloud Datastore API Documentation <datastore-api>`
@@ -47,7 +47,7 @@ Services
   .. image:: /_static/storage-logo.png
     :target: storage-api.html
 
-  - Google's `official documentation <https://developers.google.com/storage/>`_
+  - Google's `official documentation <https://developers.google.com/storage/>`__
   - :doc:`storage-quickstart`
   - :doc:`Getting started with Cloud Storage <storage-getting-started>`
   - :doc:`Cloud Storage API Documentation <storage-api>`
@@ -58,7 +58,7 @@ Services
   .. image:: /_static/compute-logo.png
     :target: https://github.com/GoogleCloudPlatform/gcloud-python/issues/34
 
-  - Google's `official documentation <https://developers.google.com/compute/>`_
+  - Google's `official documentation <https://developers.google.com/compute/>`__
   - Coming soon...
 
 .. topic:: Cloud SQL
@@ -67,7 +67,7 @@ Services
   .. image:: /_static/cloudsql-logo.png
     :target: https://github.com/GoogleCloudPlatform/gcloud-python/issues/35
 
-  - Google's `official documentation <https://developers.google.com/cloud-sql/>`_
+  - Google's `official documentation <https://developers.google.com/cloud-sql/>`__
   - Coming soon...
 
 .. topic:: Big Query
@@ -76,7 +76,7 @@ Services
   .. image:: /_static/bigquery-logo.png
     :target: https://github.com/GoogleCloudPlatform/gcloud-python/issues/36
 
-  - Google's `official documentation <https://developers.google.com/bigquery/>`_
+  - Google's `official documentation <https://developers.google.com/bigquery/>`__
   - Coming soon...
 
 Common modules
