@@ -4,6 +4,8 @@ import os
 import textwrap
 import sys
 
+from .. import NoSuchReport
+from .. import get_report_info
 from .. import list_reports
 
 
@@ -82,30 +84,39 @@ class ShowReport(object):
         parser = optparse.OptionParser(
             usage="%prog [OPTIONS] REPORT_ID")
 
+        parser.add_option(
+            '-e', '--employee-id',
+            action='store',
+            dest='employee_id',
+            default=os.getlogin(),
+            help="ID of the employee whose expense reports to list")
+
         options, args = parser.parse_args(args)
         try:
             self.report_id, = args
         except:
             raise InvalidCommandLine('Specify one report ID')
-
-    def get_report_info(self):
-        return {}
+        self.employee_id = options.employee_id
 
     def __call__(self):
-        """
-        Report-ID: sally/expenses-2014-09-01
-        Report-Status: Pending
-        Employee-ID: sally
-        Description: Frotz project kickoff, San Jose
-        """
-        info = self.get_report_info()
-        self.submitter.blather("Report-ID: %s" % self.report_id)
-        self.submitter.blather("Report-Status: %s" %
-                                info.get('status', 'Unknown'))
-        self.submitter.blather("Employee-ID: %s" %
-                                info.get('employee_id', 'Unknown'))
-        self.submitter.blather("Description: %s" %
-                                info.get('description', 'Unknown'))
+        _cols = ['Date', 'Vendor', 'Type', 'Quantity', 'Price', 'Memo']
+        try:
+            info = get_report_info(self.employee_id, self.report_id)
+        except NoSuchReport:
+            self.submitter.blather("No such report: %s/%s"
+                                   % (self.employee_id, self.report_id))
+        else:
+            self.submitter.blather("Employee-ID: %s" % info['employee_id'])
+            self.submitter.blather("Report-ID: %s" % info['report_id'])
+            self.submitter.blather("Report-Status: %s" % info['status'])
+            self.submitter.blather("Created: %s" % info['created'])
+            self.submitter.blather("Updated: %s" % info['updated'])
+            self.submitter.blather("Description: %s" % info['description'])
+            self.submitter.blather("")
+            writer = csv.writer(sys.stdout)
+            writer.writerow([x for x in _cols])
+            for item in info['items']:
+                writer.writerow([item[x] for x in _cols])
 
 
 class ApproveReport(object):

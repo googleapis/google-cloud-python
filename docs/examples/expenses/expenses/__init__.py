@@ -48,12 +48,16 @@ def get_report(dataset, employee_id, report_id, create=True):
         report.save()
     return report
 
+def _fetch_report_items(dataset, report):
+    query = Query('Expense Item', dataset)
+    for item in query.ancestor(report.key()).fetch():
+        yield item
+
 def _purge_report_items(dataset, report):
     # Delete any existing items belonging to report
-    query = Query('Expense Item', dataset)
     count = 0
-    for existing in query.ancestor(report.key()).fetch():
-        existing.delete()
+    for item in _fetch_report_items(dataset, report):
+        item.delete()
         count += 1
     return count
 
@@ -109,6 +113,29 @@ def delete_report(employee_id, report_id):
         report.delete()
     return count
 
+def _report_info(report):
+    path = report.key().path()
+    employee_id = path[0]['name']
+    report_id = path[1]['name']
+    created = report['created'].strftime('%Y-%m-%d')
+    updated = report['updated'].strftime('%Y-%m-%d')
+    status = report['status']
+    if status == 'paid':
+        memo = report['check_number']
+    elif status == 'rejected':
+        memo = report['rejected_reason']
+    else:
+        memo = ''
+    return {
+        'employee_id': employee_id,
+        'report_id': report_id,
+        'created': created,
+        'updated': updated,
+        'status': status,
+        'description': report.get('description', ''),
+        'memo': memo,
+        }
+
 def list_reports(employee_id=None, status=None):
     dataset = get_dataset()
     query = Query('Expense Report', dataset)
@@ -139,3 +166,12 @@ def list_reports(employee_id=None, status=None):
             'description': report.get('description', ''),
             'memo': memo,
             }
+
+def get_report_info(employee_id, report_id):
+    dataset = get_dataset()
+    report = get_report(dataset, employee_id, report_id, False)
+    if report is None:
+        raise NoSuchReport()
+    info = _report_info(report)
+    info['items'] = list(_fetch_report_items(dataset, report))
+    return info
