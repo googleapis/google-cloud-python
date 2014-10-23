@@ -221,7 +221,7 @@ After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
 :func:`expenses.update_report` starts a transaction (line 3) to ensure that
 all changes are performed atomically.  It then checks that a report *does*
 exist already for the given employee ID and report ID, and that it is in
-``pending`` staus, raising an exception if not (lines 3-4).  It then
+``pending`` staus, raising an exception if not (lines 4-5).  It then
 delegates most of the work to the :func:`expenses._upsert_report` utility
 function (line 6), finally updating metadata on the report itself (lines 7-11).
 
@@ -293,3 +293,39 @@ describing the report (line 6), and then delegates to
 :func:`expenses._fetch_report_items` to retrieve information about the
 expense item entities contained in the report (line 7).  Finally, the
 function returns the mapping.
+
+Approving an Expense Report
+---------------------------
+
+In the sample application, the ``approve`` subcommand of the
+:program:`review_expenses` script drives a function,
+:func:`expenses.approve_report`:
+
+.. literalinclude:: examples/expenses/expenses/__init__.py
+   :pyobject: approve_report
+   :linenos:
+
+After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
+:func:`expenses.approve_report` starts a transaction (line 3) to ensure that
+all changes are performed atomically.  It then checks that a report *does*
+exist already for the given employee ID and report ID, and that it is in
+``pending`` staus, raising an exception if not (lines 4-5).  It then updates
+the status and other metadata on the report itself (lines 9-12).
+
+Rejecting an Expense Report
+---------------------------
+
+In the sample application, the ``reject`` subcommand of the
+:program:`review_expenses` script drives a function,
+:func:`expenses.reject_report`:
+
+.. literalinclude:: examples/expenses/expenses/__init__.py
+   :pyobject: reject_report
+   :linenos:
+
+After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
+:func:`expenses.approve_report` starts a transaction (line 3) to ensure that
+all changes are performed atomically.  It then checks that a report *does*
+exist already for the given employee ID and report ID, and that it is in
+``pending`` staus, raising an exception if not (lines 4-5).  It then updates
+the status and other metadata on the report itself (lines 9-12).
