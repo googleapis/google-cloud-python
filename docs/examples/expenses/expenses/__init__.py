@@ -28,7 +28,9 @@ def _get_dataset():
 
 
 def _get_employee(dataset, employee_id, create=True):
-    key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id}])
+    key = Key(path=[
+        {'kind': 'Employee', 'name': employee_id},
+        ])
     employee = dataset.get_entity(key)
     if employee is None and create:
         employee = dataset.entity('Employee').key(key)
@@ -37,9 +39,10 @@ def _get_employee(dataset, employee_id, create=True):
 
 
 def _get_report(dataset, employee_id, report_id, create=True):
-    key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id},
-                             {'kind': 'Expense Report', 'name': report_id},
-                             ])
+    key = Key(path=[
+        {'kind': 'Employee', 'name': employee_id},
+        {'kind': 'Expense Report', 'name': report_id},
+        ])
     report = dataset.get_entity(key)
     if report is None and create:
         report = dataset.entity('Report').key(key)
@@ -87,14 +90,14 @@ def _purge_report_items(dataset, report):
 
 
 def _upsert_report(dataset, employee_id, report_id, rows):
-    employee = _get_employee(dataset, employee_id)
+    _get_employee(dataset, employee_id)  # force existence
     report = _get_report(dataset, employee_id, report_id)
     _purge_report_items(dataset, report)
     # Add items based on rows.
     report_path = report.key().path()
     for i, row in enumerate(rows):
         path = report_path + [{'kind': 'Expense Item', 'id': i + 1}]
-        key = Key(dataset, path=path)
+        key = Key(path=path)
         item = Entity(dataset, 'Expense Item').key(key)
         for k, v in row.items():
             item[k] = v
@@ -106,7 +109,7 @@ def list_reports(employee_id=None, status=None):
     dataset = _get_dataset()
     query = Query('Expense Report', dataset)
     if employee_id is not None:
-        key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id}])
+        key = Key(path=[{'kind': 'Employee', 'name': employee_id}])
         query = query.ancestor(key)
     if status is not None:
         query = query.filter('status =', status)

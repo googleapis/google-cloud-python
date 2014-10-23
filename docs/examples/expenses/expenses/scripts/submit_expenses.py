@@ -74,7 +74,7 @@ class _Command(object):
         self.filename, self.rows = _get_csv(args)
         if self.report_id is None:
             fn = os.path.basename(self.filename)
-            base, ext = os.path.splitext(fn)
+            base, _ = os.path.splitext(fn)
             self.report_id = base
 
 
@@ -195,7 +195,6 @@ class SubmitExpenses(object):
         queue = [(None, mine)]
 
         def _recordCommand(arg):
-            current, current_args = queue[-1]
             if arg is not None:
                 queue.append((arg, []))
 
@@ -265,7 +264,7 @@ class SubmitExpenses(object):
             command()
 
     def _print(self, text):  # pragma NO COVERAGE
-        print(text)
+        sys.stdout.write('%s\n' % text)
 
     def error(self, text):
         self.logger(text)
@@ -279,5 +278,5 @@ def main(argv=sys.argv[1:]):
     try:
         SubmitExpenses(argv)()
     except InvalidCommandLine as e:  # pragma NO COVERAGE
-        print(str(e))
+        sys.stdout.write('%s\n' % str(e))
         sys.exit(1)

@@ -63,14 +63,15 @@ class ListReports(object):
         self.status = options.status
 
     def __call__(self):
-        _cols = [('employee_id', 'Employee ID'),
-                 ('report_id', 'Report ID'),
-                 ('created', 'Created'),
-                 ('updated', 'Updated'),
-                 ('description', 'Description'),
-                 ('status', 'Status'),
-                 ('memo', 'Memo'),
-                 ]
+        _cols = [
+            ('employee_id', 'Employee ID'),
+            ('report_id', 'Report ID'),
+            ('created', 'Created'),
+            ('updated', 'Updated'),
+            ('description', 'Description'),
+            ('status', 'Status'),
+            ('memo', 'Memo'),
+            ]
         writer = csv.writer(sys.stdout)
         writer.writerow([x[1] for x in _cols])
         for report in list_reports(self.employee_id, self.status):
@@ -86,7 +87,7 @@ class ShowReport(object):
         parser = optparse.OptionParser(
             usage="%prog [OPTIONS] EMPLOYEE_ID REPORT_ID")
 
-        options, args = parser.parse_args(args)
+        _, args = parser.parse_args(args)
         try:
             self.employee_id, self.report_id, = args
         except:
@@ -208,7 +209,6 @@ class ReviewExpenses(object):
         queue = [(None, mine)]
 
         def _recordCommand(arg):
-            current, current_args = queue[-1]
             if arg is not None:
                 queue.append((arg, []))
 
@@ -278,7 +278,7 @@ class ReviewExpenses(object):
             command()
 
     def _print(self, text):  # pragma NO COVERAGE
-        print(text)
+        sys.stdout.write('%s/n' % text)
 
     def error(self, text):
         self.logger(text)
@@ -292,5 +292,5 @@ def main(argv=sys.argv[1:]):
     try:
         ReviewExpenses(argv)()
     except InvalidCommandLine as e:  # pragma NO COVERAGE
-        print(str(e))
+        sys.stdout.write('%s\n' % (str(e)))
         sys.exit(1)
