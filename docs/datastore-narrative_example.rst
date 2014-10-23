@@ -67,7 +67,7 @@ While in "pending" status, Sally can edit the CSV and resubmit it
 
 .. code-block:: bash
 
-   $ submit_expenses update expenses-20140901-amended.csv
+   $ submit_expenses update expenses-20140901.csv
    Updated report: sally/expenses-2014-09-01
    Processed 15 rows.
 
@@ -76,7 +76,7 @@ While it remains in "pending" status, Sally can also delete the report
 
 .. code-block:: bash
 
-   $ submit_expenses delete expenses-20140901-amended
+   $ submit_expenses delete expenses-20140901
    Deleted report: sally/expenses-2014-09-01
    Removed 15 items.
 
