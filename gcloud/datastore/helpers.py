@@ -64,8 +64,12 @@ def key_from_protobuf(pb):
 
         path.append(element_dict)
 
-    dataset_id = pb.partition_id.dataset_id or None
-    namespace = pb.partition_id.namespace
+    dataset_id = None
+    if pb.partition_id.HasField('dataset_id'):
+        dataset_id = pb.partition_id.dataset_id
+    namespace = None
+    if pb.partition_id.HasField('namespace'):
+        namespace = pb.partition_id.namespace
 
     return Key(path, namespace, dataset_id)
 
