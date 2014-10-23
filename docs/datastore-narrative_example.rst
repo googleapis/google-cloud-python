@@ -67,7 +67,7 @@ While in "pending" status, Sally can edit the CSV and resubmit it:
    Updated report: sally/expenses-2014-09-01
    Processed 15 rows.
 
-While in "pending" status, Sally can also delete the report:
+While it remains in "pending" status, Sally can also delete the report:
 
 .. code-block:: bash
 
@@ -222,3 +222,35 @@ exist already for the given employee ID and report ID, and that it is in
 ``pending`` staus, raising an exception if not (lines 3-4).  It then
 delegates most of the work to the :func:`expenses._upsert_report` utility
 function (line 6), finally updating metadata on the report itself (lines 7-11).
+
+Listing Expense Reports
+-----------------------
+
+In the sample application, the ``list`` subcommand of the
+:program:`review_expenses` script drives a function,
+:func:`expenses.list_reports`:
+
+.. literalinclude:: examples/expenses/expenses/__init__.py
+   :pyobject: list_reports
+   :linenos:
+
+After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
+:func:`expenses.list_reports` creates a :class:`~gcloud.dataset.query.Query`
+instance, limited to entities of kind, ``Expense Report`` (line 3), and
+applies filtering based on the passed criteria:
+
+- If ``employee_id`` is passed, it adds an "ancestor" filter to
+  restrict the reslts to expense reports contained in the given employee
+  (lines 4-6).
+
+- If ``status`` is passed, it adds an "attribute" filter to
+  restrict the reslts to expense reports which have that status (lines 7-8).
+
+.. note::
+
+   The function does *not* set up a transaction, as it uses only
+   "read" operations on the API.
+
+Finally, the function fetches the expense report entities returned by
+the query and iterates over them, returning a mapping describing the
+report (lines 9-30).
