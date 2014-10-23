@@ -30,7 +30,7 @@ Sally then submits her expense report from the command line using our
 
    $ submit_expenses create --employee-id=sally --description="Frotz project kickoff, San Jose" expenses-20140901.csv
    Processed 15 rows.
-   Created report: sally/expenses-2014-09-01
+   Created report: sally/expenses-20140901
 
 Sally can list all her submitted expense reports using our
 :program:`review_expenses` script (see :ref:`list-expense-reports`):
@@ -49,9 +49,9 @@ Sally can review a submitted expense report using the its ID
 
 .. code-block:: bash
 
-   $ review_expenses show sally expenses-2014-09-01
+   $ review_expenses show sally expenses-20140901
    Employee-ID: sally
-   Report-ID: expenses-2014-09-01
+   Report-ID: expenses-20140901
    Report-Status: pending
    Created: 2014-09-04
    Updated: 2014-09-04
@@ -68,7 +68,7 @@ While in "pending" status, Sally can edit the CSV and resubmit it
 .. code-block:: bash
 
    $ submit_expenses update expenses-20140901.csv
-   Updated report: sally/expenses-2014-09-01
+   Updated report: sally/expenses-20140901
    Processed 15 rows.
 
 While it remains in "pending" status, Sally can also delete the report
@@ -77,7 +77,7 @@ While it remains in "pending" status, Sally can also delete the report
 .. code-block:: bash
 
    $ submit_expenses delete expenses-20140901
-   Deleted report: sally/expenses-2014-09-01
+   Deleted report: sally/expenses-20140901
    Removed 15 items.
 
 Sally's boss, Pat, can review all open expense reports
@@ -96,8 +96,8 @@ Pat can download Sally's report
 
 .. code-block:: bash
 
-   $ review_expenses show sally expenses-2014-09-01
-   Report-ID: sally/expenses-2014-09-01
+   $ review_expenses show sally expenses-20140901
+   Report-ID: sally/expenses-20140901
    Report-Status: pending
    Employee-ID: sally
    Description: Frotz project kickoff, San Jose
@@ -111,16 +111,16 @@ Pat can approve Sally's expense report
 
 .. code-block:: bash
 
-   $ review_expenses approve --check-number=4093 sally expenses-2014-09-01
-   Approved, report: sally/expenses-2014-09-01, check #4093
+   $ review_expenses approve --check-number=4093 sally expenses-20140901
+   Approved, report: sally/expenses-20140901, check #4093
 
 or reject it
 (see :ref:`reject-expense-report`):
 
 .. code-block:: bash
 
-   $ review_expenses reject --reason="Travel not authorized by client" sally expenses-2014-09-01
-   Rejected, report: sally/expenses-2014-09-01, reason: Travel not authorized by client
+   $ review_expenses reject --reason="Travel not authorized by client" sally expenses-20140901
+   Rejected, report: sally/expenses-20140901, reason: Travel not authorized by client
 
 Connecting to the API Dataset
 -----------------------------
@@ -190,9 +190,11 @@ function creates a new employee entity and saves it.
    :linenos:
 
 The :func:`expenses._get_employee` function: looks up an expense report
-using an "ancestor" query (lines 2-3).
+using an `"ancestor" query
+<https://cloud.google.com/datastore/docs/concepts/queries#Datastore_Ancestor_queries>`_
+(lines 2-3).
 
-.. note:: Each expense report entities es expected to have an employee entity
+.. note:: Each expense report entity is expected to have an employee entity
           as its "parent".
 
 If the expense report entity does not exist, and the caller requests it, the
@@ -285,11 +287,11 @@ instance, limited to entities of kind, ``Expense Report`` (line 3), and
 applies filtering based on the passed criteria:
 
 - If ``employee_id`` is passed, it adds an "ancestor" filter to
-  restrict the reslts to expense reports contained in the given employee
+  restrict the results to expense reports contained in the given employee
   (lines 4-6).
 
 - If ``status`` is passed, it adds an "attribute" filter to
-  restrict the reslts to expense reports which have that status (lines 7-8).
+  restrict the results to expense reports which have that status (lines 7-8).
 
 .. note::
 
@@ -308,7 +310,7 @@ report (lines 9-10).
 The :func:`expenses._report_info` utility function uses the expense report
 entity's key to determine the report's employee ID (line 3), and its
 report ID (line 4).  It then uses these values and the entityy's properties
-to generate and rturn a mapping describing the report (lines 5-22).
+to generate and return a mapping describing the report (lines 5-22).
 
 .. _show-expense-report:
 

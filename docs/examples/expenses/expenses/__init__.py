@@ -23,8 +23,7 @@ def _get_dataset():
     client_email = os.environ['GCLOUD_TESTS_CLIENT_EMAIL']
     private_key_path = os.environ['GCLOUD_TESTS_KEY_FILE']
     dataset_id = os.environ['GCLOUD_TESTS_DATASET_ID']
-    conn = datastore.get_connection(client_email, private_key_path)
-    return conn.dataset(dataset_id)
+    return datastore.get_dataset(dataset_id, client_email, private_key_path)
 
 
 def _get_employee(dataset, employee_id, create=True):
