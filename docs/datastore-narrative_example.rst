@@ -254,5 +254,42 @@ applies filtering based on the passed criteria:
    "read" operations on the API.
 
 Finally, the function fetches the expense report entities returned by
-the query and iterates over them, returning a mapping describing the
-report (lines 9-30).
+the query and iterates over them, passing each to
+:func:`expenses._report_info` and yielding the mapping it returns.
+report (lines 9-10).
+
+.. literalinclude:: examples/expenses/expenses/__init__.py
+   :pyobject: _report_info
+   :linenos:
+
+The :func:`expenses._report_info` utility function uses the expense report
+entity's key to determine the report's employee ID (line 3), and its
+report ID (line 4).  It then uses these values and the entityy's properties
+to generate and rturn a mapping describing the report (lines 5-22).
+
+Showing an Expense Report
+-------------------------
+
+In the sample application, the ``show`` subcommand of the
+:program:`review_expenses` script drives a function,
+:func:`expenses.get_report_info`:
+
+.. literalinclude:: examples/expenses/expenses/__init__.py
+   :pyobject: get_report_info
+   :linenos:
+
+After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
+:func:`expenses.get_report_info` uses :func:`exenses._get_report` to fetch
+the expense report entity for the given employee ID and report ID (line 3),
+raising an exeception if the report does not exist (line 4):
+
+.. note::
+
+   The function does *not* set up a transaction, as it uses only
+   "read" operations on the API.
+
+The function delegates to :func:`expenses._report_info` to get a mapping
+describing the report (line 6), and then delegates to
+:func:`expenses._fetch_report_items` to retrieve information about the
+expense item entities contained in the report (line 7).  Finally, the
+function returns the mapping.

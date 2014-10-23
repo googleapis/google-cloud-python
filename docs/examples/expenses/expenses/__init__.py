@@ -104,27 +104,7 @@ def list_reports(employee_id=None, status=None):
     if status is not None:
         query = query.filter('status =', status)
     for report in query.fetch():
-        path = report.key().path()
-        employee_id = path[0]['name']
-        report_id = path[1]['name']
-        created = report['created'].strftime('%Y-%m-%d')
-        updated = report['updated'].strftime('%Y-%m-%d')
-        status = report['status']
-        if status == 'paid':
-            memo = report['check_number']
-        elif status == 'rejected':
-            memo = report['reason']
-        else:
-            memo = ''
-        yield {
-            'employee_id': employee_id,
-            'report_id': report_id,
-            'created': created,
-            'updated': updated,
-            'status': status,
-            'description': report.get('description', ''),
-            'memo': memo,
-            }
+        yield _report_info(report)
 
 def get_report_info(employee_id, report_id):
     dataset = _get_dataset()
@@ -132,7 +112,7 @@ def get_report_info(employee_id, report_id):
     if report is None:
         raise NoSuchReport()
     info = _report_info(report)
-    info['items'] = list(_fetch_report_items(dataset, report))
+    info['items'] = [dict(x) for x in _fetch_report_items(dataset, report)]
     return info
 
 def create_report(employee_id, report_id, rows, description):
