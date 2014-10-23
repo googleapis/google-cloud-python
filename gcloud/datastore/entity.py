@@ -223,8 +223,8 @@ class Entity(dict):
 
         if isinstance(key_pb, datastore_pb.Key):
             path = [
-                {'kind': x.kind, 'id': x.id, 'name': x.name}
-                for x in key_pb.path_element]
+                {'kind': element.kind, 'id': element.id, 'name': element.name}
+                for element in key_pb.path_element]
             # Update the path (which may have been altered).
             self._key = key.path(path)
 
