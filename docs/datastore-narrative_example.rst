@@ -71,7 +71,8 @@ While in "pending" status, Sally can edit the CSV and resubmit it
    Updated report: sally/expenses-2014-09-01
    Processed 15 rows.
 
-While it remains in "pending" status, Sally can also delete the report:
+While it remains in "pending" status, Sally can also delete the report
+(see :ref:`delete-expense-report`):
 
 .. code-block:: bash
 
@@ -231,9 +232,39 @@ After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
 :func:`expenses.update_report` starts a transaction (line 3) to ensure that
 all changes are performed atomically.  It then checks that a report *does*
 exist already for the given employee ID and report ID, and that it is in
-``pending`` staus, raising an exception if not (lines 4-5).  It then
+``pending`` status, raising an exception if not (lines 4-5).  It then
 delegates most of the work to the :func:`expenses._upsert_report` utility
 function (line 6), finally updating metadata on the report itself (lines 7-11).
+
+.. _delete-expense-report:
+
+Deleting an Existing Expense Report
+-----------------------------------
+
+In the sample application, the ``delete`` subcommand of the
+:program:`submit_expenses` script drives a function,
+:func:`expenses.delete_report`:
+
+.. literalinclude:: examples/expenses/expenses/__init__.py
+   :pyobject: delete_report
+   :linenos:
+
+After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
+:func:`expenses.delete_report` starts a transaction (line 3) to ensure that
+all changes are performed atomically.  It then checks that a report *does*
+exist already for the given employee ID and report ID (lines 4-6), and that
+it is in ``pending`` status (lines 7-8), raising an exception if either is
+false.
+
+.. note::
+
+   The function takes a ``force`` argument:  if true, it will delete the
+   report even if it is not in ``pending`` status.
+
+The function then delegates to :func:`expenses._purge_report_items` to
+delete expense item entities contained in the report (line 9), and then
+deletes the report itself (line 10).  Finally, it returns a count of the
+deleted items.
 
 .. _list-expense-reports:
 
@@ -325,7 +356,7 @@ After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
 :func:`expenses.approve_report` starts a transaction (line 3) to ensure that
 all changes are performed atomically.  It then checks that a report *does*
 exist already for the given employee ID and report ID, and that it is in
-``pending`` staus, raising an exception if not (lines 4-5).  It then updates
+``pending`` status, raising an exception if not (lines 4-5).  It then updates
 the status and other metadata on the report itself (lines 9-12).
 
 .. _reject-expense-report:
@@ -345,5 +376,5 @@ After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
 :func:`expenses.approve_report` starts a transaction (line 3) to ensure that
 all changes are performed atomically.  It then checks that a report *does*
 exist already for the given employee ID and report ID, and that it is in
-``pending`` staus, raising an exception if not (lines 4-5).  It then updates
+``pending`` status, raising an exception if not (lines 4-5).  It then updates
 the status and other metadata on the report itself (lines 9-12).
