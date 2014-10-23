@@ -24,7 +24,7 @@ expense report:
    ...
 
 Sally then submits her expense report from the command line using our
-``submit_expenses`` script:
+:program:`submit_expenses` script:
 
 .. code-block:: bash
 
@@ -32,8 +32,8 @@ Sally then submits her expense report from the command line using our
    Processed 15 rows.
    Created report: sally/expenses-2014-09-01
 
-Sally can list all her submitted expense reports using our ``review_expenses``
-script:
+Sally can list all her submitted expense reports using our
+:program:`review_expenses` script:
 
 .. code-block:: bash
 
@@ -116,7 +116,7 @@ or reject it:
 Connecting to the API Dataset
 -----------------------------
 
-The sample application uses a utility function, :func:`expenses/_get_dataset`,
+The sample application uses a utility function, :func:`expenses._get_dataset`,
 to set up the connection.
 
 .. literalinclude:: examples/expenses/expenses/__init__.py
@@ -136,18 +136,18 @@ Creating a New Expense Report
 
 In the sample application, the ``create`` subcommand of the
 :program:`submit_expenses` script drives a function,
-:func:`expenses/create_report`:
+:func:`expenses.create_report`:
 
 .. literalinclude:: examples/expenses/expenses/__init__.py
    :pyobject: create_report
    :linenos:
 
-After connecting to the dataset via :func:`expenses/_get_dataset` (line 2),
-:func:`expenses/create_report` starts a transaction (line 3) to ensure that
+After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
+:func:`expenses.create_report` starts a transaction (line 3) to ensure that
 all changes are performed atomically.  It then checks that no report exists
 already for the given employee ID and report ID, raising an exception if so
 (lines 4-5).  It then  delegates most of the work to the
-:func:`expenses/_upsert_report` utility function (line 6), finally setting
+:func:`expenses._upsert_report` utility function (line 6), finally setting
 metadata on the report itself (lines 7-11).
 
 
@@ -155,9 +155,9 @@ metadata on the report itself (lines 7-11).
    :pyobject: _upsert_report
    :linenos:
 
-The :func:`expenses/_upsert_report` function: in turn delegates to
-:func:`expenses/_get_employee`, :func:`expenses/_get_report`, and
-:func:`expenses/_purge_report_items` to ensure that the employee and report
+The :func:`expenses._upsert_report` function: in turn delegates to
+:func:`expenses._get_employee`, :func:`expenses._get_report`, and
+:func:`expenses._purge_report_items` to ensure that the employee and report
 exist, and that the report contains no items (lines 2-4).  It then
 iterates over the rows from the CSV file, creating an item for each row
 (lines 5-13), finally returning the populated report object (line 14).
@@ -166,7 +166,7 @@ iterates over the rows from the CSV file, creating an item for each row
    :pyobject: _get_employee
    :linenos:
 
-The :func:`expenses/_get_employee` function: looks up an employee (lines 2-3).
+The :func:`expenses._get_employee` function: looks up an employee (lines 2-3).
 
 .. note:: Employee entities have no "parent" object: they exist at the "top"
           level.
@@ -178,7 +178,7 @@ function creates a new employee entity and saves it.
    :pyobject: _get_report
    :linenos:
 
-The :func:`expenses/_get_employee` function: looks up an expense report
+The :func:`expenses._get_employee` function: looks up an expense report
 using an "ancestor" query (lines 2-3).
 
 .. note:: Each expense report entities es expected to have an employee entity
@@ -191,8 +191,8 @@ function creates a new expense report entity and saves it.
    :pyobject: _purge_report_items
    :linenos:
 
-The :func:`expenses/_purge_report_items` function: delegates to
-:func:`expenses/_fetch_report_items` to find expense item entities contained
+The :func:`expenses._purge_report_items` function: delegates to
+:func:`expenses._fetch_report_items` to find expense item entities contained
 within the given report (line 4), and deletes them (line 5).  It returns
 a count of the deleted items.
 
@@ -200,7 +200,7 @@ a count of the deleted items.
    :pyobject: _fetch_report_items
    :linenos:
 
-The :func:`expenses/_purge_report_items` function: performs an "ancestor"
+The :func:`expenses._purge_report_items` function: performs an "ancestor"
 query (lines 2-3) to find expense item entities contained within a given
 expense report.
 
@@ -209,16 +209,16 @@ Updating an Existing Expense Report
 
 In the sample application, the ``update`` subcommand of the
 :program:`submit_expenses` script drives a function,
-:func:`expenses/update_report`:
+:func:`expenses.update_report`:
 
 .. literalinclude:: examples/expenses/expenses/__init__.py
    :pyobject: update_report
    :linenos:
 
-After connecting to the dataset via :func:`expenses/_get_dataset` (line 2),
-:func:`expenses/update_report` starts a transaction (line 3) to ensure that
+After connecting to the dataset via :func:`expenses._get_dataset` (line 2),
+:func:`expenses.update_report` starts a transaction (line 3) to ensure that
 all changes are performed atomically.  It then checks that a report *does*
-exist already for the given employee ID and report ID, raising an exception
-if not (lines 3-4).  It then delegates most of the work to the
-:func:`expenses/_upsert_report` utility function (line 6), finally setting
-metadata on the report itself (lines 7-11).
+exist already for the given employee ID and report ID, and that it is in
+``pending`` staus, raising an exception if not (lines 3-4).  It then
+delegates most of the work to the :func:`expenses._upsert_report` utility
+function (line 6), finally updating metadata on the report itself (lines 7-11).
