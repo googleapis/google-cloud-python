@@ -56,3 +56,9 @@ Transactions
   :members:
   :undoc-members:
   :show-inheritance:
+
+Helper functions
+----------------
+
+.. automodule:: gcloud.datastore.helpers
+  :members:

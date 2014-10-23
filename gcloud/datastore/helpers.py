@@ -1,7 +1,9 @@
 """Helper functions for dealing with Cloud Datastore's Protobuf API.
 
-These functions are *not* part of the API.
+The non-private functions are part of the API.
 """
+__all__ = ('entity_from_protobuf', 'key_from_protobuf')
+
 import calendar
 import datetime
 
@@ -12,6 +14,60 @@ from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
 INT_VALUE_CHECKER = Int64ValueChecker()
+
+
+def entity_from_protobuf(pb, dataset=None):
+    """Factory method for creating an entity based on a protobuf.
+
+    The protobuf should be one returned from the Cloud Datastore
+    Protobuf API.
+
+    :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Entity`
+    :param pb: The Protobuf representing the entity.
+
+    :rtype: :class:`gcloud.datastore.entity.Entity`
+    :returns: The entity derived from the protobuf.
+    """
+    key = key_from_protobuf(pb.key)
+    entity = Entity.from_key(key, dataset)
+
+    for property_pb in pb.property:
+        value = _get_value_from_property_pb(property_pb)
+        entity[property_pb.name] = value
+
+    return entity
+
+
+def key_from_protobuf(pb):
+    """Factory method for creating a key based on a protobuf.
+
+    The protobuf should be one returned from the Cloud Datastore
+    Protobuf API.
+
+    :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+    :param pb: The Protobuf representing the key.
+
+    :rtype: :class:`gcloud.datastore.key.Key`
+    :returns: a new `Key` instance
+    """
+    path = []
+    for element in pb.path_element:
+        element_dict = {'kind': element.kind}
+
+        if element.HasField('id'):
+            element_dict['id'] = element.id
+
+        # This is safe: we expect proto objects returned will only have
+        # one of `name` or `id` set.
+        if element.HasField('name'):
+            element_dict['name'] = element.name
+
+        path.append(element_dict)
+
+    dataset_id = pb.partition_id.dataset_id or None
+    namespace = pb.partition_id.namespace
+
+    return Key(path, namespace, dataset_id)
 
 
 def _get_protobuf_attribute_and_value(val):
@@ -105,7 +161,7 @@ def _get_value_from_value_pb(value_pb):
         result = naive.replace(tzinfo=pytz.utc)
 
     elif value_pb.HasField('key_value'):
-        result = Key.from_protobuf(value_pb.key_value)
+        result = key_from_protobuf(value_pb.key_value)
 
     elif value_pb.HasField('boolean_value'):
         result = value_pb.boolean_value
@@ -123,7 +179,7 @@ def _get_value_from_value_pb(value_pb):
         result = value_pb.blob_value
 
     elif value_pb.HasField('entity_value'):
-        result = Entity.from_protobuf(value_pb.entity_value)
+        result = entity_from_protobuf(value_pb.entity_value)
 
     elif value_pb.list_value:
         result = [_get_value_from_value_pb(x) for x in value_pb.list_value]

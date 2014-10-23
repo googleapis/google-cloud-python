@@ -146,32 +146,6 @@ class Entity(dict):
 
         return cls(dataset).key(key)
 
-    @classmethod
-    def from_protobuf(cls, pb, dataset=None):
-        """Factory method for creating an entity based on a protobuf.
-
-        The protobuf should be one returned from the Cloud Datastore
-        Protobuf API.
-
-        :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Entity`
-        :param pb: The Protobuf representing the entity.
-
-        :returns: The :class:`Entity` derived from the
-                  :class:`gcloud.datastore.datastore_v1_pb2.Entity`.
-        """
-
-        # This is here to avoid circular imports.
-        from gcloud.datastore import _helpers
-
-        key = Key.from_protobuf(pb.key)
-        entity = cls.from_key(key, dataset)
-
-        for property_pb in pb.property:
-            value = _helpers._get_value_from_property_pb(property_pb)
-            entity[property_pb.name] = value
-
-        return entity
-
     @property
     def _must_key(self):
         """Return our key, or raise NoKey if not set.
@@ -248,9 +222,11 @@ class Entity(dict):
             transaction.add_auto_id_entity(self)
 
         if isinstance(key_pb, datastore_pb.Key):
-            updated_key = Key.from_protobuf(key_pb)
+            path = [
+                {'kind': element.kind, 'id': element.id, 'name': element.name}
+                for element in key_pb.path_element]
             # Update the path (which may have been altered).
-            self._key = key.path(updated_key.path())
+            self._key = key.path(path)
 
         return self
 
