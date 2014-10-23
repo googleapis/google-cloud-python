@@ -48,10 +48,12 @@ Sally can review a submitted expense report using the its ID:
 
 .. code-block:: bash
 
-   $ review_expenses show expenses-2014-09-01
-   Report-ID: sally/expenses-2014-09-01
-   Report-Status: pending
+   $ review_expenses show sally expenses-2014-09-01
    Employee-ID: sally
+   Report-ID: expenses-2014-09-01
+   Report-Status: pending
+   Created: 2014-09-04
+   Updated: 2014-09-04
    Description: Frotz project kickoff, San Jose
 
    "Date","Vendor","Type","Quantity","Price","Memo"
@@ -85,11 +87,11 @@ Sally's boss, Pat, can review all open expense reports:
    "sally","expenses-2014-09-01","2014-09-04","2014-09-04","Frotz project kickoff, San Jose","pending",""
 
 
-Pat can download Sally's report by supplying ``--employee-id=sally``:
+Pat can download Sally's report:
 
 .. code-block:: bash
 
-   $ review_expenses show --employee-id=sally expenses-2014-09-01
+   $ review_expenses show sally expenses-2014-09-01
    Report-ID: sally/expenses-2014-09-01
    Report-Status: pending
    Employee-ID: sally

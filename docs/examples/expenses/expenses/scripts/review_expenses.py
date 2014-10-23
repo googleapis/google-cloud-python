@@ -84,21 +84,13 @@ class ShowReport(object):
         self.submitter = submitter
         args = list(args)
         parser = optparse.OptionParser(
-            usage="%prog [OPTIONS] REPORT_ID")
-
-        parser.add_option(
-            '-e', '--employee-id',
-            action='store',
-            dest='employee_id',
-            default=os.getlogin(),
-            help="ID of the employee whose expense reports to list")
+            usage="%prog [OPTIONS] EMPLOYEE_ID REPORT_ID")
 
         options, args = parser.parse_args(args)
         try:
-            self.report_id, = args
+            self.employee_id, self.report_id, = args
         except:
-            raise InvalidCommandLine('Specify one report ID')
-        self.employee_id = options.employee_id
+            raise InvalidCommandLine('Specify employee ID, report ID')
 
     def __call__(self):
         _cols = ['Date', 'Vendor', 'Type', 'Quantity', 'Price', 'Memo']
