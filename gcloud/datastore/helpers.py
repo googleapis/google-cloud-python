@@ -1,7 +1,9 @@
 """Helper functions for dealing with Cloud Datastore's Protobuf API.
 
-These functions are *not* part of the API.
+The non-private functions are part of the API.
 """
+__all__ = ('entity_from_protobuf', 'key_from_protobuf')
+
 import calendar
 import datetime
 
