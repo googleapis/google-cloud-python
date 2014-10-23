@@ -217,12 +217,14 @@ class Connection(connection.Connection):
         Using the `fetch`` method...
 
         >>> query.fetch()
-        [<list of Entity Protobufs>], cursor, more_results, skipped_results
+        [<list of Entity unmarshalled from protobuf>]
+        >>> query.cursor()
+        <string containing cursor where fetch stopped>
 
         Under the hood this is doing...
 
         >>> connection.run_query('dataset-id', query.to_protobuf())
-        [<list of Entity Protobufs>]
+        [<list of Entity Protobufs>], cursor, more_results, skipped_results
 
         :type dataset_id: string
         :param dataset_id: The ID of the dataset over which to run the query.
