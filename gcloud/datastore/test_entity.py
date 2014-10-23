@@ -182,7 +182,7 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(entity['foo'], 'Foo')
         self.assertEqual(connection._saved,
                          (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
-        self.assertEqual(key._path, [{'kind': _KIND, 'id': _ID, 'name': ''}])
+        self.assertEqual(key._path, [{'kind': _KIND, 'id': _ID}])
 
     def test_delete_no_key(self):
         from gcloud.datastore.entity import NoKey
