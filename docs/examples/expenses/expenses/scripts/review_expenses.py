@@ -70,7 +70,7 @@ class ListReports(object):
                  ('description', 'Description'),
                  ('status', 'Status'),
                  ('memo', 'Memo'),
-                ]
+                 ]
         writer = csv.writer(sys.stdout)
         writer.writerow([x[1] for x in _cols])
         for report in list_reports(self.employee_id, self.status):
@@ -138,10 +138,10 @@ class ApproveReport(object):
 
     def __call__(self):
         approve_report(self.employee_id, self.report_id, self.check_number)
-        memo = ('' if self.check_number is None
-                    else ', check #%s' % self.check_number)
+        memo = ('' if self.check_number is None else
+                ', check #%s' % self.check_number)
         self.submitter.blather("Approved report: %s/%s%s" %
-                                (self.employee_id, self.report_id, memo))
+                               (self.employee_id, self.report_id, memo))
 
 
 class RejectReport(object):
@@ -169,10 +169,9 @@ class RejectReport(object):
 
     def __call__(self):
         reject_report(self.employee_id, self.report_id, self.reason)
-        memo = ('' if self.reason is None
-                    else ', reason: %s' % self.reason)
+        memo = ('' if self.reason is None else ', reason: %s' % self.reason)
         self.submitter.blather("Rejected report: %s/%s%s" %
-                                (self.employee_id, self.report_id, memo))
+                               (self.employee_id, self.report_id, memo))
 
 
 _COMMANDS = {

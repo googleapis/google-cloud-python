@@ -26,6 +26,7 @@ def _get_dataset():
     conn = datastore.get_connection(client_email, private_key_path)
     return conn.dataset(dataset_id)
 
+
 def _get_employee(dataset, employee_id, create=True):
     key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id}])
     employee = dataset.get_entity(key)
@@ -33,6 +34,7 @@ def _get_employee(dataset, employee_id, create=True):
         employee = dataset.entity('Employee').key(key)
         employee.save()
     return employee
+
 
 def _get_report(dataset, employee_id, report_id, create=True):
     key = Key(dataset, path=[{'kind': 'Employee', 'name': employee_id},
@@ -44,10 +46,12 @@ def _get_report(dataset, employee_id, report_id, create=True):
         report.save()
     return report
 
+
 def _fetch_report_items(dataset, report):
     query = Query('Expense Item', dataset)
     for item in query.ancestor(report.key()).fetch():
         yield item
+
 
 def _report_info(report):
     path = report.key().path()
@@ -72,6 +76,7 @@ def _report_info(report):
         'memo': memo,
         }
 
+
 def _purge_report_items(dataset, report):
     # Delete any existing items belonging to report
     count = 0
@@ -79,6 +84,7 @@ def _purge_report_items(dataset, report):
         item.delete()
         count += 1
     return count
+
 
 def _upsert_report(dataset, employee_id, report_id, rows):
     employee = _get_employee(dataset, employee_id)
@@ -95,6 +101,7 @@ def _upsert_report(dataset, employee_id, report_id, rows):
         item.save()
     return report
 
+
 def list_reports(employee_id=None, status=None):
     dataset = _get_dataset()
     query = Query('Expense Report', dataset)
@@ -106,6 +113,7 @@ def list_reports(employee_id=None, status=None):
     for report in query.fetch():
         yield _report_info(report)
 
+
 def get_report_info(employee_id, report_id):
     dataset = _get_dataset()
     report = _get_report(dataset, employee_id, report_id, False)
@@ -114,6 +122,7 @@ def get_report_info(employee_id, report_id):
     info = _report_info(report)
     info['items'] = [dict(x) for x in _fetch_report_items(dataset, report)]
     return info
+
 
 def create_report(employee_id, report_id, rows, description):
     dataset = _get_dataset()
@@ -126,6 +135,7 @@ def create_report(employee_id, report_id, rows, description):
             report['description'] = description
         report['created'] = report['updated'] = datetime.datetime.utcnow()
         report.save()
+
 
 def update_report(employee_id, report_id, rows, description):
     dataset = _get_dataset()
@@ -141,6 +151,7 @@ def update_report(employee_id, report_id, rows, description):
         report['updated'] = datetime.datetime.utcnow()
         report.save()
 
+
 def delete_report(employee_id, report_id, force):
     dataset = _get_dataset()
     with dataset.transaction():
@@ -152,6 +163,7 @@ def delete_report(employee_id, report_id, force):
         count = _purge_report_items(dataset, report)
         report.delete()
     return count
+
 
 def approve_report(employee_id, report_id, check_number):
     dataset = _get_dataset()
@@ -165,6 +177,7 @@ def approve_report(employee_id, report_id, check_number):
         report['status'] = 'paid'
         report['check_number'] = check_number
         report.save()
+
 
 def reject_report(employee_id, report_id, reason):
     dataset = _get_dataset()
