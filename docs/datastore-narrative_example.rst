@@ -24,7 +24,7 @@ expense report:
    ...
 
 Sally then submits her expense report from the command line using our
-:program:`submit_expenses` script:
+:program:`submit_expenses` script (see :ref:`create-expense-report`):
 
 .. code-block:: bash
 
@@ -33,7 +33,7 @@ Sally then submits her expense report from the command line using our
    Created report: sally/expenses-2014-09-01
 
 Sally can list all her submitted expense reports using our
-:program:`review_expenses` script:
+:program:`review_expenses` script (see :ref:`list-expense-reports`):
 
 .. code-block:: bash
 
@@ -44,7 +44,8 @@ Sally can list all her submitted expense reports using our
    "sally","expenses-2014-04-19","2014-04-21","2014-04-22","PyCon 2014, Montreal","Paid","Check #3992"
    "sally","expenses-2014-09-01","2014-09-04","2014-09-04","Frotz project kickoff, San Jose","pending",""
 
-Sally can review a submitted expense report using the its ID:
+Sally can review a submitted expense report using the its ID
+(see :ref:`show-expense-report`):
 
 .. code-block:: bash
 
@@ -61,7 +62,8 @@ Sally can review a submitted expense report using the its ID:
    "2014-08-27","Yellow Cab","Travel",32.00,"Taxi to IAD"
    ...
 
-While in "pending" status, Sally can edit the CSV and resubmit it:
+While in "pending" status, Sally can edit the CSV and resubmit it
+(see :ref:`update-expense-report`):
 
 .. code-block:: bash
 
@@ -77,7 +79,8 @@ While it remains in "pending" status, Sally can also delete the report:
    Deleted report: sally/expenses-2014-09-01
    Removed 15 items.
 
-Sally's boss, Pat, can review all open expense reports:
+Sally's boss, Pat, can review all open expense reports
+(see :ref:`list-expense-reports`):
 
 .. code-block:: bash
 
@@ -87,7 +90,8 @@ Sally's boss, Pat, can review all open expense reports:
    "sally","expenses-2014-09-01","2014-09-04","2014-09-04","Frotz project kickoff, San Jose","pending",""
 
 
-Pat can download Sally's report:
+Pat can download Sally's report
+(see :ref:`show-expense-report`):
 
 .. code-block:: bash
 
@@ -101,14 +105,16 @@ Pat can download Sally's report:
    "2014-08-26","United Airlines","Travel",1,425.00,"Airfaire, IAD <-> SFO"
    "2014-08-27","Yellow Cab","Travel",32.00,"Taxi to IAD"
 
-Pat can approve Sally's expense report:
+Pat can approve Sally's expense report
+(see :ref:`approve-expense-report`):
 
 .. code-block:: bash
 
    $ review_expenses approve --check-number=4093 sally expenses-2014-09-01
    Approved, report: sally/expenses-2014-09-01, check #4093
 
-or reject it:
+or reject it
+(see :ref:`reject-expense-report`):
 
 .. code-block:: bash
 
@@ -132,6 +138,8 @@ your project's
 - :envvar:`GCLOUD_TESTS_CLIENT_EMAIL` is your Google API email-address
 - :envvar:`GCLOUD_TESTS_TESTS_KEY_FILE` is the filesystem path to your
   Google API private key.
+
+.. _create-expense-report:
 
 Creating a New Expense Report
 -----------------------------
@@ -206,6 +214,8 @@ The :func:`expenses._purge_report_items` function: performs an "ancestor"
 query (lines 2-3) to find expense item entities contained within a given
 expense report.
 
+.. _update-expense-report:
+
 Updating an Existing Expense Report
 -----------------------------------
 
@@ -224,6 +234,8 @@ exist already for the given employee ID and report ID, and that it is in
 ``pending`` staus, raising an exception if not (lines 4-5).  It then
 delegates most of the work to the :func:`expenses._upsert_report` utility
 function (line 6), finally updating metadata on the report itself (lines 7-11).
+
+.. _list-expense-reports:
 
 Listing Expense Reports
 -----------------------
@@ -267,6 +279,8 @@ entity's key to determine the report's employee ID (line 3), and its
 report ID (line 4).  It then uses these values and the entityy's properties
 to generate and rturn a mapping describing the report (lines 5-22).
 
+.. _show-expense-report:
+
 Showing an Expense Report
 -------------------------
 
@@ -294,6 +308,8 @@ describing the report (line 6), and then delegates to
 expense item entities contained in the report (line 7).  Finally, the
 function returns the mapping.
 
+.. _approve-expense-report:
+
 Approving an Expense Report
 ---------------------------
 
@@ -311,6 +327,8 @@ all changes are performed atomically.  It then checks that a report *does*
 exist already for the given employee ID and report ID, and that it is in
 ``pending`` staus, raising an exception if not (lines 4-5).  It then updates
 the status and other metadata on the report itself (lines 9-12).
+
+.. _reject-expense-report:
 
 Rejecting an Expense Report
 ---------------------------
