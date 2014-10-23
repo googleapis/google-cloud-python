@@ -147,7 +147,7 @@ class Entity(dict):
         return cls(dataset).key(key)
 
     @classmethod
-    def from_protobuf(cls, pb, dataset=None):
+    def from_protobuf(cls, pb, _get_value, dataset=None):
         """Factory method for creating an entity based on a protobuf.
 
         The protobuf should be one returned from the Cloud Datastore
@@ -156,18 +156,19 @@ class Entity(dict):
         :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Entity`
         :param pb: The Protobuf representing the entity.
 
+        :type _get_value: module
+        :param _get_value: normally, this will be
+               :mod:`gcloud.datastore._helpers._get_value_from_property_pb`,
+               but it could be a shim for testing.
+
         :returns: The :class:`Entity` derived from the
                   :class:`gcloud.datastore.datastore_v1_pb2.Entity`.
         """
-
-        # This is here to avoid circular imports.
-        from gcloud.datastore import _helpers
-
         key = Key.from_protobuf(pb.key)
         entity = cls.from_key(key, dataset)
 
         for property_pb in pb.property:
-            value = _helpers._get_value_from_property_pb(property_pb)
+            value = _get_value(property_pb)
             entity[property_pb.name] = value
 
         return entity

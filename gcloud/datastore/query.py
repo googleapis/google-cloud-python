@@ -343,8 +343,9 @@ class Query(object):
         entity_pbs, end_cursor = query_results[:2]
 
         self._cursor = end_cursor
-        return [Entity.from_protobuf(entity, dataset=self.dataset())
-                for entity in entity_pbs]
+        return [Entity.from_protobuf(
+            entity, _helpers._get_value_from_property_pb,
+            dataset=self.dataset()) for entity in entity_pbs]
 
     def cursor(self):
         """Returns cursor ID
