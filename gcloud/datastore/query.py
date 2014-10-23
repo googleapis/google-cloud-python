@@ -333,6 +333,13 @@ class Query(object):
             dataset_id=self.dataset().id(),
             namespace=self._namespace,
             )
+        # NOTE: `query_results` contains two extra values that we don't use,
+        #       namely `more_results` and `skipped_results`. The value of
+        #       `more_results` is unusable because it always returns an enum
+        #       value of MORE_RESULTS_AFTER_LIMIT even if there are no more
+        #       results. See
+        #       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280
+        #       for discussion.
         entity_pbs, end_cursor = query_results[:2]
 
         self._cursor = end_cursor
