@@ -123,7 +123,8 @@ def _get_value_from_value_pb(value_pb):
         result = value_pb.blob_value
 
     elif value_pb.HasField('entity_value'):
-        result = Entity.from_protobuf(value_pb.entity_value)
+        result = Entity.from_protobuf(value_pb.entity_value,
+                                      _get_value_from_property_pb)
 
     elif value_pb.list_value:
         result = [_get_value_from_value_pb(x) for x in value_pb.list_value]

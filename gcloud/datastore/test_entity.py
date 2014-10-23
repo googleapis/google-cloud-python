@@ -78,6 +78,7 @@ class TestEntity(unittest2.TestCase):
 
     def test_from_protobuf_wo_dataset(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore._helpers import _get_value_from_property_pb
 
         entity_pb = datastore_pb.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
@@ -87,7 +88,7 @@ class TestEntity(unittest2.TestCase):
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
         klass = self._getTargetClass()
-        entity = klass.from_protobuf(entity_pb)
+        entity = klass.from_protobuf(entity_pb, _get_value_from_property_pb)
         self.assertTrue(entity.dataset() is None)
         self.assertEqual(entity.kind(), _KIND)
         self.assertEqual(entity['foo'], 'Foo')
@@ -99,6 +100,7 @@ class TestEntity(unittest2.TestCase):
     def test_from_protobuf_w_dataset(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore._helpers import _get_value_from_property_pb
 
         entity_pb = datastore_pb.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
@@ -109,7 +111,8 @@ class TestEntity(unittest2.TestCase):
         prop_pb.value.string_value = 'Foo'
         dataset = Dataset(_DATASET_ID)
         klass = self._getTargetClass()
-        entity = klass.from_protobuf(entity_pb, dataset)
+        entity = klass.from_protobuf(
+            entity_pb, _get_value_from_property_pb, dataset)
         self.assertTrue(entity.dataset() is dataset)
         self.assertEqual(entity.kind(), _KIND)
         self.assertEqual(entity['foo'], 'Foo')
