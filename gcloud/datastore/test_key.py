@@ -10,22 +10,6 @@ class TestKey(unittest2.TestCase):
     def _makeOne(self, path=None, namespace=None, dataset_id=None):
         return self._getTargetClass()(path, namespace, dataset_id)
 
-    def _makePB(self, dataset_id=None, namespace=None, path=()):
-        from gcloud.datastore.datastore_v1_pb2 import Key
-        pb = Key()
-        if dataset_id is not None:
-            pb.partition_id.dataset_id = dataset_id
-        if namespace is not None:
-            pb.partition_id.namespace = namespace
-        for elem in path:
-            added = pb.path_element.add()
-            added.kind = elem['kind']
-            if 'id' in elem:
-                added.id = elem['id']
-            if 'name' in elem:
-                added.name = elem['name']
-        return pb
-
     def test_ctor_defaults(self):
         key = self._makeOne()
         self.assertEqual(key._dataset_id, None)
@@ -57,38 +41,6 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(clone.namespace(), _NAMESPACE)
         self.assertEqual(clone.kind(), _KIND)
         self.assertEqual(clone.path(), _PATH)
-
-    def test_from_protobuf_w_dataset_id_in_pb(self):
-        _DATASET = 'DATASET'
-        pb = self._makePB(_DATASET)
-        key = self._getTargetClass().from_protobuf(pb)
-        self.assertEqual(key._dataset_id, _DATASET)
-
-    def test_from_protobuf_w_namespace_in_pb(self):
-        _NAMESPACE = 'NAMESPACE'
-        pb = self._makePB(namespace=_NAMESPACE)
-        key = self._getTargetClass().from_protobuf(pb)
-        self.assertEqual(key.namespace(), _NAMESPACE)
-
-    def test_from_protobuf_w_path_in_pb(self):
-        _DATASET = 'DATASET'
-        _NAMESPACE = 'NAMESPACE'
-        pb = self._makePB(_DATASET, _NAMESPACE)
-        _PARENT = 'PARENT'
-        _CHILD = 'CHILD'
-        _GRANDCHILD = 'GRANDCHILD'
-        _ID = 1234
-        _ID2 = 5678
-        _NAME = 'NAME'
-        _NAME2 = 'NAME2'
-        _PATH = [
-            {'kind': _PARENT, 'name': _NAME},
-            {'kind': _CHILD, 'id': _ID},
-            {'kind': _GRANDCHILD, 'id': _ID2, 'name': _NAME2},
-        ]
-        pb = self._makePB(path=_PATH)
-        key = self._getTargetClass().from_protobuf(pb)
-        self.assertEqual(key.path(), _PATH)
 
     def test_to_protobuf_defaults(self):
         from gcloud.datastore.datastore_v1_pb2 import Key as KeyPB

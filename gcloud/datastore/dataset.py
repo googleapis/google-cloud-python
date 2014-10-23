@@ -1,5 +1,10 @@
 """Create / interact with gcloud datastore datasets."""
 
+from gcloud.datastore import helpers
+from gcloud.datastore.entity import Entity
+from gcloud.datastore.query import Query
+from gcloud.datastore.transaction import Transaction
+
 
 class Dataset(object):
     """A dataset in the Cloud Datastore.
@@ -70,8 +75,6 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.query.Query`
         :returns: a new Query instance, bound to this dataset.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.query import Query
         kwargs['dataset'] = self
         return Query(*args, **kwargs)
 
@@ -84,8 +87,6 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: a new Entity instance, bound to this dataset.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.entity import Entity
         return Entity(dataset=self, kind=kind)
 
     def transaction(self, *args, **kwargs):
@@ -98,8 +99,6 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.transaction.Transaction`
         :returns: a new Transaction instance, bound to this dataset.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.transaction import Transaction
         kwargs['dataset'] = self
         return Transaction(*args, **kwargs)
 
@@ -125,9 +124,6 @@ class Dataset(object):
         :rtype: list of :class:`gcloud.datastore.entity.Entity`
         :return: The requested entities.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.entity import Entity
-
         entity_pbs = self.connection().lookup(
             dataset_id=self.id(),
             key_pbs=[k.to_protobuf() for k in keys]
@@ -135,5 +131,6 @@ class Dataset(object):
 
         entities = []
         for entity_pb in entity_pbs:
-            entities.append(Entity.from_protobuf(entity_pb, dataset=self))
+            entities.append(helpers.entity_from_protobuf(
+                entity_pb, dataset=self))
         return entities

@@ -42,38 +42,6 @@ class Key(object):
         """
         return copy.deepcopy(self)
 
-    @classmethod
-    def from_protobuf(cls, pb):
-        """Factory method for creating a key based on a protobuf.
-
-        The protobuf should be one returned from the Cloud Datastore
-        Protobuf API.
-
-        :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
-        :param pb: The Protobuf representing the key.
-
-        :rtype: :class:`gcloud.datastore.key.Key`
-        :returns: a new `Key` instance
-        """
-        path = []
-        for element in pb.path_element:
-            element_dict = {'kind': element.kind}
-
-            if element.HasField('id'):
-                element_dict['id'] = element.id
-
-            # This is safe: we expect proto objects returned will only have
-            # one of `name` or `id` set.
-            if element.HasField('name'):
-                element_dict['name'] = element.name
-
-            path.append(element_dict)
-
-        dataset_id = pb.partition_id.dataset_id or None
-        namespace = pb.partition_id.namespace
-
-        return cls(path, namespace, dataset_id)
-
     def to_protobuf(self):
         """Return a protobuf corresponding to the key.
 

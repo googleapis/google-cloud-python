@@ -76,48 +76,6 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(key.kind(), _KIND)
         self.assertEqual(key.id(), _ID)
 
-    def test_from_protobuf_wo_dataset(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        entity_pb = datastore_pb.Entity()
-        entity_pb.key.partition_id.dataset_id = _DATASET_ID
-        entity_pb.key.path_element.add(kind=_KIND, id=_ID)
-        entity_pb.key.partition_id.dataset_id = _DATASET_ID
-        prop_pb = entity_pb.property.add()
-        prop_pb.name = 'foo'
-        prop_pb.value.string_value = 'Foo'
-        klass = self._getTargetClass()
-        entity = klass.from_protobuf(entity_pb)
-        self.assertTrue(entity.dataset() is None)
-        self.assertEqual(entity.kind(), _KIND)
-        self.assertEqual(entity['foo'], 'Foo')
-        key = entity.key()
-        self.assertEqual(key._dataset_id, _DATASET_ID)
-        self.assertEqual(key.kind(), _KIND)
-        self.assertEqual(key.id(), _ID)
-
-    def test_from_protobuf_w_dataset(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-        from gcloud.datastore.dataset import Dataset
-
-        entity_pb = datastore_pb.Entity()
-        entity_pb.key.partition_id.dataset_id = _DATASET_ID
-        entity_pb.key.path_element.add(kind=_KIND, id=_ID)
-        entity_pb.key.partition_id.dataset_id = _DATASET_ID
-        prop_pb = entity_pb.property.add()
-        prop_pb.name = 'foo'
-        prop_pb.value.string_value = 'Foo'
-        dataset = Dataset(_DATASET_ID)
-        klass = self._getTargetClass()
-        entity = klass.from_protobuf(entity_pb, dataset)
-        self.assertTrue(entity.dataset() is dataset)
-        self.assertEqual(entity.kind(), _KIND)
-        self.assertEqual(entity['foo'], 'Foo')
-        key = entity.key()
-        self.assertEqual(key._dataset_id, _DATASET_ID)
-        self.assertEqual(key.kind(), _KIND)
-        self.assertEqual(key.id(), _ID)
-
     def test__must_key_no_key(self):
         from gcloud.datastore.entity import NoKey
 
@@ -224,7 +182,7 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(entity['foo'], 'Foo')
         self.assertEqual(connection._saved,
                          (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
-        self.assertEqual(key._path, [{'kind': _KIND, 'id': _ID}])
+        self.assertEqual(key._path, [{'kind': _KIND, 'id': _ID, 'name': ''}])
 
     def test_delete_no_key(self):
         from gcloud.datastore.entity import NoKey

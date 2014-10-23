@@ -4,7 +4,6 @@ import base64
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
-from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
 
@@ -343,7 +342,7 @@ class Query(object):
         entity_pbs, end_cursor = query_results[:2]
 
         self._cursor = end_cursor
-        return [Entity.from_protobuf(entity, dataset=self.dataset())
+        return [helpers.entity_from_protobuf(entity, dataset=self.dataset())
                 for entity in entity_pbs]
 
     def cursor(self):
