@@ -7,8 +7,10 @@ You'll typically use these to get started with the API:
 ...                                 'long-email@googleapis.com',
 ...                                 '/path/to/private.key')
 >>> # Then do other things...
->>> query = dataset.query().kind('EntityKind')
->>> entity = dataset.entity('EntityKind')
+>>> from gcloud.datastore.entity import Entity
+>>> from gcloud.datastore.query import Query
+>>> query = Query(dataset, 'EntityKind')
+>>> entity = Entity(dataset, 'EntityKind')
 
 The main concepts with this API are:
 
@@ -31,6 +33,14 @@ The main concepts with this API are:
 - :class:`gcloud.datastore.query.Query`
   which represents a lookup or search over the rows in the datastore.
 """
+
+# import submodules which register factories.
+import gcloud.datastore.connection
+import gcloud.datastore.dataset
+import gcloud.datastore.entity
+import gcloud.datastore.key
+import gcloud.datastore.query
+import gcloud.datastore.transaction
 
 __version__ = '0.1.2'
 
@@ -80,7 +90,9 @@ def get_dataset(dataset_id, client_email, private_key_path):
     >>> from gcloud import datastore
     >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
     >>> # Now you can do things with the dataset.
-    >>> dataset.query().kind('TestKind').fetch()
+    >>> from gcloud.datastore.query import Query
+    >>> query = Query(dataset, 'TestKind')
+    >>> query.fetch()
     [...]
 
     :type dataset_id: string

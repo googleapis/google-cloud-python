@@ -1,6 +1,93 @@
 import unittest2
 
 
+class Test_FactoryRegistry(unittest2.TestCase):
+
+    def setUp(self):
+        self._widget = object()
+        self._called_with = []
+
+    def _makeOne(self):
+        from gcloud.datastore._helpers import _FACTORIES
+        return type(_FACTORIES)()
+
+    def _factory(self, *args, **kw):  # pragma: NO COVER
+        self._called_with.append((args, kw))
+        return self._widget
+
+    def test_register(self):
+
+        class _Foo(object):
+            pass
+
+        factories = self._makeOne()
+        factories.register('Foo', _Foo)
+        self.assertTrue(factories.get('Foo') is _Foo)
+
+    def test_register_duplicate_exact(self):
+
+        class _Foo(object):
+            pass
+
+        factories = self._makeOne()
+        factories.register('Foo', _Foo)
+        factories.register('Foo', _Foo)
+        self.assertTrue(factories.get('Foo') is _Foo)
+
+    def test_register_duplicate_conflict(self):
+        from gcloud.datastore._helpers import DuplicateFactory
+
+        class _Foo(object):
+            pass
+
+        class _Bar(object):
+            pass
+
+        factories = self._makeOne()
+        factories.register('Foo', _Foo)
+        self.assertRaises(DuplicateFactory, factories.register, 'Foo', _Bar)
+
+    def test_get_miss(self):
+        from gcloud.datastore._helpers import InvalidFactory
+
+        factories = self._makeOne()
+        self.assertRaises(InvalidFactory, factories.get, 'Nonesuch')
+
+    def test_get_hit(self):
+        factories = self._makeOne()
+
+        # Use a bare function to avoid method wrappers for testing.
+        def _bare_factory():  # pragma: NO COVER
+            pass
+
+        factories.register('Widget', _bare_factory)
+        self.assertTrue(factories.get('Widget') is _bare_factory)
+
+    def test_invoke_miss(self):
+        from gcloud.datastore._helpers import InvalidFactory
+
+        factories = self._makeOne()
+        self.assertRaises(InvalidFactory, factories.invoke, 'Nonesuch')
+
+    def test_invoke_wo_args_or_kw(self):
+        factories = self._makeOne()
+        factories.register('Widget', self._factory)
+        self.assertTrue(factories.invoke('Widget') is self._widget)
+        self.assertEqual(self._called_with, [((), {})])
+
+    def test_invoke_w_args(self):
+        factories = self._makeOne()
+        factories.register('Widget', self._factory)
+        self.assertTrue(factories.invoke('Widget', 'foo', 42) is self._widget)
+        self.assertEqual(self._called_with, [(('foo', 42), {})])
+
+    def test_invoke_w_kw(self):
+        factories = self._makeOne()
+        factories.register('Widget', self._factory)
+        self.assertTrue(factories.invoke('Widget', foo=42) is self._widget)
+        self.assertEqual(self._called_with, [((), {'foo': 42})])
+
+
 class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
 
     def _callFUT(self, val):

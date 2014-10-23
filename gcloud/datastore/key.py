@@ -4,6 +4,7 @@ import copy
 from itertools import izip
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _helpers
 
 
 class Key(object):
@@ -251,3 +252,8 @@ class Key(object):
 
     def __repr__(self):
         return '<Key%s>' % self.path()
+
+
+_helpers._FACTORIES.register('Key', Key)
+_helpers._FACTORIES.register('Key_from_protobuf', Key.from_protobuf)
+_helpers._FACTORIES.register('Key_from_path', Key.from_path)

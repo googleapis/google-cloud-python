@@ -26,23 +26,6 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(dataset.id(), DATASET_ID)
         self.assertTrue(dataset.connection() is CONNECTION)
 
-    def test_query_factory(self):
-        from gcloud.datastore.query import Query
-        DATASET_ID = 'DATASET'
-        dataset = self._makeOne(DATASET_ID)
-        query = dataset.query()
-        self.assertIsInstance(query, Query)
-        self.assertTrue(query.dataset() is dataset)
-
-    def test_entity_factory(self):
-        from gcloud.datastore.entity import Entity
-        DATASET_ID = 'DATASET'
-        KIND = 'KIND'
-        dataset = self._makeOne(DATASET_ID)
-        entity = dataset.entity(KIND)
-        self.assertIsInstance(entity, Entity)
-        self.assertEqual(entity.kind(), KIND)
-
     def test_transaction_factory(self):
         from gcloud.datastore.transaction import Transaction
         DATASET_ID = 'DATASET'

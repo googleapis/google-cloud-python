@@ -4,8 +4,6 @@ import base64
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import _helpers
-from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import Key
 
 
 class Query(object):
@@ -18,23 +16,12 @@ class Query(object):
     and a clone is returned whenever
     any part of the query is modified::
 
-      >>> query = Query('MyKind')
+      >>> query = Query('MyKind', dataset)
       >>> limited_query = query.limit(10)
       >>> query.limit() == 10
       False
       >>> limited_query.limit() == 10
       True
-
-    You typically won't construct a :class:`Query`
-    by initializing it like ``Query('MyKind', dataset=...)``
-    but instead use the helper
-    :func:`gcloud.datastore.dataset.Dataset.query` method
-    which generates a query that can be executed
-    without any additional work::
-
-      >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
-      >>> query = dataset.query('MyKind')
 
     :type kind: string
     :param kind: The kind to query.
@@ -55,7 +42,7 @@ class Query(object):
     }
     """Mapping of operator strings and their protobuf equivalents."""
 
-    def __init__(self, kind=None, dataset=None, namespace=None):
+    def __init__(self, dataset=None, kind=None, namespace=None):
         self._dataset = dataset
         self._namespace = namespace
         self._pb = datastore_pb.Query()
@@ -163,13 +150,12 @@ class Query(object):
         For example::
 
           >>> parent_key = Key.from_path('Person', '1')
-          >>> query = dataset.query('Person')
+          >>> query = Query('Person', dataset)
           >>> filtered_query = query.ancestor(parent_key)
 
         If you don't have a :class:`gcloud.datastore.key.Key` but just
         know the path, you can provide that as well::
 
-          >>> query = dataset.query('Person')
           >>> filtered_query = query.ancestor(['Person', '1'])
 
         Each call to ``.ancestor()`` returns a cloned :class:`Query`,
@@ -203,10 +189,10 @@ class Query(object):
 
         # If a list was provided, turn it into a Key.
         if isinstance(ancestor, list):
-            ancestor = Key.from_path(*ancestor)
+            ancestor = _helpers._FACTORIES.invoke('Key_from_path', *ancestor)
 
         # If we don't have a Key value by now, something is wrong.
-        if not isinstance(ancestor, Key):
+        if not isinstance(ancestor, _helpers._FACTORIES.get('Key')):
             raise TypeError('Expected list or Key, got %s.' % type(ancestor))
 
         # Get the composite filter and add a new property filter.
@@ -306,7 +292,7 @@ class Query(object):
 
           >>> from gcloud import datastore
           >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
-          >>> query = dataset.query('Person').filter('name =', 'Sally')
+          >>> query = Query('Person', dataset).filter('name =', 'Sally')
           >>> query.fetch()
           [<Entity object>, <Entity object>, ...]
           >>> query.fetch(1)
@@ -343,7 +329,8 @@ class Query(object):
         entity_pbs, end_cursor = query_results[:2]
 
         self._cursor = end_cursor
-        return [Entity.from_protobuf(entity, dataset=self.dataset())
+        return [_helpers._FACTORIES.invoke('Entity_from_protobuf', entity,
+                                           dataset=self.dataset())
                 for entity in entity_pbs]
 
     def cursor(self):
@@ -411,3 +398,6 @@ class Query(object):
                 property_order.direction = property_order.ASCENDING
 
         return clone
+
+
+_helpers._FACTORIES.register('Query', Query)

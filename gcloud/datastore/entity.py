@@ -16,7 +16,7 @@ delete or persist the data stored on the entity.
 """
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-from gcloud.datastore.key import Key
+from gcloud.datastore import _helpers
 
 
 class NoKey(RuntimeError):
@@ -39,14 +39,9 @@ class Entity(dict):
     This means you could take an existing entity and change the key
     to duplicate the object.
 
-    This can be used on its own, however it is likely easier to use
-    the shortcut methods provided by :class:`gcloud.datastore.dataset.Dataset`
+    Entities can be constructed directly, or obtained via
+    the "lookup" methods provided by :class:`gcloud.datastore.dataset.Dataset`
     such as:
-
-    - :func:`gcloud.datastore.dataset.Dataset.entity` to create a new entity.
-
-      >>> dataset.entity('MyEntityKind')
-      <Entity[{'kind': 'MyEntityKind'}] {}>
 
     - :func:`gcloud.datastore.dataset.Dataset.get_entity`
       to retrieve an existing entity.
@@ -74,7 +69,7 @@ class Entity(dict):
         super(Entity, self).__init__()
         self._dataset = dataset
         if kind:
-            self._key = Key().kind(kind)
+            self._key = _helpers._FACTORIES.invoke('Key').kind(kind)
         else:
             self._key = None
 
@@ -159,11 +154,7 @@ class Entity(dict):
         :returns: The :class:`Entity` derived from the
                   :class:`gcloud.datastore.datastore_v1_pb2.Entity`.
         """
-
-        # This is here to avoid circular imports.
-        from gcloud.datastore import _helpers
-
-        key = Key.from_protobuf(pb.key)
+        key = _helpers._FACTORIES.invoke('Key_from_protobuf', pb.key)
         entity = cls.from_key(key, dataset)
 
         for property_pb in pb.property:
@@ -248,7 +239,8 @@ class Entity(dict):
             transaction.add_auto_id_entity(self)
 
         if isinstance(key_pb, datastore_pb.Key):
-            updated_key = Key.from_protobuf(key_pb)
+            updated_key = _helpers._FACTORIES.invoke(
+                'Key_from_protobuf', key_pb)
             # Update the path (which may have been altered).
             self._key = key.path(updated_key.path())
 
@@ -275,3 +267,7 @@ class Entity(dict):
                                       super(Entity, self).__repr__())
         else:
             return '<Entity %s>' % (super(Entity, self).__repr__())
+
+
+_helpers._FACTORIES.register('Entity', Entity)
+_helpers._FACTORIES.register('Entity_from_protobuf', Entity.from_protobuf)

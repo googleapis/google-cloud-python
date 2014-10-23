@@ -1,5 +1,7 @@
 """Create / interact with gcloud datastore datasets."""
 
+from gcloud.datastore import _helpers
+
 
 class Dataset(object):
     """A dataset in the Cloud Datastore.
@@ -60,34 +62,6 @@ class Dataset(object):
 
         return self._id
 
-    def query(self, *args, **kwargs):
-        """Create a query bound to this dataset.
-
-        :param args: positional arguments, passed through to the Query
-
-        :param kw: keyword arguments, passed through to the Query
-
-        :rtype: :class:`gcloud.datastore.query.Query`
-        :returns: a new Query instance, bound to this dataset.
-        """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.query import Query
-        kwargs['dataset'] = self
-        return Query(*args, **kwargs)
-
-    def entity(self, kind):
-        """Create an entity bound to this dataset.
-
-        :type kind: string
-        :param kind: the "kind" of the new entity.
-
-        :rtype: :class:`gcloud.datastore.entity.Entity`
-        :returns: a new Entity instance, bound to this dataset.
-        """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.entity import Entity
-        return Entity(dataset=self, kind=kind)
-
     def transaction(self, *args, **kwargs):
         """Create a transaction bound to this dataset.
 
@@ -98,10 +72,8 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.transaction.Transaction`
         :returns: a new Transaction instance, bound to this dataset.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.transaction import Transaction
         kwargs['dataset'] = self
-        return Transaction(*args, **kwargs)
+        return _helpers._FACTORIES.invoke('Transaction', *args, **kwargs)
 
     def get_entity(self, key):
         """Retrieves entity from the dataset, along with its attributes.
@@ -125,9 +97,6 @@ class Dataset(object):
         :rtype: list of :class:`gcloud.datastore.entity.Entity`
         :return: The requested entities.
         """
-        # This import is here to avoid circular references.
-        from gcloud.datastore.entity import Entity
-
         entity_pbs = self.connection().lookup(
             dataset_id=self.id(),
             key_pbs=[k.to_protobuf() for k in keys]
@@ -135,5 +104,9 @@ class Dataset(object):
 
         entities = []
         for entity_pb in entity_pbs:
-            entities.append(Entity.from_protobuf(entity_pb, dataset=self))
+            entities.append(_helpers._FACTORIES.invoke(
+                'Entity_from_protobuf', entity_pb, dataset=self))
         return entities
+
+
+_helpers._FACTORIES.register('Dataset', Dataset)

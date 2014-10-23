@@ -30,6 +30,7 @@ class TestDatastore(unittest2.TestCase):
         return self._datasets[self._dataset_id]
 
     def _get_post(self, name=None, key_id=None, post_content=None):
+        from gcloud.datastore.entity import Entity
         post_content = post_content or {
             'title': 'How to make the perfect pizza in your grill',
             'tags': ['pizza', 'grill'],
@@ -44,7 +45,7 @@ class TestDatastore(unittest2.TestCase):
         }
         # Create an entity with the given content in our dataset.
         dataset = self._get_dataset()
-        entity = dataset.entity(kind='Post')
+        entity = Entity(dataset, 'Post')
         entity.update(post_content)
 
         # Update the entity key.
@@ -114,5 +115,7 @@ class TestDatastore(unittest2.TestCase):
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
-        posts = self._get_dataset().query().kind('Post').limit(2).fetch()
+        from gcloud.datastore.query import Query
+        dataset = self._get_dataset()
+        posts = Query(dataset=dataset).kind('Post').limit(2).fetch()
         self.assertEqual(posts, [])
