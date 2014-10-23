@@ -161,13 +161,13 @@ class Entity(dict):
         """
 
         # This is here to avoid circular imports.
-        from gcloud.datastore import _helpers
+        from gcloud.datastore import helpers
 
         key = Key.from_protobuf(pb.key)
         entity = cls.from_key(key, dataset)
 
         for property_pb in pb.property:
-            value = _helpers._get_value_from_property_pb(property_pb)
+            value = helpers._get_value_from_property_pb(property_pb)
             entity[property_pb.name] = value
 
         return entity
