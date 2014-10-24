@@ -451,6 +451,70 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(prop_pb.property.name, 'bar')
         self.assertEqual(prop_pb.direction, prop_pb.DESCENDING)
 
+    def test_projection_empty(self):
+        _KIND = 'KIND'
+        before = self._makeOne(_KIND)
+        after = before.projection([])
+        self.assertFalse(after is before)
+        self.assertTrue(isinstance(after, self._getTargetClass()))
+        self.assertEqual(before.to_protobuf(), after.to_protobuf())
+
+    def test_projection_non_empty(self):
+        _KIND = 'KIND'
+        before = self._makeOne(_KIND)
+        after = before.projection(['field1', 'field2'])
+        projection_pb = list(after.to_protobuf().projection)
+        self.assertEqual(len(projection_pb), 2)
+        prop_pb1 = projection_pb[0]
+        self.assertEqual(prop_pb1.property.name, 'field1')
+        prop_pb2 = projection_pb[1]
+        self.assertEqual(prop_pb2.property.name, 'field2')
+
+    def test_get_projection_non_empty(self):
+        _KIND = 'KIND'
+        _PROJECTION = ['field1', 'field2']
+        after = self._makeOne(_KIND).projection(_PROJECTION)
+        self.assertEqual(after.projection(), _PROJECTION)
+
+    def test_set_offset(self):
+        _KIND = 'KIND'
+        _OFFSET = 42
+        before = self._makeOne(_KIND)
+        after = before.offset(_OFFSET)
+        offset_pb = after.to_protobuf().offset
+        self.assertEqual(offset_pb, _OFFSET)
+
+    def test_get_offset(self):
+        _KIND = 'KIND'
+        _OFFSET = 10
+        after = self._makeOne(_KIND).offset(_OFFSET)
+        self.assertEqual(after.offset(), _OFFSET)
+
+    def test_group_by_empty(self):
+        _KIND = 'KIND'
+        before = self._makeOne(_KIND)
+        after = before.group_by([])
+        self.assertFalse(after is before)
+        self.assertTrue(isinstance(after, self._getTargetClass()))
+        self.assertEqual(before.to_protobuf(), after.to_protobuf())
+
+    def test_group_by_non_empty(self):
+        _KIND = 'KIND'
+        before = self._makeOne(_KIND)
+        after = before.group_by(['field1', 'field2'])
+        group_by_pb = list(after.to_protobuf().group_by)
+        self.assertEqual(len(group_by_pb), 2)
+        prop_pb1 = group_by_pb[0]
+        self.assertEqual(prop_pb1.name, 'field1')
+        prop_pb2 = group_by_pb[1]
+        self.assertEqual(prop_pb2.name, 'field2')
+
+    def test_get_group_by_non_empty(self):
+        _KIND = 'KIND'
+        _GROUP_BY = ['field1', 'field2']
+        after = self._makeOne(_KIND).group_by(_GROUP_BY)
+        self.assertEqual(after.group_by(), _GROUP_BY)
+
 
 class _Dataset(object):
 
