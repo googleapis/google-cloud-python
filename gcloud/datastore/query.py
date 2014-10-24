@@ -45,13 +45,15 @@ class Query(object):
     :param dataset: The namespace to which to restrict results.
     """
 
-    OPERATORS = {
-        '<': datastore_pb.PropertyFilter.LESS_THAN,
-        '<=': datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL,
-        '>': datastore_pb.PropertyFilter.GREATER_THAN,
-        '>=': datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL,
-        '=': datastore_pb.PropertyFilter.EQUAL,
-    }
+    # NOTE: Order is very important here since operators that end with
+    #       '<=' and '>=' also end with '='.
+    OPERATORS = (
+        ('<=', datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL),
+        ('>=', datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL),
+        ('<', datastore_pb.PropertyFilter.LESS_THAN),
+        ('>', datastore_pb.PropertyFilter.GREATER_THAN),
+        ('=', datastore_pb.PropertyFilter.EQUAL),
+    )
     """Mapping of operator strings and their protobuf equivalents."""
 
     def __init__(self, kind=None, dataset=None, namespace=None):
@@ -132,10 +134,12 @@ class Query(object):
         property_name, operator = None, None
         expression = expression.strip()
 
-        for operator_string in self.OPERATORS:
+        for operator_string, pb_op_enum in self.OPERATORS:
             if expression.endswith(operator_string):
-                operator = self.OPERATORS[operator_string]
+                operator = pb_op_enum
                 property_name = expression[0:-len(operator_string)].strip()
+                # After one match, we move on since >= and <= conflict with =.
+                break
 
         if not operator or not property_name:
             raise ValueError('Invalid expression: "%s"' % expression)
