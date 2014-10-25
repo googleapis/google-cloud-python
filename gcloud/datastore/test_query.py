@@ -68,16 +68,48 @@ class TestQuery(unittest2.TestCase):
         self.assertRaises(ValueError, query.filter, 'firstname ~~', 'John')
 
     def test_filter_w_known_operator(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+
         query = self._makeOne()
         after = query.filter('firstname =', u'John')
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.filter.composite_filter.operator, 1)  # AND
+        self.assertEqual(q_pb.filter.composite_filter.operator,
+                         datastore_pb.CompositeFilter.AND)
         f_pb, = list(q_pb.filter.composite_filter.filter)
         p_pb = f_pb.property_filter
         self.assertEqual(p_pb.property.name, 'firstname')
         self.assertEqual(p_pb.value.string_value, u'John')
+        self.assertEqual(p_pb.operator, datastore_pb.PropertyFilter.EQUAL)
+
+    def test_filter_w_all_operators(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+
+        query = self._makeOne()
+        query = query.filter('leq_prop <=', u'val1')
+        query = query.filter('geq_prop >=', u'val2')
+        query = query.filter('lt_prop <', u'val3')
+        query = query.filter('gt_prop >', u'val4')
+        query = query.filter('eq_prop =', u'val5')
+
+        query_pb = query.to_protobuf()
+        pb_values = [
+            ('leq_prop', 'val1',
+             datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL),
+            ('geq_prop', 'val2',
+             datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL),
+            ('lt_prop', 'val3', datastore_pb.PropertyFilter.LESS_THAN),
+            ('gt_prop', 'val4', datastore_pb.PropertyFilter.GREATER_THAN),
+            ('eq_prop', 'val5', datastore_pb.PropertyFilter.EQUAL),
+        ]
+        query_filter = query_pb.filter.composite_filter.filter
+        for filter_pb, pb_value in zip(query_filter, pb_values):
+            name, val, filter_enum = pb_value
+            prop_filter = filter_pb.property_filter
+            self.assertEqual(prop_filter.property.name, name)
+            self.assertEqual(prop_filter.value.string_value, val)
+            self.assertEqual(prop_filter.operator, filter_enum)
 
     def test_filter_w_known_operator_and_entity(self):
         import operator
