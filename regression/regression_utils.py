@@ -1,6 +1,8 @@
 import os
 import sys
 
+from gcloud import datastore
+
 
 # Defaults from shell environ. May be None.
 DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
@@ -23,3 +25,14 @@ def get_environ():
         'client_email': CLIENT_EMAIL,
         'key_filename': KEY_FILENAME,
     }
+
+
+def get_dataset():
+    if get_dataset.cached_result is None:
+        environ = get_environ()
+        # Cache value on the function.
+        get_dataset.cached_result = datastore.get_dataset(
+            environ['dataset_id'], environ['client_email'],
+            environ['key_filename'])
+    return get_dataset.cached_result
+get_dataset.cached_result = None

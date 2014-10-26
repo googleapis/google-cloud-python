@@ -141,6 +141,10 @@ Running Regression Tests
 
    $ python regression/run_regression.py --package {package}
 
+  This alone will not run the tests. You'll need to change some local
+  auth settings and change some configuration in your project to
+  run all the tests.
+
 - Regression tests will be run against an actual project and
   so you'll need to provide some environment variables to facilitate
   authentication to your project:
@@ -149,6 +153,9 @@ Running Regression Tests
   - ``GCLOUD_TESTS_CLIENT_EMAIL``: The email for the service account you're
     authenticating with
   - ``GCLOUD_TESTS_KEY_FILE``: The path to an encrypted key file.
+    See private key
+    `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
+    for explanation on how to get a private key.
 
 - Examples of these can be found in ``regression/local_test_setup.sample``. We
   recommend copying this to ``regression/local_test_setup``, editing the values
@@ -159,6 +166,34 @@ Running Regression Tests
 - The ``GCLOUD_TESTS_KEY_FILE`` value should point to a valid path (relative or
   absolute) on your system where the key file for your service account can
   be found.
+
+- For datastore tests, you'll need to create composite
+  `indexes <https://cloud.google.com/datastore/docs/tools/indexconfig>`__
+  with the ``gcloud`` command line
+  `tool <https://developers.google.com/cloud/sdk/gcloud/>`__::
+
+   # Install the app (App Engine Command Line Interface) component.
+   $ gcloud components update app
+
+   # See https://cloud.google.com/sdk/crypto for details on PyOpenSSL and
+   # http://stackoverflow.com/a/25067729/1068170 for why we must persist.
+   $ export CLOUDSDK_PYTHON_SITEPACKAGES=1
+
+   # Authenticate the gcloud tool with your account.
+   $ gcloud auth activate-service-account $GCLOUD_TESTS_CLIENT_EMAIL \
+   > --key-file=$GCLOUD_TESTS_KEY_FILE
+
+   # Create the indexes
+   $ gcloud preview datastore create-indexes regression/data/ \
+   > --project=$GCLOUD_TESTS_DATASET_ID
+
+   # Restore your environment to its previous state.
+   $ unset CLOUDSDK_PYTHON_SITEPACKAGES
+
+- For datastore query tests, you'll need stored data in your dataset.
+  To populate this data, run::
+
+   $ python regression/populate_datastore.py
 
 Test Coverage
 -------------
