@@ -8,7 +8,7 @@ script:
   - tox -e py26
   - tox -e py27
   - tox -e lint
-  - scripts/run_regression.sh
+  - tox -e regression
 after_success:
   - tox -e cover
   - coveralls
