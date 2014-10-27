@@ -24,7 +24,9 @@ class Key(object):
 
         :type dataset_id: string
         :param dataset: The dataset ID assigned by back-end for the key.
-                        Leave as None for newly-created keys.
+                        Application code should leave this field None;
+                        expected to be set only by
+                        :func:`gcloud.datastore.helprs.key_from_protobuf`.
         """
         self._path = path or [{'kind': ''}]
         self._namespace = namespace
