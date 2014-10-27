@@ -32,8 +32,10 @@ def is_production_filename(filename):
     :rtype: `bool`
     :returns: Boolean indicating production status.
     """
-    return not ('demo' in filename or 'test' in filename
-                or filename.startswith('regression'))
+    return not ('demo' in filename or
+                'test' in filename or
+                'docs' in filename or
+                filename.startswith('regression'))
 
 
 def get_python_files():
