@@ -174,7 +174,7 @@ class _Connection(object):
         self._begun = dataset_id
         return self._xact_id
 
-    def rollback_transaction(self, dataset_id):
+    def rollback(self, dataset_id):
         self._rolled_back = dataset_id
 
     def commit(self, dataset_id, mutation):

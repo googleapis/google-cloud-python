@@ -324,7 +324,7 @@ class Connection(connection.Connection):
                              datastore_pb.CommitResponse)
         return response.mutation_result
 
-    def rollback_transaction(self, dataset_id):
+    def rollback(self, dataset_id):
         """Rollback the connection's existing transaction.
 
         Raises a ``ValueError``

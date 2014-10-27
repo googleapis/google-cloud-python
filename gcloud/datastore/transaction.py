@@ -210,7 +210,7 @@ class Transaction(object):
         - Sets the current connection's transaction reference to None.
         - Sets the current transaction's ID to None.
         """
-        self.connection().rollback_transaction(self.dataset().id())
+        self.connection().rollback(self.dataset().id())
         self.connection().transaction(None)
         self._id = None
 

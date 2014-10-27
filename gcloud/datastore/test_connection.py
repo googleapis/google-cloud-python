@@ -509,13 +509,13 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.mutation, mutation)
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
 
-    def test_rollback_transaction_wo_existing_transaction(self):
+    def test_rollback_wo_existing_transaction(self):
         DATASET_ID = 'DATASET'
         conn = self._makeOne()
         self.assertRaises(ValueError,
-                          conn.rollback_transaction, DATASET_ID)
+                          conn.rollback, DATASET_ID)
 
-    def test_rollback_transaction_w_existing_transaction_no_id(self):
+    def test_rollback_w_existing_transaction_no_id(self):
 
         class Xact(object):
 
@@ -525,9 +525,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         conn.transaction(Xact())
         self.assertRaises(ValueError,
-                          conn.rollback_transaction, DATASET_ID)
+                          conn.rollback, DATASET_ID)
 
-    def test_rollback_transaction_ok(self):
+    def test_rollback_ok(self):
         from gcloud.datastore.connection import datastore_pb
         DATASET_ID = 'DATASET'
         TRANSACTION = 'xact'
@@ -548,7 +548,7 @@ class TestConnection(unittest2.TestCase):
             'rollback',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.rollback_transaction(DATASET_ID), None)
+        self.assertEqual(conn.rollback(DATASET_ID), None)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
