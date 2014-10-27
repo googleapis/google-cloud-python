@@ -59,9 +59,7 @@ class Query(object):
         self._namespace = namespace
         self._pb = datastore_pb.Query()
         self._cursor = None
-        self._projection = []
         self._offset = 0
-        self._group_by = []
 
         if kind:
             self._pb.kind.add().name = kind
@@ -440,13 +438,13 @@ class Query(object):
                   :class:`Query` with that projection set.
         """
         if projection is None:
-            return self._projection
+            return [prop_expr.property.name
+                    for prop_expr in self._pb.projection]
 
         clone = self._clone()
-        clone._projection = projection
 
         # Reset projection values to empty.
-        clone._pb.projection._values = []
+        clone._pb.ClearField('projection')
 
         # Add each name to list of projections.
         for projection_name in projection:
@@ -506,13 +504,12 @@ class Query(object):
                   of the :class:`Query` with that list of values set.
         """
         if group_by is None:
-            return self._group_by
+            return [prop_ref.name for prop_ref in self._pb.group_by]
 
         clone = self._clone()
-        clone._group_by = group_by
 
         # Reset group_by values to empty.
-        clone._pb.group_by._values = []
+        clone._pb.ClearField('group_by')
 
         # Add each name to list of group_bys.
         for group_by_name in group_by:

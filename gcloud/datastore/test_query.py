@@ -476,6 +476,15 @@ class TestQuery(unittest2.TestCase):
         after = self._makeOne(_KIND).projection(_PROJECTION)
         self.assertEqual(after.projection(), _PROJECTION)
 
+    def test_projection_multiple_calls(self):
+        _KIND = 'KIND'
+        _PROJECTION1 = ['field1', 'field2']
+        _PROJECTION2 = ['field3']
+        before = self._makeOne(_KIND).projection(_PROJECTION1)
+        self.assertEqual(before.projection(), _PROJECTION1)
+        after = before.projection(_PROJECTION2)
+        self.assertEqual(after.projection(), _PROJECTION2)
+
     def test_set_offset(self):
         _KIND = 'KIND'
         _OFFSET = 42
@@ -514,6 +523,15 @@ class TestQuery(unittest2.TestCase):
         _GROUP_BY = ['field1', 'field2']
         after = self._makeOne(_KIND).group_by(_GROUP_BY)
         self.assertEqual(after.group_by(), _GROUP_BY)
+
+    def test_group_by_multiple_calls(self):
+        _KIND = 'KIND'
+        _GROUP_BY1 = ['field1', 'field2']
+        _GROUP_BY2 = ['field3']
+        before = self._makeOne(_KIND).group_by(_GROUP_BY1)
+        self.assertEqual(before.group_by(), _GROUP_BY1)
+        after = before.group_by(_GROUP_BY2)
+        self.assertEqual(after.group_by(), _GROUP_BY2)
 
 
 class _Dataset(object):
