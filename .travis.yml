@@ -8,7 +8,8 @@ script:
   - tox -e py26
   - tox -e py27
   - tox -e lint
+  - tox -e regression
 after_success:
   - tox -e cover
   - coveralls
-  - scripts/merge.sh
+  - scripts/update_docs.sh
