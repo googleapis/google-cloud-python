@@ -59,6 +59,7 @@ class Query(object):
         self._namespace = namespace
         self._pb = datastore_pb.Query()
         self._cursor = None
+        self._offset = 0
 
         if kind:
             self._pb.kind.add().name = kind
@@ -413,4 +414,104 @@ class Query(object):
                 property_order.property.name = prop
                 property_order.direction = property_order.ASCENDING
 
+        return clone
+
+    def projection(self, projection=None):
+        """Adds a projection to the query.
+
+        This is a hybrid getter / setter, used as::
+
+          >>> query = Query('Person')
+          >>> query.projection()  # Get the projection for this query.
+          []
+          >>> query = query.projection(['name'])
+          >>> query.projection()  # Get the projection for this query.
+          ['name']
+
+        :type projection: sequence of strings
+        :param projection: Each value is a string giving the name of a
+                           property to be included in the projection query.
+
+        :rtype: :class:`Query` or `list` of strings.
+        :returns: If no arguments, returns the current projection.
+                  If a projection is provided, returns a clone of the
+                  :class:`Query` with that projection set.
+        """
+        if projection is None:
+            return [prop_expr.property.name
+                    for prop_expr in self._pb.projection]
+
+        clone = self._clone()
+
+        # Reset projection values to empty.
+        clone._pb.ClearField('projection')
+
+        # Add each name to list of projections.
+        for projection_name in projection:
+            clone._pb.projection.add().property.name = projection_name
+        return clone
+
+    def offset(self, offset=None):
+        """Adds offset to the query to allow pagination.
+
+        NOTE: Paging with cursors should be preferred to using an offset.
+
+        This is a hybrid getter / setter, used as::
+
+          >>> query = Query('Person')
+          >>> query.offset()  # Get the offset for this query.
+          0
+          >>> query = query.offset(10)
+          >>> query.offset()  # Get the offset for this query.
+          10
+
+        :type offset: non-negative integer.
+        :param offset: Value representing where to start a query for
+                       a given kind.
+
+        :rtype: :class:`Query` or `int`.
+        :returns: If no arguments, returns the current offset.
+                  If an offset is provided, returns a clone of the
+                  :class:`Query` with that offset set.
+        """
+        if offset is None:
+            return self._offset
+
+        clone = self._clone()
+        clone._offset = offset
+        clone._pb.offset = offset
+        return clone
+
+    def group_by(self, group_by=None):
+        """Adds a group_by to the query.
+
+        This is a hybrid getter / setter, used as::
+
+          >>> query = Query('Person')
+          >>> query.group_by()  # Get the group_by for this query.
+          []
+          >>> query = query.group_by(['name'])
+          >>> query.group_by()  # Get the group_by for this query.
+          ['name']
+
+        :type group_by: sequence of strings
+        :param group_by: Each value is a string giving the name of a
+                         property to use to group results together.
+
+        :rtype: :class:`Query` or `list` of strings.
+        :returns: If no arguments, returns the current group_by.
+                  If a list of group by properties is provided, returns a clone
+                  of the :class:`Query` with that list of values set.
+        """
+        if group_by is None:
+            return [prop_ref.name for prop_ref in self._pb.group_by]
+
+        clone = self._clone()
+
+        # Reset group_by values to empty.
+        clone._pb.ClearField('group_by')
+
+        # Add each name to list of group_bys.
+        for group_by_name in group_by:
+            clone._pb.group_by.add().name = group_by_name
         return clone
