@@ -22,7 +22,6 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         entity_pb = datastore_pb.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
-        entity_pb.key.partition_id.dataset_id = _DATASET_ID
         prop_pb = entity_pb.property.add()
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
@@ -32,6 +31,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(entity['foo'], 'Foo')
         key = entity.key()
         self.assertEqual(key._dataset_id, _DATASET_ID)
+        self.assertEqual(key.namespace(), None)
         self.assertEqual(key.kind(), _KIND)
         self.assertEqual(key.id(), _ID)
 
@@ -45,7 +45,6 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         entity_pb = datastore_pb.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
-        entity_pb.key.partition_id.dataset_id = _DATASET_ID
         prop_pb = entity_pb.property.add()
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
@@ -56,6 +55,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(entity['foo'], 'Foo')
         key = entity.key()
         self.assertEqual(key._dataset_id, _DATASET_ID)
+        self.assertEqual(key.namespace(), None)
         self.assertEqual(key.kind(), _KIND)
         self.assertEqual(key.id(), _ID)
 
@@ -88,11 +88,13 @@ class Test_key_from_protobuf(unittest2.TestCase):
         pb = self._makePB(_DATASET)
         key = self._callFUT(pb)
         self.assertEqual(key._dataset_id, _DATASET)
+        self.assertEqual(key.namespace(), None)
 
     def test_w_namespace_in_pb(self):
         _NAMESPACE = 'NAMESPACE'
         pb = self._makePB(namespace=_NAMESPACE)
         key = self._callFUT(pb)
+        self.assertEqual(key._dataset_id, None)
         self.assertEqual(key.namespace(), _NAMESPACE)
 
     def test_w_path_in_pb(self):

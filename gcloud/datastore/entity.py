@@ -222,13 +222,18 @@ class Entity(dict):
             transaction.add_auto_id_entity(self)
 
         if isinstance(key_pb, datastore_pb.Key):
+            # Update the path (which may have been altered).
+            # NOTE: The underlying namespace can't have changed in a save().
+            #       The value of the dataset ID may have changed from implicit
+            #       (i.e. None, with the ID implied from the dataset.Dataset
+            #       object associated with the Entity/Key), but if it was
+            #       implicit before the save() we leave it as implicit.
             path = []
             for element in key_pb.path_element:
                 key_part = {}
                 for descriptor, value in element._fields.items():
                     key_part[descriptor.name] = value
                 path.append(key_part)
-            # Update the path (which may have been altered).
             self._key = key.path(path)
 
         return self
