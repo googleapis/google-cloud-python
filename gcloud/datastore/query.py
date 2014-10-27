@@ -45,15 +45,13 @@ class Query(object):
     :param dataset: The namespace to which to restrict results.
     """
 
-    # NOTE: Order is very important here since operators that end with
-    #       '<=' and '>=' also end with '='.
-    OPERATORS = (
-        ('<=', datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL),
-        ('>=', datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL),
-        ('<', datastore_pb.PropertyFilter.LESS_THAN),
-        ('>', datastore_pb.PropertyFilter.GREATER_THAN),
-        ('=', datastore_pb.PropertyFilter.EQUAL),
-    )
+    OPERATORS = {
+        '<=': datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL,
+        '>=': datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL,
+        '<': datastore_pb.PropertyFilter.LESS_THAN,
+        '>': datastore_pb.PropertyFilter.GREATER_THAN,
+        '=': datastore_pb.PropertyFilter.EQUAL,
+    }
     """Mapping of operator strings and their protobuf equivalents."""
 
     def __init__(self, kind=None, dataset=None, namespace=None):
@@ -134,14 +132,16 @@ class Query(object):
         property_name, operator = None, None
         expression = expression.strip()
 
-        for operator_string, pb_op_enum in self.OPERATORS:
-            if expression.endswith(operator_string):
-                operator = pb_op_enum
-                property_name = expression[0:-len(operator_string)].strip()
-                # After one match, we move on since >= and <= conflict with =.
-                break
+        # Use None to split on *any* whitespace.
+        expr_pieces = expression.rsplit(None, 1)
+        if len(expr_pieces) == 2:
+            property_name, operator = expr_pieces
+            property_name = property_name.strip()
 
-        if not operator or not property_name:
+        # If no whitespace in `expression`, `operator` will be `None` and
+        # self.OPERATORS[None] will be `None` as well.
+        pb_op_enum = self.OPERATORS.get(operator)
+        if pb_op_enum is None:
             raise ValueError('Invalid expression: "%s"' % expression)
 
         # Build a composite filter AND'd together.
@@ -151,7 +151,7 @@ class Query(object):
         # Add the specific filter
         property_filter = composite_filter.filter.add().property_filter
         property_filter.property.name = property_name
-        property_filter.operator = operator
+        property_filter.operator = pb_op_enum
 
         # Set the value to filter on based on the type.
         helpers._set_protobuf_value(property_filter.value, value)
