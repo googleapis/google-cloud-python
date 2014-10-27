@@ -91,8 +91,7 @@
 <span class="kn">import</span> <span class="nn">base64</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_helpers</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 
 
@@ -135,10 +134,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">OPERATORS</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">&#39;&lt;&#39;</span><span class="p">:</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">LESS_THAN</span><span class="p">,</span>
         <span class="s">&#39;&lt;=&#39;</span><span class="p">:</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">LESS_THAN_OR_EQUAL</span><span class="p">,</span>
-        <span class="s">&#39;&gt;&#39;</span><span class="p">:</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">GREATER_THAN</span><span class="p">,</span>
         <span class="s">&#39;&gt;=&#39;</span><span class="p">:</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">GREATER_THAN_OR_EQUAL</span><span class="p">,</span>
+        <span class="s">&#39;&lt;&#39;</span><span class="p">:</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">LESS_THAN</span><span class="p">,</span>
+        <span class="s">&#39;&gt;&#39;</span><span class="p">:</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">GREATER_THAN</span><span class="p">,</span>
         <span class="s">&#39;=&#39;</span><span class="p">:</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">EQUAL</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="sd">&quot;&quot;&quot;Mapping of operator strings and their protobuf equivalents.&quot;&quot;&quot;</span>
@@ -148,6 +147,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Query</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">if</span> <span class="n">kind</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">kind</span>
@@ -221,12 +221,16 @@
         <span class="n">property_name</span><span class="p">,</span> <span class="n">operator</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
         <span class="n">expression</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">operator_string</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPERATORS</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">expression</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">operator_string</span><span class="p">):</span>
-                <span class="n">operator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPERATORS</span><span class="p">[</span><span class="n">operator_string</span><span class="p">]</span>
-                <span class="n">property_name</span> <span class="o">=</span> <span class="n">expression</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">operator_string</span><span class="p">)]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="c"># Use None to split on *any* whitespace.</span>
+        <span class="n">expr_pieces</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expr_pieces</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">property_name</span><span class="p">,</span> <span class="n">operator</span> <span class="o">=</span> <span class="n">expr_pieces</span>
+            <span class="n">property_name</span> <span class="o">=</span> <span class="n">property_name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">operator</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">property_name</span><span class="p">:</span>
+        <span class="c"># If no whitespace in `expression`, `operator` will be `None` and</span>
+        <span class="c"># self.OPERATORS[None] will be `None` as well.</span>
+        <span class="n">pb_op_enum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPERATORS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pb_op_enum</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid expression: &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="n">expression</span><span class="p">)</span>
 
         <span class="c"># Build a composite filter AND&#39;d together.</span>
@@ -236,10 +240,10 @@
         <span class="c"># Add the specific filter</span>
         <span class="n">property_filter</span> <span class="o">=</span> <span class="n">composite_filter</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">property_filter</span>
         <span class="n">property_filter</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">property_name</span>
-        <span class="n">property_filter</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">operator</span>
+        <span class="n">property_filter</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">pb_op_enum</span>
 
         <span class="c"># Set the value to filter on based on the type.</span>
-        <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">property_filter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">property_filter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">clone</span>
 </div>
 <div class="viewcode-block" id="Query.ancestor"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.query.Query.ancestor">[docs]</a>    <span class="k">def</span> <span class="nf">ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ancestor</span><span class="p">):</span>
@@ -421,10 +425,17 @@
             <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
             <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
             <span class="p">)</span>
+        <span class="c"># NOTE: `query_results` contains two extra values that we don&#39;t use,</span>
+        <span class="c">#       namely `more_results` and `skipped_results`. The value of</span>
+        <span class="c">#       `more_results` is unusable because it always returns an enum</span>
+        <span class="c">#       value of MORE_RESULTS_AFTER_LIMIT even if there are no more</span>
+        <span class="c">#       results. See</span>
+        <span class="c">#       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280</span>
+        <span class="c">#       for discussion.</span>
         <span class="n">entity_pbs</span><span class="p">,</span> <span class="n">end_cursor</span> <span class="o">=</span> <span class="n">query_results</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="n">end_cursor</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">Entity</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">())</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">())</span>
                 <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="Query.cursor"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.query.Query.cursor">[docs]</a>    <span class="k">def</span> <span class="nf">cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -491,6 +502,106 @@
                 <span class="n">property_order</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">prop</span>
                 <span class="n">property_order</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">property_order</span><span class="o">.</span><span class="n">ASCENDING</span>
 
+        <span class="k">return</span> <span class="n">clone</span>
+</div>
+<div class="viewcode-block" id="Query.projection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.query.Query.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds a projection to the query.</span>
+
+<span class="sd">        This is a hybrid getter / setter, used as::</span>
+
+<span class="sd">          &gt;&gt;&gt; query = Query(&#39;Person&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; query.projection()  # Get the projection for this query.</span>
+<span class="sd">          []</span>
+<span class="sd">          &gt;&gt;&gt; query = query.projection([&#39;name&#39;])</span>
+<span class="sd">          &gt;&gt;&gt; query.projection()  # Get the projection for this query.</span>
+<span class="sd">          [&#39;name&#39;]</span>
+
+<span class="sd">        :type projection: sequence of strings</span>
+<span class="sd">        :param projection: Each value is a string giving the name of a</span>
+<span class="sd">                           property to be included in the projection query.</span>
+
+<span class="sd">        :rtype: :class:`Query` or `list` of strings.</span>
+<span class="sd">        :returns: If no arguments, returns the current projection.</span>
+<span class="sd">                  If a projection is provided, returns a clone of the</span>
+<span class="sd">                  :class:`Query` with that projection set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">prop_expr</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span>
+                    <span class="k">for</span> <span class="n">prop_expr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">projection</span><span class="p">]</span>
+
+        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+
+        <span class="c"># Reset projection values to empty.</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">ClearField</span><span class="p">(</span><span class="s">&#39;projection&#39;</span><span class="p">)</span>
+
+        <span class="c"># Add each name to list of projections.</span>
+        <span class="k">for</span> <span class="n">projection_name</span> <span class="ow">in</span> <span class="n">projection</span><span class="p">:</span>
+            <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">projection_name</span>
+        <span class="k">return</span> <span class="n">clone</span>
+</div>
+<div class="viewcode-block" id="Query.offset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.query.Query.offset">[docs]</a>    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds offset to the query to allow pagination.</span>
+
+<span class="sd">        NOTE: Paging with cursors should be preferred to using an offset.</span>
+
+<span class="sd">        This is a hybrid getter / setter, used as::</span>
+
+<span class="sd">          &gt;&gt;&gt; query = Query(&#39;Person&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; query.offset()  # Get the offset for this query.</span>
+<span class="sd">          0</span>
+<span class="sd">          &gt;&gt;&gt; query = query.offset(10)</span>
+<span class="sd">          &gt;&gt;&gt; query.offset()  # Get the offset for this query.</span>
+<span class="sd">          10</span>
+
+<span class="sd">        :type offset: non-negative integer.</span>
+<span class="sd">        :param offset: Value representing where to start a query for</span>
+<span class="sd">                       a given kind.</span>
+
+<span class="sd">        :rtype: :class:`Query` or `int`.</span>
+<span class="sd">        :returns: If no arguments, returns the current offset.</span>
+<span class="sd">                  If an offset is provided, returns a clone of the</span>
+<span class="sd">                  :class:`Query` with that offset set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
+
+        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="k">return</span> <span class="n">clone</span>
+</div>
+<div class="viewcode-block" id="Query.group_by"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.query.Query.group_by">[docs]</a>    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_by</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds a group_by to the query.</span>
+
+<span class="sd">        This is a hybrid getter / setter, used as::</span>
+
+<span class="sd">          &gt;&gt;&gt; query = Query(&#39;Person&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; query.group_by()  # Get the group_by for this query.</span>
+<span class="sd">          []</span>
+<span class="sd">          &gt;&gt;&gt; query = query.group_by([&#39;name&#39;])</span>
+<span class="sd">          &gt;&gt;&gt; query.group_by()  # Get the group_by for this query.</span>
+<span class="sd">          [&#39;name&#39;]</span>
+
+<span class="sd">        :type group_by: sequence of strings</span>
+<span class="sd">        :param group_by: Each value is a string giving the name of a</span>
+<span class="sd">                         property to use to group results together.</span>
+
+<span class="sd">        :rtype: :class:`Query` or `list` of strings.</span>
+<span class="sd">        :returns: If no arguments, returns the current group_by.</span>
+<span class="sd">                  If a list of group by properties is provided, returns a clone</span>
+<span class="sd">                  of the :class:`Query` with that list of values set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">group_by</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">prop_ref</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">prop_ref</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">group_by</span><span class="p">]</span>
+
+        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+
+        <span class="c"># Reset group_by values to empty.</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">ClearField</span><span class="p">(</span><span class="s">&#39;group_by&#39;</span><span class="p">)</span>
+
+        <span class="c"># Add each name to list of group_bys.</span>
+        <span class="k">for</span> <span class="n">group_by_name</span> <span class="ow">in</span> <span class="n">group_by</span><span class="p">:</span>
+            <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">group_by</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">group_by_name</span>
         <span class="k">return</span> <span class="n">clone</span></div></div>
 </pre></div>
 

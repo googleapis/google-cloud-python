@@ -90,7 +90,7 @@
 
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_helpers</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
 
 
@@ -305,12 +305,14 @@
 <span class="sd">        Using the `fetch`` method...</span>
 
 <span class="sd">        &gt;&gt;&gt; query.fetch()</span>
-<span class="sd">        [&lt;list of Entity Protobufs&gt;], cursor, more_results, skipped_results</span>
+<span class="sd">        [&lt;list of Entity unmarshalled from protobuf&gt;]</span>
+<span class="sd">        &gt;&gt;&gt; query.cursor()</span>
+<span class="sd">        &lt;string containing cursor where fetch stopped&gt;</span>
 
 <span class="sd">        Under the hood this is doing...</span>
 
 <span class="sd">        &gt;&gt;&gt; connection.run_query(&#39;dataset-id&#39;, query.to_protobuf())</span>
-<span class="sd">        [&lt;list of Entity Protobufs&gt;]</span>
+<span class="sd">        [&lt;list of Entity Protobufs&gt;], cursor, more_results, skipped_results</span>
 
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset_id: The ID of the dataset over which to run the query.</span>
@@ -462,7 +464,7 @@
             <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
             <span class="c"># Set the appropriate value.</span>
-            <span class="n">_helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
         <span class="c"># If this is in a transaction, we should just return True. The</span>
         <span class="c"># transaction will handle assigning any keys as necessary.</span>

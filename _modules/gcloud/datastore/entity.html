@@ -234,32 +234,6 @@
 
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 </div>
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Entity.from_protobuf"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.from_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">from_protobuf</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory method for creating an entity based on a protobuf.</span>
-
-<span class="sd">        The protobuf should be one returned from the Cloud Datastore</span>
-<span class="sd">        Protobuf API.</span>
-
-<span class="sd">        :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Entity`</span>
-<span class="sd">        :param pb: The Protobuf representing the entity.</span>
-
-<span class="sd">        :returns: The :class:`Entity` derived from the</span>
-<span class="sd">                  :class:`gcloud.datastore.datastore_v1_pb2.Entity`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c"># This is here to avoid circular imports.</span>
-        <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_helpers</span>
-
-        <span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
-        <span class="n">entity</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">from_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">property_pb</span> <span class="ow">in</span> <span class="n">pb</span><span class="o">.</span><span class="n">property</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">_helpers</span><span class="o">.</span><span class="n">_get_value_from_property_pb</span><span class="p">(</span><span class="n">property_pb</span><span class="p">)</span>
-            <span class="n">entity</span><span class="p">[</span><span class="n">property_pb</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-        <span class="k">return</span> <span class="n">entity</span>
-</div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_must_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return our key, or raise NoKey if not set.</span>
@@ -336,9 +310,19 @@
             <span class="n">transaction</span><span class="o">.</span><span class="n">add_auto_id_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key_pb</span><span class="p">,</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Key</span><span class="p">):</span>
-            <span class="n">updated_key</span> <span class="o">=</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_protobuf</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
             <span class="c"># Update the path (which may have been altered).</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">updated_key</span><span class="o">.</span><span class="n">path</span><span class="p">())</span>
+            <span class="c"># NOTE: The underlying namespace can&#39;t have changed in a save().</span>
+            <span class="c">#       The value of the dataset ID may have changed from implicit</span>
+            <span class="c">#       (i.e. None, with the ID implied from the dataset.Dataset</span>
+            <span class="c">#       object associated with the Entity/Key), but if it was</span>
+            <span class="c">#       implicit before the save() we leave it as implicit.</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">key_pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">:</span>
+                <span class="n">key_part</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">descriptor</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">key_part</span><span class="p">[</span><span class="n">descriptor</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_part</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span>
 </div>
