@@ -8,6 +8,7 @@ from gcloud import datastore
 DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
 CLIENT_EMAIL = os.getenv('GCLOUD_TESTS_CLIENT_EMAIL')
 KEY_FILENAME = os.getenv('GCLOUD_TESTS_KEY_FILE')
+DATASETS = {}
 
 ENVIRON_ERROR_MSG = """\
 To run the regression tests, you need to set some environment variables.
@@ -28,11 +29,10 @@ def get_environ():
 
 
 def get_dataset():
-    if get_dataset.cached_result is None:
-        environ = get_environ()
-        # Cache value on the function.
-        get_dataset.cached_result = datastore.get_dataset(
-            environ['dataset_id'], environ['client_email'],
-            environ['key_filename'])
-    return get_dataset.cached_result
-get_dataset.cached_result = None
+    environ = get_environ()
+    get_dataset_args = (environ['dataset_id'], environ['client_email'],
+                        environ['key_filename'])
+    if get_dataset_args not in DATASETS:
+        # Cache return value for the environment.
+        DATASETS[get_dataset_args] = datastore.get_dataset(*get_dataset_args)
+    return DATASETS[get_dataset_args]
