@@ -63,6 +63,10 @@ class TestQuery(unittest2.TestCase):
         kq_pb, = list(q_pb.kind)
         self.assertEqual(kq_pb.name, _KIND)
 
+    def test_filter_w_no_operator(self):
+        query = self._makeOne()
+        self.assertRaises(ValueError, query.filter, 'firstname', 'John')
+
     def test_filter_w_unknown_operator(self):
         query = self._makeOne()
         self.assertRaises(ValueError, query.filter, 'firstname ~~', 'John')
