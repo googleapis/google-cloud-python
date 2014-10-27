@@ -223,6 +223,15 @@ def _set_protobuf_value(value_pb, val):
     :param val: The value to be assigned.
     """
     if val is None:
+        value_pb.ClearField('boolean_value')
+        value_pb.ClearField('integer_value')
+        value_pb.ClearField('double_value')
+        value_pb.ClearField('timestamp_microseconds_value')
+        value_pb.ClearField('key_value')
+        value_pb.ClearField('blob_key_value')
+        value_pb.ClearField('string_value')
+        value_pb.ClearField('blob_value')
+        value_pb.ClearField('entity_value')
         return
 
     attr, val = _get_protobuf_attribute_and_value(val)
