@@ -153,11 +153,10 @@ class Connection(connection.Connection):
         kwargs['connection'] = self
         return Dataset(*args, **kwargs)
 
-    #
-    #   Protobuf RPCs for DatastoreService
-    #
     def lookup(self, dataset_id, key_pbs):
         """Lookup keys from a dataset in the Cloud Datastore.
+
+        Maps the ``DatastoreService.Lookup`` protobuf RPC.
 
         This method deals only with protobufs
         (:class:`gcloud.datastore.datastore_v1_pb2.Key`
@@ -223,6 +222,8 @@ class Connection(connection.Connection):
     def run_query(self, dataset_id, query_pb, namespace=None):
         """Run a query on the Cloud Datastore.
 
+        Maps the ``DatastoreService.RunQuery`` protobuf RPC.
+
         Given a Query protobuf,
         sends a ``runQuery`` request to the Cloud Datastore API
         and returns a list of entity protobufs matching the query.
@@ -277,6 +278,8 @@ class Connection(connection.Connection):
     def begin_transaction(self, dataset_id, serializable=False):
         """Begin a transaction.
 
+        Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.
+
         :type dataset_id: string
         :param dataset_id: The dataset over which to execute the transaction.
         """
@@ -301,6 +304,8 @@ class Connection(connection.Connection):
 
     def commit(self, dataset_id, mutation_pb):
         """Commit dataset mutations in context of current transation (if any).
+
+        Maps the ``DatastoreService.Commit`` protobuf RPC.
 
         :type dataset_id: string
         :param dataset_id: The dataset in which to perform the changes.
@@ -327,6 +332,8 @@ class Connection(connection.Connection):
     def rollback(self, dataset_id):
         """Rollback the connection's existing transaction.
 
+        Maps the ``DatastoreService.Rollback`` protobuf RPC.
+
         Raises a ``ValueError``
         if the connection isn't currently in a transaction.
 
@@ -345,6 +352,8 @@ class Connection(connection.Connection):
     def allocate_ids(self, dataset_id, key_pbs):
         """Obtain backend-generated IDs for a set of keys.
 
+        Maps the ``DatastoreService.AllocateIds`` protobuf RPC.
+
         :type dataset_id: string
         :param dataset_id: The dataset to which the transaction belongs.
 
@@ -362,9 +371,6 @@ class Connection(connection.Connection):
                              datastore_pb.AllocateIdsResponse)
         return list(response.key)
 
-    #
-    #   Entity-related helper methods.
-    #
     def save_entity(self, dataset_id, key_pb, properties):
         """Save an entity to the Cloud Datastore with the provided properties.
 
