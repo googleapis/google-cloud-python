@@ -153,103 +153,9 @@ class Connection(connection.Connection):
         kwargs['connection'] = self
         return Dataset(*args, **kwargs)
 
-    def begin_transaction(self, dataset_id, serializable=False):
-        """Begin a transaction.
-
-        :type dataset_id: string
-        :param dataset_id: The dataset over which to execute the transaction.
-        """
-
-        if self.transaction():
-            raise ValueError('Cannot start a transaction with another already '
-                             'in progress.')
-
-        request = datastore_pb.BeginTransactionRequest()
-
-        if serializable:
-            request.isolation_level = (
-                datastore_pb.BeginTransactionRequest.SERIALIZABLE)
-        else:
-            request.isolation_level = (
-                datastore_pb.BeginTransactionRequest.SNAPSHOT)
-
-        response = self._rpc(dataset_id, 'beginTransaction', request,
-                             datastore_pb.BeginTransactionResponse)
-
-        return response.transaction
-
-    def rollback_transaction(self, dataset_id):
-        """Rollback the connection's existing transaction.
-
-        Raises a ``ValueError``
-        if the connection isn't currently in a transaction.
-
-        :type dataset_id: string
-        :param dataset_id: The dataset to which the transaction belongs.
-        """
-        if not self.transaction() or not self.transaction().id():
-            raise ValueError('No transaction to rollback.')
-
-        request = datastore_pb.RollbackRequest()
-        request.transaction = self.transaction().id()
-        # Nothing to do with this response, so just execute the method.
-        self._rpc(dataset_id, 'rollback', request,
-                  datastore_pb.RollbackResponse)
-
-    def run_query(self, dataset_id, query_pb, namespace=None):
-        """Run a query on the Cloud Datastore.
-
-        Given a Query protobuf,
-        sends a ``runQuery`` request to the Cloud Datastore API
-        and returns a list of entity protobufs matching the query.
-
-        You typically wouldn't use this method directly,
-        in favor of the :func:`gcloud.datastore.query.Query.fetch` method.
-
-        Under the hood, the :class:`gcloud.datastore.query.Query` class
-        uses this method to fetch data:
-
-        >>> from gcloud import datastore
-        >>> connection = datastore.get_connection(email, key_path)
-        >>> dataset = connection.dataset('dataset-id')
-        >>> query = dataset.query().kind('MyKind').filter('property =', 'val')
-
-        Using the `fetch`` method...
-
-        >>> query.fetch()
-        [<list of Entity unmarshalled from protobuf>]
-        >>> query.cursor()
-        <string containing cursor where fetch stopped>
-
-        Under the hood this is doing...
-
-        >>> connection.run_query('dataset-id', query.to_protobuf())
-        [<list of Entity Protobufs>], cursor, more_results, skipped_results
-
-        :type dataset_id: string
-        :param dataset_id: The ID of the dataset over which to run the query.
-
-        :type query_pb: :class:`gcloud.datastore.datastore_v1_pb2.Query`
-        :param query_pb: The Protobuf representing the query to run.
-
-        :type namespace: string
-        :param namespace: The namespace over which to run the query.
-        """
-        request = datastore_pb.RunQueryRequest()
-
-        if namespace:
-            request.partition_id.namespace = namespace
-
-        request.query.CopyFrom(query_pb)
-        response = self._rpc(dataset_id, 'runQuery', request,
-                             datastore_pb.RunQueryResponse)
-        return (
-            [e.entity for e in response.batch.entity_result],
-            response.batch.end_cursor,
-            response.batch.more_results,
-            response.batch.skipped_results,
-        )
-
+    #
+    #   Protobuf RPCs for DatastoreService
+    #
     def lookup(self, dataset_id, key_pbs):
         """Lookup keys from a dataset in the Cloud Datastore.
 
@@ -314,6 +220,85 @@ class Connection(connection.Connection):
 
         return results
 
+    def run_query(self, dataset_id, query_pb, namespace=None):
+        """Run a query on the Cloud Datastore.
+
+        Given a Query protobuf,
+        sends a ``runQuery`` request to the Cloud Datastore API
+        and returns a list of entity protobufs matching the query.
+
+        You typically wouldn't use this method directly,
+        in favor of the :func:`gcloud.datastore.query.Query.fetch` method.
+
+        Under the hood, the :class:`gcloud.datastore.query.Query` class
+        uses this method to fetch data:
+
+        >>> from gcloud import datastore
+        >>> connection = datastore.get_connection(email, key_path)
+        >>> dataset = connection.dataset('dataset-id')
+        >>> query = dataset.query().kind('MyKind').filter('property =', 'val')
+
+        Using the `fetch`` method...
+
+        >>> query.fetch()
+        [<list of Entity unmarshalled from protobuf>]
+        >>> query.cursor()
+        <string containing cursor where fetch stopped>
+
+        Under the hood this is doing...
+
+        >>> connection.run_query('dataset-id', query.to_protobuf())
+        [<list of Entity Protobufs>], cursor, more_results, skipped_results
+
+        :type dataset_id: string
+        :param dataset_id: The ID of the dataset over which to run the query.
+
+        :type query_pb: :class:`gcloud.datastore.datastore_v1_pb2.Query`
+        :param query_pb: The Protobuf representing the query to run.
+
+        :type namespace: string
+        :param namespace: The namespace over which to run the query.
+        """
+        request = datastore_pb.RunQueryRequest()
+
+        if namespace:
+            request.partition_id.namespace = namespace
+
+        request.query.CopyFrom(query_pb)
+        response = self._rpc(dataset_id, 'runQuery', request,
+                             datastore_pb.RunQueryResponse)
+        return (
+            [e.entity for e in response.batch.entity_result],
+            response.batch.end_cursor,
+            response.batch.more_results,
+            response.batch.skipped_results,
+        )
+
+    def begin_transaction(self, dataset_id, serializable=False):
+        """Begin a transaction.
+
+        :type dataset_id: string
+        :param dataset_id: The dataset over which to execute the transaction.
+        """
+
+        if self.transaction():
+            raise ValueError('Cannot start a transaction with another already '
+                             'in progress.')
+
+        request = datastore_pb.BeginTransactionRequest()
+
+        if serializable:
+            request.isolation_level = (
+                datastore_pb.BeginTransactionRequest.SERIALIZABLE)
+        else:
+            request.isolation_level = (
+                datastore_pb.BeginTransactionRequest.SNAPSHOT)
+
+        response = self._rpc(dataset_id, 'beginTransaction', request,
+                             datastore_pb.BeginTransactionResponse)
+
+        return response.transaction
+
     def commit(self, dataset_id, mutation_pb):
         """Commit dataset mutations in context of current transation (if any).
 
@@ -339,6 +324,27 @@ class Connection(connection.Connection):
                              datastore_pb.CommitResponse)
         return response.mutation_result
 
+    def rollback_transaction(self, dataset_id):
+        """Rollback the connection's existing transaction.
+
+        Raises a ``ValueError``
+        if the connection isn't currently in a transaction.
+
+        :type dataset_id: string
+        :param dataset_id: The dataset to which the transaction belongs.
+        """
+        if not self.transaction() or not self.transaction().id():
+            raise ValueError('No transaction to rollback.')
+
+        request = datastore_pb.RollbackRequest()
+        request.transaction = self.transaction().id()
+        # Nothing to do with this response, so just execute the method.
+        self._rpc(dataset_id, 'rollback', request,
+                  datastore_pb.RollbackResponse)
+
+    #
+    #   Entity-related helper methods.
+    #
     def save_entity(self, dataset_id, key_pb, properties):
         """Save an entity to the Cloud Datastore with the provided properties.
 
