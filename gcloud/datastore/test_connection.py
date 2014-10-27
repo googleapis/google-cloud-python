@@ -560,6 +560,72 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, TRANSACTION)
 
+    def test_allocate_ids_empty(self):
+        from gcloud.datastore.connection import datastore_pb
+
+        DATASET_ID = 'DATASET'
+        rsp_pb = datastore_pb.AllocateIdsResponse()
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'allocateIds',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        self.assertEqual(conn.allocate_ids(DATASET_ID, []), [])
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        rq_class = datastore_pb.AllocateIdsRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(list(request.key), [])
+
+    def test_allocate_ids_non_empty(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        before_key_pbs = [
+            Key(path=[{'kind': 'Kind'}]).to_protobuf(),
+            Key(path=[{'kind': 'Kind'}]).to_protobuf(),
+            ]
+        after_key_pbs = [
+            Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf(),
+            Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf(),
+            ]
+        rsp_pb = datastore_pb.AllocateIdsResponse()
+        rsp_pb.key.add().CopyFrom(after_key_pbs[0])
+        rsp_pb.key.add().CopyFrom(after_key_pbs[1])
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'allocateIds',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        self.assertEqual(conn.allocate_ids(DATASET_ID, before_key_pbs),
+                         after_key_pbs)
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        rq_class = datastore_pb.AllocateIdsRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(list(request.key), before_key_pbs)
+
     def test_save_entity_wo_transaction_w_upsert(self):
         from gcloud.datastore.connection import datastore_pb
         from gcloud.datastore.key import Key

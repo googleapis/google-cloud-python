@@ -342,6 +342,26 @@ class Connection(connection.Connection):
         self._rpc(dataset_id, 'rollback', request,
                   datastore_pb.RollbackResponse)
 
+    def allocate_ids(self, dataset_id, key_pbs):
+        """Obtain backend-generated IDs for a set of keys.
+
+        :type dataset_id: string
+        :param dataset_id: The dataset to which the transaction belongs.
+
+        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :param key_pbs: The keys for which the backend should allocate IDs.
+
+        :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :returns: An equal number of keys,  with IDs filled in by the backend.
+        """
+        request = datastore_pb.AllocateIdsRequest()
+        for key_pb in key_pbs:
+            request.key.add().CopyFrom(key_pb)
+        # Nothing to do with this response, so just execute the method.
+        response = self._rpc(dataset_id, 'allocateIds', request,
+                             datastore_pb.AllocateIdsResponse)
+        return list(response.key)
+
     #
     #   Entity-related helper methods.
     #
