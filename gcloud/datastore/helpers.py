@@ -222,6 +222,9 @@ def _set_protobuf_value(value_pb, val):
                :class:`gcloud.datastore.entity.Entity`,
     :param val: The value to be assigned.
     """
+    if val is None:
+        return
+
     attr, val = _get_protobuf_attribute_and_value(val)
     if attr == 'key_value':
         value_pb.key_value.CopyFrom(val)

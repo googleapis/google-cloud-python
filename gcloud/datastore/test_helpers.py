@@ -361,6 +361,20 @@ class Test_set_protobuf_value(unittest2.TestCase):
         value = pb.key_value
         self.assertEqual(value, key.to_protobuf())
 
+    def test_none(self):
+        pb = self._makePB()
+        self._callFUT(pb, None)
+        self.assertEqual(pb.HasField('boolean_value'), False)
+        self.assertEqual(pb.HasField('integer_value'), False)
+        self.assertEqual(pb.HasField('double_value'), False)
+        self.assertEqual(pb.HasField('timestamp_microseconds_value'), False)
+        self.assertEqual(pb.HasField('key_value'), False)
+        self.assertEqual(pb.HasField('blob_key_value'), False)
+        self.assertEqual(pb.HasField('string_value'), False)
+        self.assertEqual(pb.HasField('blob_value'), False)
+        self.assertEqual(pb.HasField('entity_value'), False)
+        self.assertEqual(len(pb.list_value), 0)
+
     def test_bool(self):
         pb = self._makePB()
         self._callFUT(pb, False)
