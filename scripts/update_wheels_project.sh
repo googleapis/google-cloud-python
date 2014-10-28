@@ -44,7 +44,7 @@ echo "${TRAVIS_COMMIT}" > ${FRESH_REPO_DIR}/LATEST_COMMIT
 # Display git status and push LATEST_COMMIT. #
 ##############################################
 cd ${FRESH_REPO_DIR}
-git add ${FRESH_REPO_DIR}/LATEST_COMMIT
+git add LATEST_COMMIT
 
 git status
 # H/T: http://stackoverflow.com/a/13730477/1068170
