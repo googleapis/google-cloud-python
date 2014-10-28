@@ -7,6 +7,8 @@ demo/test code using an rc file (TEST_RC) which allows more style
 violations (hence it has a reduced number of style checks).
 """
 
+import ConfigParser
+import copy
 import subprocess
 import sys
 
@@ -18,6 +20,39 @@ IGNORED_FILES = [
 ]
 PRODUCTION_RC = 'pylintrc_default'
 TEST_RC = 'pylintrc_reduced'
+TEST_RC_MODS = 'pylintrc_test_modifications'
+
+
+def read_config(filename):
+    """Reads pylintrc config onto native ConfigParser object."""
+    config = ConfigParser.ConfigParser()
+    with open(filename, 'r') as file_obj:
+        config.readfp(file_obj)
+    return config
+
+
+def make_test_rc(base_rc_filename, modifications_rc_filename,
+                 target_filename):
+    """Combines a base rc and modifications into single file."""
+    main_cfg = read_config(base_rc_filename)
+    modification_cfg = read_config(modifications_rc_filename)
+
+    # Create fresh config for test, which must extend production.
+    test_cfg = ConfigParser.ConfigParser()
+
+    test_cfg._sections = copy.deepcopy(main_cfg._sections)
+    for section, opts in modification_cfg._sections.items():
+        curr_section = test_cfg._sections.setdefault(
+            section, modification_cfg._dict())
+        for opt, opt_val in opts.items():
+            if opt in curr_section:
+                if curr_section[opt] != opt_val:
+                    curr_section[opt] = ', '.join([curr_section[opt], opt_val])
+            else:
+                curr_section[opt] = opt_val
+
+    with open(target_filename, 'w') as file_obj:
+        test_cfg.write(file_obj)
 
 
 def valid_filename(filename):
@@ -74,6 +109,7 @@ def lint_fileset(filenames, rcfile, description):
 
 def main():
     """Script entry point. Lints both sets of files."""
+    make_test_rc(PRODUCTION_RC, TEST_RC_MODS, TEST_RC)
     library_files, non_library_files = get_python_files()
     lint_fileset(library_files, PRODUCTION_RC, 'library code')
     lint_fileset(non_library_files, TEST_RC, 'test and demo code')

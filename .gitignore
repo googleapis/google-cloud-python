@@ -45,3 +45,6 @@ coverage.xml
 
 # Regression test environment variables.
 regression/local_test_setup
+
+# Make sure a generated file isn't accidentally committed.
+pylintrc_reduced
