@@ -112,7 +112,15 @@
 
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset: The dataset ID assigned by back-end for the key.</span>
-<span class="sd">                        Leave as None for newly-created keys.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">           The key&#39;s ``_dataset_id`` field must be None for keys created</span>
+<span class="sd">           by application code.  The</span>
+<span class="sd">           :func:`gcloud.datastore.helpers.key_from_protobuf` factory</span>
+<span class="sd">           will be set the field to an appropriate value for keys returned</span>
+<span class="sd">           from the datastore backend.  The application **must** treat any</span>
+<span class="sd">           value set by the back-end as opaque.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span> <span class="ow">or</span> <span class="p">[{</span><span class="s">&#39;kind&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">}]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
