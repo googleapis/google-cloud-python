@@ -18,7 +18,7 @@ set -ev
 
 if [[ "${TRAVIS_BRANCH}" == "master" ]] && \
        [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
-  # Generate new set of json files in docs/json/master.
+  # Build new docset in docs/_build from master.
   tox -e docs
   git submodule add -b gh-pages \
       "https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME}" \
