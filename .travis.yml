@@ -1,15 +1,13 @@
 language: python
-# command to install dependencies
+
 install:
-  - pip install tox
-  - pip install coveralls
-# run tests
+  - scripts/custom_pip_install.sh tox
+
 script:
   - tox -e py26
   - tox -e py27
   - tox -e lint
   - tox -e regression
-after_success:
-  - tox -e cover
-  - coveralls
   - scripts/update_docs.sh
+after_success:
+  - tox -e coveralls
