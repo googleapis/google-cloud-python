@@ -363,6 +363,25 @@ class Test_set_protobuf_value(unittest2.TestCase):
         value = pb.key_value
         self.assertEqual(value, key.to_protobuf())
 
+    def test_none(self):
+        from gcloud.datastore.entity import Entity
+
+        entity = Entity()
+        pb = self._makePB()
+
+        self._callFUT(pb, False)
+        self._callFUT(pb, 3.1415926)
+        self._callFUT(pb, 42)
+        self._callFUT(pb, (1 << 63) - 1)
+        self._callFUT(pb, 'str')
+        self._callFUT(pb, b'str')
+        self._callFUT(pb, u'str')
+        self._callFUT(pb, entity)
+        self._callFUT(pb, [u'a', 0, 3.14])
+
+        self._callFUT(pb, None)
+        self.assertEqual(len(pb.ListFields()), 0)
+
     def test_bool(self):
         pb = self._makePB()
         self._callFUT(pb, False)
