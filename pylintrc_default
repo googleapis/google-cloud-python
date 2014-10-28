@@ -24,11 +24,7 @@ ignore = datastore_v1_pb2.py
 [MESSAGES CONTROL]
 disable = I, protected-access, maybe-no-member, no-member,
           redefined-builtin, star-args, missing-format-attribute,
-          similarities, arguments-differ,
-
-
-
-
+          similarities, arguments-differ
 
 [REPORTS]
 reports = no

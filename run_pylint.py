@@ -7,6 +7,8 @@ demo/test code using an rc file (TEST_RC) which allows more style
 violations (hence it has a reduced number of style checks).
 """
 
+import ConfigParser
+import copy
 import subprocess
 import sys
 
@@ -18,6 +20,52 @@ IGNORED_FILES = [
 ]
 PRODUCTION_RC = 'pylintrc_default'
 TEST_RC = 'pylintrc_reduced'
+TEST_DISABLED_MESSAGES = [
+    'invalid-name',
+    'missing-docstring',
+    'too-many-public-methods',
+    'too-few-public-methods',
+    'attribute-defined-outside-init',
+    'unbalanced-tuple-unpacking',
+    'too-many-locals',
+    'exec-used',
+    'no-init',
+    'no-self-use',
+]
+TEST_RC_ADDITIONS = {
+    'MESSAGES CONTROL': {
+        'disable': ', '.join(TEST_DISABLED_MESSAGES),
+    },
+}
+
+
+def read_config(filename):
+    """Reads pylintrc config onto native ConfigParser object."""
+    config = ConfigParser.ConfigParser()
+    with open(filename, 'r') as file_obj:
+        config.readfp(file_obj)
+    return config
+
+
+def make_test_rc(base_rc_filename, additions_dict, target_filename):
+    """Combines a base rc and test additions into single file."""
+    main_cfg = read_config(base_rc_filename)
+
+    # Create fresh config for test, which must extend production.
+    test_cfg = ConfigParser.ConfigParser()
+    test_cfg._sections = copy.deepcopy(main_cfg._sections)
+
+    for section, opts in additions_dict.items():
+        curr_section = test_cfg._sections.setdefault(
+            section, test_cfg._dict())
+        for opt, opt_val in opts.items():
+            curr_val = curr_section.get(opt)
+            if curr_val is None:
+                raise KeyError('Expected to be adding to existing option.')
+            curr_section[opt] = '%s, %s' % (curr_val, opt_val)
+
+    with open(target_filename, 'w') as file_obj:
+        test_cfg.write(file_obj)
 
 
 def valid_filename(filename):
@@ -74,6 +122,7 @@ def lint_fileset(filenames, rcfile, description):
 
 def main():
     """Script entry point. Lints both sets of files."""
+    make_test_rc(PRODUCTION_RC, TEST_RC_ADDITIONS, TEST_RC)
     library_files, non_library_files = get_python_files()
     lint_fileset(library_files, PRODUCTION_RC, 'library code')
     lint_fileset(non_library_files, TEST_RC, 'test and demo code')
