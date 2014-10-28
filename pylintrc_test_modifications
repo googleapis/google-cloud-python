@@ -1,8 +1,0 @@
-# This config is intended to be used for test code
-# and other non-production code, like demos.
-
-[MESSAGES CONTROL]
-disable = invalid-name, missing-docstring, too-many-public-methods,
-          too-few-public-methods, attribute-defined-outside-init,
-          unbalanced-tuple-unpacking, too-many-locals, exec-used,
-          no-init, no-self-use
