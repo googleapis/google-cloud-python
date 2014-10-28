@@ -24,14 +24,31 @@ class TestDatastore(unittest2.TestCase):
                 entity.delete()
 
 
+class TestDatastoreAllocateIDs(TestDatastore):
+
+    def test_allocate_ids(self):
+        incomplete_key = datastore.key.Key(path=[{'kind': 'Kind'}])
+        incomplete_key_pb = incomplete_key.to_protobuf()
+        incomplete_key_pbs = [incomplete_key_pb] * 10
+
+        connection = self.dataset.connection()
+        allocated_key_pbs = connection.allocate_ids(self.dataset.id(),
+                                                    incomplete_key_pbs)
+        allocated_keys = [datastore.helpers.key_from_protobuf(key_pb)
+                          for key_pb in allocated_key_pbs]
+        self.assertEqual(len(allocated_keys), 10)
+        for key in allocated_keys:
+            self.assertFalse(key.is_partial())
+
+
 class TestDatastoreSave(TestDatastore):
 
     def _get_post(self, name=None, key_id=None, post_content=None):
         post_content = post_content or {
-            'title': 'How to make the perfect pizza in your grill',
-            'tags': ['pizza', 'grill'],
+            'title': u'How to make the perfect pizza in your grill',
+            'tags': [u'pizza', u'grill'],
             'publishedAt': datetime.datetime(2001, 1, 1, tzinfo=pytz.utc),
-            'author': 'Silvano',
+            'author': u'Silvano',
             'isDraft': False,
             'wordCount': 400,
             'rating': 5.0,
@@ -90,10 +107,10 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity1)
 
             second_post_content = {
-                'title': 'How to make the perfect homemade pasta',
-                'tags': ['pasta', 'homemade'],
+                'title': u'How to make the perfect homemade pasta',
+                'tags': [u'pasta', u'homemade'],
                 'publishedAt': datetime.datetime(2001, 1, 1),
-                'author': 'Silvano',
+                'author': u'Silvano',
                 'isDraft': False,
                 'wordCount': 450,
                 'rating': 4.5,
@@ -110,6 +127,29 @@ class TestDatastoreSave(TestDatastore):
     def test_empty_kind(self):
         posts = self.dataset.query('Post').limit(2).fetch()
         self.assertEqual(posts, [])
+
+
+class TestDatastoreSaveKeys(TestDatastore):
+
+    def test_save_key_self_reference(self):
+        key = datastore.key.Key.from_path('Person', 'name')
+        entity = self.dataset.entity(kind=None).key(key)
+        entity['fullName'] = u'Full name'
+        entity['linkedTo'] = key  # Self reference.
+
+        entity.save()
+        self.case_entities_to_delete.append(entity)
+
+        query = self.dataset.query('Person').filter(
+            'linkedTo =', key).limit(2)
+
+        stored_persons = query.fetch()
+        self.assertEqual(len(stored_persons), 1)
+
+        stored_person = stored_persons[0]
+        self.assertEqual(stored_person['fullName'], entity['fullName'])
+        self.assertEqual(stored_person.key().path(), key.path())
+        self.assertEqual(stored_person.key().namespace(), key.namespace())
 
 
 class TestDatastoreQuery(TestDatastore):
@@ -286,3 +326,24 @@ class TestDatastoreQuery(TestDatastore):
 
         self.assertEqual(entities[0]['name'], 'Catelyn')
         self.assertEqual(entities[1]['name'], 'Arya')
+
+
+class TestDatastoreTransaction(TestDatastore):
+
+    def test_transaction(self):
+        key = datastore.key.Key.from_path('Company', 'Google')
+        entity = self.dataset.entity(kind=None).key(key)
+        entity['url'] = u'www.google.com'
+
+        with self.dataset.transaction():
+            retrieved_entity = self.dataset.get_entity(key)
+            if retrieved_entity is None:
+                entity.save()
+                self.case_entities_to_delete.append(entity)
+
+        # This will always return after the transaction.
+        retrieved_entity = self.dataset.get_entity(key)
+        retrieved_dict = dict(retrieved_entity.items())
+        entity_dict = dict(entity.items())
+        self.assertEqual(retrieved_dict, entity_dict)
+        retrieved_entity.delete()
