@@ -240,6 +240,32 @@ can build the docs via::
 
    $ tox -e docs
 
+Travis Configuration and Build Optimizations
+--------------------------------------------
+
+All build scripts in the ``.travis.yml`` configuration file which have
+Python dependencies are specified in the ``tox.ini`` configuration.
+They are executed in the Travis build via ``tox -e {ENV}`` where
+``{ENV}`` is the environment being tested.
+
+By enumerating all Python dependencies in the ``tox`` configuration,
+we can use our custom ``gcloud-python-wheels``
+`wheelhouse <https://github.com/GoogleCloudPlatform/gcloud-python-wheels>`__
+to speed up builds. This project builds and stores pre-built Python
+`wheels <http://pythonwheels.com>`__ for every Python dependency our library
+and tests have.
+
+If new ``tox`` environments are added to be run in a Travis build, they
+should either be:
+
+- listed in ``[tox].envlist`` as a default environment
+
+- added to the list in the
+  `Travis environment variable <http://docs.travis-ci.com/user/environment-variables/#Using-Settings>`__
+  ``EXTRA_TOX_ENVS``. The current value is::
+
+    EXTRA_TOX_ENVS="coveralls regression"
+
 Contributor License Agreements
 ------------------------------
 
