@@ -247,9 +247,35 @@ in method arguments, however should be capable of returning advanced types.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="gcloud.datastore.connection.Connection.allocate_ids">
+<code class="descname">allocate_ids</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pbs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.allocate_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.allocate_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain backend-generated IDs for a set of keys.</p>
+<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.AllocateIds</span></code> protobuf RPC.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset to which the transaction belongs.</li>
+<li><strong>key_pbs</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>) &#8211; The keys for which the backend should allocate IDs.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An equal number of keys,  with IDs filled in by the backend.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.datastore.connection.Connection.begin_transaction">
 <code class="descname">begin_transaction</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>serializable=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.begin_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.begin_transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Begin a transaction.</p>
+<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.BeginTransaction</span></code> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -291,6 +317,7 @@ You shouldn&#8217;t have to provide this.</li>
 <dt id="gcloud.datastore.connection.Connection.commit">
 <code class="descname">commit</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>mutation_pb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Commit dataset mutations in context of current transation (if any).</p>
+<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Commit</span></code> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -365,6 +392,7 @@ For example, it&#8217;s used under the hood in the
 <dt id="gcloud.datastore.connection.Connection.lookup">
 <code class="descname">lookup</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pbs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.lookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lookup keys from a dataset in the Cloud Datastore.</p>
+<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Lookup</span></code> protobuf RPC.</p>
 <p>This method deals only with protobufs
 (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>
 and
@@ -432,9 +460,10 @@ this will return an empty list.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.connection.Connection.rollback_transaction">
-<code class="descname">rollback_transaction</code><span class="sig-paren">(</span><em>dataset_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.rollback_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.rollback_transaction" title="Permalink to this definition">¶</a></dt>
+<dt id="gcloud.datastore.connection.Connection.rollback">
+<code class="descname">rollback</code><span class="sig-paren">(</span><em>dataset_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.rollback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rollback the connection&#8217;s existing transaction.</p>
+<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Rollback</span></code> protobuf RPC.</p>
 <p>Raises a <code class="docutils literal"><span class="pre">ValueError</span></code>
 if the connection isn&#8217;t currently in a transaction.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -451,6 +480,7 @@ if the connection isn&#8217;t currently in a transaction.</p>
 <dt id="gcloud.datastore.connection.Connection.run_query">
 <code class="descname">run_query</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>query_pb</em>, <em>namespace=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.run_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.run_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a query on the Cloud Datastore.</p>
+<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.RunQuery</span></code> protobuf RPC.</p>
 <p>Given a Query protobuf,
 sends a <code class="docutils literal"><span class="pre">runQuery</span></code> request to the Cloud Datastore API
 and returns a list of entity protobufs matching the query.</p>
@@ -518,7 +548,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7fae0ce65170&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f71eb88d240&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1232,7 +1262,7 @@ without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&gt;=': 4, '&lt;=': 2, '&gt;': 3, '&lt;': 1, '=': 5}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'&gt;=': 4, '&lt;=': 2, '&gt;': 3, '=': 5, '&lt;': 1}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
