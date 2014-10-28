@@ -14,8 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [[ -d ${WHEELHOUSE} ]]; then
-    pip install --no-index --find-links=${WHEELHOUSE} "$@"
+set -ev
+
+##############################################
+# Perform actions if we are updating master. #
+##############################################
+if [[ "${TRAVIS_BRANCH}" == "master" ]] && \
+       [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
+  scripts/update_docs.sh
+  scripts/update_wheels_project.sh
+else
+  echo "Not in master on a non-pull request. Doing nothing."
 fi
-# Update if the locally cached wheels are out-of-date.
-pip install --upgrade "$@"
