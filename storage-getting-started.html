@@ -107,7 +107,7 @@
             
   <div class="section" id="getting-started-with-cloud-storage">
 <h1>Getting started with Cloud Storage<a class="headerlink" href="#getting-started-with-cloud-storage" title="Permalink to this headline">¶</a></h1>
-<p>This tutorial focuses on using <code class="docutils literal"><span class="pre">gcloud</span></code> to access
+<p>This tutorial focuses on using <tt class="docutils literal"><span class="pre">gcloud</span></tt> to access
 Google Cloud Storage.
 We&#8217;ll go through the basic concepts,
 how to operate on buckets and keys,
@@ -138,7 +138,7 @@ that starts with my initials,
 then a hyphen,
 then a unique identifier for the work I&#8217;m doing.
 For this example,
-you might choose <code class="docutils literal"><span class="pre">&lt;initials&gt;-quickstart</span></code>.</p>
+you might choose <tt class="docutils literal"><span class="pre">&lt;initials&gt;-quickstart</span></tt>.</p>
 </li>
 </ul>
 <p>Then click OK
@@ -190,7 +190,7 @@ download a private key file.
 <strong>Do not lose this.</strong></p>
 </li>
 <li><p class="first"><strong>Rename your key</strong> something shorter.
-I like to name the key <code class="docutils literal"><span class="pre">&lt;project</span> <span class="pre">name&gt;.p12</span></code>.</p>
+I like to name the key <tt class="docutils literal"><span class="pre">&lt;project</span> <span class="pre">name&gt;.p12</span></tt>.</p>
 <p>This is like your password for the account.</p>
 </li>
 <li><p class="first"><strong>Copy the long weird e-mail address</strong>
@@ -211,7 +211,7 @@ is to create a connection to the service:</p>
 </pre></div>
 </div>
 <p>We&#8217;re going to use this
-<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">connection</span></code></a> object
+<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">connection</span></tt></a> object
 for the rest of this guide.</p>
 </div>
 <div class="section" id="creating-a-bucket">
@@ -249,13 +249,6 @@ in a single bucket.</p>
 <span class="go">  &quot;message&quot;: &quot;Sorry, that name is not available. Please try a different one.&quot;</span>
 <span class="go"> }</span>
 <span class="go">}</span>
-<span class="gt">Traceback (most recent call last):</span>
-  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
-  File <span class="nb">&quot;gcloud/storage/connection.py&quot;</span>, line <span class="m">340</span>, in <span class="n">create_bucket</span>
-    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
-  File <span class="nb">&quot;gcloud/storage/connection.py&quot;</span>, line <span class="m">224</span>, in <span class="n">api_request</span>
-    <span class="k">raise</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
-<span class="gr">gcloud.storage.exceptions.ConnectionError</span>: <span class="n">{&#39;status&#39;: &#39;409&#39;, &#39;alternate-protocol&#39;: &#39;443:quic&#39;, &#39;content-length&#39;: &#39;271&#39;, &#39;x-xss-protection&#39;: &#39;1; mode=block&#39;, &#39;x-content-type-options&#39;: &#39;nosniff&#39;, &#39;expires&#39;: &#39;Sat, 15 Mar 2014 19:19:47 GMT&#39;, &#39;server&#39;: &#39;GSE&#39;, &#39;-content-encoding&#39;: &#39;gzip&#39;, &#39;cache-control&#39;: &#39;private, max-age=0&#39;, &#39;date&#39;: &#39;Sat, 15 Mar 2014 19:19:47 GMT&#39;, &#39;x-frame-options&#39;: &#39;SAMEORIGIN&#39;, &#39;content-type&#39;: &#39;application/json; charset=UTF-8&#39;}{</span>
 </pre></div>
 </div>
 <p><strong>Whoops!</strong>
@@ -275,24 +268,24 @@ so you can put whatever format of data you want.
 The naming of your files is also arbitrary,
 however the Cloud Storage online file browser
 tries to make it feel a bit like a file system
-by recognizing forward-slashes (<code class="docutils literal"><span class="pre">/</span></code>)
+by recognizing forward-slashes (<tt class="docutils literal"><span class="pre">/</span></tt>)
 so if you want to group data into &#8220;directories&#8221;,
 you can do that.</p>
 <p>The fundamental container for a file in Cloud Storage
 is called an Object,
-however <code class="docutils literal"><span class="pre">gcloud</span></code> uses the term <code class="docutils literal"><span class="pre">Key</span></code>
-to avoid confusion between <code class="docutils literal"><span class="pre">object</span></code> and <code class="docutils literal"><span class="pre">Object</span></code>.</p>
+however <tt class="docutils literal"><span class="pre">gcloud</span></tt> uses the term <tt class="docutils literal"><span class="pre">Key</span></tt>
+to avoid confusion between <tt class="docutils literal"><span class="pre">object</span></tt> and <tt class="docutils literal"><span class="pre">Object</span></tt>.</p>
 <p>If you want to set some data,
-you just create a <code class="docutils literal"><span class="pre">Key</span></code> inside your bucket
+you just create a <tt class="docutils literal"><span class="pre">Key</span></tt> inside your bucket
 and store your data inside the key:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="s">&#39;greeting.txt&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;Hello world!&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.new_key" title="gcloud.storage.bucket.Bucket.new_key"><code class="xref py py-func docutils literal"><span class="pre">new_key</span></code></a>
-creates a <a class="reference internal" href="storage-api.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> object locally
+<p><a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.new_key" title="gcloud.storage.bucket.Bucket.new_key"><tt class="xref py py-func docutils literal"><span class="pre">new_key</span></tt></a>
+creates a <a class="reference internal" href="storage-api.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> object locally
 and
-<a class="reference internal" href="storage-api.html#gcloud.storage.key.Key.set_contents_from_string" title="gcloud.storage.key.Key.set_contents_from_string"><code class="xref py py-func docutils literal"><span class="pre">set_contents_from_string</span></code></a>
+<a class="reference internal" href="storage-api.html#gcloud.storage.key.Key.set_contents_from_string" title="gcloud.storage.key.Key.set_contents_from_string"><tt class="xref py py-func docutils literal"><span class="pre">set_contents_from_string</span></tt></a>
 allows you to put a string into the key.</p>
 <p>Now we can test if it worked:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="s">&#39;greeting.txt&#39;</span><span class="p">)</span>
@@ -325,20 +318,20 @@ That&#8217;s pretty simple too:</p>
 </pre></div>
 </div>
 <p>Notice that we&#8217;re using
-<a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.get_key" title="gcloud.storage.bucket.Bucket.get_key"><code class="xref py py-func docutils literal"><span class="pre">get_key</span></code></a>
+<a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.get_key" title="gcloud.storage.bucket.Bucket.get_key"><tt class="xref py py-func docutils literal"><span class="pre">get_key</span></tt></a>
 to retrieve a key we know exists remotely.
-If the key doesn&#8217;t exist, it will return <code class="docutils literal"><span class="pre">None</span></code>.</p>
+If the key doesn&#8217;t exist, it will return <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal"><span class="pre">get_key</span></code> is <strong>not</strong> retrieving the entire object&#8217;s data.</p>
+<p class="last"><tt class="docutils literal"><span class="pre">get_key</span></tt> is <strong>not</strong> retrieving the entire object&#8217;s data.</p>
 </div>
 <p>If you want to &#8220;get-or-create&#8221; the key
 (that is, overwrite it if it already exists),
-you can use <a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.new_key" title="gcloud.storage.bucket.Bucket.new_key"><code class="xref py py-func docutils literal"><span class="pre">new_key</span></code></a>.
+you can use <a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.new_key" title="gcloud.storage.bucket.Bucket.new_key"><tt class="xref py py-func docutils literal"><span class="pre">new_key</span></tt></a>.
 However, keep in mind, the key is not created
 until you store some data inside of it.</p>
 <p>If you want to check whether a key exists,
-you can use the <code class="docutils literal"><span class="pre">in</span></code> operator in Python:</p>
+you can use the <tt class="docutils literal"><span class="pre">in</span></tt> operator in Python:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&#39;kitten.jpg&#39;</span> <span class="ow">in</span> <span class="n">bucket</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&#39;does-not-exist&#39;</span> <span class="ow">in</span> <span class="n">bucket</span>
@@ -349,14 +342,14 @@ you can use the <code class="docutils literal"><span class="pre">in</span></code
 <div class="section" id="accessing-a-bucket">
 <h2>Accessing a bucket<a class="headerlink" href="#accessing-a-bucket" title="Permalink to this headline">¶</a></h2>
 <p>If you already have a bucket,
-use <a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection.get_bucket" title="gcloud.storage.connection.Connection.get_bucket"><code class="xref py py-func docutils literal"><span class="pre">get_bucket</span></code></a>
+use <a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection.get_bucket" title="gcloud.storage.connection.Connection.get_bucket"><tt class="xref py py-func docutils literal"><span class="pre">get_bucket</span></tt></a>
 to retrieve the bucket object:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If you want to get all the keys in the bucket,
 you can use
-<a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.get_all_keys" title="gcloud.storage.bucket.Bucket.get_all_keys"><code class="xref py py-func docutils literal"><span class="pre">get_all_keys</span></code></a>:</p>
+<a class="reference internal" href="storage-api.html#gcloud.storage.bucket.Bucket.get_all_keys" title="gcloud.storage.bucket.Bucket.get_all_keys"><tt class="xref py py-func docutils literal"><span class="pre">get_all_keys</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">keys</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_keys</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -370,7 +363,7 @@ you can use the bucket itself as an iterator:</p>
 <div class="section" id="deleting-a-bucket">
 <h2>Deleting a bucket<a class="headerlink" href="#deleting-a-bucket" title="Permalink to this headline">¶</a></h2>
 <p>You can delete a bucket using the
-<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection.delete_bucket" title="gcloud.storage.connection.Connection.delete_bucket"><code class="xref py py-func docutils literal"><span class="pre">delete_bucket</span></code></a>
+<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection.delete_bucket" title="gcloud.storage.connection.Connection.delete_bucket"><tt class="xref py py-func docutils literal"><span class="pre">delete_bucket</span></tt></a>
 method:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 </pre></div>
@@ -384,9 +377,9 @@ otherwise you&#8217;ll get an error.</p>
 </div>
 <div class="section" id="listing-available-buckets">
 <h2>Listing available buckets<a class="headerlink" href="#listing-available-buckets" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a>
+<p>The <a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">Connection</span></tt></a>
 object itself is iterable,
-so you can loop over it, or call <code class="docutils literal"><span class="pre">list</span></code> on it to get a list object:</p>
+so you can loop over it, or call <tt class="docutils literal"><span class="pre">list</span></tt> on it to get a list object:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="nb">list</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
@@ -409,7 +402,7 @@ all users, and all authenticated users.</p>
 </pre></div>
 </div>
 <p>For more detail on access control,
-see <a class="reference internal" href="storage-api.html#module-gcloud.storage.acl" title="gcloud.storage.acl"><code class="xref py py-mod docutils literal"><span class="pre">gcloud.storage.acl</span></code></a>.</p>
+see <a class="reference internal" href="storage-api.html#module-gcloud.storage.acl" title="gcloud.storage.acl"><tt class="xref py py-mod docutils literal"><span class="pre">gcloud.storage.acl</span></tt></a>.</p>
 </div>
 </div>
 
@@ -424,7 +417,7 @@ see <a class="reference internal" href="storage-api.html#module-gcloud.storage.a
     <footer id="gc-footer" class="footer" role="contentinfo">
     <div id="gc-copyright">
         &copy; Copyright 2014, JJ Geewax.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
       </div>
     </footer>
   </body>

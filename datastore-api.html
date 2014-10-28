@@ -65,7 +65,7 @@
   <ul><li><a href="index.html">gCloud Documentation</a></li></ul>
   <ul>
 <li><a class="reference internal" href="#">Cloud Datastore</a><ul>
-<li><a class="reference internal" href="#module-gcloud.datastore.__init__"><code class="docutils literal"><span class="pre">gcloud.datastore</span></code></a></li>
+<li><a class="reference internal" href="#module-gcloud.datastore.__init__"><tt class="docutils literal"><span class="pre">gcloud.datastore</span></tt></a></li>
 <li><a class="reference internal" href="#module-gcloud.datastore.connection">Connections</a></li>
 <li><a class="reference internal" href="#module-gcloud.datastore.dataset">Datasets</a></li>
 <li><a class="reference internal" href="#module-gcloud.datastore.entity">Entities</a></li>
@@ -106,7 +106,7 @@
   <div class="section" id="cloud-datastore">
 <h1>Cloud Datastore<a class="headerlink" href="#cloud-datastore" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-gcloud.datastore.__init__">
-<span id="gcloud-datastore"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">gcloud.datastore</span></code><a class="headerlink" href="#module-gcloud.datastore.__init__" title="Permalink to this headline">¶</a></h2>
+<span id="gcloud-datastore"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gcloud.datastore</span></tt><a class="headerlink" href="#module-gcloud.datastore.__init__" title="Permalink to this headline">¶</a></h2>
 <p>Shortcut methods for getting set up with Google Cloud Datastore.</p>
 <p>You&#8217;ll typically use these to get started with the API:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
@@ -120,30 +120,30 @@
 </div>
 <p>The main concepts with this API are:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a>
+<li><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>
 which represents a connection between your machine and the Cloud Datastore
 API.</li>
-<li><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>
+<li><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>
 which represents a particular dataset
 (akin to a database name in relational database world).</li>
-<li><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a>
+<li><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>
 which represents a single entity in the datastore
 (akin to a row in relational database world).</li>
-<li><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>
+<li><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>
 which represents a pointer to a particular entity in the datastore
 (akin to a unique identifier in relational database world).</li>
-<li><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></code></a>
+<li><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a>
 which represents a lookup or search over the rows in the datastore.</li>
 </ul>
 <dl class="data">
 <dt id="gcloud.datastore.__init__.SCOPE">
-<code class="descclassname">gcloud.datastore.__init__.</code><code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/datastore ', 'https://www.googleapis.com/auth/userinfo.email')</em><a class="headerlink" href="#gcloud.datastore.__init__.SCOPE" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">SCOPE</tt><em class="property"> = ('https://www.googleapis.com/auth/datastore ', 'https://www.googleapis.com/auth/userinfo.email')</em><a class="headerlink" href="#gcloud.datastore.__init__.SCOPE" title="Permalink to this definition">¶</a></dt>
 <dd><p>The scope required for authenticating as a Cloud Datastore consumer.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="gcloud.datastore.__init__.get_connection">
-<code class="descclassname">gcloud.datastore.__init__.</code><code class="descname">get_connection</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_connection" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_connection</tt><big>(</big><em>client_email</em>, <em>private_key_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_connection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shortcut method to establish a connection to the Cloud Datastore.</p>
 <p>Use this if you are going to access several datasets
 with the same set of credentials (unlikely):</p>
@@ -165,7 +165,7 @@ account).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A connection defined with the proper credentials.</p>
@@ -177,7 +177,7 @@ account).</li>
 
 <dl class="function">
 <dt id="gcloud.datastore.__init__.get_dataset">
-<code class="descclassname">gcloud.datastore.__init__.</code><code class="descname">get_dataset</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>client_email</em>, <em>private_key_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_dataset" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_dataset</tt><big>(</big><em>dataset_id</em>, <em>client_email</em>, <em>private_key_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Establish a connection to a particular dataset in the Cloud Datastore.</p>
 <p>This is a shortcut method for creating a connection and using it
 to connect to a dataset.</p>
@@ -205,7 +205,7 @@ account).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dataset with a connection using the provided credentials.</p>
@@ -221,8 +221,8 @@ account).</li>
 <p>Connections to gcloud datastore API servers.</p>
 <dl class="class">
 <dt id="gcloud.datastore.connection.Connection">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>credentials=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="common-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></p>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="common-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></a></p>
 <p>A connection to the Google Cloud Datastore via the Protobuf API.</p>
 <p>This class should understand only the basic types (and protobufs)
 in method arguments, however should be capable of returning advanced types.</p>
@@ -230,38 +230,38 @@ in method arguments, however should be capable of returning advanced types.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code>) &#8211; The OAuth2 Credentials to use for this connection.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt>) &#8211; The OAuth2 Credentials to use for this connection.</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.connection.Connection.API_URL_TEMPLATE">
-<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base}/datastore/{api_version}/datasets/{dataset_id}/{method}'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">API_URL_TEMPLATE</tt><em class="property"> = '{api_base}/datastore/{api_version}/datasets/{dataset_id}/{method}'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>A template for the URL of a particular API call.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.datastore.connection.Connection.API_VERSION">
-<code class="descname">API_VERSION</code><em class="property"> = 'v1beta2'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_VERSION" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">API_VERSION</tt><em class="property"> = 'v1beta2'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_VERSION" title="Permalink to this definition">¶</a></dt>
 <dd><p>The version of the API, used in building the API call&#8217;s URL.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.allocate_ids">
-<code class="descname">allocate_ids</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pbs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.allocate_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.allocate_ids" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">allocate_ids</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.allocate_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.allocate_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Obtain backend-generated IDs for a set of keys.</p>
-<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.AllocateIds</span></code> protobuf RPC.</p>
+<p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.AllocateIds</span></tt> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset to which the transaction belongs.</li>
-<li><strong>key_pbs</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>) &#8211; The keys for which the backend should allocate IDs.</li>
+<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The keys for which the backend should allocate IDs.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An equal number of keys,  with IDs filled in by the backend.</p>
@@ -273,9 +273,9 @@ in method arguments, however should be capable of returning advanced types.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.begin_transaction">
-<code class="descname">begin_transaction</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>serializable=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.begin_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.begin_transaction" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_transaction</tt><big>(</big><em>dataset_id</em>, <em>serializable=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.begin_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.begin_transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Begin a transaction.</p>
-<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.BeginTransaction</span></code> protobuf RPC.</p>
+<p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.BeginTransaction</span></tt> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -288,7 +288,7 @@ in method arguments, however should be capable of returning advanced types.</p>
 
 <dl class="classmethod">
 <dt id="gcloud.datastore.connection.Connection.build_api_url">
-<em class="property">classmethod </em><code class="descname">build_api_url</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>method</em>, <em>base_url=None</em>, <em>api_version=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.build_api_url" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><tt class="descname">build_api_url</tt><big>(</big><em>dataset_id</em>, <em>method</em>, <em>base_url=None</em>, <em>api_version=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.build_api_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Construct the URL for a particular API call.</p>
 <p>This method is used internally
 to come up with the URL
@@ -315,20 +315,20 @@ You shouldn&#8217;t have to provide this.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.commit">
-<code class="descname">commit</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>mutation_pb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">commit</tt><big>(</big><em>dataset_id</em>, <em>mutation_pb</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Commit dataset mutations in context of current transation (if any).</p>
-<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Commit</span></code> protobuf RPC.</p>
+<p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.Commit</span></tt> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset in which to perform the changes.</li>
-<li><strong>mutation_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></code>.) &#8211; The protobuf for the mutations being saved.</li>
+<li><strong>mutation_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt>.) &#8211; The protobuf for the mutations being saved.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.MutationResult</span></code>.</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.MutationResult</span></tt>.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns&#8217;:</th><td class="field-body"><p class="first last">the result protobuf for the mutation.</p>
@@ -340,16 +340,16 @@ You shouldn&#8217;t have to provide this.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.dataset">
-<code class="descname">dataset</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.dataset" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dataset</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for Dataset objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> &#8211; All args and kwargs will be passed along to the
-<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a> initializer.</td>
+<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a> initializer.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dataset object that will use this connection as
 its transport.</td>
@@ -360,25 +360,25 @@ its transport.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.delete_entities">
-<code class="descname">delete_entities</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pbs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.delete_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.delete_entities" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">delete_entities</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.delete_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.delete_entities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete keys from a dataset in the Cloud Datastore.</p>
 <p>This method deals only with
-<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code> protobufs
+<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt> protobufs
 and not with any of the other abstractions.
 For example, it&#8217;s used under the hood in the
-<a class="reference internal" href="#gcloud.datastore.entity.Entity.delete" title="gcloud.datastore.entity.Entity.delete"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.entity.Entity.delete()</span></code></a> method.</p>
+<a class="reference internal" href="#gcloud.datastore.entity.Entity.delete" title="gcloud.datastore.entity.Entity.delete"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.entity.Entity.delete()</span></tt></a> method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset from which to delete the keys.</li>
-<li><strong>key_pbs</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>) &#8211; The keys to delete from the datastore.</li>
+<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The keys to delete from the datastore.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">boolean (if in a transaction) or else
-<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.MutationResult</span></code>.</p>
+<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.MutationResult</span></tt>.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True</p>
@@ -390,15 +390,15 @@ For example, it&#8217;s used under the hood in the
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.lookup">
-<code class="descname">lookup</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pbs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.lookup" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">lookup</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.lookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lookup keys from a dataset in the Cloud Datastore.</p>
-<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Lookup</span></code> protobuf RPC.</p>
+<p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.Lookup</span></tt> protobuf RPC.</p>
 <p>This method deals only with protobufs
-(<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>
+(<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>
 and
-<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></code>)
+<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>)
 and is used under the hood for methods like
-<a class="reference internal" href="#gcloud.datastore.dataset.Dataset.get_entity" title="gcloud.datastore.dataset.Dataset.get_entity"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.get_entity()</span></code></a>:</p>
+<a class="reference internal" href="#gcloud.datastore.dataset.Dataset.get_entity" title="gcloud.datastore.dataset.Dataset.get_entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.get_entity()</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
@@ -406,12 +406,12 @@ and is used under the hood for methods like
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Using the <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a> helper:</p>
+<p>Using the <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a> helper:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">&lt;Entity object&gt;</span>
 </pre></div>
 </div>
-<p>Using the <code class="docutils literal"><span class="pre">connection</span></code> class directly:</p>
+<p>Using the <tt class="docutils literal"><span class="pre">connection</span></tt> class directly:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
 <span class="go">&lt;Entity protobuf&gt;</span>
 </pre></div>
@@ -422,12 +422,12 @@ and is used under the hood for methods like
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset to look up the keys.</li>
-<li><strong>key_pbs</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>
+<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>
 (or a single Key)) &#8211; The key (or keys) to retrieve from the datastore.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></code>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>
 (or a single Entity)</p>
 </td>
 </tr>
@@ -444,13 +444,13 @@ this will return an empty list.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.mutation">
-<code class="descname">mutation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.mutation" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mutation</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.mutation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter for mutation usable with current connection.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the mutation instance associated with the current transaction
 (if one exists) or or a new mutation instance.</td>
@@ -461,10 +461,10 @@ this will return an empty list.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.rollback">
-<code class="descname">rollback</code><span class="sig-paren">(</span><em>dataset_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.rollback" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">rollback</tt><big>(</big><em>dataset_id</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.rollback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rollback the connection&#8217;s existing transaction.</p>
-<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Rollback</span></code> protobuf RPC.</p>
-<p>Raises a <code class="docutils literal"><span class="pre">ValueError</span></code>
+<p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.Rollback</span></tt> protobuf RPC.</p>
+<p>Raises a <tt class="docutils literal"><span class="pre">ValueError</span></tt>
 if the connection isn&#8217;t currently in a transaction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -478,15 +478,15 @@ if the connection isn&#8217;t currently in a transaction.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.run_query">
-<code class="descname">run_query</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>query_pb</em>, <em>namespace=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.run_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.run_query" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">run_query</tt><big>(</big><em>dataset_id</em>, <em>query_pb</em>, <em>namespace=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.run_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.run_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a query on the Cloud Datastore.</p>
-<p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.RunQuery</span></code> protobuf RPC.</p>
+<p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.RunQuery</span></tt> protobuf RPC.</p>
 <p>Given a Query protobuf,
-sends a <code class="docutils literal"><span class="pre">runQuery</span></code> request to the Cloud Datastore API
+sends a <tt class="docutils literal"><span class="pre">runQuery</span></tt> request to the Cloud Datastore API
 and returns a list of entity protobufs matching the query.</p>
 <p>You typically wouldn&#8217;t use this method directly,
-in favor of the <a class="reference internal" href="#gcloud.datastore.query.Query.fetch" title="gcloud.datastore.query.Query.fetch"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.query.Query.fetch()</span></code></a> method.</p>
-<p>Under the hood, the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></code></a> class
+in favor of the <a class="reference internal" href="#gcloud.datastore.query.Query.fetch" title="gcloud.datastore.query.Query.fetch"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.query.Query.fetch()</span></tt></a> method.</p>
+<p>Under the hood, the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a> class
 uses this method to fetch data:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
@@ -512,7 +512,7 @@ uses this method to fetch data:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset over which to run the query.</li>
-<li><strong>query_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Query</span></code>) &#8211; The Protobuf representing the query to run.</li>
+<li><strong>query_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Query</span></tt>) &#8211; The Protobuf representing the query to run.</li>
 <li><strong>namespace</strong> (<em>string</em>) &#8211; The namespace over which to run the query.</li>
 </ul>
 </td>
@@ -523,7 +523,7 @@ uses this method to fetch data:</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.save_entity">
-<code class="descname">save_entity</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pb</em>, <em>properties</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.save_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.save_entity" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save_entity</tt><big>(</big><em>dataset_id</em>, <em>key_pb</em>, <em>properties</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.save_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.save_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an entity to the Cloud Datastore with the provided properties.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -537,7 +537,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset in which to save the entity.</li>
-<li><strong>key_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>) &#8211; The complete or partial key for the entity.</li>
+<li><strong>key_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The complete or partial key for the entity.</li>
 <li><strong>properties</strong> (<em>dict</em>) &#8211; The properties to store on the entity.</li>
 </ul>
 </td>
@@ -548,17 +548,17 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><em>transaction=&lt;object object at 0x7f44eed8b240&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f30f3c44bb0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transaction</strong> (<a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>,
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transaction</strong> (<a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></tt></a>,
 (setting), or omitted (getting).) &#8211; The new transaction (if passed).</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>, (getting)
-or <a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a> (setting)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></tt></a>, (getting)
+or <a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a> (setting)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the current transaction (getting) or self (setting).</td>
 </tr>
@@ -574,8 +574,8 @@ or <a class="reference internal" href="#gcloud.datastore.connection.Connection" 
 <p>Create / interact with gcloud datastore datasets.</p>
 <dl class="class">
 <dt id="gcloud.datastore.dataset.Dataset">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>id</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.dataset.</tt><tt class="descname">Dataset</tt><big>(</big><em>id</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A dataset in the Cloud Datastore.</p>
 <p>This class acts as an abstraction of a single dataset
 in the Cloud Datastore.</p>
@@ -586,19 +586,19 @@ using the Cloud Datastore.</p>
 <p>Typically, you would only have one of these per connection
 however it didn&#8217;t seem right to collapse the functionality
 of a connection and a dataset together into a single class.</p>
-<p>Datasets (like <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></code></a>)
+<p>Datasets (like <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a>)
 are immutable.
 That is, you cannot change the ID and connection
 references.
 If you need to modify the connection or ID,
-it&#8217;s recommended to construct a new <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">Dataset</span></code></a>.</p>
+it&#8217;s recommended to construct a new <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">Dataset</span></tt></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>id</strong> (<em>string</em>) &#8211; The ID of the dataset (your project ID)</li>
-<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a>) &#8211; The connection to use for executing API calls.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; The connection to use for executing API calls.</li>
 </ul>
 </td>
 </tr>
@@ -606,7 +606,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 </table>
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.connection">
-<code class="descname">connection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.connection" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">connection</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.connection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the current connection.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">conn</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span>
@@ -617,7 +617,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Returns the current connection.</td>
 </tr>
@@ -627,7 +627,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.entity">
-<code class="descname">entity</code><span class="sig-paren">(</span><em>kind</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.entity" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">entity</tt><big>(</big><em>kind</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an entity bound to this dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -635,7 +635,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<em>string</em>) &#8211; the &#8220;kind&#8221; of the new entity.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new Entity instance, bound to this dataset.</td>
 </tr>
@@ -645,7 +645,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.get_entities">
-<code class="descname">get_entities</code><span class="sig-paren">(</span><em>keys</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_entities" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_entities</tt><big>(</big><em>keys</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_entities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves entities from the dataset, along with their attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -653,7 +653,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>item_name</strong> &#8211; The name of the item to retrieve.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The requested entities.</td>
 </tr>
@@ -663,7 +663,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.get_entity">
-<code class="descname">get_entity</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_entity" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_entity</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves entity from the dataset, along with its attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -671,9 +671,9 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>item_name</strong> &#8211; The name of the item to retrieve.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a> or <code class="docutils literal"><span class="pre">None</span></code></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a> or <tt class="docutils literal"><span class="pre">None</span></tt></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The requested entity, or <code class="docutils literal"><span class="pre">None</span></code> if there was no match found.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The requested entity, or <tt class="docutils literal"><span class="pre">None</span></tt> if there was no match found.</td>
 </tr>
 </tbody>
 </table>
@@ -681,7 +681,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.id">
-<code class="descname">id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.id" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the current dataset ID.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">conn</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
@@ -702,7 +702,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.query">
-<code class="descname">query</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.query" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">query</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a query bound to this dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -714,7 +714,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new Query instance, bound to this dataset.</p>
@@ -726,7 +726,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.transaction" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a transaction bound to this dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -738,7 +738,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new Transaction instance, bound to this dataset.</p>
@@ -757,7 +757,7 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 <p>Entities are akin to rows in a relational database,
 storing the actual instance of data.</p>
 <p>Each entity is officially represented with
-a <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a> class,
+a <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> class,
 however it is possible that you might create
 an Entity with only a partial Key
 (that is, a Key with a Kind,
@@ -767,14 +767,14 @@ with extras built in that allow you to
 delete or persist the data stored on the entity.</p>
 <dl class="class">
 <dt id="gcloud.datastore.entity.Entity">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.entity.</code><code class="descname">Entity</code><span class="sig-paren">(</span><em>dataset=None</em>, <em>kind=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">dict</span></code></p>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">Entity</tt><big>(</big><em>dataset=None</em>, <em>kind=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>) &#8211; The dataset in which this entity belongs.</li>
+<li><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>) &#8211; The dataset in which this entity belongs.</li>
 <li><strong>kind</strong> (<em>string</em>) &#8211; The kind of entity this is, akin to a table name in a
 relational database.</li>
 </ul>
@@ -786,16 +786,16 @@ relational database.</li>
 This means you could take an existing entity and change the key
 to duplicate the object.</p>
 <p>This can be used on its own, however it is likely easier to use
-the shortcut methods provided by <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>
+the shortcut methods provided by <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>
 such as:</p>
 <ul>
-<li><p class="first"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset.entity" title="gcloud.datastore.dataset.Dataset.entity"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.entity()</span></code></a> to create a new entity.</p>
+<li><p class="first"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset.entity" title="gcloud.datastore.dataset.Dataset.entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.entity()</span></tt></a> to create a new entity.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;MyEntityKind&#39;</span><span class="p">)</span>
 <span class="go">&lt;Entity[{&#39;kind&#39;: &#39;MyEntityKind&#39;}] {}&gt;</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset.get_entity" title="gcloud.datastore.dataset.Dataset.get_entity"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.get_entity()</span></code></a>
+<li><p class="first"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset.get_entity" title="gcloud.datastore.dataset.Dataset.get_entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.get_entity()</span></tt></a>
 to retrieve an existing entity.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">&lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
@@ -819,13 +819,13 @@ with the <cite>dict</cite> builtin:</p>
 </div>
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.dataset">
-<code class="descname">dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.dataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">dataset.Dataset</span></code></a> in which this entity belongs.</p>
+<tt class="descname">dataset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">dataset.Dataset</span></tt></a> in which this entity belongs.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The Dataset containing the entity if there is a key,
 else None.</td>
@@ -834,7 +834,7 @@ else None.</td>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This is based on the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a> set on the
+<p class="last">This is based on the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> set on the
 entity. That means that if you have no key set, the dataset might
 be <cite>None</cite>. It also means that if you change the key on the entity,
 this will refer to that key&#8217;s dataset.</p>
@@ -843,11 +843,11 @@ this will refer to that key&#8217;s dataset.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.delete" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">delete</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete the entity in the Cloud Datastore.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This is based entirely off of the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>
+<p class="last">This is based entirely off of the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>
 set on the entity. Whatever is stored remotely using the key on the
 entity will be deleted.</p>
 </div>
@@ -855,8 +855,8 @@ entity will be deleted.</p>
 
 <dl class="classmethod">
 <dt id="gcloud.datastore.entity.Entity.from_key">
-<em class="property">classmethod </em><code class="descname">from_key</code><span class="sig-paren">(</span><em>key</em>, <em>dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.from_key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create entity based on <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">datastore.key.Key</span></code></a>.</p>
+<em class="property">classmethod </em><tt class="descname">from_key</tt><big>(</big><em>key</em>, <em>dataset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.from_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create entity based on <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">datastore.key.Key</span></tt></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a factory method.</p>
@@ -865,10 +865,10 @@ entity will be deleted.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; The key for the entity.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; The key for the entity.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a> derived from the
-<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a> derived from the
+<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -876,15 +876,15 @@ entity will be deleted.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.key">
-<code class="descname">key</code><span class="sig-paren">(</span><em>key=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get or set the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">datastore.key.Key</span></code></a> on the current entity.</p>
+<tt class="descname">key</tt><big>(</big><em>key=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">datastore.key.Key</span></tt></a> on the current entity.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<code class="xref py py-class docutils literal"><span class="pre">glcouddatastore.key.Key</span></code>) &#8211; The key you want to set on the entity.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<tt class="xref py py-class docutils literal"><span class="pre">glcouddatastore.key.Key</span></tt>) &#8211; The key you want to set on the entity.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a> or <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">Entity</span></code></a>.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> or <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a>.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Either the current key (on get) or the current
 object (on set).</td>
@@ -901,12 +901,12 @@ object (on set).</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.kind">
-<code class="descname">kind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.kind" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">kind</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.kind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the kind of the current entity.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This relies entirely on
-the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>
+the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>
 set on the entity.
 That means that we&#8217;re not storing the kind of the entity at all,
 just the properties and a pointer to a Key
@@ -916,9 +916,9 @@ which knows its Kind.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.reload">
-<code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.reload" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reload</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.reload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reloads the contents of this entity from the datastore.</p>
-<p>This method takes the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>, loads all
+<p>This method takes the <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>, loads all
 properties from the Cloud Datastore, and sets the updated properties on
 the current object.</p>
 <div class="admonition warning">
@@ -931,7 +931,7 @@ exist only locally.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.save">
-<code class="descname">save</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.save" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the entity in the Cloud Datastore.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -950,7 +950,7 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The entity with a possibly updated Key.</td>
 </tr>
@@ -962,15 +962,15 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 
 <dl class="exception">
 <dt id="gcloud.datastore.entity.NoDataset">
-<em class="property">exception </em><code class="descclassname">gcloud.datastore.entity.</code><code class="descname">NoDataset</code><a class="reference internal" href="_modules/gcloud/datastore/entity.html#NoDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.NoDataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">NoDataset</tt><a class="reference internal" href="_modules/gcloud/datastore/entity.html#NoDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.NoDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></tt></p>
 <p>Exception raised by Entity methods which require a dataset.</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="gcloud.datastore.entity.NoKey">
-<em class="property">exception </em><code class="descclassname">gcloud.datastore.entity.</code><code class="descname">NoKey</code><a class="reference internal" href="_modules/gcloud/datastore/entity.html#NoKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.NoKey" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></code></p>
+<em class="property">exception </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">NoKey</tt><a class="reference internal" href="_modules/gcloud/datastore/entity.html#NoKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.NoKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></tt></p>
 <p>Exception raised by Entity methods which require a key.</p>
 </dd></dl>
 
@@ -980,19 +980,19 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 <p>Create / interact with gcloud datastore keys.</p>
 <dl class="class">
 <dt id="gcloud.datastore.key.Key">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.key.</code><code class="descname">Key</code><span class="sig-paren">(</span><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.key.</tt><tt class="descname">Key</tt><big>(</big><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>An immutable representation of a datastore Key.</p>
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.__init__" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructor / initializer for a key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>namespace</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) &#8211; A namespace identifier for the key.</li>
+<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key.</li>
 <li><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
 &#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</li>
 <li><strong>dataset</strong> &#8211; The dataset ID assigned by back-end for the key.</li>
@@ -1003,9 +1003,9 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The key&#8217;s <code class="docutils literal"><span class="pre">_dataset_id</span></code> field must be None for keys created
+<p class="last">The key&#8217;s <tt class="docutils literal"><span class="pre">_dataset_id</span></tt> field must be None for keys created
 by application code.  The
-<a class="reference internal" href="#gcloud.datastore.helpers.key_from_protobuf" title="gcloud.datastore.helpers.key_from_protobuf"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.helpers.key_from_protobuf()</span></code></a> factory
+<a class="reference internal" href="#gcloud.datastore.helpers.key_from_protobuf" title="gcloud.datastore.helpers.key_from_protobuf"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.helpers.key_from_protobuf()</span></tt></a> factory
 will be set the field to an appropriate value for keys returned
 from the datastore backend.  The application <strong>must</strong> treat any
 value set by the back-end as opaque.</p>
@@ -1018,7 +1018,7 @@ value set by the back-end as opaque.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>namespace</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) &#8211; A namespace identifier for the key.</li>
+<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key.</li>
 <li><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
 &#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</li>
 <li><strong>dataset</strong> &#8211; The dataset ID assigned by back-end for the key.</li>
@@ -1029,35 +1029,35 @@ value set by the back-end as opaque.</p>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The key&#8217;s <code class="docutils literal"><span class="pre">_dataset_id</span></code> field must be None for keys created
+<p class="last">The key&#8217;s <tt class="docutils literal"><span class="pre">_dataset_id</span></tt> field must be None for keys created
 by application code.  The
-<a class="reference internal" href="#gcloud.datastore.helpers.key_from_protobuf" title="gcloud.datastore.helpers.key_from_protobuf"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.helpers.key_from_protobuf()</span></code></a> factory
+<a class="reference internal" href="#gcloud.datastore.helpers.key_from_protobuf" title="gcloud.datastore.helpers.key_from_protobuf"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.helpers.key_from_protobuf()</span></tt></a> factory
 will be set the field to an appropriate value for keys returned
 from the datastore backend.  The application <strong>must</strong> treat any
 value set by the back-end as opaque.</p>
 </div>
 <dl class="classmethod">
 <dt id="gcloud.datastore.key.Key.from_path">
-<em class="property">classmethod </em><code class="descname">from_path</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.from_path" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><tt class="descname">from_path</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.from_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for creating a key based on a path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<code class="xref py py-class docutils literal"><span class="pre">tuple</span></code>) &#8211; sequence of even length, where the first of each pair is a
+<li><strong>args</strong> (<tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt>) &#8211; sequence of even length, where the first of each pair is a
 string representing the &#8216;kind&#8217; of the path element, and
 the second of the pair is either a string (for the path
 element&#8217;s name) or an integer (for its id).</li>
-<li><strong>kwargs</strong> (<code class="xref py py-class docutils literal"><span class="pre">dict</span></code>) &#8211; Other named parameters which can be passed to
-<a class="reference internal" href="#gcloud.datastore.key.Key.__init__" title="gcloud.datastore.key.Key.__init__"><code class="xref py py-func docutils literal"><span class="pre">Key.__init__()</span></code></a>.</li>
+<li><strong>kwargs</strong> (<tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt>) &#8211; Other named parameters which can be passed to
+<a class="reference internal" href="#gcloud.datastore.key.Key.__init__" title="gcloud.datastore.key.Key.__init__"><tt class="xref py py-func docutils literal"><span class="pre">Key.__init__()</span></tt></a>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> instance</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> instance</p>
 </td>
 </tr>
 </tbody>
@@ -1066,15 +1066,15 @@ element&#8217;s name) or an integer (for its id).</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.id">
-<code class="descname">id</code><span class="sig-paren">(</span><em>id_to_set=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">id</tt><big>(</big><em>id_to_set=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id" title="Permalink to this definition">¶</a></dt>
 <dd><p>ID setter / getter.  Based on the last element of path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_to_set</strong> (<code class="xref py py-class docutils literal"><span class="pre">int</span></code>) &#8211; The new ID for the key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_to_set</strong> (<tt class="xref py py-class docutils literal"><span class="pre">int</span></tt>) &#8211; The new ID for the key.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> (for setter); or <code class="xref py py-class docutils literal"><span class="pre">int</span></code> (for getter)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">int</span></tt> (for getter)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given id (setter);
 or self&#8217;s id (getter).</td>
@@ -1085,13 +1085,13 @@ or self&#8217;s id (getter).</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.id_or_name">
-<code class="descname">id_or_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id_or_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id_or_name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">id_or_name</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id_or_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id_or_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter.  Based on the last element of path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">int</span></code> (if &#8216;id&#8217; is set); or <code class="xref py py-class docutils literal"><span class="pre">str</span></code> (the &#8216;name&#8217;)</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">int</span></tt> (if &#8216;id&#8217; is set); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (the &#8216;name&#8217;)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the last element of the key&#8217;s path has either an &#8216;id&#8217;
 or a &#8216;name&#8217;.</td>
@@ -1102,13 +1102,13 @@ or a &#8216;name&#8217;.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.is_partial">
-<code class="descname">is_partial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.is_partial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.is_partial" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">is_partial</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.is_partial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.is_partial" title="Permalink to this definition">¶</a></dt>
 <dd><p>Boolean test: is the key fully mapped onto a backend entity?</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">bool</span></tt></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the last element of the key&#8217;s path does not have
 an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
@@ -1119,15 +1119,15 @@ an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.kind">
-<code class="descname">kind</code><span class="sig-paren">(</span><em>kind=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.kind" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">kind</tt><big>(</big><em>kind=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.kind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Kind setter / getter.  Based on the last element of path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) &#8211; The new kind for the key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The new kind for the key.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> (for setter); or <code class="xref py py-class docutils literal"><span class="pre">str</span></code> (for getter)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given kind (setter);
 or self&#8217;s kind (getter).</td>
@@ -1138,15 +1138,15 @@ or self&#8217;s kind (getter).</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.name">
-<code class="descname">name</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">name</tt><big>(</big><em>name=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Name setter / getter.  Based on the last element of path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) &#8211; The new name for the key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The new name for the key.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> (for setter); or <code class="xref py py-class docutils literal"><span class="pre">str</span></code> (for getter)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given name (setter);
 or self&#8217;s name (getter).</td>
@@ -1157,15 +1157,15 @@ or self&#8217;s name (getter).</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.namespace">
-<code class="descname">namespace</code><span class="sig-paren">(</span><em>namespace=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.namespace" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">namespace</tt><big>(</big><em>namespace=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.namespace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Namespace setter / getter.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>namespace</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>) &#8211; A namespace identifier for the key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> (for setter); or <code class="xref py py-class docutils literal"><span class="pre">str</span></code> (for getter)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given namespace
 (setter); or self&#8217;s namespace (getter).</td>
@@ -1176,13 +1176,13 @@ or self&#8217;s name (getter).</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.parent">
-<code class="descname">parent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.parent" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.parent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter:  return a new key for the next highest element in path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a new <cite>Key</cite> instance, whose path consists of all but the last
 element of self&#8217;s path.  If self has only one path element,
@@ -1194,7 +1194,7 @@ return None.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.path">
-<code class="descname">path</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.path" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">path</tt><big>(</big><em>path=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path setter / getter.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1203,7 +1203,7 @@ return None.</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
 &#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">Key</span></code></a> (for setter); or <code class="xref py py-class docutils literal"><span class="pre">str</span></code> (for getter)</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given path (setter);
 or self&#8217;s path (getter).</td>
@@ -1214,13 +1214,13 @@ or self&#8217;s path (getter).</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.to_protobuf">
-<code class="descname">to_protobuf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.to_protobuf" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_protobuf</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.to_protobuf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a protobuf corresponding to the key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The Protobuf representing the key.</td>
 </tr>
@@ -1236,12 +1236,12 @@ or self&#8217;s path (getter).</td>
 <p>Create / interact with gcloud datastore queries.</p>
 <dl class="class">
 <dt id="gcloud.datastore.query.Query">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>kind=None</em>, <em>dataset=None</em>, <em>namespace=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.query.</tt><tt class="descname">Query</tt><big>(</big><em>kind=None</em>, <em>dataset=None</em>, <em>namespace=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A Query against the Cloud Datastore.</p>
 <p>This class serves as an abstraction for creating
 a query over data stored in the Cloud Datastore.</p>
-<p>Each <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> object is immutable,
+<p>Each <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> object is immutable,
 and a clone is returned whenever
 any part of the query is modified:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span>
@@ -1252,10 +1252,10 @@ any part of the query is modified:</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>You typically won&#8217;t construct a <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>
-by initializing it like <code class="docutils literal"><span class="pre">Query('MyKind',</span> <span class="pre">dataset=...)</span></code>
+<p>You typically won&#8217;t construct a <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
+by initializing it like <tt class="docutils literal"><span class="pre">Query('MyKind',</span> <span class="pre">dataset=...)</span></tt>
 but instead use the helper
-<a class="reference internal" href="#gcloud.datastore.dataset.Dataset.query" title="gcloud.datastore.dataset.Dataset.query"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.query()</span></code></a> method
+<a class="reference internal" href="#gcloud.datastore.dataset.Dataset.query" title="gcloud.datastore.dataset.Dataset.query"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.query()</span></tt></a> method
 which generates a query that can be executed
 without any additional work:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
@@ -1269,7 +1269,7 @@ without any additional work:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>kind</strong> (<em>string</em>) &#8211; The kind to query.</li>
-<li><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>) &#8211; The dataset to query.</li>
+<li><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>) &#8211; The dataset to query.</li>
 <li><strong>dataset</strong> &#8211; The namespace to which to restrict results.</li>
 </ul>
 </td>
@@ -1278,15 +1278,15 @@ without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&lt;=': 2, '&gt;=': 4, '=': 5, '&lt;': 1, '&gt;': 3}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">OPERATORS</tt><em class="property"> = {'&lt;': 1, '=': 5, '&gt;': 3, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.ancestor">
-<code class="descname">ancestor</code><span class="sig-paren">(</span><em>ancestor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.ancestor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.ancestor" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">ancestor</tt><big>(</big><em>ancestor</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.ancestor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.ancestor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the query based on an ancestor.</p>
-<p>This will return a clone of the current <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>
+<p>This will return a clone of the current <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
 filtered by the ancestor provided.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">parent_key</span> <span class="o">=</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
@@ -1294,22 +1294,22 @@ filtered by the ancestor provided.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">ancestor</span><span class="p">(</span><span class="n">parent_key</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If you don&#8217;t have a <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a> but just
+<p>If you don&#8217;t have a <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> but just
 know the path, you can provide that as well:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">ancestor</span><span class="p">([</span><span class="s">&#39;Person&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Each call to <code class="docutils literal"><span class="pre">.ancestor()</span></code> returns a cloned <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>,
+<p>Each call to <tt class="docutils literal"><span class="pre">.ancestor()</span></tt> returns a cloned <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>,
 however a query may only have one ancestor at a time.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ancestor</strong> (<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a> or list) &#8211; Either a Key or a path of the form
-<code class="docutils literal"><span class="pre">['Kind',</span> <span class="pre">'id</span> <span class="pre">or</span> <span class="pre">name',</span> <span class="pre">'Kind',</span> <span class="pre">'id</span> <span class="pre">or</span> <span class="pre">name',</span> <span class="pre">...]</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ancestor</strong> (<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> or list) &#8211; Either a Key or a path of the form
+<tt class="docutils literal"><span class="pre">['Kind',</span> <span class="pre">'id</span> <span class="pre">or</span> <span class="pre">name',</span> <span class="pre">'Kind',</span> <span class="pre">'id</span> <span class="pre">or</span> <span class="pre">name',</span> <span class="pre">...]</span></tt>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A Query filtered by the ancestor provided.</td>
 </tr>
@@ -1319,7 +1319,7 @@ however a query may only have one ancestor at a time.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.cursor">
-<code class="descname">cursor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.cursor" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">cursor</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.cursor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns cursor ID</p>
 <div class="admonition caution">
 <p class="first admonition-title">Caution</p>
@@ -1341,8 +1341,8 @@ consumed in the query&#8217;s result set.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.dataset">
-<code class="descname">dataset</code><span class="sig-paren">(</span><em>dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.dataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get or set the <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">datastore.dataset.Dataset</span></code></a> for this Query.</p>
+<tt class="descname">dataset</tt><big>(</big><em>dataset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get or set the <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">datastore.dataset.Dataset</span></tt></a> for this Query.</p>
 <p>This is the dataset against which the Query will be run.</p>
 <p>This is a hybrid getter / setter, used as:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
@@ -1355,12 +1355,12 @@ consumed in the query&#8217;s result set.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>, None,
-or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>, None,
+or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current dataset.
 If a dataset is provided, returns a clone of the
-<a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> with that dataset set.</td>
+<a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that dataset set.</td>
 </tr>
 </tbody>
 </table>
@@ -1368,11 +1368,11 @@ If a dataset is provided, returns a clone of the
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.fetch">
-<code class="descname">fetch</code><span class="sig-paren">(</span><em>limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fetch</tt><big>(</big><em>limit=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Executes the Query and returns all matching entities.</p>
 <p>This makes an API call to the Cloud Datastore, sends the Query as a
 protobuf, parses the responses to Entity protobufs, and then converts
-them to <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a> objects.</p>
+them to <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a> objects.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
@@ -1394,7 +1394,7 @@ That is, the Query itself won&#8217;t be altered,
 but the limit will be applied to the query
 before it is executed.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a>&#8216;s</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>&#8216;s</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of entities matching this query&#8217;s criteria.</td>
 </tr>
@@ -1404,23 +1404,23 @@ before it is executed.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.filter">
-<code class="descname">filter</code><span class="sig-paren">(</span><em>expression</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.filter" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">filter</tt><big>(</big><em>expression</em>, <em>value</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the query based on an expression and a value.</p>
-<p>This will return a clone of the current <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>
+<p>This will return a clone of the current <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
 filtered by the expression and value provided.</p>
 <p>Expressions take the form of:</p>
 <div class="highlight-python"><div class="highlight"><pre>.filter(&#39;&lt;property&gt; &lt;operator&gt;&#39;, &lt;value&gt;)
 </pre></div>
 </div>
 <p>where property is a property stored on the entity in the datastore
-and operator is one of <code class="docutils literal"><span class="pre">OPERATORS</span></code>
-(ie, <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>):</p>
+and operator is one of <tt class="docutils literal"><span class="pre">OPERATORS</span></tt>
+(ie, <tt class="docutils literal"><span class="pre">=</span></tt>, <tt class="docutils literal"><span class="pre">&lt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;=</span></tt>, <tt class="docutils literal"><span class="pre">&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&gt;=</span></tt>):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name =&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;age &gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Because each call to <code class="docutils literal"><span class="pre">.filter()</span></code> returns a cloned <code class="docutils literal"><span class="pre">Query</span></code> object
+<p>Because each call to <tt class="docutils literal"><span class="pre">.filter()</span></tt> returns a cloned <tt class="docutils literal"><span class="pre">Query</span></tt> object
 we are able to string these together:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s">&#39;name =&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;age &gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
@@ -1432,12 +1432,12 @@ we are able to string these together:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>expression</strong> (<em>string</em>) &#8211; An expression of a property and an
-operator (ie, <code class="docutils literal"><span class="pre">=</span></code>).</li>
+operator (ie, <tt class="docutils literal"><span class="pre">=</span></tt>).</li>
 <li><strong>value</strong> (<em>integer, string, boolean, float, None, datetime</em>) &#8211; The value to filter on.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A Query filtered by the expression and value provided.</p>
@@ -1449,7 +1449,7 @@ operator (ie, <code class="docutils literal"><span class="pre">=</span></code>).
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.group_by">
-<code class="descname">group_by</code><span class="sig-paren">(</span><em>group_by=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.group_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.group_by" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">group_by</tt><big>(</big><em>group_by=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.group_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.group_by" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a group_by to the query.</p>
 <p>This is a hybrid getter / setter, used as:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
@@ -1467,11 +1467,11 @@ operator (ie, <code class="docutils literal"><span class="pre">=</span></code>).
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_by</strong> (<em>sequence of strings</em>) &#8211; Each value is a string giving the name of a
 property to use to group results together.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> or <cite>list</cite> of strings.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> or <cite>list</cite> of strings.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current group_by.
 If a list of group by properties is provided, returns a clone
-of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> with that list of values set.</td>
+of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that list of values set.</td>
 </tr>
 </tbody>
 </table>
@@ -1479,13 +1479,13 @@ of the <a class="reference internal" href="#gcloud.datastore.query.Query" title=
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.kind">
-<code class="descname">kind</code><span class="sig-paren">(</span><em>*kinds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.kind" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">kind</tt><big>(</big><em>*kinds</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.kind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get or set the Kind of the Query.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is an <strong>additive</strong> operation.
 That is, if the Query is set for kinds A and B,
-and you call <code class="docutils literal"><span class="pre">.kind('C')</span></code>,
+and you call <tt class="docutils literal"><span class="pre">.kind('C')</span></tt>,
 it will query for kinds A, B, <em>and</em>, C.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1494,10 +1494,10 @@ it will query for kinds A, B, <em>and</em>, C.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kinds</strong> (<em>string</em>) &#8211; The entity kinds for which to query.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the kind.
-If a kind is provided, returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>
+If a kind is provided, returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
 with those kinds set.</td>
 </tr>
 </tbody>
@@ -1506,7 +1506,7 @@ with those kinds set.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.limit">
-<code class="descname">limit</code><span class="sig-paren">(</span><em>limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.limit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">limit</tt><big>(</big><em>limit=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.limit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get or set the limit of the Query.</p>
 <p>This is the maximum number of rows (Entities) to return for this Query.</p>
 <p>This is a hybrid getter / setter, used as:</p>
@@ -1520,10 +1520,10 @@ with those kinds set.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, None, or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, None, or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current limit.
-If a limit is provided, returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>
+If a limit is provided, returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
 with that limit set.</td>
 </tr>
 </tbody>
@@ -1532,7 +1532,7 @@ with that limit set.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.namespace">
-<code class="descname">namespace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.namespace" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">namespace</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.namespace" title="Permalink to this definition">¶</a></dt>
 <dd><p>This query&#8217;s namespace</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1548,7 +1548,7 @@ with that limit set.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.offset">
-<code class="descname">offset</code><span class="sig-paren">(</span><em>offset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.offset" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">offset</tt><big>(</big><em>offset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.offset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds offset to the query to allow pagination.</p>
 <p>NOTE: Paging with cursors should be preferred to using an offset.</p>
 <p>This is a hybrid getter / setter, used as:</p>
@@ -1567,11 +1567,11 @@ with that limit set.</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>offset</strong> (<em>non-negative integer.</em>) &#8211; Value representing where to start a query for
 a given kind.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> or <cite>int</cite>.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> or <cite>int</cite>.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current offset.
 If an offset is provided, returns a clone of the
-<a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> with that offset set.</td>
+<a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that offset set.</td>
 </tr>
 </tbody>
 </table>
@@ -1579,7 +1579,7 @@ If an offset is provided, returns a clone of the
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.order">
-<code class="descname">order</code><span class="sig-paren">(</span><em>*properties</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.order" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">order</tt><big>(</big><em>*properties</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.order" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a sort order to the query.</p>
 <p>Sort fields will be applied in the order specified.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1591,7 +1591,7 @@ property on which to sort, optionally preceded by a
 hyphen (-) to specify descending order.
 Omitting the hyphen implies ascending order.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new Query instance, ordered as specified.</td>
 </tr>
@@ -1601,7 +1601,7 @@ Omitting the hyphen implies ascending order.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.projection">
-<code class="descname">projection</code><span class="sig-paren">(</span><em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.projection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.projection" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">projection</tt><big>(</big><em>projection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.projection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.projection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a projection to the query.</p>
 <p>This is a hybrid getter / setter, used as:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
@@ -1619,11 +1619,11 @@ Omitting the hyphen implies ascending order.</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>projection</strong> (<em>sequence of strings</em>) &#8211; Each value is a string giving the name of a
 property to be included in the projection query.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> or <cite>list</cite> of strings.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> or <cite>list</cite> of strings.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current projection.
 If a projection is provided, returns a clone of the
-<a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> with that projection set.</td>
+<a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that projection set.</td>
 </tr>
 </tbody>
 </table>
@@ -1631,13 +1631,13 @@ If a projection is provided, returns a clone of the
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.to_protobuf">
-<code class="descname">to_protobuf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.to_protobuf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> instance to <code class="xref py py-class docutils literal"><span class="pre">datastore_v1_pb2.Query</span></code>.</p>
+<tt class="descname">to_protobuf</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.to_protobuf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> instance to <tt class="xref py py-class docutils literal"><span class="pre">datastore_v1_pb2.Query</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Query</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Query</span></tt></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A Query protobuf that can be sent to the protobuf API.</td>
 </tr>
@@ -1647,7 +1647,7 @@ If a projection is provided, returns a clone of the
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.with_cursor">
-<code class="descname">with_cursor</code><span class="sig-paren">(</span><em>start_cursor</em>, <em>end_cursor=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.with_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.with_cursor" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">with_cursor</tt><big>(</big><em>start_cursor</em>, <em>end_cursor=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.with_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.with_cursor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specifies the starting / ending positions in a query&#8217;s result set.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1661,11 +1661,11 @@ stop reading query results.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">If neither cursor is passed, returns self;  else, returns a
-clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a>, with cursors updated.</p>
+clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>, with cursors updated.</p>
 </td>
 </tr>
 </tbody>
@@ -1680,16 +1680,16 @@ clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" 
 <p>Create / interact with gcloud datastore transactions.</p>
 <dl class="class">
 <dt id="gcloud.datastore.transaction.Transaction">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>dataset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.transaction.</tt><tt class="descname">Transaction</tt><big>(</big><em>dataset</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>An abstraction representing datastore Transactions.</p>
 <p>Transactions can be used
 to build up a bulk mutuation
 as well as provide isolation.</p>
 <p>For example,
 the following snippet of code
-will put the two <code class="docutils literal"><span class="pre">save</span></code> operations
-(either <code class="docutils literal"><span class="pre">insert_auto_id</span></code> or <code class="docutils literal"><span class="pre">upsert</span></code>)
+will put the two <tt class="docutils literal"><span class="pre">save</span></tt> operations
+(either <tt class="docutils literal"><span class="pre">insert_auto_id</span></tt> or <tt class="docutils literal"><span class="pre">upsert</span></tt>)
 into the same mutation, and execute those within a transaction:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
@@ -1720,9 +1720,9 @@ if you try:</p>
 <span class="gp">... </span>  <span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">entity</span></code> won&#8217;t have a complete Key
+<p><tt class="docutils literal"><span class="pre">entity</span></tt> won&#8217;t have a complete Key
 until the transaction is committed.</p>
-<p>Once you exit the transaction (or call <code class="docutils literal"><span class="pre">commit()</span></code>),
+<p>Once you exit the transaction (or call <tt class="docutils literal"><span class="pre">commit()</span></tt>),
 the automatically generated ID will be assigned
 to the entity:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
@@ -1737,9 +1737,9 @@ to the entity:</p>
 <p class="first admonition-title">Warning</p>
 <p>If you&#8217;re using the automatically generated ID functionality,
 it&#8217;s important that you only use
-<a class="reference internal" href="#gcloud.datastore.entity.Entity.save" title="gcloud.datastore.entity.Entity.save"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.entity.Entity.save()</span></code></a>
+<a class="reference internal" href="#gcloud.datastore.entity.Entity.save" title="gcloud.datastore.entity.Entity.save"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.entity.Entity.save()</span></tt></a>
 rather than using
-<a class="reference internal" href="#gcloud.datastore.connection.Connection.save_entity" title="gcloud.datastore.connection.Connection.save_entity"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.connection.Connection.save_entity()</span></code></a> directly.</p>
+<a class="reference internal" href="#gcloud.datastore.connection.Connection.save_entity" title="gcloud.datastore.connection.Connection.save_entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.connection.Connection.save_entity()</span></tt></a> directly.</p>
 <p class="last">If you mix the two,
 the results will have extra IDs generated
 and it could jumble things up.</p>
@@ -1765,7 +1765,7 @@ That is,
 If you want to work with two transactions at the same time
 (for whatever reason),
 that must happen over two separate
-<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a> s.</p>
+<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a> s.</p>
 <p>For example, this is perfectly valid:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
@@ -1798,21 +1798,21 @@ If you really need to nest transactions, try:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a>) &#8211; The dataset to which this <a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">Transaction</span></code></a> belongs.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>) &#8211; The dataset to which this <a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">Transaction</span></tt></a> belongs.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.add_auto_id_entity">
-<code class="descname">add_auto_id_entity</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.add_auto_id_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.add_auto_id_entity" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">add_auto_id_entity</tt><big>(</big><em>entity</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.add_auto_id_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.add_auto_id_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds an entity to the list of entities to update with IDs.</p>
 <p>When an entity has a partial key,
-calling <code class="docutils literal"><span class="pre">save()</span></code> adds an insert_auto_id entry in the mutation.
+calling <tt class="docutils literal"><span class="pre">save()</span></tt> adds an insert_auto_id entry in the mutation.
 In order to make sure we update the Entity
 once the transaction is committed,
 we need to keep track of which entities to update
 (and the order is important).</p>
-<p>When you call <code class="docutils literal"><span class="pre">save()</span></code> on an entity inside a transaction,
+<p>When you call <tt class="docutils literal"><span class="pre">save()</span></tt> on an entity inside a transaction,
 if the entity has a partial key,
 it adds itself to the list of entities to be updated
 once the transaction is committed
@@ -1821,7 +1821,7 @@ by calling this method.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.begin">
-<code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.begin" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.begin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Begins a transaction.</p>
 <p>This method is called automatically when entering a with statement,
 however it can be called explicitly
@@ -1830,7 +1830,7 @@ if you don&#8217;t want to use a context manager.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.commit">
-<code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.commit" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">commit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.commit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Commits the transaction.</p>
 <p>This is called automatically upon exiting a with statement,
 however it can be called explicitly
@@ -1845,13 +1845,13 @@ if you don&#8217;t want to use a context manager.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.connection">
-<code class="descname">connection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.connection" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">connection</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.connection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter for current connection over which the transaction will run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The connection over which the transaction will run.</td>
 </tr>
@@ -1861,13 +1861,13 @@ if you don&#8217;t want to use a context manager.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.dataset">
-<code class="descname">dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.dataset" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">dataset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter for the current dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The dataset to which the transaction belongs.</td>
 </tr>
@@ -1877,7 +1877,7 @@ if you don&#8217;t want to use a context manager.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.id">
-<code class="descname">id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.id" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">id</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter for the transaction ID.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1893,13 +1893,13 @@ if you don&#8217;t want to use a context manager.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.mutation">
-<code class="descname">mutation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.mutation" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mutation</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.mutation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter for the current mutation.</p>
 <p>Every transaction is committed
 with a single Mutation
 representing the &#8216;work&#8217; to be done as part of the transaction.
 Inside a transaction,
-calling <code class="docutils literal"><span class="pre">save()</span></code> on an entity
+calling <tt class="docutils literal"><span class="pre">save()</span></tt> on an entity
 builds up the mutation.
 This getter returns the Mutation protobuf
 that has been built-up so far.</p>
@@ -1907,7 +1907,7 @@ that has been built-up so far.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The Mutation protobuf to be sent in the commit request.</td>
 </tr>
@@ -1917,7 +1917,7 @@ that has been built-up so far.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.rollback">
-<code class="descname">rollback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.rollback" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">rollback</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.rollback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rolls back the current transaction.</p>
 <p>This method has necessary side-effects:</p>
 <ul class="simple">
@@ -1935,7 +1935,7 @@ that has been built-up so far.</p>
 <p>The non-private functions are part of the API.</p>
 <dl class="function">
 <dt id="gcloud.datastore.helpers.entity_from_protobuf">
-<code class="descclassname">gcloud.datastore.helpers.</code><code class="descname">entity_from_protobuf</code><span class="sig-paren">(</span><em>pb</em>, <em>dataset=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/helpers.html#entity_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.helpers.entity_from_protobuf" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">gcloud.datastore.helpers.</tt><tt class="descname">entity_from_protobuf</tt><big>(</big><em>pb</em>, <em>dataset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/helpers.html#entity_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.helpers.entity_from_protobuf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for creating an entity based on a protobuf.</p>
 <p>The protobuf should be one returned from the Cloud Datastore
 Protobuf API.</p>
@@ -1943,9 +1943,9 @@ Protobuf API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></code>) &#8211; The Protobuf representing the entity.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>) &#8211; The Protobuf representing the entity.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The entity derived from the protobuf.</td>
 </tr>
@@ -1955,7 +1955,7 @@ Protobuf API.</p>
 
 <dl class="function">
 <dt id="gcloud.datastore.helpers.key_from_protobuf">
-<code class="descclassname">gcloud.datastore.helpers.</code><code class="descname">key_from_protobuf</code><span class="sig-paren">(</span><em>pb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/helpers.html#key_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.helpers.key_from_protobuf" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">gcloud.datastore.helpers.</tt><tt class="descname">key_from_protobuf</tt><big>(</big><em>pb</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/helpers.html#key_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.helpers.key_from_protobuf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for creating a key based on a protobuf.</p>
 <p>The protobuf should be one returned from the Cloud Datastore
 Protobuf API.</p>
@@ -1963,9 +1963,9 @@ Protobuf API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></code>) &#8211; The Protobuf representing the key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The Protobuf representing the key.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new <cite>Key</cite> instance</td>
 </tr>
@@ -1987,7 +1987,7 @@ Protobuf API.</p>
     <footer id="gc-footer" class="footer" role="contentinfo">
     <div id="gc-copyright">
         &copy; Copyright 2014, JJ Geewax.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
       </div>
     </footer>
   </body>

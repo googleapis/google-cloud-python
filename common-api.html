@@ -104,8 +104,8 @@
 <p>Shared implementation of connections to API servers.</p>
 <dl class="class">
 <dt id="gcloud.connection.Connection">
-<em class="property">class </em><code class="descclassname">gcloud.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>credentials=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><tt class="descclassname">gcloud.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A generic connection to Google Cloud Platform.</p>
 <p>Subclasses should understand
 only the basic types
@@ -116,30 +116,30 @@ of returning advanced types.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code>) &#8211; The OAuth2 Credentials to use for this connection.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt>) &#8211; The OAuth2 Credentials to use for this connection.</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="gcloud.connection.Connection.API_BASE_URL">
-<code class="descname">API_BASE_URL</code><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#gcloud.connection.Connection.API_BASE_URL" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">API_BASE_URL</tt><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#gcloud.connection.Connection.API_BASE_URL" title="Permalink to this definition">¶</a></dt>
 <dd><p>The base of the API call URL.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.connection.Connection.USER_AGENT">
-<code class="descname">USER_AGENT</code><em class="property"> = 'gcloud-python/0.02.2'</em><a class="headerlink" href="#gcloud.connection.Connection.USER_AGENT" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">USER_AGENT</tt><em class="property"> = 'gcloud-python/0.02.2'</em><a class="headerlink" href="#gcloud.connection.Connection.USER_AGENT" title="Permalink to this definition">¶</a></dt>
 <dd><p>The user agent for gcloud-python requests.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.connection.Connection.credentials">
-<code class="descname">credentials</code><a class="headerlink" href="#gcloud.connection.Connection.credentials" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">credentials</tt><a class="reference internal" href="_modules/gcloud/connection.html#Connection.credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection.credentials" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code>, or None</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt>, or None</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The credentials object associated with this connection.</td>
 </tr>
@@ -149,13 +149,13 @@ of returning advanced types.</p>
 
 <dl class="attribute">
 <dt id="gcloud.connection.Connection.http">
-<code class="descname">http</code><a class="headerlink" href="#gcloud.connection.Connection.http" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">http</tt><a class="reference internal" href="_modules/gcloud/connection.html#Connection.http"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection.http" title="Permalink to this definition">¶</a></dt>
 <dd><p>A getter for the HTTP transport used in talking to the API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></tt></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A Http object used to transport data.</td>
 </tr>
@@ -171,15 +171,15 @@ of returning advanced types.</p>
 <p>A simple wrapper around the OAuth2 credentials library.</p>
 <dl class="function">
 <dt id="gcloud.credentials.get_for_service_account">
-<code class="descclassname">gcloud.credentials.</code><code class="descname">get_for_service_account</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em>, <em>scope=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#get_for_service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_for_service_account" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">gcloud.credentials.</tt><tt class="descname">get_for_service_account</tt><big>(</big><em>client_email</em>, <em>private_key_path</em>, <em>scope=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/credentials.html#get_for_service_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_for_service_account" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the credentials for a service account.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You should not need to use this function directly.
 Instead, use the helper methods provided in
-<a class="reference internal" href="datastore-api.html#gcloud.datastore.__init__.get_connection" title="gcloud.datastore.__init__.get_connection"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.__init__.get_connection()</span></code></a>
+<a class="reference internal" href="datastore-api.html#gcloud.datastore.__init__.get_connection" title="gcloud.datastore.__init__.get_connection"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.__init__.get_connection()</span></tt></a>
 and
-<a class="reference internal" href="datastore-api.html#gcloud.datastore.__init__.get_dataset" title="gcloud.datastore.__init__.get_dataset"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.__init__.get_dataset()</span></code></a>
+<a class="reference internal" href="datastore-api.html#gcloud.datastore.__init__.get_dataset" title="gcloud.datastore.__init__.get_dataset"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.__init__.get_dataset()</span></tt></a>
 which use this method under the hood.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -198,7 +198,7 @@ particular API.)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.SignedJwtAssertionCredentials</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.SignedJwtAssertionCredentials</span></tt></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new SignedJwtAssertionCredentials instance with the
@@ -223,7 +223,7 @@ needed service account settings.</p>
     <footer id="gc-footer" class="footer" role="contentinfo">
     <div id="gc-copyright">
         &copy; Copyright 2014, JJ Geewax.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3b1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
       </div>
     </footer>
   </body>
