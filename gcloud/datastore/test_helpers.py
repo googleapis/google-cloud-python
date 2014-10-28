@@ -362,18 +362,23 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(value, key.to_protobuf())
 
     def test_none(self):
+        from gcloud.datastore.entity import Entity
+
+        entity = Entity()
         pb = self._makePB()
+
+        self._callFUT(pb, False)
+        self._callFUT(pb, 3.1415926)
+        self._callFUT(pb, 42)
+        self._callFUT(pb, (1 << 63) - 1)
+        self._callFUT(pb, 'str')
+        self._callFUT(pb, b'str')
+        self._callFUT(pb, u'str')
+        self._callFUT(pb, entity)
+        self._callFUT(pb, [u'a', 0, 3.14])
+
         self._callFUT(pb, None)
-        self.assertEqual(pb.HasField('boolean_value'), False)
-        self.assertEqual(pb.HasField('integer_value'), False)
-        self.assertEqual(pb.HasField('double_value'), False)
-        self.assertEqual(pb.HasField('timestamp_microseconds_value'), False)
-        self.assertEqual(pb.HasField('key_value'), False)
-        self.assertEqual(pb.HasField('blob_key_value'), False)
-        self.assertEqual(pb.HasField('string_value'), False)
-        self.assertEqual(pb.HasField('blob_value'), False)
-        self.assertEqual(pb.HasField('entity_value'), False)
-        self.assertEqual(len(pb.list_value), 0)
+        self.assertEqual(len(pb.ListFields()), 0)
 
     def test_bool(self):
         pb = self._makePB()
