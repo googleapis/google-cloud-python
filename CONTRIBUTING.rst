@@ -262,9 +262,8 @@ should either be:
 
 - added to the list in the
   `Travis environment variable <http://docs.travis-ci.com/user/environment-variables/#Using-Settings>`__
-  ``EXTRA_TOX_ENVS``. The current value is::
-
-    EXTRA_TOX_ENVS="coveralls regression"
+  ``EXTRA_TOX_ENVS``. This value is unencrypted in ``gcloud-python-wheels``
+  to make ongoing maintenance easier.
 
 Contributor License Agreements
 ------------------------------
