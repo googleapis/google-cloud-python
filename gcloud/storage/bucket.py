@@ -187,10 +187,21 @@ class Bucket(object):
 
         :type keys: list of string or :class:`gcloud.storage.key.Key`
         :param key: A list of key names or Key objects to delete.
+
+        :rtype: list of ``(key, success)`` tuples
+        :returns: In each tuple, `key`` is the key requested to delete and
+                  ``success`` is a boolean indicating whether it was deleted
+                  (False on a 404).
         """
-        # NOTE: boto returns a MultiDeleteResult instance.
+        result = []
         for key in keys:
-            self.delete_key(key)
+            try:
+                self.delete_key(key)
+            except exceptions.NotFoundError:
+                result.append((key, False))
+            else:
+                result.append((key, True))
+        return result
 
     def copy_key(self, key, destination_bucket, new_name=None):
         """Copy the given key to the given bucket, optionally with a new name.

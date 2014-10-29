@@ -218,7 +218,8 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
-        bucket.delete_keys([])
+        result = bucket.delete_keys([])
+        self.assertEqual(result, [])
         self.assertEqual(connection._requested, [])
 
     def test_delete_keys_hit(self):
@@ -226,20 +227,21 @@ class Test_Bucket(unittest2.TestCase):
         KEY = 'key'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        bucket.delete_keys([KEY])
+        result = bucket.delete_keys([KEY])
+        self.assertEqual(result, [(KEY, True)])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'DELETE')
         self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, KEY))
 
     def test_delete_keys_miss(self):
-        from gcloud.storage.exceptions import NotFoundError
         NAME = 'name'
         KEY = 'key'
         NONESUCH = 'nonesuch'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        self.assertRaises(NotFoundError, bucket.delete_keys, [KEY, NONESUCH])
+        result = bucket.delete_keys([KEY, NONESUCH])
+        self.assertEqual(result, [(KEY, True), (NONESUCH, False)])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'DELETE')
