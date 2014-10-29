@@ -9,6 +9,7 @@ violations (hence it has a reduced number of style checks).
 
 import ConfigParser
 import copy
+import os
 import subprocess
 import sys
 
@@ -84,8 +85,37 @@ def is_production_filename(filename):
                 or filename.startswith('regression'))
 
 
+def get_files_for_linting():
+    """Gets a list of files in the repository.
+
+    By default returns all files via `git ls-files`. However, if the
+    environment variables `GCLOUD_REMOTE_FOR_LINT` and `GCLOUD_BRANCH_FOR_LINT`
+    are set, this will return only those files which have changed since
+    the last commit in `REMOTE_FOR_LINT/BRANCH_FOR_LINT`
+    """
+    remote = os.getenv('GCLOUD_REMOTE_FOR_LINT')
+    branch = os.getenv('GCLOUD_BRANCH_FOR_LINT')
+
+    if remote is None or branch is None:
+        print 'Remote branch not specified, listing all files in repository.'
+        result = subprocess.check_output(['git', 'ls-files'])
+    else:
+        remote_branch = '%s/%s' % (remote, branch)
+        result = subprocess.check_output(['git', 'diff', '--name-only',
+                                          remote_branch])
+        print 'Using files changed relative to %s:' % (remote_branch,)
+        print '-' * 60
+        print result.rstrip('\n')  # Don't print trailing newlines.
+        print '-' * 60
+
+    return result.rstrip('\n').split('\n')
+
+
 def get_python_files():
-    """Gets a list of all Python files in the repository.
+    """Gets a list of all Python files in the repository that need linting.
+
+    Relies on get_files_for_linting() to determine which files should be
+    considered.
 
     NOTE: This requires `git` to be installed and requires that this
           is run within the `git` repository.
@@ -94,11 +124,11 @@ def get_python_files():
     :returns: A tuple containing two lists. The first list contains
               all production files and the next all test/demo files.
     """
-    all_files = subprocess.check_output(['git', 'ls-files'])
+    all_files = get_files_for_linting()
 
     library_files = []
     non_library_files = []
-    for filename in all_files.split('\n'):
+    for filename in all_files:
         if valid_filename(filename):
             if is_production_filename(filename):
                 library_files.append(filename)
@@ -110,14 +140,17 @@ def get_python_files():
 
 def lint_fileset(filenames, rcfile, description):
     """Lints a group of files using a given rcfile."""
-    rc_flag = '--rcfile=%s' % (rcfile,)
-    pylint_shell_command = ['pylint', rc_flag] + filenames
-    status_code = subprocess.call(pylint_shell_command)
-    if status_code != 0:
-        error_message = ('Pylint failed on %s with '
-                         'status %d.' % (description, status_code))
-        print >> sys.stderr, error_message
-        sys.exit(status_code)
+    if filenames:
+        rc_flag = '--rcfile=%s' % (rcfile,)
+        pylint_shell_command = ['pylint', rc_flag] + filenames
+        status_code = subprocess.call(pylint_shell_command)
+        if status_code != 0:
+            error_message = ('Pylint failed on %s with '
+                             'status %d.' % (description, status_code))
+            print >> sys.stderr, error_message
+            sys.exit(status_code)
+    else:
+        print 'Skipping %s, no files to lint.' % (description,)
 
 
 def main():

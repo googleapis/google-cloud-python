@@ -4,6 +4,8 @@ before_install:
   - git clone https://github.com/GoogleCloudPlatform/gcloud-python-wheels
         gcloud-python-wheels
   - export WHEELHOUSE="$(pwd)/gcloud-python-wheels/wheelhouse/"
+  - export GCLOUD_REMOTE_FOR_LINT="origin"
+  - export GCLOUD_BRANCH_FOR_LINT="master"
 
 install:
   - scripts/custom_pip_install.sh tox
