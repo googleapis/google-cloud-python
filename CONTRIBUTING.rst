@@ -104,6 +104,17 @@ Coding Style
 
    $ tox -e lint
 
+- In order to make ``tox -e lint`` run faster, you can set some environment
+  variables::
+
+   export GCLOUD_REMOTE_FOR_LINT="upstream"
+   export GCLOUD_BRANCH_FOR_LINT="master"
+
+  By doing this, you are specifying the location of the most up-to-date
+  version of ``gcloud-python``. The the suggested remote name ``upstream``
+  should point to the official ``GoogleCloudPlatform`` checkout and the
+  the branch should be the main branch on that remote (``master``).
+
 Exceptions to PEP8:
 
 - Many unit tests use a helper method, ``_callFUT`` ("FUT" is short for
