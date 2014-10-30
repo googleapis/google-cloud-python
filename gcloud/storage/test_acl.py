@@ -125,6 +125,7 @@ class Test_ACL(unittest2.TestCase):
         acl = self._makeOne()
         self.assertEqual(acl.entities, {})
         self.assertEqual(list(acl.get_entities()), [])
+        self.assertFalse(acl.loaded)
 
     def test_clear(self):
         TYPE = 'type'
@@ -132,6 +133,17 @@ class Test_ACL(unittest2.TestCase):
         acl = self._makeOne()
         acl.entity(TYPE, ID)
         acl.clear()
+        self.assertTrue(acl.loaded)
+        self.assertEqual(acl.entities, {})
+        self.assertEqual(list(acl.get_entities()), [])
+
+    def test_reset(self):
+        TYPE = 'type'
+        ID = 'id'
+        acl = self._makeOne()
+        acl.entity(TYPE, ID)
+        acl.reset()
+        self.assertFalse(acl.loaded)
         self.assertEqual(acl.entities, {})
         self.assertEqual(list(acl.get_entities()), [])
 
@@ -281,6 +293,7 @@ class Test_ACL(unittest2.TestCase):
         entity.grant(ROLE)
         acl = self._makeOne()
         acl.add_entity(entity)
+        self.assertTrue(acl.loaded)
         self.assertEqual(list(acl),
                          [{'entity': 'type-id', 'role': ROLE}])
         self.assertEqual(list(acl.get_entities()), [entity])
@@ -296,6 +309,7 @@ class Test_ACL(unittest2.TestCase):
         acl = self._makeOne()
         before = acl.entity(TYPE, ID)
         acl.add_entity(entity)
+        self.assertTrue(acl.loaded)
         self.assertFalse(acl.get_entity(KEY) is before)
         self.assertTrue(acl.get_entity(KEY) is entity)
         self.assertEqual(list(acl),
@@ -308,6 +322,7 @@ class Test_ACL(unittest2.TestCase):
         ROLE = 'role'
         acl = self._makeOne()
         entity = acl.entity(TYPE, ID)
+        self.assertTrue(acl.loaded)
         entity.grant(ROLE)
         self.assertEqual(list(acl),
                          [{'entity': 'type-id', 'role': ROLE}])

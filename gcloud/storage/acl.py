@@ -167,12 +167,19 @@ class _ACLEntity(object):
 class ACL(object):
     """Container class representing a list of access controls."""
 
+    loaded = False
+
     def __init__(self):
         self.clear()
 
     def clear(self):
         """Remove all entities from the ACL."""
         self.entities = {}
+
+    def reset(self):
+        """Remove all entities from the ACL, and clear the ``loaded`` flag."""
+        self.clear()
+        self.loaded = False
 
     def __iter__(self):
         for entity in self.entities.itervalues():
@@ -246,6 +253,7 @@ class ACL(object):
         :param entity: The entity to add to this ACL.
         """
         self.entities[str(entity)] = entity
+        self.loaded = True
 
     def entity(self, entity_type, identifier=None):
         """Factory method for creating an Entity.
