@@ -25,14 +25,12 @@ class Key(object):
         :param bucket: The bucket to which this key belongs.
 
         :type name: string
-        :param name: The name of the key.
-                     This corresponds to the unique path of the object
-                     in the bucket.
+        :param name: The name of the key.  This corresponds to the
+                     unique path of the object in the bucket.
 
         :type metadata: dict
         :param metadata: All the other data provided by Cloud Storage.
         """
-
         self.bucket = bucket
         self.name = name
         self.metadata = metadata or {}
@@ -45,12 +43,12 @@ class Key(object):
         """Instantiate a :class:`Key` from data returned by the JSON API.
 
         :type key_dict: dict
-        :param key_dict: A dictionary of data returned from
-                         getting an Cloud Storage object.
+        :param key_dict: A dictionary of data returned from getting an
+                         Cloud Storage object.
 
         :type bucket: :class:`gcloud.storage.bucket.Bucket`
-        :param bucket: The bucket to which this key belongs
-                       (and by proxy, which connection to use).
+        :param bucket: The bucket to which this key belongs (and by
+                       proxy, which connection to use).
 
         :rtype: :class:`Key`
         :returns: A key based on the data provided.
@@ -73,7 +71,6 @@ class Key(object):
         :rtype: :class:`gcloud.storage.connection.Connection` or None
         :returns: The connection to use, or None if no connection is set.
         """
-
         if self.bucket and self.bucket.connection:
             return self.bucket.connection
 
@@ -84,7 +81,6 @@ class Key(object):
         :rtype: string
         :returns: The URL path to this Key.
         """
-
         if not self.bucket:
             raise ValueError('Cannot determine path without a bucket defined.')
         elif not self.name:
@@ -94,7 +90,8 @@ class Key(object):
 
     @property
     def public_url(self):
-        """
+        """The public URL for this key's object.
+
         :rtype: `string`
         :returns: The public URL for this key.
         """
@@ -105,13 +102,13 @@ class Key(object):
     def generate_signed_url(self, expiration, method='GET'):
         """Generates a signed URL for this key.
 
-        If you have a key that you want to allow access to
-        for a set amount of time,
-        you can use this method to generate a URL
-        that is only valid within a certain time period.
+        If you have a key that you want to allow access to for a set
+        amount of time, you can use this method to generate a URL that
+        is only valid within a certain time period.
 
-        This is particularly useful if you don't want publicly accessible keys,
-        but don't want to require users to explicitly log in.
+        This is particularly useful if you don't want publicly
+        accessible keys, but don't want to require users to explicitly
+        log in.
 
         :type expiration: int, long, datetime.datetime, datetime.timedelta
         :param expiration: When the signed URL should expire.
@@ -123,7 +120,6 @@ class Key(object):
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
-
         resource = '/{self.bucket.name}/{self.name}'.format(self=self)
         return self.connection.generate_signed_url(resource=resource,
                                                    expiration=expiration,
@@ -135,7 +131,6 @@ class Key(object):
         :rtype: bool
         :returns: True if the key exists in Cloud Storage.
         """
-
         return self.bucket.get_key(self.name) is not None
 
     def rename(self, new_name):
@@ -145,11 +140,9 @@ class Key(object):
         deletes the key.
 
         .. warning::
-          This method will first duplicate the data
-          and then delete the old key.
-          This means that with very large objects
-          renaming could be a very (temporarily) costly
-          or a very slow operation.
+          This method will first duplicate the data and then delete the
+          old key.  This means that with very large objects renaming
+          could be a very (temporarily) costly or a very slow operation.
 
         :type new_name: string
         :param new_name: The new name for this key.
@@ -167,7 +160,6 @@ class Key(object):
         :rtype: :class:`Key`
         :returns: The key that was just deleted.
         """
-
         return self.bucket.delete_key(self)
 
     def get_contents_to_file(self, file_obj):
@@ -178,7 +170,6 @@ class Key(object):
 
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
-
         for chunk in KeyDataIterator(self):
             file_obj.write(chunk)
 
@@ -190,7 +181,6 @@ class Key(object):
 
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
-
         with open(filename, 'wb') as file_obj:
             self.get_contents_to_file(file_obj)
 
@@ -201,7 +191,6 @@ class Key(object):
         :returns: The data stored in this key.
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
-
         string_buffer = StringIO()
         self.get_contents_to_file(string_buffer)
         return string_buffer.getvalue()
@@ -222,7 +211,6 @@ class Key(object):
                      If not provided, we'll try to guess the size using
                      :func:`os.fstat`
         """
-
         # Rewind the file if desired.
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
@@ -273,7 +261,6 @@ class Key(object):
         :type filename: string
         :param filename: The path to the file.
         """
-
         content_type, _ = mimetypes.guess_type(filename)
 
         with open(filename, 'rb') as file_obj:
@@ -290,8 +277,8 @@ class Key(object):
           >>> key = bucket.new_key('my_text_file.txt')
           >>> key.set_contents_from_string('This is the contents of my file!')
 
-        Under the hood this is using a string buffer
-        and calling :func:`gcloud.storage.key.Key.set_contents_from_file`.
+        Under the hood this is using a string buffer and calling
+        :func:`gcloud.storage.key.Key.set_contents_from_file`.
 
         :type data: string
         :param data: The data to store in this key.
@@ -299,7 +286,6 @@ class Key(object):
         :rtype: :class:`Key`
         :returns: The updated Key object.
         """
-
         string_buffer = StringIO()
         string_buffer.write(data)
         self.set_contents_from_file(file_obj=string_buffer, rewind=True,
@@ -316,7 +302,6 @@ class Key(object):
         :rtype: bool
         :returns: Whether metadata is available locally.
         """
-
         if not self.metadata:
             return False
         elif field and field not in self.metadata:
@@ -333,7 +318,6 @@ class Key(object):
         :rtype: :class:`Key`
         :returns: The key you just reloaded data for.
         """
-
         projection = 'full' if full else 'noAcl'
         query_params = {'projection': projection}
         self.metadata = self.connection.api_request(
@@ -343,11 +327,9 @@ class Key(object):
     def get_metadata(self, field=None, default=None):
         """Get all metadata or a specific field.
 
-        If you request a field that isn't available,
-        and that field can be retrieved by refreshing data
-        from Cloud Storage,
-        this method will reload the data using
-        :func:`Key.reload_metadata`.
+        If you request a field that isn't available, and that field can
+        be retrieved by refreshing data from Cloud Storage, this method
+        will reload the data using :func:`Key.reload_metadata`.
 
         :type field: string
         :param field: (optional) A particular field to retrieve from metadata.
@@ -358,7 +340,6 @@ class Key(object):
         :rtype: dict or anything
         :returns: All metadata or the value of the specific field.
         """
-
         if not self.has_metadata(field=field):
             full = (field and field == 'acl')
             self.reload_metadata(full=full)
@@ -371,11 +352,11 @@ class Key(object):
     def patch_metadata(self, metadata):
         """Update particular fields of this key's metadata.
 
-        This method will only update the fields provided
-        and will not touch the other fields.
+        This method will only update the fields provided and will not
+        touch the other fields.
 
-        It will also reload the metadata locally
-        based on the servers response.
+        It will also reload the metadata locally based on the servers
+        response.
 
         :type metadata: dict
         :param metadata: The dictionary of values to update.
@@ -419,11 +400,9 @@ class Key(object):
         """Save the ACL data for this key.
 
         :type acl: :class:`gcloud.storage.acl.ACL`
-        :param acl: The ACL object to save.
-                    If left blank, this will save the ACL
-                    set locally on the key.
+        :param acl: The ACL object to save.  If left blank, this will
+                    save the ACL set locally on the key.
         """
-
         # We do things in this weird way because [] and None
         # both evaluate to False, but mean very different things.
         if acl is None:
@@ -439,15 +418,11 @@ class Key(object):
     def clear_acl(self):
         """Remove all ACL rules from the key.
 
-        Note that this won't actually remove *ALL* the rules,
-        but it will remove all the non-default rules.
-        In short,
-        you'll still have access
-        to a key that you created
-        even after you clear ACL rules
-        with this method.
+        Note that this won't actually remove *ALL* the rules, but it
+        will remove all the non-default rules.  In short, you'll still
+        have access to a key that you created even after you clear ACL
+        rules with this method.
         """
-
         return self.save_acl(acl=[])
 
     def make_public(self):
@@ -456,7 +431,6 @@ class Key(object):
         :rtype: :class:`Key`
         :returns: The current key.
         """
-
         self.get_acl().all().grant_read()
         self.save_acl()
         return self
@@ -465,14 +439,12 @@ class Key(object):
 class KeyIterator(Iterator):
     """An iterator listing keys.
 
-    You shouldn't have to use this directly,
-    but instead should use the helper methods
-    on :class:`gcloud.storage.key.Key` objects.
+    You shouldn't have to use this directly, but instead should use the
+    helper methods on :class:`gcloud.storage.key.Key` objects.
 
     :type bucket: :class:`gcloud.storage.bucket.Bucket`
     :param bucket: The bucket from which to list keys.
     """
-
     def __init__(self, bucket):
         self.bucket = bucket
         super(KeyIterator, self).__init__(
