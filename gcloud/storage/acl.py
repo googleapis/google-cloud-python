@@ -113,7 +113,6 @@ class _ACLEntity(object):
         :rtype: list of strings
         :returns: The list of roles associated with this entity.
         """
-
         return self.roles
 
     def grant(self, role):
@@ -125,7 +124,6 @@ class _ACLEntity(object):
         :rtype: :class:`_ACLEntity`
         :returns: The entity class.
         """
-
         self.roles.add(role)
         return self
 
@@ -138,7 +136,6 @@ class _ACLEntity(object):
         :rtype: :class:`_ACLEntity`
         :returns: The entity class.
         """
-
         if role in self.roles:
             self.roles.remove(role)
         return self
@@ -202,7 +199,6 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An Entity constructed from the dictionary.
         """
-
         entity = entity_dict['entity']
         role = entity_dict['role']
 
@@ -231,7 +227,6 @@ class ACL(object):
         :rtype: bool
         :returns: True of the entity exists in the ACL.
         """
-
         return str(entity) in self.entities
 
     def get_entity(self, entity, default=None):
@@ -248,7 +243,6 @@ class ACL(object):
         :returns: The corresponding entity or the value provided
                   to ``default``.
         """
-
         return self.entities.get(str(entity), default)
 
     def add_entity(self, entity):
@@ -257,7 +251,6 @@ class ACL(object):
         :type entity: :class:`_ACLEntity`
         :param entity: The entity to add to this ACL.
         """
-
         self.entities[str(entity)] = entity
 
     def entity(self, entity_type, identifier=None):
@@ -279,7 +272,6 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: A new Entity or a reference to an existing identical entity.
         """
-
         entity = _ACLEntity(entity_type=entity_type, identifier=identifier)
         if self.has_entity(entity):
             entity = self.get_entity(entity)
@@ -296,7 +288,6 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An Entity corresponding to this user.
         """
-
         return self.entity('user', identifier=identifier)
 
     def group(self, identifier):
@@ -308,7 +299,6 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An Entity corresponding to this group.
         """
-
         return self.entity('group', identifier=identifier)
 
     def domain(self, domain):
@@ -320,7 +310,6 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An entity corresponding to this domain.
         """
-
         return self.entity('domain', identifier=domain)
 
     def all(self):
@@ -329,7 +318,6 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An entity representing all users.
         """
-
         return self.entity('allUsers')
 
     def all_authenticated(self):
@@ -338,7 +326,6 @@ class ACL(object):
         :rtype: :class:`_ACLEntity`
         :returns: An entity representing all authenticated users.
         """
-
         return self.entity('allAuthenticatedUsers')
 
     def get_entities(self):
@@ -347,7 +334,6 @@ class ACL(object):
         :rtype: list of :class:`_ACLEntity` objects
         :returns: A list of all Entity objects.
         """
-
         return self.entities.values()
 
     def save(self):
@@ -355,7 +341,6 @@ class ACL(object):
 
         :raises: NotImplementedError
         """
-
         raise NotImplementedError
 
 
@@ -367,7 +352,6 @@ class BucketACL(ACL):
         :type bucket: :class:`gcloud.storage.bucket.Bucket`
         :param bucket: The bucket to which this ACL relates.
         """
-
         super(BucketACL, self).__init__()
         self.bucket = bucket
 
@@ -394,7 +378,6 @@ class ObjectACL(ACL):
         :type key: :class:`gcloud.storage.key.Key`
         :param key: The key that this ACL corresponds to.
         """
-
         super(ObjectACL, self).__init__()
         self.key = key
 
