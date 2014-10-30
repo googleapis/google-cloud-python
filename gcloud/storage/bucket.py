@@ -39,7 +39,6 @@ class Bucket(object):
         :rtype: :class:`Bucket`
         :returns: A bucket constructed from the data provided.
         """
-
         return cls(connection=connection, name=bucket_dict['name'],
                    metadata=bucket_dict)
 
@@ -55,7 +54,6 @@ class Bucket(object):
     @property
     def path(self):
         """The URL path to this bucket."""
-
         if not self.name:
             raise ValueError('Cannot determine path without bucket name.')
 
@@ -80,7 +78,6 @@ class Bucket(object):
         :rtype: :class:`gcloud.storage.key.Key` or None
         :returns: The key object if it exists, otherwise None.
         """
-
         # Coerce this to a key object (either from a Key or a string).
         key = self.new_key(key)
 
@@ -103,7 +100,6 @@ class Bucket(object):
         :rtype: list of :class:`gcloud.storage.key.Key`
         :returns: A list of all the Key objects in this bucket.
         """
-
         return list(self)
 
     def new_key(self, key):
@@ -120,7 +116,6 @@ class Bucket(object):
         :rtype: :class:`gcloud.storage.key.Key`
         :returns: A Key object with the path provided.
         """
-
         if isinstance(key, Key):
             return key
 
@@ -184,7 +179,6 @@ class Bucket(object):
         :returns: The key that was just deleted.
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
-
         key = self.new_key(key)
         self.connection.api_request(method='DELETE', path=key.path)
         return key
@@ -320,7 +314,6 @@ class Bucket(object):
         :rtype: bool
         :returns: Whether metadata is available locally.
         """
-
         if not self.metadata:
             return False
         elif field and field not in self.metadata:
@@ -337,7 +330,6 @@ class Bucket(object):
         :rtype: :class:`Bucket`
         :returns: The bucket you just reloaded data for.
         """
-
         projection = 'full' if full else 'noAcl'
         query_params = {'projection': projection}
         self.metadata = self.connection.api_request(
@@ -362,7 +354,6 @@ class Bucket(object):
         :rtype: dict or anything
         :returns: All metadata or the value of the specific field.
         """
-
         if not self.has_metadata(field=field):
             full = (field and field in ('acl', 'defaultObjectAcl'))
             self.reload_metadata(full=full)
@@ -387,7 +378,6 @@ class Bucket(object):
         :rtype: :class:`Bucket`
         :returns: The current bucket.
         """
-
         self.metadata = self.connection.api_request(
             method='PATCH', path=self.path, data=metadata,
             query_params={'projection': 'full'})
@@ -432,7 +422,6 @@ class Bucket(object):
         :type not_found_page: string
         :param not_found_page: The file to use when a page isn't found.
         """
-
         data = {
             'website': {
                 'mainPageSuffix': main_page_suffix,
@@ -447,7 +436,6 @@ class Bucket(object):
         This is really just a shortcut for
         setting the website-related attributes to ``None``.
         """
-
         return self.configure_website(None, None)
 
     def reload_acl(self):
@@ -456,7 +444,6 @@ class Bucket(object):
         :rtype: :class:`Bucket`
         :returns: The current bucket.
         """
-
         self.acl = BucketACL(bucket=self)
 
         for entry in self.get_metadata('acl', []):
@@ -471,7 +458,6 @@ class Bucket(object):
         :rtype: :class:`gcloud.storage.acl.BucketACL`
         :returns: An ACL object for the current bucket.
         """
-
         if not self.acl:
             self.reload_acl()
         return self.acl
@@ -514,7 +500,6 @@ class Bucket(object):
                     If left blank, this will save the ACL
                     set locally on the bucket.
         """
-
         # We do things in this weird way because [] and None
         # both evaluate to False, but mean very different things.
         if acl is None:
@@ -558,7 +543,6 @@ class Bucket(object):
 
         At this point all the custom rules you created have been removed.
         """
-
         return self.save_acl(acl=[])
 
     def reload_default_object_acl(self):
@@ -567,7 +551,6 @@ class Bucket(object):
         :rtype: :class:`Bucket`
         :returns: The current bucket.
         """
-
         self.default_object_acl = DefaultObjectACL(bucket=self)
 
         for entry in self.get_metadata('defaultObjectAcl', []):
@@ -585,7 +568,6 @@ class Bucket(object):
         :rtype: :class:`gcloud.storage.acl.DefaultObjectACL`
         :returns: A DefaultObjectACL object for this bucket.
         """
-
         if not self.default_object_acl:
             self.reload_default_object_acl()
         return self.default_object_acl
@@ -599,7 +581,6 @@ class Bucket(object):
                     the ``default_object_acl`` property
                     and save that.
         """
-
         if acl is None:
             acl = self.default_object_acl
 
@@ -626,7 +607,6 @@ class Bucket(object):
         :param future: If True, this will make all objects created in the
                        future public as well.
         """
-
         self.get_acl().all().grant_read()
         self.save_acl()
 
