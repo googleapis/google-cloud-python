@@ -635,16 +635,12 @@ It always returns the object:</p>
 <dt id="gcloud.storage.bucket.Bucket.clear_acl">
 <tt class="descname">clear_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.clear_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.clear_acl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all ACL rules from the bucket.</p>
-<p>Note that this won&#8217;t actually remove <em>ALL</em> the rules,
-but it will remove all the non-default rules.
-In short,
-you&#8217;ll still have access
-to a bucket that you created
-even after you clear ACL rules
-with this method.</p>
-<p>For example,
-imagine that you granted access to this bucket
-to a bunch of coworkers:</p>
+<p>Note that this won&#8217;t actually remove <em>ALL</em> the rules, but it
+will remove all the non-default rules.  In short, you&#8217;ll still
+have access to a bucket that you created even after you clear
+ACL rules with this method.</p>
+<p>For example, imagine that you granted access to this bucket to a
+bunch of coworkers:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span>
 <span class="go">                                        private_key_path)</span>
@@ -681,9 +677,8 @@ if your bucket name is a domain name
 <p class="last">Check out the official documentation here:
 <a class="reference external" href="https://developers.google.com/storage/docs/website-configuration">https://developers.google.com/storage/docs/website-configuration</a></p>
 </div>
-<p>If you want this bucket to host a website,
-just provide the name of an index page
-and a page to use when a key isn&#8217;t found:</p>
+<p>If you want this bucket to host a website, just provide the name
+of an index page and a page to use when a key isn&#8217;t found:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span>
 <span class="go">                                        private_key_path)</span>
@@ -695,11 +690,9 @@ and a page to use when a key isn&#8217;t found:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">make_public</span><span class="p">(</span><span class="n">recursive</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This says:
-&#8220;Make the bucket public,
-and all the stuff already in the bucket,
-and anything else I add to the bucket.
-Just make it all public.&#8221;</p>
+<p>This says: &#8220;Make the bucket public, and all the stuff already in
+the bucket, and anything else I add to the bucket.  Just make it
+all public.&#8221;</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -746,15 +739,13 @@ copied.</li>
 <dt id="gcloud.storage.bucket.Bucket.delete">
 <tt class="descname">delete</tt><big>(</big><em>force=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete this bucket.</p>
-<p>The bucket <strong>must</strong> be empty in order to delete it.
-If the bucket doesn&#8217;t exist,
-this will raise a <a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>.
-If the bucket is not empty,
-this will raise an Exception.</p>
-<p>If you want to delete a non-empty bucket you can pass
-in a force parameter set to true.
-This will iterate through the bucket&#8217;s keys and delete the
-related objects, before deleting the bucket.</p>
+<p>The bucket <strong>must</strong> be empty in order to delete it.  If the
+bucket doesn&#8217;t exist, this will raise a
+<a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>.  If the bucket
+is not empty, this will raise an Exception.</p>
+<p>If you want to delete a non-empty bucket you can pass in a force
+parameter set to true.  This will iterate through the bucket&#8217;s
+keys and delete the related objects, before deleting the bucket.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -822,8 +813,8 @@ this will throw a <a class="reference internal" href="#gcloud.storage.exceptions
 <dt id="gcloud.storage.bucket.Bucket.disable_website">
 <tt class="descname">disable_website</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.disable_website"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.disable_website" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disable the website configuration for this bucket.</p>
-<p>This is really just a shortcut for
-setting the website-related attributes to <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+<p>This is really just a shortcut for setting the website-related
+attributes to <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
 </dd></dl>
 
 <dl class="classmethod">
@@ -864,8 +855,8 @@ setting the website-related attributes to <tt class="docutils literal"><span cla
 <dt id="gcloud.storage.bucket.Bucket.get_all_keys">
 <tt class="descname">get_all_keys</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_all_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_all_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all the keys in this bucket.</p>
-<p>This will <strong>not</strong> retrieve all the data for all the keys,
-it will only retrieve metadata about the keys.</p>
+<p>This will <strong>not</strong> retrieve all the data for all the keys, it
+will only retrieve metadata about the keys.</p>
 <p>This is equivalent to:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">]</span>
 </pre></div>
@@ -886,8 +877,8 @@ it will only retrieve metadata about the keys.</p>
 <dt id="gcloud.storage.bucket.Bucket.get_default_object_acl">
 <tt class="descname">get_default_object_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_default_object_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_default_object_acl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the current Default Object ACL rules.</p>
-<p>If the appropriate metadata isn&#8217;t available locally,
-this method will reload it from Cloud Storage.</p>
+<p>If the appropriate metadata isn&#8217;t available locally, this method
+will reload it from Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -932,11 +923,9 @@ this method will reload it from Cloud Storage.</p>
 <dt id="gcloud.storage.bucket.Bucket.get_metadata">
 <tt class="descname">get_metadata</tt><big>(</big><em>field=None</em>, <em>default=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all metadata or a specific field.</p>
-<p>If you request a field that isn&#8217;t available,
-and that field can be retrieved by refreshing data
-from Cloud Storage,
-this method will reload the data using
-<a class="reference internal" href="#gcloud.storage.bucket.Bucket.reload_metadata" title="gcloud.storage.bucket.Bucket.reload_metadata"><tt class="xref py py-func docutils literal"><span class="pre">Bucket.reload_metadata()</span></tt></a>.</p>
+<p>If you request a field that isn&#8217;t available, and that field can
+be retrieved by refreshing data from Cloud Storage, this method
+will reload the data using <a class="reference internal" href="#gcloud.storage.bucket.Bucket.reload_metadata" title="gcloud.storage.bucket.Bucket.reload_metadata"><tt class="xref py py-func docutils literal"><span class="pre">Bucket.reload_metadata()</span></tt></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -999,10 +988,9 @@ future public as well.</li>
 <dt id="gcloud.storage.bucket.Bucket.new_key">
 <tt class="descname">new_key</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.new_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.new_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given path name (or Key), return a <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">storage.key.Key</span></tt></a> object.</p>
-<p>This is really useful when you&#8217;re not sure
-if you have a Key object or a string path name.
-Given either of those types,
-this returns the corresponding Key object.</p>
+<p>This is really useful when you&#8217;re not sure if you have a Key
+object or a string path name.  Given either of those types, this
+returns the corresponding Key object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1021,10 +1009,10 @@ this returns the corresponding Key object.</p>
 <dt id="gcloud.storage.bucket.Bucket.patch_metadata">
 <tt class="descname">patch_metadata</tt><big>(</big><em>metadata</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.patch_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.patch_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update particular fields of this bucket&#8217;s metadata.</p>
-<p>This method will only update the fields provided
-and will not touch the other fields.</p>
-<p>It will also reload the metadata locally
-based on the servers response.</p>
+<p>This method will only update the fields provided and will not
+touch the other fields.</p>
+<p>It will also reload the metadata locally based on the servers
+response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1099,32 +1087,28 @@ based on the servers response.</p>
 <dt id="gcloud.storage.bucket.Bucket.save_acl">
 <tt class="descname">save_acl</tt><big>(</big><em>acl=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.save_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.save_acl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the ACL data for this bucket.</p>
-<p>If called without arguments,
-this will save the ACL currently stored on the Bucket object.
-For example,
-this will save
-the ACL stored in <tt class="docutils literal"><span class="pre">some_other_acl</span></tt>:</p>
+<p>If called without arguments, this will save the ACL currently
+stored on the Bucket object.  For example, this will save the
+ACL stored in <tt class="docutils literal"><span class="pre">some_other_acl</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">acl</span> <span class="o">=</span> <span class="n">some_other_acl</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>You can also provide a specific ACL to save
-instead of the one currently set
-on the Bucket object:</p>
+<p>You can also provide a specific ACL to save instead of the one
+currently set on the Bucket object:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="n">my_other_acl</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can use this to set access controls
-to be consistent from one bucket to another:</p>
+<p>You can use this to set access controls to be consistent from
+one bucket to another:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket1</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket1_name</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket2_name</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">bucket1</span><span class="o">.</span><span class="n">get_acl</span><span class="p">())</span>
 </pre></div>
 </div>
-<p>If you want to <strong>clear</strong> the ACL for the bucket,
-you must save an empty list (<tt class="docutils literal"><span class="pre">[]</span></tt>)
-rather than using <tt class="docutils literal"><span class="pre">None</span></tt>
-(which is interpreted as wanting to save the current ACL):</p>
+<p>If you want to <strong>clear</strong> the ACL for the bucket, you must save
+an empty list (<tt class="docutils literal"><span class="pre">[]</span></tt>) rather than using <tt class="docutils literal"><span class="pre">None</span></tt> (which is
+interpreted as wanting to save the current ACL):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>  <span class="c"># Saves the current ACL (self.acl).</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">([])</span>  <span class="c"># Clears the current ACL.</span>
 </pre></div>
@@ -1172,10 +1156,9 @@ and save that.</td>
 <span class="go">[&lt;Key: my-bucket, remote-text-file.txt&gt;]</span>
 </pre></div>
 </div>
-<p>If you don&#8217;t provide a key value,
-we will try to upload the file using the local filename
-as the key
-(<strong>not</strong> the complete path):</p>
+<p>If you don&#8217;t provide a key value, we will try to upload the file
+using the local filename as the key (<strong>not</strong> the complete
+path):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
@@ -1190,13 +1173,10 @@ as the key
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>filename</strong> (<em>string</em>) &#8211; Local path to the file you want to upload.</li>
-<li><strong>key</strong> (string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; <p>The key (either an object or a remote path)
-of where to put the file.</p>
-<p>If this is blank,
-we will try to upload the file
-to the root of the bucket
-with the same name as on your local file system.</p>
-</li>
+<li><strong>key</strong> (string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; The key (either an object or a remote path) of where
+to put the file.  If this is blank, we will try to
+upload the file to the root of the bucket with the
+same name as on your local file system.</li>
 </ul>
 </td>
 </tr>
@@ -1218,10 +1198,9 @@ with the same name as on your local file system.</p>
 <span class="go">[&lt;Key: my-bucket, remote-text-file.txt&gt;]</span>
 </pre></div>
 </div>
-<p>If you don&#8217;t provide a key value,
-we will try to upload the file using the local filename
-as the key
-(<strong>not</strong> the complete path):</p>
+<p>If you don&#8217;t provide a key value, we will try to upload the file
+using the local filename as the key (<strong>not</strong> the complete
+path):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
@@ -1236,13 +1215,10 @@ as the key
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
-<li><strong>key</strong> (string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; <p>The key (either an object or a remote path)
-of where to put the file.</p>
-<p>If this is blank,
-we will try to upload the file
-to the root of the bucket
-with the same name as on your local file system.</p>
-</li>
+<li><strong>key</strong> (string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; The key (either an object or a remote path) of where
+to put the file.  If this is blank, we will try to
+upload the file to the root of the bucket with the
+same name as on your local file system.</li>
 </ul>
 </td>
 </tr>
@@ -1257,9 +1233,8 @@ with the same name as on your local file system.</p>
 <em class="property">class </em><tt class="descclassname">gcloud.storage.bucket.</tt><tt class="descname">BucketIterator</tt><big>(</big><em>connection</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#BucketIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.BucketIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#gcloud.storage.iterator.Iterator" title="gcloud.storage.iterator.Iterator"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.iterator.Iterator</span></tt></a></p>
 <p>An iterator listing all buckets.</p>
-<p>You shouldn&#8217;t have to use this directly,
-but instead should use the helper methods
-on <a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a> objects.</p>
+<p>You shouldn&#8217;t have to use this directly, but instead should use the helper
+methods on <a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a> objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1795,11 +1770,9 @@ on <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.st
 </div>
 <div class="section" id="module-gcloud.storage.acl">
 <span id="access-control"></span><h2>Access Control<a class="headerlink" href="#module-gcloud.storage.acl" title="Permalink to this headline">¶</a></h2>
-<p>This module makes it simple to interact
-with the access control lists that Cloud Storage provides.</p>
-<p><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> has a getting method
-that creates an ACL object under the hood,
-and you can interact with that using
+<p>Manipulate access control lists that Cloud Storage provides.</p>
+<p><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> has a getting method that creates
+an ACL object under the hood, and you can interact with that using
 <a class="reference internal" href="#gcloud.storage.bucket.Bucket.get_acl" title="gcloud.storage.bucket.Bucket.get_acl"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.get_acl()</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
@@ -1830,41 +1803,36 @@ per user basis (either by ID or e-mail address).</li>
 <li><strong>Owning</strong>:
 <tt class="xref py py-func docutils literal"><span class="pre">_ACLEntity.grant_owner()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">_ACLEntity.revoke_owner()</span></tt></li>
 </ul>
-<p>You can use any of these like any other factory method
-(these happen to be <tt class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></tt> factories):</p>
+<p>You can use any of these like any other factory method (these happen to
+be <tt class="xref py py-class docutils literal"><span class="pre">_ACLEntity</span></tt> factories):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s">&#39;me@example.org&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">all_authenticated</span><span class="p">()</span><span class="o">.</span><span class="n">grant_write</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>You can also chain
-these <tt class="docutils literal"><span class="pre">grant_*</span></tt> and <tt class="docutils literal"><span class="pre">revoke_*</span></tt> methods
-together for brevity:</p>
+<p>You can also chain these <tt class="docutils literal"><span class="pre">grant_*</span></tt> and <tt class="docutils literal"><span class="pre">revoke_*</span></tt> methods together
+for brevity:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span><span class="o">.</span><span class="n">revoke_write</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>After that,
-you can save any changes you make
-with the <a class="reference internal" href="#gcloud.storage.acl.ACL.save" title="gcloud.storage.acl.ACL.save"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.acl.ACL.save()</span></tt></a> method:</p>
+<p>After that, you can save any changes you make with the
+<a class="reference internal" href="#gcloud.storage.acl.ACL.save" title="gcloud.storage.acl.ACL.save"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.acl.ACL.save()</span></tt></a> method:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>You can alternatively save any existing
-<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a> object
-(whether it was created by a factory method or not)
-with the <a class="reference internal" href="#gcloud.storage.bucket.Bucket.save_acl" title="gcloud.storage.bucket.Bucket.save_acl"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.save_acl()</span></tt></a> method:</p>
+<p>You can alternatively save any existing <a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>
+object (whether it was created by a factory method or not) with the
+<a class="reference internal" href="#gcloud.storage.bucket.Bucket.save_acl" title="gcloud.storage.bucket.Bucket.save_acl"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.save_acl()</span></tt></a> method:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">acl</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>To get the list
-of <tt class="docutils literal"><span class="pre">entity</span></tt> and <tt class="docutils literal"><span class="pre">role</span></tt>
-for each unique pair,
-the <a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">ACL</span></tt></a> class is iterable:</p>
+<p>To get the list of <tt class="docutils literal"><span class="pre">entity</span></tt> and <tt class="docutils literal"><span class="pre">role</span></tt> for each unique pair, the
+<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">ACL</span></tt></a> class is iterable:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="nb">list</span><span class="p">(</span><span class="n">ACL</span><span class="p">)</span>
 <span class="go">[{&#39;role&#39;: &#39;OWNER&#39;, &#39;entity&#39;: &#39;allUsers&#39;}, ...]</span>
 </pre></div>
 </div>
-<p>This list of tuples can be used as the <tt class="docutils literal"><span class="pre">entity</span></tt> and <tt class="docutils literal"><span class="pre">role</span></tt>
-fields when sending metadata for ACLs to the API.</p>
+<p>This list of tuples can be used as the <tt class="docutils literal"><span class="pre">entity</span></tt> and <tt class="docutils literal"><span class="pre">role</span></tt> fields
+when sending metadata for ACLs to the API.</p>
 <dl class="class">
 <dt id="gcloud.storage.acl.ACL">
 <em class="property">class </em><tt class="descclassname">gcloud.storage.acl.</tt><tt class="descname">ACL</tt><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL" title="Permalink to this definition">¶</a></dt>
@@ -1939,9 +1907,9 @@ fields when sending metadata for ACLs to the API.</p>
 <tt class="descname">entity</tt><big>(</big><em>entity_type</em>, <em>identifier=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for creating an Entity.</p>
 <p>If an entity with the same type and identifier already exists,
-this will return a reference to that entity.
-If not, it will create a new one and add it to the list
-of known entities for this ACL.</p>
+this will return a reference to that entity.  If not, it will
+create a new one and add it to the list of known entities for
+this ACL.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1968,12 +1936,9 @@ This can be either an ID or an e-mail address.</li>
 <dt id="gcloud.storage.acl.ACL.entity_from_dict">
 <tt class="descname">entity_from_dict</tt><big>(</big><em>entity_dict</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.entity_from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.entity_from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build an _ACLEntity object from a dictionary of data.</p>
-<p>An entity is a mutable object
-that represents a list of roles
-belonging to either a user or group
-or the special types
-for all users
-and all authenticated users.</p>
+<p>An entity is a mutable object that represents a list of roles
+belonging to either a user or group or the special types for all
+users and all authenticated users.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

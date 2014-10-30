@@ -178,8 +178,8 @@
 <div class="viewcode-block" id="Bucket.get_all_keys"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_all_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List all the keys in this bucket.</span>
 
-<span class="sd">        This will **not** retrieve all the data for all the keys,</span>
-<span class="sd">        it will only retrieve metadata about the keys.</span>
+<span class="sd">        This will **not** retrieve all the data for all the keys, it</span>
+<span class="sd">        will only retrieve metadata about the keys.</span>
 
 <span class="sd">        This is equivalent to::</span>
 
@@ -193,10 +193,9 @@
 <div class="viewcode-block" id="Bucket.new_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.new_key">[docs]</a>    <span class="k">def</span> <span class="nf">new_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Given path name (or Key), return a :class:`.storage.key.Key` object.</span>
 
-<span class="sd">        This is really useful when you&#39;re not sure</span>
-<span class="sd">        if you have a Key object or a string path name.</span>
-<span class="sd">        Given either of those types,</span>
-<span class="sd">        this returns the corresponding Key object.</span>
+<span class="sd">        This is really useful when you&#39;re not sure if you have a Key</span>
+<span class="sd">        object or a string path name.  Given either of those types, this</span>
+<span class="sd">        returns the corresponding Key object.</span>
 
 <span class="sd">        :type key: string or :class:`gcloud.storage.key.Key`</span>
 <span class="sd">        :param key: A path name or actual key object.</span>
@@ -221,16 +220,14 @@
 <div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this bucket.</span>
 
-<span class="sd">        The bucket **must** be empty in order to delete it.</span>
-<span class="sd">        If the bucket doesn&#39;t exist,</span>
-<span class="sd">        this will raise a :class:`gcloud.storage.exceptions.NotFoundError`.</span>
-<span class="sd">        If the bucket is not empty,</span>
-<span class="sd">        this will raise an Exception.</span>
+<span class="sd">        The bucket **must** be empty in order to delete it.  If the</span>
+<span class="sd">        bucket doesn&#39;t exist, this will raise a</span>
+<span class="sd">        :class:`gcloud.storage.exceptions.NotFoundError`.  If the bucket</span>
+<span class="sd">        is not empty, this will raise an Exception.</span>
 
-<span class="sd">        If you want to delete a non-empty bucket you can pass</span>
-<span class="sd">        in a force parameter set to true.</span>
-<span class="sd">        This will iterate through the bucket&#39;s keys and delete the</span>
-<span class="sd">        related objects, before deleting the bucket.</span>
+<span class="sd">        If you want to delete a non-empty bucket you can pass in a force</span>
+<span class="sd">        parameter set to true.  This will iterate through the bucket&#39;s</span>
+<span class="sd">        keys and delete the related objects, before deleting the bucket.</span>
 
 <span class="sd">        :type force: bool</span>
 <span class="sd">        :param full: If True, empties the bucket&#39;s objects then deletes it.</span>
@@ -320,10 +317,9 @@
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_keys()</span>
 <span class="sd">          [&lt;Key: my-bucket, remote-text-file.txt&gt;]</span>
 
-<span class="sd">        If you don&#39;t provide a key value,</span>
-<span class="sd">        we will try to upload the file using the local filename</span>
-<span class="sd">        as the key</span>
-<span class="sd">        (**not** the complete path)::</span>
+<span class="sd">        If you don&#39;t provide a key value, we will try to upload the file</span>
+<span class="sd">        using the local filename as the key (**not** the complete</span>
+<span class="sd">        path)::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
@@ -336,13 +332,10 @@
 <span class="sd">        :param filename: Local path to the file you want to upload.</span>
 
 <span class="sd">        :type key: string or :class:`gcloud.storage.key.Key`</span>
-<span class="sd">        :param key: The key (either an object or a remote path)</span>
-<span class="sd">                    of where to put the file.</span>
-
-<span class="sd">                    If this is blank,</span>
-<span class="sd">                    we will try to upload the file</span>
-<span class="sd">                    to the root of the bucket</span>
-<span class="sd">                    with the same name as on your local file system.</span>
+<span class="sd">        :param key: The key (either an object or a remote path) of where</span>
+<span class="sd">                    to put the file.  If this is blank, we will try to</span>
+<span class="sd">                    upload the file to the root of the bucket with the</span>
+<span class="sd">                    same name as on your local file system.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -363,10 +356,9 @@
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_keys()</span>
 <span class="sd">          [&lt;Key: my-bucket, remote-text-file.txt&gt;]</span>
 
-<span class="sd">        If you don&#39;t provide a key value,</span>
-<span class="sd">        we will try to upload the file using the local filename</span>
-<span class="sd">        as the key</span>
-<span class="sd">        (**not** the complete path)::</span>
+<span class="sd">        If you don&#39;t provide a key value, we will try to upload the file</span>
+<span class="sd">        using the local filename as the key (**not** the complete</span>
+<span class="sd">        path)::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
@@ -379,13 +371,10 @@
 <span class="sd">        :param file_obj: A file handle open for reading.</span>
 
 <span class="sd">        :type key: string or :class:`gcloud.storage.key.Key`</span>
-<span class="sd">        :param key: The key (either an object or a remote path)</span>
-<span class="sd">                    of where to put the file.</span>
-
-<span class="sd">                    If this is blank,</span>
-<span class="sd">                    we will try to upload the file</span>
-<span class="sd">                    to the root of the bucket</span>
-<span class="sd">                    with the same name as on your local file system.</span>
+<span class="sd">        :param key: The key (either an object or a remote path) of where</span>
+<span class="sd">                    to put the file.  If this is blank, we will try to</span>
+<span class="sd">                    upload the file to the root of the bucket with the</span>
+<span class="sd">                    same name as on your local file system.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -427,11 +416,9 @@
 <div class="viewcode-block" id="Bucket.get_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all metadata or a specific field.</span>
 
-<span class="sd">        If you request a field that isn&#39;t available,</span>
-<span class="sd">        and that field can be retrieved by refreshing data</span>
-<span class="sd">        from Cloud Storage,</span>
-<span class="sd">        this method will reload the data using</span>
-<span class="sd">        :func:`Bucket.reload_metadata`.</span>
+<span class="sd">        If you request a field that isn&#39;t available, and that field can</span>
+<span class="sd">        be retrieved by refreshing data from Cloud Storage, this method</span>
+<span class="sd">        will reload the data using :func:`Bucket.reload_metadata`.</span>
 
 <span class="sd">        :type field: string</span>
 <span class="sd">        :param field: (optional) A particular field to retrieve from metadata.</span>
@@ -454,11 +441,11 @@
 <div class="viewcode-block" id="Bucket.patch_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.patch_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">patch_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update particular fields of this bucket&#39;s metadata.</span>
 
-<span class="sd">        This method will only update the fields provided</span>
-<span class="sd">        and will not touch the other fields.</span>
+<span class="sd">        This method will only update the fields provided and will not</span>
+<span class="sd">        touch the other fields.</span>
 
-<span class="sd">        It will also reload the metadata locally</span>
-<span class="sd">        based on the servers response.</span>
+<span class="sd">        It will also reload the metadata locally based on the servers</span>
+<span class="sd">        response.</span>
 
 <span class="sd">        :type metadata: dict</span>
 <span class="sd">        :param metadata: The dictionary of values to update.</span>
@@ -482,9 +469,8 @@
 <span class="sd">          Check out the official documentation here:</span>
 <span class="sd">          https://developers.google.com/storage/docs/website-configuration</span>
 
-<span class="sd">        If you want this bucket to host a website,</span>
-<span class="sd">        just provide the name of an index page</span>
-<span class="sd">        and a page to use when a key isn&#39;t found::</span>
+<span class="sd">        If you want this bucket to host a website, just provide the name</span>
+<span class="sd">        of an index page and a page to use when a key isn&#39;t found::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email,</span>
@@ -496,11 +482,9 @@
 
 <span class="sd">          &gt;&gt;&gt; bucket.make_public(recursive=True, future=True)</span>
 
-<span class="sd">        This says:</span>
-<span class="sd">        &quot;Make the bucket public,</span>
-<span class="sd">        and all the stuff already in the bucket,</span>
-<span class="sd">        and anything else I add to the bucket.</span>
-<span class="sd">        Just make it all public.&quot;</span>
+<span class="sd">        This says: &quot;Make the bucket public, and all the stuff already in</span>
+<span class="sd">        the bucket, and anything else I add to the bucket.  Just make it</span>
+<span class="sd">        all public.&quot;</span>
 
 <span class="sd">        :type main_page_suffix: string</span>
 <span class="sd">        :param main_page_suffix: The page to use as the main page</span>
@@ -521,8 +505,8 @@
 <div class="viewcode-block" id="Bucket.disable_website"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.disable_website">[docs]</a>    <span class="k">def</span> <span class="nf">disable_website</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disable the website configuration for this bucket.</span>
 
-<span class="sd">        This is really just a shortcut for</span>
-<span class="sd">        setting the website-related attributes to ``None``.</span>
+<span class="sd">        This is really just a shortcut for setting the website-related</span>
+<span class="sd">        attributes to ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 </div>
@@ -553,32 +537,28 @@
 <div class="viewcode-block" id="Bucket.save_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.save_acl">[docs]</a>    <span class="k">def</span> <span class="nf">save_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the ACL data for this bucket.</span>
 
-<span class="sd">        If called without arguments,</span>
-<span class="sd">        this will save the ACL currently stored on the Bucket object.</span>
-<span class="sd">        For example,</span>
-<span class="sd">        this will save</span>
-<span class="sd">        the ACL stored in ``some_other_acl``::</span>
+<span class="sd">        If called without arguments, this will save the ACL currently</span>
+<span class="sd">        stored on the Bucket object.  For example, this will save the</span>
+<span class="sd">        ACL stored in ``some_other_acl``::</span>
 
 <span class="sd">           &gt;&gt;&gt; bucket.acl = some_other_acl</span>
 <span class="sd">           &gt;&gt;&gt; bucket.save_acl()</span>
 
-<span class="sd">        You can also provide a specific ACL to save</span>
-<span class="sd">        instead of the one currently set</span>
-<span class="sd">        on the Bucket object::</span>
+<span class="sd">        You can also provide a specific ACL to save instead of the one</span>
+<span class="sd">        currently set on the Bucket object::</span>
 
 <span class="sd">           &gt;&gt;&gt; bucket.save_acl(acl=my_other_acl)</span>
 
-<span class="sd">        You can use this to set access controls</span>
-<span class="sd">        to be consistent from one bucket to another::</span>
+<span class="sd">        You can use this to set access controls to be consistent from</span>
+<span class="sd">        one bucket to another::</span>
 
 <span class="sd">          &gt;&gt;&gt; bucket1 = connection.get_bucket(bucket1_name)</span>
 <span class="sd">          &gt;&gt;&gt; bucket2 = connection.get_bucket(bucket2_name)</span>
 <span class="sd">          &gt;&gt;&gt; bucket2.save_acl(bucket1.get_acl())</span>
 
-<span class="sd">        If you want to **clear** the ACL for the bucket,</span>
-<span class="sd">        you must save an empty list (``[]``)</span>
-<span class="sd">        rather than using ``None``</span>
-<span class="sd">        (which is interpreted as wanting to save the current ACL)::</span>
+<span class="sd">        If you want to **clear** the ACL for the bucket, you must save</span>
+<span class="sd">        an empty list (``[]``) rather than using ``None`` (which is</span>
+<span class="sd">        interpreted as wanting to save the current ACL)::</span>
 
 <span class="sd">          &gt;&gt;&gt; bucket.save_acl(None)  # Saves the current ACL (self.acl).</span>
 <span class="sd">          &gt;&gt;&gt; bucket.save_acl([])  # Clears the current ACL.</span>
@@ -603,17 +583,13 @@
 <div class="viewcode-block" id="Bucket.clear_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.clear_acl">[docs]</a>    <span class="k">def</span> <span class="nf">clear_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove all ACL rules from the bucket.</span>
 
-<span class="sd">        Note that this won&#39;t actually remove *ALL* the rules,</span>
-<span class="sd">        but it will remove all the non-default rules.</span>
-<span class="sd">        In short,</span>
-<span class="sd">        you&#39;ll still have access</span>
-<span class="sd">        to a bucket that you created</span>
-<span class="sd">        even after you clear ACL rules</span>
-<span class="sd">        with this method.</span>
+<span class="sd">        Note that this won&#39;t actually remove *ALL* the rules, but it</span>
+<span class="sd">        will remove all the non-default rules.  In short, you&#39;ll still</span>
+<span class="sd">        have access to a bucket that you created even after you clear</span>
+<span class="sd">        ACL rules with this method.</span>
 
-<span class="sd">        For example,</span>
-<span class="sd">        imagine that you granted access to this bucket</span>
-<span class="sd">        to a bunch of coworkers::</span>
+<span class="sd">        For example, imagine that you granted access to this bucket to a</span>
+<span class="sd">        bunch of coworkers::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email,</span>
@@ -650,8 +626,8 @@
 <div class="viewcode-block" id="Bucket.get_default_object_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_default_object_acl">[docs]</a>    <span class="k">def</span> <span class="nf">get_default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the current Default Object ACL rules.</span>
 
-<span class="sd">        If the appropriate metadata isn&#39;t available locally,</span>
-<span class="sd">        this method will reload it from Cloud Storage.</span>
+<span class="sd">        If the appropriate metadata isn&#39;t available locally, this method</span>
+<span class="sd">        will reload it from Cloud Storage.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.storage.acl.DefaultObjectACL`</span>
 <span class="sd">        :returns: A DefaultObjectACL object for this bucket.</span>
@@ -711,9 +687,8 @@
 <div class="viewcode-block" id="BucketIterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.BucketIterator">[docs]</a><span class="k">class</span> <span class="nc">BucketIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An iterator listing all buckets.</span>
 
-<span class="sd">    You shouldn&#39;t have to use this directly,</span>
-<span class="sd">    but instead should use the helper methods</span>
-<span class="sd">    on :class:`gcloud.storage.connection.Connection` objects.</span>
+<span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the helper</span>
+<span class="sd">    methods on :class:`gcloud.storage.connection.Connection` objects.</span>
 
 <span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
 <span class="sd">    :param connection: The connection to use for querying the list of buckets.</span>

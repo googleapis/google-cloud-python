@@ -86,12 +86,10 @@
           <div class="body" role="main" id="gc-content">
             
   <h1>Source code for gcloud.storage.acl</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;This module makes it simple to interact</span>
-<span class="sd">with the access control lists that Cloud Storage provides.</span>
+<span class="sd">&quot;&quot;&quot;Manipulate access control lists that Cloud Storage provides.</span>
 
-<span class="sd">:class:`gcloud.storage.bucket.Bucket` has a getting method</span>
-<span class="sd">that creates an ACL object under the hood,</span>
-<span class="sd">and you can interact with that using</span>
+<span class="sd">:class:`gcloud.storage.bucket.Bucket` has a getting method that creates</span>
+<span class="sd">an ACL object under the hood, and you can interact with that using</span>
 <span class="sd">:func:`gcloud.storage.bucket.Bucket.get_acl`::</span>
 
 <span class="sd">  &gt;&gt;&gt; from gcloud import storage</span>
@@ -122,41 +120,36 @@
 <span class="sd">- **Owning**:</span>
 <span class="sd">  :func:`_ACLEntity.grant_owner` and :func:`_ACLEntity.revoke_owner`</span>
 
-<span class="sd">You can use any of these like any other factory method</span>
-<span class="sd">(these happen to be :class:`_ACLEntity` factories)::</span>
+<span class="sd">You can use any of these like any other factory method (these happen to</span>
+<span class="sd">be :class:`_ACLEntity` factories)::</span>
 
 <span class="sd">  &gt;&gt;&gt; acl.user(&#39;me@example.org&#39;).grant_read()</span>
 <span class="sd">  &gt;&gt;&gt; acl.all_authenticated().grant_write()</span>
 
-<span class="sd">You can also chain</span>
-<span class="sd">these ``grant_*`` and ``revoke_*`` methods</span>
-<span class="sd">together for brevity::</span>
+<span class="sd">You can also chain these ``grant_*`` and ``revoke_*`` methods together</span>
+<span class="sd">for brevity::</span>
 
 <span class="sd">  &gt;&gt;&gt; acl.all().grant_read().revoke_write()</span>
 
-<span class="sd">After that,</span>
-<span class="sd">you can save any changes you make</span>
-<span class="sd">with the :func:`gcloud.storage.acl.ACL.save` method::</span>
+<span class="sd">After that, you can save any changes you make with the</span>
+<span class="sd">:func:`gcloud.storage.acl.ACL.save` method::</span>
 
 <span class="sd">  &gt;&gt;&gt; acl.save()</span>
 
-<span class="sd">You can alternatively save any existing</span>
-<span class="sd">:class:`gcloud.storage.acl.ACL` object</span>
-<span class="sd">(whether it was created by a factory method or not)</span>
-<span class="sd">with the :func:`gcloud.storage.bucket.Bucket.save_acl` method::</span>
+<span class="sd">You can alternatively save any existing :class:`gcloud.storage.acl.ACL`</span>
+<span class="sd">object (whether it was created by a factory method or not) with the</span>
+<span class="sd">:func:`gcloud.storage.bucket.Bucket.save_acl` method::</span>
 
 <span class="sd">  &gt;&gt;&gt; bucket.save_acl(acl)</span>
 
-<span class="sd">To get the list</span>
-<span class="sd">of ``entity`` and ``role``</span>
-<span class="sd">for each unique pair,</span>
-<span class="sd">the :class:`ACL` class is iterable::</span>
+<span class="sd">To get the list of ``entity`` and ``role`` for each unique pair, the</span>
+<span class="sd">:class:`ACL` class is iterable::</span>
 
 <span class="sd">  &gt;&gt;&gt; print list(ACL)</span>
 <span class="sd">  [{&#39;role&#39;: &#39;OWNER&#39;, &#39;entity&#39;: &#39;allUsers&#39;}, ...]</span>
 
-<span class="sd">This list of tuples can be used as the ``entity`` and ``role``</span>
-<span class="sd">fields when sending metadata for ACLs to the API.</span>
+<span class="sd">This list of tuples can be used as the ``entity`` and ``role`` fields</span>
+<span class="sd">when sending metadata for ACLs to the API.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -274,12 +267,9 @@
 <div class="viewcode-block" id="ACL.entity_from_dict"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.entity_from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">entity_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an _ACLEntity object from a dictionary of data.</span>
 
-<span class="sd">        An entity is a mutable object</span>
-<span class="sd">        that represents a list of roles</span>
-<span class="sd">        belonging to either a user or group</span>
-<span class="sd">        or the special types</span>
-<span class="sd">        for all users</span>
-<span class="sd">        and all authenticated users.</span>
+<span class="sd">        An entity is a mutable object that represents a list of roles</span>
+<span class="sd">        belonging to either a user or group or the special types for all</span>
+<span class="sd">        users and all authenticated users.</span>
 
 <span class="sd">        :type entity_dict: dict</span>
 <span class="sd">        :param entity_dict: Dictionary full of data from an ACL lookup.</span>
@@ -345,9 +335,9 @@
         <span class="sd">&quot;&quot;&quot;Factory method for creating an Entity.</span>
 
 <span class="sd">        If an entity with the same type and identifier already exists,</span>
-<span class="sd">        this will return a reference to that entity.</span>
-<span class="sd">        If not, it will create a new one and add it to the list</span>
-<span class="sd">        of known entities for this ACL.</span>
+<span class="sd">        this will return a reference to that entity.  If not, it will</span>
+<span class="sd">        create a new one and add it to the list of known entities for</span>
+<span class="sd">        this ACL.</span>
 
 <span class="sd">        :type entity_type: string</span>
 <span class="sd">        :param entity_type: The type of entity to create</span>
