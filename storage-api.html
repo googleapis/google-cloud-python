@@ -1275,9 +1275,8 @@ methods on <a class="reference internal" href="#gcloud.storage.connection.Connec
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>bucket</strong> (<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket to which this key belongs.</li>
-<li><strong>name</strong> (<em>string</em>) &#8211; The name of the key.
-This corresponds to the unique path of the object
-in the bucket.</li>
+<li><strong>name</strong> (<em>string</em>) &#8211; The name of the key.  This corresponds to the
+unique path of the object in the bucket.</li>
 <li><strong>metadata</strong> (<em>dict</em>) &#8211; All the other data provided by Cloud Storage.</li>
 </ul>
 </td>
@@ -1295,13 +1294,10 @@ in the bucket.</li>
 <dt id="gcloud.storage.key.Key.clear_acl">
 <tt class="descname">clear_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.clear_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.clear_acl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all ACL rules from the key.</p>
-<p>Note that this won&#8217;t actually remove <em>ALL</em> the rules,
-but it will remove all the non-default rules.
-In short,
-you&#8217;ll still have access
-to a key that you created
-even after you clear ACL rules
-with this method.</p>
+<p>Note that this won&#8217;t actually remove <em>ALL</em> the rules, but it
+will remove all the non-default rules.  In short, you&#8217;ll still
+have access to a key that you created even after you clear ACL
+rules with this method.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1361,10 +1357,10 @@ with this method.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>key_dict</strong> (<em>dict</em>) &#8211; A dictionary of data returned from
-getting an Cloud Storage object.</li>
-<li><strong>bucket</strong> (<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket to which this key belongs
-(and by proxy, which connection to use).</li>
+<li><strong>key_dict</strong> (<em>dict</em>) &#8211; A dictionary of data returned from getting an
+Cloud Storage object.</li>
+<li><strong>bucket</strong> (<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket to which this key belongs (and by
+proxy, which connection to use).</li>
 </ul>
 </td>
 </tr>
@@ -1382,12 +1378,12 @@ getting an Cloud Storage object.</li>
 <dt id="gcloud.storage.key.Key.generate_signed_url">
 <tt class="descname">generate_signed_url</tt><big>(</big><em>expiration</em>, <em>method='GET'</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.generate_signed_url" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates a signed URL for this key.</p>
-<p>If you have a key that you want to allow access to
-for a set amount of time,
-you can use this method to generate a URL
-that is only valid within a certain time period.</p>
-<p>This is particularly useful if you don&#8217;t want publicly accessible keys,
-but don&#8217;t want to require users to explicitly log in.</p>
+<p>If you have a key that you want to allow access to for a set
+amount of time, you can use this method to generate a URL that
+is only valid within a certain time period.</p>
+<p>This is particularly useful if you don&#8217;t want publicly
+accessible keys, but don&#8217;t want to require users to explicitly
+log in.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1479,11 +1475,9 @@ until expiration.</p>
 <dt id="gcloud.storage.key.Key.get_metadata">
 <tt class="descname">get_metadata</tt><big>(</big><em>field=None</em>, <em>default=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.get_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.get_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all metadata or a specific field.</p>
-<p>If you request a field that isn&#8217;t available,
-and that field can be retrieved by refreshing data
-from Cloud Storage,
-this method will reload the data using
-<a class="reference internal" href="#gcloud.storage.key.Key.reload_metadata" title="gcloud.storage.key.Key.reload_metadata"><tt class="xref py py-func docutils literal"><span class="pre">Key.reload_metadata()</span></tt></a>.</p>
+<p>If you request a field that isn&#8217;t available, and that field can
+be retrieved by refreshing data from Cloud Storage, this method
+will reload the data using <a class="reference internal" href="#gcloud.storage.key.Key.reload_metadata" title="gcloud.storage.key.Key.reload_metadata"><tt class="xref py py-func docutils literal"><span class="pre">Key.reload_metadata()</span></tt></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1542,10 +1536,10 @@ this method will reload the data using
 <dt id="gcloud.storage.key.Key.patch_metadata">
 <tt class="descname">patch_metadata</tt><big>(</big><em>metadata</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.patch_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.patch_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update particular fields of this key&#8217;s metadata.</p>
-<p>This method will only update the fields provided
-and will not touch the other fields.</p>
-<p>It will also reload the metadata locally
-based on the servers response.</p>
+<p>This method will only update the fields provided and will not
+touch the other fields.</p>
+<p>It will also reload the metadata locally based on the servers
+response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1579,7 +1573,8 @@ based on the servers response.</p>
 <dl class="attribute">
 <dt id="gcloud.storage.key.Key.public_url">
 <tt class="descname">public_url</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.public_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.public_url" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>The public URL for this key&#8217;s object.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -1633,11 +1628,9 @@ based on the servers response.</p>
 deletes the key.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">This method will first duplicate the data
-and then delete the old key.
-This means that with very large objects
-renaming could be a very (temporarily) costly
-or a very slow operation.</p>
+<p class="last">This method will first duplicate the data and then delete the
+old key.  This means that with very large objects renaming
+could be a very (temporarily) costly or a very slow operation.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1661,9 +1654,8 @@ or a very slow operation.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acl</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>) &#8211; The ACL object to save.
-If left blank, this will save the ACL
-set locally on the key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acl</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>) &#8211; The ACL object to save.  If left blank, this will
+save the ACL set locally on the key.</td>
 </tr>
 </tbody>
 </table>
@@ -1717,8 +1709,8 @@ If not provided, we&#8217;ll try to guess the size using
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;This is the contents of my file!&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Under the hood this is using a string buffer
-and calling <a class="reference internal" href="#gcloud.storage.key.Key.set_contents_from_file" title="gcloud.storage.key.Key.set_contents_from_file"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.key.Key.set_contents_from_file()</span></tt></a>.</p>
+<p>Under the hood this is using a string buffer and calling
+<a class="reference internal" href="#gcloud.storage.key.Key.set_contents_from_file" title="gcloud.storage.key.Key.set_contents_from_file"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.key.Key.set_contents_from_file()</span></tt></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1740,9 +1732,8 @@ and calling <a class="reference internal" href="#gcloud.storage.key.Key.set_cont
 <em class="property">class </em><tt class="descclassname">gcloud.storage.key.</tt><tt class="descname">KeyIterator</tt><big>(</big><em>bucket</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#KeyIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.KeyIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#gcloud.storage.iterator.Iterator" title="gcloud.storage.iterator.Iterator"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.iterator.Iterator</span></tt></a></p>
 <p>An iterator listing keys.</p>
-<p>You shouldn&#8217;t have to use this directly,
-but instead should use the helper methods
-on <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a> objects.</p>
+<p>You shouldn&#8217;t have to use this directly, but instead should use the
+helper methods on <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a> objects.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

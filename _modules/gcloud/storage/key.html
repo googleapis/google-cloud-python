@@ -113,14 +113,12 @@
 <span class="sd">        :param bucket: The bucket to which this key belongs.</span>
 
 <span class="sd">        :type name: string</span>
-<span class="sd">        :param name: The name of the key.</span>
-<span class="sd">                     This corresponds to the unique path of the object</span>
-<span class="sd">                     in the bucket.</span>
+<span class="sd">        :param name: The name of the key.  This corresponds to the</span>
+<span class="sd">                     unique path of the object in the bucket.</span>
 
 <span class="sd">        :type metadata: dict</span>
 <span class="sd">        :param metadata: All the other data provided by Cloud Storage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -133,12 +131,12 @@
         <span class="sd">&quot;&quot;&quot;Instantiate a :class:`Key` from data returned by the JSON API.</span>
 
 <span class="sd">        :type key_dict: dict</span>
-<span class="sd">        :param key_dict: A dictionary of data returned from</span>
-<span class="sd">                         getting an Cloud Storage object.</span>
+<span class="sd">        :param key_dict: A dictionary of data returned from getting an</span>
+<span class="sd">                         Cloud Storage object.</span>
 
 <span class="sd">        :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">        :param bucket: The bucket to which this key belongs</span>
-<span class="sd">                       (and by proxy, which connection to use).</span>
+<span class="sd">        :param bucket: The bucket to which this key belongs (and by</span>
+<span class="sd">                       proxy, which connection to use).</span>
 
 <span class="sd">        :rtype: :class:`Key`</span>
 <span class="sd">        :returns: A key based on the data provided.</span>
@@ -161,7 +159,6 @@
 <span class="sd">        :rtype: :class:`gcloud.storage.connection.Connection` or None</span>
 <span class="sd">        :returns: The connection to use, or None if no connection is set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span>
 </div>
@@ -172,7 +169,6 @@
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The URL path to this Key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot determine path without a bucket defined.&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
@@ -182,7 +178,8 @@
 </div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Key.public_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.public_url">[docs]</a>    <span class="k">def</span> <span class="nf">public_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;The public URL for this key&#39;s object.</span>
+
 <span class="sd">        :rtype: `string`</span>
 <span class="sd">        :returns: The public URL for this key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -193,13 +190,13 @@
 <div class="viewcode-block" id="Key.generate_signed_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a signed URL for this key.</span>
 
-<span class="sd">        If you have a key that you want to allow access to</span>
-<span class="sd">        for a set amount of time,</span>
-<span class="sd">        you can use this method to generate a URL</span>
-<span class="sd">        that is only valid within a certain time period.</span>
+<span class="sd">        If you have a key that you want to allow access to for a set</span>
+<span class="sd">        amount of time, you can use this method to generate a URL that</span>
+<span class="sd">        is only valid within a certain time period.</span>
 
-<span class="sd">        This is particularly useful if you don&#39;t want publicly accessible keys,</span>
-<span class="sd">        but don&#39;t want to require users to explicitly log in.</span>
+<span class="sd">        This is particularly useful if you don&#39;t want publicly</span>
+<span class="sd">        accessible keys, but don&#39;t want to require users to explicitly</span>
+<span class="sd">        log in.</span>
 
 <span class="sd">        :type expiration: int, long, datetime.datetime, datetime.timedelta</span>
 <span class="sd">        :param expiration: When the signed URL should expire.</span>
@@ -211,7 +208,6 @@
 <span class="sd">        :returns: A signed URL you can use to access the resource</span>
 <span class="sd">                  until expiration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">resource</span> <span class="o">=</span> <span class="s">&#39;/{self.bucket.name}/{self.name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">generate_signed_url</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
                                                    <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">,</span>
@@ -223,7 +219,6 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True if the key exists in Cloud Storage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 </div>
 <div class="viewcode-block" id="Key.rename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.rename">[docs]</a>    <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
@@ -233,11 +228,9 @@
 <span class="sd">        deletes the key.</span>
 
 <span class="sd">        .. warning::</span>
-<span class="sd">          This method will first duplicate the data</span>
-<span class="sd">          and then delete the old key.</span>
-<span class="sd">          This means that with very large objects</span>
-<span class="sd">          renaming could be a very (temporarily) costly</span>
-<span class="sd">          or a very slow operation.</span>
+<span class="sd">          This method will first duplicate the data and then delete the</span>
+<span class="sd">          old key.  This means that with very large objects renaming</span>
+<span class="sd">          could be a very (temporarily) costly or a very slow operation.</span>
 
 <span class="sd">        :type new_name: string</span>
 <span class="sd">        :param new_name: The new name for this key.</span>
@@ -255,7 +248,6 @@
 <span class="sd">        :rtype: :class:`Key`</span>
 <span class="sd">        :returns: The key that was just deleted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Key.get_contents_to_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_contents_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">):</span>
@@ -266,7 +258,6 @@
 
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">KeyDataIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">file_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 </div>
@@ -278,7 +269,6 @@
 
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_contents_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
 </div>
@@ -289,7 +279,6 @@
 <span class="sd">        :returns: The data stored in this key.</span>
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_contents_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
@@ -310,7 +299,6 @@
 <span class="sd">                     If not provided, we&#39;ll try to guess the size using</span>
 <span class="sd">                     :func:`os.fstat`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c"># Rewind the file if desired.</span>
         <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
             <span class="n">file_obj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
@@ -361,7 +349,6 @@
 <span class="sd">        :type filename: string</span>
 <span class="sd">        :param filename: The path to the file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
@@ -378,8 +365,8 @@
 <span class="sd">          &gt;&gt;&gt; key = bucket.new_key(&#39;my_text_file.txt&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; key.set_contents_from_string(&#39;This is the contents of my file!&#39;)</span>
 
-<span class="sd">        Under the hood this is using a string buffer</span>
-<span class="sd">        and calling :func:`gcloud.storage.key.Key.set_contents_from_file`.</span>
+<span class="sd">        Under the hood this is using a string buffer and calling</span>
+<span class="sd">        :func:`gcloud.storage.key.Key.set_contents_from_file`.</span>
 
 <span class="sd">        :type data: string</span>
 <span class="sd">        :param data: The data to store in this key.</span>
@@ -387,7 +374,6 @@
 <span class="sd">        :rtype: :class:`Key`</span>
 <span class="sd">        :returns: The updated Key object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
         <span class="n">string_buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
@@ -404,7 +390,6 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: Whether metadata is available locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
         <span class="k">elif</span> <span class="n">field</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
@@ -421,7 +406,6 @@
 <span class="sd">        :rtype: :class:`Key`</span>
 <span class="sd">        :returns: The key you just reloaded data for.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">projection</span> <span class="o">=</span> <span class="s">&#39;full&#39;</span> <span class="k">if</span> <span class="n">full</span> <span class="k">else</span> <span class="s">&#39;noAcl&#39;</span>
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="n">projection</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
@@ -431,11 +415,9 @@
 <div class="viewcode-block" id="Key.get_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all metadata or a specific field.</span>
 
-<span class="sd">        If you request a field that isn&#39;t available,</span>
-<span class="sd">        and that field can be retrieved by refreshing data</span>
-<span class="sd">        from Cloud Storage,</span>
-<span class="sd">        this method will reload the data using</span>
-<span class="sd">        :func:`Key.reload_metadata`.</span>
+<span class="sd">        If you request a field that isn&#39;t available, and that field can</span>
+<span class="sd">        be retrieved by refreshing data from Cloud Storage, this method</span>
+<span class="sd">        will reload the data using :func:`Key.reload_metadata`.</span>
 
 <span class="sd">        :type field: string</span>
 <span class="sd">        :param field: (optional) A particular field to retrieve from metadata.</span>
@@ -446,7 +428,6 @@
 <span class="sd">        :rtype: dict or anything</span>
 <span class="sd">        :returns: All metadata or the value of the specific field.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_metadata</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">):</span>
             <span class="n">full</span> <span class="o">=</span> <span class="p">(</span><span class="n">field</span> <span class="ow">and</span> <span class="n">field</span> <span class="o">==</span> <span class="s">&#39;acl&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reload_metadata</span><span class="p">(</span><span class="n">full</span><span class="o">=</span><span class="n">full</span><span class="p">)</span>
@@ -459,11 +440,11 @@
 <div class="viewcode-block" id="Key.patch_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.patch_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">patch_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update particular fields of this key&#39;s metadata.</span>
 
-<span class="sd">        This method will only update the fields provided</span>
-<span class="sd">        and will not touch the other fields.</span>
+<span class="sd">        This method will only update the fields provided and will not</span>
+<span class="sd">        touch the other fields.</span>
 
-<span class="sd">        It will also reload the metadata locally</span>
-<span class="sd">        based on the servers response.</span>
+<span class="sd">        It will also reload the metadata locally based on the servers</span>
+<span class="sd">        response.</span>
 
 <span class="sd">        :type metadata: dict</span>
 <span class="sd">        :param metadata: The dictionary of values to update.</span>
@@ -507,11 +488,9 @@
         <span class="sd">&quot;&quot;&quot;Save the ACL data for this key.</span>
 
 <span class="sd">        :type acl: :class:`gcloud.storage.acl.ACL`</span>
-<span class="sd">        :param acl: The ACL object to save.</span>
-<span class="sd">                    If left blank, this will save the ACL</span>
-<span class="sd">                    set locally on the key.</span>
+<span class="sd">        :param acl: The ACL object to save.  If left blank, this will</span>
+<span class="sd">                    save the ACL set locally on the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c"># We do things in this weird way because [] and None</span>
         <span class="c"># both evaluate to False, but mean very different things.</span>
         <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -527,15 +506,11 @@
 <div class="viewcode-block" id="Key.clear_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.clear_acl">[docs]</a>    <span class="k">def</span> <span class="nf">clear_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove all ACL rules from the key.</span>
 
-<span class="sd">        Note that this won&#39;t actually remove *ALL* the rules,</span>
-<span class="sd">        but it will remove all the non-default rules.</span>
-<span class="sd">        In short,</span>
-<span class="sd">        you&#39;ll still have access</span>
-<span class="sd">        to a key that you created</span>
-<span class="sd">        even after you clear ACL rules</span>
-<span class="sd">        with this method.</span>
+<span class="sd">        Note that this won&#39;t actually remove *ALL* the rules, but it</span>
+<span class="sd">        will remove all the non-default rules.  In short, you&#39;ll still</span>
+<span class="sd">        have access to a key that you created even after you clear ACL</span>
+<span class="sd">        rules with this method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="p">[])</span>
 </div>
 <div class="viewcode-block" id="Key.make_public"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -544,7 +519,6 @@
 <span class="sd">        :rtype: :class:`Key`</span>
 <span class="sd">        :returns: The current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -553,14 +527,12 @@
 <div class="viewcode-block" id="KeyIterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.KeyIterator">[docs]</a><span class="k">class</span> <span class="nc">KeyIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An iterator listing keys.</span>
 
-<span class="sd">    You shouldn&#39;t have to use this directly,</span>
-<span class="sd">    but instead should use the helper methods</span>
-<span class="sd">    on :class:`gcloud.storage.key.Key` objects.</span>
+<span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the</span>
+<span class="sd">    helper methods on :class:`gcloud.storage.key.Key` objects.</span>
 
 <span class="sd">    :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">    :param bucket: The bucket from which to list keys.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">KeyIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
