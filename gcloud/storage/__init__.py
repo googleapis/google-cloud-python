@@ -15,18 +15,15 @@ You'll typically use these to get started with the API:
 
 The main concepts with this API are:
 
-- :class:`gcloud.storage.connection.Connection`
-  which represents a connection between your machine
-  and the Cloud Storage API.
+- :class:`gcloud.storage.connection.Connection` which represents a
+  connection between your machine and the Cloud Storage API.
 
-- :class:`gcloud.storage.bucket.Bucket`
-  which represents a particular bucket
-  (akin to a mounted disk on a computer).
+- :class:`gcloud.storage.bucket.Bucket` which represents a particular
+  bucket (akin to a mounted disk on a computer).
 
-- :class:`gcloud.storage.key.Key`
-  which represents a pointer
-  to a particular entity in Cloud Storage
-  (akin to a file path on a remote machine).
+- :class:`gcloud.storage.key.Key` which represents a pointer to a
+  particular entity in Cloud Storage (akin to a file path on a remote
+  machine).
 """
 
 __version__ = '0.1'
@@ -39,8 +36,8 @@ SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
 def get_connection(project, client_email, private_key_path):
     """Shortcut method to establish a connection to Cloud Storage.
 
-    Use this if you are going to access several buckets
-    with the same set of credentials:
+    Use this if you are going to access several buckets with the same
+    set of credentials:
 
     >>> from gcloud import storage
     >>> connection = storage.get_connection(project, email, key_path)
@@ -61,7 +58,6 @@ def get_connection(project, client_email, private_key_path):
     :rtype: :class:`gcloud.storage.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-
     from gcloud import credentials
     from gcloud.storage.connection import Connection
 
@@ -99,6 +95,5 @@ def get_bucket(bucket_name, project, client_email, private_key_path):
     :rtype: :class:`gcloud.storage.bucket.Bucket`
     :returns: A bucket with a connection using the provided credentials.
     """
-
     connection = get_connection(project, client_email, private_key_path)
     return connection.get_bucket(bucket_name)

@@ -53,16 +53,15 @@ class Connection(connection.Connection):
 
       >>> bucket = connection.get_bucket('my-bucket-name')
 
-    A :class:`Connection` is actually iterable
-    and will return the :class:`gcloud.storage.bucket.Bucket` objects
-    inside the project::
+    A :class:`Connection` is actually iterable and will return the
+    :class:`gcloud.storage.bucket.Bucket` objects inside the project::
 
       >>> for bucket in connection:
       >>>   print bucket
       <Bucket: my-bucket-name>
 
-    In that same way, you can check for whether a bucket exists
-    inside the project using Python's ``in`` operator::
+    In that same way, you can check for whether a bucket exists inside
+    the project using Python's ``in`` operator::
 
       >>> print 'my-bucket-name' in connection
       True
@@ -78,12 +77,10 @@ class Connection(connection.Connection):
 
     def __init__(self, project, *args, **kwargs):
         """:type project: string
+
         :param project: The project name to connect to.
-
         """
-
         super(Connection, self).__init__(*args, **kwargs)
-
         self.project = project
 
     def __iter__(self):
@@ -117,7 +114,6 @@ class Connection(connection.Connection):
         :rtype: string
         :returns: The URL assembled from the pieces provided.
         """
-
         url = self.API_URL_TEMPLATE.format(
             api_base_url=(api_base_url or self.API_BASE_URL),
             api_version=(api_version or self.API_VERSION),
@@ -154,7 +150,6 @@ class Connection(connection.Connection):
                 and ``content`` (a string).
         :returns: The HTTP response object and the content of the response.
         """
-
         headers = headers or {}
         headers['Accept-Encoding'] = 'gzip'
 
@@ -179,9 +174,9 @@ class Connection(connection.Connection):
                     expect_json=True):
         """Make a request over the HTTP transport to the Cloud Storage API.
 
-        You shouldn't need to use this method,
-        but if you plan to interact with the API using these primitives,
-        this is the correct one to use...
+        You shouldn't need to use this method, but if you plan to
+        interact with the API using these primitives, this is the
+        correct one to use...
 
         :type method: string
         :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).
@@ -193,8 +188,8 @@ class Connection(connection.Connection):
 
         :type query_params: dict
         :param query_params: A dictionary of keys and values to insert into
-                             the query string of the URL.
-                             Default is empty dict.
+                             the query string of the URL.  Default is
+                             empty dict.
 
         :type data: string
         :param data: The data to send as the body of the request. Default is
@@ -210,20 +205,19 @@ class Connection(connection.Connection):
                              Default is the standard API base URL.
 
         :type api_version: string
-        :param api_version: The version of the API to call.
-                            Typically you shouldn't provide this and instead
-                            use the default for the library.
-                            Default is the latest API version supported by
+        :param api_version: The version of the API to call.  Typically
+                            you shouldn't provide this and instead use
+                            the default for the library.  Default is the
+                            latest API version supported by
                             gcloud-python.
 
         :type expect_json: bool
-        :param expect_json: If True, this method will try to parse the response
-                            as JSON and raise an exception if that cannot
-                            be done.  Default is True.
+        :param expect_json: If True, this method will try to parse the
+                            response as JSON and raise an exception if
+                            that cannot be done.  Default is True.
 
         :raises: Exception if the response code is not 200 OK.
         """
-
         url = self.build_api_url(path=path, query_params=query_params,
                                  api_base_url=api_base_url,
                                  api_version=api_version)
@@ -253,11 +247,11 @@ class Connection(connection.Connection):
     def get_all_buckets(self):
         """Get all buckets in the project.
 
-        This will not populate the list of keys available
-        in each bucket.
+        This will not populate the list of keys available in each
+        bucket.
 
-        You can also iterate over the connection object,
-        so these two operations are identical::
+        You can also iterate over the connection object, so these two
+        operations are identical::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project, email, key_path)
@@ -270,18 +264,16 @@ class Connection(connection.Connection):
         :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.
         :returns: All buckets belonging to this project.
         """
-
         return list(self)
 
     def get_bucket(self, bucket_name):
         """Get a bucket by name.
 
-        If the bucket isn't found,
-        this will raise a :class:`gcloud.storage.exceptions.NotFoundError`.
-        If you would rather get a bucket by name,
-        and return ``None`` if the bucket isn't found
-        (like ``{}.get('...')``)
-        then use :func:`Connection.lookup`.
+        If the bucket isn't found, this will raise a
+        :class:`gcloud.storage.exceptions.NotFoundError`.  If you would
+        rather get a bucket by name, and return ``None`` if the bucket
+        isn't found (like ``{}.get('...')``) then use
+        :func:`Connection.lookup`.
 
         For example::
 
@@ -307,8 +299,7 @@ class Connection(connection.Connection):
     def lookup(self, bucket_name):
         """Get a bucket by name, returning None if not found.
 
-        You can use this if you would rather
-        checking for a None value
+        You can use this if you would rather checking for a None value
         than catching an exception::
 
           >>> from gcloud import storage
@@ -326,7 +317,6 @@ class Connection(connection.Connection):
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The bucket matching the name provided or None if not found.
         """
-
         try:
             return self.get_bucket(bucket_name)
         except exceptions.NotFoundError:
@@ -349,7 +339,6 @@ class Connection(connection.Connection):
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
         """
-
         bucket = self.new_bucket(bucket)
         response = self.api_request(method='POST', path='/b',
                                     data={'name': bucket.name})
@@ -358,8 +347,8 @@ class Connection(connection.Connection):
     def delete_bucket(self, bucket, force=False):
         """Delete a bucket.
 
-        You can use this method to delete a bucket by name,
-        or to delete a bucket object::
+        You can use this method to delete a bucket by name, or to delete
+        a bucket object::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project, email, key_path)
@@ -372,8 +361,8 @@ class Connection(connection.Connection):
           >>> connection.delete_bucket(bucket)
           True
 
-        If the bucket doesn't exist,
-        this will raise a :class:`gcloud.storage.exceptions.NotFoundError`::
+        If the bucket doesn't exist, this will raise a
+        :class:`gcloud.storage.exceptions.NotFoundError`::
 
           >>> from gcloud.storage import exceptions
           >>> try:
@@ -391,7 +380,6 @@ class Connection(connection.Connection):
         :returns: True if the bucket was deleted.
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
-
         bucket = self.new_bucket(bucket)
 
         # This force delete operation is slow.
@@ -405,10 +393,9 @@ class Connection(connection.Connection):
     def new_bucket(self, bucket):
         """Factory method for creating a new (unsaved) bucket object.
 
-        This method is really useful when you're not sure whether
-        you have an actual :class:`gcloud.storage.bucket.Bucket` object
-        or just a name of a bucket.
-        It always returns the object::
+        This method is really useful when you're not sure whether you
+        have an actual :class:`gcloud.storage.bucket.Bucket` object or
+        just a name of a bucket.  It always returns the object::
 
            >>> bucket = connection.new_bucket('bucket')
            >>> print bucket
@@ -420,7 +407,6 @@ class Connection(connection.Connection):
         :type bucket: string or :class:`gcloud.storage.bucket.Bucket`
         :param bucket: A name of a bucket or an existing Bucket object.
         """
-
         if isinstance(bucket, Bucket):
             return bucket
 
@@ -462,7 +448,6 @@ class Connection(connection.Connection):
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
-
         expiration = _get_expiration_seconds(expiration)
 
         # Generate the string to sign.
@@ -509,7 +494,6 @@ def _get_expiration_seconds(expiration):
     :rtype: int
     :returns: a timestamp as an absolute number of seconds.
     """
-
     # If it's a timedelta, add it to `now` in UTC.
     if isinstance(expiration, datetime.timedelta):
         now = _utcnow().replace(tzinfo=pytz.utc)

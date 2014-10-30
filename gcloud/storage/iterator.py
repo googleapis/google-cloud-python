@@ -1,19 +1,11 @@
 """Iterators for paging through API responses.
 
-These iterators
-simplify the process
-of paging through API responses
-where the response
-is a list of results
-with a ``nextPageToken``.
+These iterators simplify the process of paging through API responses
+where the response is a list of results with a ``nextPageToken``.
 
-To make an iterator work,
-just override the ``get_items_from_response`` method
-so that given a response
-(containing a page of results)
-it parses those results
-into an iterable
-of the actual objects you want::
+To make an iterator work, just override the ``get_items_from_response``
+method so that given a response (containing a page of results) it parses
+those results into an iterable of the actual objects you want::
 
   class MyIterator(Iterator):
     def get_items_from_response(self, response):
@@ -21,24 +13,20 @@ of the actual objects you want::
       for item in items:
         yield MyItemClass.from_dict(item, other_arg=True)
 
-You then can use this
-to get **all** the results
-from a resource::
+You then can use this to get **all** the results from a resource::
 
   >>> iterator = MyIterator(...)
   >>> list(iterator)  # Convert to a list (consumes all values).
 
-Or you can walk your way through items
-and call off the search early
-if you find what you're looking for
-(resulting in possibly fewer requests)::
+Or you can walk your way through items and call off the search early if
+you find what you're looking for (resulting in possibly fewer
+requests)::
 
   >>> for item in MyIterator(...):
   >>>   print item.name
   >>>   if not item.is_valid:
   >>>     break
 """
-
 
 from gcloud.storage.exceptions import StorageError
 
@@ -52,7 +40,6 @@ class Iterator(object):
     :type path: string
     :param path: The path to query for the list of items.
     """
-
     def __init__(self, connection, path):
         self.connection = connection
         self.path = path
@@ -73,7 +60,6 @@ class Iterator(object):
         :rtype: bool
         :returns: Whether the iterator has more pages or not.
         """
-
         if self.page_number == 0:
             return True
 
@@ -85,7 +71,6 @@ class Iterator(object):
         :rtype: dict or None
         :returns: A dictionary of query parameters or None if there are none.
         """
-
         if self.next_page_token:
             return {'pageToken': self.next_page_token}
 
@@ -95,7 +80,6 @@ class Iterator(object):
         :rtype: dict
         :returns: The parsed JSON response of the next page's contents.
         """
-
         if not self.has_next_page():
             raise RuntimeError('No more pages. Try resetting the iterator.')
 
@@ -115,15 +99,12 @@ class Iterator(object):
     def get_items_from_response(self, response):
         """Factory method called while iterating. This should be overriden.
 
-        This method should be overridden by a subclass.
-        It should accept the API response
-        of a request for the next page of items,
-        and return a list (or other iterable)
-        of items.
+        This method should be overridden by a subclass.  It should
+        accept the API response of a request for the next page of items,
+        and return a list (or other iterable) of items.
 
-        Typically this method will construct
-        a Bucket or a Key
-        from the page of results in the response.
+        Typically this method will construct a Bucket or a Key from the
+        page of results in the response.
 
         :type response: dict
         :param response: The response of asking for the next page of items.
@@ -137,9 +118,8 @@ class Iterator(object):
 class KeyDataIterator(object):
     """An iterator listing data stored in a key.
 
-    You shouldn't have to use this directly,
-    but instead should use the helper methods
-    on :class:`gcloud.storage.key.Key` objects.
+    You shouldn't have to use this directly, but instead should use the
+    helper methods on :class:`gcloud.storage.key.Key` objects.
 
     :type key: :class:`gcloud.storage.key.Key`
     :param key: The key from which to list data..
@@ -167,7 +147,6 @@ class KeyDataIterator(object):
         :rtype: bool
         :returns: Whether the iterator has more data or not.
         """
-
         if self._bytes_written == 0:
             return True
         elif not self._total_bytes:
@@ -183,7 +162,6 @@ class KeyDataIterator(object):
         :rtype: dict
         :returns: A dictionary of query parameters.
         """
-
         start = self._bytes_written
         end = self._bytes_written + self.key.CHUNK_SIZE - 1
 
