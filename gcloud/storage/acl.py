@@ -1,9 +1,7 @@
-"""This module makes it simple to interact
-with the access control lists that Cloud Storage provides.
+"""Manipulate access control lists that Cloud Storage provides.
 
-:class:`gcloud.storage.bucket.Bucket` has a getting method
-that creates an ACL object under the hood,
-and you can interact with that using
+:class:`gcloud.storage.bucket.Bucket` has a getting method that creates
+an ACL object under the hood, and you can interact with that using
 :func:`gcloud.storage.bucket.Bucket.get_acl`::
 
   >>> from gcloud import storage
@@ -34,41 +32,36 @@ And you are able to ``grant`` and ``revoke`` the following roles:
 - **Owning**:
   :func:`_ACLEntity.grant_owner` and :func:`_ACLEntity.revoke_owner`
 
-You can use any of these like any other factory method
-(these happen to be :class:`_ACLEntity` factories)::
+You can use any of these like any other factory method (these happen to
+be :class:`_ACLEntity` factories)::
 
   >>> acl.user('me@example.org').grant_read()
   >>> acl.all_authenticated().grant_write()
 
-You can also chain
-these ``grant_*`` and ``revoke_*`` methods
-together for brevity::
+You can also chain these ``grant_*`` and ``revoke_*`` methods together
+for brevity::
 
   >>> acl.all().grant_read().revoke_write()
 
-After that,
-you can save any changes you make
-with the :func:`gcloud.storage.acl.ACL.save` method::
+After that, you can save any changes you make with the
+:func:`gcloud.storage.acl.ACL.save` method::
 
   >>> acl.save()
 
-You can alternatively save any existing
-:class:`gcloud.storage.acl.ACL` object
-(whether it was created by a factory method or not)
-with the :func:`gcloud.storage.bucket.Bucket.save_acl` method::
+You can alternatively save any existing :class:`gcloud.storage.acl.ACL`
+object (whether it was created by a factory method or not) with the
+:func:`gcloud.storage.bucket.Bucket.save_acl` method::
 
   >>> bucket.save_acl(acl)
 
-To get the list
-of ``entity`` and ``role``
-for each unique pair,
-the :class:`ACL` class is iterable::
+To get the list of ``entity`` and ``role`` for each unique pair, the
+:class:`ACL` class is iterable::
 
   >>> print list(ACL)
   [{'role': 'OWNER', 'entity': 'allUsers'}, ...]
 
-This list of tuples can be used as the ``entity`` and ``role``
-fields when sending metadata for ACLs to the API.
+This list of tuples can be used as the ``entity`` and ``role`` fields
+when sending metadata for ACLs to the API.
 """
 
 
@@ -186,12 +179,9 @@ class ACL(object):
     def entity_from_dict(self, entity_dict):
         """Build an _ACLEntity object from a dictionary of data.
 
-        An entity is a mutable object
-        that represents a list of roles
-        belonging to either a user or group
-        or the special types
-        for all users
-        and all authenticated users.
+        An entity is a mutable object that represents a list of roles
+        belonging to either a user or group or the special types for all
+        users and all authenticated users.
 
         :type entity_dict: dict
         :param entity_dict: Dictionary full of data from an ACL lookup.
@@ -257,9 +247,9 @@ class ACL(object):
         """Factory method for creating an Entity.
 
         If an entity with the same type and identifier already exists,
-        this will return a reference to that entity.
-        If not, it will create a new one and add it to the list
-        of known entities for this ACL.
+        this will return a reference to that entity.  If not, it will
+        create a new one and add it to the list of known entities for
+        this ACL.
 
         :type entity_type: string
         :param entity_type: The type of entity to create

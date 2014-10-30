@@ -90,8 +90,8 @@ class Bucket(object):
     def get_all_keys(self):
         """List all the keys in this bucket.
 
-        This will **not** retrieve all the data for all the keys,
-        it will only retrieve metadata about the keys.
+        This will **not** retrieve all the data for all the keys, it
+        will only retrieve metadata about the keys.
 
         This is equivalent to::
 
@@ -105,10 +105,9 @@ class Bucket(object):
     def new_key(self, key):
         """Given path name (or Key), return a :class:`.storage.key.Key` object.
 
-        This is really useful when you're not sure
-        if you have a Key object or a string path name.
-        Given either of those types,
-        this returns the corresponding Key object.
+        This is really useful when you're not sure if you have a Key
+        object or a string path name.  Given either of those types, this
+        returns the corresponding Key object.
 
         :type key: string or :class:`gcloud.storage.key.Key`
         :param key: A path name or actual key object.
@@ -133,16 +132,14 @@ class Bucket(object):
     def delete(self, force=False):
         """Delete this bucket.
 
-        The bucket **must** be empty in order to delete it.
-        If the bucket doesn't exist,
-        this will raise a :class:`gcloud.storage.exceptions.NotFoundError`.
-        If the bucket is not empty,
-        this will raise an Exception.
+        The bucket **must** be empty in order to delete it.  If the
+        bucket doesn't exist, this will raise a
+        :class:`gcloud.storage.exceptions.NotFoundError`.  If the bucket
+        is not empty, this will raise an Exception.
 
-        If you want to delete a non-empty bucket you can pass
-        in a force parameter set to true.
-        This will iterate through the bucket's keys and delete the
-        related objects, before deleting the bucket.
+        If you want to delete a non-empty bucket you can pass in a force
+        parameter set to true.  This will iterate through the bucket's
+        keys and delete the related objects, before deleting the bucket.
 
         :type force: bool
         :param full: If True, empties the bucket's objects then deletes it.
@@ -232,10 +229,9 @@ class Bucket(object):
           >>> print bucket.get_all_keys()
           [<Key: my-bucket, remote-text-file.txt>]
 
-        If you don't provide a key value,
-        we will try to upload the file using the local filename
-        as the key
-        (**not** the complete path)::
+        If you don't provide a key value, we will try to upload the file
+        using the local filename as the key (**not** the complete
+        path)::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project, email, key_path)
@@ -248,13 +244,10 @@ class Bucket(object):
         :param filename: Local path to the file you want to upload.
 
         :type key: string or :class:`gcloud.storage.key.Key`
-        :param key: The key (either an object or a remote path)
-                    of where to put the file.
-
-                    If this is blank,
-                    we will try to upload the file
-                    to the root of the bucket
-                    with the same name as on your local file system.
+        :param key: The key (either an object or a remote path) of where
+                    to put the file.  If this is blank, we will try to
+                    upload the file to the root of the bucket with the
+                    same name as on your local file system.
         """
         if key is None:
             key = os.path.basename(filename)
@@ -275,10 +268,9 @@ class Bucket(object):
           >>> print bucket.get_all_keys()
           [<Key: my-bucket, remote-text-file.txt>]
 
-        If you don't provide a key value,
-        we will try to upload the file using the local filename
-        as the key
-        (**not** the complete path)::
+        If you don't provide a key value, we will try to upload the file
+        using the local filename as the key (**not** the complete
+        path)::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project, email, key_path)
@@ -291,13 +283,10 @@ class Bucket(object):
         :param file_obj: A file handle open for reading.
 
         :type key: string or :class:`gcloud.storage.key.Key`
-        :param key: The key (either an object or a remote path)
-                    of where to put the file.
-
-                    If this is blank,
-                    we will try to upload the file
-                    to the root of the bucket
-                    with the same name as on your local file system.
+        :param key: The key (either an object or a remote path) of where
+                    to put the file.  If this is blank, we will try to
+                    upload the file to the root of the bucket with the
+                    same name as on your local file system.
         """
         if key:
             key = self.new_key(key)
@@ -339,11 +328,9 @@ class Bucket(object):
     def get_metadata(self, field=None, default=None):
         """Get all metadata or a specific field.
 
-        If you request a field that isn't available,
-        and that field can be retrieved by refreshing data
-        from Cloud Storage,
-        this method will reload the data using
-        :func:`Bucket.reload_metadata`.
+        If you request a field that isn't available, and that field can
+        be retrieved by refreshing data from Cloud Storage, this method
+        will reload the data using :func:`Bucket.reload_metadata`.
 
         :type field: string
         :param field: (optional) A particular field to retrieve from metadata.
@@ -366,11 +353,11 @@ class Bucket(object):
     def patch_metadata(self, metadata):
         """Update particular fields of this bucket's metadata.
 
-        This method will only update the fields provided
-        and will not touch the other fields.
+        This method will only update the fields provided and will not
+        touch the other fields.
 
-        It will also reload the metadata locally
-        based on the servers response.
+        It will also reload the metadata locally based on the servers
+        response.
 
         :type metadata: dict
         :param metadata: The dictionary of values to update.
@@ -394,9 +381,8 @@ class Bucket(object):
           Check out the official documentation here:
           https://developers.google.com/storage/docs/website-configuration
 
-        If you want this bucket to host a website,
-        just provide the name of an index page
-        and a page to use when a key isn't found::
+        If you want this bucket to host a website, just provide the name
+        of an index page and a page to use when a key isn't found::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project, email,
@@ -408,11 +394,9 @@ class Bucket(object):
 
           >>> bucket.make_public(recursive=True, future=True)
 
-        This says:
-        "Make the bucket public,
-        and all the stuff already in the bucket,
-        and anything else I add to the bucket.
-        Just make it all public."
+        This says: "Make the bucket public, and all the stuff already in
+        the bucket, and anything else I add to the bucket.  Just make it
+        all public."
 
         :type main_page_suffix: string
         :param main_page_suffix: The page to use as the main page
@@ -433,8 +417,8 @@ class Bucket(object):
     def disable_website(self):
         """Disable the website configuration for this bucket.
 
-        This is really just a shortcut for
-        setting the website-related attributes to ``None``.
+        This is really just a shortcut for setting the website-related
+        attributes to ``None``.
         """
         return self.configure_website(None, None)
 
@@ -465,32 +449,28 @@ class Bucket(object):
     def save_acl(self, acl=None):
         """Save the ACL data for this bucket.
 
-        If called without arguments,
-        this will save the ACL currently stored on the Bucket object.
-        For example,
-        this will save
-        the ACL stored in ``some_other_acl``::
+        If called without arguments, this will save the ACL currently
+        stored on the Bucket object.  For example, this will save the
+        ACL stored in ``some_other_acl``::
 
            >>> bucket.acl = some_other_acl
            >>> bucket.save_acl()
 
-        You can also provide a specific ACL to save
-        instead of the one currently set
-        on the Bucket object::
+        You can also provide a specific ACL to save instead of the one
+        currently set on the Bucket object::
 
            >>> bucket.save_acl(acl=my_other_acl)
 
-        You can use this to set access controls
-        to be consistent from one bucket to another::
+        You can use this to set access controls to be consistent from
+        one bucket to another::
 
           >>> bucket1 = connection.get_bucket(bucket1_name)
           >>> bucket2 = connection.get_bucket(bucket2_name)
           >>> bucket2.save_acl(bucket1.get_acl())
 
-        If you want to **clear** the ACL for the bucket,
-        you must save an empty list (``[]``)
-        rather than using ``None``
-        (which is interpreted as wanting to save the current ACL)::
+        If you want to **clear** the ACL for the bucket, you must save
+        an empty list (``[]``) rather than using ``None`` (which is
+        interpreted as wanting to save the current ACL)::
 
           >>> bucket.save_acl(None)  # Saves the current ACL (self.acl).
           >>> bucket.save_acl([])  # Clears the current ACL.
@@ -515,17 +495,13 @@ class Bucket(object):
     def clear_acl(self):
         """Remove all ACL rules from the bucket.
 
-        Note that this won't actually remove *ALL* the rules,
-        but it will remove all the non-default rules.
-        In short,
-        you'll still have access
-        to a bucket that you created
-        even after you clear ACL rules
-        with this method.
+        Note that this won't actually remove *ALL* the rules, but it
+        will remove all the non-default rules.  In short, you'll still
+        have access to a bucket that you created even after you clear
+        ACL rules with this method.
 
-        For example,
-        imagine that you granted access to this bucket
-        to a bunch of coworkers::
+        For example, imagine that you granted access to this bucket to a
+        bunch of coworkers::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project, email,
@@ -562,8 +538,8 @@ class Bucket(object):
     def get_default_object_acl(self):
         """Get the current Default Object ACL rules.
 
-        If the appropriate metadata isn't available locally,
-        this method will reload it from Cloud Storage.
+        If the appropriate metadata isn't available locally, this method
+        will reload it from Cloud Storage.
 
         :rtype: :class:`gcloud.storage.acl.DefaultObjectACL`
         :returns: A DefaultObjectACL object for this bucket.
@@ -623,9 +599,8 @@ class Bucket(object):
 class BucketIterator(Iterator):
     """An iterator listing all buckets.
 
-    You shouldn't have to use this directly,
-    but instead should use the helper methods
-    on :class:`gcloud.storage.connection.Connection` objects.
+    You shouldn't have to use this directly, but instead should use the helper
+    methods on :class:`gcloud.storage.connection.Connection` objects.
 
     :type connection: :class:`gcloud.storage.connection.Connection`
     :param connection: The connection to use for querying the list of buckets.
