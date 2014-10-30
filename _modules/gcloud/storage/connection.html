@@ -141,16 +141,15 @@
 
 <span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket-name&#39;)</span>
 
-<span class="sd">    A :class:`Connection` is actually iterable</span>
-<span class="sd">    and will return the :class:`gcloud.storage.bucket.Bucket` objects</span>
-<span class="sd">    inside the project::</span>
+<span class="sd">    A :class:`Connection` is actually iterable and will return the</span>
+<span class="sd">    :class:`gcloud.storage.bucket.Bucket` objects inside the project::</span>
 
 <span class="sd">      &gt;&gt;&gt; for bucket in connection:</span>
 <span class="sd">      &gt;&gt;&gt;   print bucket</span>
 <span class="sd">      &lt;Bucket: my-bucket-name&gt;</span>
 
-<span class="sd">    In that same way, you can check for whether a bucket exists</span>
-<span class="sd">    inside the project using Python&#39;s ``in`` operator::</span>
+<span class="sd">    In that same way, you can check for whether a bucket exists inside</span>
+<span class="sd">    the project using Python&#39;s ``in`` operator::</span>
 
 <span class="sd">      &gt;&gt;&gt; print &#39;my-bucket-name&#39; in connection</span>
 <span class="sd">      True</span>
@@ -166,12 +165,10 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;:type project: string</span>
+
 <span class="sd">        :param project: The project name to connect to.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -205,7 +202,6 @@
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The URL assembled from the pieces provided.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">api_base_url</span><span class="o">=</span><span class="p">(</span><span class="n">api_base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_BASE_URL</span><span class="p">),</span>
             <span class="n">api_version</span><span class="o">=</span><span class="p">(</span><span class="n">api_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">),</span>
@@ -242,7 +238,6 @@
 <span class="sd">                and ``content`` (a string).</span>
 <span class="sd">        :returns: The HTTP response object and the content of the response.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Accept-Encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;gzip&#39;</span>
 
@@ -267,9 +262,9 @@
                     <span class="n">expect_json</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a request over the HTTP transport to the Cloud Storage API.</span>
 
-<span class="sd">        You shouldn&#39;t need to use this method,</span>
-<span class="sd">        but if you plan to interact with the API using these primitives,</span>
-<span class="sd">        this is the correct one to use...</span>
+<span class="sd">        You shouldn&#39;t need to use this method, but if you plan to</span>
+<span class="sd">        interact with the API using these primitives, this is the</span>
+<span class="sd">        correct one to use...</span>
 
 <span class="sd">        :type method: string</span>
 <span class="sd">        :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).</span>
@@ -281,8 +276,8 @@
 
 <span class="sd">        :type query_params: dict</span>
 <span class="sd">        :param query_params: A dictionary of keys and values to insert into</span>
-<span class="sd">                             the query string of the URL.</span>
-<span class="sd">                             Default is empty dict.</span>
+<span class="sd">                             the query string of the URL.  Default is</span>
+<span class="sd">                             empty dict.</span>
 
 <span class="sd">        :type data: string</span>
 <span class="sd">        :param data: The data to send as the body of the request. Default is</span>
@@ -298,20 +293,19 @@
 <span class="sd">                             Default is the standard API base URL.</span>
 
 <span class="sd">        :type api_version: string</span>
-<span class="sd">        :param api_version: The version of the API to call.</span>
-<span class="sd">                            Typically you shouldn&#39;t provide this and instead</span>
-<span class="sd">                            use the default for the library.</span>
-<span class="sd">                            Default is the latest API version supported by</span>
+<span class="sd">        :param api_version: The version of the API to call.  Typically</span>
+<span class="sd">                            you shouldn&#39;t provide this and instead use</span>
+<span class="sd">                            the default for the library.  Default is the</span>
+<span class="sd">                            latest API version supported by</span>
 <span class="sd">                            gcloud-python.</span>
 
 <span class="sd">        :type expect_json: bool</span>
-<span class="sd">        :param expect_json: If True, this method will try to parse the response</span>
-<span class="sd">                            as JSON and raise an exception if that cannot</span>
-<span class="sd">                            be done.  Default is True.</span>
+<span class="sd">        :param expect_json: If True, this method will try to parse the</span>
+<span class="sd">                            response as JSON and raise an exception if</span>
+<span class="sd">                            that cannot be done.  Default is True.</span>
 
 <span class="sd">        :raises: Exception if the response code is not 200 OK.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
                                  <span class="n">api_base_url</span><span class="o">=</span><span class="n">api_base_url</span><span class="p">,</span>
                                  <span class="n">api_version</span><span class="o">=</span><span class="n">api_version</span><span class="p">)</span>
@@ -341,11 +335,11 @@
 <div class="viewcode-block" id="Connection.get_all_buckets"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_all_buckets">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_buckets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all buckets in the project.</span>
 
-<span class="sd">        This will not populate the list of keys available</span>
-<span class="sd">        in each bucket.</span>
+<span class="sd">        This will not populate the list of keys available in each</span>
+<span class="sd">        bucket.</span>
 
-<span class="sd">        You can also iterate over the connection object,</span>
-<span class="sd">        so these two operations are identical::</span>
+<span class="sd">        You can also iterate over the connection object, so these two</span>
+<span class="sd">        operations are identical::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
@@ -358,18 +352,16 @@
 <span class="sd">        :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.</span>
 <span class="sd">        :returns: All buckets belonging to this project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Connection.get_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a bucket by name.</span>
 
-<span class="sd">        If the bucket isn&#39;t found,</span>
-<span class="sd">        this will raise a :class:`gcloud.storage.exceptions.NotFoundError`.</span>
-<span class="sd">        If you would rather get a bucket by name,</span>
-<span class="sd">        and return ``None`` if the bucket isn&#39;t found</span>
-<span class="sd">        (like ``{}.get(&#39;...&#39;)``)</span>
-<span class="sd">        then use :func:`Connection.lookup`.</span>
+<span class="sd">        If the bucket isn&#39;t found, this will raise a</span>
+<span class="sd">        :class:`gcloud.storage.exceptions.NotFoundError`.  If you would</span>
+<span class="sd">        rather get a bucket by name, and return ``None`` if the bucket</span>
+<span class="sd">        isn&#39;t found (like ``{}.get(&#39;...&#39;)``) then use</span>
+<span class="sd">        :func:`Connection.lookup`.</span>
 
 <span class="sd">        For example::</span>
 
@@ -395,8 +387,7 @@
 <div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a bucket by name, returning None if not found.</span>
 
-<span class="sd">        You can use this if you would rather</span>
-<span class="sd">        checking for a None value</span>
+<span class="sd">        You can use this if you would rather checking for a None value</span>
 <span class="sd">        than catching an exception::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
@@ -414,7 +405,6 @@
 <span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The bucket matching the name provided or None if not found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">:</span>
@@ -437,7 +427,6 @@
 <span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The newly created bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span>
                                     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
@@ -446,8 +435,8 @@
 <div class="viewcode-block" id="Connection.delete_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.delete_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete a bucket.</span>
 
-<span class="sd">        You can use this method to delete a bucket by name,</span>
-<span class="sd">        or to delete a bucket object::</span>
+<span class="sd">        You can use this method to delete a bucket by name, or to delete</span>
+<span class="sd">        a bucket object::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
@@ -460,8 +449,8 @@
 <span class="sd">          &gt;&gt;&gt; connection.delete_bucket(bucket)</span>
 <span class="sd">          True</span>
 
-<span class="sd">        If the bucket doesn&#39;t exist,</span>
-<span class="sd">        this will raise a :class:`gcloud.storage.exceptions.NotFoundError`::</span>
+<span class="sd">        If the bucket doesn&#39;t exist, this will raise a</span>
+<span class="sd">        :class:`gcloud.storage.exceptions.NotFoundError`::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud.storage import exceptions</span>
 <span class="sd">          &gt;&gt;&gt; try:</span>
@@ -479,7 +468,6 @@
 <span class="sd">        :returns: True if the bucket was deleted.</span>
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
 
         <span class="c"># This force delete operation is slow.</span>
@@ -493,10 +481,9 @@
 <div class="viewcode-block" id="Connection.new_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.new_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">new_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for creating a new (unsaved) bucket object.</span>
 
-<span class="sd">        This method is really useful when you&#39;re not sure whether</span>
-<span class="sd">        you have an actual :class:`gcloud.storage.bucket.Bucket` object</span>
-<span class="sd">        or just a name of a bucket.</span>
-<span class="sd">        It always returns the object::</span>
+<span class="sd">        This method is really useful when you&#39;re not sure whether you</span>
+<span class="sd">        have an actual :class:`gcloud.storage.bucket.Bucket` object or</span>
+<span class="sd">        just a name of a bucket.  It always returns the object::</span>
 
 <span class="sd">           &gt;&gt;&gt; bucket = connection.new_bucket(&#39;bucket&#39;)</span>
 <span class="sd">           &gt;&gt;&gt; print bucket</span>
@@ -508,7 +495,6 @@
 <span class="sd">        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :param bucket: A name of a bucket or an existing Bucket object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">bucket</span>
 
@@ -550,7 +536,6 @@
 <span class="sd">        :returns: A signed URL you can use to access the resource</span>
 <span class="sd">                  until expiration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">expiration</span> <span class="o">=</span> <span class="n">_get_expiration_seconds</span><span class="p">(</span><span class="n">expiration</span><span class="p">)</span>
 
         <span class="c"># Generate the string to sign.</span>
@@ -597,7 +582,6 @@
 <span class="sd">    :rtype: int</span>
 <span class="sd">    :returns: a timestamp as an absolute number of seconds.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="c"># If it&#39;s a timedelta, add it to `now` in UTC.</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">):</span>
         <span class="n">now</span> <span class="o">=</span> <span class="n">_utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>

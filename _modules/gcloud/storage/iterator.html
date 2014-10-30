@@ -88,20 +88,12 @@
   <h1>Source code for gcloud.storage.iterator</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Iterators for paging through API responses.</span>
 
-<span class="sd">These iterators</span>
-<span class="sd">simplify the process</span>
-<span class="sd">of paging through API responses</span>
-<span class="sd">where the response</span>
-<span class="sd">is a list of results</span>
-<span class="sd">with a ``nextPageToken``.</span>
+<span class="sd">These iterators simplify the process of paging through API responses</span>
+<span class="sd">where the response is a list of results with a ``nextPageToken``.</span>
 
-<span class="sd">To make an iterator work,</span>
-<span class="sd">just override the ``get_items_from_response`` method</span>
-<span class="sd">so that given a response</span>
-<span class="sd">(containing a page of results)</span>
-<span class="sd">it parses those results</span>
-<span class="sd">into an iterable</span>
-<span class="sd">of the actual objects you want::</span>
+<span class="sd">To make an iterator work, just override the ``get_items_from_response``</span>
+<span class="sd">method so that given a response (containing a page of results) it parses</span>
+<span class="sd">those results into an iterable of the actual objects you want::</span>
 
 <span class="sd">  class MyIterator(Iterator):</span>
 <span class="sd">    def get_items_from_response(self, response):</span>
@@ -109,24 +101,20 @@
 <span class="sd">      for item in items:</span>
 <span class="sd">        yield MyItemClass.from_dict(item, other_arg=True)</span>
 
-<span class="sd">You then can use this</span>
-<span class="sd">to get **all** the results</span>
-<span class="sd">from a resource::</span>
+<span class="sd">You then can use this to get **all** the results from a resource::</span>
 
 <span class="sd">  &gt;&gt;&gt; iterator = MyIterator(...)</span>
 <span class="sd">  &gt;&gt;&gt; list(iterator)  # Convert to a list (consumes all values).</span>
 
-<span class="sd">Or you can walk your way through items</span>
-<span class="sd">and call off the search early</span>
-<span class="sd">if you find what you&#39;re looking for</span>
-<span class="sd">(resulting in possibly fewer requests)::</span>
+<span class="sd">Or you can walk your way through items and call off the search early if</span>
+<span class="sd">you find what you&#39;re looking for (resulting in possibly fewer</span>
+<span class="sd">requests)::</span>
 
 <span class="sd">  &gt;&gt;&gt; for item in MyIterator(...):</span>
 <span class="sd">  &gt;&gt;&gt;   print item.name</span>
 <span class="sd">  &gt;&gt;&gt;   if not item.is_valid:</span>
 <span class="sd">  &gt;&gt;&gt;     break</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
 
 <span class="kn">from</span> <span class="nn">gcloud.storage.exceptions</span> <span class="kn">import</span> <span class="n">StorageError</span>
 
@@ -140,7 +128,6 @@
 <span class="sd">    :type path: string</span>
 <span class="sd">    :param path: The path to query for the list of items.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
@@ -161,7 +148,6 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: Whether the iterator has more pages or not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">True</span>
 
@@ -173,7 +159,6 @@
 <span class="sd">        :rtype: dict or None</span>
 <span class="sd">        :returns: A dictionary of query parameters or None if there are none.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span><span class="s">&#39;pageToken&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">}</span>
 </div>
@@ -183,7 +168,6 @@
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: The parsed JSON response of the next page&#39;s contents.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next_page</span><span class="p">():</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;No more pages. Try resetting the iterator.&#39;</span><span class="p">)</span>
 
@@ -203,15 +187,12 @@
 <div class="viewcode-block" id="Iterator.get_items_from_response"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.Iterator.get_items_from_response">[docs]</a>    <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method called while iterating. This should be overriden.</span>
 
-<span class="sd">        This method should be overridden by a subclass.</span>
-<span class="sd">        It should accept the API response</span>
-<span class="sd">        of a request for the next page of items,</span>
-<span class="sd">        and return a list (or other iterable)</span>
-<span class="sd">        of items.</span>
+<span class="sd">        This method should be overridden by a subclass.  It should</span>
+<span class="sd">        accept the API response of a request for the next page of items,</span>
+<span class="sd">        and return a list (or other iterable) of items.</span>
 
-<span class="sd">        Typically this method will construct</span>
-<span class="sd">        a Bucket or a Key</span>
-<span class="sd">        from the page of results in the response.</span>
+<span class="sd">        Typically this method will construct a Bucket or a Key from the</span>
+<span class="sd">        page of results in the response.</span>
 
 <span class="sd">        :type response: dict</span>
 <span class="sd">        :param response: The response of asking for the next page of items.</span>
@@ -225,9 +206,8 @@
 <div class="viewcode-block" id="KeyDataIterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.KeyDataIterator">[docs]</a><span class="k">class</span> <span class="nc">KeyDataIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An iterator listing data stored in a key.</span>
 
-<span class="sd">    You shouldn&#39;t have to use this directly,</span>
-<span class="sd">    but instead should use the helper methods</span>
-<span class="sd">    on :class:`gcloud.storage.key.Key` objects.</span>
+<span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the</span>
+<span class="sd">    helper methods on :class:`gcloud.storage.key.Key` objects.</span>
 
 <span class="sd">    :type key: :class:`gcloud.storage.key.Key`</span>
 <span class="sd">    :param key: The key from which to list data..</span>
@@ -255,7 +235,6 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: Whether the iterator has more data or not.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">True</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span><span class="p">:</span>
@@ -271,7 +250,6 @@
 <span class="sd">        :rtype: dict</span>
 <span class="sd">        :returns: A dictionary of query parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span>
         <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CHUNK_SIZE</span> <span class="o">-</span> <span class="mi">1</span>
 

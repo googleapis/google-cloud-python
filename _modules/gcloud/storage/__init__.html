@@ -103,18 +103,15 @@
 
 <span class="sd">The main concepts with this API are:</span>
 
-<span class="sd">- :class:`gcloud.storage.connection.Connection`</span>
-<span class="sd">  which represents a connection between your machine</span>
-<span class="sd">  and the Cloud Storage API.</span>
+<span class="sd">- :class:`gcloud.storage.connection.Connection` which represents a</span>
+<span class="sd">  connection between your machine and the Cloud Storage API.</span>
 
-<span class="sd">- :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">  which represents a particular bucket</span>
-<span class="sd">  (akin to a mounted disk on a computer).</span>
+<span class="sd">- :class:`gcloud.storage.bucket.Bucket` which represents a particular</span>
+<span class="sd">  bucket (akin to a mounted disk on a computer).</span>
 
-<span class="sd">- :class:`gcloud.storage.key.Key`</span>
-<span class="sd">  which represents a pointer</span>
-<span class="sd">  to a particular entity in Cloud Storage</span>
-<span class="sd">  (akin to a file path on a remote machine).</span>
+<span class="sd">- :class:`gcloud.storage.key.Key` which represents a pointer to a</span>
+<span class="sd">  particular entity in Cloud Storage (akin to a file path on a remote</span>
+<span class="sd">  machine).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;0.1&#39;</span>
@@ -127,8 +124,8 @@
 <div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to Cloud Storage.</span>
 
-<span class="sd">    Use this if you are going to access several buckets</span>
-<span class="sd">    with the same set of credentials:</span>
+<span class="sd">    Use this if you are going to access several buckets with the same</span>
+<span class="sd">    set of credentials:</span>
 
 <span class="sd">    &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">    &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
@@ -149,7 +146,6 @@
 <span class="sd">    :rtype: :class:`gcloud.storage.connection.Connection`</span>
 <span class="sd">    :returns: A connection defined with the proper credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
     <span class="kn">from</span> <span class="nn">gcloud.storage.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 
@@ -187,7 +183,6 @@
 <span class="sd">    :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">    :returns: A bucket with a connection using the provided credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span></div>
 </pre></div>
