@@ -47,7 +47,6 @@ cd ${FRESH_REPO_DIR}
 git add LATEST_COMMIT
 
 git status
-# H/T: http://stackoverflow.com/a/13730477/1068170
-git commit -m "Latest wheels build by travis-ci. [ci skip]"
+git commit -m "Main project gcloud-python has been updated."
 git status
 git push origin master
