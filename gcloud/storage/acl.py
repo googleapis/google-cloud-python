@@ -170,15 +170,15 @@ class ACL(object):
     loaded = False
 
     def __init__(self):
-        self.clear()
+        self.entities = {}
 
     def clear(self):
         """Remove all entities from the ACL."""
-        self.entities = {}
+        self.entities.clear()
 
     def reset(self):
         """Remove all entities from the ACL, and clear the ``loaded`` flag."""
-        self.clear()
+        self.entities.clear()
         self.loaded = False
 
     def __iter__(self):
