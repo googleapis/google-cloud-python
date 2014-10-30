@@ -126,6 +126,15 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(acl.entities, {})
         self.assertEqual(list(acl.get_entities()), [])
 
+    def test_clear(self):
+        TYPE = 'type'
+        ID = 'id'
+        acl = self._makeOne()
+        acl.entity(TYPE, ID)
+        acl.clear()
+        self.assertEqual(acl.entities, {})
+        self.assertEqual(list(acl.get_entities()), [])
+
     def test___iter___empty(self):
         acl = self._makeOne()
         self.assertEqual(list(acl), [])

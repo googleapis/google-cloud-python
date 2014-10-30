@@ -168,6 +168,10 @@ class ACL(object):
     """Container class representing a list of access controls."""
 
     def __init__(self):
+        self.clear()
+
+    def clear(self):
+        """Remove all entities from the ACL."""
         self.entities = {}
 
     def __iter__(self):
