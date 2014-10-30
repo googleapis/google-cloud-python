@@ -201,7 +201,6 @@
 <span class="sd">        :rtype: list of strings</span>
 <span class="sd">        :returns: The list of roles associated with this entity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span>
 
     <span class="k">def</span> <span class="nf">grant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
@@ -213,7 +212,6 @@
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: The entity class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
@@ -226,7 +224,6 @@
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: The entity class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="n">role</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -290,7 +287,6 @@
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An Entity constructed from the dictionary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">entity</span> <span class="o">=</span> <span class="n">entity_dict</span><span class="p">[</span><span class="s">&#39;entity&#39;</span><span class="p">]</span>
         <span class="n">role</span> <span class="o">=</span> <span class="n">entity_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span>
 
@@ -319,7 +315,6 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True of the entity exists in the ACL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span>
 </div>
 <div class="viewcode-block" id="ACL.get_entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.get_entity">[docs]</a>    <span class="k">def</span> <span class="nf">get_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -336,7 +331,6 @@
 <span class="sd">        :returns: The corresponding entity or the value provided</span>
 <span class="sd">                  to ``default``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">),</span> <span class="n">default</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.add_entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.add_entity">[docs]</a>    <span class="k">def</span> <span class="nf">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
@@ -345,7 +339,6 @@
 <span class="sd">        :type entity: :class:`_ACLEntity`</span>
 <span class="sd">        :param entity: The entity to add to this ACL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">)]</span> <span class="o">=</span> <span class="n">entity</span>
 </div>
 <div class="viewcode-block" id="ACL.entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.entity">[docs]</a>    <span class="k">def</span> <span class="nf">entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -367,7 +360,6 @@
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: A new Entity or a reference to an existing identical entity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">entity</span> <span class="o">=</span> <span class="n">_ACLEntity</span><span class="p">(</span><span class="n">entity_type</span><span class="o">=</span><span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">):</span>
             <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
@@ -384,7 +376,6 @@
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An Entity corresponding to this user.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.group"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.group">[docs]</a>    <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
@@ -396,7 +387,6 @@
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An Entity corresponding to this group.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.domain"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.domain">[docs]</a>    <span class="k">def</span> <span class="nf">domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
@@ -408,7 +398,6 @@
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An entity corresponding to this domain.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;domain&#39;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">domain</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.all"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -417,7 +406,6 @@
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An entity representing all users.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;allUsers&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.all_authenticated"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.all_authenticated">[docs]</a>    <span class="k">def</span> <span class="nf">all_authenticated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -426,7 +414,6 @@
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An entity representing all authenticated users.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;allAuthenticatedUsers&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.get_entities"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.get_entities">[docs]</a>    <span class="k">def</span> <span class="nf">get_entities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -435,7 +422,6 @@
 <span class="sd">        :rtype: list of :class:`_ACLEntity` objects</span>
 <span class="sd">        :returns: A list of all Entity objects.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="ACL.save"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -443,7 +429,6 @@
 
 <span class="sd">        :raises: NotImplementedError</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 </div></div>
@@ -455,7 +440,6 @@
 <span class="sd">        :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :param bucket: The bucket to which this ACL relates.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="nb">super</span><span class="p">(</span><span class="n">BucketACL</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
 
@@ -482,7 +466,6 @@
 <span class="sd">        :type key: :class:`gcloud.storage.key.Key`</span>
 <span class="sd">        :param key: The key that this ACL corresponds to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="nb">super</span><span class="p">(</span><span class="n">ObjectACL</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
 
