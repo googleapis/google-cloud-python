@@ -88,22 +88,40 @@ def is_production_filename(filename):
 def get_files_for_linting():
     """Gets a list of files in the repository.
 
-    By default returns all files via `git ls-files`. However, if the
-    environment variables `GCLOUD_REMOTE_FOR_LINT` and `GCLOUD_BRANCH_FOR_LINT`
-    are set, this will return only those files which have changed since
-    the last commit in `REMOTE_FOR_LINT/BRANCH_FOR_LINT`
-    """
-    remote = os.getenv('GCLOUD_REMOTE_FOR_LINT')
-    branch = os.getenv('GCLOUD_BRANCH_FOR_LINT')
+    By default, returns all files via `git ls-files`. However, in some cases
+    uses a specific commit or branch (a so-called diff base) to compare
+    against for changed files.
 
-    if remote is None or branch is None:
-        print 'Remote branch not specified, listing all files in repository.'
+    To speed up linting on Travis pull requests against master, we manually
+    set the diff base to origin/master. We don't do this on non-pull requests
+    since origin/master will be equivalent to the currently checked out code.
+    One could potentially use ${TRAVIS_COMMIT_RANGE} to find a diff base but
+    this value is not dependable.
+
+    To allow faster local `tox` runs, the environment variables
+    `GCLOUD_REMOTE_FOR_LINT` and `GCLOUD_BRANCH_FOR_LINT` can be set to specify
+    a remote branch to diff against.
+    """
+    diff_base = None
+    if (os.getenv('TRAVIS_BRANCH') == 'master' and
+            os.getenv('TRAVIS_PULL_REQUEST') != 'false'):
+        # In the case of a pull request into master, we want to
+        # diff against HEAD in master.
+        diff_base = 'origin/master'
+    elif os.getenv('TRAVIS') is None:
+        # Only allow specified remote and branch in local dev.
+        remote = os.getenv('GCLOUD_REMOTE_FOR_LINT')
+        branch = os.getenv('GCLOUD_BRANCH_FOR_LINT')
+        if remote is not None and branch is not None:
+            diff_base = '%s/%s' % (remote, branch)
+
+    if diff_base is None:
+        print 'Diff base not specified, listing all files in repository.'
         result = subprocess.check_output(['git', 'ls-files'])
     else:
-        remote_branch = '%s/%s' % (remote, branch)
         result = subprocess.check_output(['git', 'diff', '--name-only',
-                                          remote_branch])
-        print 'Using files changed relative to %s:' % (remote_branch,)
+                                          diff_base])
+        print 'Using files changed relative to %s:' % (diff_base,)
         print '-' * 60
         print result.rstrip('\n')  # Don't print trailing newlines.
         print '-' * 60
