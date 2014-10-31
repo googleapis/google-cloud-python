@@ -218,8 +218,7 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
-        result = bucket.delete_keys([])
-        self.assertEqual(result, [])
+        bucket.delete_keys([])
         self.assertEqual(connection._requested, [])
 
     def test_delete_keys_hit(self):
@@ -227,8 +226,7 @@ class Test_Bucket(unittest2.TestCase):
         KEY = 'key'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        result = bucket.delete_keys([KEY])
-        self.assertEqual(result, [(KEY, True)])
+        bucket.delete_keys([KEY])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'DELETE')
@@ -240,8 +238,23 @@ class Test_Bucket(unittest2.TestCase):
         NONESUCH = 'nonesuch'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        result = bucket.delete_keys([KEY, NONESUCH])
-        self.assertEqual(result, [(KEY, True), (NONESUCH, False)])
+        bucket.delete_keys([KEY, NONESUCH])
+        kw = connection._requested
+        self.assertEqual(len(kw), 2)
+        self.assertEqual(kw[0]['method'], 'DELETE')
+        self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, KEY))
+        self.assertEqual(kw[1]['method'], 'DELETE')
+        self.assertEqual(kw[1]['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
+
+    def test_delete_keys_miss_w_on_error(self):
+        NAME = 'name'
+        KEY = 'key'
+        NONESUCH = 'nonesuch'
+        connection = _Connection({})
+        bucket = self._makeOne(connection, NAME)
+        errors = []
+        bucket.delete_keys([KEY, NONESUCH], errors.append)
+        self.assertEqual(errors, [NONESUCH])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'DELETE')
