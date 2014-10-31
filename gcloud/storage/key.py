@@ -162,8 +162,8 @@ class Key(object):
         """
         return self.bucket.delete_key(self)
 
-    def get_contents_to_file(self, file_obj):
-        """Gets the contents of this key to a file-like object.
+    def download_to_file(self, file_obj):
+        """Download the contents of this key into a file-like object.
 
         :type file_obj: file
         :param file_obj: A file handle to which to write the key's data.
@@ -173,8 +173,11 @@ class Key(object):
         for chunk in _KeyDataIterator(self):
             file_obj.write(chunk)
 
-    def get_contents_to_filename(self, filename):
-        """Get the contents of this key to a file by name.
+    # NOTE: Alias for boto-like API.
+    get_contents_to_file = download_to_file
+
+    def download_to_filename(self, filename):
+        """Download the contents of this key into a named file.
 
         :type filename: string
         :param filename: A filename to be passed to ``open``.
@@ -182,22 +185,28 @@ class Key(object):
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
         with open(filename, 'wb') as file_obj:
-            self.get_contents_to_file(file_obj)
+            self.download_to_file(file_obj)
 
-    def get_contents_as_string(self):
-        """Gets the data stored on this Key as a string.
+    # NOTE: Alias for boto-like API.
+    get_contents_to_filename = download_to_filename
+
+    def download_as_string(self):
+        """Download the contents of this key as a string.
 
         :rtype: string
         :returns: The data stored in this key.
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
         string_buffer = StringIO()
-        self.get_contents_to_file(string_buffer)
+        self.download_to_file(string_buffer)
         return string_buffer.getvalue()
 
-    def set_contents_from_file(self, file_obj, rewind=False, size=None,
-                               content_type=None):
-        """Set the contents of this key to the contents of a file handle.
+    # NOTE: Alias for boto-like API.
+    get_contents_as_string = download_as_string
+
+    def upload_from_file(self, file_obj, rewind=False, size=None,
+                         content_type=None):
+        """Upload the contents of this key from a file-like object.
 
         :type file_obj: file
         :param file_obj: A file handle open for reading.
@@ -255,8 +264,11 @@ class Key(object):
 
             bytes_uploaded += chunk_size
 
-    def set_contents_from_filename(self, filename):
-        """Open a path and set this key's contents to the content of that file.
+    # NOTE: Alias for boto-like API.
+    set_contents_from_file = upload_from_file
+
+    def upload_from_filename(self, filename):
+        """Upload this key's contents from the content of f named file.
 
         :type filename: string
         :param filename: The path to the file.
@@ -264,21 +276,13 @@ class Key(object):
         content_type, _ = mimetypes.guess_type(filename)
 
         with open(filename, 'rb') as file_obj:
-            self.set_contents_from_file(file_obj, content_type=content_type)
+            self.upload_from_file(file_obj, content_type=content_type)
 
-    def set_contents_from_string(self, data, content_type='text/plain'):
-        """Sets the contents of this key to the provided string.
+    # NOTE: Alias for boto-like API.
+    set_contents_from_filename = upload_from_filename
 
-        You can use this method to quickly set the value of a key::
-
-          >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email, key_path)
-          >>> bucket = connection.get_bucket(bucket_name)
-          >>> key = bucket.new_key('my_text_file.txt')
-          >>> key.set_contents_from_string('This is the contents of my file!')
-
-        Under the hood this is using a string buffer and calling
-        :func:`gcloud.storage.key.Key.set_contents_from_file`.
+    def upload_from_string(self, data, content_type='text/plain'):
+        """Upload contents of this key from the provided string.
 
         :type data: string
         :param data: The data to store in this key.
@@ -292,6 +296,9 @@ class Key(object):
                                     size=string_buffer.len,
                                     content_type=content_type)
         return self
+
+    # NOTE: Alias for boto-like API.
+    set_contents_from_string = upload_from_string
 
     def has_metadata(self, field=None):
         """Check if metadata is available locally.
