@@ -429,6 +429,7 @@ class Key(object):
             self.acl.clear()
             for entry in result['acl']:
                 self.acl.entity(self.acl.entity_from_dict(entry))
+            self.acl.loaded = True
 
         return self
 
@@ -440,12 +441,7 @@ class Key(object):
         have access to a key that you created even after you clear ACL
         rules with this method.
         """
-        self.connection.api_request(
-            method='PATCH', path=self.path, data={'acl': []},
-            query_params={'projection': 'full'})
-        self.acl.clear()
-        self.acl.loaded = True
-        return self
+        return self.save_acl([])
 
     def make_public(self):
         """Make this key public giving all users read access.

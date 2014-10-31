@@ -545,16 +545,9 @@ class Bucket(object):
 
         At this point all the custom rules you created have been removed.
         """
-        found = self.connection.api_request(
-            method='PATCH', path=self.path, data={'acl': []},
-            query_params={'projection': 'full'})
-        self.acl.clear()
         # NOTE:  back-end makes some ACL entries sticky (they remain even
         #        after the PATCH succeeds.
-        for entry in found['acl']:
-            self.acl.add_entity(self.acl.entity_from_dict(entry))
-        self.acl.loaded = True
-        return self
+        return self.save_acl([])
 
     def reload_default_object_acl(self):
         """Reload the Default Object ACL rules for this bucket.
@@ -612,18 +605,13 @@ class Bucket(object):
             doa.clear()
             for entry in result['defaultObjectAcl']:
                 doa.entity(doa.entity_from_dict(entry))
+            doa.loaded = True
 
         return self
 
     def clear_default_object_acl(self):
         """Remove the Default Object ACL from this bucket."""
-
-        self.connection.api_request(
-            method='PATCH', path=self.path, data={'defaultObjectAcl': []},
-            query_params={'projection': 'full'})
-        self.default_object_acl.clear()
-        self.default_object_acl.loaded = True
-        return self
+        return self.save_default_object_acl([])
 
     def make_public(self, recursive=False, future=False):
         """Make a bucket public.
