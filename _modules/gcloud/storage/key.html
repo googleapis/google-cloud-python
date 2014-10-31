@@ -452,7 +452,6 @@
 <span class="sd">        :rtype: :class:`Key`</span>
 <span class="sd">        :returns: The current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
             <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
@@ -464,7 +463,6 @@
 <span class="sd">        :rtype: :class:`Key`</span>
 <span class="sd">        :returns: The current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span> <span class="o">=</span> <span class="n">ObjectACL</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="p">[]):</span>
@@ -479,7 +477,6 @@
 <span class="sd">        :rtype: :class:`gcloud.storage.acl.ObjectACL`</span>
 <span class="sd">        :returns: An ACL object for the current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reload_acl</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span>
