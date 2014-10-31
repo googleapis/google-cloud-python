@@ -509,7 +509,8 @@ class Bucket(object):
 
         if dirty:
             result = self.connection.api_request(
-                method='PATCH', path=self.path, data={'acl': list(acl)})
+                method='PATCH', path=self.path, data={'acl': list(acl)},
+                query_params={'projection': 'full'})
             self.acl.clear()
             for entry in result['acl']:
                 self.acl.entity(self.acl.entity_from_dict(entry))
@@ -544,7 +545,8 @@ class Bucket(object):
         At this point all the custom rules you created have been removed.
         """
         self.connection.api_request(
-            method='PATCH', path=self.path, data={'acl': []})
+            method='PATCH', path=self.path, data={'acl': []},
+            query_params={'projection': 'full'})
         self.acl.clear()
         self.acl.loaded = True
         return self
@@ -599,7 +601,8 @@ class Bucket(object):
         if dirty:
             result = self.connection.api_request(
                 method='PATCH', path=self.path,
-                data={'defaultObjectAcl': list(acl)})
+                data={'defaultObjectAcl': list(acl)},
+                query_params={'projection': 'full'})
             doa = self.default_object_acl
             doa.clear()
             for entry in result['defaultObjectAcl']:
@@ -611,7 +614,8 @@ class Bucket(object):
         """Remove the Default Object ACL from this bucket."""
 
         self.connection.api_request(
-            method='PATCH', path=self.path, data={'defaultObjectAcl': []})
+            method='PATCH', path=self.path, data={'defaultObjectAcl': []},
+            query_params={'projection': 'full'})
         self.default_object_acl.clear()
         self.default_object_acl.loaded = True
         return self

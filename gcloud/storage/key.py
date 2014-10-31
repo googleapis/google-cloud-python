@@ -425,7 +425,8 @@ class Key(object):
 
         if dirty:
             result = self.connection.api_request(
-                method='PATCH', path=self.path, data={'acl': list(acl)})
+                method='PATCH', path=self.path, data={'acl': list(acl)},
+                query_params={'projection': 'full'})
             self.acl.clear()
             for entry in result['acl']:
                 self.acl.entity(self.acl.entity_from_dict(entry))
@@ -441,7 +442,8 @@ class Key(object):
         rules with this method.
         """
         self.connection.api_request(
-            method='PATCH', path=self.path, data={'acl': []})
+            method='PATCH', path=self.path, data={'acl': []},
+            query_params={'projection': 'full'})
         self.acl.clear()
         self.acl.loaded = True
         return self
