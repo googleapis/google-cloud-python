@@ -331,6 +331,8 @@ class Bucket(object):
         :rtype: :class:`Bucket`
         :returns: The bucket you just reloaded data for.
         """
+        # Pass only '?projection=noAcl' here because 'acl'/'defaultObjectAcl'
+        # are handled via 'get_acl()'/'get_default_object_acl()'
         query_params = {'projection': 'noAcl'}
         self.metadata = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)

@@ -328,6 +328,8 @@ class Key(object):
         :rtype: :class:`Key`
         :returns: The key you just reloaded data for.
         """
+        # Pass only '?projection=noAcl' here because 'acl' is handled via
+        # 'get_acl().
         query_params = {'projection': 'noAcl'}
         self.metadata = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)
