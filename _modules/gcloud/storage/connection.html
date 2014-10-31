@@ -426,6 +426,8 @@
 
 <span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The newly created bucket.</span>
+<span class="sd">        :raises: :class:`gcloud.storage.exceptions.ConnectionError` if</span>
+<span class="sd">                 there is a confict (bucket already exists, invalid name, etc.)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span>
