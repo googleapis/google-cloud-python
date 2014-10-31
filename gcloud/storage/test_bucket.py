@@ -660,7 +660,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], {'acl': new_acl})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_clear_acl(self):
         NAME = 'name'
@@ -680,7 +679,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], {'acl': []})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_reload_default_object_acl_eager_empty(self):
         from gcloud.storage.acl import DefaultObjectACL
@@ -823,7 +821,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], {'acl': after['acl']})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_make_public_w_future(self):
         from gcloud.storage.acl import _ACLEntity
