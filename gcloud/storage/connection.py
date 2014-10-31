@@ -338,6 +338,8 @@ class Connection(connection.Connection):
 
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
+        :raises: :class:`gcloud.storage.exceptions.ConnectionError` if
+                 there is a confict (bucket already exists, invalid name, etc.)
         """
         bucket = self.new_bucket(bucket)
         response = self.api_request(method='POST', path='/b',
