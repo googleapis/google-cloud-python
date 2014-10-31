@@ -542,6 +542,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
         self.assertEqual(kw[0]['data'], {'acl': new_acl})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_clear_acl(self):
         KEY = 'key'
@@ -557,6 +558,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
         self.assertEqual(kw[0]['data'], {'acl': []})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_make_public(self):
         from gcloud.storage.acl import _ACLEntity

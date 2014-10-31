@@ -548,9 +548,18 @@ class Bucket(object):
 
         At this point all the custom rules you created have been removed.
         """
+<<<<<<< HEAD
         # NOTE:  back-end makes some ACL entries sticky (they remain even
         #        after the PATCH succeeds.
         return self.save_acl([])
+=======
+        self.connection.api_request(
+            method='PATCH', path=self.path, data={'acl': []},
+            query_params={'projection': 'full'})
+        self.acl.clear()
+        self.acl.loaded = True
+        return self
+>>>>>>> Fix save/clear ACL operations.
 
     def reload_default_object_acl(self):
         """Reload the Default Object ACL rules for this bucket.
