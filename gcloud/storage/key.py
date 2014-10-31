@@ -349,7 +349,7 @@ class Key(object):
         :rtype: dict or anything
         :returns: All metadata or the value of the specific field.
         """
-        # Use 'get_acl()' to retrieve the 'acl'.
+        # We ignore 'acl' because it is meant to be handled via 'get_acl()'.
         if field == 'acl':
             return default
 

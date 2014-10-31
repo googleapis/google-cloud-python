@@ -352,8 +352,8 @@ class Bucket(object):
         :rtype: dict or anything
         :returns: All metadata or the value of the specific field.
         """
-        # Use 'get_acl()' to retrieve the 'acl', and 'get_default_object_acl()'
-        # to retrieve the 'defaultObjectAcl'.
+        # We ignore 'acl' / 'defaultObjectAcl' because they should be
+        # handled via 'get_acl()' / 'get_default_object_acl()'
         if field in ('acl', 'defaultObjectAcl'):
             return default
 
