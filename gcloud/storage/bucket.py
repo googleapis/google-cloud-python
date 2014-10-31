@@ -144,7 +144,10 @@ class Bucket(object):
         :type force: bool
         :param full: If True, empties the bucket's objects then deletes it.
 
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        :raises: :class:`gcloud.storage.exceptions.NotFoundError` if the
+                 bucket does not exist, or
+                 :class:`gcloud.storage.exceptions.ConnectionError` if the
+                 bucket has keys and `force` is not passed.
         """
         return self.connection.delete_bucket(self.name, force=force)
 
