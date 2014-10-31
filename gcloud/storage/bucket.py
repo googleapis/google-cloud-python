@@ -544,10 +544,14 @@ class Bucket(object):
 
         At this point all the custom rules you created have been removed.
         """
-        self.connection.api_request(
+        found = self.connection.api_request(
             method='PATCH', path=self.path, data={'acl': []},
             query_params={'projection': 'full'})
         self.acl.clear()
+        # NOTE:  back-end makes some ACL entries sticky (they remain even
+        #        after the PATCH succeeds.
+        for entry in found['acl']:
+            self.acl.add_entity(self.acl.entity_from_dict(entry))
         self.acl.loaded = True
         return self
 

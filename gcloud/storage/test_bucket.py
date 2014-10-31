@@ -673,14 +673,17 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_clear_acl(self):
         NAME = 'name'
-        ROLE = 'role'
+        ROLE1 = 'role1'
+        ROLE2 = 'role2'
+        STICKY = {'entity': 'allUsers', 'role': ROLE2}
         connection = _Connection(
-            {'foo': 'Foo', 'acl': []},
+            # Emulate back-end, which makes some entries "sticky".
+            {'foo': 'Foo', 'acl': [STICKY]},
             )
         bucket = self._makeOne(connection, NAME)
-        bucket.acl.entity('allUsers', ROLE)
+        bucket.acl.entity('allUsers', ROLE1)
         self.assertTrue(bucket.clear_acl() is bucket)
-        self.assertEqual(list(bucket.acl), [])
+        self.assertEqual(list(bucket.acl), [STICKY])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
