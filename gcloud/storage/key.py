@@ -383,24 +383,6 @@ class Key(object):
             query_params={'projection': 'full'})
         return self
 
-    def reload_acl(self):
-        """Reload the ACL data from Cloud Storage.
-
-        :rtype: :class:`Key`
-        :returns: The current key.
-        """
-        self.acl.clear()
-
-        url_path = '%s/acl' % self.path
-        found = self.connection.api_request(method='GET', path=url_path)
-        for entry in found['items']:
-            self.acl.add_entity(self.acl.entity_from_dict(entry))
-
-        # Even if we fetch no entries, the ACL is still loaded.
-        self.acl.loaded = True
-
-        return self
-
     def get_acl(self):
         """Get ACL metadata as a :class:`gcloud.storage.acl.ObjectACL` object.
 
@@ -408,42 +390,8 @@ class Key(object):
         :returns: An ACL object for the current key.
         """
         if not self.acl.loaded:
-            self.reload_acl()
+            self.acl.reload()
         return self.acl
-
-    def save_acl(self, acl=None):
-        """Save the ACL data for this key.
-
-        :type acl: :class:`gcloud.storage.acl.ACL`
-        :param acl: The ACL object to save.  If left blank, this will
-                    save the ACL set locally on the key.
-        """
-        if acl is None:
-            acl = self.acl
-            dirty = acl.loaded
-        else:
-            dirty = True
-
-        if dirty:
-            result = self.connection.api_request(
-                method='PATCH', path=self.path, data={'acl': list(acl)},
-                query_params={'projection': 'full'})
-            self.acl.clear()
-            for entry in result['acl']:
-                self.acl.entity(self.acl.entity_from_dict(entry))
-            self.acl.loaded = True
-
-        return self
-
-    def clear_acl(self):
-        """Remove all ACL rules from the key.
-
-        Note that this won't actually remove *ALL* the rules, but it
-        will remove all the non-default rules.  In short, you'll still
-        have access to a key that you created even after you clear ACL
-        rules with this method.
-        """
-        return self.save_acl([])
 
     def make_public(self):
         """Make this key public giving all users read access.
@@ -452,7 +400,7 @@ class Key(object):
         :returns: The current key.
         """
         self.get_acl().all().grant_read()
-        self.save_acl()
+        self.acl.save()
         return self
 
 
