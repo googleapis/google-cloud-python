@@ -19,15 +19,27 @@ class Bucket(object):
     :type name: string
     :param name: The name of the bucket.
     """
+    # ACL rules are lazily retrieved.
+    _acl = _default_object_acl = None
 
     def __init__(self, connection=None, name=None, metadata=None):
         self.connection = connection
         self.name = name
         self.metadata = metadata
 
-        # ACL rules are lazily retrieved.
-        self.acl = None
-        self.default_object_acl = None
+    @property
+    def acl(self):
+        """Create our ACL on demand."""
+        if self._acl is None:
+            self._acl = BucketACL(self)
+        return self._acl
+
+    @property
+    def default_object_acl(self):
+        """Create our defaultObjectACL on demand."""
+        if self._default_object_acl is None:
+            self._default_object_acl = DefaultObjectACL(self)
+        return self._default_object_acl
 
     @classmethod
     def from_dict(cls, bucket_dict, connection=None):
@@ -431,11 +443,15 @@ class Bucket(object):
         :rtype: :class:`Bucket`
         :returns: The current bucket.
         """
-        self.acl = BucketACL(bucket=self)
+        self.acl.clear()
 
-        for entry in self.get_metadata('acl', []):
-            entity = self.acl.entity_from_dict(entry)
-            self.acl.add_entity(entity)
+        url_path = '%s/acl' % self.path
+        found = self.connection.api_request(method='GET', path=url_path)
+        for entry in found['items']:
+            self.acl.add_entity(self.acl.entity_from_dict(entry))
+
+        # Even if we fetch no entries, the ACL is still loaded.
+        self.acl.loaded = True
 
         return self
 
@@ -445,7 +461,7 @@ class Bucket(object):
         :rtype: :class:`gcloud.storage.acl.BucketACL`
         :returns: An ACL object for the current bucket.
         """
-        if not self.acl:
+        if not self.acl.loaded:
             self.reload_acl()
         return self.acl
 
@@ -487,12 +503,17 @@ class Bucket(object):
         # both evaluate to False, but mean very different things.
         if acl is None:
             acl = self.acl
+            dirty = acl.loaded
+        else:
+            dirty = True
 
-        if acl is None:
-            return self
+        if dirty:
+            result = self.connection.api_request(
+                method='PATCH', path=self.path, data={'acl': list(acl)})
+            self.acl.clear()
+            for entry in result['acl']:
+                self.acl.entity(self.acl.entity_from_dict(entry))
 
-        self.patch_metadata({'acl': list(acl)})
-        self.reload_acl()
         return self
 
     def clear_acl(self):
@@ -522,7 +543,11 @@ class Bucket(object):
 
         At this point all the custom rules you created have been removed.
         """
-        return self.save_acl(acl=[])
+        self.connection.api_request(
+            method='PATCH', path=self.path, data={'acl': []})
+        self.acl.clear()
+        self.acl.loaded = True
+        return self
 
     def reload_default_object_acl(self):
         """Reload the Default Object ACL rules for this bucket.
@@ -530,11 +555,16 @@ class Bucket(object):
         :rtype: :class:`Bucket`
         :returns: The current bucket.
         """
-        self.default_object_acl = DefaultObjectACL(bucket=self)
+        doa = self.default_object_acl
+        doa.clear()
 
-        for entry in self.get_metadata('defaultObjectAcl', []):
-            entity = self.default_object_acl.entity_from_dict(entry)
-            self.default_object_acl.add_entity(entity)
+        url_path = '%s/defaultObjectAcl' % self.path
+        found = self.connection.api_request(method='GET', path=url_path)
+        for entry in found['items']:
+            doa.add_entity(doa.entity_from_dict(entry))
+
+        # Even if we fetch no entries, the ACL is still loaded.
+        doa.loaded = True
 
         return self
 
@@ -547,7 +577,7 @@ class Bucket(object):
         :rtype: :class:`gcloud.storage.acl.DefaultObjectACL`
         :returns: A DefaultObjectACL object for this bucket.
         """
-        if not self.default_object_acl:
+        if not self.default_object_acl.loaded:
             self.reload_default_object_acl()
         return self.default_object_acl
 
@@ -562,18 +592,29 @@ class Bucket(object):
         """
         if acl is None:
             acl = self.default_object_acl
+            dirty = acl.loaded
+        else:
+            dirty = True
 
-        if acl is None:
-            return self
+        if dirty:
+            result = self.connection.api_request(
+                method='PATCH', path=self.path,
+                data={'defaultObjectAcl': list(acl)})
+            doa = self.default_object_acl
+            doa.clear()
+            for entry in result['defaultObjectAcl']:
+                doa.entity(doa.entity_from_dict(entry))
 
-        self.patch_metadata({'defaultObjectAcl': list(acl)})
-        self.reload_default_object_acl()
         return self
 
     def clear_default_object_acl(self):
         """Remove the Default Object ACL from this bucket."""
 
-        return self.save_default_object_acl(acl=[])
+        self.connection.api_request(
+            method='PATCH', path=self.path, data={'defaultObjectAcl': []})
+        self.default_object_acl.clear()
+        self.default_object_acl.loaded = True
+        return self
 
     def make_public(self, recursive=False, future=False):
         """Make a bucket public.
