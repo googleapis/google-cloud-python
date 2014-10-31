@@ -325,17 +325,13 @@ class Bucket(object):
         else:
             return True
 
-    def reload_metadata(self, full=False):
+    def reload_metadata(self):
         """Reload metadata from Cloud Storage.
-
-        :type full: bool
-        :param full: If True, loads all data (include ACL data).
 
         :rtype: :class:`Bucket`
         :returns: The bucket you just reloaded data for.
         """
-        projection = 'full' if full else 'noAcl'
-        query_params = {'projection': projection}
+        query_params = {'projection': 'noAcl'}
         self.metadata = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)
         return self
@@ -356,9 +352,11 @@ class Bucket(object):
         :rtype: dict or anything
         :returns: All metadata or the value of the specific field.
         """
+        if field in ('acl', 'defaultObjectAcl'):
+            return default
+
         if not self.has_metadata(field=field):
-            full = (field and field in ('acl', 'defaultObjectAcl'))
-            self.reload_metadata(full=full)
+            self.reload_metadata()
 
         if field:
             return self.metadata.get(field, default)

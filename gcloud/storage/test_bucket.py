@@ -409,7 +409,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(metadata=metadata)
         self.assertTrue(bucket.has_metadata(KEY))
 
-    def test_reload_metadata_default(self):
+    def test_reload_metadata(self):
         NAME = 'name'
         before = {'foo': 'Foo'}
         after = {'bar': 'Bar'}
@@ -423,21 +423,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-
-    def test_reload_metadata_explicit(self):
-        NAME = 'name'
-        before = {'foo': 'Foo'}
-        after = {'bar': 'Bar'}
-        connection = _Connection(after)
-        bucket = self._makeOne(connection, NAME, before)
-        found = bucket.reload_metadata(True)
-        self.assertTrue(found is bucket)
-        self.assertEqual(found.metadata, after)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_get_metadata_none_set_none_passed(self):
         NAME = 'name'
@@ -453,34 +438,43 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test_get_metadata_none_set_acl_hit(self):
+    def test_get_metadata_acl_no_default(self):
         NAME = 'name'
-        after = {'bar': 'Bar', 'acl': []}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = self._makeOne(connection, NAME)
         found = bucket.get_metadata('acl')
-        self.assertEqual(found, [])
-        self.assertEqual(bucket.metadata, after)
+        self.assertEqual(found, None)
         kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(kw), 0)
+
+    def test_get_metadata_acl_w_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        default = object()
+        found = bucket.get_metadata('acl', default)
+        self.assertTrue(found is default)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_metadata_defaultObjectAcl_no_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        found = bucket.get_metadata('defaultObjectAcl')
+        self.assertEqual(found, None)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
 
     def test_get_metadata_none_set_defaultObjectAcl_miss_clear_default(self):
         NAME = 'name'
-        after = {'bar': 'Bar'}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = self._makeOne(connection, NAME)
         default = object()
         found = bucket.get_metadata('defaultObjectAcl', default)
         self.assertTrue(found is default)
-        self.assertEqual(bucket.metadata, after)
         kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(kw), 0)
 
     def test_get_metadata_miss(self):
         NAME = 'name'

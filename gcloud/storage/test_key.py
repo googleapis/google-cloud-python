@@ -349,7 +349,7 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(metadata=metadata)
         self.assertTrue(key.has_metadata(KEY))
 
-    def test_reload_metadata_default(self):
+    def test_reload_metadata(self):
         KEY = 'key'
         before = {'foo': 'Foo'}
         after = {'bar': 'Bar'}
@@ -364,22 +364,6 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-
-    def test_reload_metadata_explicit(self):
-        KEY = 'key'
-        before = {'foo': 'Foo'}
-        after = {'bar': 'Bar'}
-        connection = _Connection(after)
-        bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY, before)
-        found = key.reload_metadata(True)
-        self.assertTrue(found is key)
-        self.assertEqual(found.metadata, after)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_get_metadata_none_set_none_passed(self):
         KEY = 'key'
@@ -396,22 +380,17 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test_get_metadata_none_set_acl_hit(self):
+    def test_get_metadata_acl_no_default(self):
         KEY = 'key'
-        after = {'bar': 'Bar', 'acl': []}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         found = key.get_metadata('acl')
-        self.assertEqual(found, [])
-        self.assertEqual(key.metadata, after)
+        self.assertEqual(found, None)
         kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(kw), 0)
 
-    def test_get_metadata_none_set_acl_miss_explicit_default(self):
+    def test_get_metadata_acl_w_default(self):
         KEY = 'key'
         after = {'bar': 'Bar'}
         connection = _Connection(after)
@@ -420,12 +399,8 @@ class Test_Key(unittest2.TestCase):
         default = object()
         found = key.get_metadata('acl', default)
         self.assertTrue(found is default)
-        self.assertEqual(key.metadata, after)
         kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(kw), 0)
 
     def test_get_metadata_miss(self):
         KEY = 'key'
