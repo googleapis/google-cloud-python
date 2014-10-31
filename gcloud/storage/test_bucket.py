@@ -863,7 +863,7 @@ class Test_Bucket(unittest2.TestCase):
             def save_acl(self):
                 _saved.append((self._bucket, self._name, self._granted))
 
-        class _KeyIterator(key.KeyIterator):
+        class _KeyIterator(key._KeyIterator):
             def get_items_from_response(self, response):
                 for item in response.get('items', []):
                     yield _Key(self.bucket, item['name'])
@@ -875,7 +875,7 @@ class Test_Bucket(unittest2.TestCase):
         after = {'acl': permissive, 'defaultObjectAcl': []}
         connection = _Connection(after, {'items': [{'name': KEY}]})
         bucket = self._makeOne(connection, NAME, before)
-        with _Monkey(MUT, KeyIterator=_KeyIterator):
+        with _Monkey(MUT, _KeyIterator=_KeyIterator):
             bucket.make_public(recursive=True)
         self.assertEqual(bucket.metadata, after)
         self.assertEqual(list(bucket.acl), after['acl'])

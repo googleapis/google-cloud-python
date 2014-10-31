@@ -7,7 +7,7 @@ from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
 from gcloud.storage.key import Key
-from gcloud.storage.key import KeyIterator
+from gcloud.storage.key import _KeyIterator
 
 
 class Bucket(object):
@@ -46,7 +46,7 @@ class Bucket(object):
         return '<Bucket: %s>' % self.name
 
     def __iter__(self):
-        return iter(KeyIterator(bucket=self))
+        return iter(_KeyIterator(bucket=self))
 
     def __contains__(self, key):
         return self.get_key(key) is not None

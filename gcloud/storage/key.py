@@ -5,8 +5,8 @@ import os
 from StringIO import StringIO
 
 from gcloud.storage.acl import ObjectACL
+from gcloud.storage.exceptions import StorageError
 from gcloud.storage.iterator import Iterator
-from gcloud.storage.iterator import KeyDataIterator
 
 
 class Key(object):
@@ -170,7 +170,7 @@ class Key(object):
 
         :raises: :class:`gcloud.storage.exceptions.NotFoundError`
         """
-        for chunk in KeyDataIterator(self):
+        for chunk in _KeyDataIterator(self):
             file_obj.write(chunk)
 
     def get_contents_to_filename(self, filename):
@@ -433,7 +433,7 @@ class Key(object):
         return self
 
 
-class KeyIterator(Iterator):
+class _KeyIterator(Iterator):
     """An iterator listing keys.
 
     You shouldn't have to use this directly, but instead should use the
@@ -444,7 +444,7 @@ class KeyIterator(Iterator):
     """
     def __init__(self, bucket):
         self.bucket = bucket
-        super(KeyIterator, self).__init__(
+        super(_KeyIterator, self).__init__(
             connection=bucket.connection, path=bucket.path + '/o')
 
     def get_items_from_response(self, response):
@@ -455,3 +455,97 @@ class KeyIterator(Iterator):
         """
         for item in response.get('items', []):
             yield Key.from_dict(item, bucket=self.bucket)
+
+
+class _KeyDataIterator(object):
+    """An iterator listing data stored in a key.
+
+    You shouldn't have to use this directly, but instead should use the
+    helper methods on :class:`gcloud.storage.key.Key` objects.
+
+    :type key: :class:`gcloud.storage.key.Key`
+    :param key: The key from which to list data..
+    """
+
+    def __init__(self, key):
+        self.key = key
+        # NOTE: These variables will be initialized by reset().
+        self._bytes_written = None
+        self._total_bytes = None
+        self.reset()
+
+    def __iter__(self):
+        while self.has_more_data():
+            yield self.get_next_chunk()
+
+    def reset(self):
+        """Resets the iterator to the beginning."""
+        self._bytes_written = 0
+        self._total_bytes = None
+
+    def has_more_data(self):
+        """Determines whether or not this iterator has more data to read.
+
+        :rtype: bool
+        :returns: Whether the iterator has more data or not.
+        """
+        if self._bytes_written == 0:
+            return True
+        elif not self._total_bytes:
+            # self._total_bytes **should** be set by this point.
+            # If it isn't, something is wrong.
+            raise ValueError('Size of object is unknown.')
+        else:
+            return self._bytes_written < self._total_bytes
+
+    def get_headers(self):
+        """Gets range header(s) for next chunk of data.
+
+        :rtype: dict
+        :returns: A dictionary of query parameters.
+        """
+        start = self._bytes_written
+        end = self._bytes_written + self.key.CHUNK_SIZE - 1
+
+        if self._total_bytes and end > self._total_bytes:
+            end = ''
+
+        return {'Range': 'bytes=%s-%s' % (start, end)}
+
+    def get_url(self):
+        """Gets URL to read next chunk of data.
+
+        :rtype: string
+        :returns: A URL.
+        """
+        return self.key.connection.build_api_url(
+            path=self.key.path, query_params={'alt': 'media'})
+
+    def get_next_chunk(self):
+        """Gets the next chunk of data.
+
+        Uses CHUNK_SIZE to determine how much data to get.
+
+        :rtype: string
+        :returns: The chunk of data read from the key.
+        :raises: :class:`RuntimeError` if no more data or
+                 :class:`gcloud.storage.exceptions.StorageError` in the
+                 case of an unexpected response status code.
+        """
+        if not self.has_more_data():
+            raise RuntimeError('No more data in this iterator. Try resetting.')
+
+        response, content = self.key.connection.make_request(
+            method='GET', url=self.get_url(), headers=self.get_headers())
+
+        if response.status in (200, 206):
+            self._bytes_written += len(content)
+
+            if 'content-range' in response:
+                content_range = response['content-range']
+                self._total_bytes = int(content_range.rsplit('/', 1)[1])
+
+            return content
+
+        # Expected a 200 or a 206. Got something else, which is unknown.
+        raise StorageError(response)
