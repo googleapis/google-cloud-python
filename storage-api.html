@@ -418,7 +418,10 @@ a bucket object:</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the bucket was deleted.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a> if the
+bucket doesn&#8217;t exist, or
+<a class="reference internal" href="#gcloud.storage.exceptions.ConnectionError" title="gcloud.storage.exceptions.ConnectionError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ConnectionError</span></tt></a> if the
+bucket has keys and <cite>force</cite> is not passed.</p>
 </td>
 </tr>
 </tbody>
@@ -748,7 +751,10 @@ keys and delete the related objects, before deleting the bucket.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>full</strong> &#8211; If True, empties the bucket&#8217;s objects then deletes it.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a> if the
+bucket does not exist, or
+<a class="reference internal" href="#gcloud.storage.exceptions.ConnectionError" title="gcloud.storage.exceptions.ConnectionError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ConnectionError</span></tt></a> if the
+bucket has keys and <cite>force</cite> is not passed.</td>
 </tr>
 </tbody>
 </table>

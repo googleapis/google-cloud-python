@@ -468,7 +468,10 @@
 
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True if the bucket was deleted.</span>
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
+<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError` if the</span>
+<span class="sd">                 bucket doesn&#39;t exist, or</span>
+<span class="sd">                 :class:`gcloud.storage.exceptions.ConnectionError` if the</span>
+<span class="sd">                 bucket has keys and `force` is not passed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
 
