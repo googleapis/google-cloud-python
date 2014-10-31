@@ -364,7 +364,6 @@ class Key(object):
         :rtype: :class:`Key`
         :returns: The current key.
         """
-
         self.metadata = self.connection.api_request(
             method='PATCH', path=self.path, data=metadata,
             query_params={'projection': 'full'})
@@ -376,7 +375,6 @@ class Key(object):
         :rtype: :class:`Key`
         :returns: The current key.
         """
-
         self.acl = ObjectACL(key=self)
 
         for entry in self.get_metadata('acl', []):
@@ -391,7 +389,6 @@ class Key(object):
         :rtype: :class:`gcloud.storage.acl.ObjectACL`
         :returns: An ACL object for the current key.
         """
-
         if not self.acl:
             self.reload_acl()
         return self.acl
