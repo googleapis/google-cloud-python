@@ -380,7 +380,10 @@ class Connection(connection.Connection):
 
         :rtype: bool
         :returns: True if the bucket was deleted.
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        :raises: :class:`gcloud.storage.exceptions.NotFoundError` if the
+                 bucket doesn't exist, or
+                 :class:`gcloud.storage.exceptions.ConnectionError` if the
+                 bucket has keys and `force` is not passed.
         """
         bucket = self.new_bucket(bucket)
 
