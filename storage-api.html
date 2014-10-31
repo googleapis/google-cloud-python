@@ -1729,37 +1729,6 @@ If not provided, we&#8217;ll try to guess the size using
 
 </dd></dl>
 
-<dl class="class">
-<dt id="gcloud.storage.key.KeyIterator">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.key.</tt><tt class="descname">KeyIterator</tt><big>(</big><em>bucket</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#KeyIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.KeyIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.iterator.Iterator" title="gcloud.storage.iterator.Iterator"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.iterator.Iterator</span></tt></a></p>
-<p>An iterator listing keys.</p>
-<p>You shouldn&#8217;t have to use this directly, but instead should use the
-helper methods on <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a> objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket from which to list keys.</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="gcloud.storage.key.KeyIterator.get_items_from_response">
-<tt class="descname">get_items_from_response</tt><big>(</big><em>response</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#KeyIterator.get_items_from_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.KeyIterator.get_items_from_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Factory method, yields <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">storage.key.Key</span></tt></a> items from response.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<em>dict</em>) &#8211; The JSON API response for a page of keys.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 <div class="section" id="module-gcloud.storage.acl">
 <span id="access-control"></span><h2>Access Control<a class="headerlink" href="#module-gcloud.storage.acl" title="Permalink to this headline">¶</a></h2>
@@ -2242,98 +2211,6 @@ page of results in the response.</p>
 <dl class="method">
 <dt id="gcloud.storage.iterator.Iterator.reset">
 <tt class="descname">reset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the iterator to the beginning.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="gcloud.storage.iterator.KeyDataIterator">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.iterator.</tt><tt class="descname">KeyDataIterator</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#KeyDataIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.KeyDataIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>An iterator listing data stored in a key.</p>
-<p>You shouldn&#8217;t have to use this directly, but instead should use the
-helper methods on <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a> objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; The key from which to list data..</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="gcloud.storage.iterator.KeyDataIterator.get_headers">
-<tt class="descname">get_headers</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#KeyDataIterator.get_headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.KeyDataIterator.get_headers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets range header(s) for next chunk of data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary of query parameters.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.iterator.KeyDataIterator.get_next_chunk">
-<tt class="descname">get_next_chunk</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#KeyDataIterator.get_next_chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.KeyDataIterator.get_next_chunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the next chunk of data.</p>
-<p>Uses CHUNK_SIZE to determine how much data to get.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The chunk of data read from the key.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">RuntimeError</span></tt> if no more data or
-<a class="reference internal" href="#gcloud.storage.exceptions.StorageError" title="gcloud.storage.exceptions.StorageError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.StorageError</span></tt></a> in the
-case of an unexpected response status code.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.iterator.KeyDataIterator.get_url">
-<tt class="descname">get_url</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#KeyDataIterator.get_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.KeyDataIterator.get_url" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets URL to read next chunk of data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A URL.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.iterator.KeyDataIterator.has_more_data">
-<tt class="descname">has_more_data</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#KeyDataIterator.has_more_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.KeyDataIterator.has_more_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determines whether or not this iterator has more data to read.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Whether the iterator has more data or not.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.iterator.KeyDataIterator.reset">
-<tt class="descname">reset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#KeyDataIterator.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.KeyDataIterator.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the iterator to the beginning.</p>
 </dd></dl>
 

@@ -95,7 +95,7 @@
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.key</span> <span class="kn">import</span> <span class="n">Key</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage.key</span> <span class="kn">import</span> <span class="n">KeyIterator</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.key</span> <span class="kn">import</span> <span class="n">_KeyIterator</span>
 
 
 <div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -134,7 +134,7 @@
         <span class="k">return</span> <span class="s">&#39;&lt;Bucket: </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">KeyIterator</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_KeyIterator</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>

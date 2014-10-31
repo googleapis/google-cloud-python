@@ -93,8 +93,8 @@
 <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">ObjectACL</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.exceptions</span> <span class="kn">import</span> <span class="n">StorageError</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">KeyDataIterator</span>
 
 
 <div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -258,7 +258,7 @@
 
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">KeyDataIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">_KeyDataIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">file_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Key.get_contents_to_filename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_contents_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
@@ -521,7 +521,7 @@
         <span class="k">return</span> <span class="bp">self</span>
 
 </div></div>
-<div class="viewcode-block" id="KeyIterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.KeyIterator">[docs]</a><span class="k">class</span> <span class="nc">KeyIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">_KeyIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An iterator listing keys.</span>
 
 <span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the</span>
@@ -532,17 +532,111 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">KeyIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">_KeyIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
             <span class="n">connection</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="KeyIterator.get_items_from_response"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.KeyIterator.get_items_from_response">[docs]</a>    <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method, yields :class:`.storage.key.Key` items from response.</span>
 
 <span class="sd">        :type response: dict</span>
 <span class="sd">        :param response: The JSON API response for a page of keys.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="k">yield</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span></div></div>
+            <span class="k">yield</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_KeyDataIterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An iterator listing data stored in a key.</span>
+
+<span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the</span>
+<span class="sd">    helper methods on :class:`gcloud.storage.key.Key` objects.</span>
+
+<span class="sd">    :type key: :class:`gcloud.storage.key.Key`</span>
+<span class="sd">    :param key: The key from which to list data..</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="c"># NOTE: These variables will be initialized by reset().</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_more_data</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_chunk</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resets the iterator to the beginning.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">has_more_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determines whether or not this iterator has more data to read.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: Whether the iterator has more data or not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span><span class="p">:</span>
+            <span class="c"># self._total_bytes **should** be set by this point.</span>
+            <span class="c"># If it isn&#39;t, something is wrong.</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Size of object is unknown.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span>
+
+    <span class="k">def</span> <span class="nf">get_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets range header(s) for next chunk of data.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dictionary of query parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CHUNK_SIZE</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span> <span class="ow">and</span> <span class="n">end</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;Range&#39;</span><span class="p">:</span> <span class="s">&#39;bytes=</span><span class="si">%s</span><span class="s">-</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)}</span>
+
+    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets URL to read next chunk of data.</span>
+
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: A URL.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;alt&#39;</span><span class="p">:</span> <span class="s">&#39;media&#39;</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">get_next_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gets the next chunk of data.</span>
+
+<span class="sd">        Uses CHUNK_SIZE to determine how much data to get.</span>
+
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: The chunk of data read from the key.</span>
+<span class="sd">        :raises: :class:`RuntimeError` if no more data or</span>
+<span class="sd">                 :class:`gcloud.storage.exceptions.StorageError` in the</span>
+<span class="sd">                 case of an unexpected response status code.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_more_data</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;No more data in this iterator. Try resetting.&#39;</span><span class="p">)</span>
+
+        <span class="n">response</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">(),</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_headers</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">206</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bytes_written</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s">&#39;content-range&#39;</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                <span class="n">content_range</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;content-range&#39;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_total_bytes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">content_range</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="n">content</span>
+
+        <span class="c"># Expected a 200 or a 206. Got something else, which is unknown.</span>
+        <span class="k">raise</span> <span class="n">StorageError</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 </pre></div>
 
           </div>
