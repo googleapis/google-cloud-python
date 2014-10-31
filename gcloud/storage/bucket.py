@@ -514,6 +514,7 @@ class Bucket(object):
             self.acl.clear()
             for entry in result['acl']:
                 self.acl.entity(self.acl.entity_from_dict(entry))
+            self.acl.loaded = True
 
         return self
 
