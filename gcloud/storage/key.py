@@ -214,6 +214,18 @@ class Key(object):
                          content_type=None):
         """Upload the contents of this key from a file-like object.
 
+        .. note::
+
+           The effect of uploading to an existing key depends on the
+           "versioning" and "lifecycle" policies defined on the key's
+           bucket.  In the absence of those policies, upload will
+           overwrite any existing contents.
+
+           See the `object versioning
+           <https://cloud.google.com/storage/docs/object-versioning>`_ and
+           `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
+           API documents for details.
+
         :type file_obj: file
         :param file_obj: A file handle open for reading.
 
@@ -276,6 +288,18 @@ class Key(object):
     def upload_from_filename(self, filename):
         """Upload this key's contents from the content of f named file.
 
+        .. note::
+
+           The effect of uploading to an existing key depends on the
+           "versioning" and "lifecycle" policies defined on the key's
+           bucket.  In the absence of those policies, upload will
+           overwrite any existing contents.
+
+           See the `object versioning
+           <https://cloud.google.com/storage/docs/object-versioning>`_ and
+           `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
+           API documents for details.
+
         :type filename: string
         :param filename: The path to the file.
         """
@@ -289,6 +313,18 @@ class Key(object):
 
     def upload_from_string(self, data, content_type='text/plain'):
         """Upload contents of this key from the provided string.
+
+        .. note::
+
+           The effect of uploading to an existing key depends on the
+           "versioning" and "lifecycle" policies defined on the key's
+           bucket.  In the absence of those policies, upload will
+           overwrite any existing contents.
+
+           See the `object versioning
+           <https://cloud.google.com/storage/docs/object-versioning>`_ and
+           `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
+           API documents for details.
 
         :type data: string
         :param data: The data to store in this key.
