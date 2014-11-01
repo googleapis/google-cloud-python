@@ -1335,6 +1335,56 @@ rules with this method.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="gcloud.storage.key.Key.download_as_string">
+<tt class="descname">download_as_string</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.download_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.download_as_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the contents of this key as a string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The data stored in this key.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.key.Key.download_to_file">
+<tt class="descname">download_to_file</tt><big>(</big><em>file_obj</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.download_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.download_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the contents of this key into a file-like object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle to which to write the key&#8217;s data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.key.Key.download_to_filename">
+<tt class="descname">download_to_filename</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.download_to_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.download_to_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the contents of this key into a named file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>string</em>) &#8211; A filename to be passed to <tt class="docutils literal"><span class="pre">open</span></tt>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.storage.key.Key.exists">
 <tt class="descname">exists</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines whether or not this key exists.</p>
@@ -1425,8 +1475,8 @@ until expiration.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.get_contents_as_string">
-<tt class="descname">get_contents_as_string</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.get_contents_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_as_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the data stored on this Key as a string.</p>
+<tt class="descname">get_contents_as_string</tt><big>(</big><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_as_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the contents of this key as a string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1443,8 +1493,8 @@ until expiration.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.get_contents_to_file">
-<tt class="descname">get_contents_to_file</tt><big>(</big><em>file_obj</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.get_contents_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_to_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the contents of this key to a file-like object.</p>
+<tt class="descname">get_contents_to_file</tt><big>(</big><em>file_obj</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the contents of this key into a file-like object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1459,8 +1509,8 @@ until expiration.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.get_contents_to_filename">
-<tt class="descname">get_contents_to_filename</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.get_contents_to_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_to_filename" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the contents of this key to a file by name.</p>
+<tt class="descname">get_contents_to_filename</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_to_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download the contents of this key into a named file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1665,8 +1715,8 @@ save the ACL set locally on the key.</td>
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.set_contents_from_file">
-<tt class="descname">set_contents_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.set_contents_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the contents of this key to the contents of a file handle.</p>
+<tt class="descname">set_contents_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload the contents of this key from a file-like object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1687,8 +1737,8 @@ If not provided, we&#8217;ll try to guess the size using
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.set_contents_from_filename">
-<tt class="descname">set_contents_from_filename</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.set_contents_from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_filename" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open a path and set this key&#8217;s contents to the content of that file.</p>
+<tt class="descname">set_contents_from_filename</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload this key&#8217;s contents from the content of f named file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1701,18 +1751,62 @@ If not provided, we&#8217;ll try to guess the size using
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.set_contents_from_string">
-<tt class="descname">set_contents_from_string</tt><big>(</big><em>data</em>, <em>content_type='text/plain'</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.set_contents_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_string" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the contents of this key to the provided string.</p>
-<p>You can use this method to quickly set the value of a key:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="s">&#39;my_text_file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;This is the contents of my file!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Under the hood this is using a string buffer and calling
-<a class="reference internal" href="#gcloud.storage.key.Key.set_contents_from_file" title="gcloud.storage.key.Key.set_contents_from_file"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.key.Key.set_contents_from_file()</span></tt></a>.</p>
+<tt class="descname">set_contents_from_string</tt><big>(</big><em>data</em>, <em>content_type='text/plain'</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload contents of this key from the provided string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>string</em>) &#8211; The data to store in this key.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The updated Key object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.key.Key.upload_from_file">
+<tt class="descname">upload_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.upload_from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload the contents of this key from a file-like object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
+<li><strong>rewind</strong> (<em>bool</em>) &#8211; If True, seek to the beginning of the file handle before
+writing the file to Cloud Storage.</li>
+<li><strong>size</strong> (<em>int</em>) &#8211; The number of bytes to read from the file handle.
+If not provided, we&#8217;ll try to guess the size using
+<tt class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></tt></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.key.Key.upload_from_filename">
+<tt class="descname">upload_from_filename</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.upload_from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.upload_from_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload this key&#8217;s contents from the content of f named file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>string</em>) &#8211; The path to the file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.key.Key.upload_from_string">
+<tt class="descname">upload_from_string</tt><big>(</big><em>data</em>, <em>content_type='text/plain'</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.upload_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.upload_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload contents of this key from the provided string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

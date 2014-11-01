@@ -250,8 +250,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Key.get_contents_to_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_contents_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Gets the contents of this key to a file-like object.</span>
+<div class="viewcode-block" id="Key.download_to_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Download the contents of this key into a file-like object.</span>
 
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle to which to write the key&#39;s data.</span>
@@ -260,9 +260,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">_KeyDataIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">file_obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Key.get_contents_to_filename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_contents_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the contents of this key to a file by name.</span>
+
+    <span class="c"># NOTE: Alias for boto-like API.</span></div>
+    <span class="n">get_contents_to_file</span> <span class="o">=</span> <span class="n">download_to_file</span>
+
+<div class="viewcode-block" id="Key.download_to_filename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Download the contents of this key into a named file.</span>
 
 <span class="sd">        :type filename: string</span>
 <span class="sd">        :param filename: A filename to be passed to ``open``.</span>
@@ -270,22 +273,28 @@
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_contents_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Key.get_contents_as_string"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_contents_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">get_contents_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Gets the data stored on this Key as a string.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+
+    <span class="c"># NOTE: Alias for boto-like API.</span></div>
+    <span class="n">get_contents_to_filename</span> <span class="o">=</span> <span class="n">download_to_filename</span>
+
+<div class="viewcode-block" id="Key.download_as_string"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Download the contents of this key as a string.</span>
 
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The data stored in this key.</span>
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFoundError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">get_contents_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
-</div>
-<div class="viewcode-block" id="Key.set_contents_from_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.set_contents_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">set_contents_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                               <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the contents of this key to the contents of a file handle.</span>
+
+    <span class="c"># NOTE: Alias for boto-like API.</span></div>
+    <span class="n">get_contents_as_string</span> <span class="o">=</span> <span class="n">download_as_string</span>
+
+<div class="viewcode-block" id="Key.upload_from_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Upload the contents of this key from a file-like object.</span>
 
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle open for reading.</span>
@@ -342,9 +351,12 @@
                 <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">upload_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
             <span class="n">bytes_uploaded</span> <span class="o">+=</span> <span class="n">chunk_size</span>
-</div>
-<div class="viewcode-block" id="Key.set_contents_from_filename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.set_contents_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">set_contents_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Open a path and set this key&#39;s contents to the content of that file.</span>
+
+    <span class="c"># NOTE: Alias for boto-like API.</span></div>
+    <span class="n">set_contents_from_file</span> <span class="o">=</span> <span class="n">upload_from_file</span>
+
+<div class="viewcode-block" id="Key.upload_from_filename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Upload this key&#39;s contents from the content of f named file.</span>
 
 <span class="sd">        :type filename: string</span>
 <span class="sd">        :param filename: The path to the file.</span>
@@ -352,21 +364,13 @@
         <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Key.set_contents_from_string"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.set_contents_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">set_contents_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;text/plain&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Sets the contents of this key to the provided string.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
 
-<span class="sd">        You can use this method to quickly set the value of a key::</span>
+    <span class="c"># NOTE: Alias for boto-like API.</span></div>
+    <span class="n">set_contents_from_filename</span> <span class="o">=</span> <span class="n">upload_from_filename</span>
 
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(bucket_name)</span>
-<span class="sd">          &gt;&gt;&gt; key = bucket.new_key(&#39;my_text_file.txt&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; key.set_contents_from_string(&#39;This is the contents of my file!&#39;)</span>
-
-<span class="sd">        Under the hood this is using a string buffer and calling</span>
-<span class="sd">        :func:`gcloud.storage.key.Key.set_contents_from_file`.</span>
+<div class="viewcode-block" id="Key.upload_from_string"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;text/plain&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Upload contents of this key from the provided string.</span>
 
 <span class="sd">        :type data: string</span>
 <span class="sd">        :param data: The data to store in this key.</span>
@@ -380,7 +384,10 @@
                                     <span class="n">size</span><span class="o">=</span><span class="n">string_buffer</span><span class="o">.</span><span class="n">len</span><span class="p">,</span>
                                     <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
-</div>
+
+    <span class="c"># NOTE: Alias for boto-like API.</span></div>
+    <span class="n">set_contents_from_string</span> <span class="o">=</span> <span class="n">upload_from_string</span>
+
 <div class="viewcode-block" id="Key.has_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.has_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">has_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if metadata is available locally.</span>
 
