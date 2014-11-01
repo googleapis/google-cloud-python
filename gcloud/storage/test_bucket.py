@@ -232,13 +232,14 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'DELETE')
         self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, KEY))
 
-    def test_delete_keys_miss(self):
+    def test_delete_keys_miss_no_on_error(self):
+        from gcloud.storage.exceptions import NotFoundError
         NAME = 'name'
         KEY = 'key'
         NONESUCH = 'nonesuch'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        bucket.delete_keys([KEY, NONESUCH])
+        self.assertRaises(NotFoundError, bucket.delete_keys, [KEY, NONESUCH])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'DELETE')

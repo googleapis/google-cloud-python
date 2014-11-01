@@ -198,6 +198,8 @@ class Bucket(object):
             except exceptions.NotFoundError:
                 if on_error is not None:
                     on_error(key)
+                else:
+                    raise
 
     def copy_key(self, key, destination_bucket, new_name=None):
         """Copy the given key to the given bucket, optionally with a new name.
