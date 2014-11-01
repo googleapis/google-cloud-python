@@ -16,7 +16,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(key.connection, None)
         self.assertEqual(key.name, None)
         self.assertEqual(key.metadata, {})
-        self.assertEqual(key.acl, None)
+        self.assertTrue(key._acl is None)
 
     def test_ctor_explicit(self):
         KEY = 'key'
@@ -28,7 +28,7 @@ class Test_Key(unittest2.TestCase):
         self.assertTrue(key.connection is connection)
         self.assertEqual(key.name, KEY)
         self.assertEqual(key.metadata, metadata)
-        self.assertEqual(key.acl, None)
+        self.assertTrue(key._acl is None)
 
     def test_from_dict_defaults(self):
         KEY = 'key'
@@ -39,7 +39,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(key.connection, None)
         self.assertEqual(key.name, KEY)
         self.assertEqual(key.metadata, metadata)
-        self.assertEqual(key.acl, None)
+        self.assertTrue(key._acl is None)
 
     def test_from_dict_explicit(self):
         KEY = 'key'
@@ -52,7 +52,14 @@ class Test_Key(unittest2.TestCase):
         self.assertTrue(key.connection is connection)
         self.assertEqual(key.name, KEY)
         self.assertEqual(key.metadata, metadata)
-        self.assertEqual(key.acl, None)
+        self.assertTrue(key._acl is None)
+
+    def test_acl_property(self):
+        from gcloud.storage.acl import ObjectACL
+        key = self._makeOne()
+        acl = key.acl
+        self.assertTrue(isinstance(acl, ObjectACL))
+        self.assertTrue(acl is key._acl)
 
     def test_path_no_bucket(self):
         key = self._makeOne()
@@ -342,7 +349,7 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(metadata=metadata)
         self.assertTrue(key.has_metadata(KEY))
 
-    def test_reload_metadata_default(self):
+    def test_reload_metadata(self):
         KEY = 'key'
         before = {'foo': 'Foo'}
         after = {'bar': 'Bar'}
@@ -357,22 +364,6 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-
-    def test_reload_metadata_explicit(self):
-        KEY = 'key'
-        before = {'foo': 'Foo'}
-        after = {'bar': 'Bar'}
-        connection = _Connection(after)
-        bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY, before)
-        found = key.reload_metadata(True)
-        self.assertTrue(found is key)
-        self.assertEqual(found.metadata, after)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_get_metadata_none_set_none_passed(self):
         KEY = 'key'
@@ -389,36 +380,25 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test_get_metadata_none_set_acl_hit(self):
+    def test_get_metadata_acl_no_default(self):
         KEY = 'key'
-        after = {'bar': 'Bar', 'acl': []}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
-        found = key.get_metadata('acl')
-        self.assertEqual(found, [])
-        self.assertEqual(key.metadata, after)
+        self.assertRaises(KeyError, key.get_metadata, 'acl')
         kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(kw), 0)
 
-    def test_get_metadata_none_set_acl_miss_explicit_default(self):
+    def test_get_metadata_acl_w_default(self):
         KEY = 'key'
         after = {'bar': 'Bar'}
         connection = _Connection(after)
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         default = object()
-        found = key.get_metadata('acl', default)
-        self.assertTrue(found is default)
-        self.assertEqual(key.metadata, after)
+        self.assertRaises(KeyError, key.get_metadata, 'acl', default)
         kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(kw), 0)
 
     def test_get_metadata_miss(self):
         KEY = 'key'
@@ -461,27 +441,39 @@ class Test_Key(unittest2.TestCase):
 
     def test_reload_acl_eager_empty(self):
         from gcloud.storage.acl import ObjectACL
-        metadata = {'acl': []}
-        key = self._makeOne(metadata=metadata)
+        KEY = 'key'
+        ROLE = 'role'
+        after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.acl.loaded = True
         self.assertTrue(key.reload_acl() is key)
         self.assertTrue(isinstance(key.acl, ObjectACL))
-        self.assertEqual(list(key.acl), [])
+        self.assertEqual(list(key.acl), after['items'])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % KEY)
 
     def test_reload_acl_eager_nonempty(self):
         from gcloud.storage.acl import ObjectACL
+        KEY = 'key'
         ROLE = 'role'
-        metadata = {'acl': [{'entity': 'allUsers', 'role': ROLE}]}
-        key = self._makeOne(metadata=metadata)
+        after = {'items': []}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.acl.entity('allUsers', ROLE)
         self.assertTrue(key.reload_acl() is key)
         self.assertTrue(isinstance(key.acl, ObjectACL))
-        self.assertEqual(list(key.acl),
-                         [{'entity': 'allUsers', 'role': ROLE}])
+        self.assertEqual(list(key.acl), [])
 
     def test_reload_acl_lazy(self):
         from gcloud.storage.acl import ObjectACL
         KEY = 'key'
         ROLE = 'role'
-        after = {'acl': [{'entity': 'allUsers', 'role': ROLE}]}
+        after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
         connection = _Connection(after)
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
@@ -492,22 +484,23 @@ class Test_Key(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % KEY)
 
     def test_get_acl_lazy(self):
         from gcloud.storage.acl import ObjectACL
-        metadata = {'acl': []}
-        key = self._makeOne(metadata=metadata)
+        KEY = 'key'
+        connection = _Connection({'items': []})
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
         acl = key.get_acl()
         self.assertTrue(acl is key.acl)
         self.assertTrue(isinstance(acl, ObjectACL))
         self.assertEqual(list(key.acl), [])
 
     def test_get_acl_eager(self):
-        from gcloud.storage.acl import ObjectACL
         key = self._makeOne()
-        preset = key.acl = ObjectACL(key)
+        preset = key.acl
+        preset.loaded = True
         acl = key.get_acl()
         self.assertTrue(acl is preset)
 
@@ -524,15 +517,14 @@ class Test_Key(unittest2.TestCase):
         KEY = 'key'
         connection = _Connection({'foo': 'Foo', 'acl': []})
         bucket = _Bucket(connection)
-        metadata = {'acl': []}
-        key = self._makeOne(bucket, KEY, metadata)
-        key.reload_acl()
+        key = self._makeOne(bucket, KEY)
+        key.acl.loaded = True
         self.assertTrue(key.save_acl() is key)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['data'], metadata)
+        self.assertEqual(kw[0]['data'], {'acl': []})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_save_acl_existing_set_new_passed(self):
@@ -541,9 +533,8 @@ class Test_Key(unittest2.TestCase):
         new_acl = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'foo': 'Foo', 'acl': new_acl})
         bucket = _Bucket(connection)
-        metadata = {'acl': []}
-        key = self._makeOne(bucket, KEY, metadata)
-        key.reload_acl()
+        key = self._makeOne(bucket, KEY)
+        key.acl.entity('allUsers', 'other-role')
         self.assertTrue(key.save_acl(new_acl) is key)
         self.assertEqual(list(key.acl), new_acl)
         kw = connection._requested
@@ -556,12 +547,10 @@ class Test_Key(unittest2.TestCase):
     def test_clear_acl(self):
         KEY = 'key'
         ROLE = 'role'
-        old_acl = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'foo': 'Foo', 'acl': []})
         bucket = _Bucket(connection)
-        metadata = {'acl': old_acl}
-        key = self._makeOne(bucket, KEY, metadata)
-        key.reload_acl()
+        key = self._makeOne(bucket, KEY)
+        key.acl.entity('allUsers', ROLE)
         self.assertTrue(key.clear_acl() is key)
         self.assertEqual(list(key.acl), [])
         kw = connection._requested
@@ -574,20 +563,19 @@ class Test_Key(unittest2.TestCase):
     def test_make_public(self):
         from gcloud.storage.acl import _ACLEntity
         KEY = 'key'
-        before = {'acl': []}
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive}
         connection = _Connection(after)
         bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY, before)
+        key = self._makeOne(bucket, KEY)
+        key.acl.loaded = True
         key.make_public()
-        self.assertEqual(key.metadata, after)
-        self.assertEqual(list(key.acl), after['acl'])
+        self.assertEqual(list(key.acl), permissive)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['data'], {'acl': after['acl']})
+        self.assertEqual(kw[0]['data'], {'acl': permissive})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 

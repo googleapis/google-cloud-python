@@ -17,6 +17,8 @@ class Key(object):
 
     This must be a multiple of 256 KB per the API specification.
     """
+    # ACL rules are lazily retrieved.
+    _acl = None
 
     def __init__(self, bucket=None, name=None, metadata=None):
         """Key constructor.
@@ -35,8 +37,12 @@ class Key(object):
         self.name = name
         self.metadata = metadata or {}
 
-        # Lazily get the ACL information.
-        self.acl = None
+    @property
+    def acl(self):
+        """Create our ACL on demand."""
+        if self._acl is None:
+            self._acl = ObjectACL(self)
+        return self._acl
 
     @classmethod
     def from_dict(cls, key_dict, bucket=None):
@@ -316,17 +322,15 @@ class Key(object):
         else:
             return True
 
-    def reload_metadata(self, full=False):
+    def reload_metadata(self):
         """Reload metadata from Cloud Storage.
-
-        :type full: bool
-        :param full: If True, loads all data (include ACL data).
 
         :rtype: :class:`Key`
         :returns: The key you just reloaded data for.
         """
-        projection = 'full' if full else 'noAcl'
-        query_params = {'projection': projection}
+        # Pass only '?projection=noAcl' here because 'acl' is handled via
+        # 'get_acl().
+        query_params = {'projection': 'noAcl'}
         self.metadata = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)
         return self
@@ -347,9 +351,12 @@ class Key(object):
         :rtype: dict or anything
         :returns: All metadata or the value of the specific field.
         """
+        # We ignore 'acl' because it is meant to be handled via 'get_acl()'.
+        if field == 'acl':
+            raise KeyError("Use 'get_acl()'")
+
         if not self.has_metadata(field=field):
-            full = (field and field == 'acl')
-            self.reload_metadata(full=full)
+            self.reload_metadata()
 
         if field:
             return self.metadata.get(field, default)
@@ -382,11 +389,15 @@ class Key(object):
         :rtype: :class:`Key`
         :returns: The current key.
         """
-        self.acl = ObjectACL(key=self)
+        self.acl.clear()
 
-        for entry in self.get_metadata('acl', []):
-            entity = self.acl.entity_from_dict(entry)
-            self.acl.add_entity(entity)
+        url_path = '%s/acl' % self.path
+        found = self.connection.api_request(method='GET', path=url_path)
+        for entry in found['items']:
+            self.acl.add_entity(self.acl.entity_from_dict(entry))
+
+        # Even if we fetch no entries, the ACL is still loaded.
+        self.acl.loaded = True
 
         return self
 
@@ -396,7 +407,7 @@ class Key(object):
         :rtype: :class:`gcloud.storage.acl.ObjectACL`
         :returns: An ACL object for the current key.
         """
-        if not self.acl:
+        if not self.acl.loaded:
             self.reload_acl()
         return self.acl
 
@@ -407,16 +418,21 @@ class Key(object):
         :param acl: The ACL object to save.  If left blank, this will
                     save the ACL set locally on the key.
         """
-        # We do things in this weird way because [] and None
-        # both evaluate to False, but mean very different things.
         if acl is None:
             acl = self.acl
+            dirty = acl.loaded
+        else:
+            dirty = True
 
-        if acl is None:
-            return self
+        if dirty:
+            result = self.connection.api_request(
+                method='PATCH', path=self.path, data={'acl': list(acl)},
+                query_params={'projection': 'full'})
+            self.acl.clear()
+            for entry in result['acl']:
+                self.acl.entity(self.acl.entity_from_dict(entry))
+            self.acl.loaded = True
 
-        self.patch_metadata({'acl': list(acl)})
-        self.reload_acl()
         return self
 
     def clear_acl(self):
@@ -427,7 +443,7 @@ class Key(object):
         have access to a key that you created even after you clear ACL
         rules with this method.
         """
-        return self.save_acl(acl=[])
+        return self.save_acl([])
 
     def make_public(self):
         """Make this key public giving all users read access.
