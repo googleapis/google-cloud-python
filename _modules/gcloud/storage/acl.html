@@ -255,9 +255,20 @@
 <div class="viewcode-block" id="ACL"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL">[docs]</a><span class="k">class</span> <span class="nc">ACL</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Container class representing a list of access controls.&quot;&quot;&quot;</span>
 
+    <span class="n">loaded</span> <span class="o">=</span> <span class="bp">False</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span> <span class="o">=</span> <span class="p">{}</span>
 
+<div class="viewcode-block" id="ACL.clear"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove all entities from the ACL.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="ACL.reset"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove all entities from the ACL, and clear the ``loaded`` flag.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">False</span>
+</div>
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">get_roles</span><span class="p">():</span>
@@ -330,6 +341,7 @@
 <span class="sd">        :param entity: The entity to add to this ACL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">)]</span> <span class="o">=</span> <span class="n">entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
 </div>
 <div class="viewcode-block" id="ACL.entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.entity">[docs]</a>    <span class="k">def</span> <span class="nf">entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for creating an Entity.</span>

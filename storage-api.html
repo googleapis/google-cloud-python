@@ -630,6 +630,12 @@ just a name of a bucket.  It always returns the object:</p>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.acl">
+<tt class="descname">acl</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.acl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create our ACL on demand.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.clear_acl">
 <tt class="descname">clear_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.clear_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.clear_acl" title="Permalink to this definition">¶</a></dt>
@@ -732,6 +738,12 @@ copied.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.default_object_acl">
+<tt class="descname">default_object_acl</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.default_object_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.default_object_acl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create our defaultObjectACL on demand.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1069,17 +1081,15 @@ response.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.reload_metadata">
-<tt class="descname">reload_metadata</tt><big>(</big><em>full=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.reload_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.reload_metadata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reload_metadata</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.reload_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.reload_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reload metadata from Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>full</strong> (<em>bool</em>) &#8211; If True, loads all data (include ACL data).</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The bucket you just reloaded data for.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The bucket you just reloaded data for.</td>
 </tr>
 </tbody>
 </table>
@@ -1290,6 +1300,12 @@ unique path of the object in the bucket.</li>
 <tt class="descname">CHUNK_SIZE</tt><em class="property"> = 1048576</em><a class="headerlink" href="#gcloud.storage.key.Key.CHUNK_SIZE" title="Permalink to this definition">¶</a></dt>
 <dd><p>The size of a chunk of data whenever iterating (1 MB).</p>
 <p>This must be a multiple of 256 KB per the API specification.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.acl">
+<tt class="descname">acl</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.acl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create our ACL on demand.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1656,17 +1672,15 @@ response.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.reload_metadata">
-<tt class="descname">reload_metadata</tt><big>(</big><em>full=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.reload_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.reload_metadata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reload_metadata</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.reload_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.reload_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reload metadata from Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>full</strong> (<em>bool</em>) &#8211; If True, loads all data (include ACL data).</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The key you just reloaded data for.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key you just reloaded data for.</td>
 </tr>
 </tbody>
 </table>
@@ -1941,6 +1955,12 @@ when sending metadata for ACLs to the API.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="gcloud.storage.acl.ACL.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all entities from the ACL.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.storage.acl.ACL.domain">
 <tt class="descname">domain</tt><big>(</big><em>domain</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.domain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Factory method for a domain Entity.</p>
@@ -2085,6 +2105,17 @@ to <tt class="docutils literal"><span class="pre">default</span></tt>.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.acl.ACL.loaded">
+<tt class="descname">loaded</tt><em class="property"> = False</em><a class="headerlink" href="#gcloud.storage.acl.ACL.loaded" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.acl.ACL.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all entities from the ACL, and clear the <tt class="docutils literal"><span class="pre">loaded</span></tt> flag.</p>
 </dd></dl>
 
 <dl class="method">

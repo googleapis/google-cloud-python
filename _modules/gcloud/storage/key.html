@@ -105,6 +105,8 @@
 
 <span class="sd">    This must be a multiple of 256 KB per the API specification.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># ACL rules are lazily retrieved.</span>
+    <span class="n">_acl</span> <span class="o">=</span> <span class="bp">None</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Key constructor.</span>
@@ -123,9 +125,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span> <span class="ow">or</span> <span class="p">{}</span>
 
-        <span class="c"># Lazily get the ACL information.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span> <span class="o">=</span> <span class="bp">None</span>
-
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Key.acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.acl">[docs]</a>    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create our ACL on demand.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">ObjectACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span>
+</div>
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Key.from_dict"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">key_dict</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate a :class:`Key` from data returned by the JSON API.</span>
@@ -404,17 +410,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">True</span>
 </div>
-<div class="viewcode-block" id="Key.reload_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.reload_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">reload_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.reload_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.reload_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">reload_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload metadata from Cloud Storage.</span>
-
-<span class="sd">        :type full: bool</span>
-<span class="sd">        :param full: If True, loads all data (include ACL data).</span>
 
 <span class="sd">        :rtype: :class:`Key`</span>
 <span class="sd">        :returns: The key you just reloaded data for.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">projection</span> <span class="o">=</span> <span class="s">&#39;full&#39;</span> <span class="k">if</span> <span class="n">full</span> <span class="k">else</span> <span class="s">&#39;noAcl&#39;</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="n">projection</span><span class="p">}</span>
+        <span class="c"># Pass only &#39;?projection=noAcl&#39; here because &#39;acl&#39; is handled via</span>
+        <span class="c"># &#39;get_acl().</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;noAcl&#39;</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -435,9 +439,12 @@
 <span class="sd">        :rtype: dict or anything</span>
 <span class="sd">        :returns: All metadata or the value of the specific field.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># We ignore &#39;acl&#39; because it is meant to be handled via &#39;get_acl()&#39;.</span>
+        <span class="k">if</span> <span class="n">field</span> <span class="o">==</span> <span class="s">&#39;acl&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s">&quot;Use &#39;get_acl()&#39;&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_metadata</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">):</span>
-            <span class="n">full</span> <span class="o">=</span> <span class="p">(</span><span class="n">field</span> <span class="ow">and</span> <span class="n">field</span> <span class="o">==</span> <span class="s">&#39;acl&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reload_metadata</span><span class="p">(</span><span class="n">full</span><span class="o">=</span><span class="n">full</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reload_metadata</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">field</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
@@ -470,11 +477,15 @@
 <span class="sd">        :rtype: :class:`Key`</span>
 <span class="sd">        :returns: The current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span> <span class="o">=</span> <span class="n">ObjectACL</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+        <span class="n">url_path</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/acl&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">url_path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="p">[</span><span class="s">&#39;items&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
+
+        <span class="c"># Even if we fetch no entries, the ACL is still loaded.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
 
         <span class="k">return</span> <span class="bp">self</span>
 </div>
@@ -484,7 +495,7 @@
 <span class="sd">        :rtype: :class:`gcloud.storage.acl.ObjectACL`</span>
 <span class="sd">        :returns: An ACL object for the current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">loaded</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reload_acl</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span>
 </div>
@@ -495,16 +506,21 @@
 <span class="sd">        :param acl: The ACL object to save.  If left blank, this will</span>
 <span class="sd">                    save the ACL set locally on the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># We do things in this weird way because [] and None</span>
-        <span class="c"># both evaluate to False, but mean very different things.</span>
         <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">acl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span>
+            <span class="n">dirty</span> <span class="o">=</span> <span class="n">acl</span><span class="o">.</span><span class="n">loaded</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dirty</span> <span class="o">=</span> <span class="bp">True</span>
 
-        <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">if</span> <span class="n">dirty</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)},</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;acl&#39;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">patch_metadata</span><span class="p">({</span><span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reload_acl</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 </div>
 <div class="viewcode-block" id="Key.clear_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.clear_acl">[docs]</a>    <span class="k">def</span> <span class="nf">clear_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -515,7 +531,7 @@
 <span class="sd">        have access to a key that you created even after you clear ACL</span>
 <span class="sd">        rules with this method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="p">[])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_acl</span><span class="p">([])</span>
 </div>
 <div class="viewcode-block" id="Key.make_public"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this key public giving all users read access.</span>
