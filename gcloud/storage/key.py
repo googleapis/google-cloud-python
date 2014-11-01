@@ -353,7 +353,7 @@ class Key(object):
         """
         # We ignore 'acl' because it is meant to be handled via 'get_acl()'.
         if field == 'acl':
-            return default
+            raise KeyError("Use 'get_acl()'")
 
         if not self.has_metadata(field=field):
             self.reload_metadata()

@@ -385,8 +385,7 @@ class Test_Key(unittest2.TestCase):
         connection = _Connection()
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
-        found = key.get_metadata('acl')
-        self.assertEqual(found, None)
+        self.assertRaises(KeyError, key.get_metadata, 'acl')
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
@@ -397,8 +396,7 @@ class Test_Key(unittest2.TestCase):
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         default = object()
-        found = key.get_metadata('acl', default)
-        self.assertTrue(found is default)
+        self.assertRaises(KeyError, key.get_metadata, 'acl', default)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 

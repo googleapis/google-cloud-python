@@ -354,10 +354,11 @@ class Bucket(object):
         :rtype: dict or anything
         :returns: All metadata or the value of the specific field.
         """
-        # We ignore 'acl' / 'defaultObjectAcl' because they should be
-        # handled via 'get_acl()' / 'get_default_object_acl()'
-        if field in ('acl', 'defaultObjectAcl'):
-            return default
+        if field == 'acl':
+            raise KeyError("Use 'get_acl()'")
+
+        if field == 'defaultObjectAcl':
+            raise KeyError("Use 'get_default_object_acl()'")
 
         if not self.has_metadata(field=field):
             self.reload_metadata()

@@ -442,8 +442,7 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
-        found = bucket.get_metadata('acl')
-        self.assertEqual(found, None)
+        self.assertRaises(KeyError, bucket.get_metadata, 'acl')
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
@@ -452,8 +451,7 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
         default = object()
-        found = bucket.get_metadata('acl', default)
-        self.assertTrue(found is default)
+        self.assertRaises(KeyError, bucket.get_metadata, 'acl', default)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
@@ -461,8 +459,7 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
-        found = bucket.get_metadata('defaultObjectAcl')
-        self.assertEqual(found, None)
+        self.assertRaises(KeyError, bucket.get_metadata, 'defaultObjectAcl')
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
@@ -471,8 +468,8 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
         default = object()
-        found = bucket.get_metadata('defaultObjectAcl', default)
-        self.assertTrue(found is default)
+        self.assertRaises(KeyError, bucket.get_metadata, 'defaultObjectAcl',
+                          default)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
