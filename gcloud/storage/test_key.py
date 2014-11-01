@@ -142,7 +142,7 @@ class Test_Key(unittest2.TestCase):
         key.delete()
         self.assertFalse(key.exists())
 
-    def test_get_contents_to_file(self):
+    def test_download_to_file(self):
         from StringIO import StringIO
         from gcloud._testing import _Monkey
         from gcloud.storage import key as MUT
@@ -153,10 +153,10 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(bucket, KEY)
         fh = StringIO()
         with _Monkey(MUT, _KeyDataIterator=lambda self: iter(_CHUNKS)):
-            key.get_contents_to_file(fh)
+            key.download_to_file(fh)
         self.assertEqual(fh.getvalue(), ''.join(_CHUNKS))
 
-    def test_get_contents_to_filename(self):
+    def test_download_to_filename(self):
         from tempfile import NamedTemporaryFile
         from gcloud._testing import _Monkey
         from gcloud.storage import key as MUT
@@ -167,13 +167,13 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(bucket, KEY)
         with _Monkey(MUT, _KeyDataIterator=lambda self: iter(_CHUNKS)):
             with NamedTemporaryFile() as f:
-                key.get_contents_to_filename(f.name)
+                key.download_to_filename(f.name)
                 f.flush()
                 with open(f.name) as g:
                     wrote = g.read()
         self.assertEqual(wrote, ''.join(_CHUNKS))
 
-    def test_get_contents_as_string(self):
+    def test_download_as_string(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import key as MUT
         _CHUNKS = ['abc', 'def']
@@ -182,10 +182,10 @@ class Test_Key(unittest2.TestCase):
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         with _Monkey(MUT, _KeyDataIterator=lambda self: iter(_CHUNKS)):
-            fetched = key.get_contents_as_string()
+            fetched = key.download_as_string()
         self.assertEqual(fetched, ''.join(_CHUNKS))
 
-    def test_set_contents_from_file(self):
+    def test_upload_from_file(self):
         from tempfile import NamedTemporaryFile
         from urlparse import parse_qsl
         from urlparse import urlsplit
@@ -206,7 +206,7 @@ class Test_Key(unittest2.TestCase):
         with NamedTemporaryFile() as fh:
             fh.write(DATA)
             fh.flush()
-            key.set_contents_from_file(fh, rewind=True)
+            key.upload_from_file(fh, rewind=True)
         rq = connection._requested
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -231,7 +231,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(rq[2]['data'], DATA[5:])
         self.assertEqual(rq[2]['headers'], {'Content-Range': 'bytes 5-5/6'})
 
-    def test_set_contents_from_filename(self):
+    def test_upload_from_filename(self):
         from tempfile import NamedTemporaryFile
         from urlparse import parse_qsl
         from urlparse import urlsplit
@@ -252,7 +252,7 @@ class Test_Key(unittest2.TestCase):
         with NamedTemporaryFile(suffix='.jpeg') as fh:
             fh.write(DATA)
             fh.flush()
-            key.set_contents_from_filename(fh.name)
+            key.upload_from_filename(fh.name)
         rq = connection._requested
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -277,7 +277,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(rq[2]['data'], DATA[5:])
         self.assertEqual(rq[2]['headers'], {'Content-Range': 'bytes 5-5/6'})
 
-    def test_set_contents_from_string(self):
+    def test_upload_from_string(self):
         from urlparse import parse_qsl
         from urlparse import urlsplit
         KEY = 'key'
@@ -294,7 +294,7 @@ class Test_Key(unittest2.TestCase):
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
-        key.set_contents_from_string(DATA)
+        key.upload_from_string(DATA)
         rq = connection._requested
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
