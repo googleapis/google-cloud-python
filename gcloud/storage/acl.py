@@ -416,15 +416,13 @@ class BucketACL(ACL):
         :rtype: :class:`gcloud.storage.acl.BucketACL`
         :returns: The current ACL.
         """
-        # We do things in this weird way because [] and None
-        # both evaluate to False, but mean very different things.
         if acl is None:
             acl = self
-            dirty = acl.loaded
+            save_to_backend = acl.loaded
         else:
-            dirty = True
+            save_to_backend = True
 
-        if dirty:
+        if save_to_backend:
             result = self.bucket.connection.api_request(
                 method='PATCH', path=self.bucket.path,
                 data={self._SUBKEY: list(acl)},
@@ -508,11 +506,11 @@ class ObjectACL(ACL):
         """
         if acl is None:
             acl = self
-            dirty = acl.loaded
+            save_to_backend = acl.loaded
         else:
-            dirty = True
+            save_to_backend = True
 
-        if dirty:
+        if save_to_backend:
             result = self.key.connection.api_request(
                 method='PATCH', path=self.key.path, data={'acl': list(acl)},
                 query_params={'projection': 'full'})
