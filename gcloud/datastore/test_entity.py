@@ -13,13 +13,13 @@ class TestEntity(unittest2.TestCase):
 
         return Entity
 
-    def _makeOne(self, dataset=_MARKER, kind=_KIND):
+    def _makeOne(self, dataset=_MARKER, kind=_KIND, exclude_from_indexes=()):
         from gcloud.datastore.dataset import Dataset
 
         klass = self._getTargetClass()
         if dataset is _MARKER:
             dataset = Dataset(_DATASET_ID)
-        return klass(dataset, kind)
+        return klass(dataset, kind, exclude_from_indexes)
 
     def test_ctor_defaults(self):
         klass = self._getTargetClass()
@@ -27,13 +27,17 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(entity.key(), None)
         self.assertEqual(entity.dataset(), None)
         self.assertEqual(entity.kind(), None)
+        self.assertEqual(sorted(entity.exclude_from_indexes()), [])
 
     def test_ctor_explicit(self):
         from gcloud.datastore.dataset import Dataset
 
         dataset = Dataset(_DATASET_ID)
-        entity = self._makeOne(dataset, _KIND)
+        _EXCLUDE_FROM_INDEXES = ['foo', 'bar']
+        entity = self._makeOne(dataset, _KIND, _EXCLUDE_FROM_INDEXES)
         self.assertTrue(entity.dataset() is dataset)
+        self.assertEqual(sorted(entity.exclude_from_indexes()),
+                         sorted(_EXCLUDE_FROM_INDEXES))
 
     def test_key_getter(self):
         from gcloud.datastore.key import Key
@@ -132,7 +136,7 @@ class TestEntity(unittest2.TestCase):
         self.assertTrue(entity.save() is entity)
         self.assertEqual(entity['foo'], 'Foo')
         self.assertEqual(connection._saved,
-                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
+                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}, ()))
         self.assertEqual(key._path, None)
 
     def test_save_w_transaction_wo_partial_key(self):
@@ -146,7 +150,7 @@ class TestEntity(unittest2.TestCase):
         self.assertTrue(entity.save() is entity)
         self.assertEqual(entity['foo'], 'Foo')
         self.assertEqual(connection._saved,
-                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
+                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}, ()))
         self.assertEqual(transaction._added, ())
         self.assertEqual(key._path, None)
 
@@ -162,11 +166,11 @@ class TestEntity(unittest2.TestCase):
         self.assertTrue(entity.save() is entity)
         self.assertEqual(entity['foo'], 'Foo')
         self.assertEqual(connection._saved,
-                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
+                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}, ()))
         self.assertEqual(transaction._added, (entity,))
         self.assertEqual(key._path, None)
 
-    def test_save_w_returned_key(self):
+    def test_save_w_returned_key_exclude_from_indexes(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         key_pb = datastore_pb.Key()
         key_pb.partition_id.dataset_id = _DATASET_ID
@@ -175,13 +179,13 @@ class TestEntity(unittest2.TestCase):
         connection._save_result = key_pb
         dataset = _Dataset(connection)
         key = _Key()
-        entity = self._makeOne(dataset)
+        entity = self._makeOne(dataset, exclude_from_indexes=['foo'])
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertTrue(entity.save() is entity)
         self.assertEqual(entity['foo'], 'Foo')
         self.assertEqual(connection._saved,
-                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}))
+                         (_DATASET_ID, 'KEY', {'foo': 'Foo'}, ('foo',)))
         self.assertEqual(key._path, [{'kind': _KIND, 'id': _ID}])
 
     def test_delete_no_key(self):
@@ -257,8 +261,10 @@ class _Connection(object):
     def transaction(self):
         return self._transaction
 
-    def save_entity(self, dataset_id, key_pb, properties):
-        self._saved = (dataset_id, key_pb, properties)
+    def save_entity(self, dataset_id, key_pb, properties,
+                    exclude_from_indexes=()):
+        self._saved = (dataset_id, key_pb, properties,
+                       tuple(exclude_from_indexes))
         return self._save_result
 
     def delete_entities(self, dataset_id, key_pbs):

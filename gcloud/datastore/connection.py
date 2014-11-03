@@ -371,7 +371,8 @@ class Connection(connection.Connection):
                              datastore_pb.AllocateIdsResponse)
         return list(response.key)
 
-    def save_entity(self, dataset_id, key_pb, properties):
+    def save_entity(self, dataset_id, key_pb, properties,
+                    exclude_from_indexes=()):
         """Save an entity to the Cloud Datastore with the provided properties.
 
         .. note::
@@ -387,6 +388,9 @@ class Connection(connection.Connection):
 
         :type properties: dict
         :param properties: The properties to store on the entity.
+
+        :type exclude_from_indexes: sequence of str
+        :param exclude_from_indexes: Names of properties *not* to be indexed.
         """
         mutation = self.mutation()
 
@@ -409,6 +413,9 @@ class Connection(connection.Connection):
 
             # Set the appropriate value.
             helpers._set_protobuf_value(prop.value, value)
+
+            if name in exclude_from_indexes:
+                prop.value.indexed = False
 
         # If this is in a transaction, we should just return True. The
         # transaction will handle assigning any keys as necessary.
