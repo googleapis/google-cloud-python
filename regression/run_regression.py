@@ -11,7 +11,7 @@ def get_parser():
     parser = argparse.ArgumentParser(
         description='GCloud test runner against actual project.')
     parser.add_argument('--package', dest='package',
-                        choices=('datastore',),
+                        choices=('datastore', 'storage'),
                         default='datastore', help='Package to be tested.')
     return parser
 
@@ -27,7 +27,10 @@ def main():
     parser = get_parser()
     args = parser.parse_args()
     # Make sure environ is set before running test.
-    regression_utils.get_environ()
+    if args.package == 'datastore':
+        regression_utils.get_environ(require_datastore=True)
+    elif args.package == 'storage':
+        regression_utils.get_environ(require_storage=True)
     test_result = run_module_tests(args.package)
     if not test_result.wasSuccessful():
         sys.exit(1)
