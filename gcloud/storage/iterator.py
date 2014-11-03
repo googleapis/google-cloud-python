@@ -38,12 +38,22 @@ class Iterator(object):
     :type path: string
     :param path: The path to query for the list of items.
     """
+
+    PAGE_TOKEN = 'pageToken'
+    RESERVED_PARAMS = frozenset([PAGE_TOKEN])
+
     def __init__(self, connection, path, extra_params=None):
         self.connection = connection
         self.path = path
         self.page_number = 0
         self.next_page_token = None
         self.extra_params = extra_params
+        if self.extra_params is not None:
+            reserved_in_use = self.RESERVED_PARAMS.intersection(
+                extra_params.keys())
+            if reserved_in_use:
+                raise ValueError(('Using a reserved parameter',
+                                  reserved_in_use))
 
     def __iter__(self):
         """Iterate through the list of items."""
@@ -72,7 +82,7 @@ class Iterator(object):
         """
         result = None
         if self.next_page_token:
-            result = {'pageToken': self.next_page_token}
+            result = {self.PAGE_TOKEN: self.next_page_token}
         if self.extra_params is not None:
             result = result or {}
             result.update(self.extra_params)

@@ -300,7 +300,7 @@ class Bucket(_MetadataMixin):
         if key is None:
             key = os.path.basename(filename)
         key = self.new_key(key)
-        return key.set_contents_from_filename(filename)
+        return key.upload_from_filename(filename)
 
     def upload_file_object(self, file_obj, key=None):
         """Shortcut method to upload a file object into this bucket.
@@ -340,7 +340,7 @@ class Bucket(_MetadataMixin):
             key = self.new_key(key)
         else:
             key = self.new_key(os.path.basename(file_obj.name))
-        return key.set_contents_from_file(file_obj)
+        return key.upload_from_file(file_obj)
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related metadata.

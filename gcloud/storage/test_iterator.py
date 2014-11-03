@@ -82,6 +82,25 @@ class TestIterator(unittest2.TestCase):
         iterator = self._makeOne(connection, PATH, extra_params=extra_params)
         self.assertEqual(iterator.get_query_params(), extra_params)
 
+    def test_get_query_params_w_token_and_extra_params(self):
+        connection = _Connection()
+        PATH = '/foo'
+        TOKEN = 'token'
+        extra_params = {'key': 'val'}
+        iterator = self._makeOne(connection, PATH, extra_params=extra_params)
+        iterator.next_page_token = TOKEN
+
+        expected_query = extra_params.copy()
+        expected_query.update({'pageToken': TOKEN})
+        self.assertEqual(iterator.get_query_params(), expected_query)
+
+    def test_get_query_params_w_token_collision(self):
+        connection = _Connection()
+        PATH = '/foo'
+        extra_params = {'pageToken': 'val'}
+        self.assertRaises(ValueError, self._makeOne, connection, PATH,
+                          extra_params=extra_params)
+
     def test_get_next_page_response_new_no_token_in_response(self):
         PATH = '/foo'
         TOKEN = 'token'
