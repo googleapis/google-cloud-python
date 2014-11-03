@@ -38,11 +38,12 @@ class Iterator(object):
     :type path: string
     :param path: The path to query for the list of items.
     """
-    def __init__(self, connection, path):
+    def __init__(self, connection, path, extra_params=None):
         self.connection = connection
         self.path = path
         self.page_number = 0
         self.next_page_token = None
+        self.extra_params = extra_params
 
     def __iter__(self):
         """Iterate through the list of items."""
@@ -69,8 +70,13 @@ class Iterator(object):
         :rtype: dict or None
         :returns: A dictionary of query parameters or None if there are none.
         """
+        result = None
         if self.next_page_token:
-            return {'pageToken': self.next_page_token}
+            result = {'pageToken': self.next_page_token}
+        if self.extra_params is not None:
+            result = result or {}
+            result.update(self.extra_params)
+        return result
 
     def get_next_page_response(self):
         """Requests the next page from the path provided.

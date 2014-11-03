@@ -334,8 +334,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def set_contents_from_filename(self, filename):
+            def upload_from_filename(self, filename):
                 _uploaded.append((self._bucket, self._name, filename))
+
         bucket = self._makeOne()
         with _Monkey(MUT, Key=_Key):
             bucket.upload_file(FILENAME)
@@ -354,8 +355,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def set_contents_from_filename(self, filename):
+            def upload_from_filename(self, filename):
                 _uploaded.append((self._bucket, self._name, filename))
+
         bucket = self._makeOne()
         with _Monkey(MUT, Key=_Key):
             bucket.upload_file(FILENAME, KEY)

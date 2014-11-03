@@ -75,6 +75,13 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(iterator.get_query_params(),
                          {'pageToken': TOKEN})
 
+    def test_get_query_params_extra_params(self):
+        connection = _Connection()
+        PATH = '/foo'
+        extra_params = {'key': 'val'}
+        iterator = self._makeOne(connection, PATH, extra_params=extra_params)
+        self.assertEqual(iterator.get_query_params(), extra_params)
+
     def test_get_next_page_response_new_no_token_in_response(self):
         PATH = '/foo'
         TOKEN = 'token'
