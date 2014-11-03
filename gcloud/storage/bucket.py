@@ -193,7 +193,7 @@ class Bucket(object):
                  the exception, call ``delete_keys``, passing a no-op
                  ``on_error`` callback, e.g.::
 
-                 >>> bucket.delete_keys([key], on_error=lambda *key: pass)
+                 >>> bucket.delete_keys([key], on_error=lambda key: pass)
         """
         key = self.new_key(key)
         self.connection.api_request(method='DELETE', path=key.path)
