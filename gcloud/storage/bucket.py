@@ -449,24 +449,6 @@ class Bucket(object):
         """
         return self.configure_website(None, None)
 
-    def reload_acl(self):
-        """Reload the ACL data from Cloud Storage.
-
-        :rtype: :class:`Bucket`
-        :returns: The current bucket.
-        """
-        self.acl.clear()
-
-        url_path = '%s/acl' % self.path
-        found = self.connection.api_request(method='GET', path=url_path)
-        for entry in found['items']:
-            self.acl.add_entity(self.acl.entity_from_dict(entry))
-
-        # Even if we fetch no entries, the ACL is still loaded.
-        self.acl.loaded = True
-
-        return self
-
     def get_acl(self):
         """Get ACL metadata as a :class:`gcloud.storage.acl.BucketACL` object.
 
@@ -474,111 +456,8 @@ class Bucket(object):
         :returns: An ACL object for the current bucket.
         """
         if not self.acl.loaded:
-            self.reload_acl()
+            self.acl.reload()
         return self.acl
-
-    def save_acl(self, acl=None):
-        """Save the ACL data for this bucket.
-
-        If called without arguments, this will save the ACL currently
-        stored on the Bucket object.  For example, this will save the
-        ACL stored in ``some_other_acl``::
-
-           >>> bucket.acl = some_other_acl
-           >>> bucket.save_acl()
-
-        You can also provide a specific ACL to save instead of the one
-        currently set on the Bucket object::
-
-           >>> bucket.save_acl(acl=my_other_acl)
-
-        You can use this to set access controls to be consistent from
-        one bucket to another::
-
-          >>> bucket1 = connection.get_bucket(bucket1_name)
-          >>> bucket2 = connection.get_bucket(bucket2_name)
-          >>> bucket2.save_acl(bucket1.get_acl())
-
-        If you want to **clear** the ACL for the bucket, you must save
-        an empty list (``[]``) rather than using ``None`` (which is
-        interpreted as wanting to save the current ACL)::
-
-          >>> bucket.save_acl(None)  # Saves the current ACL (self.acl).
-          >>> bucket.save_acl([])  # Clears the current ACL.
-
-        :type acl: :class:`gcloud.storage.acl.ACL`
-        :param acl: The ACL object to save.
-                    If left blank, this will save the ACL
-                    set locally on the bucket.
-        """
-        # We do things in this weird way because [] and None
-        # both evaluate to False, but mean very different things.
-        if acl is None:
-            acl = self.acl
-            dirty = acl.loaded
-        else:
-            dirty = True
-
-        if dirty:
-            result = self.connection.api_request(
-                method='PATCH', path=self.path, data={'acl': list(acl)},
-                query_params={'projection': 'full'})
-            self.acl.clear()
-            for entry in result['acl']:
-                self.acl.entity(self.acl.entity_from_dict(entry))
-            self.acl.loaded = True
-
-        return self
-
-    def clear_acl(self):
-        """Remove all ACL rules from the bucket.
-
-        Note that this won't actually remove *ALL* the rules, but it
-        will remove all the non-default rules.  In short, you'll still
-        have access to a bucket that you created even after you clear
-        ACL rules with this method.
-
-        For example, imagine that you granted access to this bucket to a
-        bunch of coworkers::
-
-          >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email,
-                                                  private_key_path)
-          >>> bucket = connection.get_bucket(bucket_name)
-          >>> acl = bucket.get_acl()
-          >>> acl.user('coworker1@example.org').grant_read()
-          >>> acl.user('coworker2@example.org').grant_read()
-          >>> acl.save()
-
-        Now they work in another part of the company
-        and you want to 'start fresh' on who has access::
-
-          >>> acl.clear_acl()
-
-        At this point all the custom rules you created have been removed.
-        """
-        # NOTE:  back-end makes some ACL entries sticky (they remain even
-        #        after the PATCH succeeds.
-        return self.save_acl([])
-
-    def reload_default_object_acl(self):
-        """Reload the Default Object ACL rules for this bucket.
-
-        :rtype: :class:`Bucket`
-        :returns: The current bucket.
-        """
-        doa = self.default_object_acl
-        doa.clear()
-
-        url_path = '%s/defaultObjectAcl' % self.path
-        found = self.connection.api_request(method='GET', path=url_path)
-        for entry in found['items']:
-            doa.add_entity(doa.entity_from_dict(entry))
-
-        # Even if we fetch no entries, the ACL is still loaded.
-        doa.loaded = True
-
-        return self
 
     def get_default_object_acl(self):
         """Get the current Default Object ACL rules.
@@ -590,40 +469,8 @@ class Bucket(object):
         :returns: A DefaultObjectACL object for this bucket.
         """
         if not self.default_object_acl.loaded:
-            self.reload_default_object_acl()
+            self.default_object_acl.reload()
         return self.default_object_acl
-
-    def save_default_object_acl(self, acl=None):
-        """Save the Default Object ACL rules for this bucket.
-
-        :type acl: :class:`gcloud.storage.acl.DefaultObjectACL`
-        :param acl: The DefaultObjectACL object to save.
-                    If not provided, this will look at
-                    the ``default_object_acl`` property
-                    and save that.
-        """
-        if acl is None:
-            acl = self.default_object_acl
-            dirty = acl.loaded
-        else:
-            dirty = True
-
-        if dirty:
-            result = self.connection.api_request(
-                method='PATCH', path=self.path,
-                data={'defaultObjectAcl': list(acl)},
-                query_params={'projection': 'full'})
-            doa = self.default_object_acl
-            doa.clear()
-            for entry in result['defaultObjectAcl']:
-                doa.entity(doa.entity_from_dict(entry))
-            doa.loaded = True
-
-        return self
-
-    def clear_default_object_acl(self):
-        """Remove the Default Object ACL from this bucket."""
-        return self.save_default_object_acl([])
 
     def make_public(self, recursive=False, future=False):
         """Make a bucket public.
@@ -637,11 +484,12 @@ class Bucket(object):
                        future public as well.
         """
         self.get_acl().all().grant_read()
-        self.save_acl()
+        self.acl.save()
 
         if future:
-            self.get_default_object_acl().all().grant_read()
-            self.save_default_object_acl()
+            doa = self.get_default_object_acl()
+            doa.all().grant_read()
+            doa.save()
 
         if recursive:
             for key in self:

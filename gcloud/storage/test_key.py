@@ -439,53 +439,6 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], after)
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_reload_acl_eager_empty(self):
-        from gcloud.storage.acl import ObjectACL
-        KEY = 'key'
-        ROLE = 'role'
-        after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
-        connection = _Connection(after)
-        bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
-        key.acl.loaded = True
-        self.assertTrue(key.reload_acl() is key)
-        self.assertTrue(isinstance(key.acl, ObjectACL))
-        self.assertEqual(list(key.acl), after['items'])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % KEY)
-
-    def test_reload_acl_eager_nonempty(self):
-        from gcloud.storage.acl import ObjectACL
-        KEY = 'key'
-        ROLE = 'role'
-        after = {'items': []}
-        connection = _Connection(after)
-        bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
-        key.acl.entity('allUsers', ROLE)
-        self.assertTrue(key.reload_acl() is key)
-        self.assertTrue(isinstance(key.acl, ObjectACL))
-        self.assertEqual(list(key.acl), [])
-
-    def test_reload_acl_lazy(self):
-        from gcloud.storage.acl import ObjectACL
-        KEY = 'key'
-        ROLE = 'role'
-        after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
-        connection = _Connection(after)
-        bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
-        self.assertTrue(key.reload_acl() is key)
-        self.assertTrue(isinstance(key.acl, ObjectACL))
-        self.assertEqual(list(key.acl),
-                         [{'entity': 'allUsers', 'role': ROLE}])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % KEY)
-
     def test_get_acl_lazy(self):
         from gcloud.storage.acl import ObjectACL
         KEY = 'key'
@@ -503,62 +456,6 @@ class Test_Key(unittest2.TestCase):
         preset.loaded = True
         acl = key.get_acl()
         self.assertTrue(acl is preset)
-
-    def test_save_acl_none_set_none_passed(self):
-        KEY = 'key'
-        connection = _Connection()
-        bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
-        self.assertTrue(key.save_acl() is key)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_save_acl_existing_set_none_passed(self):
-        KEY = 'key'
-        connection = _Connection({'foo': 'Foo', 'acl': []})
-        bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
-        key.acl.loaded = True
-        self.assertTrue(key.save_acl() is key)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['data'], {'acl': []})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-
-    def test_save_acl_existing_set_new_passed(self):
-        KEY = 'key'
-        ROLE = 'role'
-        new_acl = [{'entity': 'allUsers', 'role': ROLE}]
-        connection = _Connection({'foo': 'Foo', 'acl': new_acl})
-        bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
-        key.acl.entity('allUsers', 'other-role')
-        self.assertTrue(key.save_acl(new_acl) is key)
-        self.assertEqual(list(key.acl), new_acl)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['data'], {'acl': new_acl})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-
-    def test_clear_acl(self):
-        KEY = 'key'
-        ROLE = 'role'
-        connection = _Connection({'foo': 'Foo', 'acl': []})
-        bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
-        key.acl.entity('allUsers', ROLE)
-        self.assertTrue(key.clear_acl() is key)
-        self.assertEqual(list(key.acl), [])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
-        self.assertEqual(kw[0]['data'], {'acl': []})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_make_public(self):
         from gcloud.storage.acl import _ACLEntity

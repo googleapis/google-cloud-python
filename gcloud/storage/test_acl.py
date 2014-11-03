@@ -127,16 +127,6 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(list(acl.get_entities()), [])
         self.assertFalse(acl.loaded)
 
-    def test_clear(self):
-        TYPE = 'type'
-        ID = 'id'
-        acl = self._makeOne()
-        acl.entity(TYPE, ID)
-        acl.clear()
-        self.assertTrue(acl.loaded)
-        self.assertEqual(acl.entities, {})
-        self.assertEqual(list(acl.get_entities()), [])
-
     def test_reset(self):
         TYPE = 'type'
         ID = 'id'
@@ -405,9 +395,17 @@ class Test_ACL(unittest2.TestCase):
         entity = acl.entity(TYPE, ID)
         self.assertEqual(acl.get_entities(), [entity])
 
+    def test_reload_raises_NotImplementedError(self):
+        acl = self._makeOne()
+        self.assertRaises(NotImplementedError, acl.reload)
+
     def test_save_raises_NotImplementedError(self):
         acl = self._makeOne()
         self.assertRaises(NotImplementedError, acl.save)
+
+    def test_clear(self):
+        acl = self._makeOne()
+        self.assertRaises(NotImplementedError, acl.clear)
 
 
 class Test_BucketACL(unittest2.TestCase):
@@ -426,33 +424,114 @@ class Test_BucketACL(unittest2.TestCase):
         self.assertEqual(list(acl.get_entities()), [])
         self.assertTrue(acl.bucket is bucket)
 
-    def test_save(self):
-        class _Bucket(object):
-            def save_acl(self, acl):
-                self._saved = acl
-        bucket = _Bucket()
+    def test_reload_eager_empty(self):
+        NAME = 'name'
+        ROLE = 'role'
+        connection = _Connection({'items': []})
+        bucket = _Bucket(connection, NAME)
         acl = self._makeOne(bucket)
-        acl.save()
-        self.assertTrue(bucket._saved is acl)
+        acl.entity('allUsers', ROLE)
+        self.assertTrue(acl.reload() is acl)
+        self.assertEqual(list(acl), [])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s/acl' % NAME)
 
-
-class Test_DefaultObjectACL(unittest2.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.storage.acl import DefaultObjectACL
-        return DefaultObjectACL
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test_save(self):
-        class _Bucket(object):
-            def save_default_object_acl(self, acl):
-                self._saved = acl
-        bucket = _Bucket()
+    def test_reload_eager_nonempty(self):
+        NAME = 'name'
+        ROLE = 'role'
+        connection = _Connection(
+            {'items': [{'entity': 'allUsers', 'role': ROLE}]})
+        bucket = _Bucket(connection, NAME)
         acl = self._makeOne(bucket)
-        acl.save()
-        self.assertTrue(bucket._saved is acl)
+        acl.loaded = True
+        self.assertTrue(acl.reload() is acl)
+        self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s/acl' % NAME)
+
+    def test_reload_lazy(self):
+        NAME = 'name'
+        ROLE = 'role'
+        connection = _Connection(
+            {'items': [{'entity': 'allUsers', 'role': ROLE}]})
+        bucket = _Bucket(connection, NAME)
+        acl = self._makeOne(bucket)
+        self.assertTrue(acl.reload() is acl)
+        self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s/acl' % NAME)
+
+    def test_save_none_set_none_passed(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = _Bucket(connection, NAME)
+        acl = self._makeOne(bucket)
+        self.assertTrue(acl.save() is acl)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_save_no_arg(self):
+        NAME = 'name'
+        ROLE = 'role'
+        AFTER = [{'entity': 'allUsers', 'role': ROLE}]
+        connection = _Connection({'acl': AFTER})
+        bucket = _Bucket(connection, NAME)
+        acl = self._makeOne(bucket)
+        acl.entity('allUsers').grant(ROLE)
+        self.assertTrue(acl.save() is acl)
+        self.assertEqual(list(acl), AFTER)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': AFTER})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_save_w_arg(self):
+        NAME = 'name'
+        ROLE1 = 'role1'
+        ROLE2 = 'role2'
+        STICKY = {'entity': 'allUsers', 'role': ROLE2}
+        new_acl = [{'entity': 'allUsers', 'role': ROLE1}]
+        connection = _Connection({'acl': [STICKY] + new_acl})
+        bucket = _Bucket(connection, NAME)
+        acl = self._makeOne(bucket)
+        acl.loaded = True
+        self.assertTrue(acl.save(new_acl) is acl)
+        entries = list(acl)
+        self.assertEqual(len(entries), 2)
+        self.assertTrue(STICKY in entries)
+        self.assertTrue(new_acl[0] in entries)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': new_acl})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_clear(self):
+        NAME = 'name'
+        ROLE1 = 'role1'
+        ROLE2 = 'role2'
+        STICKY = {'entity': 'allUsers', 'role': ROLE2}
+        connection = _Connection({'acl': [STICKY]})
+        bucket = _Bucket(connection, NAME)
+        acl = self._makeOne(bucket)
+        acl.entity('allUsers', ROLE1)
+        self.assertTrue(acl.clear() is acl)
+        self.assertEqual(list(acl), [STICKY])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': []})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
 class Test_ObjectACL(unittest2.TestCase):
@@ -471,11 +550,159 @@ class Test_ObjectACL(unittest2.TestCase):
         self.assertEqual(list(acl.get_entities()), [])
         self.assertTrue(acl.key is key)
 
-    def test_save(self):
-        class _Key(object):
-            def save_acl(self, acl):
-                self._saved = acl
-        key = _Key()
+    def test_reload_eager_empty(self):
+        NAME = 'name'
+        KEY = 'key'
+        ROLE = 'role'
+        after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
+        connection = _Connection(after)
+        bucket = _Bucket(connection, NAME)
+        key = _Key(bucket, KEY)
         acl = self._makeOne(key)
-        acl.save()
-        self.assertTrue(key._saved is acl)
+        acl.loaded = True
+        self.assertTrue(acl.reload() is acl)
+        self.assertEqual(list(acl), after['items'])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % KEY)
+
+    def test_reload_eager_nonempty(self):
+        NAME = 'name'
+        KEY = 'key'
+        ROLE = 'role'
+        after = {'items': []}
+        connection = _Connection(after)
+        bucket = _Bucket(connection, NAME)
+        key = _Key(bucket, KEY)
+        acl = self._makeOne(key)
+        acl.entity('allUsers', ROLE)
+        self.assertTrue(acl.reload() is acl)
+        self.assertEqual(list(acl), [])
+
+    def test_reload_lazy(self):
+        NAME = 'name'
+        KEY = 'key'
+        ROLE = 'role'
+        after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
+        connection = _Connection(after)
+        bucket = _Bucket(connection, NAME)
+        key = _Key(bucket, KEY)
+        acl = self._makeOne(key)
+        self.assertTrue(acl.reload() is acl)
+        self.assertEqual(list(acl),
+                         [{'entity': 'allUsers', 'role': ROLE}])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % KEY)
+
+    def test_save_none_set_none_passed(self):
+        NAME = 'name'
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection, NAME)
+        key = _Key(bucket, KEY)
+        acl = self._makeOne(key)
+        self.assertTrue(acl.save() is acl)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_save_existing_set_none_passed(self):
+        NAME = 'name'
+        KEY = 'key'
+        connection = _Connection({'foo': 'Foo', 'acl': []})
+        bucket = _Bucket(connection, NAME)
+        key = _Key(bucket, KEY)
+        acl = self._makeOne(key)
+        acl.loaded = True
+        self.assertTrue(acl.save() is acl)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'], {'acl': []})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_save_existing_set_new_passed(self):
+        NAME = 'name'
+        KEY = 'key'
+        ROLE = 'role'
+        new_acl = [{'entity': 'allUsers', 'role': ROLE}]
+        connection = _Connection({'foo': 'Foo', 'acl': new_acl})
+        bucket = _Bucket(connection, NAME)
+        key = _Key(bucket, KEY)
+        acl = self._makeOne(key)
+        acl.entity('allUsers', 'other-role')
+        self.assertTrue(acl.save(new_acl) is acl)
+        self.assertEqual(list(acl), new_acl)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'], {'acl': new_acl})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_clear(self):
+        NAME = 'name'
+        KEY = 'key'
+        ROLE = 'role'
+        connection = _Connection({'foo': 'Foo', 'acl': []})
+        bucket = _Bucket(connection, NAME)
+        key = _Key(bucket, KEY)
+        acl = self._makeOne(key)
+        acl.entity('allUsers', ROLE)
+        self.assertTrue(acl.clear() is acl)
+        self.assertEqual(list(acl), [])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'], {'acl': []})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+
+class _Key(object):
+
+    def __init__(self, bucket, key):
+        self.bucket = bucket
+        self.key = key
+
+    @property
+    def connection(self):
+        return self.bucket.connection
+
+    @property
+    def path(self):
+        return '%s/o/%s' % (self.bucket.path, self.key)
+
+
+class _Bucket(object):
+
+    def __init__(self, connection, name):
+        self.connection = connection
+        self.name = name
+
+    @property
+    def path(self):
+        return '/b/%s' % self.name
+
+
+class _Connection(object):
+    _delete_ok = False
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+        self._deleted = []
+
+    def api_request(self, **kw):
+        from gcloud.storage.exceptions import NotFoundError
+        self._requested.append(kw)
+
+        try:
+            response, self._responses = self._responses[0], self._responses[1:]
+        except:  # pragma: NO COVER
+            raise NotFoundError('miss')
+        else:
+            return response
