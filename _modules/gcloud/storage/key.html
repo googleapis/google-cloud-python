@@ -507,24 +507,6 @@
             <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
         <span class="k">return</span> <span class="bp">self</span>
 </div>
-<div class="viewcode-block" id="Key.reload_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.reload_acl">[docs]</a>    <span class="k">def</span> <span class="nf">reload_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.</span>
-
-<span class="sd">        :rtype: :class:`Key`</span>
-<span class="sd">        :returns: The current key.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-
-        <span class="n">url_path</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/acl&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">url_path</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="p">[</span><span class="s">&#39;items&#39;</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-
-        <span class="c"># Even if we fetch no entries, the ACL is still loaded.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
-
-        <span class="k">return</span> <span class="bp">self</span>
-</div>
 <div class="viewcode-block" id="Key.get_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_acl">[docs]</a>    <span class="k">def</span> <span class="nf">get_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get ACL metadata as a :class:`gcloud.storage.acl.ObjectACL` object.</span>
 
@@ -532,42 +514,8 @@
 <span class="sd">        :returns: An ACL object for the current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">loaded</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reload_acl</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span>
-</div>
-<div class="viewcode-block" id="Key.save_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.save_acl">[docs]</a>    <span class="k">def</span> <span class="nf">save_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Save the ACL data for this key.</span>
-
-<span class="sd">        :type acl: :class:`gcloud.storage.acl.ACL`</span>
-<span class="sd">        :param acl: The ACL object to save.  If left blank, this will</span>
-<span class="sd">                    save the ACL set locally on the key.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">acl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span>
-            <span class="n">dirty</span> <span class="o">=</span> <span class="n">acl</span><span class="o">.</span><span class="n">loaded</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">dirty</span> <span class="o">=</span> <span class="bp">True</span>
-
-        <span class="k">if</span> <span class="n">dirty</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)},</span>
-                <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;acl&#39;</span><span class="p">]:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
-
-        <span class="k">return</span> <span class="bp">self</span>
-</div>
-<div class="viewcode-block" id="Key.clear_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.clear_acl">[docs]</a>    <span class="k">def</span> <span class="nf">clear_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remove all ACL rules from the key.</span>
-
-<span class="sd">        Note that this won&#39;t actually remove *ALL* the rules, but it</span>
-<span class="sd">        will remove all the non-default rules.  In short, you&#39;ll still</span>
-<span class="sd">        have access to a key that you created even after you clear ACL</span>
-<span class="sd">        rules with this method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_acl</span><span class="p">([])</span>
 </div>
 <div class="viewcode-block" id="Key.make_public"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this key public giving all users read access.</span>
@@ -576,7 +524,7 @@
 <span class="sd">        :returns: The current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 
 </div></div>

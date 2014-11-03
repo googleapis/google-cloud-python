@@ -637,40 +637,6 @@ just a name of a bucket.  It always returns the object:</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.clear_acl">
-<tt class="descname">clear_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.clear_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.clear_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove all ACL rules from the bucket.</p>
-<p>Note that this won&#8217;t actually remove <em>ALL</em> the rules, but it
-will remove all the non-default rules.  In short, you&#8217;ll still
-have access to a bucket that you created even after you clear
-ACL rules with this method.</p>
-<p>For example, imagine that you granted access to this bucket to a
-bunch of coworkers:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span>
-<span class="go">                                        private_key_path)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s">&#39;coworker1@example.org&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s">&#39;coworker2@example.org&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Now they work in another part of the company
-and you want to &#8216;start fresh&#8217; on who has access:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">clear_acl</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>At this point all the custom rules you created have been removed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.clear_default_object_acl">
-<tt class="descname">clear_default_object_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.clear_default_object_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.clear_default_object_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove the Default Object ACL from this bucket.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.configure_website">
 <tt class="descname">configure_website</tt><big>(</big><em>main_page_suffix=None</em>, <em>not_found_page=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.configure_website"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.configure_website" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configure website-related metadata.</p>
@@ -1053,38 +1019,6 @@ response.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.reload_acl">
-<tt class="descname">reload_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.reload_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.reload_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reload the ACL data from Cloud Storage.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current bucket.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.reload_default_object_acl">
-<tt class="descname">reload_default_object_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.reload_default_object_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.reload_default_object_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reload the Default Object ACL rules for this bucket.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current bucket.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.reload_metadata">
 <tt class="descname">reload_metadata</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.reload_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.reload_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reload metadata from Cloud Storage.</p>
@@ -1095,65 +1029,6 @@ response.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The bucket you just reloaded data for.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.save_acl">
-<tt class="descname">save_acl</tt><big>(</big><em>acl=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.save_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.save_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the ACL data for this bucket.</p>
-<p>If called without arguments, this will save the ACL currently
-stored on the Bucket object.  For example, this will save the
-ACL stored in <tt class="docutils literal"><span class="pre">some_other_acl</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">acl</span> <span class="o">=</span> <span class="n">some_other_acl</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>You can also provide a specific ACL to save instead of the one
-currently set on the Bucket object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="n">my_other_acl</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>You can use this to set access controls to be consistent from
-one bucket to another:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket1</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket1_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket2_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">bucket1</span><span class="o">.</span><span class="n">get_acl</span><span class="p">())</span>
-</pre></div>
-</div>
-<p>If you want to <strong>clear</strong> the ACL for the bucket, you must save
-an empty list (<tt class="docutils literal"><span class="pre">[]</span></tt>) rather than using <tt class="docutils literal"><span class="pre">None</span></tt> (which is
-interpreted as wanting to save the current ACL):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>  <span class="c"># Saves the current ACL (self.acl).</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">([])</span>  <span class="c"># Clears the current ACL.</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acl</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>) &#8211; The ACL object to save.
-If left blank, this will save the ACL
-set locally on the bucket.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.save_default_object_acl">
-<tt class="descname">save_default_object_acl</tt><big>(</big><em>acl=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.save_default_object_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.save_default_object_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the Default Object ACL rules for this bucket.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acl</strong> (<a class="reference internal" href="#gcloud.storage.acl.DefaultObjectACL" title="gcloud.storage.acl.DefaultObjectACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.DefaultObjectACL</span></tt></a>) &#8211; The DefaultObjectACL object to save.
-If not provided, this will look at
-the <tt class="docutils literal"><span class="pre">default_object_acl</span></tt> property
-and save that.</td>
 </tr>
 </tbody>
 </table>
@@ -1311,16 +1186,6 @@ unique path of the object in the bucket.</li>
 <dt id="gcloud.storage.key.Key.acl">
 <tt class="descname">acl</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.acl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create our ACL on demand.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.key.Key.clear_acl">
-<tt class="descname">clear_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.clear_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.clear_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove all ACL rules from the key.</p>
-<p>Note that this won&#8217;t actually remove <em>ALL</em> the rules, but it
-will remove all the non-default rules.  In short, you&#8217;ll still
-have access to a key that you created even after you clear ACL
-rules with this method.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1660,22 +1525,6 @@ response.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.key.Key.reload_acl">
-<tt class="descname">reload_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.reload_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.reload_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reload the ACL data from Cloud Storage.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current key.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.key.Key.reload_metadata">
 <tt class="descname">reload_metadata</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.reload_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.reload_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reload metadata from Cloud Storage.</p>
@@ -1712,21 +1561,6 @@ could be a very (temporarily) costly or a very slow operation.</p>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The newly-copied key.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.key.Key.save_acl">
-<tt class="descname">save_acl</tt><big>(</big><em>acl=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.save_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.save_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the ACL data for this key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acl</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>) &#8211; The ACL object to save.  If left blank, this will
-save the ACL set locally on the key.</td>
 </tr>
 </tbody>
 </table>
@@ -1956,7 +1790,7 @@ for brevity:</p>
 </div>
 <p>You can alternatively save any existing <a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>
 object (whether it was created by a factory method or not) with the
-<a class="reference internal" href="#gcloud.storage.bucket.Bucket.save_acl" title="gcloud.storage.bucket.Bucket.save_acl"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.save_acl()</span></tt></a> method:</p>
+<tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.save_acl()</span></tt> method:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">acl</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2178,6 +2012,22 @@ to <tt class="docutils literal"><span class="pre">default</span></tt>.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="gcloud.storage.acl.ACL.reload">
+<tt class="descname">reload</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the ACL data from Cloud Storage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">ACL</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.storage.acl.ACL.reset">
 <tt class="descname">reset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all entities from the ACL, and clear the <tt class="docutils literal"><span class="pre">loaded</span></tt> flag.</p>
@@ -2185,13 +2035,16 @@ to <tt class="docutils literal"><span class="pre">default</span></tt>.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.save">
-<tt class="descname">save</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.save" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save</tt><big>(</big><em>acl=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>A method to be overridden by subclasses.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">NotImplementedError</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acl</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>, or a compatible list.) &#8211; The ACL object to save.  If left blank, this will save
+current entries.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">NotImplementedError</td>
 </tr>
 </tbody>
 </table>
@@ -2231,9 +2084,88 @@ to <tt class="docutils literal"><span class="pre">default</span></tt>.</p>
 </tbody>
 </table>
 <dl class="method">
+<dt id="gcloud.storage.acl.BucketACL.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#BucketACL.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.BucketACL.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all ACL entries.</p>
+<p>Note that this won&#8217;t actually remove <em>ALL</em> the rules, but it
+will remove all the non-default rules.  In short, you&#8217;ll still
+have access to a bucket that you created even after you clear
+ACL rules with this method.</p>
+<p>For example, imagine that you granted access to this bucket to a
+bunch of coworkers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s">&#39;coworker1@example.org&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">user</span><span class="p">(</span><span class="s">&#39;coworker2@example.org&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now they work in another part of the company and you want to
+&#8216;start fresh&#8217; on who has access:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>At this point all the custom rules you created have been removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.BucketACL" title="gcloud.storage.acl.BucketACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.BucketACL</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.acl.BucketACL.reload">
+<tt class="descname">reload</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#BucketACL.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.BucketACL.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the ACL data from Cloud Storage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.BucketACL" title="gcloud.storage.acl.BucketACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.BucketACL</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.storage.acl.BucketACL.save">
-<tt class="descname">save</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#BucketACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.BucketACL.save" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save</tt><big>(</big><em>acl=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#BucketACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.BucketACL.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save this ACL for the current bucket.</p>
+<p>If called without arguments, this will save the entries
+currently stored on this ACL:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also provide a specific ACL to save instead of the one
+currently set on the Bucket object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="n">my_other_acl</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can use this to set access controls to be consistent from
+one bucket to another:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket1</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket1_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket2_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">bucket1</span><span class="o">.</span><span class="n">get_acl</span><span class="p">())</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acl</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>, or a compatible list.) &#8211; The ACL object to save.  If left blank, this will save
+current entries.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.BucketACL" title="gcloud.storage.acl.BucketACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.BucketACL</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -2251,12 +2183,6 @@ to <tt class="docutils literal"><span class="pre">default</span></tt>.</p>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="gcloud.storage.acl.DefaultObjectACL.save">
-<tt class="descname">save</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#DefaultObjectACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.DefaultObjectACL.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save this ACL as the default object ACL for the current bucket.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -2273,9 +2199,44 @@ to <tt class="docutils literal"><span class="pre">default</span></tt>.</p>
 </tbody>
 </table>
 <dl class="method">
+<dt id="gcloud.storage.acl.ObjectACL.clear">
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ObjectACL.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ObjectACL.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all ACL rules from the key.</p>
+<p>Note that this won&#8217;t actually remove <em>ALL</em> the rules, but it
+will remove all the non-default rules.  In short, you&#8217;ll still
+have access to a key that you created even after you clear ACL
+rules with this method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.acl.ObjectACL.reload">
+<tt class="descname">reload</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ObjectACL.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ObjectACL.reload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the ACL data from Cloud Storage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ObjectACL" title="gcloud.storage.acl.ObjectACL"><tt class="xref py py-class docutils literal"><span class="pre">ObjectACL</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.storage.acl.ObjectACL.save">
-<tt class="descname">save</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ObjectACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ObjectACL.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save this ACL for the current key.</p>
+<tt class="descname">save</tt><big>(</big><em>acl=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ObjectACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ObjectACL.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the ACL data for this key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acl</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>) &#8211; The ACL object to save.  If left blank, this will
+save the entries set locally on the ACL.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
