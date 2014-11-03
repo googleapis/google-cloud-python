@@ -195,17 +195,26 @@ class Bucket(object):
         self.connection.api_request(method='DELETE', path=key.path)
         return key
 
-    def delete_keys(self, keys):
+    def delete_keys(self, keys, on_error=None):
         """Deletes a list of keys from the current bucket.
 
         Uses :func:`Bucket.delete_key` to delete each individual key.
 
         :type keys: list of string or :class:`gcloud.storage.key.Key`
-        :param key: A list of key names or Key objects to delete.
+        :param keys: A list of key names or Key objects to delete.
+
+        :type on_error: a callable taking (key)
+        :param on_error: If not ``None``, called once for each key which
+                         raises a ``NotFoundError``.
         """
-        # NOTE: boto returns a MultiDeleteResult instance.
         for key in keys:
-            self.delete_key(key)
+            try:
+                self.delete_key(key)
+            except exceptions.NotFoundError:
+                if on_error is not None:
+                    on_error(key)
+                else:
+                    raise
 
     def copy_key(self, key, destination_bucket, new_name=None):
         """Copy the given key to the given bucket, optionally with a new name.
