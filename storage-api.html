@@ -1736,6 +1736,16 @@ save the ACL set locally on the key.</td>
 <dt id="gcloud.storage.key.Key.set_contents_from_file">
 <tt class="descname">set_contents_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload the contents of this key from a file-like object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The effect of uploading to an existing key depends on the
+&#8220;versioning&#8221; and &#8220;lifecycle&#8221; policies defined on the key&#8217;s
+bucket.  In the absence of those policies, upload will
+overwrite any existing contents.</p>
+<p class="last">See the <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">object versioning</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
+API documents for details.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1758,6 +1768,16 @@ If not provided, we&#8217;ll try to guess the size using
 <dt id="gcloud.storage.key.Key.set_contents_from_filename">
 <tt class="descname">set_contents_from_filename</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload this key&#8217;s contents from the content of f named file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The effect of uploading to an existing key depends on the
+&#8220;versioning&#8221; and &#8220;lifecycle&#8221; policies defined on the key&#8217;s
+bucket.  In the absence of those policies, upload will
+overwrite any existing contents.</p>
+<p class="last">See the <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">object versioning</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
+API documents for details.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1772,6 +1792,16 @@ If not provided, we&#8217;ll try to guess the size using
 <dt id="gcloud.storage.key.Key.set_contents_from_string">
 <tt class="descname">set_contents_from_string</tt><big>(</big><em>data</em>, <em>content_type='text/plain'</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload contents of this key from the provided string.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The effect of uploading to an existing key depends on the
+&#8220;versioning&#8221; and &#8220;lifecycle&#8221; policies defined on the key&#8217;s
+bucket.  In the absence of those policies, upload will
+overwrite any existing contents.</p>
+<p class="last">See the <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">object versioning</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
+API documents for details.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1790,6 +1820,16 @@ If not provided, we&#8217;ll try to guess the size using
 <dt id="gcloud.storage.key.Key.upload_from_file">
 <tt class="descname">upload_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.upload_from_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload the contents of this key from a file-like object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The effect of uploading to an existing key depends on the
+&#8220;versioning&#8221; and &#8220;lifecycle&#8221; policies defined on the key&#8217;s
+bucket.  In the absence of those policies, upload will
+overwrite any existing contents.</p>
+<p class="last">See the <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">object versioning</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
+API documents for details.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1812,6 +1852,16 @@ If not provided, we&#8217;ll try to guess the size using
 <dt id="gcloud.storage.key.Key.upload_from_filename">
 <tt class="descname">upload_from_filename</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.upload_from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.upload_from_filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload this key&#8217;s contents from the content of f named file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The effect of uploading to an existing key depends on the
+&#8220;versioning&#8221; and &#8220;lifecycle&#8221; policies defined on the key&#8217;s
+bucket.  In the absence of those policies, upload will
+overwrite any existing contents.</p>
+<p class="last">See the <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">object versioning</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
+API documents for details.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1826,6 +1876,16 @@ If not provided, we&#8217;ll try to guess the size using
 <dt id="gcloud.storage.key.Key.upload_from_string">
 <tt class="descname">upload_from_string</tt><big>(</big><em>data</em>, <em>content_type='text/plain'</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.upload_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.upload_from_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Upload contents of this key from the provided string.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The effect of uploading to an existing key depends on the
+&#8220;versioning&#8221; and &#8220;lifecycle&#8221; policies defined on the key&#8217;s
+bucket.  In the absence of those policies, upload will
+overwrite any existing contents.</p>
+<p class="last">See the <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">object versioning</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
+API documents for details.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
