@@ -762,13 +762,22 @@ this will throw a <a class="reference internal" href="#gcloud.storage.exceptions
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; A key name or Key object to delete.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>key</strong> (string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; A key name or Key object to delete.</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a></p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The key that was just deleted.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The key that was just deleted.</p>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a> (to suppress
+the exception, call <tt class="docutils literal"><span class="pre">delete_keys</span></tt>, passing a no-op
+<tt class="docutils literal"><span class="pre">on_error</span></tt> callback, e.g.:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_keys</span><span class="p">([</span><span class="n">key</span><span class="p">],</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="k">pass</span><span class="p">)</span>
+</pre></div>
+</div>
+</td>
 </tr>
 </tbody>
 </table>
@@ -783,11 +792,16 @@ this will throw a <a class="reference internal" href="#gcloud.storage.exceptions
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>keys</strong> (list of string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; A list of key names or Key objects to delete.</li>
-<li><strong>on_error</strong> (<em>a callable taking (key)</em>) &#8211; If not <tt class="docutils literal"><span class="pre">None</span></tt>, called once for each key which
-raises a <tt class="docutils literal"><span class="pre">NotFoundError</span></tt>.</li>
+<li><strong>on_error</strong> (<em>a callable taking (key)</em>) &#8211; If not <tt class="docutils literal"><span class="pre">None</span></tt>, called once for each key raising
+<a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>;
+otherwise, the exception is propagated.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a> (if
+<cite>on_error</cite> is not passed).</p>
 </td>
 </tr>
 </tbody>
@@ -1215,6 +1229,10 @@ unique path of the object in the bucket.</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key that was just deleted.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>
+(propagated from
+<a class="reference internal" href="#gcloud.storage.bucket.Bucket.delete_key" title="gcloud.storage.bucket.Bucket.delete_key"><tt class="xref py py-meth docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.delete_key()</span></tt></a>).</td>
 </tr>
 </tbody>
 </table>
