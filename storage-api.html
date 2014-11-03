@@ -810,14 +810,19 @@ this will throw a <a class="reference internal" href="#gcloud.storage.exceptions
 
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.delete_keys">
-<tt class="descname">delete_keys</tt><big>(</big><em>keys</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete_keys" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">delete_keys</tt><big>(</big><em>keys</em>, <em>on_error=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a list of keys from the current bucket.</p>
 <p>Uses <a class="reference internal" href="#gcloud.storage.bucket.Bucket.delete_key" title="gcloud.storage.bucket.Bucket.delete_key"><tt class="xref py py-func docutils literal"><span class="pre">Bucket.delete_key()</span></tt></a> to delete each individual key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> &#8211; A list of key names or Key objects to delete.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>keys</strong> (list of string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; A list of key names or Key objects to delete.</li>
+<li><strong>on_error</strong> (<em>a callable taking (key)</em>) &#8211; If not <tt class="docutils literal"><span class="pre">None</span></tt>, called once for each key which
+raises a <tt class="docutils literal"><span class="pre">NotFoundError</span></tt>.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
