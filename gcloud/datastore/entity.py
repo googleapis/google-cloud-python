@@ -75,7 +75,7 @@ class Entity(dict):
        the 'text_value' field, after being encoded to UTF-8.  When
        retrieved from the back-end, such values will be decoded to "text"
        again.  Values which are "bytes" ('str' in Python2, 'bytes' in
-       Python3), will be saved using the 'bytes_value' field, without
+       Python3), will be saved using the 'blob_value' field, without
        any decoding / encoding step.
 
     """
