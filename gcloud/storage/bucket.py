@@ -189,7 +189,11 @@ class Bucket(object):
 
         :rtype: :class:`gcloud.storage.key.Key`
         :returns: The key that was just deleted.
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        :raises: :class:`gcloud.storage.exceptions.NotFoundError` (to suppress
+                 the exception, call ``delete_keys``, passing a no-op
+                 ``on_error`` callback, e.g.::
+
+                 >>> bucket.delete_keys([key], on_error=lambda key: pass)
         """
         key = self.new_key(key)
         self.connection.api_request(method='DELETE', path=key.path)
@@ -204,8 +208,12 @@ class Bucket(object):
         :param keys: A list of key names or Key objects to delete.
 
         :type on_error: a callable taking (key)
-        :param on_error: If not ``None``, called once for each key which
-                         raises a ``NotFoundError``.
+        :param on_error: If not ``None``, called once for each key raising
+                         :class:`gcloud.storage.exceptions.NotFoundError`;
+                         otherwise, the exception is propagated.
+
+        :raises: :class:`gcloud.storage.exceptions.NotFoundError` (if
+                 `on_error` is not passed).
         """
         for key in keys:
             try:

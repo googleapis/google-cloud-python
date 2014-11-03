@@ -165,6 +165,9 @@ class Key(object):
 
         :rtype: :class:`Key`
         :returns: The key that was just deleted.
+        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+                 (propagated from
+                 :meth:`gcloud.storage.bucket.Bucket.delete_key`).
         """
         return self.bucket.delete_key(self)
 
