@@ -361,7 +361,7 @@ class ACL(object):
 class BucketACL(ACL):
     """An ACL specifically for a bucket."""
 
-    _SUBKEY = 'acl'
+    _URL_PATH_ELEM = 'acl'
 
     def __init__(self, bucket):
         """
@@ -379,7 +379,7 @@ class BucketACL(ACL):
         """
         self.entities.clear()
 
-        url_path = '%s/%s' % (self.bucket.path, self._SUBKEY)
+        url_path = '%s/%s' % (self.bucket.path, self._URL_PATH_ELEM)
         found = self.bucket.connection.api_request(method='GET', path=url_path)
         for entry in found['items']:
             self.add_entity(self.entity_from_dict(entry))
@@ -425,10 +425,10 @@ class BucketACL(ACL):
         if save_to_backend:
             result = self.bucket.connection.api_request(
                 method='PATCH', path=self.bucket.path,
-                data={self._SUBKEY: list(acl)},
+                data={self._URL_PATH_ELEM: list(acl)},
                 query_params={'projection': 'full'})
             self.entities.clear()
-            for entry in result[self._SUBKEY]:
+            for entry in result[self._URL_PATH_ELEM]:
                 self.add_entity(self.entity_from_dict(entry))
             self.loaded = True
 
@@ -465,7 +465,7 @@ class BucketACL(ACL):
 class DefaultObjectACL(BucketACL):
     """A class representing the default object ACL for a bucket."""
 
-    _SUBKEY = 'defaultObjectAcl'
+    _URL_PATH_ELEM = 'defaultObjectAcl'
 
 
 class ObjectACL(ACL):
