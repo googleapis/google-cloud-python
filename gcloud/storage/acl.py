@@ -429,7 +429,7 @@ class BucketACL(ACL):
                 query_params={'projection': 'full'})
             self.entities.clear()
             for entry in result[self._SUBKEY]:
-                self.entity(self.entity_from_dict(entry))
+                self.add_entity(self.entity_from_dict(entry))
             self.loaded = True
 
         return self
@@ -516,7 +516,7 @@ class ObjectACL(ACL):
                 query_params={'projection': 'full'})
             self.entities.clear()
             for entry in result['acl']:
-                self.entity(self.entity_from_dict(entry))
+                self.add_entity(self.entity_from_dict(entry))
             self.loaded = True
 
         return self
