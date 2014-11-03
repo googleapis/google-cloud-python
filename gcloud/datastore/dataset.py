@@ -78,16 +78,21 @@ class Dataset(object):
         kwargs['dataset'] = self
         return Query(*args, **kwargs)
 
-    def entity(self, kind):
+    def entity(self, kind, exclude_from_indexes=()):
         """Create an entity bound to this dataset.
 
         :type kind: string
         :param kind: the "kind" of the new entity.
 
+        :type exclude_from_indexes: sequence of str
+        :param exclude_from_indexes: Names of properties *not* to be indexed
+                                     for the entity.
+
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: a new Entity instance, bound to this dataset.
         """
-        return Entity(dataset=self, kind=kind)
+        return Entity(dataset=self, kind=kind,
+                      exclude_from_indexes=exclude_from_indexes)
 
     def transaction(self, *args, **kwargs):
         """Create a transaction bound to this dataset.

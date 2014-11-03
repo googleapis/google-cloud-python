@@ -34,7 +34,7 @@ class TestDataset(unittest2.TestCase):
         self.assertIsInstance(query, Query)
         self.assertTrue(query.dataset() is dataset)
 
-    def test_entity_factory(self):
+    def test_entity_factory_defaults(self):
         from gcloud.datastore.entity import Entity
         DATASET_ID = 'DATASET'
         KIND = 'KIND'
@@ -42,6 +42,17 @@ class TestDataset(unittest2.TestCase):
         entity = dataset.entity(KIND)
         self.assertIsInstance(entity, Entity)
         self.assertEqual(entity.kind(), KIND)
+        self.assertEqual(sorted(entity.exclude_from_indexes()), [])
+
+    def test_entity_factory_explicit(self):
+        from gcloud.datastore.entity import Entity
+        DATASET_ID = 'DATASET'
+        KIND = 'KIND'
+        dataset = self._makeOne(DATASET_ID)
+        entity = dataset.entity(KIND, ['foo', 'bar'])
+        self.assertIsInstance(entity, Entity)
+        self.assertEqual(entity.kind(), KIND)
+        self.assertEqual(sorted(entity.exclude_from_indexes()), ['bar', 'foo'])
 
     def test_transaction_factory(self):
         from gcloud.datastore.transaction import Transaction
