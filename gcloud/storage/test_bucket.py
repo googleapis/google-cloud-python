@@ -77,7 +77,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test___iter___non_empty(self):
         NAME = 'name'
@@ -91,7 +91,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test___contains___miss(self):
         NAME = 'name'
@@ -154,7 +154,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test_get_all_keys_non_empty(self):
         NAME = 'name'
@@ -168,7 +168,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test_new_key_existing(self):
         from gcloud.storage.key import Key
@@ -715,7 +715,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw[1]['query_params'], None)
+        self.assertEqual(kw[1]['query_params'], {})
 
 
 class TestBucketIterator(unittest2.TestCase):

@@ -47,17 +47,15 @@ class Iterator(object):
         self.path = path
         self.page_number = 0
         self.next_page_token = None
-        self.extra_params = extra_params
-        if self.extra_params is not None:
-            reserved_in_use = self.RESERVED_PARAMS.intersection(
-                extra_params.keys())
-            if reserved_in_use:
-                raise ValueError(('Using a reserved parameter',
-                                  reserved_in_use))
+        self.extra_params = extra_params or {}
+        reserved_in_use = self.RESERVED_PARAMS.intersection(
+            self.extra_params.keys())
+        if reserved_in_use:
+            raise ValueError(('Using a reserved parameter',
+                              reserved_in_use))
 
     def __iter__(self):
         """Iterate through the list of items."""
-
         while self.has_next_page():
             response = self.get_next_page_response()
             for item in self.get_items_from_response(response):
@@ -80,12 +78,9 @@ class Iterator(object):
         :rtype: dict or None
         :returns: A dictionary of query parameters or None if there are none.
         """
-        result = None
-        if self.next_page_token:
-            result = {self.PAGE_TOKEN: self.next_page_token}
-        if self.extra_params is not None:
-            result = result or {}
-            result.update(self.extra_params)
+        result = ({self.PAGE_TOKEN: self.next_page_token}
+                  if self.next_page_token else {})
+        result.update(self.extra_params)
         return result
 
     def get_next_page_response(self):
