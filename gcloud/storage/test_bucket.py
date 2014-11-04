@@ -489,6 +489,23 @@ class Test_Bucket(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
+    def test_get_metadata_cors_no_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        self.assertRaises(KeyError, bucket.get_metadata, 'cors')
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_metadata_none_set_cors_w_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        default = object()
+        self.assertRaises(KeyError, bucket.get_metadata, 'cors', default)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
     def test_get_metadata_miss(self):
         NAME = 'name'
         before = {'bar': 'Bar'}
@@ -712,6 +729,77 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw[1]['query_params'], None)
+
+    def test_get_cors_eager(self):
+        NAME = 'name'
+        CORS_ENTRY = {
+            'maxAgeSeconds': 1234,
+            'method': ['OPTIONS', 'GET'],
+            'origin': ['127.0.0.1'],
+            'responseHeader': ['Content-Type'],
+            }
+        before = {'cors': [CORS_ENTRY, {}]}
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME, before)
+        entries = bucket.get_cors()
+        self.assertEqual(len(entries), 2)
+        self.assertEqual(entries[0]['max_age'], CORS_ENTRY['maxAgeSeconds'])
+        self.assertEqual(entries[0]['methods'], CORS_ENTRY['method'])
+        self.assertEqual(entries[0]['origins'], CORS_ENTRY['origin'])
+        self.assertEqual(entries[0]['headers'], CORS_ENTRY['responseHeader'])
+        self.assertEqual(entries[1], {})
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_cors_lazy(self):
+        NAME = 'name'
+        CORS_ENTRY = {
+            'maxAgeSeconds': 1234,
+            'method': ['OPTIONS', 'GET'],
+            'origin': ['127.0.0.1'],
+            'responseHeader': ['Content-Type'],
+            }
+        after = {'cors': [CORS_ENTRY]}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        entries = bucket.get_cors()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]['max_age'], CORS_ENTRY['maxAgeSeconds'])
+        self.assertEqual(entries[0]['methods'], CORS_ENTRY['method'])
+        self.assertEqual(entries[0]['origins'], CORS_ENTRY['origin'])
+        self.assertEqual(entries[0]['headers'], CORS_ENTRY['responseHeader'])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+
+    def test_update_cors(self):
+        NAME = 'name'
+        CORS_ENTRY = {
+            'maxAgeSeconds': 1234,
+            'method': ['OPTIONS', 'GET'],
+            'origin': ['127.0.0.1'],
+            'responseHeader': ['Content-Type'],
+            }
+        MAPPED = {
+            'max_age': 1234,
+            'methods': ['OPTIONS', 'GET'],
+            'origins': ['127.0.0.1'],
+            'headers': ['Content-Type'],
+            }
+        after = {'cors': [CORS_ENTRY, {}]}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        bucket.update_cors([MAPPED, {}])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        entries = bucket.get_cors()
+        self.assertEqual(entries, [MAPPED, {}])
 
 
 class TestBucketIterator(unittest2.TestCase):
