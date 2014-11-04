@@ -4,13 +4,17 @@ import mimetypes
 import os
 from StringIO import StringIO
 
+from gcloud.storage._helpers import _MetadataMixin
 from gcloud.storage.acl import ObjectACL
 from gcloud.storage.exceptions import StorageError
 from gcloud.storage.iterator import Iterator
 
 
-class Key(object):
+class Key(_MetadataMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
+
+    METADATA_ACL_FIELDS = ('acl',)
+    """Tuple of metadata fields pertaining to key ACLs."""
 
     CHUNK_SIZE = 1024 * 1024  # 1 MB.
     """The size of a chunk of data whenever iterating (1 MB).
@@ -33,9 +37,8 @@ class Key(object):
         :type metadata: dict
         :param metadata: All the other data provided by Cloud Storage.
         """
+        super(Key, self).__init__(name=name, metadata=metadata or {})
         self.bucket = bucket
-        self.name = name
-        self.metadata = metadata or {}
 
     @property
     def acl(self):
@@ -345,98 +348,10 @@ class Key(object):
     # NOTE: Alias for boto-like API.
     set_contents_from_string = upload_from_string
 
-    def has_metadata(self, field=None):
-        """Check if metadata is available locally.
-
-        :type field: string
-        :param field: (optional) the particular field to check for.
-
-        :rtype: bool
-        :returns: Whether metadata is available locally.
-        """
-        if not self.metadata:
-            return False
-        elif field and field not in self.metadata:
-            return False
-        else:
-            return True
-
-    def reload_metadata(self):
-        """Reload metadata from Cloud Storage.
-
-        :rtype: :class:`Key`
-        :returns: The key you just reloaded data for.
-        """
-        # Pass only '?projection=noAcl' here because 'acl' is handled via
-        # 'get_acl().
-        query_params = {'projection': 'noAcl'}
-        self.metadata = self.connection.api_request(
-            method='GET', path=self.path, query_params=query_params)
-        return self
-
-    def get_metadata(self, field=None, default=None):
-        """Get all metadata or a specific field.
-
-        If you request a field that isn't available, and that field can
-        be retrieved by refreshing data from Cloud Storage, this method
-        will reload the data using :func:`Key.reload_metadata`.
-
-        :type field: string
-        :param field: (optional) A particular field to retrieve from metadata.
-
-        :type default: anything
-        :param default: The value to return if the field provided wasn't found.
-
-        :rtype: dict or anything
-        :returns: All metadata or the value of the specific field.
-        """
-        # We ignore 'acl' because it is meant to be handled via 'get_acl()'.
-        if field == 'acl':
-            raise KeyError("Use 'get_acl()'")
-
-        if not self.has_metadata(field=field):
-            self.reload_metadata()
-
-        if field:
-            return self.metadata.get(field, default)
-        else:
-            return self.metadata
-
-    def patch_metadata(self, metadata):
-        """Update particular fields of this key's metadata.
-
-        This method will only update the fields provided and will not
-        touch the other fields.
-
-        It will also reload the metadata locally based on the servers
-        response.
-
-        :type metadata: dict
-        :param metadata: The dictionary of values to update.
-
-        :rtype: :class:`Key`
-        :returns: The current key.
-        """
-        self.metadata = self.connection.api_request(
-            method='PATCH', path=self.path, data=metadata,
-            query_params={'projection': 'full'})
-        return self
-
-    def get_acl(self):
-        """Get ACL metadata as a :class:`gcloud.storage.acl.ObjectACL` object.
-
-        :rtype: :class:`gcloud.storage.acl.ObjectACL`
-        :returns: An ACL object for the current key.
-        """
-        if not self.acl.loaded:
-            self.acl.reload()
-        return self.acl
-
     def make_public(self):
         """Make this key public giving all users read access.
 
-        :rtype: :class:`Key`
-        :returns: The current key.
+        :returns: The current object.
         """
         self.get_acl().all().grant_read()
         self.acl.save()

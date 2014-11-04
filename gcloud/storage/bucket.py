@@ -2,6 +2,7 @@
 
 import os
 
+from gcloud.storage._helpers import _MetadataMixin
 from gcloud.storage import exceptions
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
@@ -10,7 +11,7 @@ from gcloud.storage.key import Key
 from gcloud.storage.key import _KeyIterator
 
 
-class Bucket(object):
+class Bucket(_MetadataMixin):
     """A class representing a Bucket on Cloud Storage.
 
     :type connection: :class:`gcloud.storage.connection.Connection`
@@ -19,13 +20,16 @@ class Bucket(object):
     :type name: string
     :param name: The name of the bucket.
     """
+
+    METADATA_ACL_FIELDS = ('acl', 'defaultObjectAcl')
+    """Tuple of metadata fields pertaining to bucket ACLs."""
+
     # ACL rules are lazily retrieved.
     _acl = _default_object_acl = None
 
     def __init__(self, connection=None, name=None, metadata=None):
-        self.connection = connection
-        self.name = name
-        self.metadata = metadata
+        super(Bucket, self).__init__(name=name, metadata=metadata)
+        self._connection = connection
 
     @property
     def acl(self):
@@ -62,6 +66,15 @@ class Bucket(object):
 
     def __contains__(self, key):
         return self.get_key(key) is not None
+
+    @property
+    def connection(self):
+        """Getter property for the connection to use with this Bucket.
+
+        :rtype: :class:`gcloud.storage.connection.Connection`
+        :returns: The connection to use.
+        """
+        return self._connection
 
     @property
     def path(self):
@@ -325,85 +338,6 @@ class Bucket(object):
         else:
             key = self.new_key(os.path.basename(file_obj.name))
         return key.set_contents_from_file(file_obj)
-
-    def has_metadata(self, field=None):
-        """Check if metadata is available locally.
-
-        :type field: string
-        :param field: (optional) the particular field to check for.
-
-        :rtype: bool
-        :returns: Whether metadata is available locally.
-        """
-        if not self.metadata:
-            return False
-        elif field and field not in self.metadata:
-            return False
-        else:
-            return True
-
-    def reload_metadata(self):
-        """Reload metadata from Cloud Storage.
-
-        :rtype: :class:`Bucket`
-        :returns: The bucket you just reloaded data for.
-        """
-        # Pass only '?projection=noAcl' here because 'acl'/'defaultObjectAcl'
-        # are handled via 'get_acl()'/'get_default_object_acl()'
-        query_params = {'projection': 'noAcl'}
-        self.metadata = self.connection.api_request(
-            method='GET', path=self.path, query_params=query_params)
-        return self
-
-    def get_metadata(self, field=None, default=None):
-        """Get all metadata or a specific field.
-
-        If you request a field that isn't available, and that field can
-        be retrieved by refreshing data from Cloud Storage, this method
-        will reload the data using :func:`Bucket.reload_metadata`.
-
-        :type field: string
-        :param field: (optional) A particular field to retrieve from metadata.
-
-        :type default: anything
-        :param default: The value to return if the field provided wasn't found.
-
-        :rtype: dict or anything
-        :returns: All metadata or the value of the specific field.
-        """
-        if field == 'acl':
-            raise KeyError("Use 'get_acl()'")
-
-        if field == 'defaultObjectAcl':
-            raise KeyError("Use 'get_default_object_acl()'")
-
-        if not self.has_metadata(field=field):
-            self.reload_metadata()
-
-        if field:
-            return self.metadata.get(field, default)
-        else:
-            return self.metadata
-
-    def patch_metadata(self, metadata):
-        """Update particular fields of this bucket's metadata.
-
-        This method will only update the fields provided and will not
-        touch the other fields.
-
-        It will also reload the metadata locally based on the servers
-        response.
-
-        :type metadata: dict
-        :param metadata: The dictionary of values to update.
-
-        :rtype: :class:`Bucket`
-        :returns: The current bucket.
-        """
-        self.metadata = self.connection.api_request(
-            method='PATCH', path=self.path, data=metadata,
-            query_params={'projection': 'full'})
-        return self
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related metadata.
