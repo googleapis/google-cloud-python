@@ -112,6 +112,7 @@
     <span class="n">CUSTOM_METADATA_FIELDS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="s">&#39;get_acl&#39;</span><span class="p">,</span>
         <span class="s">&#39;defaultObjectAcl&#39;</span><span class="p">:</span> <span class="s">&#39;get_default_object_acl&#39;</span><span class="p">,</span>
+        <span class="s">&#39;lifecycle&#39;</span><span class="p">:</span> <span class="s">&#39;get_lifecycle&#39;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="sd">&quot;&quot;&quot;Mapping of field name -&gt; accessor for fields w/ custom accessors.&quot;&quot;&quot;</span>
 
@@ -528,6 +529,35 @@
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
                 <span class="n">key</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
                 <span class="n">key</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Bucket.get_lifecycle"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_lifecycle">[docs]</a>    <span class="k">def</span> <span class="nf">get_lifecycle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve CORS policies configured for this bucket.</span>
+
+<span class="sd">        See: https://cloud.google.com/storage/docs/lifecycle and</span>
+<span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
+
+<span class="sd">        :rtype: list(dict)</span>
+<span class="sd">        :returns: A sequence of mappings describing each CORS policy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_metadata</span><span class="p">(</span><span class="s">&#39;lifecycle&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reload_metadata</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lifecycle&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;rule&#39;</span><span class="p">,</span> <span class="p">()):</span>
+            <span class="n">rule</span> <span class="o">=</span> <span class="n">rule</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+</div>
+<div class="viewcode-block" id="Bucket.update_lifecycle"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.update_lifecycle">[docs]</a>    <span class="k">def</span> <span class="nf">update_lifecycle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update CORS policies configured for this bucket.</span>
+
+<span class="sd">        See: https://cloud.google.com/storage/docs/lifecycle and</span>
+<span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
+
+<span class="sd">        :type rules: list(dict)</span>
+<span class="sd">        :param rules: A sequence of mappings describing each lifecycle policy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_metadata</span><span class="p">({</span><span class="s">&#39;lifecycle&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;rule&#39;</span><span class="p">:</span> <span class="n">rules</span><span class="p">}})</span>
 
 </div></div>
 <div class="viewcode-block" id="BucketIterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.BucketIterator">[docs]</a><span class="k">class</span> <span class="nc">BucketIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
