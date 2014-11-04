@@ -342,9 +342,9 @@ class Key(_MetadataMixin):
         """
         string_buffer = StringIO()
         string_buffer.write(data)
-        self.set_contents_from_file(file_obj=string_buffer, rewind=True,
-                                    size=string_buffer.len,
-                                    content_type=content_type)
+        self.upload_from_file(file_obj=string_buffer, rewind=True,
+                              size=string_buffer.len,
+                              content_type=content_type)
         return self
 
     # NOTE: Alias for boto-like API.
@@ -369,10 +369,11 @@ class _KeyIterator(Iterator):
     :type bucket: :class:`gcloud.storage.bucket.Bucket`
     :param bucket: The bucket from which to list keys.
     """
-    def __init__(self, bucket):
+    def __init__(self, bucket, extra_params=None):
         self.bucket = bucket
         super(_KeyIterator, self).__init__(
-            connection=bucket.connection, path=bucket.path + '/o')
+            connection=bucket.connection, path=bucket.path + '/o',
+            extra_params=extra_params)
 
     def get_items_from_response(self, response):
         """Factory method, yields :class:`.storage.key.Key` items from response.

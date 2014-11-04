@@ -36,7 +36,7 @@ class TestIterator(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], PATH)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test_has_next_page_new(self):
         connection = _Connection()
@@ -64,7 +64,7 @@ class TestIterator(unittest2.TestCase):
         connection = _Connection()
         PATH = '/foo'
         iterator = self._makeOne(connection, PATH)
-        self.assertEqual(iterator.get_query_params(), None)
+        self.assertEqual(iterator.get_query_params(), {})
 
     def test_get_query_params_w_token(self):
         connection = _Connection()
@@ -74,6 +74,32 @@ class TestIterator(unittest2.TestCase):
         iterator.next_page_token = TOKEN
         self.assertEqual(iterator.get_query_params(),
                          {'pageToken': TOKEN})
+
+    def test_get_query_params_extra_params(self):
+        connection = _Connection()
+        PATH = '/foo'
+        extra_params = {'key': 'val'}
+        iterator = self._makeOne(connection, PATH, extra_params=extra_params)
+        self.assertEqual(iterator.get_query_params(), extra_params)
+
+    def test_get_query_params_w_token_and_extra_params(self):
+        connection = _Connection()
+        PATH = '/foo'
+        TOKEN = 'token'
+        extra_params = {'key': 'val'}
+        iterator = self._makeOne(connection, PATH, extra_params=extra_params)
+        iterator.next_page_token = TOKEN
+
+        expected_query = extra_params.copy()
+        expected_query.update({'pageToken': TOKEN})
+        self.assertEqual(iterator.get_query_params(), expected_query)
+
+    def test_get_query_params_w_token_collision(self):
+        connection = _Connection()
+        PATH = '/foo'
+        extra_params = {'pageToken': 'val'}
+        self.assertRaises(ValueError, self._makeOne, connection, PATH,
+                          extra_params=extra_params)
 
     def test_get_next_page_response_new_no_token_in_response(self):
         PATH = '/foo'
@@ -90,7 +116,7 @@ class TestIterator(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], PATH)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test_get_next_page_response_no_token(self):
         connection = _Connection()

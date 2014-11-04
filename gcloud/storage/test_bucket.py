@@ -77,7 +77,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test___iter___non_empty(self):
         NAME = 'name'
@@ -91,7 +91,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test___contains___miss(self):
         NAME = 'name'
@@ -154,7 +154,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test_get_all_keys_non_empty(self):
         NAME = 'name'
@@ -168,7 +168,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], None)
+        self.assertEqual(kw['query_params'], {})
 
     def test_new_key_existing(self):
         from gcloud.storage.key import Key
@@ -334,8 +334,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def set_contents_from_filename(self, filename):
+            def upload_from_filename(self, filename):
                 _uploaded.append((self._bucket, self._name, filename))
+
         bucket = self._makeOne()
         with _Monkey(MUT, Key=_Key):
             bucket.upload_file(FILENAME)
@@ -354,8 +355,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def set_contents_from_filename(self, filename):
+            def upload_from_filename(self, filename):
                 _uploaded.append((self._bucket, self._name, filename))
+
         bucket = self._makeOne()
         with _Monkey(MUT, Key=_Key):
             bucket.upload_file(FILENAME, KEY)
@@ -374,8 +376,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def set_contents_from_file(self, fh):
+            def upload_from_file(self, fh):
                 _uploaded.append((self._bucket, self._name, fh))
+
         bucket = self._makeOne()
         with _Monkey(MUT, Key=_Key):
             bucket.upload_file_object(FILEOBJECT)
@@ -395,8 +398,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def set_contents_from_file(self, fh):
+            def upload_from_file(self, fh):
                 _uploaded.append((self._bucket, self._name, fh))
+
         bucket = self._makeOne()
         with _Monkey(MUT, Key=_Key):
             bucket.upload_file_object(FILEOBJECT, KEY)
@@ -728,7 +732,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw[1]['query_params'], None)
+        self.assertEqual(kw[1]['query_params'], {})
 
     def test_get_lifecycle_eager(self):
         NAME = 'name'
