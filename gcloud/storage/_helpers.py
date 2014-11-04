@@ -9,7 +9,6 @@ class _MetadataMixin(object):
 
     Non-abstract subclasses should implement:
       - METADATA_ACL_FIELDS
-      - ACL_CLASS
       - connection
       - path
     """
@@ -20,12 +19,6 @@ class _MetadataMixin(object):
     Expected to be set by subclasses. Fields in this tuple will cause
     `get_metadata()` to raise a KeyError with a message to use get_acl()
     methods.
-    """
-
-    ACL_CLASS = type(None)
-    """Class which holds ACL data for a given type.
-
-    Expected to be set by subclasses.
     """
 
     def __init__(self, name=None, metadata=None):
@@ -131,44 +124,11 @@ class _MetadataMixin(object):
             query_params={'projection': 'full'})
         return self
 
-
-class _ACLMetadataMixin(_MetadataMixin):
-    """Abstract mixin for cloud storage classes with metadata and ACLs.
-
-    Expected to be subclassed by :class:`gcloud.storage.bucket.Bucket`
-    and :class:`gcloud.storage.key.Key`.
-
-    Non-abstract subclasses should implement:
-      - METADATA_ACL_FIELDS
-      - ACL_CLASS
-      - connection
-      - path
-    """
-
-    @property
-    def connection(self):
-        """Abstract getter for the connection to use."""
-        raise NotImplementedError
-
-    @property
-    def path(self):
-        """Abstract getter for the object path."""
-        raise NotImplementedError
-
     def get_acl(self):
-        """Get ACL metadata as an object of type `ACL_CLASS`.
+        """Get ACL metadata as an object.
 
         :returns: An ACL object for the current object.
         """
         if not self.acl.loaded:
             self.acl.reload()
         return self.acl
-
-    def make_public(self):
-        """Make this object public giving all users read access.
-
-        :returns: The current object.
-        """
-        self.get_acl().all().grant_read()
-        self.acl.save()
-        return self

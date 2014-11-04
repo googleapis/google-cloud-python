@@ -4,20 +4,17 @@ import mimetypes
 import os
 from StringIO import StringIO
 
-from gcloud.storage._helpers import _ACLMetadataMixin
+from gcloud.storage._helpers import _MetadataMixin
 from gcloud.storage.acl import ObjectACL
 from gcloud.storage.exceptions import StorageError
 from gcloud.storage.iterator import Iterator
 
 
-class Key(_ACLMetadataMixin):
+class Key(_MetadataMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
 
     METADATA_ACL_FIELDS = ('acl',)
     """Tuple of metadata fields pertaining to key ACLs."""
-
-    ACL_CLASS = ObjectACL
-    """Class which holds ACL data for keys."""
 
     CHUNK_SIZE = 1024 * 1024  # 1 MB.
     """The size of a chunk of data whenever iterating (1 MB).
@@ -350,6 +347,15 @@ class Key(_ACLMetadataMixin):
 
     # NOTE: Alias for boto-like API.
     set_contents_from_string = upload_from_string
+
+    def make_public(self):
+        """Make this key public giving all users read access.
+
+        :returns: The current object.
+        """
+        self.get_acl().all().grant_read()
+        self.acl.save()
+        return self
 
 
 class _KeyIterator(Iterator):

@@ -2,7 +2,7 @@
 
 import os
 
-from gcloud.storage._helpers import _ACLMetadataMixin
+from gcloud.storage._helpers import _MetadataMixin
 from gcloud.storage import exceptions
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
@@ -11,7 +11,7 @@ from gcloud.storage.key import Key
 from gcloud.storage.key import _KeyIterator
 
 
-class Bucket(_ACLMetadataMixin):
+class Bucket(_MetadataMixin):
     """A class representing a Bucket on Cloud Storage.
 
     :type connection: :class:`gcloud.storage.connection.Connection`
@@ -23,9 +23,6 @@ class Bucket(_ACLMetadataMixin):
 
     METADATA_ACL_FIELDS = ('acl', 'defaultObjectAcl')
     """Tuple of metadata fields pertaining to bucket ACLs."""
-
-    ACL_CLASS = BucketACL
-    """Class which holds ACL data for buckets."""
 
     # ACL rules are lazily retrieved.
     _acl = _default_object_acl = None
@@ -428,7 +425,8 @@ class Bucket(_ACLMetadataMixin):
         :param future: If True, this will make all objects created in the
                        future public as well.
         """
-        super(Bucket, self).make_public()
+        self.get_acl().all().grant_read()
+        self.acl.save()
 
         if future:
             doa = self.get_default_object_acl()
