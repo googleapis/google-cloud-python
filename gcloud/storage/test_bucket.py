@@ -510,6 +510,23 @@ class Test_Bucket(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
+    def test_get_metadata_versioning_no_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        self.assertRaises(KeyError, bucket.get_metadata, 'versioning')
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_metadata_versioning_w_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        default = object()
+        self.assertRaises(KeyError, bucket.get_metadata, 'versioning', default)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
     def test_get_metadata_miss(self):
         NAME = 'name'
         before = {'bar': 'Bar'}
