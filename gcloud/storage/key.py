@@ -13,8 +13,10 @@ from gcloud.storage.iterator import Iterator
 class Key(_MetadataMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
 
-    METADATA_ACL_FIELDS = ('acl',)
-    """Tuple of metadata fields pertaining to key ACLs."""
+    CUSTOM_METADATA_FIELDS = {
+        'acl': 'get_acl',
+    }
+    """Mapping of field name -> accessor for fields w/ custom accessors."""
 
     CHUNK_SIZE = 1024 * 1024  # 1 MB.
     """The size of a chunk of data whenever iterating (1 MB).
