@@ -126,15 +126,24 @@
 <span class="sd">    :type path: string</span>
 <span class="sd">    :param path: The path to query for the list of items.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+
+    <span class="n">PAGE_TOKEN</span> <span class="o">=</span> <span class="s">&#39;pageToken&#39;</span>
+    <span class="n">RESERVED_PARAMS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span><span class="n">PAGE_TOKEN</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="o">=</span> <span class="n">extra_params</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">reserved_in_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESERVED_PARAMS</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">reserved_in_use</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s">&#39;Using a reserved parameter&#39;</span><span class="p">,</span>
+                              <span class="n">reserved_in_use</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Iterate through the list of items.&quot;&quot;&quot;</span>
-
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next_page</span><span class="p">():</span>
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_next_page_response</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_items_from_response</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
@@ -154,11 +163,13 @@
 <div class="viewcode-block" id="Iterator.get_query_params"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.Iterator.get_query_params">[docs]</a>    <span class="k">def</span> <span class="nf">get_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter for query parameters for the next request.</span>
 
-<span class="sd">        :rtype: dict or None</span>
-<span class="sd">        :returns: A dictionary of query parameters or None if there are none.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: A dictionary of query parameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;pageToken&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">}</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">PAGE_TOKEN</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span><span class="p">}</span>
+                  <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="k">else</span> <span class="p">{})</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
 </div>
 <div class="viewcode-block" id="Iterator.get_next_page_response"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.iterator.Iterator.get_next_page_response">[docs]</a>    <span class="k">def</span> <span class="nf">get_next_page_response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Requests the next page from the path provided.</span>

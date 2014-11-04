@@ -632,7 +632,7 @@ just a name of a bucket.  It always returns the object:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_METADATA_FIELDS">
-<tt class="descname">CUSTOM_METADATA_FIELDS</tt><em class="property"> = {'defaultObjectAcl': 'get_default_object_acl', 'acl': 'get_acl', 'lifecycle': 'get_lifecycle'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_METADATA_FIELDS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_METADATA_FIELDS</tt><em class="property"> = {'lifecycle': 'get_lifecycle', 'acl': 'get_acl', 'defaultObjectAcl': 'get_default_object_acl'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_METADATA_FIELDS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -2173,7 +2173,7 @@ requests):</p>
 </div>
 <dl class="class">
 <dt id="gcloud.storage.iterator.Iterator">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.iterator.</tt><tt class="descname">Iterator</tt><big>(</big><em>connection</em>, <em>path</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.storage.iterator.</tt><tt class="descname">Iterator</tt><big>(</big><em>connection</em>, <em>path</em>, <em>extra_params=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A generic class for iterating through Cloud Storage list responses.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2188,6 +2188,16 @@ requests):</p>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="gcloud.storage.iterator.Iterator.PAGE_TOKEN">
+<tt class="descname">PAGE_TOKEN</tt><em class="property"> = 'pageToken'</em><a class="headerlink" href="#gcloud.storage.iterator.Iterator.PAGE_TOKEN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.iterator.Iterator.RESERVED_PARAMS">
+<tt class="descname">RESERVED_PARAMS</tt><em class="property"> = frozenset(['pageToken'])</em><a class="headerlink" href="#gcloud.storage.iterator.Iterator.RESERVED_PARAMS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="gcloud.storage.iterator.Iterator.get_items_from_response">
 <tt class="descname">get_items_from_response</tt><big>(</big><em>response</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.get_items_from_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.get_items_from_response" title="Permalink to this definition">¶</a></dt>
@@ -2235,9 +2245,9 @@ page of results in the response.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or None</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary of query parameters or None if there are none.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dictionary of query parameters.</td>
 </tr>
 </tbody>
 </table>

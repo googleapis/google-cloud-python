@@ -430,9 +430,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
         <span class="n">string_buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                                    <span class="n">size</span><span class="o">=</span><span class="n">string_buffer</span><span class="o">.</span><span class="n">len</span><span class="p">,</span>
-                                    <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                              <span class="n">size</span><span class="o">=</span><span class="n">string_buffer</span><span class="o">.</span><span class="n">len</span><span class="p">,</span>
+                              <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="c"># NOTE: Alias for boto-like API.</span></div>
@@ -457,10 +457,11 @@
 <span class="sd">    :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">    :param bucket: The bucket from which to list keys.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">_KeyIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
-            <span class="n">connection</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">)</span>
+            <span class="n">connection</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span>
+            <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method, yields :class:`.storage.key.Key` items from response.</span>
