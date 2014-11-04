@@ -510,6 +510,23 @@ class Test_Bucket(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
+    def test_get_metadata_location_no_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        self.assertRaises(KeyError, bucket.get_metadata, 'location')
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_metadata_location_w_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        default = object()
+        self.assertRaises(KeyError, bucket.get_metadata, 'location', default)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
     def test_get_metadata_miss(self):
         NAME = 'name'
         before = {'bar': 'Bar'}
@@ -780,6 +797,38 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]['action']['type'], 'Delete')
         self.assertEqual(entries[0]['condition']['age'], 42)
+
+    def test_get_location_eager(self):
+        NAME = 'name'
+        connection = _Connection()
+        before = {'location': 'AS'}
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertEqual(bucket.get_location(), 'AS')
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_location_lazy(self):
+        NAME = 'name'
+        connection = _Connection({'location': 'AS'})
+        bucket = self._makeOne(connection, NAME)
+        self.assertEqual(bucket.get_location(), 'AS')
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+
+    def test_update_location(self):
+        NAME = 'name'
+        connection = _Connection({'location': 'AS'})
+        bucket = self._makeOne(connection, NAME)
+        bucket.set_location('AS')
+        self.assertEqual(bucket.get_location(), 'AS')
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'location': 'AS'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
 class TestBucketIterator(unittest2.TestCase):

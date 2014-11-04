@@ -25,6 +25,7 @@ class Bucket(_MetadataMixin):
         'acl': 'get_acl',
         'defaultObjectAcl': 'get_default_object_acl',
         'lifecycle': 'get_lifecycle',
+        'location': 'get_location',
     }
     """Mapping of field name -> accessor for fields w/ custom accessors."""
 
@@ -470,6 +471,30 @@ class Bucket(_MetadataMixin):
         :param rules: A sequence of mappings describing each lifecycle policy.
         """
         self.patch_metadata({'lifecycle': {'rule': rules}})
+
+    def get_location(self):
+        """Retrieve location configured for this bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+
+        :rtype: string
+        :returns: The configured location.
+        """
+        if not self.has_metadata('location'):
+            self.reload_metadata()
+        return self.metadata.get('location')
+
+    def set_location(self, location):
+        """Update location configured for this bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+
+        :type location: string
+        :param location: The new configured location.
+        """
+        self.patch_metadata({'location': location})
 
 
 class BucketIterator(Iterator):
