@@ -137,10 +137,10 @@
 <span class="sd">  &gt;&gt;&gt; acl.save()</span>
 
 <span class="sd">You can alternatively save any existing :class:`gcloud.storage.acl.ACL`</span>
-<span class="sd">object (whether it was created by a factory method or not) with the</span>
-<span class="sd">:func:`gcloud.storage.bucket.Bucket.save_acl` method::</span>
+<span class="sd">object (whether it was created by a factory method or not) from a</span>
+<span class="sd">:class:`gcloud.storage.bucket.Bucket`::</span>
 
-<span class="sd">  &gt;&gt;&gt; bucket.save_acl(acl)</span>
+<span class="sd">  &gt;&gt;&gt; bucket.acl.save(acl=acl)</span>
 
 <span class="sd">To get the list of ``entity`` and ``role`` for each unique pair, the</span>
 <span class="sd">:class:`ACL` class is iterable::</span>

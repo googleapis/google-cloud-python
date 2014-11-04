@@ -92,13 +92,17 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
 
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_MetadataMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">ObjectACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.exceptions</span> <span class="kn">import</span> <span class="n">StorageError</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 
 
-<div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="n">_MetadataMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A wrapper around Cloud Storage&#39;s concept of an ``Object``.&quot;&quot;&quot;</span>
+
+    <span class="n">METADATA_ACL_FIELDS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;acl&#39;</span><span class="p">,)</span>
+    <span class="sd">&quot;&quot;&quot;Tuple of metadata fields pertaining to key ACLs.&quot;&quot;&quot;</span>
 
     <span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c"># 1 MB.</span>
     <span class="sd">&quot;&quot;&quot;The size of a chunk of data whenever iterating (1 MB).</span>
@@ -121,9 +125,8 @@
 <span class="sd">        :type metadata: dict</span>
 <span class="sd">        :param metadata: All the other data provided by Cloud Storage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Key</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span> <span class="ow">or</span> <span class="p">{}</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Key.acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.acl">[docs]</a>    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -433,98 +436,10 @@
     <span class="c"># NOTE: Alias for boto-like API.</span></div>
     <span class="n">set_contents_from_string</span> <span class="o">=</span> <span class="n">upload_from_string</span>
 
-<div class="viewcode-block" id="Key.has_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.has_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">has_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check if metadata is available locally.</span>
-
-<span class="sd">        :type field: string</span>
-<span class="sd">        :param field: (optional) the particular field to check for.</span>
-
-<span class="sd">        :rtype: bool</span>
-<span class="sd">        :returns: Whether metadata is available locally.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-        <span class="k">elif</span> <span class="n">field</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span>
-</div>
-<div class="viewcode-block" id="Key.reload_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.reload_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">reload_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reload metadata from Cloud Storage.</span>
-
-<span class="sd">        :rtype: :class:`Key`</span>
-<span class="sd">        :returns: The key you just reloaded data for.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Pass only &#39;?projection=noAcl&#39; here because &#39;acl&#39; is handled via</span>
-        <span class="c"># &#39;get_acl().</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;noAcl&#39;</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
-</div>
-<div class="viewcode-block" id="Key.get_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get all metadata or a specific field.</span>
-
-<span class="sd">        If you request a field that isn&#39;t available, and that field can</span>
-<span class="sd">        be retrieved by refreshing data from Cloud Storage, this method</span>
-<span class="sd">        will reload the data using :func:`Key.reload_metadata`.</span>
-
-<span class="sd">        :type field: string</span>
-<span class="sd">        :param field: (optional) A particular field to retrieve from metadata.</span>
-
-<span class="sd">        :type default: anything</span>
-<span class="sd">        :param default: The value to return if the field provided wasn&#39;t found.</span>
-
-<span class="sd">        :rtype: dict or anything</span>
-<span class="sd">        :returns: All metadata or the value of the specific field.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># We ignore &#39;acl&#39; because it is meant to be handled via &#39;get_acl()&#39;.</span>
-        <span class="k">if</span> <span class="n">field</span> <span class="o">==</span> <span class="s">&#39;acl&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s">&quot;Use &#39;get_acl()&#39;&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_metadata</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reload_metadata</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">field</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
-</div>
-<div class="viewcode-block" id="Key.patch_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.patch_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">patch_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update particular fields of this key&#39;s metadata.</span>
-
-<span class="sd">        This method will only update the fields provided and will not</span>
-<span class="sd">        touch the other fields.</span>
-
-<span class="sd">        It will also reload the metadata locally based on the servers</span>
-<span class="sd">        response.</span>
-
-<span class="sd">        :type metadata: dict</span>
-<span class="sd">        :param metadata: The dictionary of values to update.</span>
-
-<span class="sd">        :rtype: :class:`Key`</span>
-<span class="sd">        :returns: The current key.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
-        <span class="k">return</span> <span class="bp">self</span>
-</div>
-<div class="viewcode-block" id="Key.get_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.get_acl">[docs]</a>    <span class="k">def</span> <span class="nf">get_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get ACL metadata as a :class:`gcloud.storage.acl.ObjectACL` object.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.storage.acl.ObjectACL`</span>
-<span class="sd">        :returns: An ACL object for the current key.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">loaded</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">acl</span>
-</div>
 <div class="viewcode-block" id="Key.make_public"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this key public giving all users read access.</span>
 
-<span class="sd">        :rtype: :class:`Key`</span>
-<span class="sd">        :returns: The current key.</span>
+<span class="sd">        :returns: The current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>

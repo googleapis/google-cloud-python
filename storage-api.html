@@ -616,7 +616,7 @@ just a name of a bucket.  It always returns the object:</p>
 <dl class="class">
 <dt id="gcloud.storage.bucket.Bucket">
 <em class="property">class </em><tt class="descclassname">gcloud.storage.bucket.</tt><tt class="descname">Bucket</tt><big>(</big><em>connection=None</em>, <em>name=None</em>, <em>metadata=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage._helpers._MetadataMixin</span></tt></p>
 <p>A class representing a Bucket on Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -630,6 +630,12 @@ just a name of a bucket.  It always returns the object:</p>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.METADATA_ACL_FIELDS">
+<tt class="descname">METADATA_ACL_FIELDS</tt><em class="property"> = ('acl', 'defaultObjectAcl')</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.METADATA_ACL_FIELDS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tuple of metadata fields pertaining to bucket ACLs.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.acl">
 <tt class="descname">acl</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.acl" title="Permalink to this definition">¶</a></dt>
@@ -675,6 +681,22 @@ Typically something like index.html.</li>
 <li><strong>not_found_page</strong> (<em>string</em>) &#8211; The file to use when a page isn&#8217;t found.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.connection">
+<tt class="descname">connection</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter property for the connection to use with this Bucket.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The connection to use.</td>
 </tr>
 </tbody>
 </table>
@@ -919,51 +941,6 @@ will reload it from Cloud Storage.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.get_metadata">
-<tt class="descname">get_metadata</tt><big>(</big><em>field=None</em>, <em>default=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all metadata or a specific field.</p>
-<p>If you request a field that isn&#8217;t available, and that field can
-be retrieved by refreshing data from Cloud Storage, this method
-will reload the data using <a class="reference internal" href="#gcloud.storage.bucket.Bucket.reload_metadata" title="gcloud.storage.bucket.Bucket.reload_metadata"><tt class="xref py py-func docutils literal"><span class="pre">Bucket.reload_metadata()</span></tt></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field</strong> (<em>string</em>) &#8211; (optional) A particular field to retrieve from metadata.</li>
-<li><strong>default</strong> (<em>anything</em>) &#8211; The value to return if the field provided wasn&#8217;t found.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">dict or anything</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">All metadata or the value of the specific field.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.has_metadata">
-<tt class="descname">has_metadata</tt><big>(</big><em>field=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.has_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.has_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if metadata is available locally.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field</strong> (<em>string</em>) &#8211; (optional) the particular field to check for.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Whether metadata is available locally.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.make_public">
 <tt class="descname">make_public</tt><big>(</big><em>recursive=False</em>, <em>future=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.make_public"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.make_public" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a bucket public.</p>
@@ -1004,48 +981,10 @@ returns the corresponding Key object.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.patch_metadata">
-<tt class="descname">patch_metadata</tt><big>(</big><em>metadata</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.patch_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.patch_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update particular fields of this bucket&#8217;s metadata.</p>
-<p>This method will only update the fields provided and will not
-touch the other fields.</p>
-<p>It will also reload the metadata locally based on the servers
-response.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>dict</em>) &#8211; The dictionary of values to update.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current bucket.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.path">
 <tt class="descname">path</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.path" title="Permalink to this definition">¶</a></dt>
 <dd><p>The URL path to this bucket.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.reload_metadata">
-<tt class="descname">reload_metadata</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.reload_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.reload_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reload metadata from Cloud Storage.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The bucket you just reloaded data for.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
@@ -1172,7 +1111,7 @@ methods on <a class="reference internal" href="#gcloud.storage.connection.Connec
 <dl class="class">
 <dt id="gcloud.storage.key.Key">
 <em class="property">class </em><tt class="descclassname">gcloud.storage.key.</tt><tt class="descname">Key</tt><big>(</big><em>bucket=None</em>, <em>name=None</em>, <em>metadata=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage._helpers._MetadataMixin</span></tt></p>
 <p>A wrapper around Cloud Storage&#8217;s concept of an <tt class="docutils literal"><span class="pre">Object</span></tt>.</p>
 <p>Key constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1194,6 +1133,12 @@ unique path of the object in the bucket.</li>
 <tt class="descname">CHUNK_SIZE</tt><em class="property"> = 1048576</em><a class="headerlink" href="#gcloud.storage.key.Key.CHUNK_SIZE" title="Permalink to this definition">¶</a></dt>
 <dd><p>The size of a chunk of data whenever iterating (1 MB).</p>
 <p>This must be a multiple of 256 KB per the API specification.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.METADATA_ACL_FIELDS">
+<tt class="descname">METADATA_ACL_FIELDS</tt><em class="property"> = ('acl',)</em><a class="headerlink" href="#gcloud.storage.key.Key.METADATA_ACL_FIELDS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tuple of metadata fields pertaining to key ACLs.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1362,22 +1307,6 @@ until expiration.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.key.Key.get_acl">
-<tt class="descname">get_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.get_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.get_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get ACL metadata as a <a class="reference internal" href="#gcloud.storage.acl.ObjectACL" title="gcloud.storage.acl.ObjectACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ObjectACL</span></tt></a> object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ObjectACL" title="gcloud.storage.acl.ObjectACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ObjectACL</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An ACL object for the current key.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.key.Key.get_contents_as_string">
 <tt class="descname">get_contents_as_string</tt><big>(</big><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_as_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download the contents of this key as a string.</p>
@@ -1428,51 +1357,6 @@ until expiration.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.key.Key.get_metadata">
-<tt class="descname">get_metadata</tt><big>(</big><em>field=None</em>, <em>default=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.get_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.get_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get all metadata or a specific field.</p>
-<p>If you request a field that isn&#8217;t available, and that field can
-be retrieved by refreshing data from Cloud Storage, this method
-will reload the data using <a class="reference internal" href="#gcloud.storage.key.Key.reload_metadata" title="gcloud.storage.key.Key.reload_metadata"><tt class="xref py py-func docutils literal"><span class="pre">Key.reload_metadata()</span></tt></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field</strong> (<em>string</em>) &#8211; (optional) A particular field to retrieve from metadata.</li>
-<li><strong>default</strong> (<em>anything</em>) &#8211; The value to return if the field provided wasn&#8217;t found.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">dict or anything</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">All metadata or the value of the specific field.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.key.Key.has_metadata">
-<tt class="descname">has_metadata</tt><big>(</big><em>field=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.has_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.has_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check if metadata is available locally.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>field</strong> (<em>string</em>) &#8211; (optional) the particular field to check for.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Whether metadata is available locally.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.key.Key.make_public">
 <tt class="descname">make_public</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.make_public"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.make_public" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make this key public giving all users read access.</p>
@@ -1480,31 +1364,7 @@ will reload the data using <a class="reference internal" href="#gcloud.storage.k
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current key.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.key.Key.patch_metadata">
-<tt class="descname">patch_metadata</tt><big>(</big><em>metadata</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.patch_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.patch_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update particular fields of this key&#8217;s metadata.</p>
-<p>This method will only update the fields provided and will not
-touch the other fields.</p>
-<p>It will also reload the metadata locally based on the servers
-response.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>metadata</strong> (<em>dict</em>) &#8211; The dictionary of values to update.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current key.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current object.</td>
 </tr>
 </tbody>
 </table>
@@ -1537,22 +1397,6 @@ response.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><cite>string</cite></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The public URL for this key.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.key.Key.reload_metadata">
-<tt class="descname">reload_metadata</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.reload_metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.reload_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reload metadata from Cloud Storage.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key you just reloaded data for.</td>
 </tr>
 </tbody>
 </table>
@@ -1807,9 +1651,9 @@ for brevity:</p>
 </pre></div>
 </div>
 <p>You can alternatively save any existing <a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a>
-object (whether it was created by a factory method or not) with the
-<tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.save_acl()</span></tt> method:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">save_acl</span><span class="p">(</span><span class="n">acl</span><span class="p">)</span>
+object (whether it was created by a factory method or not) from a
+<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="n">acl</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To get the list of <tt class="docutils literal"><span class="pre">entity</span></tt> and <tt class="docutils literal"><span class="pre">role</span></tt> for each unique pair, the

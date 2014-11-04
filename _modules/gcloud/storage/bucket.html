@@ -90,6 +90,7 @@
 
 <span class="kn">import</span> <span class="nn">os</span>
 
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_MetadataMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">BucketACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
@@ -98,7 +99,7 @@
 <span class="kn">from</span> <span class="nn">gcloud.storage.key</span> <span class="kn">import</span> <span class="n">_KeyIterator</span>
 
 
-<div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="n">_MetadataMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class representing a Bucket on Cloud Storage.</span>
 
 <span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
@@ -107,13 +108,16 @@
 <span class="sd">    :type name: string</span>
 <span class="sd">    :param name: The name of the bucket.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">METADATA_ACL_FIELDS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="s">&#39;defaultObjectAcl&#39;</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Tuple of metadata fields pertaining to bucket ACLs.&quot;&quot;&quot;</span>
+
     <span class="c"># ACL rules are lazily retrieved.</span>
     <span class="n">_acl</span> <span class="o">=</span> <span class="n">_default_object_acl</span> <span class="o">=</span> <span class="bp">None</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Bucket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Bucket.acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.acl">[docs]</a>    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -151,6 +155,15 @@
     <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Bucket.connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.connection">[docs]</a>    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Getter property for the connection to use with this Bucket.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.storage.connection.Connection`</span>
+<span class="sd">        :returns: The connection to use.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span>
+</div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Bucket.path"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.path">[docs]</a>    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The URL path to this bucket.&quot;&quot;&quot;</span>
@@ -413,85 +426,6 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Bucket.has_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.has_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">has_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Check if metadata is available locally.</span>
-
-<span class="sd">        :type field: string</span>
-<span class="sd">        :param field: (optional) the particular field to check for.</span>
-
-<span class="sd">        :rtype: bool</span>
-<span class="sd">        :returns: Whether metadata is available locally.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-        <span class="k">elif</span> <span class="n">field</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span>
-</div>
-<div class="viewcode-block" id="Bucket.reload_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.reload_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">reload_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reload metadata from Cloud Storage.</span>
-
-<span class="sd">        :rtype: :class:`Bucket`</span>
-<span class="sd">        :returns: The bucket you just reloaded data for.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># Pass only &#39;?projection=noAcl&#39; here because &#39;acl&#39;/&#39;defaultObjectAcl&#39;</span>
-        <span class="c"># are handled via &#39;get_acl()&#39;/&#39;get_default_object_acl()&#39;</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;noAcl&#39;</span><span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
-</div>
-<div class="viewcode-block" id="Bucket.get_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get all metadata or a specific field.</span>
-
-<span class="sd">        If you request a field that isn&#39;t available, and that field can</span>
-<span class="sd">        be retrieved by refreshing data from Cloud Storage, this method</span>
-<span class="sd">        will reload the data using :func:`Bucket.reload_metadata`.</span>
-
-<span class="sd">        :type field: string</span>
-<span class="sd">        :param field: (optional) A particular field to retrieve from metadata.</span>
-
-<span class="sd">        :type default: anything</span>
-<span class="sd">        :param default: The value to return if the field provided wasn&#39;t found.</span>
-
-<span class="sd">        :rtype: dict or anything</span>
-<span class="sd">        :returns: All metadata or the value of the specific field.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">field</span> <span class="o">==</span> <span class="s">&#39;acl&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s">&quot;Use &#39;get_acl()&#39;&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">field</span> <span class="o">==</span> <span class="s">&#39;defaultObjectAcl&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s">&quot;Use &#39;get_default_object_acl()&#39;&quot;</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_metadata</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reload_metadata</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">field</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span>
-</div>
-<div class="viewcode-block" id="Bucket.patch_metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.patch_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">patch_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update particular fields of this bucket&#39;s metadata.</span>
-
-<span class="sd">        This method will only update the fields provided and will not</span>
-<span class="sd">        touch the other fields.</span>
-
-<span class="sd">        It will also reload the metadata locally based on the servers</span>
-<span class="sd">        response.</span>
-
-<span class="sd">        :type metadata: dict</span>
-<span class="sd">        :param metadata: The dictionary of values to update.</span>
-
-<span class="sd">        :rtype: :class:`Bucket`</span>
-<span class="sd">        :returns: The current bucket.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
-        <span class="k">return</span> <span class="bp">self</span>
 </div>
 <div class="viewcode-block" id="Bucket.configure_website"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.configure_website">[docs]</a>    <span class="k">def</span> <span class="nf">configure_website</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_page_suffix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">not_found_page</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure website-related metadata.</span>
