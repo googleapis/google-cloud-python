@@ -75,8 +75,8 @@ class Iterator(object):
     def get_query_params(self):
         """Getter for query parameters for the next request.
 
-        :rtype: dict or None
-        :returns: A dictionary of query parameters or None if there are none.
+        :rtype: dict
+        :returns: A dictionary of query parameters.
         """
         result = ({self.PAGE_TOKEN: self.next_page_token}
                   if self.next_page_token else {})
