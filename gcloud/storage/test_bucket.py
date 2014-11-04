@@ -489,6 +489,23 @@ class Test_Bucket(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
+    def test_get_metadata_lifecycle_no_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        self.assertRaises(KeyError, bucket.get_metadata, 'lifecycle')
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_metadata_lifecycle_w_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        default = object()
+        self.assertRaises(KeyError, bucket.get_metadata, 'lifecycle', default)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
     def test_get_metadata_miss(self):
         NAME = 'name'
         before = {'bar': 'Bar'}
@@ -712,6 +729,53 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw[1]['query_params'], None)
+
+    def test_get_lifecycle_eager(self):
+        NAME = 'name'
+        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
+        before = {'lifecycle': {'rule': [LC_RULE]}}
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME, before)
+        entries = bucket.get_lifecycle()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]['action']['type'], 'Delete')
+        self.assertEqual(entries[0]['condition']['age'], 42)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_lifecycle_lazy(self):
+        NAME = 'name'
+        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
+        after = {'lifecycle': {'rule': [LC_RULE]}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        entries = bucket.get_lifecycle()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]['action']['type'], 'Delete')
+        self.assertEqual(entries[0]['condition']['age'], 42)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+
+    def test_update_lifecycle(self):
+        NAME = 'name'
+        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
+        after = {'lifecycle': {'rule': [LC_RULE]}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        bucket.update_lifecycle([LC_RULE])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        entries = bucket.get_lifecycle()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]['action']['type'], 'Delete')
+        self.assertEqual(entries[0]['condition']['age'], 42)
 
 
 class TestBucketIterator(unittest2.TestCase):

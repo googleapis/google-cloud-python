@@ -24,6 +24,7 @@ class Bucket(_MetadataMixin):
     CUSTOM_METADATA_FIELDS = {
         'acl': 'get_acl',
         'defaultObjectAcl': 'get_default_object_acl',
+        'lifecycle': 'get_lifecycle',
     }
     """Mapping of field name -> accessor for fields w/ custom accessors."""
 
@@ -440,6 +441,35 @@ class Bucket(_MetadataMixin):
             for key in self:
                 key.get_acl().all().grant_read()
                 key.save_acl()
+
+    def get_lifecycle(self):
+        """Retrieve CORS policies configured for this bucket.
+
+        See: https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: list(dict)
+        :returns: A sequence of mappings describing each CORS policy.
+        """
+        if not self.has_metadata('lifecycle'):
+            self.reload_metadata()
+        result = []
+        info = self.metadata.get('lifecycle', {})
+        for rule in info.get('rule', ()):
+            rule = rule.copy()
+            result.append(rule)
+        return result
+
+    def update_lifecycle(self, rules):
+        """Update CORS policies configured for this bucket.
+
+        See: https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :type rules: list(dict)
+        :param rules: A sequence of mappings describing each lifecycle policy.
+        """
+        self.patch_metadata({'lifecycle': {'rule': rules}})
 
 
 class BucketIterator(Iterator):
