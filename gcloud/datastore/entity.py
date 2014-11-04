@@ -78,6 +78,15 @@ class Entity(dict):
        Python3), will be saved using the 'blob_value' field, without
        any decoding / encoding step.
 
+    :type dataset: :class:`gcloud.datastore.dataset.Dataset`, or None
+    :param dataset: the Dataset instance associated with this entity.
+
+    :type kind: str
+    :param kind: the "kind" of the entity (see
+                 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers)
+
+    :param exclude_from_indexes: names of fields whose values are not to be
+                                 indexed for this entity.
     """
 
     def __init__(self, dataset=None, kind=None, exclude_from_indexes=()):
@@ -142,9 +151,9 @@ class Entity(dict):
             return self._key.kind()
 
     def exclude_from_indexes(self):
-        """Return  field names which are *not* to be indexed.
+        """Names of fields which are *not* to be indexed for this entity.
 
-        :rtype: list(str)
+        :rtype: sequence of field names
         """
         return frozenset(self._exclude_from_indexes)
 

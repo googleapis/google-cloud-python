@@ -82,11 +82,11 @@ class Dataset(object):
         """Create an entity bound to this dataset.
 
         :type kind: string
-        :param kind: the "kind" of the new entity.
+        :param kind: the "kind" of the new entity (see
+                 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers)
 
-        :type exclude_from_indexes: sequence of str
-        :param exclude_from_indexes: Names of properties *not* to be indexed
-                                     for the entity.
+        :param exclude_from_indexes: names of fields whose values are not to
+                                     be indexed.
 
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: a new Entity instance, bound to this dataset.
