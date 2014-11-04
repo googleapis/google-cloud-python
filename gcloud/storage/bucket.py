@@ -24,6 +24,7 @@ class Bucket(_MetadataMixin):
     CUSTOM_METADATA_FIELDS = {
         'acl': 'get_acl',
         'defaultObjectAcl': 'get_default_object_acl',
+        'location': 'get_location',
     }
     """Mapping of field name -> accessor for fields w/ custom accessors."""
 
@@ -440,6 +441,30 @@ class Bucket(_MetadataMixin):
             for key in self:
                 key.get_acl().all().grant_read()
                 key.save_acl()
+
+    def get_location(self):
+        """Retrieve location configured for this bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+
+        :rtype: string
+        :returns: The configured location.
+        """
+        if not self.has_metadata('location'):
+            self.reload_metadata()
+        return self.metadata.get('location')
+
+    def set_location(self, location):
+        """Update location configured for this bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+
+        :type location: string
+        :param location: The new configured location.
+        """
+        self.patch_metadata({'location': location})
 
 
 class BucketIterator(Iterator):
