@@ -166,16 +166,21 @@
         <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="n">Query</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Dataset.entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.entity">[docs]</a>    <span class="k">def</span> <span class="nf">entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">):</span>
+<div class="viewcode-block" id="Dataset.entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.entity">[docs]</a>    <span class="k">def</span> <span class="nf">entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;Create an entity bound to this dataset.</span>
 
 <span class="sd">        :type kind: string</span>
-<span class="sd">        :param kind: the &quot;kind&quot; of the new entity.</span>
+<span class="sd">        :param kind: the &quot;kind&quot; of the new entity (see</span>
+<span class="sd">                 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers)</span>
+
+<span class="sd">        :param exclude_from_indexes: names of fields whose values are not to</span>
+<span class="sd">                                     be indexed.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">        :returns: a new Entity instance, bound to this dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Entity</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Entity</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">,</span>
+                      <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="n">exclude_from_indexes</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Dataset.transaction"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.dataset.Dataset.transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a transaction bound to this dataset.</span>

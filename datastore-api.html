@@ -523,7 +523,7 @@ uses this method to fetch data:</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.save_entity">
-<tt class="descname">save_entity</tt><big>(</big><em>dataset_id</em>, <em>key_pb</em>, <em>properties</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.save_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.save_entity" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save_entity</tt><big>(</big><em>dataset_id</em>, <em>key_pb</em>, <em>properties</em>, <em>exclude_from_indexes=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.save_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.save_entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an entity to the Cloud Datastore with the provided properties.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -539,6 +539,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset in which to save the entity.</li>
 <li><strong>key_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The complete or partial key for the entity.</li>
 <li><strong>properties</strong> (<em>dict</em>) &#8211; The properties to store on the entity.</li>
+<li><strong>exclude_from_indexes</strong> (<em>sequence of str</em>) &#8211; Names of properties <em>not</em> to be indexed.</li>
 </ul>
 </td>
 </tr>
@@ -548,7 +549,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f30e9300be0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fdbf7a6fbe0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -627,17 +628,25 @@ it&#8217;s recommended to construct a new <a class="reference internal" href="#g
 
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.entity">
-<tt class="descname">entity</tt><big>(</big><em>kind</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.entity" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">entity</tt><big>(</big><em>kind</em>, <em>exclude_from_indexes=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an entity bound to this dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<em>string</em>) &#8211; the &#8220;kind&#8221; of the new entity.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>kind</strong> (<em>string</em>) &#8211; the &#8220;kind&#8221; of the new entity (see
+<a class="reference external" href="https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers">https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers</a>)</li>
+<li><strong>exclude_from_indexes</strong> &#8211; names of fields whose values are not to
+be indexed.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new Entity instance, bound to this dataset.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new Entity instance, bound to this dataset.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -767,7 +776,7 @@ with extras built in that allow you to
 delete or persist the data stored on the entity.</p>
 <dl class="class">
 <dt id="gcloud.datastore.entity.Entity">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">Entity</tt><big>(</big><em>dataset=None</em>, <em>kind=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">Entity</tt><big>(</big><em>dataset=None</em>, <em>kind=None</em>, <em>exclude_from_indexes=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -827,6 +836,21 @@ again.  Values which are &#8220;bytes&#8221; (&#8216;str&#8217; in Python2, &#82
 Python3), will be saved using the &#8216;blob_value&#8217; field, without
 any decoding / encoding step.</p>
 </div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dataset</strong> (<a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>, or None) &#8211; the Dataset instance associated with this entity.</li>
+<li><strong>kind</strong> (<em>str</em>) &#8211; the &#8220;kind&#8221; of the entity (see
+<a class="reference external" href="https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers">https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers</a>)</li>
+<li><strong>exclude_from_indexes</strong> &#8211; names of fields whose values are not to be
+indexed for this entity.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.dataset">
 <tt class="descname">dataset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.dataset" title="Permalink to this definition">¶</a></dt>
@@ -861,6 +885,20 @@ this will refer to that key&#8217;s dataset.</p>
 set on the entity. Whatever is stored remotely using the key on the
 entity will be deleted.</p>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.entity.Entity.exclude_from_indexes">
+<tt class="descname">exclude_from_indexes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.exclude_from_indexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.exclude_from_indexes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names of fields which are <em>not</em> to be indexed for this entity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sequence of field names</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
@@ -1288,7 +1326,7 @@ without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<tt class="descname">OPERATORS</tt><em class="property"> = {'&lt;=': 2, '=': 5, '&lt;': 1, '&gt;': 3, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;=': 4, '&lt;=': 2, '&gt;': 3, '=': 5, '&lt;': 1}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 

@@ -166,15 +166,25 @@
 <span class="sd">       Python3), will be saved using the &#39;blob_value&#39; field, without</span>
 <span class="sd">       any decoding / encoding step.</span>
 
+<span class="sd">    :type dataset: :class:`gcloud.datastore.dataset.Dataset`, or None</span>
+<span class="sd">    :param dataset: the Dataset instance associated with this entity.</span>
+
+<span class="sd">    :type kind: str</span>
+<span class="sd">    :param kind: the &quot;kind&quot; of the entity (see</span>
+<span class="sd">                 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers)</span>
+
+<span class="sd">    :param exclude_from_indexes: names of fields whose values are not to be</span>
+<span class="sd">                                 indexed for this entity.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">()):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
         <span class="k">if</span> <span class="n">kind</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_from_indexes</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Entity.dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the :class:`.dataset.Dataset` in which this entity belongs.</span>
@@ -227,6 +237,13 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="o">.</span><span class="n">kind</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Entity.exclude_from_indexes"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.exclude_from_indexes">[docs]</a>    <span class="k">def</span> <span class="nf">exclude_from_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Names of fields which are *not* to be indexed for this entity.</span>
+
+<span class="sd">        :rtype: sequence of field names</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span><span class="p">)</span>
 </div>
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Entity.from_key"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.entity.Entity.from_key">[docs]</a>    <span class="k">def</span> <span class="nf">from_key</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -311,7 +328,8 @@
         <span class="n">key_pb</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">save_entity</span><span class="p">(</span>
             <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
             <span class="n">key_pb</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">(),</span>
-            <span class="n">properties</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+            <span class="n">properties</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+            <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span><span class="p">())</span>
 
         <span class="c"># If we are in a transaction and the current entity needs an</span>
         <span class="c"># automatically assigned ID, tell the transaction where to put that.</span>
