@@ -21,8 +21,11 @@ class Bucket(_MetadataMixin):
     :param name: The name of the bucket.
     """
 
-    METADATA_ACL_FIELDS = ('acl', 'defaultObjectAcl')
-    """Tuple of metadata fields pertaining to bucket ACLs."""
+    CUSTOM_METADATA_FIELDS = {
+        'acl': 'get_acl',
+        'defaultObjectAcl': 'get_default_object_acl',
+    }
+    """Mapping of field name -> accessor for fields w/ custom accessors."""
 
     # ACL rules are lazily retrieved.
     _acl = _default_object_acl = None

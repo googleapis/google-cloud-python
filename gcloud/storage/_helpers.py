@@ -8,17 +8,17 @@ class _MetadataMixin(object):
     """Abstract mixin for cloud storage classes with associated metadata.
 
     Non-abstract subclasses should implement:
-      - METADATA_ACL_FIELDS
+      - CUSTOM_METADATA_FIELDS
       - connection
       - path
     """
 
-    METADATA_ACL_FIELDS = None
-    """Tuple of fields which pertain to metadata.
+    CUSTOM_METADATA_FIELDS = None
+    """Mapping of field name -> accessor for fields w/ custom accessors.
 
-    Expected to be set by subclasses. Fields in this tuple will cause
-    `get_metadata()` to raise a KeyError with a message to use get_acl()
-    methods.
+    Expected to be set by subclasses. Fields in this mapping will cause
+    `get_metadata()` to raise a KeyError with a message to use the relevant
+    accessor methods.
     """
 
     def __init__(self, name=None, metadata=None):
@@ -88,12 +88,13 @@ class _MetadataMixin(object):
         :rtype: dict or anything
         :returns: All metadata or the value of the specific field.
 
-        :raises: :class:`KeyError` if the field is in METADATA_ACL_FIELDS.
+        :raises: :class:`KeyError` if the field is in CUSTOM_METADATA_FIELDS.
         """
         # We ignore 'acl' and related fields because they are meant to be
         # handled via 'get_acl()' and related methods.
-        if field in self.METADATA_ACL_FIELDS:
-            message = 'Use get_acl() or related methods instead.'
+        custom = self.CUSTOM_METADATA_FIELDS.get(field)
+        if custom is not None:
+            message = 'Use %s or related methods instead.' % custom
             raise KeyError((field, message))
 
         if not self.has_metadata(field=field):
