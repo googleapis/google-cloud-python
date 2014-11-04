@@ -25,6 +25,7 @@ class Bucket(_MetadataMixin):
         'acl': 'get_acl',
         'defaultObjectAcl': 'get_default_object_acl',
         'lifecycle': 'get_lifecycle',
+        'cors': 'get_cors',
     }
     """Mapping of field name -> accessor for fields w/ custom accessors."""
 
@@ -443,13 +444,13 @@ class Bucket(_MetadataMixin):
                 key.save_acl()
 
     def get_lifecycle(self):
-        """Retrieve CORS policies configured for this bucket.
+        """Retrieve lifecycle rules configured for this bucket.
 
         See: https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: list(dict)
-        :returns: A sequence of mappings describing each CORS policy.
+        :returns: A sequence of mappings describing each lifecycle rule.
         """
         if not self.has_metadata('lifecycle'):
             self.reload_metadata()
@@ -467,9 +468,61 @@ class Bucket(_MetadataMixin):
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :type rules: list(dict)
-        :param rules: A sequence of mappings describing each lifecycle policy.
+        :param rules: A sequence of mappings describing each lifecycle rule.
         """
         self.patch_metadata({'lifecycle': {'rule': rules}})
+
+    def get_cors(self):
+        """Retrieve CORS policies configured for this bucket.
+
+        See: http://www.w3.org/TR/cors/ and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: list(dict)
+        :returns: A sequence of mappings describing each CORS policy.
+                  Keys include 'max_age', 'methods', 'origins', and
+                  'headers'.
+        """
+        if not self.has_metadata('cors'):
+            self.reload_metadata()
+        result = []
+        for entry in self.metadata.get('cors', ()):
+            entry = entry.copy()
+            result.append(entry)
+            if 'maxAgeSeconds' in entry:
+                entry['max_age'] = entry.pop('maxAgeSeconds')
+            if 'method' in entry:
+                entry['methods'] = entry.pop('method')
+            if 'origin' in entry:
+                entry['origins'] = entry.pop('origin')
+            if 'responseHeader' in entry:
+                entry['headers'] = entry.pop('responseHeader')
+        return result
+
+    def update_cors(self, entries):
+        """Update CORS policies configured for this bucket.
+
+        See: http://www.w3.org/TR/cors/ and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :type entries: list(dict)
+        :param entries: A sequence of mappings describing each CORS policy.
+                        Keys include 'max_age', 'methods', 'origins', and
+                        'headers'.
+        """
+        to_patch = []
+        for entry in entries:
+            entry = entry.copy()
+            to_patch.append(entry)
+            if 'max_age' in entry:
+                entry['maxAgeSeconds'] = entry.pop('max_age')
+            if 'methods' in entry:
+                entry['method'] = entry.pop('methods')
+            if 'origins' in entry:
+                entry['origin'] = entry.pop('origins')
+            if 'headers' in entry:
+                entry['responseHeader'] = entry.pop('headers')
+        self.patch_metadata({'cors': to_patch})
 
 
 class BucketIterator(Iterator):
