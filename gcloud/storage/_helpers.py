@@ -100,7 +100,8 @@ class _MetadataMixin(object):
         # We ignore 'acl' and related fields because they are meant to be
         # handled via 'get_acl()' and related methods.
         if field in self.METADATA_ACL_FIELDS:
-            raise KeyError((field, 'Use get_acl() or related methods instead.'))
+            message = 'Use get_acl() or related methods instead.'
+            raise KeyError((field, message))
 
         if not self.has_metadata(field=field):
             self.reload_metadata()
