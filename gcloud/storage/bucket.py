@@ -25,6 +25,7 @@ class Bucket(_MetadataMixin):
         'acl': 'get_acl',
         'defaultObjectAcl': 'get_default_object_acl',
         'lifecycle': 'get_lifecycle',
+        'logging': 'get_logging',
     }
     """Mapping of field name -> accessor for fields w/ custom accessors."""
 
@@ -470,6 +471,45 @@ class Bucket(_MetadataMixin):
         :param rules: A sequence of mappings describing each lifecycle policy.
         """
         self.patch_metadata({'lifecycle': {'rule': rules}})
+
+    def get_logging(self):
+        """Return info about access logging for this bucket.
+
+        See: https://cloud.google.com/storage/docs/accesslogs#status
+
+        :rtype: dict or None
+        :returns: a dict w/ keys, ``bucket_name`` and ``object_prefix``
+                  (if logging is enabled), or None (if not).
+        """
+        if not self.has_metadata('logging'):
+            self.reload_metadata()
+        info = self.metadata.get('logging')
+        if info is not None:
+            info = info.copy()
+            info['bucket_name'] = info.pop('logBucket')
+            info['object_prefix'] = info.pop('logObjectPrefix', '')
+        return info
+
+    def enable_logging(self, bucket_name, object_prefix=''):
+        """Enable access logging for this bucket.
+
+        See: https://cloud.google.com/storage/docs/accesslogs#delivery
+
+        :type bucket_name: string
+        :param bucket_name: name of bucket in which to store access logs
+
+        :type object_prefix: string
+        :param object_prefix: prefix for access log filenames
+        """
+        info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
+        self.patch_metadata({'logging': info})
+
+    def disable_logging(self):
+        """Disable access logging for this bucket.
+
+        See: https://cloud.google.com/storage/docs/accesslogs#disabling
+        """
+        self.patch_metadata({'logging': None})
 
 
 class BucketIterator(Iterator):
