@@ -548,7 +548,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f3f1fe89bb0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f30e9300be0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -816,6 +816,16 @@ with the <cite>dict</cite> builtin:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">dict</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 <span class="go">{&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When saving an entity to the backend, values which are &#8220;text&#8221;
+(&#8216;unicode&#8217; in Python2, &#8216;str&#8217; in Python3) will be saved using
+the &#8216;text_value&#8217; field, after being encoded to UTF-8.  When
+retrieved from the back-end, such values will be decoded to &#8220;text&#8221;
+again.  Values which are &#8220;bytes&#8221; (&#8216;str&#8217; in Python2, &#8216;bytes&#8217; in
+Python3), will be saved using the &#8216;blob_value&#8217; field, without
+any decoding / encoding step.</p>
 </div>
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.dataset">
@@ -1278,7 +1288,7 @@ without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;': 3, '&gt;=': 4, '=': 5, '&lt;=': 2, '&lt;': 1}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">OPERATORS</tt><em class="property"> = {'&lt;=': 2, '=': 5, '&lt;': 1, '&gt;': 3, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 

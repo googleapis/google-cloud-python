@@ -156,6 +156,16 @@
 <span class="sd">    &gt;&gt;&gt; dict(entity)</span>
 <span class="sd">    {&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}</span>
 
+<span class="sd">    .. note::</span>
+
+<span class="sd">       When saving an entity to the backend, values which are &quot;text&quot;</span>
+<span class="sd">       (&#39;unicode&#39; in Python2, &#39;str&#39; in Python3) will be saved using</span>
+<span class="sd">       the &#39;text_value&#39; field, after being encoded to UTF-8.  When</span>
+<span class="sd">       retrieved from the back-end, such values will be decoded to &quot;text&quot;</span>
+<span class="sd">       again.  Values which are &quot;bytes&quot; (&#39;str&#39; in Python2, &#39;bytes&#39; in</span>
+<span class="sd">       Python3), will be saved using the &#39;blob_value&#39; field, without</span>
+<span class="sd">       any decoding / encoding step.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
