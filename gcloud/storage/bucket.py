@@ -25,6 +25,7 @@ class Bucket(_MetadataMixin):
         'acl': 'get_acl',
         'defaultObjectAcl': 'get_default_object_acl',
         'lifecycle': 'get_lifecycle',
+        'versioning': 'get_versioning',
     }
     """Mapping of field name -> accessor for fields w/ custom accessors."""
 
@@ -470,6 +471,36 @@ class Bucket(_MetadataMixin):
         :param rules: A sequence of mappings describing each lifecycle policy.
         """
         self.patch_metadata({'lifecycle': {'rule': rules}})
+
+    def get_versioning(self):
+        """Is versioning enabled for this bucket?
+
+        See:  https://cloud.google.com/storage/docs/object-versioning for
+        details.
+
+        :rtype: boolean
+        :returns: True if enabled, else False.
+        """
+        if not self.has_metadata(field='versioning'):
+            self.reload_metadata()
+        versioning = self.metadata.get('versioning', {})
+        return versioning.get('enabled', False)
+
+    def enable_versioning(self):
+        """Enable versioning for this bucket.
+
+        See:  https://cloud.google.com/storage/docs/object-versioning for
+        details.
+        """
+        self.patch_metadata({'versioning': {'enabled': True}})
+
+    def disable_versioning(self):
+        """Disable versioning for this bucket.
+
+        See:  https://cloud.google.com/storage/docs/object-versioning for
+        details.
+        """
+        self.patch_metadata({'versioning': {'enabled': False}})
 
 
 class BucketIterator(Iterator):
