@@ -665,6 +665,51 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(props), 1)
         self.assertEqual(props[0].name, 'foo')
         self.assertEqual(props[0].value.string_value, u'Foo')
+        self.assertEqual(props[0].value.indexed, True)
+        self.assertEqual(len(mutation.delete), 0)
+        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
+
+    def test_save_entity_w_exclude_from_indexes(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.CommitResponse()
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'commit',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'},
+                                  exclude_from_indexes=['foo'])
+        self.assertEqual(result, True)
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        rq_class = datastore_pb.CommitRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, '')
+        mutation = request.mutation
+        self.assertEqual(len(mutation.insert_auto_id), 0)
+        upserts = list(mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        upsert = upserts[0]
+        self.assertEqual(upsert.key, key_pb)
+        props = list(upsert.property)
+        self.assertEqual(len(props), 1)
+        self.assertEqual(props[0].name, 'foo')
+        self.assertEqual(props[0].value.string_value, u'Foo')
+        self.assertEqual(props[0].value.indexed, False)
         self.assertEqual(len(mutation.delete), 0)
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
