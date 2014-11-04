@@ -68,6 +68,16 @@ class Entity(dict):
     >>> dict(entity)
     {'age': 20, 'name': 'JJ'}
 
+    .. note::
+
+       When saving an entity to the backend, values which are "text"
+       ('unicode' in Python2, 'str' in Python3) will be saved using
+       the 'text_value' field, after being encoded to UTF-8.  When
+       retrieved from the back-end, such values will be decoded to "text"
+       again.  Values which are "bytes" ('str' in Python2, 'bytes' in
+       Python3), will be saved using the 'blob_value' field, without
+       any decoding / encoding step.
+
     """
 
     def __init__(self, dataset=None, kind=None):
