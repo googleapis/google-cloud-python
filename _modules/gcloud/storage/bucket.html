@@ -109,8 +109,11 @@
 <span class="sd">    :param name: The name of the bucket.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">METADATA_ACL_FIELDS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="s">&#39;defaultObjectAcl&#39;</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;Tuple of metadata fields pertaining to bucket ACLs.&quot;&quot;&quot;</span>
+    <span class="n">CUSTOM_METADATA_FIELDS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="s">&#39;get_acl&#39;</span><span class="p">,</span>
+        <span class="s">&#39;defaultObjectAcl&#39;</span><span class="p">:</span> <span class="s">&#39;get_default_object_acl&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="sd">&quot;&quot;&quot;Mapping of field name -&gt; accessor for fields w/ custom accessors.&quot;&quot;&quot;</span>
 
     <span class="c"># ACL rules are lazily retrieved.</span>
     <span class="n">_acl</span> <span class="o">=</span> <span class="n">_default_object_acl</span> <span class="o">=</span> <span class="bp">None</span>

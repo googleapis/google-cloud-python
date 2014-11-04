@@ -631,9 +631,9 @@ just a name of a bucket.  It always returns the object:</p>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="gcloud.storage.bucket.Bucket.METADATA_ACL_FIELDS">
-<tt class="descname">METADATA_ACL_FIELDS</tt><em class="property"> = ('acl', 'defaultObjectAcl')</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.METADATA_ACL_FIELDS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tuple of metadata fields pertaining to bucket ACLs.</p>
+<dt id="gcloud.storage.bucket.Bucket.CUSTOM_METADATA_FIELDS">
+<tt class="descname">CUSTOM_METADATA_FIELDS</tt><em class="property"> = {'acl': 'get_acl', 'defaultObjectAcl': 'get_default_object_acl'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_METADATA_FIELDS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1136,9 +1136,9 @@ unique path of the object in the bucket.</li>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="gcloud.storage.key.Key.METADATA_ACL_FIELDS">
-<tt class="descname">METADATA_ACL_FIELDS</tt><em class="property"> = ('acl',)</em><a class="headerlink" href="#gcloud.storage.key.Key.METADATA_ACL_FIELDS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tuple of metadata fields pertaining to key ACLs.</p>
+<dt id="gcloud.storage.key.Key.CUSTOM_METADATA_FIELDS">
+<tt class="descname">CUSTOM_METADATA_FIELDS</tt><em class="property"> = {'acl': 'get_acl'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_METADATA_FIELDS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping of field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
 <dl class="attribute">
