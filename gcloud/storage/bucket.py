@@ -367,10 +367,8 @@ class Bucket(_PropertyMixin):
                   Keys include 'max_age', 'methods', 'origins', and
                   'headers'.
         """
-        if not self.has_metadata('cors'):
-            self.reload_metadata()
         result = []
-        for entry in self.metadata.get('cors', ()):
+        for entry in self.properties.get('cors', ()):
             entry = entry.copy()
             result.append(entry)
             if 'maxAgeSeconds' in entry:
@@ -406,7 +404,7 @@ class Bucket(_PropertyMixin):
                 entry['origin'] = entry.pop('origins')
             if 'headers' in entry:
                 entry['responseHeader'] = entry.pop('headers')
-        self.patch_metadata({'cors': to_patch})
+        self._patch_properties({'cors': to_patch})
 
     def get_default_object_acl(self):
         """Get the current Default Object ACL rules.
@@ -453,10 +451,8 @@ class Bucket(_PropertyMixin):
         :rtype: list(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
         """
-        if not self._has_property('lifecycle'):
-            self._reload_properties()
         result = []
-        info = self._properties.get('lifecycle', {})
+        info = self.properties.get('lifecycle', {})
         for rule in info.get('rule', ()):
             rule = rule.copy()
             result.append(rule)
@@ -482,9 +478,7 @@ class Bucket(_PropertyMixin):
         :rtype: string
         :returns: The configured location.
         """
-        if not self.has_metadata('location'):
-            self.reload_metadata()
-        return self.metadata.get('location')
+        return self.properties.get('location')
 
     def set_location(self, location):
         """Update location configured for this bucket.
@@ -495,7 +489,7 @@ class Bucket(_PropertyMixin):
         :type location: string
         :param location: The new configured location.
         """
-        self.patch_metadata({'location': location})
+        self._patch_properties({'location': location})
 
     def get_logging(self):
         """Return info about access logging for this bucket.
@@ -506,9 +500,7 @@ class Bucket(_PropertyMixin):
         :returns: a dict w/ keys, ``bucket_name`` and ``object_prefix``
                   (if logging is enabled), or None (if not).
         """
-        if not self.has_metadata('logging'):
-            self.reload_metadata()
-        info = self.metadata.get('logging')
+        info = self.properties.get('logging')
         if info is not None:
             info = info.copy()
             info['bucket_name'] = info.pop('logBucket')
@@ -527,14 +519,14 @@ class Bucket(_PropertyMixin):
         :param object_prefix: prefix for access log filenames
         """
         info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
-        self.patch_metadata({'logging': info})
+        self._patch_properties({'logging': info})
 
     def disable_logging(self):
         """Disable access logging for this bucket.
 
         See: https://cloud.google.com/storage/docs/accesslogs#disabling
         """
-        self.patch_metadata({'logging': None})
+        self._patch_properties({'logging': None})
 
     @property
     def metageneration(self):
@@ -616,9 +608,7 @@ class Bucket(_PropertyMixin):
         :rtype: boolean
         :returns: True if enabled, else False.
         """
-        if not self.has_metadata(field='versioning'):
-            self.reload_metadata()
-        versioning = self.metadata.get('versioning', {})
+        versioning = self.properties.get('versioning', {})
         return versioning.get('enabled', False)
 
     def enable_versioning(self):
@@ -627,7 +617,7 @@ class Bucket(_PropertyMixin):
         See:  https://cloud.google.com/storage/docs/object-versioning for
         details.
         """
-        self.patch_metadata({'versioning': {'enabled': True}})
+        self._patch_properties({'versioning': {'enabled': True}})
 
     def disable_versioning(self):
         """Disable versioning for this bucket.
@@ -635,8 +625,7 @@ class Bucket(_PropertyMixin):
         See:  https://cloud.google.com/storage/docs/object-versioning for
         details.
         """
-        self.patch_metadata({'versioning': {'enabled': False}})
-
+        self._patch_properties({'versioning': {'enabled': False}})
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
