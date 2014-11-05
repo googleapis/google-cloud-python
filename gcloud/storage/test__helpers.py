@@ -1,11 +1,11 @@
 import unittest2
 
 
-class Test_MetadataMixin(unittest2.TestCase):
+class Test_PropertyMixin(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage._helpers import _MetadataMixin
-        return _MetadataMixin
+        from gcloud.storage._helpers import _PropertyMixin
+        return _PropertyMixin
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -13,7 +13,7 @@ class Test_MetadataMixin(unittest2.TestCase):
     def _derivedClass(self, connection=None, path=None, **custom_fields):
 
         class Derived(self._getTargetClass()):
-            CUSTOM_METADATA_FIELDS = custom_fields
+            CUSTOM_PROPERTY_ACCESSORS = custom_fields
 
             @property
             def connection(self):
@@ -33,70 +33,91 @@ class Test_MetadataMixin(unittest2.TestCase):
         mixin = self._makeOne()
         self.assertRaises(NotImplementedError, lambda: mixin.path)
 
-    def test_has_metadata_not_loaded(self):
+    def test__reload_properties(self):
+        connection = _Connection({'foo': 'Foo'})
+        derived = self._derivedClass(connection, '/path')()
+        derived._reload_properties()
+        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+
+    def test__has_property_not_loaded(self):
         mixin = self._makeOne()
-        self.assertEqual(mixin.has_metadata('nonesuch'), False)
+        self.assertEqual(mixin._has_property('nonesuch'), False)
 
-    def test_has_metadata_loaded_no_field(self):
-        mixin = self._makeOne(metadata={'foo': 'Foo'})
-        self.assertEqual(mixin.has_metadata(), True)
+    def test__has_property_loaded_no_field(self):
+        mixin = self._makeOne(properties={'foo': 'Foo'})
+        self.assertEqual(mixin._has_property(), True)
 
-    def test_has_metadata_loaded_miss(self):
-        mixin = self._makeOne(metadata={'foo': 'Foo'})
-        self.assertEqual(mixin.has_metadata('nonesuch'), False)
+    def test__has_property_loaded_miss(self):
+        mixin = self._makeOne(properties={'foo': 'Foo'})
+        self.assertEqual(mixin._has_property('nonesuch'), False)
 
-    def test_has_metadata_loaded_hit(self):
-        mixin = self._makeOne(metadata={'extant': False})
-        self.assertEqual(mixin.has_metadata('extant'), True)
+    def test__has_property_loaded_hit(self):
+        mixin = self._makeOne(properties={'extant': False})
+        self.assertEqual(mixin._has_property('extant'), True)
 
-    def test_reload_metadata(self):
+    def test__get_property_eager_hit(self):
+        derived = self._derivedClass()(properties={'foo': 'Foo'})
+        self.assertEqual(derived._get_property('foo'), 'Foo')
+
+    def test__get_property_eager_miss_w_default(self):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
-        derived.reload_metadata()
-        self.assertEqual(derived.metadata, {'foo': 'Foo'})
+        default = object()
+        self.assertTrue(derived._get_property('nonesuch', default) is default)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test_get_metadata_eager_no_field(self):
-        derived = self._derivedClass()(metadata={'extant': False})
-        self.assertEqual(derived.get_metadata(), {'extant': False})
-
-    def test_get_metadata_eager_hit(self):
-        derived = self._derivedClass()(metadata={'foo': 'Foo'})
-        self.assertEqual(derived.get_metadata('foo'), 'Foo')
-
-    def test_get_metadata_lazy_hit(self):
+    def test__get_property_lazy_hit(self):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
-        self.assertEqual(derived.get_metadata('foo'), 'Foo')
+        self.assertTrue(derived._get_property('nonesuch') is None)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test_get_metadata_w_custom_field(self):
+    def test__get_property_w_custom_field(self):
         derived = self._derivedClass(foo='get_foo')()
         try:
-            derived.get_metadata('foo')
+            derived._get_property('foo')
         except KeyError as e:
             self.assertTrue('get_foo' in str(e))
         else:  # pragma: NO COVER
             self.assert_('KeyError not raised')
 
-    def test_patch_metadata(self):
+    def test__patch_properties(self):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
-        self.assertTrue(derived.patch_metadata({'foo': 'Foo'}) is derived)
+        self.assertTrue(derived._patch_properties({'foo': 'Foo'}) is derived)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['data'], {'foo': 'Foo'})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_properties_eager(self):
+        derived = self._derivedClass()(properties={'extant': False})
+        self.assertEqual(derived.properties, {'extant': False})
+
+    def test_properties_lazy(self):
+        connection = _Connection({'foo': 'Foo'})
+        derived = self._derivedClass(connection, '/path')()
+        self.assertEqual(derived.properties, {'foo': 'Foo'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_get_acl_not_yet_loaded(self):
         class ACL(object):

@@ -15,43 +15,43 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(key.bucket, None)
         self.assertEqual(key.connection, None)
         self.assertEqual(key.name, None)
-        self.assertEqual(key.metadata, {})
+        self.assertEqual(key._properties, {})
         self.assertTrue(key._acl is None)
 
     def test_ctor_explicit(self):
         KEY = 'key'
         connection = _Connection()
         bucket = _Bucket(connection)
-        metadata = {'key': 'value'}
-        key = self._makeOne(bucket, KEY, metadata)
+        properties = {'key': 'value'}
+        key = self._makeOne(bucket, KEY, properties)
         self.assertTrue(key.bucket is bucket)
         self.assertTrue(key.connection is connection)
         self.assertEqual(key.name, KEY)
-        self.assertEqual(key.metadata, metadata)
+        self.assertEqual(key.properties, properties)
         self.assertTrue(key._acl is None)
 
     def test_from_dict_defaults(self):
         KEY = 'key'
-        metadata = {'key': 'value', 'name': KEY}
+        properties = {'key': 'value', 'name': KEY}
         klass = self._getTargetClass()
-        key = klass.from_dict(metadata)
+        key = klass.from_dict(properties)
         self.assertEqual(key.bucket, None)
         self.assertEqual(key.connection, None)
         self.assertEqual(key.name, KEY)
-        self.assertEqual(key.metadata, metadata)
+        self.assertEqual(key.properties, properties)
         self.assertTrue(key._acl is None)
 
     def test_from_dict_explicit(self):
         KEY = 'key'
         connection = _Connection()
         bucket = _Bucket(connection)
-        metadata = {'key': 'value', 'name': KEY}
+        properties = {'key': 'value', 'name': KEY}
         klass = self._getTargetClass()
-        key = klass.from_dict(metadata, bucket)
+        key = klass.from_dict(properties, bucket)
         self.assertTrue(key.bucket is bucket)
         self.assertTrue(key.connection is connection)
         self.assertEqual(key.name, KEY)
-        self.assertEqual(key.metadata, metadata)
+        self.assertEqual(key.properties, properties)
         self.assertTrue(key._acl is None)
 
     def test_acl_property(self):
