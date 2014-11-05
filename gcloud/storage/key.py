@@ -4,19 +4,19 @@ import mimetypes
 import os
 from StringIO import StringIO
 
-from gcloud.storage._helpers import _MetadataMixin
+from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage.acl import ObjectACL
 from gcloud.storage.exceptions import StorageError
 from gcloud.storage.iterator import Iterator
 
 
-class Key(_MetadataMixin):
+class Key(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
 
-    CUSTOM_METADATA_FIELDS = {
-        'acl': 'get_acl',
+    CUSTOM_PROPERTY_ACCESSORS = {
+        'acl': 'get_acl()',
     }
-    """Mapping of field name -> accessor for fields w/ custom accessors."""
+    """Map field name -> accessor for fields w/ custom accessors."""
 
     CHUNK_SIZE = 1024 * 1024  # 1 MB.
     """The size of a chunk of data whenever iterating (1 MB).
@@ -26,7 +26,7 @@ class Key(_MetadataMixin):
     # ACL rules are lazily retrieved.
     _acl = None
 
-    def __init__(self, bucket=None, name=None, metadata=None):
+    def __init__(self, bucket=None, name=None, properties=None):
         """Key constructor.
 
         :type bucket: :class:`gcloud.storage.bucket.Bucket`
@@ -36,10 +36,10 @@ class Key(_MetadataMixin):
         :param name: The name of the key.  This corresponds to the
                      unique path of the object in the bucket.
 
-        :type metadata: dict
-        :param metadata: All the other data provided by Cloud Storage.
+        :type properties: dict
+        :param properties: All the other data provided by Cloud Storage.
         """
-        super(Key, self).__init__(name=name, metadata=metadata or {})
+        super(Key, self).__init__(name=name, properties=properties)
         self.bucket = bucket
 
     @property
@@ -65,7 +65,7 @@ class Key(_MetadataMixin):
         :returns: A key based on the data provided.
         """
 
-        return cls(bucket=bucket, name=key_dict['name'], metadata=key_dict)
+        return cls(bucket=bucket, name=key_dict['name'], properties=key_dict)
 
     def __repr__(self):
         if self.bucket:

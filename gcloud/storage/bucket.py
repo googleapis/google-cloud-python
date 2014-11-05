@@ -2,7 +2,7 @@
 
 import os
 
-from gcloud.storage._helpers import _MetadataMixin
+from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage import exceptions
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
@@ -11,7 +11,7 @@ from gcloud.storage.key import Key
 from gcloud.storage.key import _KeyIterator
 
 
-class Bucket(_MetadataMixin):
+class Bucket(_PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 
     :type connection: :class:`gcloud.storage.connection.Connection`
@@ -21,18 +21,27 @@ class Bucket(_MetadataMixin):
     :param name: The name of the bucket.
     """
 
-    CUSTOM_METADATA_FIELDS = {
-        'acl': 'get_acl',
-        'defaultObjectAcl': 'get_default_object_acl',
-        'lifecycle': 'get_lifecycle',
+    CUSTOM_PROPERTY_ACCESSORS = {
+        'acl': 'get_acl()',
+        'defaultObjectAcl': 'get_default_object_acl()',
+        'lifecycle': 'get_lifecycle()',
+        'etag': 'etag',
+        'id': 'id',
+        'metageneration': 'metageneration',
+        'name': 'name',
+        'owner': 'owner',
+        'projectNumber': 'project_number',
+        'selfLink': 'self_link',
+        'storageClass': 'storage_class',
+        'timeCreated': 'time_created',
     }
-    """Mapping of field name -> accessor for fields w/ custom accessors."""
+    """Map field name -> accessor for fields w/ custom accessors."""
 
     # ACL rules are lazily retrieved.
     _acl = _default_object_acl = None
 
-    def __init__(self, connection=None, name=None, metadata=None):
-        super(Bucket, self).__init__(name=name, metadata=metadata)
+    def __init__(self, connection=None, name=None, properties=None):
+        super(Bucket, self).__init__(name=name, properties=properties)
         self._connection = connection
 
     @property
@@ -60,7 +69,7 @@ class Bucket(_MetadataMixin):
         :returns: A bucket constructed from the data provided.
         """
         return cls(connection=connection, name=bucket_dict['name'],
-                   metadata=bucket_dict)
+                   properties=bucket_dict)
 
     def __repr__(self):
         return '<Bucket: %s>' % self.name
@@ -120,7 +129,7 @@ class Bucket(_MetadataMixin):
         """List all the keys in this bucket.
 
         This will **not** retrieve all the data for all the keys, it
-        will only retrieve metadata about the keys.
+        will only retrieve the keys.
 
         This is equivalent to::
 
@@ -344,7 +353,7 @@ class Bucket(_MetadataMixin):
         return key.upload_from_file(file_obj)
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
-        """Configure website-related metadata.
+        """Configure website-related properties.
 
         .. note::
           This (apparently) only works
@@ -385,7 +394,7 @@ class Bucket(_MetadataMixin):
                 'notFoundPage': not_found_page,
             },
         }
-        return self.patch_metadata(data)
+        return self._patch_properties(data)
 
     def disable_website(self):
         """Disable the website configuration for this bucket.
@@ -395,21 +404,11 @@ class Bucket(_MetadataMixin):
         """
         return self.configure_website(None, None)
 
-    def get_acl(self):
-        """Get ACL metadata as a :class:`gcloud.storage.acl.BucketACL` object.
-
-        :rtype: :class:`gcloud.storage.acl.BucketACL`
-        :returns: An ACL object for the current bucket.
-        """
-        if not self.acl.loaded:
-            self.acl.reload()
-        return self.acl
-
     def get_default_object_acl(self):
         """Get the current Default Object ACL rules.
 
-        If the appropriate metadata isn't available locally, this method
-        will reload it from Cloud Storage.
+        If the acl isn't available locally, this method will reload it from
+        Cloud Storage.
 
         :rtype: :class:`gcloud.storage.acl.DefaultObjectACL`
         :returns: A DefaultObjectACL object for this bucket.
@@ -451,10 +450,10 @@ class Bucket(_MetadataMixin):
         :rtype: list(dict)
         :returns: A sequence of mappings describing each CORS policy.
         """
-        if not self.has_metadata('lifecycle'):
-            self.reload_metadata()
+        if not self._has_property('lifecycle'):
+            self._reload_properties()
         result = []
-        info = self.metadata.get('lifecycle', {})
+        info = self._properties.get('lifecycle', {})
         for rule in info.get('rule', ()):
             rule = rule.copy()
             result.append(rule)
@@ -469,7 +468,101 @@ class Bucket(_MetadataMixin):
         :type rules: list(dict)
         :param rules: A sequence of mappings describing each lifecycle policy.
         """
-        self.patch_metadata({'lifecycle': {'rule': rules}})
+        self._patch_properties({'lifecycle': {'rule': rules}})
+
+    @property
+    def etag(self):
+        """Retrieve the ETag for the bucket.
+
+        See: http://tools.ietf.org/html/rfc2616#section-3.11 and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: string
+        :returns: a unique identifier for the bucket and current metadata.
+        """
+        return self.properties['etag']
+
+    @property
+    def id(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: string
+        :returns: a unique identifier for the bucket.
+        """
+        return self.properties['id']
+
+    @property
+    def metageneration(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: integer
+        :returns: count of times since creation the bucket's metadata has
+                  been updated.
+        """
+        return self.properties['metageneration']
+
+    @property
+    def owner(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: dict
+        :returns: mapping of owner's role/ID.
+        """
+        owner = self.properties['owner'].copy()
+        owner['id'] = owner.pop('entityId')
+        return owner
+
+    @property
+    def project_number(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: integer
+        :returns: a unique identifier for the bucket.
+        """
+        return self.properties['projectNumber']
+
+    @property
+    def self_link(self):
+        """Retrieve the URI for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: string
+        :returns: URI of the bucket.
+        """
+        return self.properties['selfLink']
+
+    @property
+    def storage_class(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket
+
+        :rtype: string
+        :returns: the storage class for the bucket (currently one of
+        ``STANDARD``, ``DURABLE_REDUCED_AVAILABILITY``)
+        """
+        return self.properties['storageClass']
+
+    @property
+    def time_created(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: string
+        :returns: timestamp for the bucket's creation, in RFC 3339 format.
+        """
+        return self.properties['timeCreated']
 
 
 class BucketIterator(Iterator):
