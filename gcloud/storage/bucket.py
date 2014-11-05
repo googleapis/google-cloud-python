@@ -28,6 +28,7 @@ class Bucket(_PropertyMixin):
         'etag': 'etag',
         'id': 'id',
         'lifecycle': 'get_lifecycle()',
+        'location': 'get_location()',
         'logging': 'get_logging()',
         'metageneration': 'metageneration',
         'name': 'name',
@@ -687,6 +688,30 @@ class Bucket(_PropertyMixin):
             if 'headers' in entry:
                 entry['responseHeader'] = entry.pop('headers')
         self.patch_metadata({'cors': to_patch})
+
+    def get_location(self):
+        """Retrieve location configured for this bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+
+        :rtype: string
+        :returns: The configured location.
+        """
+        if not self.has_metadata('location'):
+            self.reload_metadata()
+        return self.metadata.get('location')
+
+    def set_location(self, location):
+        """Update location configured for this bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+
+        :type location: string
+        :param location: The new configured location.
+        """
+        self.patch_metadata({'location': location})
 
 
 class BucketIterator(Iterator):

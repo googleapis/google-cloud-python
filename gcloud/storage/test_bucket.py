@@ -745,6 +745,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(info['object_prefix'], '')
         kw = connection._requested
         self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
@@ -866,13 +867,45 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(after)
         bucket = self._makeOne(connection, NAME)
         bucket.update_cors([MAPPED, {}])
-        entries = bucket.get_cors()
-        self.assertEqual(entries, [MAPPED, {}])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        entries = bucket.get_cors()
+        self.assertEqual(entries, [MAPPED, {}])
+
+    def test_get_location_eager(self):
+        NAME = 'name'
+        connection = _Connection()
+        before = {'location': 'AS'}
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertEqual(bucket.get_location(), 'AS')
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_location_lazy(self):
+        NAME = 'name'
+        connection = _Connection({'location': 'AS'})
+        bucket = self._makeOne(connection, NAME)
+        self.assertEqual(bucket.get_location(), 'AS')
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+
+    def test_update_location(self):
+        NAME = 'name'
+        connection = _Connection({'location': 'AS'})
+        bucket = self._makeOne(connection, NAME)
+        bucket.set_location('AS')
+        self.assertEqual(bucket.get_location(), 'AS')
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'location': 'AS'})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
