@@ -126,7 +126,7 @@ class _PropertyMixin(object):
         # Raise for fields which have custom accessors.
         custom = self.CUSTOM_PROPERTY_ACCESSORS.get(field)
         if custom is not None:
-            message = 'Use %s or related methods instead.' % custom
+            message = "Use '%s' or related methods instead." % custom
             raise KeyError((field, message))
 
         if not self._properties or field not in self._properties:
