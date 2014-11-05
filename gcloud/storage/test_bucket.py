@@ -727,10 +727,9 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_get_versioning_lazy(self):
         NAME = 'name'
-        before = {'bar': 'Bar'}
         after = {'bar': 'Bar', 'versioning': {'enabled': True}}
         connection = _Connection(after)
-        bucket = self._makeOne(connection, NAME, before)
+        bucket = self._makeOne(connection, NAME)
         self.assertEqual(bucket.get_versioning(), True)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
