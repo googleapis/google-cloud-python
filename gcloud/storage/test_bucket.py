@@ -617,6 +617,56 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(entries[0]['action']['type'], 'Delete')
         self.assertEqual(entries[0]['condition']['age'], 42)
 
+    def test_etag(self):
+        ETAG = 'ETAG'
+        properties = {'etag': ETAG}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.etag, ETAG)
+
+    def test_id(self):
+        ID = 'ID'
+        properties = {'id': ID}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.id, ID)
+
+    def test_metageneration(self):
+        METAGENERATION = 42
+        properties = {'metageneration': METAGENERATION}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.metageneration, METAGENERATION)
+
+    def test_owner(self):
+        OWNER = {'entity': 'project-owner-12345', 'entityId': '23456'}
+        properties = {'owner': OWNER}
+        bucket = self._makeOne(properties=properties)
+        owner = bucket.owner
+        self.assertEqual(owner['entity'], 'project-owner-12345')
+        self.assertEqual(owner['id'], '23456')
+
+    def test_project_number(self):
+        PROJECT_NUMBER = 12345
+        properties = {'projectNumber': PROJECT_NUMBER}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.project_number, PROJECT_NUMBER)
+
+    def test_self_link(self):
+        SELF_LINK = 'http://example.com/self/'
+        properties = {'selfLink': SELF_LINK}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.self_link, SELF_LINK)
+
+    def test_storage_class(self):
+        STORAGE_CLASS = 'http://example.com/self/'
+        properties = {'storageClass': STORAGE_CLASS}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.storage_class, STORAGE_CLASS)
+
+    def test_time_created(self):
+        TIME_CREATED = '2014-11-05T20:34:37Z'
+        properties = {'timeCreated': TIME_CREATED}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.time_created, TIME_CREATED)
+
 
 class TestBucketIterator(unittest2.TestCase):
 

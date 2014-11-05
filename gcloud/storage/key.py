@@ -14,7 +14,7 @@ class Key(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
 
     CUSTOM_PROPERTY_ACCESSORS = {
-        'acl': 'get_acl',
+        'acl': 'get_acl()',
     }
     """Map field name -> accessor for fields w/ custom accessors."""
 

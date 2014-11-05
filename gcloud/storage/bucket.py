@@ -22,9 +22,18 @@ class Bucket(_PropertyMixin):
     """
 
     CUSTOM_PROPERTY_ACCESSORS = {
-        'acl': 'get_acl',
-        'defaultObjectAcl': 'get_default_object_acl',
-        'lifecycle': 'get_lifecycle',
+        'acl': 'get_acl()',
+        'defaultObjectAcl': 'get_default_object_acl()',
+        'lifecycle': 'get_lifecycle()',
+        'etag': 'etag',
+        'id': 'id',
+        'metageneration': 'metageneration',
+        'name': 'name',
+        'owner': 'owner',
+        'projectNumber': 'project_number',
+        'selfLink': 'self_link',
+        'storageClass': 'storage_class',
+        'timeCreated': 'time_created',
     }
     """Map field name -> accessor for fields w/ custom accessors."""
 
@@ -460,6 +469,100 @@ class Bucket(_PropertyMixin):
         :param rules: A sequence of mappings describing each lifecycle policy.
         """
         self._patch_properties({'lifecycle': {'rule': rules}})
+
+    @property
+    def etag(self):
+        """Retrieve the ETag for the bucket.
+
+        See: http://tools.ietf.org/html/rfc2616#section-3.11 and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: string
+        :returns: a unique identifier for the bucket and current metadata.
+        """
+        return self.properties['etag']
+
+    @property
+    def id(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: string
+        :returns: a unique identifier for the bucket.
+        """
+        return self.properties['id']
+
+    @property
+    def metageneration(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: integer
+        :returns: count of times since creation the bucket's metadata has
+                  been updated.
+        """
+        return self.properties['metageneration']
+
+    @property
+    def owner(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: dict
+        :returns: mapping of owner's role/ID.
+        """
+        owner = self.properties['owner'].copy()
+        owner['id'] = owner.pop('entityId')
+        return owner
+
+    @property
+    def project_number(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: integer
+        :returns: a unique identifier for the bucket.
+        """
+        return self.properties['projectNumber']
+
+    @property
+    def self_link(self):
+        """Retrieve the URI for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: string
+        :returns: URI of the bucket.
+        """
+        return self.properties['selfLink']
+
+    @property
+    def storage_class(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket
+
+        :rtype: string
+        :returns: the storage class for the bucket (currently one of
+        ``STANDARD``, ``DURABLE_REDUCED_AVAILABILITY``)
+        """
+        return self.properties['storageClass']
+
+    @property
+    def time_created(self):
+        """Retrieve the ID for the bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: string
+        :returns: timestamp for the bucket's creation, in RFC 3339 format.
+        """
+        return self.properties['timeCreated']
 
 
 class BucketIterator(Iterator):
