@@ -48,20 +48,6 @@ class Bucket(_PropertyMixin):
         super(Bucket, self).__init__(name=name, properties=properties)
         self._connection = connection
 
-    @property
-    def acl(self):
-        """Create our ACL on demand."""
-        if self._acl is None:
-            self._acl = BucketACL(self)
-        return self._acl
-
-    @property
-    def default_object_acl(self):
-        """Create our defaultObjectACL on demand."""
-        if self._default_object_acl is None:
-            self._default_object_acl = DefaultObjectACL(self)
-        return self._default_object_acl
-
     @classmethod
     def from_dict(cls, bucket_dict, connection=None):
         """Construct a new bucket from a dictionary of data from Cloud Storage.
@@ -83,6 +69,20 @@ class Bucket(_PropertyMixin):
 
     def __contains__(self, key):
         return self.get_key(key) is not None
+
+    @property
+    def acl(self):
+        """Create our ACL on demand."""
+        if self._acl is None:
+            self._acl = BucketACL(self)
+        return self._acl
+
+    @property
+    def default_object_acl(self):
+        """Create our defaultObjectACL on demand."""
+        if self._default_object_acl is None:
+            self._default_object_acl = DefaultObjectACL(self)
+        return self._default_object_acl
 
     @property
     def connection(self):
@@ -356,57 +356,57 @@ class Bucket(_PropertyMixin):
             key = self.new_key(os.path.basename(file_obj.name))
         return key.upload_from_file(file_obj)
 
-    def configure_website(self, main_page_suffix=None, not_found_page=None):
-        """Configure website-related properties.
+    def get_cors(self):
+        """Retrieve CORS policies configured for this bucket.
 
-        .. note::
-          This (apparently) only works
-          if your bucket name is a domain name
-          (and to do that, you need to get approved somehow...).
+        See: http://www.w3.org/TR/cors/ and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-          Check out the official documentation here:
-          https://developers.google.com/storage/docs/website-configuration
-
-        If you want this bucket to host a website, just provide the name
-        of an index page and a page to use when a key isn't found::
-
-          >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email,
-                                                  private_key_path)
-          >>> bucket = connection.get_bucket(bucket_name)
-          >>> bucket.configure_website('index.html', '404.html')
-
-        You probably should also make the whole bucket public::
-
-          >>> bucket.make_public(recursive=True, future=True)
-
-        This says: "Make the bucket public, and all the stuff already in
-        the bucket, and anything else I add to the bucket.  Just make it
-        all public."
-
-        :type main_page_suffix: string
-        :param main_page_suffix: The page to use as the main page
-                                 of a directory.
-                                 Typically something like index.html.
-
-        :type not_found_page: string
-        :param not_found_page: The file to use when a page isn't found.
+        :rtype: list(dict)
+        :returns: A sequence of mappings describing each CORS policy.
+                  Keys include 'max_age', 'methods', 'origins', and
+                  'headers'.
         """
-        data = {
-            'website': {
-                'mainPageSuffix': main_page_suffix,
-                'notFoundPage': not_found_page,
-            },
-        }
-        return self._patch_properties(data)
+        if not self.has_metadata('cors'):
+            self.reload_metadata()
+        result = []
+        for entry in self.metadata.get('cors', ()):
+            entry = entry.copy()
+            result.append(entry)
+            if 'maxAgeSeconds' in entry:
+                entry['max_age'] = entry.pop('maxAgeSeconds')
+            if 'method' in entry:
+                entry['methods'] = entry.pop('method')
+            if 'origin' in entry:
+                entry['origins'] = entry.pop('origin')
+            if 'responseHeader' in entry:
+                entry['headers'] = entry.pop('responseHeader')
+        return result
 
-    def disable_website(self):
-        """Disable the website configuration for this bucket.
+    def update_cors(self, entries):
+        """Update CORS policies configured for this bucket.
 
-        This is really just a shortcut for setting the website-related
-        attributes to ``None``.
+        See: http://www.w3.org/TR/cors/ and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :type entries: list(dict)
+        :param entries: A sequence of mappings describing each CORS policy.
+                        Keys include 'max_age', 'methods', 'origins', and
+                        'headers'.
         """
-        return self.configure_website(None, None)
+        to_patch = []
+        for entry in entries:
+            entry = entry.copy()
+            to_patch.append(entry)
+            if 'max_age' in entry:
+                entry['maxAgeSeconds'] = entry.pop('max_age')
+            if 'methods' in entry:
+                entry['method'] = entry.pop('methods')
+            if 'origins' in entry:
+                entry['origin'] = entry.pop('origins')
+            if 'headers' in entry:
+                entry['responseHeader'] = entry.pop('headers')
+        self.patch_metadata({'cors': to_patch})
 
     def get_default_object_acl(self):
         """Get the current Default Object ACL rules.
@@ -421,29 +421,28 @@ class Bucket(_PropertyMixin):
             self.default_object_acl.reload()
         return self.default_object_acl
 
-    def make_public(self, recursive=False, future=False):
-        """Make a bucket public.
+    @property
+    def etag(self):
+        """Retrieve the ETag for the bucket.
 
-        :type recursive: bool
-        :param recursive: If True, this will make all keys inside the bucket
-                          public as well.
+        See: http://tools.ietf.org/html/rfc2616#section-3.11 and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :type future: bool
-        :param future: If True, this will make all objects created in the
-                       future public as well.
+        :rtype: string
+        :returns: a unique identifier for the bucket and current metadata.
         """
-        self.get_acl().all().grant_read()
-        self.acl.save()
+        return self.properties['etag']
 
-        if future:
-            doa = self.get_default_object_acl()
-            doa.all().grant_read()
-            doa.save()
+    @property
+    def id(self):
+        """Retrieve the ID for the bucket.
 
-        if recursive:
-            for key in self:
-                key.get_acl().all().grant_read()
-                key.save_acl()
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: string
+        :returns: a unique identifier for the bucket.
+        """
+        return self.properties['id']
 
     def get_lifecycle(self):
         """Retrieve lifecycle rules configured for this bucket.
@@ -474,28 +473,68 @@ class Bucket(_PropertyMixin):
         """
         self._patch_properties({'lifecycle': {'rule': rules}})
 
-    @property
-    def etag(self):
-        """Retrieve the ETag for the bucket.
+    def get_location(self):
+        """Retrieve location configured for this bucket.
 
-        See: http://tools.ietf.org/html/rfc2616#section-3.11 and
-             https://cloud.google.com/storage/docs/json_api/v1/buckets
-
-        :rtype: string
-        :returns: a unique identifier for the bucket and current metadata.
-        """
-        return self.properties['etag']
-
-    @property
-    def id(self):
-        """Retrieve the ID for the bucket.
-
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
 
         :rtype: string
-        :returns: a unique identifier for the bucket.
+        :returns: The configured location.
         """
-        return self.properties['id']
+        if not self.has_metadata('location'):
+            self.reload_metadata()
+        return self.metadata.get('location')
+
+    def set_location(self, location):
+        """Update location configured for this bucket.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+
+        :type location: string
+        :param location: The new configured location.
+        """
+        self.patch_metadata({'location': location})
+
+    def get_logging(self):
+        """Return info about access logging for this bucket.
+
+        See: https://cloud.google.com/storage/docs/accesslogs#status
+
+        :rtype: dict or None
+        :returns: a dict w/ keys, ``bucket_name`` and ``object_prefix``
+                  (if logging is enabled), or None (if not).
+        """
+        if not self.has_metadata('logging'):
+            self.reload_metadata()
+        info = self.metadata.get('logging')
+        if info is not None:
+            info = info.copy()
+            info['bucket_name'] = info.pop('logBucket')
+            info['object_prefix'] = info.pop('logObjectPrefix', '')
+        return info
+
+    def enable_logging(self, bucket_name, object_prefix=''):
+        """Enable access logging for this bucket.
+
+        See: https://cloud.google.com/storage/docs/accesslogs#delivery
+
+        :type bucket_name: string
+        :param bucket_name: name of bucket in which to store access logs
+
+        :type object_prefix: string
+        :param object_prefix: prefix for access log filenames
+        """
+        info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
+        self.patch_metadata({'logging': info})
+
+    def disable_logging(self):
+        """Disable access logging for this bucket.
+
+        See: https://cloud.google.com/storage/docs/accesslogs#disabling
+        """
+        self.patch_metadata({'logging': None})
 
     @property
     def metageneration(self):
@@ -553,7 +592,7 @@ class Bucket(_PropertyMixin):
 
         :rtype: string
         :returns: the storage class for the bucket (currently one of
-        ``STANDARD``, ``DURABLE_REDUCED_AVAILABILITY``)
+                  ``STANDARD``, ``DURABLE_REDUCED_AVAILABILITY``)
         """
         return self.properties['storageClass']
 
@@ -598,120 +637,81 @@ class Bucket(_PropertyMixin):
         """
         self.patch_metadata({'versioning': {'enabled': False}})
 
-    def get_logging(self):
-        """Return info about access logging for this bucket.
 
-        See: https://cloud.google.com/storage/docs/accesslogs#status
+    def configure_website(self, main_page_suffix=None, not_found_page=None):
+        """Configure website-related properties.
 
-        :rtype: dict or None
-        :returns: a dict w/ keys, ``bucket_name`` and ``object_prefix``
-                  (if logging is enabled), or None (if not).
+        See: https://developers.google.com/storage/docs/website-configuration
+
+        .. note::
+          This (apparently) only works
+          if your bucket name is a domain name
+          (and to do that, you need to get approved somehow...).
+
+        If you want this bucket to host a website, just provide the name
+        of an index page and a page to use when a key isn't found::
+
+          >>> from gcloud import storage
+          >>> connection = storage.get_connection(project, email,
+                                                  private_key_path)
+          >>> bucket = connection.get_bucket(bucket_name)
+          >>> bucket.configure_website('index.html', '404.html')
+
+        You probably should also make the whole bucket public::
+
+          >>> bucket.make_public(recursive=True, future=True)
+
+        This says: "Make the bucket public, and all the stuff already in
+        the bucket, and anything else I add to the bucket.  Just make it
+        all public."
+
+        :type main_page_suffix: string
+        :param main_page_suffix: The page to use as the main page
+                                 of a directory.
+                                 Typically something like index.html.
+
+        :type not_found_page: string
+        :param not_found_page: The file to use when a page isn't found.
         """
-        if not self.has_metadata('logging'):
-            self.reload_metadata()
-        info = self.metadata.get('logging')
-        if info is not None:
-            info = info.copy()
-            info['bucket_name'] = info.pop('logBucket')
-            info['object_prefix'] = info.pop('logObjectPrefix', '')
-        return info
+        data = {
+            'website': {
+                'mainPageSuffix': main_page_suffix,
+                'notFoundPage': not_found_page,
+            },
+        }
+        return self._patch_properties(data)
 
-    def enable_logging(self, bucket_name, object_prefix=''):
-        """Enable access logging for this bucket.
+    def disable_website(self):
+        """Disable the website configuration for this bucket.
 
-        See: https://cloud.google.com/storage/docs/accesslogs#delivery
-
-        :type bucket_name: string
-        :param bucket_name: name of bucket in which to store access logs
-
-        :type object_prefix: string
-        :param object_prefix: prefix for access log filenames
+        This is really just a shortcut for setting the website-related
+        attributes to ``None``.
         """
-        info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
-        self.patch_metadata({'logging': info})
+        return self.configure_website(None, None)
 
-    def disable_logging(self):
-        """Disable access logging for this bucket.
+    def make_public(self, recursive=False, future=False):
+        """Make a bucket public.
 
-        See: https://cloud.google.com/storage/docs/accesslogs#disabling
+        :type recursive: bool
+        :param recursive: If True, this will make all keys inside the bucket
+                          public as well.
+
+        :type future: bool
+        :param future: If True, this will make all objects created in the
+                       future public as well.
         """
-        self.patch_metadata({'logging': None})
+        self.get_acl().all().grant_read()
+        self.acl.save()
 
-    def get_cors(self):
-        """Retrieve CORS policies configured for this bucket.
+        if future:
+            doa = self.get_default_object_acl()
+            doa.all().grant_read()
+            doa.save()
 
-        See: http://www.w3.org/TR/cors/ and
-             https://cloud.google.com/storage/docs/json_api/v1/buckets
-
-        :rtype: list(dict)
-        :returns: A sequence of mappings describing each CORS policy.
-                  Keys include 'max_age', 'methods', 'origins', and
-                  'headers'.
-        """
-        if not self.has_metadata('cors'):
-            self.reload_metadata()
-        result = []
-        for entry in self.metadata.get('cors', ()):
-            entry = entry.copy()
-            result.append(entry)
-            if 'maxAgeSeconds' in entry:
-                entry['max_age'] = entry.pop('maxAgeSeconds')
-            if 'method' in entry:
-                entry['methods'] = entry.pop('method')
-            if 'origin' in entry:
-                entry['origins'] = entry.pop('origin')
-            if 'responseHeader' in entry:
-                entry['headers'] = entry.pop('responseHeader')
-        return result
-
-    def update_cors(self, entries):
-        """Update CORS policies configured for this bucket.
-
-        See: http://www.w3.org/TR/cors/ and
-             https://cloud.google.com/storage/docs/json_api/v1/buckets
-
-        :type entries: list(dict)
-        :param entries: A sequence of mappings describing each CORS policy.
-                        Keys include 'max_age', 'methods', 'origins', and
-                        'headers'.
-        """
-        to_patch = []
-        for entry in entries:
-            entry = entry.copy()
-            to_patch.append(entry)
-            if 'max_age' in entry:
-                entry['maxAgeSeconds'] = entry.pop('max_age')
-            if 'methods' in entry:
-                entry['method'] = entry.pop('methods')
-            if 'origins' in entry:
-                entry['origin'] = entry.pop('origins')
-            if 'headers' in entry:
-                entry['responseHeader'] = entry.pop('headers')
-        self.patch_metadata({'cors': to_patch})
-
-    def get_location(self):
-        """Retrieve location configured for this bucket.
-
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
-        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
-
-        :rtype: string
-        :returns: The configured location.
-        """
-        if not self.has_metadata('location'):
-            self.reload_metadata()
-        return self.metadata.get('location')
-
-    def set_location(self, location):
-        """Update location configured for this bucket.
-
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
-        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
-
-        :type location: string
-        :param location: The new configured location.
-        """
-        self.patch_metadata({'location': location})
+        if recursive:
+            for key in self:
+                key.get_acl().all().grant_read()
+                key.save_acl()
 
 
 class BucketIterator(Iterator):
