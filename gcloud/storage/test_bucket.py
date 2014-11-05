@@ -701,7 +701,6 @@ class Test_Bucket(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], {'versioning': {'enabled': True}})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
@@ -717,8 +716,92 @@ class Test_Bucket(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_get_logging_eager_w_prefix(self):
+        NAME = 'name'
+        LOG_BUCKET = 'logs'
+        LOG_PREFIX = 'pfx'
+        before = {
+            'logging': {'logBucket': LOG_BUCKET,
+                        'logObjectPrefix': LOG_PREFIX}}
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME, before)
+        info = bucket.get_logging()
+        self.assertEqual(info['bucket_name'], LOG_BUCKET)
+        self.assertEqual(info['object_prefix'], LOG_PREFIX)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_logging_lazy_wo_prefix(self):
+        NAME = 'name'
+        LOG_BUCKET = 'logs'
+        after = {'logging': {'logBucket': LOG_BUCKET}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        info = bucket.get_logging()
+        self.assertEqual(info['bucket_name'], LOG_BUCKET)
+        self.assertEqual(info['object_prefix'], '')
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['data'], {'versioning': {'enabled': False}})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+
+    def test_enable_logging_defaults(self):
+        NAME = 'name'
+        LOG_BUCKET = 'logs'
+        before = {'logging': None}
+        after = {'logging': {'logBucket': LOG_BUCKET, 'logObjectPrefix': ''}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertTrue(bucket.get_logging() is None)
+        bucket.enable_logging(LOG_BUCKET)
+        info = bucket.get_logging()
+        self.assertEqual(info['bucket_name'], LOG_BUCKET)
+        self.assertEqual(info['object_prefix'], '')
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_enable_logging_explicit(self):
+        NAME = 'name'
+        LOG_BUCKET = 'logs'
+        LOG_PFX = 'pfx'
+        before = {'logging': None}
+        after = {
+            'logging': {'logBucket': LOG_BUCKET, 'logObjectPrefix': LOG_PFX}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertTrue(bucket.get_logging() is None)
+        bucket.enable_logging(LOG_BUCKET, LOG_PFX)
+        info = bucket.get_logging()
+        self.assertEqual(info['bucket_name'], LOG_BUCKET)
+        self.assertEqual(info['object_prefix'], LOG_PFX)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_disable_logging(self):
+        NAME = 'name'
+        before = {'logging': {'logBucket': 'logs', 'logObjectPrefix': 'pfx'}}
+        after = {'logging': None}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertTrue(bucket.get_logging() is not None)
+        bucket.disable_logging()
+        self.assertTrue(bucket.get_logging() is None)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'logging': None})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
