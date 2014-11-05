@@ -34,6 +34,7 @@ class Bucket(_PropertyMixin):
         'selfLink': 'self_link',
         'storageClass': 'storage_class',
         'timeCreated': 'time_created',
+        'versioning': 'get_versioning',
     }
     """Map field name -> accessor for fields w/ custom accessors."""
 
@@ -563,6 +564,36 @@ class Bucket(_PropertyMixin):
         :returns: timestamp for the bucket's creation, in RFC 3339 format.
         """
         return self.properties['timeCreated']
+
+    def get_versioning(self):
+        """Is versioning enabled for this bucket?
+
+        See:  https://cloud.google.com/storage/docs/object-versioning for
+        details.
+
+        :rtype: boolean
+        :returns: True if enabled, else False.
+        """
+        if not self.has_metadata(field='versioning'):
+            self.reload_metadata()
+        versioning = self.metadata.get('versioning', {})
+        return versioning.get('enabled', False)
+
+    def enable_versioning(self):
+        """Enable versioning for this bucket.
+
+        See:  https://cloud.google.com/storage/docs/object-versioning for
+        details.
+        """
+        self.patch_metadata({'versioning': {'enabled': True}})
+
+    def disable_versioning(self):
+        """Disable versioning for this bucket.
+
+        See:  https://cloud.google.com/storage/docs/object-versioning for
+        details.
+        """
+        self.patch_metadata({'versioning': {'enabled': False}})
 
 
 class BucketIterator(Iterator):
