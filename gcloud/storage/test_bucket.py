@@ -510,6 +510,23 @@ class Test_Bucket(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
+    def test_get_metadata_versioning_no_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        self.assertRaises(KeyError, bucket.get_metadata, 'versioning')
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_metadata_versioning_w_default(self):
+        NAME = 'name'
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME)
+        default = object()
+        self.assertRaises(KeyError, bucket.get_metadata, 'versioning', default)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
     def test_get_metadata_miss(self):
         NAME = 'name'
         before = {'bar': 'Bar'}
@@ -780,6 +797,60 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]['action']['type'], 'Delete')
         self.assertEqual(entries[0]['condition']['age'], 42)
+
+    def test_get_versioning_eager(self):
+        NAME = 'name'
+        before = {'bar': 'Bar', 'versioning': {'enabled': True}}
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertEqual(bucket.get_versioning(), True)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_versioning_lazy(self):
+        NAME = 'name'
+        before = {'bar': 'Bar'}
+        after = {'bar': 'Bar', 'versioning': {'enabled': True}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertEqual(bucket.get_versioning(), True)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+
+    def test_enable_versioning(self):
+        NAME = 'name'
+        before = {'versioning': {'enabled': False}}
+        after = {'versioning': {'enabled': True}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertFalse(bucket.get_versioning())
+        bucket.enable_versioning()
+        self.assertTrue(bucket.get_versioning())
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'versioning': {'enabled': True}})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_disable_versioning(self):
+        NAME = 'name'
+        before = {'versioning': {'enabled': True}}
+        after = {'versioning': {'enabled': False}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertTrue(bucket.get_versioning())
+        bucket.disable_versioning()
+        self.assertFalse(bucket.get_versioning())
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'versioning': {'enabled': False}})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
 class TestBucketIterator(unittest2.TestCase):
