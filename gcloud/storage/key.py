@@ -11,6 +11,18 @@ from gcloud.storage.exceptions import StorageError
 from gcloud.storage.iterator import Iterator
 
 
+def _scalar_property(fieldname):
+    """Create a property descriptor around the :class:`_PropertyMixin` helpers.
+    """
+    def _getter(self):
+        return self.properties[fieldname]
+
+    def _setter(self, value):
+        self._patch_properties({fieldname: value})
+
+    return property(_getter, _setter)
+
+
 class Key(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
 
@@ -378,137 +390,59 @@ class Key(_PropertyMixin):
         self.acl.save()
         return self
 
-    @property
-    def cache_control(self):
-        """Retrieve HTTP 'Cache-Control' header for this object.
+    cache_control = _scalar_property('cacheControl')
+    """HTTP 'Cache-Control' header for this object.
 
-        See: https://tools.ietf.org/html/rfc7234#section-5.2 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: https://tools.ietf.org/html/rfc7234#section-5.2 and
+         https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string
-        """
-        return self.properties['cacheControl']
+    :rtype: string
+    """
 
-    @cache_control.setter
-    def cache_control(self, value):
-        """Update HTTP 'Cache-Control' header for this object.
+    content_disposition = _scalar_property('contentDisposition')
+    """HTTP 'Content-Disposition' header for this object.
 
-        See: https://tools.ietf.org/html/rfc7234#section-5.2 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: https://tools.ietf.org/html/rfc6266 and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :type value: string
-        """
-        self._patch_properties({'cacheControl': value})
+    :rtype: string
+    """
 
-    @property
-    def content_disposition(self):
-        """Retrieve HTTP 'Content-Disposition' header for this object.
+    content_encoding = _scalar_property('contentEncoding')
+    """HTTP 'Content-Encoding' header for this object.
 
-        See: https://tools.ietf.org/html/rfc6266 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string
-        """
-        return self.properties['contentDisposition']
+    :rtype: string
+    """
 
-    @content_disposition.setter
-    def content_disposition(self, value):
-        """Update HTTP 'Content-Disposition' header for this object.
+    content_language = _scalar_property('contentLanguage')
+    """HTTP 'Content-Language' header for this object.
 
-        See: https://tools.ietf.org/html/rfc6266 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: http://tools.ietf.org/html/bcp47 and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :type value: string
-        """
-        self._patch_properties({'contentDisposition': value})
+    :rtype: string
+    """
 
-    @property
-    def content_encoding(self):
-        """Retrieve HTTP 'Content-Encoding' header for this object.
+    content_type = _scalar_property('contentType')
+    """HTTP 'Content-Type' header for this object.
 
-        See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: https://tools.ietf.org/html/rfc2616#section-14.17 and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string
-        """
-        return self.properties['contentEncoding']
+    :rtype: string
+    """
 
-    @content_encoding.setter
-    def content_encoding(self, value):
-        """Update HTTP 'Content-Encoding' header for this object.
+    crc32c = _scalar_property('crc32c')
+    """CRC32C checksum for this object.
 
-        See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: http://tools.ietf.org/html/rfc4960#appendix-B and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :type value: string
-        """
-        self._patch_properties({'contentEncoding': value})
-
-    @property
-    def content_language(self):
-        """Retrieve HTTP 'Content-Language' header for this object.
-
-        See: http://tools.ietf.org/html/bcp47 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
-
-        :rtype: string
-        """
-        return self.properties['contentLanguage']
-
-    @content_language.setter
-    def content_language(self, value):
-        """Update HTTP 'Content-Language' header for this object.
-
-        See: http://tools.ietf.org/html/bcp47 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
-
-        :type value: string
-        """
-        self._patch_properties({'contentLanguage': value})
-
-    @property
-    def content_type(self):
-        """Retrieve HTTP 'Content-Type' header for this object.
-
-        See: https://tools.ietf.org/html/rfc2616#section-14.17 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
-
-        :rtype: string
-        """
-        return self.properties['contentType']
-
-    @content_type.setter
-    def content_type(self, value):
-        """Update HTTP 'Content-Type' header for this object.
-
-        See: https://tools.ietf.org/html/rfc2616#section-14.17 and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
-
-        :type value: string
-        """
-        self._patch_properties({'contentType': value})
-
-    @property
-    def crc32c(self):
-        """Retrieve CRC32C checksum for this object.
-
-        See: http://tools.ietf.org/html/rfc4960#appendix-B and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
-
-        :rtype: string
-        """
-        return self.properties['crc32c']
-
-    @crc32c.setter
-    def crc32c(self, value):
-        """Update CRC32C checksum for this object.
-
-        See: http://tools.ietf.org/html/rfc4960#appendix-B and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
-
-        :type value: string
-        """
-        self._patch_properties({'crc32c': value})
+    :rtype: string
+    """
 
     @property
     def component_count(self):
@@ -551,27 +485,14 @@ class Key(_PropertyMixin):
         """
         return self.properties['id']
 
-    @property
-    def md5_hash(self):
-        """Retrieve MD5 hash for this object.
+    md5_hash = _scalar_property('md5Hash')
+    """MD5 hash for this object.
 
-        See: http://tools.ietf.org/html/rfc4960#appendix-B and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
+    See: http://tools.ietf.org/html/rfc4960#appendix-B and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string
-        """
-        return self.properties['md5Hash']
-
-    @md5_hash.setter
-    def md5_hash(self, value):
-        """Update MD5 hash for this object.
-
-        See: http://tools.ietf.org/html/rfc4960#appendix-B and
-             https://cloud.google.com/storage/docs/json_api/v1/objects
-
-        :type value: string
-        """
-        self._patch_properties({'md5Hash': value})
+    :rtype: string
+    """
 
     @property
     def media_link(self):
