@@ -530,7 +530,7 @@ class Bucket(_PropertyMixin):
 
     @property
     def metageneration(self):
-        """Retrieve the ID for the bucket.
+        """Retrieve the metageneration for the bucket.
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
@@ -542,7 +542,7 @@ class Bucket(_PropertyMixin):
 
     @property
     def owner(self):
-        """Retrieve the ID for the bucket.
+        """Retrieve info about the owner of the bucket.
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
@@ -555,7 +555,7 @@ class Bucket(_PropertyMixin):
 
     @property
     def project_number(self):
-        """Retrieve the ID for the bucket.
+        """Retrieve the number of the project to which the bucket is assigned.
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
@@ -577,7 +577,7 @@ class Bucket(_PropertyMixin):
 
     @property
     def storage_class(self):
-        """Retrieve the ID for the bucket.
+        """Retrieve the storage class for the bucket.
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
         https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket
@@ -590,7 +590,7 @@ class Bucket(_PropertyMixin):
 
     @property
     def time_created(self):
-        """Retrieve the ID for the bucket.
+        """Retrieve the timestamp at which the bucket was created.
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
