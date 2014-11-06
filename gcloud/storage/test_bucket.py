@@ -16,57 +16,43 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne()
         self.assertEqual(bucket.connection, None)
         self.assertEqual(bucket.name, None)
-        self.assertEqual(bucket.metadata, None)
+        self.assertEqual(bucket._properties, {})
         self.assertTrue(bucket._acl is None)
         self.assertTrue(bucket._default_object_acl is None)
 
     def test_ctor_explicit(self):
         NAME = 'name'
         connection = _Connection()
-        metadata = {'key': 'value'}
-        bucket = self._makeOne(connection, NAME, metadata)
+        properties = {'key': 'value'}
+        bucket = self._makeOne(connection, NAME, properties)
         self.assertTrue(bucket.connection is connection)
         self.assertEqual(bucket.name, NAME)
-        self.assertEqual(bucket.metadata, metadata)
+        self.assertEqual(bucket._properties, properties)
         self.assertTrue(bucket._acl is None)
         self.assertTrue(bucket._default_object_acl is None)
 
     def test_from_dict_defaults(self):
         NAME = 'name'
-        metadata = {'key': 'value', 'name': NAME}
+        properties = {'key': 'value', 'name': NAME}
         klass = self._getTargetClass()
-        bucket = klass.from_dict(metadata)
+        bucket = klass.from_dict(properties)
         self.assertEqual(bucket.connection, None)
         self.assertEqual(bucket.name, NAME)
-        self.assertEqual(bucket.metadata, metadata)
+        self.assertEqual(bucket.properties, properties)
         self.assertTrue(bucket._acl is None)
         self.assertTrue(bucket._default_object_acl is None)
 
     def test_from_dict_explicit(self):
         NAME = 'name'
         connection = _Connection()
-        metadata = {'key': 'value', 'name': NAME}
+        properties = {'key': 'value', 'name': NAME}
         klass = self._getTargetClass()
-        bucket = klass.from_dict(metadata, connection)
+        bucket = klass.from_dict(properties, connection)
         self.assertTrue(bucket.connection is connection)
         self.assertEqual(bucket.name, NAME)
-        self.assertEqual(bucket.metadata, metadata)
+        self.assertEqual(bucket.properties, properties)
         self.assertTrue(bucket._acl is None)
         self.assertTrue(bucket._default_object_acl is None)
-
-    def test_acl_property(self):
-        from gcloud.storage.acl import BucketACL
-        bucket = self._makeOne()
-        acl = bucket.acl
-        self.assertTrue(isinstance(acl, BucketACL))
-        self.assertTrue(acl is bucket._acl)
-
-    def test_default_object_acl_property(self):
-        from gcloud.storage.acl import DefaultObjectACL
-        bucket = self._makeOne()
-        acl = bucket.default_object_acl
-        self.assertTrue(isinstance(acl, DefaultObjectACL))
-        self.assertTrue(acl is bucket._default_object_acl)
 
     def test___iter___empty(self):
         NAME = 'name'
@@ -112,6 +98,20 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, KEY))
+
+    def test_acl_property(self):
+        from gcloud.storage.acl import BucketACL
+        bucket = self._makeOne()
+        acl = bucket.acl
+        self.assertTrue(isinstance(acl, BucketACL))
+        self.assertTrue(acl is bucket._acl)
+
+    def test_default_object_acl_property(self):
+        from gcloud.storage.acl import DefaultObjectACL
+        bucket = self._makeOne()
+        acl = bucket.default_object_acl
+        self.assertTrue(isinstance(acl, DefaultObjectACL))
+        self.assertTrue(acl is bucket._default_object_acl)
 
     def test_path_no_name(self):
         bucket = self._makeOne()
@@ -406,214 +406,78 @@ class Test_Bucket(unittest2.TestCase):
             bucket.upload_file_object(FILEOBJECT, KEY)
         self.assertEqual(_uploaded, [(bucket, KEY, FILEOBJECT)])
 
-    def test_has_metdata_none_set(self):
-        NONESUCH = 'nonesuch'
-        bucket = self._makeOne()
-        self.assertFalse(bucket.has_metadata(NONESUCH))
-
-    def test_has_metdata_miss(self):
-        NONESUCH = 'nonesuch'
-        metadata = {'key': 'value'}
-        bucket = self._makeOne(metadata=metadata)
-        self.assertFalse(bucket.has_metadata(NONESUCH))
-
-    def test_has_metdata_none_passed(self):
-        KEY = 'key'
-        metadata = {KEY: 'value'}
-        bucket = self._makeOne(metadata=metadata)
-        self.assertTrue(bucket.has_metadata())
-
-    def test_has_metdata_hit(self):
-        KEY = 'key'
-        metadata = {KEY: 'value'}
-        bucket = self._makeOne(metadata=metadata)
-        self.assertTrue(bucket.has_metadata(KEY))
-
-    def test_reload_metadata(self):
+    def test_get_cors_eager(self):
         NAME = 'name'
-        before = {'foo': 'Foo'}
-        after = {'bar': 'Bar'}
-        connection = _Connection(after)
+        CORS_ENTRY = {
+            'maxAgeSeconds': 1234,
+            'method': ['OPTIONS', 'GET'],
+            'origin': ['127.0.0.1'],
+            'responseHeader': ['Content-Type'],
+            }
+        before = {'cors': [CORS_ENTRY, {}]}
+        connection = _Connection()
         bucket = self._makeOne(connection, NAME, before)
-        found = bucket.reload_metadata()
-        self.assertTrue(found is bucket)
-        self.assertEqual(found.metadata, after)
+        entries = bucket.get_cors()
+        self.assertEqual(len(entries), 2)
+        self.assertEqual(entries[0]['maxAgeSeconds'],
+                         CORS_ENTRY['maxAgeSeconds'])
+        self.assertEqual(entries[0]['method'],
+                         CORS_ENTRY['method'])
+        self.assertEqual(entries[0]['origin'],
+                         CORS_ENTRY['origin'])
+        self.assertEqual(entries[0]['responseHeader'],
+                         CORS_ENTRY['responseHeader'])
+        self.assertEqual(entries[1], {})
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_cors_lazy(self):
+        NAME = 'name'
+        CORS_ENTRY = {
+            'maxAgeSeconds': 1234,
+            'method': ['OPTIONS', 'GET'],
+            'origin': ['127.0.0.1'],
+            'responseHeader': ['Content-Type'],
+            }
+        after = {'cors': [CORS_ENTRY]}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        entries = bucket.get_cors()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]['maxAgeSeconds'],
+                         CORS_ENTRY['maxAgeSeconds'])
+        self.assertEqual(entries[0]['method'],
+                         CORS_ENTRY['method'])
+        self.assertEqual(entries[0]['origin'],
+                         CORS_ENTRY['origin'])
+        self.assertEqual(entries[0]['responseHeader'],
+                         CORS_ENTRY['responseHeader'])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test_get_metadata_none_set_none_passed(self):
+    def test_update_cors(self):
         NAME = 'name'
-        after = {'bar': 'Bar'}
+        CORS_ENTRY = {
+            'maxAgeSeconds': 1234,
+            'method': ['OPTIONS', 'GET'],
+            'origin': ['127.0.0.1'],
+            'responseHeader': ['Content-Type'],
+            }
+        after = {'cors': [CORS_ENTRY, {}]}
         connection = _Connection(after)
         bucket = self._makeOne(connection, NAME)
-        found = bucket.get_metadata()
-        self.assertEqual(found, after)
-        self.assertEqual(bucket.metadata, after)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-
-    def test_get_metadata_acl_no_default(self):
-        NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(connection, NAME)
-        self.assertRaises(KeyError, bucket.get_metadata, 'acl')
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_get_metadata_acl_w_default(self):
-        NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(connection, NAME)
-        default = object()
-        self.assertRaises(KeyError, bucket.get_metadata, 'acl', default)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_get_metadata_defaultObjectAcl_no_default(self):
-        NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(connection, NAME)
-        self.assertRaises(KeyError, bucket.get_metadata, 'defaultObjectAcl')
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_get_metadata_none_set_defaultObjectAcl_miss_clear_default(self):
-        NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(connection, NAME)
-        default = object()
-        self.assertRaises(KeyError, bucket.get_metadata, 'defaultObjectAcl',
-                          default)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_get_metadata_lifecycle_no_default(self):
-        NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(connection, NAME)
-        self.assertRaises(KeyError, bucket.get_metadata, 'lifecycle')
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_get_metadata_lifecycle_w_default(self):
-        NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(connection, NAME)
-        default = object()
-        self.assertRaises(KeyError, bucket.get_metadata, 'lifecycle', default)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_get_metadata_miss(self):
-        NAME = 'name'
-        before = {'bar': 'Bar'}
-        after = {'bar': 'Bar'}
-        connection = _Connection(after)
-        bucket = self._makeOne(connection, NAME, before)
-        self.assertEqual(bucket.get_metadata('foo'), None)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-
-    def test_get_metadata_hit(self):
-        NAME = 'name'
-        before = {'bar': 'Bar'}
-        connection = _Connection()
-        bucket = self._makeOne(connection, NAME, before)
-        self.assertEqual(bucket.get_metadata('bar'), 'Bar')
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_patch_metadata(self):
-        NAME = 'name'
-        before = {'foo': 'Foo'}
-        after = {'bar': 'Bar'}
-        connection = _Connection(after)
-        bucket = self._makeOne(connection, NAME, before)
-        self.assertTrue(bucket.patch_metadata(after) is bucket)
+        bucket.update_cors([CORS_ENTRY, {}])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], after)
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-
-    def test_configure_website_defaults(self):
-        NAME = 'name'
-        patched = {'website': {'mainPageSuffix': None,
-                               'notFoundPage': None}}
-        connection = _Connection(patched)
-        bucket = self._makeOne(connection, NAME)
-        self.assertTrue(bucket.configure_website() is bucket)
-        self.assertEqual(bucket.metadata, patched)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['data'], patched)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-
-    def test_configure_website_explicit(self):
-        NAME = 'name'
-        patched = {'website': {'mainPageSuffix': 'html',
-                               'notFoundPage': '404.html'}}
-        connection = _Connection(patched)
-        bucket = self._makeOne(connection, NAME)
-        self.assertTrue(bucket.configure_website('html', '404.html') is bucket)
-        self.assertEqual(bucket.metadata, patched)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['data'], patched)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-
-    def test_disable_website(self):
-        NAME = 'name'
-        patched = {'website': {'mainPageSuffix': None,
-                               'notFoundPage': None}}
-        connection = _Connection(patched)
-        bucket = self._makeOne(connection, NAME)
-        self.assertTrue(bucket.disable_website() is bucket)
-        self.assertEqual(bucket.metadata, patched)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['data'], patched)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-
-    def test_get_acl_lazy(self):
-        from gcloud.storage.acl import BucketACL
-        NAME = 'name'
-        connection = _Connection({'items': []})
-        bucket = self._makeOne(connection, NAME)
-        acl = bucket.get_acl()
-        self.assertTrue(acl is bucket.acl)
-        self.assertTrue(isinstance(acl, BucketACL))
-        self.assertEqual(list(bucket.acl), [])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s/acl' % NAME)
-
-    def test_get_acl_eager(self):
-        connection = _Connection()
-        bucket = self._makeOne()
-        preset = bucket.acl  # Ensure it is assigned
-        preset.loaded = True
-        acl = bucket.get_acl()
-        self.assertTrue(acl is preset)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
+        entries = bucket.get_cors()
+        self.assertEqual(entries, [CORS_ENTRY, {}])
 
     def test_get_default_object_acl_lazy(self):
         from gcloud.storage.acl import BucketACL
@@ -638,6 +502,317 @@ class Test_Bucket(unittest2.TestCase):
         self.assertTrue(acl is preset)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
+
+    def test_etag(self):
+        ETAG = 'ETAG'
+        properties = {'etag': ETAG}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.etag, ETAG)
+
+    def test_id(self):
+        ID = 'ID'
+        properties = {'id': ID}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.id, ID)
+
+    def test_get_lifecycle_eager(self):
+        NAME = 'name'
+        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
+        before = {'lifecycle': {'rule': [LC_RULE]}}
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME, before)
+        entries = bucket.get_lifecycle()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]['action']['type'], 'Delete')
+        self.assertEqual(entries[0]['condition']['age'], 42)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_lifecycle_lazy(self):
+        NAME = 'name'
+        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
+        after = {'lifecycle': {'rule': [LC_RULE]}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        entries = bucket.get_lifecycle()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]['action']['type'], 'Delete')
+        self.assertEqual(entries[0]['condition']['age'], 42)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+
+    def test_update_lifecycle(self):
+        NAME = 'name'
+        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
+        after = {'lifecycle': {'rule': [LC_RULE]}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        bucket.update_lifecycle([LC_RULE])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        entries = bucket.get_lifecycle()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0]['action']['type'], 'Delete')
+        self.assertEqual(entries[0]['condition']['age'], 42)
+
+    def test_get_location_eager(self):
+        NAME = 'name'
+        connection = _Connection()
+        before = {'location': 'AS'}
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertEqual(bucket.get_location(), 'AS')
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_location_lazy(self):
+        NAME = 'name'
+        connection = _Connection({'location': 'AS'})
+        bucket = self._makeOne(connection, NAME)
+        self.assertEqual(bucket.get_location(), 'AS')
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+
+    def test_update_location(self):
+        NAME = 'name'
+        connection = _Connection({'location': 'AS'})
+        bucket = self._makeOne(connection, NAME)
+        bucket.set_location('AS')
+        self.assertEqual(bucket.get_location(), 'AS')
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'location': 'AS'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_get_logging_eager_w_prefix(self):
+        NAME = 'name'
+        LOG_BUCKET = 'logs'
+        LOG_PREFIX = 'pfx'
+        before = {
+            'logging': {'logBucket': LOG_BUCKET,
+                        'logObjectPrefix': LOG_PREFIX}}
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME, before)
+        info = bucket.get_logging()
+        self.assertEqual(info['logBucket'], LOG_BUCKET)
+        self.assertEqual(info['logObjectPrefix'], LOG_PREFIX)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_logging_lazy_wo_prefix(self):
+        NAME = 'name'
+        LOG_BUCKET = 'logs'
+        after = {'logging': {'logBucket': LOG_BUCKET}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        info = bucket.get_logging()
+        self.assertEqual(info['logBucket'], LOG_BUCKET)
+        self.assertEqual(info.get('logObjectPrefix'), None)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+
+    def test_enable_logging_defaults(self):
+        NAME = 'name'
+        LOG_BUCKET = 'logs'
+        before = {'logging': None}
+        after = {'logging': {'logBucket': LOG_BUCKET, 'logObjectPrefix': ''}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertTrue(bucket.get_logging() is None)
+        bucket.enable_logging(LOG_BUCKET)
+        info = bucket.get_logging()
+        self.assertEqual(info['logBucket'], LOG_BUCKET)
+        self.assertEqual(info['logObjectPrefix'], '')
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_enable_logging_explicit(self):
+        NAME = 'name'
+        LOG_BUCKET = 'logs'
+        LOG_PFX = 'pfx'
+        before = {'logging': None}
+        after = {
+            'logging': {'logBucket': LOG_BUCKET, 'logObjectPrefix': LOG_PFX}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertTrue(bucket.get_logging() is None)
+        bucket.enable_logging(LOG_BUCKET, LOG_PFX)
+        info = bucket.get_logging()
+        self.assertEqual(info['logBucket'], LOG_BUCKET)
+        self.assertEqual(info['logObjectPrefix'], LOG_PFX)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_disable_logging(self):
+        NAME = 'name'
+        before = {'logging': {'logBucket': 'logs', 'logObjectPrefix': 'pfx'}}
+        after = {'logging': None}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertTrue(bucket.get_logging() is not None)
+        bucket.disable_logging()
+        self.assertTrue(bucket.get_logging() is None)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'logging': None})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_metageneration(self):
+        METAGENERATION = 42
+        properties = {'metageneration': METAGENERATION}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.metageneration, METAGENERATION)
+
+    def test_owner(self):
+        OWNER = {'entity': 'project-owner-12345', 'entityId': '23456'}
+        properties = {'owner': OWNER}
+        bucket = self._makeOne(properties=properties)
+        owner = bucket.owner
+        self.assertEqual(owner['entity'], 'project-owner-12345')
+        self.assertEqual(owner['entityId'], '23456')
+
+    def test_project_number(self):
+        PROJECT_NUMBER = 12345
+        properties = {'projectNumber': PROJECT_NUMBER}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.project_number, PROJECT_NUMBER)
+
+    def test_self_link(self):
+        SELF_LINK = 'http://example.com/self/'
+        properties = {'selfLink': SELF_LINK}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.self_link, SELF_LINK)
+
+    def test_storage_class(self):
+        STORAGE_CLASS = 'http://example.com/self/'
+        properties = {'storageClass': STORAGE_CLASS}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.storage_class, STORAGE_CLASS)
+
+    def test_time_created(self):
+        TIME_CREATED = '2014-11-05T20:34:37Z'
+        properties = {'timeCreated': TIME_CREATED}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.time_created, TIME_CREATED)
+
+    def test_get_versioning_eager(self):
+        NAME = 'name'
+        before = {'bar': 'Bar', 'versioning': {'enabled': True}}
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertEqual(bucket.get_versioning(), True)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_get_versioning_lazy(self):
+        NAME = 'name'
+        after = {'bar': 'Bar', 'versioning': {'enabled': True}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME)
+        self.assertEqual(bucket.get_versioning(), True)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+
+    def test_enable_versioning(self):
+        NAME = 'name'
+        before = {'versioning': {'enabled': False}}
+        after = {'versioning': {'enabled': True}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertFalse(bucket.get_versioning())
+        bucket.enable_versioning()
+        self.assertTrue(bucket.get_versioning())
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['data'], {'versioning': {'enabled': True}})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_disable_versioning(self):
+        NAME = 'name'
+        before = {'versioning': {'enabled': True}}
+        after = {'versioning': {'enabled': False}}
+        connection = _Connection(after)
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertTrue(bucket.get_versioning())
+        bucket.disable_versioning()
+        self.assertFalse(bucket.get_versioning())
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_configure_website_defaults(self):
+        NAME = 'name'
+        patched = {'website': {'mainPageSuffix': None,
+                               'notFoundPage': None}}
+        connection = _Connection(patched)
+        bucket = self._makeOne(connection, NAME)
+        self.assertTrue(bucket.configure_website() is bucket)
+        self.assertEqual(bucket.properties, patched)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], patched)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_configure_website_explicit(self):
+        NAME = 'name'
+        patched = {'website': {'mainPageSuffix': 'html',
+                               'notFoundPage': '404.html'}}
+        connection = _Connection(patched)
+        bucket = self._makeOne(connection, NAME)
+        self.assertTrue(bucket.configure_website('html', '404.html') is bucket)
+        self.assertEqual(bucket.properties, patched)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], patched)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_disable_website(self):
+        NAME = 'name'
+        patched = {'website': {'mainPageSuffix': None,
+                               'notFoundPage': None}}
+        connection = _Connection(patched)
+        bucket = self._makeOne(connection, NAME)
+        self.assertTrue(bucket.disable_website() is bucket)
+        self.assertEqual(bucket.properties, patched)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], patched)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_make_public_defaults(self):
         from gcloud.storage.acl import _ACLEntity
@@ -733,53 +908,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw[1]['query_params'], {})
-
-    def test_get_lifecycle_eager(self):
-        NAME = 'name'
-        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
-        before = {'lifecycle': {'rule': [LC_RULE]}}
-        connection = _Connection()
-        bucket = self._makeOne(connection, NAME, before)
-        entries = bucket.get_lifecycle()
-        self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0]['action']['type'], 'Delete')
-        self.assertEqual(entries[0]['condition']['age'], 42)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_get_lifecycle_lazy(self):
-        NAME = 'name'
-        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
-        after = {'lifecycle': {'rule': [LC_RULE]}}
-        connection = _Connection(after)
-        bucket = self._makeOne(connection, NAME)
-        entries = bucket.get_lifecycle()
-        self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0]['action']['type'], 'Delete')
-        self.assertEqual(entries[0]['condition']['age'], 42)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-
-    def test_update_lifecycle(self):
-        NAME = 'name'
-        LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
-        after = {'lifecycle': {'rule': [LC_RULE]}}
-        connection = _Connection(after)
-        bucket = self._makeOne(connection, NAME)
-        bucket.update_lifecycle([LC_RULE])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['data'], after)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-        entries = bucket.get_lifecycle()
-        self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0]['action']['type'], 'Delete')
-        self.assertEqual(entries[0]['condition']['age'], 42)
 
 
 class TestBucketIterator(unittest2.TestCase):

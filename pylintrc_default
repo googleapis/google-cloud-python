@@ -7,7 +7,7 @@ good-names = i, j, k, ex, Run, _, pb, id,
 
 [DESIGN]
 max-args = 10
-max-public-methods = 30
+max-public-methods = 40
 
 [FORMAT]
 # NOTE: By default pylint ignores whitespace checks around the
