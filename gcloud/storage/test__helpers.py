@@ -44,22 +44,6 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test__has_property_not_loaded(self):
-        mixin = self._makeOne()
-        self.assertEqual(mixin._has_property('nonesuch'), False)
-
-    def test__has_property_loaded_no_field(self):
-        mixin = self._makeOne(properties={'foo': 'Foo'})
-        self.assertEqual(mixin._has_property(), True)
-
-    def test__has_property_loaded_miss(self):
-        mixin = self._makeOne(properties={'foo': 'Foo'})
-        self.assertEqual(mixin._has_property('nonesuch'), False)
-
-    def test__has_property_loaded_hit(self):
-        mixin = self._makeOne(properties={'extant': False})
-        self.assertEqual(mixin._has_property('extant'), True)
-
     def test__get_property_eager_hit(self):
         derived = self._derivedClass()(properties={'foo': 'Foo'})
         self.assertEqual(derived._get_property('foo'), 'Foo')

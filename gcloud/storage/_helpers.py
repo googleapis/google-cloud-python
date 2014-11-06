@@ -90,20 +90,6 @@ class _PropertyMixin(object):
             query_params={'projection': 'full'})
         return self
 
-    def _has_property(self, field=None):
-        """Check if property is available.
-
-        :type field: string
-        :param field: (optional) the particular field to check for.
-
-        :rtype: boolean
-        :returns: Whether property is available locally.  If no ``field``
-                  passed, return whether *any* properties are available.
-        """
-        if field and field not in self._properties:
-            return False
-        return len(self._properties) > 0
-
     def _get_property(self, field, default=None):
         """Return the value of a field from the server-side representation.
 
