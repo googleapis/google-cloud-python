@@ -389,7 +389,8 @@
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">upload_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">key</span><span class="o">.</span><span class="n">upload_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">key</span>
 </div>
 <div class="viewcode-block" id="Bucket.upload_file_object"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.upload_file_object">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Shortcut method to upload a file object into this bucket.</span>
