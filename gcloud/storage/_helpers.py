@@ -53,8 +53,6 @@ class _PropertyMixin(object):
             self._reload_properties()
         return self._properties.copy()
 
-    metadata = properties  # Backward-compatibiltiy alias
-
     def _reload_properties(self):
         """Reload properties from Cloud Storage.
 
@@ -67,7 +65,6 @@ class _PropertyMixin(object):
         self._properties = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)
         return self
-    reload_metadata = _reload_properties  # backward-compat alias
 
     def _patch_properties(self, properties):
         """Update particular fields of this object's properties.
@@ -90,7 +87,6 @@ class _PropertyMixin(object):
             method='PATCH', path=self.path, data=properties,
             query_params={'projection': 'full'})
         return self
-    patch_metadata = _patch_properties  # backward-compat alias
 
     def _has_property(self, field=None):
         """Check if property is available.
@@ -105,7 +101,6 @@ class _PropertyMixin(object):
         if field and field not in self._properties:
             return False
         return len(self._properties) > 0
-    has_metadata = _has_property  # backward-compat alias
 
     def _get_property(self, field, default=None):
         """Return the value of a field from the server-side representation.
@@ -133,7 +128,6 @@ class _PropertyMixin(object):
             self._reload_properties()
 
         return self._properties.get(field, default)
-    get_metadata = _get_property  # Backward-compat alias
 
     def get_acl(self):
         """Get ACL as an object.
