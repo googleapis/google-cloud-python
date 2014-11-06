@@ -344,6 +344,31 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': permissive})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
+    def test_cache_control_getter(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        CACHE_CONTROL = 'no-cache'
+        properties = {'cacheControl': CACHE_CONTROL}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.cache_control, CACHE_CONTROL)
+
+    def test_cache_control_setter(self):
+        KEY = 'key'
+        CACHE_CONTROL = 'no-cache'
+        after = {'cacheControl': CACHE_CONTROL}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.cache_control = CACHE_CONTROL
+        self.assertEqual(key.cache_control, CACHE_CONTROL)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'], {'cacheControl': CACHE_CONTROL})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
     def test_component_count(self):
         KEY = 'key'
         connection = _Connection()
@@ -352,6 +377,136 @@ class Test_Key(unittest2.TestCase):
         properties = {'componentCount': COMPONENT_COUNT}
         key = self._makeOne(bucket, KEY, properties)
         self.assertEqual(key.component_count, COMPONENT_COUNT)
+
+    def test_content_disposition_getter(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        CONTENT_DISPOSITION = 'Attachment; filename=example.jpg'
+        properties = {'contentDisposition': CONTENT_DISPOSITION}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.content_disposition, CONTENT_DISPOSITION)
+
+    def test_content_disposition_setter(self):
+        KEY = 'key'
+        CONTENT_DISPOSITION = 'Attachment; filename=example.jpg'
+        after = {'contentDisposition': CONTENT_DISPOSITION}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.content_disposition = CONTENT_DISPOSITION
+        self.assertEqual(key.content_disposition, CONTENT_DISPOSITION)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'],
+                         {'contentDisposition': CONTENT_DISPOSITION})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_content_encoding_getter(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        CONTENT_ENCODING = 'gzip'
+        properties = {'contentEncoding': CONTENT_ENCODING}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.content_encoding, CONTENT_ENCODING)
+
+    def test_content_encoding_setter(self):
+        KEY = 'key'
+        CONTENT_ENCODING = 'gzip'
+        after = {'contentEncoding': CONTENT_ENCODING}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.content_encoding = CONTENT_ENCODING
+        self.assertEqual(key.content_encoding, CONTENT_ENCODING)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'],
+                         {'contentEncoding': CONTENT_ENCODING})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_content_language_getter(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        CONTENT_LANGUAGE = 'pt-BR'
+        properties = {'contentLanguage': CONTENT_LANGUAGE}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.content_language, CONTENT_LANGUAGE)
+
+    def test_content_language_setter(self):
+        KEY = 'key'
+        CONTENT_LANGUAGE = 'pt-BR'
+        after = {'contentLanguage': CONTENT_LANGUAGE}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.content_language = CONTENT_LANGUAGE
+        self.assertEqual(key.content_language, CONTENT_LANGUAGE)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'],
+                         {'contentLanguage': CONTENT_LANGUAGE})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_content_type_getter(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        CONTENT_TYPE = 'image/jpeg'
+        properties = {'contentType': CONTENT_TYPE}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.content_type, CONTENT_TYPE)
+
+    def test_content_type_setter(self):
+        KEY = 'key'
+        CONTENT_TYPE = 'image/jpeg'
+        after = {'contentType': CONTENT_TYPE}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.content_type = CONTENT_TYPE
+        self.assertEqual(key.content_type, CONTENT_TYPE)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'],
+                         {'contentType': CONTENT_TYPE})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_crc32c_getter(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        CRC32C = 'DEADBEEF'
+        properties = {'crc32c': CRC32C}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.crc32c, CRC32C)
+
+    def test_crc32c_setter(self):
+        KEY = 'key'
+        CRC32C = 'DEADBEEF'
+        after = {'crc32c': CRC32C}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.crc32c = CRC32C
+        self.assertEqual(key.crc32c, CRC32C)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'],
+                         {'crc32c': CRC32C})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_etag(self):
         KEY = 'key'
@@ -380,14 +535,66 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(bucket, KEY, properties)
         self.assertEqual(key.id, ID)
 
+    def test_md5_hash_getter(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        MD5_HASH = 'DEADBEEF'
+        properties = {'md5Hash': MD5_HASH}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.md5_hash, MD5_HASH)
+
+    def test_md5_hash_setter(self):
+        KEY = 'key'
+        MD5_HASH = 'DEADBEEF'
+        after = {'md5Hash': MD5_HASH}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.md5_hash = MD5_HASH
+        self.assertEqual(key.md5_hash, MD5_HASH)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'],
+                         {'md5Hash': MD5_HASH})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
     def test_media_link(self):
         KEY = 'key'
         connection = _Connection()
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
-        properties = {'selfLink': MEDIA_LINK}
+        properties = {'mediaLink': MEDIA_LINK}
         key = self._makeOne(bucket, KEY, properties)
         self.assertEqual(key.media_link, MEDIA_LINK)
+
+    def test_metadata_getter(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        METADATA = {'foo': 'Foo'}
+        properties = {'metadata': METADATA}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.metadata, METADATA)
+
+    def test_metadata_setter(self):
+        KEY = 'key'
+        METADATA = {'foo': 'Foo'}
+        after = {'metadata': METADATA}
+        connection = _Connection(after)
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.metadata = METADATA
+        self.assertEqual(key.metadata, METADATA)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['data'],
+                         {'metadata': METADATA})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_metageneration(self):
         KEY = 'key'

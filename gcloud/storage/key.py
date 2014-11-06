@@ -1,5 +1,6 @@
 """Create / interact with gcloud storage keys."""
 
+import copy
 import mimetypes
 import os
 from StringIO import StringIO
@@ -15,6 +16,11 @@ class Key(_PropertyMixin):
 
     CUSTOM_PROPERTY_ACCESSORS = {
         'acl': 'get_acl()',
+        'cacheControl': 'cache_control',
+        'contentDisposition': 'content_disposition',
+        'contentEncoding': 'content_encoding',
+        'contentLanguage': 'content_language',
+        'contentType': 'content_type',
         'componentCount': 'component_count',
         'etag': 'etag',
         'generation': 'generation',
@@ -373,6 +379,138 @@ class Key(_PropertyMixin):
         return self
 
     @property
+    def cache_control(self):
+        """Retrieve HTTP 'Cache-Control' header for this object.
+
+        See: https://tools.ietf.org/html/rfc7234#section-5.2 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['cacheControl']
+
+    @cache_control.setter
+    def cache_control(self, value):
+        """Update HTTP 'Cache-Control' header for this object.
+
+        See: https://tools.ietf.org/html/rfc7234#section-5.2 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: string
+        """
+        self._patch_properties({'cacheControl': value})
+
+    @property
+    def content_disposition(self):
+        """Retrieve HTTP 'Content-Disposition' header for this object.
+
+        See: https://tools.ietf.org/html/rfc6266 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['contentDisposition']
+
+    @content_disposition.setter
+    def content_disposition(self, value):
+        """Update HTTP 'Content-Disposition' header for this object.
+
+        See: https://tools.ietf.org/html/rfc6266 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: string
+        """
+        self._patch_properties({'contentDisposition': value})
+
+    @property
+    def content_encoding(self):
+        """Retrieve HTTP 'Content-Encoding' header for this object.
+
+        See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['contentEncoding']
+
+    @content_encoding.setter
+    def content_encoding(self, value):
+        """Update HTTP 'Content-Encoding' header for this object.
+
+        See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: string
+        """
+        self._patch_properties({'contentEncoding': value})
+
+    @property
+    def content_language(self):
+        """Retrieve HTTP 'Content-Language' header for this object.
+
+        See: http://tools.ietf.org/html/bcp47 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['contentLanguage']
+
+    @content_language.setter
+    def content_language(self, value):
+        """Update HTTP 'Content-Language' header for this object.
+
+        See: http://tools.ietf.org/html/bcp47 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: string
+        """
+        self._patch_properties({'contentLanguage': value})
+
+    @property
+    def content_type(self):
+        """Retrieve HTTP 'Content-Type' header for this object.
+
+        See: https://tools.ietf.org/html/rfc2616#section-14.17 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['contentType']
+
+    @content_type.setter
+    def content_type(self, value):
+        """Update HTTP 'Content-Type' header for this object.
+
+        See: https://tools.ietf.org/html/rfc2616#section-14.17 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: string
+        """
+        self._patch_properties({'contentType': value})
+
+    @property
+    def crc32c(self):
+        """Retrieve CRC32C checksum for this object.
+
+        See: http://tools.ietf.org/html/rfc4960#appendix-B and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['crc32c']
+
+    @crc32c.setter
+    def crc32c(self, value):
+        """Update CRC32C checksum for this object.
+
+        See: http://tools.ietf.org/html/rfc4960#appendix-B and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: string
+        """
+        self._patch_properties({'crc32c': value})
+
+    @property
     def component_count(self):
         """Number of underlying components that make up this object.
 
@@ -414,6 +552,28 @@ class Key(_PropertyMixin):
         return self.properties['id']
 
     @property
+    def md5_hash(self):
+        """Retrieve MD5 hash for this object.
+
+        See: http://tools.ietf.org/html/rfc4960#appendix-B and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['md5Hash']
+
+    @md5_hash.setter
+    def md5_hash(self, value):
+        """Update MD5 hash for this object.
+
+        See: http://tools.ietf.org/html/rfc4960#appendix-B and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: string
+        """
+        self._patch_properties({'md5Hash': value})
+
+    @property
     def media_link(self):
         """Retrieve the media download URI for the object.
 
@@ -421,7 +581,27 @@ class Key(_PropertyMixin):
 
         :rtype: string
         """
-        return self.properties['selfLink']
+        return self.properties['mediaLink']
+
+    @property
+    def metadata(self):
+        """Retrieve arbitrary/application specific metadata for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: dict
+        """
+        return copy.deepcopy(self.properties['metadata'])
+
+    @metadata.setter
+    def metadata(self, value):
+        """Update arbitrary/application specific metadata for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: dict
+        """
+        self._patch_properties({'metadata': value})
 
     @property
     def metageneration(self):
