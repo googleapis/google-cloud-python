@@ -92,19 +92,19 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_MetadataMixin</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">ObjectACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.exceptions</span> <span class="kn">import</span> <span class="n">StorageError</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 
 
-<div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="n">_MetadataMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A wrapper around Cloud Storage&#39;s concept of an ``Object``.&quot;&quot;&quot;</span>
 
-    <span class="n">CUSTOM_METADATA_FIELDS</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="s">&#39;get_acl&#39;</span><span class="p">,</span>
+    <span class="n">CUSTOM_PROPERTY_ACCESSORS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="s">&#39;get_acl()&#39;</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="sd">&quot;&quot;&quot;Mapping of field name -&gt; accessor for fields w/ custom accessors.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Map field name -&gt; accessor for fields w/ custom accessors.&quot;&quot;&quot;</span>
 
     <span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c"># 1 MB.</span>
     <span class="sd">&quot;&quot;&quot;The size of a chunk of data whenever iterating (1 MB).</span>
@@ -114,7 +114,7 @@
     <span class="c"># ACL rules are lazily retrieved.</span>
     <span class="n">_acl</span> <span class="o">=</span> <span class="bp">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Key constructor.</span>
 
 <span class="sd">        :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
@@ -124,10 +124,10 @@
 <span class="sd">        :param name: The name of the key.  This corresponds to the</span>
 <span class="sd">                     unique path of the object in the bucket.</span>
 
-<span class="sd">        :type metadata: dict</span>
-<span class="sd">        :param metadata: All the other data provided by Cloud Storage.</span>
+<span class="sd">        :type properties: dict</span>
+<span class="sd">        :param properties: All the other data provided by Cloud Storage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Key</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Key</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
 
     <span class="nd">@property</span>
@@ -153,7 +153,7 @@
 <span class="sd">        :returns: A key based on the data provided.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span> <span class="n">metadata</span><span class="o">=</span><span class="n">key_dict</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span> <span class="n">properties</span><span class="o">=</span><span class="n">key_dict</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">:</span>

@@ -615,8 +615,8 @@ just a name of a bucket.  It always returns the object:</p>
 <p>Create / interact with gcloud storage buckets.</p>
 <dl class="class">
 <dt id="gcloud.storage.bucket.Bucket">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.bucket.</tt><tt class="descname">Bucket</tt><big>(</big><em>connection=None</em>, <em>name=None</em>, <em>metadata=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage._helpers._MetadataMixin</span></tt></p>
+<em class="property">class </em><tt class="descclassname">gcloud.storage.bucket.</tt><tt class="descname">Bucket</tt><big>(</big><em>connection=None</em>, <em>name=None</em>, <em>properties=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage._helpers._PropertyMixin</span></tt></p>
 <p>A class representing a Bucket on Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -631,9 +631,9 @@ just a name of a bucket.  It always returns the object:</p>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="gcloud.storage.bucket.Bucket.CUSTOM_METADATA_FIELDS">
-<tt class="descname">CUSTOM_METADATA_FIELDS</tt><em class="property"> = {'lifecycle': 'get_lifecycle', 'acl': 'get_acl', 'defaultObjectAcl': 'get_default_object_acl'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_METADATA_FIELDS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mapping of field name -&gt; accessor for fields w/ custom accessors.</p>
+<dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'selfLink': 'self_link', 'id': 'id', 'projectNumber': 'project_number', 'lifecycle': 'get_lifecycle()', 'cors': 'get_cors()', 'metageneration': 'metageneration', 'location': 'get_location()', 'owner': 'owner', 'etag': 'etag', 'defaultObjectAcl': 'get_default_object_acl()', 'acl': 'get_acl()', 'versioning': 'get_versioning()', 'timeCreated': 'time_created', 'name': 'name', 'logging': 'get_logging()', 'storageClass': 'storage_class'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -645,14 +645,13 @@ just a name of a bucket.  It always returns the object:</p>
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.configure_website">
 <tt class="descname">configure_website</tt><big>(</big><em>main_page_suffix=None</em>, <em>not_found_page=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.configure_website"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.configure_website" title="Permalink to this definition">¶</a></dt>
-<dd><p>Configure website-related metadata.</p>
+<dd><p>Configure website-related properties.</p>
+<p>See: <a class="reference external" href="https://developers.google.com/storage/docs/website-configuration">https://developers.google.com/storage/docs/website-configuration</a></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>This (apparently) only works
+<p class="last">This (apparently) only works
 if your bucket name is a domain name
 (and to do that, you need to get approved somehow...).</p>
-<p class="last">Check out the official documentation here:
-<a class="reference external" href="https://developers.google.com/storage/docs/website-configuration">https://developers.google.com/storage/docs/website-configuration</a></p>
 </div>
 <p>If you want this bucket to host a website, just provide the name
 of an index page and a page to use when a key isn&#8217;t found:</p>
@@ -831,11 +830,73 @@ otherwise, the exception is propagated.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.disable_logging">
+<tt class="descname">disable_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.disable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.disable_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable access logging for this bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/accesslogs#disabling">https://cloud.google.com/storage/docs/accesslogs#disabling</a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.disable_versioning">
+<tt class="descname">disable_versioning</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.disable_versioning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.disable_versioning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disable versioning for this bucket.</p>
+<p>See:  <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">https://cloud.google.com/storage/docs/object-versioning</a> for
+details.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.disable_website">
 <tt class="descname">disable_website</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.disable_website"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.disable_website" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disable the website configuration for this bucket.</p>
 <p>This is really just a shortcut for setting the website-related
 attributes to <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.enable_logging">
+<tt class="descname">enable_logging</tt><big>(</big><em>bucket_name</em>, <em>object_prefix=''</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.enable_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.enable_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable access logging for this bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/accesslogs#delivery">https://cloud.google.com/storage/docs/accesslogs#delivery</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bucket_name</strong> (<em>string</em>) &#8211; name of bucket in which to store access logs</li>
+<li><strong>object_prefix</strong> (<em>string</em>) &#8211; prefix for access log filenames</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.enable_versioning">
+<tt class="descname">enable_versioning</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.enable_versioning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.enable_versioning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable versioning for this bucket.</p>
+<p>See:  <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">https://cloud.google.com/storage/docs/object-versioning</a> for
+details.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.etag">
+<tt class="descname">etag</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.etag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.etag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the ETag for the bucket.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="http://tools.ietf.org/html/rfc2616#section-3.11">http://tools.ietf.org/html/rfc2616#section-3.11</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a unique identifier for the bucket and current metadata.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="classmethod">
@@ -857,27 +918,11 @@ attributes to <tt class="docutils literal"><span class="pre">None</span></tt>.</
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.get_acl">
-<tt class="descname">get_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_acl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get ACL metadata as a <a class="reference internal" href="#gcloud.storage.acl.BucketACL" title="gcloud.storage.acl.BucketACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.BucketACL</span></tt></a> object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.BucketACL" title="gcloud.storage.acl.BucketACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.BucketACL</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An ACL object for the current bucket.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.get_all_keys">
 <tt class="descname">get_all_keys</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_all_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_all_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>List all the keys in this bucket.</p>
 <p>This will <strong>not</strong> retrieve all the data for all the keys, it
-will only retrieve metadata about the keys.</p>
+will only retrieve the keys.</p>
 <p>This is equivalent to:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">]</span>
 </pre></div>
@@ -895,11 +940,31 @@ will only retrieve metadata about the keys.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.get_cors">
+<tt class="descname">get_cors</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_cors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_cors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve CORS policies configured for this bucket.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(dict)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A sequence of mappings describing each CORS policy.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.get_default_object_acl">
 <tt class="descname">get_default_object_acl</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_default_object_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_default_object_acl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the current Default Object ACL rules.</p>
-<p>If the appropriate metadata isn&#8217;t available locally, this method
-will reload it from Cloud Storage.</p>
+<p>If the acl isn&#8217;t available locally, this method will reload it from
+Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -943,7 +1008,7 @@ will reload it from Cloud Storage.</p>
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.get_lifecycle">
 <tt class="descname">get_lifecycle</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_lifecycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_lifecycle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve CORS policies configured for this bucket.</p>
+<dd><p>Retrieve lifecycle rules configured for this bucket.</p>
 <dl class="docutils">
 <dt>See: <a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">https://cloud.google.com/storage/docs/lifecycle</a> and</dt>
 <dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></dd>
@@ -954,7 +1019,78 @@ will reload it from Cloud Storage.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(dict)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A sequence of mappings describing each CORS policy.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A sequence of mappings describing each lifecycle rule.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.get_location">
+<tt class="descname">get_location</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve location configured for this bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations">https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The configured location.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.get_logging">
+<tt class="descname">get_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return info about access logging for this bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/accesslogs#status">https://cloud.google.com/storage/docs/accesslogs#status</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a dict w/ keys, <tt class="docutils literal"><span class="pre">logBucket</span></tt> and <tt class="docutils literal"><span class="pre">logObjectPrefix</span></tt>
+(if logging is enabled), or None (if not).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.get_versioning">
+<tt class="descname">get_versioning</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_versioning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_versioning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is versioning enabled for this bucket?</p>
+<p>See:  <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">https://cloud.google.com/storage/docs/object-versioning</a> for
+details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if enabled, else False.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.id">
+<tt class="descname">id</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the ID for the bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a unique identifier for the bucket.</td>
 </tr>
 </tbody>
 </table>
@@ -975,6 +1111,24 @@ public as well.</li>
 future public as well.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.metageneration">
+<tt class="descname">metageneration</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.metageneration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.metageneration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the metageneration for the bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">count of times since creation the bucket&#8217;s metadata has
+been updated.</td>
 </tr>
 </tbody>
 </table>
@@ -1002,9 +1156,130 @@ returns the corresponding Key object.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.owner">
+<tt class="descname">owner</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.owner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.owner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve info about the owner of the bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">mapping of owner&#8217;s role/ID.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.path">
 <tt class="descname">path</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.path" title="Permalink to this definition">¶</a></dt>
 <dd><p>The URL path to this bucket.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.project_number">
+<tt class="descname">project_number</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.project_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.project_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the number of the project to which the bucket is assigned.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a unique identifier for the bucket.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.self_link">
+<tt class="descname">self_link</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.self_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.self_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the URI for the bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">URI of the bucket.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.set_location">
+<tt class="descname">set_location</tt><big>(</big><em>location</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.set_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.set_location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update location configured for this bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations">https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>location</strong> (<em>string</em>) &#8211; The new configured location.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.storage_class">
+<tt class="descname">storage_class</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.storage_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.storage_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the storage class for the bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket">https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the storage class for the bucket (currently one of
+<tt class="docutils literal"><span class="pre">STANDARD</span></tt>, <tt class="docutils literal"><span class="pre">DURABLE_REDUCED_AVAILABILITY</span></tt>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.time_created">
+<tt class="descname">time_created</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.time_created"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.time_created" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the timestamp at which the bucket was created.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timestamp for the bucket&#8217;s creation, in RFC 3339 format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.update_cors">
+<tt class="descname">update_cors</tt><big>(</big><em>entries</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.update_cors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.update_cors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update CORS policies configured for this bucket.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entries</strong> (<em>list(dict)</em>) &#8211; A sequence of mappings describing each CORS policy.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1019,7 +1294,7 @@ returns the corresponding Key object.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rules</strong> (<em>list(dict)</em>) &#8211; A sequence of mappings describing each lifecycle policy.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rules</strong> (<em>list(dict)</em>) &#8211; A sequence of mappings describing each lifecycle rule.</td>
 </tr>
 </tbody>
 </table>
@@ -1148,8 +1423,8 @@ methods on <a class="reference internal" href="#gcloud.storage.connection.Connec
 <p>Create / interact with gcloud storage keys.</p>
 <dl class="class">
 <dt id="gcloud.storage.key.Key">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.key.</tt><tt class="descname">Key</tt><big>(</big><em>bucket=None</em>, <em>name=None</em>, <em>metadata=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage._helpers._MetadataMixin</span></tt></p>
+<em class="property">class </em><tt class="descclassname">gcloud.storage.key.</tt><tt class="descname">Key</tt><big>(</big><em>bucket=None</em>, <em>name=None</em>, <em>properties=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage._helpers._PropertyMixin</span></tt></p>
 <p>A wrapper around Cloud Storage&#8217;s concept of an <tt class="docutils literal"><span class="pre">Object</span></tt>.</p>
 <p>Key constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1160,7 +1435,7 @@ methods on <a class="reference internal" href="#gcloud.storage.connection.Connec
 <li><strong>bucket</strong> (<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket to which this key belongs.</li>
 <li><strong>name</strong> (<em>string</em>) &#8211; The name of the key.  This corresponds to the
 unique path of the object in the bucket.</li>
-<li><strong>metadata</strong> (<em>dict</em>) &#8211; All the other data provided by Cloud Storage.</li>
+<li><strong>properties</strong> (<em>dict</em>) &#8211; All the other data provided by Cloud Storage.</li>
 </ul>
 </td>
 </tr>
@@ -1174,9 +1449,9 @@ unique path of the object in the bucket.</li>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="gcloud.storage.key.Key.CUSTOM_METADATA_FIELDS">
-<tt class="descname">CUSTOM_METADATA_FIELDS</tt><em class="property"> = {'acl': 'get_acl'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_METADATA_FIELDS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mapping of field name -&gt; accessor for fields w/ custom accessors.</p>
+<dt id="gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS">
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'acl': 'get_acl()'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1642,7 +1917,7 @@ API documents for details.</p>
 <p>Manipulate access control lists that Cloud Storage provides.</p>
 <p><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> has a getting method that creates
 an ACL object under the hood, and you can interact with that using
-<a class="reference internal" href="#gcloud.storage.bucket.Bucket.get_acl" title="gcloud.storage.bucket.Bucket.get_acl"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.get_acl()</span></tt></a>:</p>
+<tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.get_acl()</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
