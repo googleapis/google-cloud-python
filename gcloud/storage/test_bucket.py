@@ -419,10 +419,14 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(connection, NAME, before)
         entries = bucket.get_cors()
         self.assertEqual(len(entries), 2)
-        self.assertEqual(entries[0]['max_age'], CORS_ENTRY['maxAgeSeconds'])
-        self.assertEqual(entries[0]['methods'], CORS_ENTRY['method'])
-        self.assertEqual(entries[0]['origins'], CORS_ENTRY['origin'])
-        self.assertEqual(entries[0]['headers'], CORS_ENTRY['responseHeader'])
+        self.assertEqual(entries[0]['maxAgeSeconds'],
+                         CORS_ENTRY['maxAgeSeconds'])
+        self.assertEqual(entries[0]['method'],
+                         CORS_ENTRY['method'])
+        self.assertEqual(entries[0]['origin'],
+                         CORS_ENTRY['origin'])
+        self.assertEqual(entries[0]['responseHeader'],
+                         CORS_ENTRY['responseHeader'])
         self.assertEqual(entries[1], {})
         kw = connection._requested
         self.assertEqual(len(kw), 0)
@@ -440,10 +444,14 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(connection, NAME)
         entries = bucket.get_cors()
         self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0]['max_age'], CORS_ENTRY['maxAgeSeconds'])
-        self.assertEqual(entries[0]['methods'], CORS_ENTRY['method'])
-        self.assertEqual(entries[0]['origins'], CORS_ENTRY['origin'])
-        self.assertEqual(entries[0]['headers'], CORS_ENTRY['responseHeader'])
+        self.assertEqual(entries[0]['maxAgeSeconds'],
+                         CORS_ENTRY['maxAgeSeconds'])
+        self.assertEqual(entries[0]['method'],
+                         CORS_ENTRY['method'])
+        self.assertEqual(entries[0]['origin'],
+                         CORS_ENTRY['origin'])
+        self.assertEqual(entries[0]['responseHeader'],
+                         CORS_ENTRY['responseHeader'])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
@@ -458,16 +466,10 @@ class Test_Bucket(unittest2.TestCase):
             'origin': ['127.0.0.1'],
             'responseHeader': ['Content-Type'],
             }
-        MAPPED = {
-            'max_age': 1234,
-            'methods': ['OPTIONS', 'GET'],
-            'origins': ['127.0.0.1'],
-            'headers': ['Content-Type'],
-            }
         after = {'cors': [CORS_ENTRY, {}]}
         connection = _Connection(after)
         bucket = self._makeOne(connection, NAME)
-        bucket.update_cors([MAPPED, {}])
+        bucket.update_cors([CORS_ENTRY, {}])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -475,7 +477,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], after)
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
         entries = bucket.get_cors()
-        self.assertEqual(entries, [MAPPED, {}])
+        self.assertEqual(entries, [CORS_ENTRY, {}])
 
     def test_get_default_object_acl_lazy(self):
         from gcloud.storage.acl import BucketACL
@@ -602,8 +604,8 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection()
         bucket = self._makeOne(connection, NAME, before)
         info = bucket.get_logging()
-        self.assertEqual(info['bucket_name'], LOG_BUCKET)
-        self.assertEqual(info['object_prefix'], LOG_PREFIX)
+        self.assertEqual(info['logBucket'], LOG_BUCKET)
+        self.assertEqual(info['logObjectPrefix'], LOG_PREFIX)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
@@ -614,8 +616,8 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(after)
         bucket = self._makeOne(connection, NAME)
         info = bucket.get_logging()
-        self.assertEqual(info['bucket_name'], LOG_BUCKET)
-        self.assertEqual(info['object_prefix'], '')
+        self.assertEqual(info['logBucket'], LOG_BUCKET)
+        self.assertEqual(info.get('logObjectPrefix'), None)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
@@ -632,8 +634,8 @@ class Test_Bucket(unittest2.TestCase):
         self.assertTrue(bucket.get_logging() is None)
         bucket.enable_logging(LOG_BUCKET)
         info = bucket.get_logging()
-        self.assertEqual(info['bucket_name'], LOG_BUCKET)
-        self.assertEqual(info['object_prefix'], '')
+        self.assertEqual(info['logBucket'], LOG_BUCKET)
+        self.assertEqual(info['logObjectPrefix'], '')
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -653,8 +655,8 @@ class Test_Bucket(unittest2.TestCase):
         self.assertTrue(bucket.get_logging() is None)
         bucket.enable_logging(LOG_BUCKET, LOG_PFX)
         info = bucket.get_logging()
-        self.assertEqual(info['bucket_name'], LOG_BUCKET)
-        self.assertEqual(info['object_prefix'], LOG_PFX)
+        self.assertEqual(info['logBucket'], LOG_BUCKET)
+        self.assertEqual(info['logObjectPrefix'], LOG_PFX)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -690,7 +692,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(properties=properties)
         owner = bucket.owner
         self.assertEqual(owner['entity'], 'project-owner-12345')
-        self.assertEqual(owner['id'], '23456')
+        self.assertEqual(owner['entityId'], '23456')
 
     def test_project_number(self):
         PROJECT_NUMBER = 12345

@@ -364,22 +364,8 @@ class Bucket(_PropertyMixin):
 
         :rtype: list(dict)
         :returns: A sequence of mappings describing each CORS policy.
-                  Keys include 'max_age', 'methods', 'origins', and
-                  'headers'.
         """
-        result = []
-        for entry in self.properties.get('cors', ()):
-            entry = entry.copy()
-            result.append(entry)
-            if 'maxAgeSeconds' in entry:
-                entry['max_age'] = entry.pop('maxAgeSeconds')
-            if 'method' in entry:
-                entry['methods'] = entry.pop('method')
-            if 'origin' in entry:
-                entry['origins'] = entry.pop('origin')
-            if 'responseHeader' in entry:
-                entry['headers'] = entry.pop('responseHeader')
-        return result
+        return [policy.copy() for policy in self.properties.get('cors', ())]
 
     def update_cors(self, entries):
         """Update CORS policies configured for this bucket.
@@ -389,22 +375,8 @@ class Bucket(_PropertyMixin):
 
         :type entries: list(dict)
         :param entries: A sequence of mappings describing each CORS policy.
-                        Keys include 'max_age', 'methods', 'origins', and
-                        'headers'.
         """
-        to_patch = []
-        for entry in entries:
-            entry = entry.copy()
-            to_patch.append(entry)
-            if 'max_age' in entry:
-                entry['maxAgeSeconds'] = entry.pop('max_age')
-            if 'methods' in entry:
-                entry['method'] = entry.pop('methods')
-            if 'origins' in entry:
-                entry['origin'] = entry.pop('origins')
-            if 'headers' in entry:
-                entry['responseHeader'] = entry.pop('headers')
-        self._patch_properties({'cors': to_patch})
+        self._patch_properties({'cors': entries})
 
     def get_default_object_acl(self):
         """Get the current Default Object ACL rules.
@@ -451,12 +423,8 @@ class Bucket(_PropertyMixin):
         :rtype: list(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
         """
-        result = []
         info = self.properties.get('lifecycle', {})
-        for rule in info.get('rule', ()):
-            rule = rule.copy()
-            result.append(rule)
-        return result
+        return [rule.copy() for rule in info.get('rule', ())]
 
     def update_lifecycle(self, rules):
         """Update CORS policies configured for this bucket.
@@ -497,15 +465,12 @@ class Bucket(_PropertyMixin):
         See: https://cloud.google.com/storage/docs/accesslogs#status
 
         :rtype: dict or None
-        :returns: a dict w/ keys, ``bucket_name`` and ``object_prefix``
+        :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``
                   (if logging is enabled), or None (if not).
         """
         info = self.properties.get('logging')
         if info is not None:
-            info = info.copy()
-            info['bucket_name'] = info.pop('logBucket')
-            info['object_prefix'] = info.pop('logObjectPrefix', '')
-        return info
+            return info.copy()
 
     def enable_logging(self, bucket_name, object_prefix=''):
         """Enable access logging for this bucket.
@@ -549,9 +514,7 @@ class Bucket(_PropertyMixin):
         :rtype: dict
         :returns: mapping of owner's role/ID.
         """
-        owner = self.properties['owner'].copy()
-        owner['id'] = owner.pop('entityId')
-        return owner
+        return self.properties['owner'].copy()
 
     @property
     def project_number(self):
