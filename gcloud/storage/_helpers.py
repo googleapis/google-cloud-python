@@ -112,10 +112,7 @@ class _PropertyMixin(object):
             message = "Use '%s' or related methods instead." % custom
             raise KeyError((field, message))
 
-        if not self._properties or field not in self._properties:
-            self._reload_properties()
-
-        return self._properties.get(field, default)
+        return self.properties.get(field, default)
 
     def get_acl(self):
         """Get ACL as an object.
