@@ -344,6 +344,116 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': permissive})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
+    def test_component_count(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        COMPONENT_COUNT = 42
+        properties = {'componentCount': COMPONENT_COUNT}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.component_count, COMPONENT_COUNT)
+
+    def test_etag(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        ETAG = 'ETAG'
+        properties = {'etag': ETAG}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.etag, ETAG)
+
+    def test_generation(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        GENERATION = 42
+        properties = {'generation': GENERATION}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.generation, GENERATION)
+
+    def test_id(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        ID = 'ID'
+        properties = {'id': ID}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.id, ID)
+
+    def test_media_link(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        MEDIA_LINK = 'http://example.com/media/'
+        properties = {'selfLink': MEDIA_LINK}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.media_link, MEDIA_LINK)
+
+    def test_metageneration(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        METAGENERATION = 42
+        properties = {'metageneration': METAGENERATION}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.metageneration, METAGENERATION)
+
+    def test_owner(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        OWNER = {'entity': 'project-owner-12345', 'entityId': '23456'}
+        properties = {'owner': OWNER}
+        key = self._makeOne(bucket, KEY, properties)
+        owner = key.owner
+        self.assertEqual(owner['entity'], 'project-owner-12345')
+        self.assertEqual(owner['entityId'], '23456')
+
+    def test_self_link(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        SELF_LINK = 'http://example.com/self/'
+        properties = {'selfLink': SELF_LINK}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.self_link, SELF_LINK)
+
+    def test_size(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        SIZE = 42
+        properties = {'size': SIZE}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.size, SIZE)
+
+    def test_storage_class(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        STORAGE_CLASS = 'http://example.com/self/'
+        properties = {'storageClass': STORAGE_CLASS}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.storage_class, STORAGE_CLASS)
+
+    def test_time_deleted(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        TIME_DELETED = '2014-11-05T20:34:37Z'
+        properties = {'timeDeleted': TIME_DELETED}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.time_deleted, TIME_DELETED)
+
+    def test_updated(self):
+        KEY = 'key'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        UPDATED = '2014-11-05T20:34:37Z'
+        properties = {'updated': UPDATED}
+        key = self._makeOne(bucket, KEY, properties)
+        self.assertEqual(key.updated, UPDATED)
+
 
 class Test__KeyIterator(unittest2.TestCase):
 
