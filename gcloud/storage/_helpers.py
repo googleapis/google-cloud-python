@@ -62,7 +62,7 @@ class _PropertyMixin(object):
         :returns: The object you just reloaded data for.
         """
         # Pass only '?projection=noAcl' here because 'acl' and related
-        # are handled via 'get_acl()' etc.
+        # are handled via custom endpoints..
         query_params = {'projection': 'noAcl'}
         self._properties = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)
