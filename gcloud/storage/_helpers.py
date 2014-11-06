@@ -37,8 +37,8 @@ class _PropertyMixin(object):
         :type name: string
         :param name: The name of the object.
 
-        :type metadata: dict
-        :param metadata: All the other data provided by Cloud Storage.
+        :type properties: dict
+        :param properties: All the other data provided by Cloud Storage.
         """
         self.name = name
         self._properties = {}
@@ -48,6 +48,8 @@ class _PropertyMixin(object):
     @property
     def properties(self):
         """Ensure properties are loaded, and return a copy.
+
+        :rtype: dict
         """
         if not self._properties:
             self._reload_properties()
