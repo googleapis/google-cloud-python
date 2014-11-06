@@ -1,3 +1,4 @@
-export GCLOUD_TESTS_DATASET_ID="my-dataset"
+export GCLOUD_TESTS_PROJECT_ID="my-project"
+export GCLOUD_TESTS_DATASET_ID=${GCLOUD_TESTS_PROJECT_ID}
 export GCLOUD_TESTS_CLIENT_EMAIL="some-account@developer.gserviceaccount.com"
 export GCLOUD_TESTS_KEY_FILE="path.key"

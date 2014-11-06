@@ -160,7 +160,10 @@ Running Regression Tests
   so you'll need to provide some environment variables to facilitate
   authentication to your project:
 
+  - ``GCLOUD_TESTS_PROJECT_ID``: Developers Console project ID (e.g.
+    bamboo-shift-455).
   - ``GCLOUD_TESTS_DATASET_ID``: The name of the dataset your tests connect to.
+    This is typically the same as ``GCLOUD_TESTS_PROJECT_ID``.
   - ``GCLOUD_TESTS_CLIENT_EMAIL``: The email for the service account you're
     authenticating with
   - ``GCLOUD_TESTS_KEY_FILE``: The path to an encrypted key file.

@@ -301,7 +301,8 @@ class Bucket(_MetadataMixin):
         if key is None:
             key = os.path.basename(filename)
         key = self.new_key(key)
-        return key.upload_from_filename(filename)
+        key.upload_from_filename(filename)
+        return key
 
     def upload_file_object(self, file_obj, key=None):
         """Shortcut method to upload a file object into this bucket.
