@@ -488,7 +488,6 @@
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: a unique identifier for the bucket and current metadata.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;etag&#39;</span><span class="p">]</span>
 </div>
@@ -499,7 +498,6 @@
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: a unique identifier for the bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
 </div>
@@ -589,8 +587,6 @@
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: integer</span>
-<span class="sd">        :returns: count of times since creation the bucket&#39;s metadata has</span>
-<span class="sd">                  been updated.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;metageneration&#39;</span><span class="p">]</span>
 </div>
@@ -612,7 +608,6 @@
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: integer</span>
-<span class="sd">        :returns: a unique identifier for the bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;projectNumber&#39;</span><span class="p">]</span>
 </div>
@@ -623,7 +618,6 @@
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: URI of the bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;selfLink&#39;</span><span class="p">]</span>
 </div>
@@ -635,8 +629,7 @@
 <span class="sd">        https://cloud.google.com/storage/docs/durable-reduced-availability</span>
 
 <span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: the storage class for the bucket (currently one of</span>
-<span class="sd">                  ``STANDARD``, ``DURABLE_REDUCED_AVAILABILITY``)</span>
+<span class="sd">        :returns: Currently one of &quot;STANDARD&quot;, &quot;DURABLE_REDUCED_AVAILABILITY&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;storageClass&#39;</span><span class="p">]</span>
 </div>
@@ -647,7 +640,7 @@
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
 <span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: timestamp for the bucket&#39;s creation, in RFC 3339 format.</span>
+<span class="sd">        :returns: timestamp in RFC 3339 format.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;timeCreated&#39;</span><span class="p">]</span>
 </div>

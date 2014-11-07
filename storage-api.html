@@ -632,7 +632,7 @@ just a name of a bucket.  It always returns the object:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'acl': 'get_acl()', 'location': 'get_location()', 'storageClass': 'storage_class', 'projectNumber': 'project_number', 'timeCreated': 'time_created', 'versioning': 'get_versioning()', 'logging': 'get_logging()', 'name': 'name', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'id': 'id', 'owner': 'owner', 'cors': 'get_cors()', 'lifecycle': 'get_lifecycle()', 'defaultObjectAcl': 'get_default_object_acl()', 'etag': 'etag'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'defaultObjectAcl': 'get_default_object_acl()', 'acl': 'get_acl()', 'timeCreated': 'time_created', 'location': 'get_location()', 'logging': 'get_logging()', 'cors': 'get_cors()', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'projectNumber': 'project_number', 'owner': 'owner', 'storageClass': 'storage_class', 'etag': 'etag', 'versioning': 'get_versioning()', 'id': 'id', 'lifecycle': 'get_lifecycle()', 'name': 'name'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -893,8 +893,6 @@ details.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a unique identifier for the bucket and current metadata.</td>
-</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -1090,8 +1088,6 @@ details.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a unique identifier for the bucket.</td>
-</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -1126,9 +1122,6 @@ future public as well.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">count of times since creation the bucket&#8217;s metadata has
-been updated.</td>
 </tr>
 </tbody>
 </table>
@@ -1189,8 +1182,6 @@ returns the corresponding Key object.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a unique identifier for the bucket.</td>
-</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -1205,8 +1196,6 @@ returns the corresponding Key object.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">URI of the bucket.</td>
 </tr>
 </tbody>
 </table>
@@ -1240,8 +1229,7 @@ returns the corresponding Key object.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the storage class for the bucket (currently one of
-<tt class="docutils literal"><span class="pre">STANDARD</span></tt>, <tt class="docutils literal"><span class="pre">DURABLE_REDUCED_AVAILABILITY</span></tt>)</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Currently one of &#8220;STANDARD&#8221;, &#8220;DURABLE_REDUCED_AVAILABILITY&#8221;</td>
 </tr>
 </tbody>
 </table>
@@ -1258,7 +1246,7 @@ returns the corresponding Key object.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timestamp for the bucket&#8217;s creation, in RFC 3339 format.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timestamp in RFC 3339 format.</td>
 </tr>
 </tbody>
 </table>
@@ -1450,7 +1438,7 @@ unique path of the object in the bucket.</li>
 
 <dl class="attribute">
 <dt id="gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'acl': 'get_acl()'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'selfLink': 'self_link', 'acl': 'get_acl()', 'componentCount': 'component_count', 'storageClass': 'storage_class', 'cacheControl': 'cache_control', 'contentLanguage': 'content_language', 'mediaLink': 'media_link', 'contentDisposition': 'content_disposition', 'metageneration': 'metageneration', 'size': 'size', 'timeDeleted': 'time_deleted', 'generation': 'generation', 'owner': 'owner', 'contentEncoding': 'content_encoding', 'updated': 'updated', 'etag': 'etag', 'id': 'id', 'contentType': 'content_type', 'name': 'name'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -1458,6 +1446,39 @@ unique path of the object in the bucket.</li>
 <dt id="gcloud.storage.key.Key.acl">
 <tt class="descname">acl</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.acl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create our ACL on demand.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.cache_control">
+<tt class="descname">cache_control</tt><a class="headerlink" href="#gcloud.storage.key.Key.cache_control" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP &#8216;Cache-Control&#8217; header for this object.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="https://tools.ietf.org/html/rfc7234#section-5.2">https://tools.ietf.org/html/rfc7234#section-5.2</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.component_count">
+<tt class="descname">component_count</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.component_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.component_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of underlying components that make up this object.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -1471,6 +1492,96 @@ unique path of the object in the bucket.</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a> or None</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The connection to use, or None if no connection is set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.content_disposition">
+<tt class="descname">content_disposition</tt><a class="headerlink" href="#gcloud.storage.key.Key.content_disposition" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP &#8216;Content-Disposition&#8217; header for this object.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="https://tools.ietf.org/html/rfc6266">https://tools.ietf.org/html/rfc6266</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.content_encoding">
+<tt class="descname">content_encoding</tt><a class="headerlink" href="#gcloud.storage.key.Key.content_encoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP &#8216;Content-Encoding&#8217; header for this object.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="https://tools.ietf.org/html/rfc7231#section-3.1.2.2">https://tools.ietf.org/html/rfc7231#section-3.1.2.2</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.content_language">
+<tt class="descname">content_language</tt><a class="headerlink" href="#gcloud.storage.key.Key.content_language" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP &#8216;Content-Language&#8217; header for this object.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="http://tools.ietf.org/html/bcp47">http://tools.ietf.org/html/bcp47</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.content_type">
+<tt class="descname">content_type</tt><a class="headerlink" href="#gcloud.storage.key.Key.content_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP &#8216;Content-Type&#8217; header for this object.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="https://tools.ietf.org/html/rfc2616#section-14.17">https://tools.ietf.org/html/rfc2616#section-14.17</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.crc32c">
+<tt class="descname">crc32c</tt><a class="headerlink" href="#gcloud.storage.key.Key.crc32c" title="Permalink to this definition">¶</a></dt>
+<dd><p>CRC32C checksum for this object.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="http://tools.ietf.org/html/rfc4960#appendix-B">http://tools.ietf.org/html/rfc4960#appendix-B</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 </tbody>
 </table>
@@ -1541,6 +1652,24 @@ unique path of the object in the bucket.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>string</em>) &#8211; A filename to be passed to <tt class="docutils literal"><span class="pre">open</span></tt>.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.etag">
+<tt class="descname">etag</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.etag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.etag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the ETag for the object.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="http://tools.ietf.org/html/rfc2616#section-3.11">http://tools.ietf.org/html/rfc2616#section-3.11</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 </tbody>
 </table>
@@ -1619,6 +1748,21 @@ until expiration.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.generation">
+<tt class="descname">generation</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.generation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.generation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the generation for the object.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="gcloud.storage.key.Key.get_contents_as_string">
 <tt class="descname">get_contents_as_string</tt><big>(</big><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.get_contents_as_string" title="Permalink to this definition">¶</a></dt>
@@ -1669,6 +1813,21 @@ until expiration.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.id">
+<tt class="descname">id</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the ID for the object.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="gcloud.storage.key.Key.make_public">
 <tt class="descname">make_public</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.make_public"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.make_public" title="Permalink to this definition">¶</a></dt>
@@ -1678,6 +1837,86 @@ until expiration.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.md5_hash">
+<tt class="descname">md5_hash</tt><a class="headerlink" href="#gcloud.storage.key.Key.md5_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>MD5 hash for this object.</p>
+<dl class="docutils">
+<dt>See: <a class="reference external" href="http://tools.ietf.org/html/rfc4960#appendix-B">http://tools.ietf.org/html/rfc4960#appendix-B</a> and</dt>
+<dd><a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.media_link">
+<tt class="descname">media_link</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.media_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.media_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the media download URI for the object.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.metadata">
+<tt class="descname">metadata</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.metadata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve arbitrary/application specific metadata for the object.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.metageneration">
+<tt class="descname">metageneration</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.metageneration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.metageneration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the metageneration for the object.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.owner">
+<tt class="descname">owner</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.owner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.owner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve info about the owner of the object.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">mapping of owner&#8217;s role/ID.</td>
 </tr>
 </tbody>
 </table>
@@ -1736,6 +1975,21 @@ could be a very (temporarily) costly or a very slow operation.</p>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The newly-copied key.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.self_link">
+<tt class="descname">self_link</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.self_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.self_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the URI for the object.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 </tbody>
 </table>
@@ -1820,6 +2074,74 @@ API documents for details.</p>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The updated Key object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.size">
+<tt class="descname">size</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of the object,  in bytes.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.storage_class">
+<tt class="descname">storage_class</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.storage_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.storage_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the storage class for the object.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket">https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Currently one of &#8220;STANDARD&#8221;, &#8220;DURABLE_REDUCED_AVAILABILITY&#8221;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.time_deleted">
+<tt class="descname">time_deleted</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.time_deleted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.time_deleted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the timestamp at which the object was deleted.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timestamp in RFC 3339 format, or None if the object
+has a &#8220;live&#8221; version.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.key.Key.updated">
+<tt class="descname">updated</tt><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.updated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.updated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the timestamp at which the object was updated.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/objects">https://cloud.google.com/storage/docs/json_api/v1/objects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timestamp in RFC 3339 format.</td>
 </tr>
 </tbody>
 </table>
