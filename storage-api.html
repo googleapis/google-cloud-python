@@ -632,7 +632,7 @@ just a name of a bucket.  It always returns the object:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'defaultObjectAcl': 'get_default_object_acl()', 'cors': 'get_cors()', 'location': 'get_location()', 'etag': 'etag', 'name': 'name', 'acl': 'get_acl()', 'logging': 'get_logging()', 'metageneration': 'metageneration', 'projectNumber': 'project_number', 'owner': 'owner', 'id': 'id', 'timeCreated': 'time_created', 'versioning': 'get_versioning()', 'storageClass': 'storage_class', 'lifecycle': 'get_lifecycle()', 'selfLink': 'self_link'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'acl': 'get_acl()', 'location': 'get_location()', 'storageClass': 'storage_class', 'projectNumber': 'project_number', 'timeCreated': 'time_created', 'versioning': 'get_versioning()', 'logging': 'get_logging()', 'name': 'name', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'id': 'id', 'owner': 'owner', 'cors': 'get_cors()', 'lifecycle': 'get_lifecycle()', 'defaultObjectAcl': 'get_default_object_acl()', 'etag': 'etag'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -1233,7 +1233,7 @@ returns the corresponding Key object.</p>
 <tt class="descname">storage_class</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.storage_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.storage_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve the storage class for the bucket.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
-<a class="reference external" href="https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket">https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket</a></p>
+<a class="reference external" href="https://cloud.google.com/storage/docs/durable-reduced-availability">https://cloud.google.com/storage/docs/durable-reduced-availability</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
