@@ -1,29 +1,14 @@
 """Create / interact with gcloud storage connections."""
 
-import base64
-import calendar
-import datetime
 import json
 import urllib
 
-from Crypto.Hash import SHA256
-from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
-from OpenSSL import crypto
-import pytz
 
 from gcloud import connection
+from gcloud import credentials
 from gcloud.storage import exceptions
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.bucket import BucketIterator
-
-
-def _utcnow():  # pragma: NO COVER testing replaces
-    """Returns current time as UTC datetime.
-
-    NOTE: on the module namespace so tests can replace it.
-    """
-    return datetime.datetime.utcnow()
 
 
 class Connection(connection.Connection):
@@ -453,70 +438,6 @@ class Connection(connection.Connection):
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
-        expiration = _get_expiration_seconds(expiration)
-
-        # Generate the string to sign.
-        signature_string = '\n'.join([
-            method,
-            content_md5 or '',
-            content_type or '',
-            str(expiration),
-            resource])
-
-        # Take our PKCS12 (.p12) key and make it into a RSA key we can use...
-        pkcs12 = crypto.load_pkcs12(
-            base64.b64decode(self.credentials.private_key),
-            'notasecret')
-        pem = crypto.dump_privatekey(
-            crypto.FILETYPE_PEM, pkcs12.get_privatekey())
-        pem_key = RSA.importKey(pem)
-
-        # Sign the string with the RSA key.
-        signer = PKCS1_v1_5.new(pem_key)
-        signature_hash = SHA256.new(signature_string)
-        signature_bytes = signer.sign(signature_hash)
-        signature = base64.b64encode(signature_bytes)
-
-        # Set the right query parameters.
-        query_params = {
-            'GoogleAccessId': self.credentials.service_account_name,
-            'Expires': str(expiration),
-            'Signature': signature,
-        }
-
-        # Return the built URL.
-        return '{endpoint}{resource}?{querystring}'.format(
-            endpoint=self.API_ACCESS_ENDPOINT, resource=resource,
-            querystring=urllib.urlencode(query_params))
-
-
-def _get_expiration_seconds(expiration):
-    """Convert 'expiration' to a number of seconds in the future.
-
-    :type expiration: int, long, datetime.datetime, datetime.timedelta
-    :param expiration: When the signed URL should expire.
-
-    :rtype: int
-    :returns: a timestamp as an absolute number of seconds.
-    """
-    # If it's a timedelta, add it to `now` in UTC.
-    if isinstance(expiration, datetime.timedelta):
-        now = _utcnow().replace(tzinfo=pytz.utc)
-        expiration = now + expiration
-
-    # If it's a datetime, convert to a timestamp.
-    if isinstance(expiration, datetime.datetime):
-        # Make sure the timezone on the value is UTC
-        # (either by converting or replacing the value).
-        if expiration.tzinfo:
-            expiration = expiration.astimezone(pytz.utc)
-        else:
-            expiration = expiration.replace(tzinfo=pytz.utc)
-
-        # Turn the datetime into a timestamp (seconds, not microseconds).
-        expiration = int(calendar.timegm(expiration.timetuple()))
-
-    if not isinstance(expiration, (int, long)):
-        raise TypeError('Expected an integer timestamp, datetime, or '
-                        'timedelta. Got %s' % type(expiration))
-    return expiration
+        return credentials.generate_signed_url(
+            self.credentials, self.API_ACCESS_ENDPOINT, resource, expiration,
+            method, content_md5, content_type)
