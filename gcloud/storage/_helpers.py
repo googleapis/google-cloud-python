@@ -59,13 +59,19 @@ class _PropertyMixin(object):
     def batch(self):
         """Return a context manager which defers/batches updates.
 
-        E.g., to batch multiple updates::
+        E.g., to batch multiple updates to a bucket::
 
-            >>> with instance.batch:
-            ...     instance._patch_properties({'foo': 'Foo'})
-            ...     instance._patch_properties({'bar': 'Bar'})
+            >>> with bucket.batch:
+            ...     bucket.enable_versioning()
+            ...     bucket.disable_website()
 
-        The batch will be aggregated and sent as a single call to
+        or for a key::
+
+            >>> with key.batch:
+            ...     key.content_type = 'image/jpeg'
+            ...     key.content_encoding = 'gzip'
+
+        Updates will be aggregated and sent as a single call to
         :meth:`_patch_properties` IFF the ``with`` block exits without
         an exception.
 
