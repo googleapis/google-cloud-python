@@ -94,23 +94,10 @@
 <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">ObjectACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.exceptions</span> <span class="kn">import</span> <span class="n">StorageError</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
-
-
-<span class="k">def</span> <span class="nf">_scalar_property</span><span class="p">(</span><span class="n">fieldname</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a property descriptor around the :class:`_PropertyMixin` helpers.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Scalar property getter.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">_setter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Scalar property setter.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="n">fieldname</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
-
-    <span class="k">return</span> <span class="nb">property</span><span class="p">(</span><span class="n">_getter</span><span class="p">,</span> <span class="n">_setter</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>

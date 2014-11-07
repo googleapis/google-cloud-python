@@ -91,6 +91,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">BucketACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
@@ -116,7 +117,7 @@
         <span class="s">&#39;etag&#39;</span><span class="p">:</span> <span class="s">&#39;etag&#39;</span><span class="p">,</span>
         <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;id&#39;</span><span class="p">,</span>
         <span class="s">&#39;lifecycle&#39;</span><span class="p">:</span> <span class="s">&#39;get_lifecycle()&#39;</span><span class="p">,</span>
-        <span class="s">&#39;location&#39;</span><span class="p">:</span> <span class="s">&#39;get_location()&#39;</span><span class="p">,</span>
+        <span class="s">&#39;location&#39;</span><span class="p">:</span> <span class="s">&#39;location&#39;</span><span class="p">,</span>
         <span class="s">&#39;logging&#39;</span><span class="p">:</span> <span class="s">&#39;get_logging()&#39;</span><span class="p">,</span>
         <span class="s">&#39;metageneration&#39;</span><span class="p">:</span> <span class="s">&#39;metageneration&#39;</span><span class="p">,</span>
         <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;name&#39;</span><span class="p">,</span>
@@ -125,7 +126,7 @@
         <span class="s">&#39;selfLink&#39;</span><span class="p">:</span> <span class="s">&#39;self_link&#39;</span><span class="p">,</span>
         <span class="s">&#39;storageClass&#39;</span><span class="p">:</span> <span class="s">&#39;storage_class&#39;</span><span class="p">,</span>
         <span class="s">&#39;timeCreated&#39;</span><span class="p">:</span> <span class="s">&#39;time_created&#39;</span><span class="p">,</span>
-        <span class="s">&#39;versioning&#39;</span><span class="p">:</span> <span class="s">&#39;get_versioning()&#39;</span><span class="p">,</span>
+        <span class="s">&#39;versioning&#39;</span><span class="p">:</span> <span class="s">&#39;versioning_enabled&#39;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="sd">&quot;&quot;&quot;Map field name -&gt; accessor for fields w/ custom accessors.&quot;&quot;&quot;</span>
 
@@ -524,28 +525,15 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;lifecycle&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;rule&#39;</span><span class="p">:</span> <span class="n">rules</span><span class="p">}})</span>
 </div>
-<div class="viewcode-block" id="Bucket.get_location"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_location">[docs]</a>    <span class="k">def</span> <span class="nf">get_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retrieve location configured for this bucket.</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s">&#39;location&#39;</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve location configured for this bucket.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
-<span class="sd">        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</span>
+<span class="sd">    See: https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
+<span class="sd">    https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</span>
 
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: The configured location.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;location&#39;</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Bucket.set_location"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.set_location">[docs]</a>    <span class="k">def</span> <span class="nf">set_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update location configured for this bucket.</span>
+<span class="sd">    :rtype: string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
-<span class="sd">        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</span>
-
-<span class="sd">        :type location: string</span>
-<span class="sd">        :param location: The new configured location.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;location&#39;</span><span class="p">:</span> <span class="n">location</span><span class="p">})</span>
-</div>
 <div class="viewcode-block" id="Bucket.get_logging"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_logging">[docs]</a>    <span class="k">def</span> <span class="nf">get_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return info about access logging for this bucket.</span>
 
@@ -644,7 +632,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;timeCreated&#39;</span><span class="p">]</span>
 </div>
-<div class="viewcode-block" id="Bucket.get_versioning"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_versioning">[docs]</a>    <span class="k">def</span> <span class="nf">get_versioning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">versioning_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Is versioning enabled for this bucket?</span>
 
 <span class="sd">        See:  https://cloud.google.com/storage/docs/object-versioning for</span>
@@ -655,22 +644,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">versioning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;versioning&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">return</span> <span class="n">versioning</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;enabled&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Bucket.enable_versioning"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.enable_versioning">[docs]</a>    <span class="k">def</span> <span class="nf">enable_versioning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="nd">@versioning_enabled.setter</span>
+<div class="viewcode-block" id="Bucket.versioning_enabled"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.versioning_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">versioning_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable versioning for this bucket.</span>
 
 <span class="sd">        See:  https://cloud.google.com/storage/docs/object-versioning for</span>
 <span class="sd">        details.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;versioning&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;enabled&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}})</span>
-</div>
-<div class="viewcode-block" id="Bucket.disable_versioning"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.disable_versioning">[docs]</a>    <span class="k">def</span> <span class="nf">disable_versioning</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Disable versioning for this bucket.</span>
 
-<span class="sd">        See:  https://cloud.google.com/storage/docs/object-versioning for</span>
-<span class="sd">        details.</span>
+<span class="sd">        :type value: convertible to bool</span>
+<span class="sd">        :param value: should versioning be anabled for the bucket?</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;versioning&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;enabled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;versioning&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;enabled&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)}})</span>
 </div>
 <div class="viewcode-block" id="Bucket.configure_website"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.configure_website">[docs]</a>    <span class="k">def</span> <span class="nf">configure_website</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_page_suffix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">not_found_page</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure website-related properties.</span>

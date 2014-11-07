@@ -632,7 +632,7 @@ just a name of a bucket.  It always returns the object:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'defaultObjectAcl': 'get_default_object_acl()', 'acl': 'get_acl()', 'timeCreated': 'time_created', 'location': 'get_location()', 'logging': 'get_logging()', 'cors': 'get_cors()', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'projectNumber': 'project_number', 'owner': 'owner', 'storageClass': 'storage_class', 'etag': 'etag', 'versioning': 'get_versioning()', 'id': 'id', 'lifecycle': 'get_lifecycle()', 'name': 'name'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'storageClass': 'storage_class', 'versioning': 'versioning_enabled', 'owner': 'owner', 'projectNumber': 'project_number', 'metageneration': 'metageneration', 'id': 'id', 'etag': 'etag', 'timeCreated': 'time_created', 'lifecycle': 'get_lifecycle()', 'name': 'name', 'logging': 'get_logging()', 'selfLink': 'self_link', 'cors': 'get_cors()', 'location': 'location', 'defaultObjectAcl': 'get_default_object_acl()', 'acl': 'get_acl()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -837,14 +837,6 @@ otherwise, the exception is propagated.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.disable_versioning">
-<tt class="descname">disable_versioning</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.disable_versioning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.disable_versioning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Disable versioning for this bucket.</p>
-<p>See:  <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">https://cloud.google.com/storage/docs/object-versioning</a> for
-details.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.disable_website">
 <tt class="descname">disable_website</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.disable_website"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.disable_website" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disable the website configuration for this bucket.</p>
@@ -869,14 +861,6 @@ attributes to <tt class="docutils literal"><span class="pre">None</span></tt>.</
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.enable_versioning">
-<tt class="descname">enable_versioning</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.enable_versioning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.enable_versioning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enable versioning for this bucket.</p>
-<p>See:  <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">https://cloud.google.com/storage/docs/object-versioning</a> for
-details.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1024,24 +1008,6 @@ Cloud Storage.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.get_location">
-<tt class="descname">get_location</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_location" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve location configured for this bucket.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
-<a class="reference external" href="https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations">https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The configured location.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.get_logging">
 <tt class="descname">get_logging</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_logging"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_logging" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return info about access logging for this bucket.</p>
@@ -1059,29 +1025,27 @@ Cloud Storage.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.get_versioning">
-<tt class="descname">get_versioning</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_versioning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_versioning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Is versioning enabled for this bucket?</p>
-<p>See:  <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">https://cloud.google.com/storage/docs/object-versioning</a> for
-details.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.id">
+<tt class="descname">id</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the ID for the bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if enabled, else False.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="gcloud.storage.bucket.Bucket.id">
-<tt class="descname">id</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve the ID for the bucket.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a></p>
+<dt id="gcloud.storage.bucket.Bucket.location">
+<tt class="descname">location</tt><a class="headerlink" href="#gcloud.storage.bucket.Bucket.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve location configured for this bucket.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
+<a class="reference external" href="https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations">https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1196,22 +1160,6 @@ returns the corresponding Key object.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.set_location">
-<tt class="descname">set_location</tt><big>(</big><em>location</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.set_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.set_location" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update location configured for this bucket.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
-<a class="reference external" href="https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations">https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>location</strong> (<em>string</em>) &#8211; The new configured location.</td>
 </tr>
 </tbody>
 </table>
@@ -1372,6 +1320,24 @@ same name as on your local file system.</li>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.versioning_enabled">
+<tt class="descname">versioning_enabled</tt><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.versioning_enabled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.versioning_enabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is versioning enabled for this bucket?</p>
+<p>See:  <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">https://cloud.google.com/storage/docs/object-versioning</a> for
+details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if enabled, else False.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -1438,7 +1404,7 @@ unique path of the object in the bucket.</li>
 
 <dl class="attribute">
 <dt id="gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'selfLink': 'self_link', 'acl': 'get_acl()', 'componentCount': 'component_count', 'storageClass': 'storage_class', 'cacheControl': 'cache_control', 'contentLanguage': 'content_language', 'mediaLink': 'media_link', 'contentDisposition': 'content_disposition', 'metageneration': 'metageneration', 'size': 'size', 'timeDeleted': 'time_deleted', 'generation': 'generation', 'owner': 'owner', 'contentEncoding': 'content_encoding', 'updated': 'updated', 'etag': 'etag', 'id': 'id', 'contentType': 'content_type', 'name': 'name'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'storageClass': 'storage_class', 'contentType': 'content_type', 'metageneration': 'metageneration', 'id': 'id', 'owner': 'owner', 'etag': 'etag', 'contentLanguage': 'content_language', 'generation': 'generation', 'timeDeleted': 'time_deleted', 'size': 'size', 'cacheControl': 'cache_control', 'updated': 'updated', 'name': 'name', 'componentCount': 'component_count', 'mediaLink': 'media_link', 'contentDisposition': 'content_disposition', 'contentEncoding': 'content_encoding', 'selfLink': 'self_link', 'acl': 'get_acl()'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
