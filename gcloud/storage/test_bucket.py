@@ -708,55 +708,39 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(properties=properties)
         self.assertEqual(bucket.time_created, TIME_CREATED)
 
-    def test_get_versioning_eager(self):
+    def test_versioning_enabled_getter_missing(self):
         NAME = 'name'
-        before = {'bar': 'Bar', 'versioning': {'enabled': True}}
-        connection = _Connection()
-        bucket = self._makeOne(connection, NAME, before)
-        self.assertEqual(bucket.get_versioning(), True)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_get_versioning_lazy(self):
-        NAME = 'name'
-        after = {'bar': 'Bar', 'versioning': {'enabled': True}}
-        connection = _Connection(after)
+        connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        self.assertEqual(bucket.get_versioning(), True)
+        self.assertEqual(bucket.versioning_enabled, False)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test_enable_versioning(self):
+    def test_versioning_enabled_getter(self):
+        NAME = 'name'
+        before = {'versioning': {'enabled': True}}
+        connection = _Connection()
+        bucket = self._makeOne(connection, NAME, before)
+        self.assertEqual(bucket.versioning_enabled, True)
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test_versioning_enabled_setter(self):
         NAME = 'name'
         before = {'versioning': {'enabled': False}}
         after = {'versioning': {'enabled': True}}
         connection = _Connection(after)
         bucket = self._makeOne(connection, NAME, before)
-        self.assertFalse(bucket.get_versioning())
-        bucket.enable_versioning()
-        self.assertTrue(bucket.get_versioning())
+        self.assertFalse(bucket.versioning_enabled)
+        bucket.versioning_enabled = True
+        self.assertTrue(bucket.versioning_enabled)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['data'], {'versioning': {'enabled': True}})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-
-    def test_disable_versioning(self):
-        NAME = 'name'
-        before = {'versioning': {'enabled': True}}
-        after = {'versioning': {'enabled': False}}
-        connection = _Connection(after)
-        bucket = self._makeOne(connection, NAME, before)
-        self.assertTrue(bucket.get_versioning())
-        bucket.disable_versioning()
-        self.assertFalse(bucket.get_versioning())
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['data'], after)
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_configure_website_defaults(self):
