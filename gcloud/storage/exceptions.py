@@ -164,7 +164,16 @@ def make_exception(response, content):
     return error
 
 
-for name, value in globals().items():
-    code = getattr(value, 'code', None)
+def _walk_subclasses(klass):
+    """Recursively walk subclass tree."""
+    for sub in klass.__subclasses__():
+        yield sub
+        for subsub in _walk_subclasses(sub):
+            yield subsub
+
+
+# Build the code->exception class mapping.
+for eklass in _walk_subclasses(StorageError):
+    code = getattr(eklass, 'code', None)
     if code is not None:
-        _HTTP_CODE_TO_EXCEPTION[code] = value
+        _HTTP_CODE_TO_EXCEPTION[code] = eklass
