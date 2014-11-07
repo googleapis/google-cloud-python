@@ -368,7 +368,7 @@ use the default for the library.</li>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The newly created bucket.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.ConnectionError" title="gcloud.storage.exceptions.ConnectionError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ConnectionError</span></tt></a> if
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.Conflict" title="gcloud.storage.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Conflict</span></tt></a> if
 there is a confict (bucket already exists, invalid name, etc.)</td>
 </tr>
 </tbody>
@@ -394,11 +394,11 @@ a bucket object:</p>
 </pre></div>
 </div>
 <p>If the bucket doesn&#8217;t exist, this will raise a
-<a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>:</p>
+<a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="s">&#39;That bucket does not exist!&#39;</span>
 </pre></div>
 </div>
@@ -418,9 +418,9 @@ a bucket object:</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the bucket was deleted.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a> if the
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> if the
 bucket doesn&#8217;t exist, or
-<a class="reference internal" href="#gcloud.storage.exceptions.ConnectionError" title="gcloud.storage.exceptions.ConnectionError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ConnectionError</span></tt></a> if the
+<a class="reference internal" href="#gcloud.storage.exceptions.Conflict" title="gcloud.storage.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Conflict</span></tt></a> if the
 bucket has keys and <cite>force</cite> is not passed.</p>
 </td>
 </tr>
@@ -493,7 +493,7 @@ operations are identical:</p>
 <tt class="descname">get_bucket</tt><big>(</big><em>bucket_name</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.get_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.get_bucket" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a bucket by name.</p>
 <p>If the bucket isn&#8217;t found, this will raise a
-<a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>.  If you would
+<a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>.  If you would
 rather get a bucket by name, and return <tt class="docutils literal"><span class="pre">None</span></tt> if the bucket
 isn&#8217;t found (like <tt class="docutils literal"><span class="pre">{}.get('...')</span></tt>) then use
 <a class="reference internal" href="#gcloud.storage.connection.Connection.lookup" title="gcloud.storage.connection.Connection.lookup"><tt class="xref py py-func docutils literal"><span class="pre">Connection.lookup()</span></tt></a>.</p>
@@ -503,7 +503,7 @@ isn&#8217;t found (like <tt class="docutils literal"><span class="pre">{}.get('.
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="s">&#39;Sorry, that bucket does not exist!&#39;</span>
 </pre></div>
 </div>
@@ -517,7 +517,7 @@ isn&#8217;t found (like <tt class="docutils literal"><span class="pre">{}.get('.
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The bucket matching the name provided.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -632,7 +632,7 @@ just a name of a bucket.  It always returns the object:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'storageClass': 'storage_class', 'versioning': 'versioning_enabled', 'owner': 'owner', 'projectNumber': 'project_number', 'metageneration': 'metageneration', 'id': 'id', 'etag': 'etag', 'timeCreated': 'time_created', 'lifecycle': 'get_lifecycle()', 'name': 'name', 'logging': 'get_logging()', 'selfLink': 'self_link', 'cors': 'get_cors()', 'location': 'location', 'defaultObjectAcl': 'get_default_object_acl()', 'acl': 'get_acl()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'logging': 'get_logging()', 'projectNumber': 'project_number', 'storageClass': 'storage_class', 'selfLink': 'self_link', 'lifecycle': 'get_lifecycle()', 'id': 'id', 'metageneration': 'metageneration', 'defaultObjectAcl': 'get_default_object_acl()', 'acl': 'get_acl()', 'timeCreated': 'time_created', 'owner': 'owner', 'location': 'location', 'cors': 'get_cors()', 'versioning': 'versioning_enabled', 'etag': 'etag', 'name': 'name'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -739,7 +739,7 @@ copied.</li>
 <dd><p>Delete this bucket.</p>
 <p>The bucket <strong>must</strong> be empty in order to delete it.  If the
 bucket doesn&#8217;t exist, this will raise a
-<a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>.  If the bucket
+<a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>.  If the bucket
 is not empty, this will raise an Exception.</p>
 <p>If you want to delete a non-empty bucket you can pass in a force
 parameter set to true.  This will iterate through the bucket&#8217;s
@@ -750,9 +750,9 @@ keys and delete the related objects, before deleting the bucket.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>full</strong> &#8211; If True, empties the bucket&#8217;s objects then deletes it.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a> if the
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> if the
 bucket does not exist, or
-<a class="reference internal" href="#gcloud.storage.exceptions.ConnectionError" title="gcloud.storage.exceptions.ConnectionError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ConnectionError</span></tt></a> if the
+<a class="reference internal" href="#gcloud.storage.exceptions.Conflict" title="gcloud.storage.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Conflict</span></tt></a> if the
 bucket has keys and <cite>force</cite> is not passed.</td>
 </tr>
 </tbody>
@@ -764,7 +764,7 @@ bucket has keys and <cite>force</cite> is not passed.</td>
 <tt class="descname">delete_key</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete_key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deletes a key from the current bucket.</p>
 <p>If the key isn&#8217;t found,
-this will throw a <a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>.</p>
+this will throw a <a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
@@ -775,7 +775,7 @@ this will throw a <a class="reference internal" href="#gcloud.storage.exceptions
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="s">&#39;my-file.txt&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="s">&#39;doesnt-exist&#39;</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFoundError</span><span class="p">:</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="k">pass</span>
 </pre></div>
 </div>
@@ -792,7 +792,7 @@ this will throw a <a class="reference internal" href="#gcloud.storage.exceptions
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The key that was just deleted.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a> (to suppress
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> (to suppress
 the exception, call <tt class="docutils literal"><span class="pre">delete_keys</span></tt>, passing a no-op
 <tt class="docutils literal"><span class="pre">on_error</span></tt> callback, e.g.:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_keys</span><span class="p">([</span><span class="n">key</span><span class="p">],</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="k">pass</span><span class="p">)</span>
@@ -816,12 +816,12 @@ the exception, call <tt class="docutils literal"><span class="pre">delete_keys</
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>keys</strong> (list of string or <a class="reference internal" href="#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; A list of key names or Key objects to delete.</li>
 <li><strong>on_error</strong> (<em>a callable taking (key)</em>) &#8211; If not <tt class="docutils literal"><span class="pre">None</span></tt>, called once for each key raising
-<a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>;
+<a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>;
 otherwise, the exception is propagated.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a> (if
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> (if
 <cite>on_error</cite> is not passed).</p>
 </td>
 </tr>
@@ -1404,7 +1404,7 @@ unique path of the object in the bucket.</li>
 
 <dl class="attribute">
 <dt id="gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'storageClass': 'storage_class', 'contentType': 'content_type', 'metageneration': 'metageneration', 'id': 'id', 'owner': 'owner', 'etag': 'etag', 'contentLanguage': 'content_language', 'generation': 'generation', 'timeDeleted': 'time_deleted', 'size': 'size', 'cacheControl': 'cache_control', 'updated': 'updated', 'name': 'name', 'componentCount': 'component_count', 'mediaLink': 'media_link', 'contentDisposition': 'content_disposition', 'contentEncoding': 'content_encoding', 'selfLink': 'self_link', 'acl': 'get_acl()'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'size': 'size', 'generation': 'generation', 'contentEncoding': 'content_encoding', 'updated': 'updated', 'contentLanguage': 'content_language', 'mediaLink': 'media_link', 'id': 'id', 'metageneration': 'metageneration', 'timeDeleted': 'time_deleted', 'storageClass': 'storage_class', 'selfLink': 'self_link', 'acl': 'get_acl()', 'componentCount': 'component_count', 'owner': 'owner', 'cacheControl': 'cache_control', 'etag': 'etag', 'contentDisposition': 'content_disposition', 'contentType': 'content_type', 'name': 'name'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -1565,7 +1565,7 @@ unique path of the object in the bucket.</li>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key that was just deleted.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>
 (propagated from
 <a class="reference internal" href="#gcloud.storage.bucket.Bucket.delete_key" title="gcloud.storage.bucket.Bucket.delete_key"><tt class="xref py py-meth docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.delete_key()</span></tt></a>).</td>
 </tr>
@@ -1585,7 +1585,7 @@ unique path of the object in the bucket.</li>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The data stored in this key.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1601,7 +1601,7 @@ unique path of the object in the bucket.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle to which to write the key&#8217;s data.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1617,7 +1617,7 @@ unique path of the object in the bucket.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>string</em>) &#8211; A filename to be passed to <tt class="docutils literal"><span class="pre">open</span></tt>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1741,7 +1741,7 @@ until expiration.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The data stored in this key.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1757,7 +1757,7 @@ until expiration.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle to which to write the key&#8217;s data.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -1773,7 +1773,7 @@ until expiration.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>string</em>) &#8211; A filename to be passed to <tt class="docutils literal"><span class="pre">open</span></tt>.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFoundError" title="gcloud.storage.exceptions.NotFoundError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFoundError</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
 </tr>
 </tbody>
 </table>
@@ -2844,25 +2844,283 @@ page of results in the response.</p>
 <div class="section" id="module-gcloud.storage.exceptions">
 <span id="exceptions"></span><h2>Exceptions<a class="headerlink" href="#module-gcloud.storage.exceptions" title="Permalink to this headline">¶</a></h2>
 <p>Custom exceptions for gcloud.storage package.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/status-codes">https://cloud.google.com/storage/docs/json_api/v1/status-codes</a></p>
 <dl class="exception">
-<dt id="gcloud.storage.exceptions.ConnectionError">
-<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">ConnectionError</tt><big>(</big><em>response</em>, <em>content</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#ConnectionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.ConnectionError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.StorageError" title="gcloud.storage.exceptions.StorageError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.StorageError</span></tt></a></p>
-<p>Exception corresponding to a bad HTTP/RPC connection.</p>
+<dt id="gcloud.storage.exceptions.BadRequest">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">BadRequest</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#BadRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.BadRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;400 Bad Request&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.BadRequest.code">
+<tt class="descname">code</tt><em class="property"> = 400</em><a class="headerlink" href="#gcloud.storage.exceptions.BadRequest.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="exception">
-<dt id="gcloud.storage.exceptions.NotFoundError">
-<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">NotFoundError</tt><big>(</big><em>response</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#NotFoundError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.NotFoundError" title="Permalink to this definition">¶</a></dt>
+<dt id="gcloud.storage.exceptions.ClientError">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">ClientError</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#ClientError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.ClientError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.StorageError" title="gcloud.storage.exceptions.StorageError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.StorageError</span></tt></a></p>
-<p>Exception corresponding to a 404 not found bad connection.</p>
+<p>Base for 4xx responses</p>
+<p>This class is abstract</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.Conflict">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">Conflict</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#Conflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.Conflict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;409 Conflict&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.Conflict.code">
+<tt class="descname">code</tt><em class="property"> = 409</em><a class="headerlink" href="#gcloud.storage.exceptions.Conflict.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.Forbidden">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">Forbidden</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#Forbidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.Forbidden" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;403 Forbidden&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.Forbidden.code">
+<tt class="descname">code</tt><em class="property"> = 400</em><a class="headerlink" href="#gcloud.storage.exceptions.Forbidden.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.InternalServerError">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">InternalServerError</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#InternalServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.InternalServerError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ServerError" title="gcloud.storage.exceptions.ServerError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ServerError</span></tt></a></p>
+<p>Exception mapping a &#8216;500 Internal Server Error&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.InternalServerError.code">
+<tt class="descname">code</tt><em class="property"> = 500</em><a class="headerlink" href="#gcloud.storage.exceptions.InternalServerError.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.LengthRequired">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">LengthRequired</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#LengthRequired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.LengthRequired" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;411 Length Required&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.LengthRequired.code">
+<tt class="descname">code</tt><em class="property"> = 411</em><a class="headerlink" href="#gcloud.storage.exceptions.LengthRequired.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.MethodNotAllowed">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">MethodNotAllowed</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#MethodNotAllowed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.MethodNotAllowed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;405 Method Not Allowed&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.MethodNotAllowed.code">
+<tt class="descname">code</tt><em class="property"> = 405</em><a class="headerlink" href="#gcloud.storage.exceptions.MethodNotAllowed.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.MovedPermanently">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">MovedPermanently</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#MovedPermanently"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.MovedPermanently" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.Redirection" title="gcloud.storage.exceptions.Redirection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Redirection</span></tt></a></p>
+<p>Exception mapping a &#8216;301 Moved Permanently&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.MovedPermanently.code">
+<tt class="descname">code</tt><em class="property"> = 301</em><a class="headerlink" href="#gcloud.storage.exceptions.MovedPermanently.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.NotFound">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">NotFound</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#NotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.NotFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;404 Not Found&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.NotFound.code">
+<tt class="descname">code</tt><em class="property"> = 404</em><a class="headerlink" href="#gcloud.storage.exceptions.NotFound.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.NotImplemented">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">NotImplemented</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#NotImplemented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.NotImplemented" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ServerError" title="gcloud.storage.exceptions.ServerError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ServerError</span></tt></a></p>
+<p>Exception mapping a &#8216;501 Not Implemented&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.NotImplemented.code">
+<tt class="descname">code</tt><em class="property"> = 501</em><a class="headerlink" href="#gcloud.storage.exceptions.NotImplemented.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.NotModified">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">NotModified</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#NotModified"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.NotModified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.Redirection" title="gcloud.storage.exceptions.Redirection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Redirection</span></tt></a></p>
+<p>Exception mapping a &#8216;304 Not Modified&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.NotModified.code">
+<tt class="descname">code</tt><em class="property"> = 304</em><a class="headerlink" href="#gcloud.storage.exceptions.NotModified.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.PreconditionFailed">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">PreconditionFailed</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#PreconditionFailed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.PreconditionFailed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;412 Precondition Failed&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.PreconditionFailed.code">
+<tt class="descname">code</tt><em class="property"> = 412</em><a class="headerlink" href="#gcloud.storage.exceptions.PreconditionFailed.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.Redirection">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">Redirection</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#Redirection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.Redirection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.StorageError" title="gcloud.storage.exceptions.StorageError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.StorageError</span></tt></a></p>
+<p>Base for 3xx responses</p>
+<p>This class is abstract.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.RequestRangeNotSatisfiable">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">RequestRangeNotSatisfiable</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#RequestRangeNotSatisfiable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.RequestRangeNotSatisfiable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;416 Request Range Not Satisfiable&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.RequestRangeNotSatisfiable.code">
+<tt class="descname">code</tt><em class="property"> = 416</em><a class="headerlink" href="#gcloud.storage.exceptions.RequestRangeNotSatisfiable.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.ResumeIncomplete">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">ResumeIncomplete</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#ResumeIncomplete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.ResumeIncomplete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.Redirection" title="gcloud.storage.exceptions.Redirection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Redirection</span></tt></a></p>
+<p>Exception mapping a &#8216;308 Resume Incomplete&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.ResumeIncomplete.code">
+<tt class="descname">code</tt><em class="property"> = 308</em><a class="headerlink" href="#gcloud.storage.exceptions.ResumeIncomplete.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.ServerError">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">ServerError</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#ServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.ServerError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.StorageError" title="gcloud.storage.exceptions.StorageError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.StorageError</span></tt></a></p>
+<p>Base for 5xx responses:  (abstract)</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.ServiceUnavailable">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">ServiceUnavailable</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#ServiceUnavailable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.ServiceUnavailable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ServerError" title="gcloud.storage.exceptions.ServerError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ServerError</span></tt></a></p>
+<p>Exception mapping a &#8216;503 Service Unavailable&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.ServiceUnavailable.code">
+<tt class="descname">code</tt><em class="property"> = 503</em><a class="headerlink" href="#gcloud.storage.exceptions.ServiceUnavailable.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="exception">
 <dt id="gcloud.storage.exceptions.StorageError">
-<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">StorageError</tt><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#StorageError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.StorageError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">StorageError</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#StorageError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.StorageError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
-<p>Base error class for gcloud errors.</p>
+<p>Base error class for gcloud errors (abstract).</p>
+<p>Each subclass represents a single type of HTTP error response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.StorageError.code">
+<tt class="descname">code</tt><em class="property"> = None</em><a class="headerlink" href="#gcloud.storage.exceptions.StorageError.code" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP status code.  Concrete subclasses <em>must</em> define.</p>
+<p>See: <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.StorageError.errors">
+<tt class="descname">errors</tt><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#StorageError.errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.StorageError.errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detailed error information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(dict)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of mappings describing each error.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.TemporaryRedirect">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">TemporaryRedirect</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#TemporaryRedirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.TemporaryRedirect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.Redirection" title="gcloud.storage.exceptions.Redirection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Redirection</span></tt></a></p>
+<p>Exception mapping a &#8216;307 Temporary Redirect&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.TemporaryRedirect.code">
+<tt class="descname">code</tt><em class="property"> = 307</em><a class="headerlink" href="#gcloud.storage.exceptions.TemporaryRedirect.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.TooManyRequests">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">TooManyRequests</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#TooManyRequests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.TooManyRequests" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;429 Too Many Requests&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.TooManyRequests.code">
+<tt class="descname">code</tt><em class="property"> = 429</em><a class="headerlink" href="#gcloud.storage.exceptions.TooManyRequests.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.storage.exceptions.Unauthorized">
+<em class="property">exception </em><tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">Unauthorized</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#Unauthorized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.Unauthorized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.exceptions.ClientError" title="gcloud.storage.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;401 Unauthorized&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.Unauthorized.code">
+<tt class="descname">code</tt><em class="property"> = 400</em><a class="headerlink" href="#gcloud.storage.exceptions.Unauthorized.code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.exceptions.eklass">
+<tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">eklass</tt><a class="headerlink" href="#gcloud.storage.exceptions.eklass" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#gcloud.storage.exceptions.ServiceUnavailable" title="gcloud.storage.exceptions.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">ServiceUnavailable</span></tt></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.storage.exceptions.make_exception">
+<tt class="descclassname">gcloud.storage.exceptions.</tt><tt class="descname">make_exception</tt><big>(</big><em>response</em>, <em>content</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/exceptions.html#make_exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.exceptions.make_exception" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory:  create exception based on HTTP response code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">instance of <a class="reference internal" href="#gcloud.storage.exceptions.StorageError" title="gcloud.storage.exceptions.StorageError"><tt class="xref py py-class docutils literal"><span class="pre">StorageError</span></tt></a>, or a concrete subclass.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
