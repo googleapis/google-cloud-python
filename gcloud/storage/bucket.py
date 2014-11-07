@@ -3,6 +3,7 @@
 import os
 
 from gcloud.storage._helpers import _PropertyMixin
+from gcloud.storage._helpers import _scalar_property
 from gcloud.storage import exceptions
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
@@ -28,7 +29,7 @@ class Bucket(_PropertyMixin):
         'etag': 'etag',
         'id': 'id',
         'lifecycle': 'get_lifecycle()',
-        'location': 'get_location()',
+        'location': 'location',
         'logging': 'get_logging()',
         'metageneration': 'metageneration',
         'name': 'name',
@@ -37,7 +38,7 @@ class Bucket(_PropertyMixin):
         'selfLink': 'self_link',
         'storageClass': 'storage_class',
         'timeCreated': 'time_created',
-        'versioning': 'get_versioning()',
+        'versioning': 'versioning_enabled',
     }
     """Map field name -> accessor for fields w/ custom accessors."""
 
@@ -436,27 +437,14 @@ class Bucket(_PropertyMixin):
         """
         self._patch_properties({'lifecycle': {'rule': rules}})
 
-    def get_location(self):
-        """Retrieve location configured for this bucket.
+    location = _scalar_property('location')
+    """Retrieve location configured for this bucket.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
-        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+    See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+    https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
 
-        :rtype: string
-        :returns: The configured location.
-        """
-        return self.properties.get('location')
-
-    def set_location(self, location):
-        """Update location configured for this bucket.
-
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
-        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
-
-        :type location: string
-        :param location: The new configured location.
-        """
-        self._patch_properties({'location': location})
+    :rtype: string
+    """
 
     def get_logging(self):
         """Return info about access logging for this bucket.
@@ -556,7 +544,8 @@ class Bucket(_PropertyMixin):
         """
         return self.properties['timeCreated']
 
-    def get_versioning(self):
+    @property
+    def versioning_enabled(self):
         """Is versioning enabled for this bucket?
 
         See:  https://cloud.google.com/storage/docs/object-versioning for
@@ -568,21 +557,17 @@ class Bucket(_PropertyMixin):
         versioning = self.properties.get('versioning', {})
         return versioning.get('enabled', False)
 
-    def enable_versioning(self):
+    @versioning_enabled.setter
+    def versioning_enabled(self, value):
         """Enable versioning for this bucket.
 
         See:  https://cloud.google.com/storage/docs/object-versioning for
         details.
-        """
-        self._patch_properties({'versioning': {'enabled': True}})
 
-    def disable_versioning(self):
-        """Disable versioning for this bucket.
-
-        See:  https://cloud.google.com/storage/docs/object-versioning for
-        details.
+        :type value: convertible to bool
+        :param value: should versioning be anabled for the bucket?
         """
-        self._patch_properties({'versioning': {'enabled': False}})
+        self._patch_properties({'versioning': {'enabled': bool(value)}})
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.

@@ -6,23 +6,10 @@ import os
 from StringIO import StringIO
 
 from gcloud.storage._helpers import _PropertyMixin
+from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
 from gcloud.storage.exceptions import StorageError
 from gcloud.storage.iterator import Iterator
-
-
-def _scalar_property(fieldname):
-    """Create a property descriptor around the :class:`_PropertyMixin` helpers.
-    """
-    def _getter(self):
-        """Scalar property getter."""
-        return self.properties[fieldname]
-
-    def _setter(self, value):
-        """Scalar property setter."""
-        self._patch_properties({fieldname: value})
-
-    return property(_getter, _setter)
 
 
 class Key(_PropertyMixin):

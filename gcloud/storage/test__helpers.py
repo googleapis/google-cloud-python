@@ -214,6 +214,34 @@ class TestPropertyBatch(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
+class Test__scalar_property(unittest2.TestCase):
+
+    def _callFUT(self, fieldName):
+        from gcloud.storage._helpers import _scalar_property
+        return _scalar_property(fieldName)
+
+    def test_getter(self):
+
+        class Test(object):
+            def __init__(self, **kw):
+                self.properties = kw.copy()
+            do_re_mi = self._callFUT('solfege')
+
+        test = Test(solfege='Latido')
+        self.assertEqual(test.do_re_mi, 'Latido')
+
+    def test_setter(self):
+
+        class Test(object):
+            def _patch_properties(self, mapping):
+                self._patched = mapping.copy()
+            do_re_mi = self._callFUT('solfege')
+
+        test = Test()
+        test.do_re_mi = 'Latido'
+        self.assertEqual(test._patched, {'solfege': 'Latido'})
+
+
 class _Connection(object):
 
     def __init__(self, *responses):
