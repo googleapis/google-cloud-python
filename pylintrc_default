@@ -7,7 +7,6 @@ good-names = i, j, k, ex, Run, _, pb, id,
 
 [DESIGN]
 max-args = 10
-max-public-methods = 40
 
 [FORMAT]
 # NOTE: By default pylint ignores whitespace checks around the
@@ -24,7 +23,8 @@ ignore = datastore_v1_pb2.py
 [MESSAGES CONTROL]
 disable = I, protected-access, maybe-no-member, no-member,
           redefined-builtin, star-args, missing-format-attribute,
-          similarities, arguments-differ
+          similarities, arguments-differ,
+          too-many-public-methods, too-few-public-methods
 
 [REPORTS]
 reports = no
