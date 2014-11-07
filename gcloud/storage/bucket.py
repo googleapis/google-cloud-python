@@ -400,7 +400,6 @@ class Bucket(_PropertyMixin):
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: string
-        :returns: a unique identifier for the bucket and current metadata.
         """
         return self.properties['etag']
 
@@ -411,7 +410,6 @@ class Bucket(_PropertyMixin):
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: string
-        :returns: a unique identifier for the bucket.
         """
         return self.properties['id']
 
@@ -501,8 +499,6 @@ class Bucket(_PropertyMixin):
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: integer
-        :returns: count of times since creation the bucket's metadata has
-                  been updated.
         """
         return self.properties['metageneration']
 
@@ -524,7 +520,6 @@ class Bucket(_PropertyMixin):
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: integer
-        :returns: a unique identifier for the bucket.
         """
         return self.properties['projectNumber']
 
@@ -535,7 +530,6 @@ class Bucket(_PropertyMixin):
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: string
-        :returns: URI of the bucket.
         """
         return self.properties['selfLink']
 
@@ -547,8 +541,7 @@ class Bucket(_PropertyMixin):
         https://cloud.google.com/storage/docs/durable-reduced-availability
 
         :rtype: string
-        :returns: the storage class for the bucket (currently one of
-                  ``STANDARD``, ``DURABLE_REDUCED_AVAILABILITY``)
+        :returns: Currently one of "STANDARD", "DURABLE_REDUCED_AVAILABILITY"
         """
         return self.properties['storageClass']
 
@@ -559,7 +552,7 @@ class Bucket(_PropertyMixin):
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
         :rtype: string
-        :returns: timestamp for the bucket's creation, in RFC 3339 format.
+        :returns: timestamp in RFC 3339 format.
         """
         return self.properties['timeCreated']
 

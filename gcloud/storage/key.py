@@ -1,5 +1,6 @@
 """Create / interact with gcloud storage keys."""
 
+import copy
 import mimetypes
 import os
 from StringIO import StringIO
@@ -10,11 +11,43 @@ from gcloud.storage.exceptions import StorageError
 from gcloud.storage.iterator import Iterator
 
 
+def _scalar_property(fieldname):
+    """Create a property descriptor around the :class:`_PropertyMixin` helpers.
+    """
+    def _getter(self):
+        """Scalar property getter."""
+        return self.properties[fieldname]
+
+    def _setter(self, value):
+        """Scalar property setter."""
+        self._patch_properties({fieldname: value})
+
+    return property(_getter, _setter)
+
+
 class Key(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
 
     CUSTOM_PROPERTY_ACCESSORS = {
         'acl': 'get_acl()',
+        'cacheControl': 'cache_control',
+        'contentDisposition': 'content_disposition',
+        'contentEncoding': 'content_encoding',
+        'contentLanguage': 'content_language',
+        'contentType': 'content_type',
+        'componentCount': 'component_count',
+        'etag': 'etag',
+        'generation': 'generation',
+        'id': 'id',
+        'mediaLink': 'media_link',
+        'metageneration': 'metageneration',
+        'name': 'name',
+        'owner': 'owner',
+        'selfLink': 'self_link',
+        'size': 'size',
+        'storageClass': 'storage_class',
+        'timeDeleted': 'time_deleted',
+        'updated': 'updated',
     }
     """Map field name -> accessor for fields w/ custom accessors."""
 
@@ -358,6 +391,216 @@ class Key(_PropertyMixin):
         self.get_acl().all().grant_read()
         self.acl.save()
         return self
+
+    cache_control = _scalar_property('cacheControl')
+    """HTTP 'Cache-Control' header for this object.
+
+    See: https://tools.ietf.org/html/rfc7234#section-5.2 and
+         https://cloud.google.com/storage/docs/json_api/v1/objects
+
+    :rtype: string
+    """
+
+    content_disposition = _scalar_property('contentDisposition')
+    """HTTP 'Content-Disposition' header for this object.
+
+    See: https://tools.ietf.org/html/rfc6266 and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
+
+    :rtype: string
+    """
+
+    content_encoding = _scalar_property('contentEncoding')
+    """HTTP 'Content-Encoding' header for this object.
+
+    See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
+
+    :rtype: string
+    """
+
+    content_language = _scalar_property('contentLanguage')
+    """HTTP 'Content-Language' header for this object.
+
+    See: http://tools.ietf.org/html/bcp47 and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
+
+    :rtype: string
+    """
+
+    content_type = _scalar_property('contentType')
+    """HTTP 'Content-Type' header for this object.
+
+    See: https://tools.ietf.org/html/rfc2616#section-14.17 and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
+
+    :rtype: string
+    """
+
+    crc32c = _scalar_property('crc32c')
+    """CRC32C checksum for this object.
+
+    See: http://tools.ietf.org/html/rfc4960#appendix-B and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
+
+    :rtype: string
+    """
+
+    @property
+    def component_count(self):
+        """Number of underlying components that make up this object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: integer
+        """
+        return self.properties['componentCount']
+
+    @property
+    def etag(self):
+        """Retrieve the ETag for the object.
+
+        See: http://tools.ietf.org/html/rfc2616#section-3.11 and
+             https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['etag']
+
+    @property
+    def generation(self):
+        """Retrieve the generation for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: integer
+        """
+        return self.properties['generation']
+
+    @property
+    def id(self):
+        """Retrieve the ID for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['id']
+
+    md5_hash = _scalar_property('md5Hash')
+    """MD5 hash for this object.
+
+    See: http://tools.ietf.org/html/rfc4960#appendix-B and
+            https://cloud.google.com/storage/docs/json_api/v1/objects
+
+    :rtype: string
+    """
+
+    @property
+    def media_link(self):
+        """Retrieve the media download URI for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['mediaLink']
+
+    @property
+    def metadata(self):
+        """Retrieve arbitrary/application specific metadata for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: dict
+        """
+        return copy.deepcopy(self.properties['metadata'])
+
+    @metadata.setter
+    def metadata(self, value):
+        """Update arbitrary/application specific metadata for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :type value: dict
+        """
+        self._patch_properties({'metadata': value})
+
+    @property
+    def metageneration(self):
+        """Retrieve the metageneration for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: integer
+        """
+        return self.properties['metageneration']
+
+    @property
+    def owner(self):
+        """Retrieve info about the owner of the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: dict
+        :returns: mapping of owner's role/ID.
+        """
+        return self.properties['owner'].copy()
+
+    @property
+    def self_link(self):
+        """Retrieve the URI for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        """
+        return self.properties['selfLink']
+
+    @property
+    def size(self):
+        """Size of the object,  in bytes.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: integer
+        """
+        return self.properties['size']
+
+    @property
+    def storage_class(self):
+        """Retrieve the storage class for the object.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects and
+        https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket
+
+        :rtype: string
+        :returns: Currently one of "STANDARD", "DURABLE_REDUCED_AVAILABILITY"
+        """
+        return self.properties['storageClass']
+
+    @property
+    def time_deleted(self):
+        """Retrieve the timestamp at which the object was deleted.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string or None
+        :returns: timestamp in RFC 3339 format, or None if the object
+                  has a "live" version.
+        """
+        return self.properties.get('timeDeleted')
+
+    @property
+    def updated(self):
+        """Retrieve the timestamp at which the object was updated.
+
+        See: https://cloud.google.com/storage/docs/json_api/v1/objects
+
+        :rtype: string
+        :returns: timestamp in RFC 3339 format.
+        """
+        return self.properties['updated']
 
 
 class _KeyIterator(Iterator):
