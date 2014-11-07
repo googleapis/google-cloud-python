@@ -49,7 +49,7 @@ class TestStorageBuckets(TestStorage):
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'
-        self.assertRaises(storage.exceptions.NotFoundError,
+        self.assertRaises(storage.exceptions.NotFound,
                           self.connection.get_bucket, new_bucket_name)
         created = self.connection.create_bucket(new_bucket_name)
         self.case_buckets_to_delete.append(created)
@@ -243,5 +243,5 @@ class TestStorageSignURLs(TestStorageFiles):
         self.assertEqual(content, '')
 
         # Check that the key has actually been deleted.
-        self.assertRaises(storage.exceptions.NotFoundError,
+        self.assertRaises(storage.exceptions.NotFound,
                           key.reload_metadata)

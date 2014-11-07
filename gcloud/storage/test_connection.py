@@ -312,24 +312,24 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_api_request_w_404(self):
-        from gcloud.storage.exceptions import NotFoundError
+        from gcloud.storage.exceptions import NotFound
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '404', 'content-type': 'text/plain'},
-            '',
+            '{}'
         )
-        self.assertRaises(NotFoundError, conn.api_request, 'GET', '/')
+        self.assertRaises(NotFound, conn.api_request, 'GET', '/')
 
     def test_api_request_w_500(self):
-        from gcloud.storage.exceptions import ConnectionError
+        from gcloud.storage.exceptions import InternalServerError
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '500', 'content-type': 'text/plain'},
-            '',
+            '{}',
         )
-        self.assertRaises(ConnectionError, conn.api_request, 'GET', '/')
+        self.assertRaises(InternalServerError, conn.api_request, 'GET', '/')
 
     def test_get_all_buckets_empty(self):
         PROJECT = 'project'
@@ -370,7 +370,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_get_bucket_miss(self):
-        from gcloud.storage.exceptions import NotFoundError
+        from gcloud.storage.exceptions import NotFound
         PROJECT = 'project'
         NONESUCH = 'nonesuch'
         conn = self._makeOne(PROJECT)
@@ -385,7 +385,7 @@ class TestConnection(unittest2.TestCase):
             {'status': '404', 'content-type': 'application/json'},
             '{}',
         )
-        self.assertRaises(NotFoundError, conn.get_bucket, NONESUCH)
+        self.assertRaises(NotFound, conn.get_bucket, NONESUCH)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 

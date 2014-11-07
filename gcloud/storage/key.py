@@ -190,7 +190,7 @@ class Key(_PropertyMixin):
 
         :rtype: :class:`Key`
         :returns: The key that was just deleted.
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        :raises: :class:`gcloud.storage.exceptions.NotFound`
                  (propagated from
                  :meth:`gcloud.storage.bucket.Bucket.delete_key`).
         """
@@ -202,7 +202,7 @@ class Key(_PropertyMixin):
         :type file_obj: file
         :param file_obj: A file handle to which to write the key's data.
 
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        :raises: :class:`gcloud.storage.exceptions.NotFound`
         """
         for chunk in _KeyDataIterator(self):
             file_obj.write(chunk)
@@ -216,7 +216,7 @@ class Key(_PropertyMixin):
         :type filename: string
         :param filename: A filename to be passed to ``open``.
 
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        :raises: :class:`gcloud.storage.exceptions.NotFound`
         """
         with open(filename, 'wb') as file_obj:
             self.download_to_file(file_obj)
@@ -229,7 +229,7 @@ class Key(_PropertyMixin):
 
         :rtype: string
         :returns: The data stored in this key.
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        :raises: :class:`gcloud.storage.exceptions.NotFound`
         """
         string_buffer = StringIO()
         self.download_to_file(string_buffer)
