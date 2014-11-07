@@ -231,10 +231,8 @@ class Connection(connection.Connection):
         response, content = self.make_request(
             method=method, url=url, data=data, content_type=content_type)
 
-        if response.status == 404:
-            raise exceptions.NotFoundError(response)
-        elif not 200 <= response.status < 300:
-            raise exceptions.ConnectionError(response, content)
+        if not 200 <= response.status < 300:
+            raise exceptions.make_exception(response, content)
 
         if content and expect_json:
             content_type = response.get('content-type', '')
@@ -270,7 +268,7 @@ class Connection(connection.Connection):
         """Get a bucket by name.
 
         If the bucket isn't found, this will raise a
-        :class:`gcloud.storage.exceptions.NotFoundError`.  If you would
+        :class:`gcloud.storage.exceptions.NotFound`.  If you would
         rather get a bucket by name, and return ``None`` if the bucket
         isn't found (like ``{}.get('...')``) then use
         :func:`Connection.lookup`.
@@ -282,7 +280,7 @@ class Connection(connection.Connection):
           >>> connection = storage.get_connection(project, email, key_path)
           >>> try:
           >>>   bucket = connection.get_bucket('my-bucket')
-          >>> except exceptions.NotFoundError:
+          >>> except exceptions.NotFound:
           >>>   print 'Sorry, that bucket does not exist!'
 
         :type bucket_name: string
@@ -290,7 +288,7 @@ class Connection(connection.Connection):
 
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The bucket matching the name provided.
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError`
+        :raises: :class:`gcloud.storage.exceptions.NotFound`
         """
         bucket = self.new_bucket(bucket_name)
         response = self.api_request(method='GET', path=bucket.path)
@@ -319,7 +317,7 @@ class Connection(connection.Connection):
         """
         try:
             return self.get_bucket(bucket_name)
-        except exceptions.NotFoundError:
+        except exceptions.NotFound:
             return None
 
     def create_bucket(self, bucket):
@@ -338,7 +336,7 @@ class Connection(connection.Connection):
 
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
-        :raises: :class:`gcloud.storage.exceptions.ConnectionError` if
+        :raises: :class:`gcloud.storage.exceptions.Conflict` if
                  there is a confict (bucket already exists, invalid name, etc.)
         """
         bucket = self.new_bucket(bucket)
@@ -364,12 +362,12 @@ class Connection(connection.Connection):
           True
 
         If the bucket doesn't exist, this will raise a
-        :class:`gcloud.storage.exceptions.NotFoundError`::
+        :class:`gcloud.storage.exceptions.NotFound`::
 
           >>> from gcloud.storage import exceptions
           >>> try:
           >>>   connection.delete_bucket('my-bucket')
-          >>> except exceptions.NotFoundError:
+          >>> except exceptions.NotFound:
           >>>   print 'That bucket does not exist!'
 
         :type bucket: string or :class:`gcloud.storage.bucket.Bucket`
@@ -380,9 +378,9 @@ class Connection(connection.Connection):
 
         :rtype: bool
         :returns: True if the bucket was deleted.
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError` if the
+        :raises: :class:`gcloud.storage.exceptions.NotFound` if the
                  bucket doesn't exist, or
-                 :class:`gcloud.storage.exceptions.ConnectionError` if the
+                 :class:`gcloud.storage.exceptions.Conflict` if the
                  bucket has keys and `force` is not passed.
         """
         bucket = self.new_bucket(bucket)

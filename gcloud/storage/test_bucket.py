@@ -190,11 +190,11 @@ class Test_Bucket(unittest2.TestCase):
         self.assertRaises(TypeError, bucket.new_key, object())
 
     def test_delete_default_miss(self):
-        from gcloud.storage.exceptions import NotFoundError
+        from gcloud.storage.exceptions import NotFound
         NAME = 'name'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
-        self.assertRaises(NotFoundError, bucket.delete)
+        self.assertRaises(NotFound, bucket.delete)
         self.assertEqual(connection._deleted, [(NAME, False)])
 
     def test_delete_explicit_hit(self):
@@ -206,12 +206,12 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(connection._deleted, [(NAME, True)])
 
     def test_delete_key_miss(self):
-        from gcloud.storage.exceptions import NotFoundError
+        from gcloud.storage.exceptions import NotFound
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
-        self.assertRaises(NotFoundError, bucket.delete_key, NONESUCH)
+        self.assertRaises(NotFound, bucket.delete_key, NONESUCH)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
@@ -247,13 +247,13 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, KEY))
 
     def test_delete_keys_miss_no_on_error(self):
-        from gcloud.storage.exceptions import NotFoundError
+        from gcloud.storage.exceptions import NotFound
         NAME = 'name'
         KEY = 'key'
         NONESUCH = 'nonesuch'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        self.assertRaises(NotFoundError, bucket.delete_keys, [KEY, NONESUCH])
+        self.assertRaises(NotFound, bucket.delete_keys, [KEY, NONESUCH])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'DELETE')
@@ -955,21 +955,21 @@ class _Connection(object):
         self._deleted = []
 
     def api_request(self, **kw):
-        from gcloud.storage.exceptions import NotFoundError
+        from gcloud.storage.exceptions import NotFound
         self._requested.append(kw)
 
         try:
             response, self._responses = self._responses[0], self._responses[1:]
         except:
-            raise NotFoundError('miss')
+            raise NotFound('miss')
         else:
             return response
 
     def delete_bucket(self, bucket, force=False):
-        from gcloud.storage.exceptions import NotFoundError
+        from gcloud.storage.exceptions import NotFound
         self._deleted.append((bucket, force))
         if not self._delete_ok:
-            raise NotFoundError('miss')
+            raise NotFound('miss')
         return True
 
 

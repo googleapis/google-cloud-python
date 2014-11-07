@@ -126,7 +126,7 @@ class Bucket(_PropertyMixin):
         try:
             response = self.connection.api_request(method='GET', path=key.path)
             return Key.from_dict(response, bucket=self)
-        except exceptions.NotFoundError:
+        except exceptions.NotFound:
             return None
 
     def get_all_keys(self):
@@ -176,7 +176,7 @@ class Bucket(_PropertyMixin):
 
         The bucket **must** be empty in order to delete it.  If the
         bucket doesn't exist, this will raise a
-        :class:`gcloud.storage.exceptions.NotFoundError`.  If the bucket
+        :class:`gcloud.storage.exceptions.NotFound`.  If the bucket
         is not empty, this will raise an Exception.
 
         If you want to delete a non-empty bucket you can pass in a force
@@ -186,9 +186,9 @@ class Bucket(_PropertyMixin):
         :type force: bool
         :param full: If True, empties the bucket's objects then deletes it.
 
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError` if the
+        :raises: :class:`gcloud.storage.exceptions.NotFound` if the
                  bucket does not exist, or
-                 :class:`gcloud.storage.exceptions.ConnectionError` if the
+                 :class:`gcloud.storage.exceptions.Conflict` if the
                  bucket has keys and `force` is not passed.
         """
         return self.connection.delete_bucket(self.name, force=force)
@@ -197,7 +197,7 @@ class Bucket(_PropertyMixin):
         """Deletes a key from the current bucket.
 
         If the key isn't found,
-        this will throw a :class:`gcloud.storage.exceptions.NotFoundError`.
+        this will throw a :class:`gcloud.storage.exceptions.NotFound`.
 
         For example::
 
@@ -210,7 +210,7 @@ class Bucket(_PropertyMixin):
           >>> bucket.delete_key('my-file.txt')
           >>> try:
           ...   bucket.delete_key('doesnt-exist')
-          ... except exceptions.NotFoundError:
+          ... except exceptions.NotFound:
           ...   pass
 
 
@@ -219,7 +219,7 @@ class Bucket(_PropertyMixin):
 
         :rtype: :class:`gcloud.storage.key.Key`
         :returns: The key that was just deleted.
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError` (to suppress
+        :raises: :class:`gcloud.storage.exceptions.NotFound` (to suppress
                  the exception, call ``delete_keys``, passing a no-op
                  ``on_error`` callback, e.g.::
 
@@ -239,16 +239,16 @@ class Bucket(_PropertyMixin):
 
         :type on_error: a callable taking (key)
         :param on_error: If not ``None``, called once for each key raising
-                         :class:`gcloud.storage.exceptions.NotFoundError`;
+                         :class:`gcloud.storage.exceptions.NotFound`;
                          otherwise, the exception is propagated.
 
-        :raises: :class:`gcloud.storage.exceptions.NotFoundError` (if
+        :raises: :class:`gcloud.storage.exceptions.NotFound` (if
                  `on_error` is not passed).
         """
         for key in keys:
             try:
                 self.delete_key(key)
-            except exceptions.NotFoundError:
+            except exceptions.NotFound:
                 if on_error is not None:
                     on_error(key)
                 else:
