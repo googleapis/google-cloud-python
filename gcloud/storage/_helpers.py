@@ -55,6 +55,30 @@ class _PropertyMixin(object):
             self._reload_properties()
         return self._properties.copy()
 
+    @property
+    def batch(self):
+        """Return a context manager which defers/batches updates.
+
+        E.g., to batch multiple updates to a bucket::
+
+            >>> with bucket.batch:
+            ...     bucket.enable_versioning()
+            ...     bucket.disable_website()
+
+        or for a key::
+
+            >>> with key.batch:
+            ...     key.content_type = 'image/jpeg'
+            ...     key.content_encoding = 'gzip'
+
+        Updates will be aggregated and sent as a single call to
+        :meth:`_patch_properties` IFF the ``with`` block exits without
+        an exception.
+
+        :rtype: :class:`_PropertyBatch`
+        """
+        return _PropertyBatch(self)
+
     def _reload_properties(self):
         """Reload properties from Cloud Storage.
 
@@ -122,3 +146,25 @@ class _PropertyMixin(object):
         if not self.acl.loaded:
             self.acl.reload()
         return self.acl
+
+
+class _PropertyBatch(object):
+    """Context manager: Batch updates to object's ``_patch_properties``
+
+    :type wrapped: class derived from :class:`_PropertyMixin`.
+    :param wrapped:  the instance whose property updates to defer/batch.
+    """
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+        self._deferred = {}
+
+    def __enter__(self):
+        """Intercept / defer property updates."""
+        self._wrapped._patch_properties = self._deferred.update
+
+    def __exit__(self, type, value, traceback):
+        """Patch deferred property updates if no error."""
+        del self._wrapped._patch_properties
+        if type is None:
+            if self._deferred:
+                self._wrapped._patch_properties(self._deferred)

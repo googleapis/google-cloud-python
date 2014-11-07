@@ -376,7 +376,7 @@ class _KeyIterator(Iterator):
             extra_params=extra_params)
 
     def get_items_from_response(self, response):
-        """Factory method, yields :class:`.storage.key.Key` items from response.
+        """Yield :class:`.storage.key.Key` items from response.
 
         :type response: dict
         :param response: The JSON API response for a page of keys.

@@ -33,6 +33,34 @@ class Test_PropertyMixin(unittest2.TestCase):
         mixin = self._makeOne()
         self.assertRaises(NotImplementedError, lambda: mixin.path)
 
+    def test_properties_eager(self):
+        derived = self._derivedClass()(properties={'extant': False})
+        self.assertEqual(derived.properties, {'extant': False})
+
+    def test_batch(self):
+        connection = _Connection({'foo': 'Qux', 'bar': 'Baz'})
+        derived = self._derivedClass(connection, '/path')()
+        with derived.batch:
+            derived._patch_properties({'foo': 'Foo'})
+            derived._patch_properties({'bar': 'Baz'})
+            derived._patch_properties({'foo': 'Qux'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(kw[0]['data'], {'foo': 'Qux', 'bar': 'Baz'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_properties_lazy(self):
+        connection = _Connection({'foo': 'Foo'})
+        derived = self._derivedClass(connection, '/path')()
+        self.assertEqual(derived.properties, {'foo': 'Foo'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+
     def test__reload_properties(self):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
@@ -89,20 +117,6 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'foo': 'Foo'})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_properties_eager(self):
-        derived = self._derivedClass()(properties={'extant': False})
-        self.assertEqual(derived.properties, {'extant': False})
-
-    def test_properties_lazy(self):
-        connection = _Connection({'foo': 'Foo'})
-        derived = self._derivedClass(connection, '/path')()
-        self.assertEqual(derived.properties, {'foo': 'Foo'})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-
     def test_get_acl_not_yet_loaded(self):
         class ACL(object):
             loaded = False
@@ -121,6 +135,83 @@ class Test_PropertyMixin(unittest2.TestCase):
         mixin = self._makeOne()
         acl = mixin.acl = ACL()
         self.assertTrue(mixin.get_acl() is acl)  # no 'reload'
+
+
+class TestPropertyBatch(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage._helpers import _PropertyBatch
+        return _PropertyBatch
+
+    def _makeOne(self, wrapped):
+        return self._getTargetClass()(wrapped)
+
+    def _makeWrapped(self, connection=None, path=None, **custom_fields):
+        from gcloud.storage._helpers import _PropertyMixin
+
+        class Wrapped(_PropertyMixin):
+            CUSTOM_PROPERTY_ACCESSORS = custom_fields
+
+            @property
+            def connection(self):
+                return connection
+
+            @property
+            def path(self):
+                return path
+
+        return Wrapped()
+
+    def test_ctor_does_not_intercept__patch_properties(self):
+        wrapped = self._makeWrapped()
+        before = wrapped._patch_properties
+        batch = self._makeOne(wrapped)
+        after = wrapped._patch_properties
+        self.assertEqual(before, after)
+        self.assertTrue(batch._wrapped is wrapped)
+
+    def test_cm_intercepts_restores__patch_properties(self):
+        wrapped = self._makeWrapped()
+        before = wrapped._patch_properties
+        batch = self._makeOne(wrapped)
+        with batch:
+            # No deferred patching -> no call to the real '_patch_properties'
+            during = wrapped._patch_properties
+        after = wrapped._patch_properties
+        self.assertNotEqual(before, during)
+        self.assertEqual(before, after)
+
+    def test___exit___w_error_skips__patch_properties(self):
+        class Testing(Exception):
+            pass
+        wrapped = self._makeWrapped()
+        batch = self._makeOne(wrapped)
+        try:
+            with batch:
+                # deferred patching
+                wrapped._patch_properties({'foo': 'Foo'})
+                # but error -> no call to the real '_patch_properties'
+                raise Testing('testing')
+        except Testing:
+            pass
+
+    def test___exit___no_error_aggregates__patch_properties(self):
+        connection = _Connection({'foo': 'Foo'})
+        wrapped = self._makeWrapped(connection, '/path')
+        batch = self._makeOne(wrapped)
+        kw = connection._requested
+        with batch:
+            # deferred patching
+            wrapped._patch_properties({'foo': 'Foo'})
+            wrapped._patch_properties({'bar': 'Baz'})
+            wrapped._patch_properties({'foo': 'Qux'})
+            self.assertEqual(len(kw), 0)
+        # exited w/o error -> call to the real '_patch_properties'
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(kw[0]['data'], {'foo': 'Qux', 'bar': 'Baz'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
 class _Connection(object):

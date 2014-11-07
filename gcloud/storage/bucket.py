@@ -544,7 +544,7 @@ class Bucket(_PropertyMixin):
         """Retrieve the storage class for the bucket.
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
-        https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket
+        https://cloud.google.com/storage/docs/durable-reduced-availability
 
         :rtype: string
         :returns: the storage class for the bucket (currently one of
