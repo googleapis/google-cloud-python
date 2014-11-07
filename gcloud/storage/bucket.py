@@ -3,6 +3,7 @@
 import os
 
 from gcloud.storage._helpers import _PropertyMixin
+from gcloud.storage._helpers import _scalar_property
 from gcloud.storage import exceptions
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
@@ -28,7 +29,7 @@ class Bucket(_PropertyMixin):
         'etag': 'etag',
         'id': 'id',
         'lifecycle': 'get_lifecycle()',
-        'location': 'get_location()',
+        'location': 'location',
         'logging': 'get_logging()',
         'metageneration': 'metageneration',
         'name': 'name',
@@ -436,27 +437,14 @@ class Bucket(_PropertyMixin):
         """
         self._patch_properties({'lifecycle': {'rule': rules}})
 
-    def get_location(self):
-        """Retrieve location configured for this bucket.
+    location = _scalar_property('location')
+    """Retrieve location configured for this bucket.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
-        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
+    See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+    https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
 
-        :rtype: string
-        :returns: The configured location.
-        """
-        return self.properties.get('location')
-
-    def set_location(self, location):
-        """Update location configured for this bucket.
-
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
-        https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
-
-        :type location: string
-        :param location: The new configured location.
-        """
-        self._patch_properties({'location': location})
+    :rtype: string
+    """
 
     def get_logging(self):
         """Return info about access logging for this bucket.

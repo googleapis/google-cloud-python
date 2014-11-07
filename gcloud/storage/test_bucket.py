@@ -562,31 +562,21 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(entries[0]['action']['type'], 'Delete')
         self.assertEqual(entries[0]['condition']['age'], 42)
 
-    def test_get_location_eager(self):
+    def test_location_getter(self):
         NAME = 'name'
         connection = _Connection()
         before = {'location': 'AS'}
         bucket = self._makeOne(connection, NAME, before)
-        self.assertEqual(bucket.get_location(), 'AS')
+        self.assertEqual(bucket.location, 'AS')
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
-    def test_get_location_lazy(self):
+    def test_location_setter(self):
         NAME = 'name'
         connection = _Connection({'location': 'AS'})
         bucket = self._makeOne(connection, NAME)
-        self.assertEqual(bucket.get_location(), 'AS')
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-
-    def test_update_location(self):
-        NAME = 'name'
-        connection = _Connection({'location': 'AS'})
-        bucket = self._makeOne(connection, NAME)
-        bucket.set_location('AS')
-        self.assertEqual(bucket.get_location(), 'AS')
+        bucket.location = 'AS'
+        self.assertEqual(bucket.location, 'AS')
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
