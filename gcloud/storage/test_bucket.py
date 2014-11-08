@@ -170,6 +170,41 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], {})
 
+    def test_iterator_defaults(self):
+        NAME = 'name'
+        connection = _Connection({'items': []})
+        bucket = self._makeOne(connection, NAME)
+        iterator = bucket.iterator()
+        keys = list(iterator)
+        self.assertEqual(keys, [])
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
+        self.assertEqual(kw['query_params'], {})
+
+    def test_iterator_explicit(self):
+        NAME = 'name'
+        EXPECTED = {
+            'prefix': 'subfolder',
+            'delimiter': '/',
+            'maxResults': 10,
+            'versions': True,
+        }
+        connection = _Connection({'items': []})
+        bucket = self._makeOne(connection, NAME)
+        iterator = bucket.iterator(
+            prefix='subfolder',
+            delimiter='/',
+            max_results=10,
+            versions=True,
+        )
+        keys = list(iterator)
+        self.assertEqual(keys, [])
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
+        self.assertEqual(kw['query_params'], EXPECTED)
+
     def test_new_key_existing(self):
         from gcloud.storage.key import Key
         existing = Key()

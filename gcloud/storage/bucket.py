@@ -170,6 +170,42 @@ class Bucket(_PropertyMixin):
         """
         return list(self)
 
+    def iterator(self, prefix=None, delimiter=None, max_results=None,
+                 versions=None):
+        """Return an iterator used to find keys in the bucket.
+
+        :type prefix: string or None
+        :param prefix: optional prefix used to filter keys.
+
+        :type delimiter: string or None
+        :param delimiter: optional delimter, used with ``prefix`` to
+                          emulate hierarchy.
+
+        :type max_results: integer or None
+        :param max_results: maximum number of keys to return.
+
+        :type versions: boolean or None
+        :param versions: whether object versions should be returned as
+                         separate keys.
+
+        :rtype: :class:`_KeyIterator`
+        """
+        extra_params = {}
+
+        if prefix is not None:
+            extra_params['prefix'] = prefix
+
+        if delimiter is not None:
+            extra_params['delimiter'] = delimiter
+
+        if max_results is not None:
+            extra_params['maxResults'] = max_results
+
+        if versions is not None:
+            extra_params['versions'] = versions
+
+        return self._iterator_class(self, extra_params=extra_params)
+
     def new_key(self, key):
         """Given path name (or Key), return a :class:`.storage.key.Key` object.
 
