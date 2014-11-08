@@ -12,7 +12,7 @@ from Crypto.Signature import PKCS1_v1_5
 from OpenSSL import crypto
 import pytz
 
-from gcloud import connection
+from gcloud.connection import Connection as _Base
 from gcloud.storage import exceptions
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
@@ -26,7 +26,7 @@ def _utcnow():  # pragma: NO COVER testing replaces
     return datetime.datetime.utcnow()
 
 
-class Connection(connection.Connection):
+class Connection(_Base):
     """A connection to Google Cloud Storage via the JSON REST API.
 
     This class should understand only the basic types (and protobufs)

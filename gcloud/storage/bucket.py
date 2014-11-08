@@ -9,7 +9,31 @@ from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
 from gcloud.storage.key import Key
-from gcloud.storage.key import _KeyIterator
+
+
+class _KeyIterator(Iterator):
+    """An iterator listing keys in a bucket
+
+    You shouldn't have to use this directly, but instead should use the
+    helper methods on :class:`gcloud.storage.key.Bucket` objects.
+
+    :type bucket: :class:`gcloud.storage.bucket.Bucket`
+    :param bucket: The bucket from which to list keys.
+    """
+    def __init__(self, bucket, connection=None, extra_params=None):
+        self.bucket = bucket
+        super(_KeyIterator, self).__init__(
+            connection=bucket.connection, path=bucket.path + '/o',
+            extra_params=extra_params)
+
+    def get_items_from_response(self, response):
+        """Yield :class:`.storage.key.Key` items from response.
+
+        :type response: dict
+        :param response: The JSON API response for a page of keys.
+        """
+        for item in response.get('items', []):
+            yield Key.from_dict(item, bucket=self.bucket)
 
 
 class Bucket(_PropertyMixin):
@@ -21,6 +45,7 @@ class Bucket(_PropertyMixin):
     :type name: string
     :param name: The name of the bucket.
     """
+    _iterator_class = _KeyIterator
 
     CUSTOM_PROPERTY_ACCESSORS = {
         'acl': 'get_acl()',
@@ -66,7 +91,7 @@ class Bucket(_PropertyMixin):
         return '<Bucket: %s>' % self.name
 
     def __iter__(self):
-        return iter(_KeyIterator(bucket=self))
+        return iter(self._iterator_class(bucket=self))
 
     def __contains__(self, key):
         return self.get_key(key) is not None
@@ -640,6 +665,7 @@ class Bucket(_PropertyMixin):
             doa.save()
 
         if recursive:
-            for key in self:
+            iterator = self._iterator_class(self)
+            for key in iterator:
                 key.get_acl().all().grant_read()
                 key.save_acl()

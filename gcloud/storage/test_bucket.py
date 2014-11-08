@@ -832,9 +832,7 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_make_public_recursive(self):
         from gcloud.storage.acl import _ACLEntity
-        from gcloud._testing import _Monkey
-        from gcloud.storage import key
-        from gcloud.storage import bucket as MUT
+        from gcloud.storage.bucket import _KeyIterator
         _saved = []
 
         class _Key(object):
@@ -856,7 +854,7 @@ class Test_Bucket(unittest2.TestCase):
             def save_acl(self):
                 _saved.append((self._bucket, self._name, self._granted))
 
-        class _KeyIterator(key._KeyIterator):
+        class _Iterator(_KeyIterator):
             def get_items_from_response(self, response):
                 for item in response.get('items', []):
                     yield _Key(self.bucket, item['name'])
@@ -868,8 +866,8 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(after, {'items': [{'name': KEY}]})
         bucket = self._makeOne(connection, NAME)
         bucket.acl.loaded = True
-        with _Monkey(MUT, _KeyIterator=_KeyIterator):
-            bucket.make_public(recursive=True)
+        bucket._iterator_class = _Iterator
+        bucket.make_public(recursive=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
         self.assertEqual(_saved, [(bucket, KEY, True)])
@@ -882,6 +880,46 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw[1]['query_params'], {})
+
+
+class Test__KeyIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.bucket import _KeyIterator
+        return _KeyIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        iterator = self._makeOne(bucket)
+        self.assertTrue(iterator.bucket is bucket)
+        self.assertTrue(iterator.connection is connection)
+        self.assertEqual(iterator.path, '%s/o' % bucket.path)
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+
+    def test_get_items_from_response_empty(self):
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        iterator = self._makeOne(bucket)
+        self.assertEqual(list(iterator.get_items_from_response({})), [])
+
+    def test_get_items_from_response_non_empty(self):
+        from gcloud.storage.key import Key
+        KEY = 'key'
+        response = {'items': [{'name': KEY}]}
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        iterator = self._makeOne(bucket)
+        keys = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(keys), 1)
+        key = keys[0]
+        self.assertTrue(isinstance(key, Key))
+        self.assertTrue(key.connection is connection)
+        self.assertEqual(key.name, KEY)
 
 
 class _Connection(object):
@@ -909,6 +947,14 @@ class _Connection(object):
         if not self._delete_ok:
             raise NotFound('miss')
         return True
+
+
+class _Bucket(object):
+    path = '/b/name'
+    name = 'name'
+
+    def __init__(self, connection):
+        self.connection = connection
 
 
 class MockFile(io.StringIO):
