@@ -22,6 +22,7 @@ class _KeyIterator(Iterator):
     """
     def __init__(self, bucket, extra_params=None):
         self.bucket = bucket
+        self.prefixes = ()
         super(_KeyIterator, self).__init__(
             connection=bucket.connection, path=bucket.path + '/o',
             extra_params=extra_params)
@@ -32,6 +33,7 @@ class _KeyIterator(Iterator):
         :type response: dict
         :param response: The JSON API response for a page of keys.
         """
+        self.prefixes = tuple(response.get('prefixes', ()))
         for item in response.get('items', []):
             yield Key.from_dict(item, bucket=self.bucket)
 
