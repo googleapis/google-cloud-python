@@ -620,7 +620,7 @@ class Test__BucketIterator(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
-        connection = _Connection()
+        connection = object()
         iterator = self._makeOne(connection)
         self.assertTrue(iterator.connection is connection)
         self.assertEqual(iterator.path, '/b')
@@ -628,7 +628,7 @@ class Test__BucketIterator(unittest2.TestCase):
         self.assertEqual(iterator.next_page_token, None)
 
     def test_get_items_from_response_empty(self):
-        connection = _Connection()
+        connection = object()
         iterator = self._makeOne(connection)
         self.assertEqual(list(iterator.get_items_from_response({})), [])
 
@@ -636,7 +636,7 @@ class Test__BucketIterator(unittest2.TestCase):
         from gcloud.storage.bucket import Bucket
         KEY = 'key'
         response = {'items': [{'name': KEY}]}
-        connection = _Connection()
+        connection = object()
         iterator = self._makeOne(connection)
         buckets = list(iterator.get_items_from_response(response))
         self.assertEqual(len(buckets), 1)
@@ -739,24 +739,6 @@ class Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
-
-
-class _Connection(object):
-
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
-
-    def api_request(self, **kw):
-        from gcloud.storage.exceptions import NotFound
-        self._requested.append(kw)
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:
-            raise NotFound('miss')
-        else:
-            return response
 
 
 class _Credentials(object):
