@@ -665,7 +665,6 @@ class Bucket(_PropertyMixin):
             doa.save()
 
         if recursive:
-            iterator = self._iterator_class(self)
-            for key in iterator:
+            for key in self:
                 key.get_acl().all().grant_read()
                 key.save_acl()
