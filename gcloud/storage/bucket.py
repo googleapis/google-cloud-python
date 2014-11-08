@@ -20,7 +20,7 @@ class _KeyIterator(Iterator):
     :type bucket: :class:`gcloud.storage.bucket.Bucket`
     :param bucket: The bucket from which to list keys.
     """
-    def __init__(self, bucket, connection=None, extra_params=None):
+    def __init__(self, bucket, extra_params=None):
         self.bucket = bucket
         super(_KeyIterator, self).__init__(
             connection=bucket.connection, path=bucket.path + '/o',
