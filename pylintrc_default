@@ -24,7 +24,7 @@ ignore = datastore_v1_pb2.py
 disable = I, protected-access, maybe-no-member, no-member,
           redefined-builtin, star-args, missing-format-attribute,
           similarities, arguments-differ,
-          too-many-public-methods, too-few-public-methods
+          too-many-public-methods, too-few-public-methods, too-many-locals
 
 [REPORTS]
 reports = no
