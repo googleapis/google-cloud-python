@@ -5,7 +5,7 @@
 # - Rules for test / demo code are generated into 'pylintrc_reduced'
 #   as deltas from this configuration by the 'run_pylint.py' script.
 #
-# - 'RATIONALE:  API mapping' as a defence for non-default settings is
+# - 'RATIONALE:  API mapping' as a defense for non-default settings is
 #   based on the fact that this library maps APIs which are outside our
 #   control, and adhereing to the out-of-the-box defaults would induce
 #   breakage / complexity in those mappings
