@@ -84,7 +84,7 @@ body.docs h2, body.docs h3, body.docs h4, body.docs h5, body.docs h6 {
   padding-top: 1em;
 }
 
-.viewcode-link {
+.viewcode-link, .viewcode-back {
   float: right;
 }
 
