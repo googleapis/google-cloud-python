@@ -287,7 +287,8 @@ class Key(_PropertyMixin):
         query_params = {
             'uploadType': 'resumable',
             'name': urllib.quote_plus(self.name),
-            }
+        }
+
         upload_url = self.connection.build_api_url(
             path=self.bucket.path + '/o',
             query_params=query_params,
