@@ -4,6 +4,7 @@ import copy
 import mimetypes
 import os
 from StringIO import StringIO
+from urllib import quote_plus
 
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
@@ -117,7 +118,7 @@ class Key(_PropertyMixin):
         elif not self.name:
             raise ValueError('Cannot determine path without a key name.')
 
-        return self.bucket.path + '/o/' + self.name
+        return self.bucket.path + '/o/' + quote_plus(self.name)
 
     @property
     def public_url(self):
