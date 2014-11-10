@@ -201,7 +201,7 @@ max-module-lines=1500
 
 # Good variable names which should always be accepted, separated by a comma
 # DEFAULT:  good-names=i,j,k,ex,Run,_
-# RATIONALE:  'pb' adn 'id' have well-understood meainings in the code. 
+# RATIONALE:  'pb' and 'id' have well-understood meainings in the code. 
 good-names = i, j, k, ex, Run, _,
              pb,
              id,
