@@ -34,5 +34,5 @@ def get_for_service_account(client_email, private_key_path, scope=None):
     """
     return client.SignedJwtAssertionCredentials(
         service_account_name=client_email,
-        private_key=open(private_key_path).read(),
+        private_key=open(private_key_path, 'rb').read(),
         scope=scope)
