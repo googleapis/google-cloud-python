@@ -110,26 +110,25 @@ class TestStorageWriteFiles(TestStorageFiles):
 
     def test_large_file_write_from_stream(self):
         key = self.bucket.new_key('LargeFile')
-        self.assertEqual(key.metadata, {})
+        self.assertEqual(key._properties, {})
 
         file_data = self.FILES['big']
         with open(file_data['path'], 'rb') as file_obj:
             self.bucket.upload_file_object(file_obj, key=key)
             self.case_keys_to_delete.append(key)
 
-        key.reload_metadata()
-        self.assertEqual(key.metadata['md5Hash'], file_data['hash'])
+        key._properties.clear()  # force a reload
+        self.assertEqual(key.md5_hash, file_data['hash'])
 
     def test_write_metadata(self):
-        my_metadata = {'contentType': 'image/png'}
         key = self.bucket.upload_file(self.FILES['logo']['path'])
         self.case_keys_to_delete.append(key)
 
         # NOTE: This should not be necessary. We should be able to pass
         #       it in to upload_file and also to upload_from_string.
-        key.patch_metadata(my_metadata)
-        self.assertEqual(key.metadata['contentType'],
-                         my_metadata['contentType'])
+        key.content_type = 'image/png'
+        key._properties.clear()  # force a reload
+        self.assertEqual(key.content_type, 'image/png')
 
     def test_direct_write_and_read_into_file(self):
         key = self.bucket.new_key('MyBuffer')
@@ -243,5 +242,4 @@ class TestStorageSignURLs(TestStorageFiles):
         self.assertEqual(content, '')
 
         # Check that the key has actually been deleted.
-        self.assertRaises(storage.exceptions.NotFound,
-                          key.reload_metadata)
+        self.assertFalse(key in self.bucket)
