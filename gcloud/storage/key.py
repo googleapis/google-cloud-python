@@ -126,9 +126,11 @@ class Key(_PropertyMixin):
         :rtype: `string`
         :returns: The public URL for this key.
         """
-        return '{storage_base_url}/{self.bucket.name}/{self.name}'.format(
+        return '{storage_base_url}/{bucket_name}/{key_name}'.format(
             storage_base_url='http://commondatastorage.googleapis.com',
-            self=self)
+            key_name=self.name,
+            bucket_name=self.bucket.name,
+            )
 
     def generate_signed_url(self, expiration, method='GET'):
         """Generates a signed URL for this key.
@@ -151,7 +153,10 @@ class Key(_PropertyMixin):
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
-        resource = '/{self.bucket.name}/{self.name}'.format(self=self)
+        resource = '/{bucket_name}/{key_name}'.format(
+            key_name=self.name,
+            bucket_name=self.bucket.name,
+            )
         return self.connection.generate_signed_url(resource=resource,
                                                    expiration=expiration,
                                                    method=method)

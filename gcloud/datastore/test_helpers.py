@@ -118,12 +118,12 @@ class Test_key_from_protobuf(unittest2.TestCase):
         self.assertEqual(key.path(), _PATH)
 
 
-class Test__get_protobuf_attribute_and_value(unittest2.TestCase):
+class Test__pb_attr_value(unittest2.TestCase):
 
     def _callFUT(self, val):
-        from gcloud.datastore.helpers import _get_protobuf_attribute_and_value
+        from gcloud.datastore.helpers import _pb_attr_value
 
-        return _get_protobuf_attribute_and_value(val)
+        return _pb_attr_value(val)
 
     def test_datetime_naive(self):
         import calendar

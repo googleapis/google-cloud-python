@@ -74,7 +74,7 @@ def key_from_protobuf(pb):
     return Key(path, namespace, dataset_id)
 
 
-def _get_protobuf_attribute_and_value(val):
+def _pb_attr_value(val):
     """Given a value, return the protobuf attribute name and proper value.
 
     The Protobuf API uses different attribute names
@@ -96,9 +96,9 @@ def _get_protobuf_attribute_and_value(val):
 
     For example:
 
-    >>> _get_protobuf_attribute_and_value(1234)
+    >>> _pb_attr_value(1234)
     ('integer_value', 1234)
-    >>> _get_protobuf_attribute_and_value('my_string')
+    >>> _pb_attr_value('my_string')
     ('string_value', 'my_string')
 
     :type val: `datetime.datetime`, :class:`gcloud.datastore.key.Key`,
@@ -230,7 +230,7 @@ def _set_protobuf_value(value_pb, val):
         value_pb.Clear()
         return
 
-    attr, val = _get_protobuf_attribute_and_value(val)
+    attr, val = _pb_attr_value(val)
     if attr == 'key_value':
         value_pb.key_value.CopyFrom(val)
     elif attr == 'entity_value':
