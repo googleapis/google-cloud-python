@@ -9,7 +9,6 @@ from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
 from gcloud.storage.exceptions import StorageError
-from gcloud.storage.iterator import Iterator
 
 
 class Key(_PropertyMixin):
@@ -593,31 +592,6 @@ class Key(_PropertyMixin):
         :returns: timestamp in RFC 3339 format.
         """
         return self.properties['updated']
-
-
-class _KeyIterator(Iterator):
-    """An iterator listing keys.
-
-    You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`gcloud.storage.key.Key` objects.
-
-    :type bucket: :class:`gcloud.storage.bucket.Bucket`
-    :param bucket: The bucket from which to list keys.
-    """
-    def __init__(self, bucket, extra_params=None):
-        self.bucket = bucket
-        super(_KeyIterator, self).__init__(
-            connection=bucket.connection, path=bucket.path + '/o',
-            extra_params=extra_params)
-
-    def get_items_from_response(self, response):
-        """Yield :class:`.storage.key.Key` items from response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of keys.
-        """
-        for item in response.get('items', []):
-            yield Key.from_dict(item, bucket=self.bucket)
 
 
 class _KeyDataIterator(object):

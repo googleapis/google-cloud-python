@@ -12,10 +12,10 @@ from Crypto.Signature import PKCS1_v1_5
 from OpenSSL import crypto
 import pytz
 
-from gcloud import connection
+from gcloud.connection import Connection as _Base
 from gcloud.storage import exceptions
 from gcloud.storage.bucket import Bucket
-from gcloud.storage.bucket import BucketIterator
+from gcloud.storage.iterator import Iterator
 
 
 def _utcnow():  # pragma: NO COVER testing replaces
@@ -26,7 +26,7 @@ def _utcnow():  # pragma: NO COVER testing replaces
     return datetime.datetime.utcnow()
 
 
-class Connection(connection.Connection):
+class Connection(_Base):
     """A connection to Google Cloud Storage via the JSON REST API.
 
     This class should understand only the basic types (and protobufs)
@@ -84,7 +84,7 @@ class Connection(connection.Connection):
         self.project = project
 
     def __iter__(self):
-        return iter(BucketIterator(connection=self))
+        return iter(_BucketIterator(connection=self))
 
     def __contains__(self, bucket_name):
         return self.lookup(bucket_name) is not None
@@ -486,6 +486,29 @@ class Connection(connection.Connection):
         return '{endpoint}{resource}?{querystring}'.format(
             endpoint=self.API_ACCESS_ENDPOINT, resource=resource,
             querystring=urllib.urlencode(query_params))
+
+
+class _BucketIterator(Iterator):
+    """An iterator listing all buckets.
+
+    You shouldn't have to use this directly, but instead should use the helper
+    methods on :class:`gcloud.storage.connection.Connection` objects.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: The connection to use for querying the list of buckets.
+    """
+
+    def __init__(self, connection):
+        super(_BucketIterator, self).__init__(connection=connection, path='/b')
+
+    def get_items_from_response(self, response):
+        """Factory method which yields :class:`.Bucket` items from a response.
+
+        :type response: dict
+        :param response: The JSON API response for a page of buckets.
+        """
+        for item in response.get('items', []):
+            yield Bucket.from_dict(item, connection=self.connection)
 
 
 def _get_expiration_seconds(expiration):

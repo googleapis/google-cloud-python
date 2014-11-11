@@ -610,6 +610,42 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(frag, '')
 
 
+class Test__BucketIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.connection import _BucketIterator
+        return _BucketIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = object()
+        iterator = self._makeOne(connection)
+        self.assertTrue(iterator.connection is connection)
+        self.assertEqual(iterator.path, '/b')
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+
+    def test_get_items_from_response_empty(self):
+        connection = object()
+        iterator = self._makeOne(connection)
+        self.assertEqual(list(iterator.get_items_from_response({})), [])
+
+    def test_get_items_from_response_non_empty(self):
+        from gcloud.storage.bucket import Bucket
+        KEY = 'key'
+        response = {'items': [{'name': KEY}]}
+        connection = object()
+        iterator = self._makeOne(connection)
+        buckets = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(buckets), 1)
+        bucket = buckets[0]
+        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertTrue(bucket.connection is connection)
+        self.assertEqual(bucket.name, KEY)
+
+
 class Test__get_expiration_seconds(unittest2.TestCase):
 
     def _callFUT(self, expiration):
