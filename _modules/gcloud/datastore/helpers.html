@@ -162,7 +162,7 @@
     <span class="k">return</span> <span class="n">Key</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">)</span>
 
 </div>
-<span class="k">def</span> <span class="nf">_get_protobuf_attribute_and_value</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_pb_attr_value</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Given a value, return the protobuf attribute name and proper value.</span>
 
 <span class="sd">    The Protobuf API uses different attribute names</span>
@@ -184,9 +184,9 @@
 
 <span class="sd">    For example:</span>
 
-<span class="sd">    &gt;&gt;&gt; _get_protobuf_attribute_and_value(1234)</span>
+<span class="sd">    &gt;&gt;&gt; _pb_attr_value(1234)</span>
 <span class="sd">    (&#39;integer_value&#39;, 1234)</span>
-<span class="sd">    &gt;&gt;&gt; _get_protobuf_attribute_and_value(&#39;my_string&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; _pb_attr_value(&#39;my_string&#39;)</span>
 <span class="sd">    (&#39;string_value&#39;, &#39;my_string&#39;)</span>
 
 <span class="sd">    :type val: `datetime.datetime`, :class:`gcloud.datastore.key.Key`,</span>
@@ -318,7 +318,7 @@
         <span class="n">value_pb</span><span class="o">.</span><span class="n">Clear</span><span class="p">()</span>
         <span class="k">return</span>
 
-    <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">_get_protobuf_attribute_and_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+    <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">_pb_attr_value</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s">&#39;key_value&#39;</span><span class="p">:</span>
         <span class="n">value_pb</span><span class="o">.</span><span class="n">key_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s">&#39;entity_value&#39;</span><span class="p">:</span>
