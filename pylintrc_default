@@ -357,6 +357,7 @@ max-args = 10
 
 # Maximum number of locals for function / method body
 # DEFAULT:  max-locals=15
+max-locals=20
 
 # Maximum number of return / yield for function / method body
 # DEFAULT:  max-returns=6
