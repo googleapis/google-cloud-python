@@ -92,6 +92,7 @@
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="kn">import</span> <span class="nn">urllib</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
@@ -204,7 +205,7 @@
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot determine path without a key name.&#39;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 </div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Key.public_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.public_url">[docs]</a>    <span class="k">def</span> <span class="nf">public_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -213,11 +214,10 @@
 <span class="sd">        :rtype: `string`</span>
 <span class="sd">        :returns: The public URL for this key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s">&#39;{storage_base_url}/{bucket_name}/{key_name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">return</span> <span class="s">&#39;{storage_base_url}/{bucket_name}/{quoted_name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">storage_base_url</span><span class="o">=</span><span class="s">&#39;http://commondatastorage.googleapis.com&#39;</span><span class="p">,</span>
-            <span class="n">key_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="n">quoted_name</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="Key.generate_signed_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a signed URL for this key.</span>
@@ -240,10 +240,9 @@
 <span class="sd">        :returns: A signed URL you can use to access the resource</span>
 <span class="sd">                  until expiration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">resource</span> <span class="o">=</span> <span class="s">&#39;/{bucket_name}/{key_name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">key_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="s">&#39;/{bucket_name}/{quoted_name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="n">quoted_name</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">generate_signed_url</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
                                                    <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">,</span>
                                                    <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
@@ -372,9 +371,14 @@
             <span class="s">&#39;X-Upload-Content-Length&#39;</span><span class="p">:</span> <span class="n">total_bytes</span><span class="p">,</span>
         <span class="p">}</span>
 
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;uploadType&#39;</span><span class="p">:</span> <span class="s">&#39;resumable&#39;</span><span class="p">,</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">urllib</span><span class="o">.</span><span class="n">quote_plus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+        <span class="p">}</span>
+
         <span class="n">upload_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span>
-            <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;uploadType&#39;</span><span class="p">:</span> <span class="s">&#39;resumable&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">api_base_url</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s">&#39;/upload&#39;</span><span class="p">)</span>
 
         <span class="n">response</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
