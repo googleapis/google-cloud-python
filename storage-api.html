@@ -632,7 +632,7 @@ just a name of a bucket.  It always returns the object:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'owner': 'owner', 'storageClass': 'storage_class', 'logging': 'get_logging()', 'projectNumber': 'project_number', 'location': 'location', 'timeCreated': 'time_created', 'name': 'name', 'metageneration': 'metageneration', 'acl': 'get_acl()', 'selfLink': 'self_link', 'lifecycle': 'get_lifecycle()', 'defaultObjectAcl': 'get_default_object_acl()', 'cors': 'get_cors()', 'etag': 'etag', 'id': 'id', 'versioning': 'versioning_enabled'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'owner': 'owner', 'location': 'location', 'defaultObjectAcl': 'get_default_object_acl()', 'timeCreated': 'time_created', 'acl': 'get_acl()', 'lifecycle': 'get_lifecycle()', 'name': 'name', 'versioning': 'versioning_enabled', 'cors': 'get_cors()', 'etag': 'etag', 'projectNumber': 'project_number', 'storageClass': 'storage_class', 'logging': 'get_logging()', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'id': 'id'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -1340,37 +1340,6 @@ details.</p>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="gcloud.storage.bucket.BucketIterator">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.bucket.</tt><tt class="descname">BucketIterator</tt><big>(</big><em>connection</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#BucketIterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.BucketIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#gcloud.storage.iterator.Iterator" title="gcloud.storage.iterator.Iterator"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.iterator.Iterator</span></tt></a></p>
-<p>An iterator listing all buckets.</p>
-<p>You shouldn&#8217;t have to use this directly, but instead should use the helper
-methods on <a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a> objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a>) &#8211; The connection to use for querying the list of buckets.</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="gcloud.storage.bucket.BucketIterator.get_items_from_response">
-<tt class="descname">get_items_from_response</tt><big>(</big><em>response</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#BucketIterator.get_items_from_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.BucketIterator.get_items_from_response" title="Permalink to this definition">¶</a></dt>
-<dd><p>Factory method which yields <a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a> items from a response.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>response</strong> (<em>dict</em>) &#8211; The JSON API response for a page of buckets.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 <div class="section" id="module-gcloud.storage.key">
 <span id="keys"></span><h2>Keys<a class="headerlink" href="#module-gcloud.storage.key" title="Permalink to this headline">¶</a></h2>
@@ -1404,7 +1373,7 @@ unique path of the object in the bucket.</li>
 
 <dl class="attribute">
 <dt id="gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'contentLanguage': 'content_language', 'storageClass': 'storage_class', 'contentType': 'content_type', 'mediaLink': 'media_link', 'componentCount': 'component_count', 'contentDisposition': 'content_disposition', 'generation': 'generation', 'cacheControl': 'cache_control', 'metageneration': 'metageneration', 'acl': 'get_acl()', 'selfLink': 'self_link', 'timeDeleted': 'time_deleted', 'contentEncoding': 'content_encoding', 'owner': 'owner', 'name': 'name', 'etag': 'etag', 'id': 'id', 'updated': 'updated', 'size': 'size'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'owner': 'owner', 'cacheControl': 'cache_control', 'selfLink': 'self_link', 'updated': 'updated', 'componentCount': 'component_count', 'acl': 'get_acl()', 'contentType': 'content_type', 'name': 'name', 'contentDisposition': 'content_disposition', 'etag': 'etag', 'timeDeleted': 'time_deleted', 'contentLanguage': 'content_language', 'contentEncoding': 'content_encoding', 'storageClass': 'storage_class', 'size': 'size', 'generation': 'generation', 'metageneration': 'metageneration', 'mediaLink': 'media_link', 'id': 'id'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
