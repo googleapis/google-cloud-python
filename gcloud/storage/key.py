@@ -4,6 +4,7 @@ import copy
 import mimetypes
 import os
 from StringIO import StringIO
+import urllib
 
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
@@ -116,7 +117,7 @@ class Key(_PropertyMixin):
         elif not self.name:
             raise ValueError('Cannot determine path without a key name.')
 
-        return self.bucket.path + '/o/' + self.name
+        return self.bucket.path + '/o/' + urllib.quote(self.name, safe='')
 
     @property
     def public_url(self):
@@ -125,11 +126,10 @@ class Key(_PropertyMixin):
         :rtype: `string`
         :returns: The public URL for this key.
         """
-        return '{storage_base_url}/{bucket_name}/{key_name}'.format(
+        return '{storage_base_url}/{bucket_name}/{quoted_name}'.format(
             storage_base_url='http://commondatastorage.googleapis.com',
-            key_name=self.name,
             bucket_name=self.bucket.name,
-            )
+            quoted_name=urllib.quote(self.name, safe=''))
 
     def generate_signed_url(self, expiration, method='GET'):
         """Generates a signed URL for this key.
@@ -152,10 +152,9 @@ class Key(_PropertyMixin):
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
-        resource = '/{bucket_name}/{key_name}'.format(
-            key_name=self.name,
+        resource = '/{bucket_name}/{quoted_name}'.format(
             bucket_name=self.bucket.name,
-            )
+            quoted_name=urllib.quote(self.name, safe=''))
         return self.connection.generate_signed_url(resource=resource,
                                                    expiration=expiration,
                                                    method=method)
@@ -284,9 +283,14 @@ class Key(_PropertyMixin):
             'X-Upload-Content-Length': total_bytes,
         }
 
+        query_params = {
+            'uploadType': 'resumable',
+            'name': urllib.quote_plus(self.name),
+        }
+
         upload_url = self.connection.build_api_url(
             path=self.bucket.path + '/o',
-            query_params={'uploadType': 'resumable', 'name': self.name},
+            query_params=query_params,
             api_base_url=self.connection.API_BASE_URL + '/upload')
 
         response, _ = self.connection.make_request(

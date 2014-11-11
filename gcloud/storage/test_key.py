@@ -78,6 +78,13 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(bucket, KEY)
         self.assertEqual(key.path, '/b/name/o/%s' % KEY)
 
+    def test_path_w_slash_in_name(self):
+        KEY = 'parent/child'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        self.assertEqual(key.path, '/b/name/o/parent%2Fchild')
+
     def test_public_url(self):
         KEY = 'key'
         connection = _Connection()
@@ -86,6 +93,15 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(key.public_url,
                          'http://commondatastorage.googleapis.com/name/%s' %
                          KEY)
+
+    def test_public_url_w_slash_in_name(self):
+        KEY = 'parent/child'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        self.assertEqual(
+            key.public_url,
+            'http://commondatastorage.googleapis.com/name/parent%2Fchild')
 
     def test_generate_signed_url_w_default_method(self):
         KEY = 'key'
@@ -98,6 +114,19 @@ class Test_Key(unittest2.TestCase):
                          '&Expiration=2014-10-16T20:34:37Z')
         self.assertEqual(connection._signed,
                          [('/name/key', EXPIRATION, {'method': 'GET'})])
+
+    def test_generate_signed_url_w_slash_in_name(self):
+        KEY = 'parent/child'
+        EXPIRATION = '2014-10-16T20:34:37Z'
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        self.assertEqual(key.generate_signed_url(EXPIRATION),
+                         'http://example.com/abucket/akey?Signature=DEADBEEF'
+                         '&Expiration=2014-10-16T20:34:37Z')
+        self.assertEqual(connection._signed,
+                         [('/name/parent%2Fchild',
+                           EXPIRATION, {'method': 'GET'})])
 
     def test_generate_signed_url_w_explicit_method(self):
         KEY = 'key'
@@ -224,6 +253,52 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'resumable', 'name': 'key'})
+        self.assertEqual(rq[0]['headers'],
+                         {'X-Upload-Content-Length': 6,
+                          'X-Upload-Content-Type': 'application/unknown'})
+        self.assertEqual(rq[1]['method'], 'POST')
+        self.assertEqual(rq[1]['url'], UPLOAD_URL)
+        self.assertEqual(rq[1]['content_type'], 'text/plain')
+        self.assertEqual(rq[1]['data'], DATA[:5])
+        self.assertEqual(rq[1]['headers'], {'Content-Range': 'bytes 0-4/6'})
+        self.assertEqual(rq[2]['method'], 'POST')
+        self.assertEqual(rq[2]['url'], UPLOAD_URL)
+        self.assertEqual(rq[2]['content_type'], 'text/plain')
+        self.assertEqual(rq[2]['data'], DATA[5:])
+        self.assertEqual(rq[2]['headers'], {'Content-Range': 'bytes 5-5/6'})
+
+    def test_upload_from_file_w_slash_in_name(self):
+        from tempfile import NamedTemporaryFile
+        from urlparse import parse_qsl
+        from urlparse import urlsplit
+        KEY = 'parent/child'
+        UPLOAD_URL = 'http://example.com/upload/name/parent%2Fchild'
+        DATA = 'ABCDEF'
+        loc_response = {'location': UPLOAD_URL}
+        chunk1_response = {}
+        chunk2_response = {}
+        connection = _Connection(
+            (loc_response, ''),
+            (chunk1_response, ''),
+            (chunk2_response, ''),
+        )
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.CHUNK_SIZE = 5
+        with NamedTemporaryFile() as fh:
+            fh.write(DATA)
+            fh.flush()
+            key.upload_from_file(fh, rewind=True)
+        rq = connection._requested
+        self.assertEqual(len(rq), 3)
+        self.assertEqual(rq[0]['method'], 'POST')
+        uri = rq[0]['url']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'resumable', 'name': 'parent%2Fchild'})
         self.assertEqual(rq[0]['headers'],
                          {'X-Upload-Content-Length': 6,
                           'X-Upload-Content-Type': 'application/unknown'})
