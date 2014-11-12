@@ -190,12 +190,11 @@ class TestStorageListFiles(TestStorageFiles):
 
     def test_paginate_files(self):
         truncation_size = 1
-        extra_params = {'maxResults': len(self.FILENAMES) - truncation_size}
-        iterator = storage.key._KeyIterator(bucket=self.bucket,
-                                            extra_params=extra_params)
+        count = len(self.FILENAMES) - truncation_size
+        iterator = self.bucket.iterator(max_results=count)
         response = iterator.get_next_page_response()
         keys = list(iterator.get_items_from_response(response))
-        self.assertEqual(len(keys), extra_params['maxResults'])
+        self.assertEqual(len(keys), count)
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is not None)
 

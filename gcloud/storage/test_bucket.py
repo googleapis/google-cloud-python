@@ -3,6 +3,49 @@ import io
 import unittest2
 
 
+class Test__KeyIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.bucket import _KeyIterator
+        return _KeyIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        iterator = self._makeOne(bucket)
+        self.assertTrue(iterator.bucket is bucket)
+        self.assertTrue(iterator.connection is connection)
+        self.assertEqual(iterator.path, '%s/o' % bucket.path)
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+        self.assertEqual(iterator.prefixes, ())
+
+    def test_get_items_from_response_empty(self):
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        iterator = self._makeOne(bucket)
+        self.assertEqual(list(iterator.get_items_from_response({})), [])
+        self.assertEqual(iterator.prefixes, ())
+
+    def test_get_items_from_response_non_empty(self):
+        from gcloud.storage.key import Key
+        KEY = 'key'
+        response = {'items': [{'name': KEY}], 'prefixes': ['foo']}
+        connection = _Connection()
+        bucket = _Bucket(connection)
+        iterator = self._makeOne(bucket)
+        keys = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(keys), 1)
+        key = keys[0]
+        self.assertTrue(isinstance(key, Key))
+        self.assertTrue(key.connection is connection)
+        self.assertEqual(key.name, KEY)
+        self.assertEqual(iterator.prefixes, ('foo',))
+
+
 class Test_Bucket(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -169,6 +212,41 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], {})
+
+    def test_iterator_defaults(self):
+        NAME = 'name'
+        connection = _Connection({'items': []})
+        bucket = self._makeOne(connection, NAME)
+        iterator = bucket.iterator()
+        keys = list(iterator)
+        self.assertEqual(keys, [])
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
+        self.assertEqual(kw['query_params'], {})
+
+    def test_iterator_explicit(self):
+        NAME = 'name'
+        EXPECTED = {
+            'prefix': 'subfolder',
+            'delimiter': '/',
+            'maxResults': 10,
+            'versions': True,
+        }
+        connection = _Connection({'items': []})
+        bucket = self._makeOne(connection, NAME)
+        iterator = bucket.iterator(
+            prefix='subfolder',
+            delimiter='/',
+            max_results=10,
+            versions=True,
+        )
+        keys = list(iterator)
+        self.assertEqual(keys, [])
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
+        self.assertEqual(kw['query_params'], EXPECTED)
 
     def test_new_key_existing(self):
         from gcloud.storage.key import Key
@@ -880,46 +958,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw[1]['query_params'], {})
-
-
-class Test__KeyIterator(unittest2.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.storage.bucket import _KeyIterator
-        return _KeyIterator
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test_ctor(self):
-        connection = _Connection()
-        bucket = _Bucket(connection)
-        iterator = self._makeOne(bucket)
-        self.assertTrue(iterator.bucket is bucket)
-        self.assertTrue(iterator.connection is connection)
-        self.assertEqual(iterator.path, '%s/o' % bucket.path)
-        self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
-
-    def test_get_items_from_response_empty(self):
-        connection = _Connection()
-        bucket = _Bucket(connection)
-        iterator = self._makeOne(bucket)
-        self.assertEqual(list(iterator.get_items_from_response({})), [])
-
-    def test_get_items_from_response_non_empty(self):
-        from gcloud.storage.key import Key
-        KEY = 'key'
-        response = {'items': [{'name': KEY}]}
-        connection = _Connection()
-        bucket = _Bucket(connection)
-        iterator = self._makeOne(bucket)
-        keys = list(iterator.get_items_from_response(response))
-        self.assertEqual(len(keys), 1)
-        key = keys[0]
-        self.assertTrue(isinstance(key, Key))
-        self.assertTrue(key.connection is connection)
-        self.assertEqual(key.name, KEY)
 
 
 class _Connection(object):

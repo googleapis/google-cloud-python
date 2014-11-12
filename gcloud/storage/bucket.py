@@ -20,8 +20,9 @@ class _KeyIterator(Iterator):
     :type bucket: :class:`gcloud.storage.bucket.Bucket`
     :param bucket: The bucket from which to list keys.
     """
-    def __init__(self, bucket, connection=None, extra_params=None):
+    def __init__(self, bucket, extra_params=None):
         self.bucket = bucket
+        self.prefixes = ()
         super(_KeyIterator, self).__init__(
             connection=bucket.connection, path=bucket.path + '/o',
             extra_params=extra_params)
@@ -32,6 +33,7 @@ class _KeyIterator(Iterator):
         :type response: dict
         :param response: The JSON API response for a page of keys.
         """
+        self.prefixes = tuple(response.get('prefixes', ()))
         for item in response.get('items', []):
             yield Key.from_dict(item, bucket=self.bucket)
 
@@ -169,6 +171,42 @@ class Bucket(_PropertyMixin):
         :returns: A list of all the Key objects in this bucket.
         """
         return list(self)
+
+    def iterator(self, prefix=None, delimiter=None, max_results=None,
+                 versions=None):
+        """Return an iterator used to find keys in the bucket.
+
+        :type prefix: string or None
+        :param prefix: optional prefix used to filter keys.
+
+        :type delimiter: string or None
+        :param delimiter: optional delimter, used with ``prefix`` to
+                          emulate hierarchy.
+
+        :type max_results: integer or None
+        :param max_results: maximum number of keys to return.
+
+        :type versions: boolean or None
+        :param versions: whether object versions should be returned as
+                         separate keys.
+
+        :rtype: :class:`_KeyIterator`
+        """
+        extra_params = {}
+
+        if prefix is not None:
+            extra_params['prefix'] = prefix
+
+        if delimiter is not None:
+            extra_params['delimiter'] = delimiter
+
+        if max_results is not None:
+            extra_params['maxResults'] = max_results
+
+        if versions is not None:
+            extra_params['versions'] = versions
+
+        return self._iterator_class(self, extra_params=extra_params)
 
     def new_key(self, key):
         """Given path name (or Key), return a :class:`.storage.key.Key` object.
@@ -665,7 +703,6 @@ class Bucket(_PropertyMixin):
             doa.save()
 
         if recursive:
-            iterator = self._iterator_class(self)
-            for key in iterator:
+            for key in self:
                 key.get_acl().all().grant_read()
                 key.save_acl()
