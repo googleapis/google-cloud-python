@@ -209,6 +209,12 @@ Running Regression Tests
 
    $ python regression/populate_datastore.py
 
+- If you make a mistake during development (i.e. a failing test that
+  prevents clean-up) you can clear all regression data from your
+  datastore instance via::
+
+   $ python regression/clear_datastore.py
+
 Test Coverage
 -------------
 
