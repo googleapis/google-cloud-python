@@ -298,7 +298,7 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': 'parent%2Fchild'})
+                         {'uploadType': 'resumable', 'name': 'parent/child'})
         self.assertEqual(rq[0]['headers'],
                          {'X-Upload-Content-Length': 6,
                           'X-Upload-Content-Type': 'application/unknown'})
