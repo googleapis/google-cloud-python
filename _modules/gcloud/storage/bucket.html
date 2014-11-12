@@ -108,8 +108,9 @@
 <span class="sd">    :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">    :param bucket: The bucket from which to list keys.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="p">()</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">_KeyIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
             <span class="n">connection</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
@@ -120,6 +121,7 @@
 <span class="sd">        :type response: dict</span>
 <span class="sd">        :param response: The JSON API response for a page of keys.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;prefixes&#39;</span><span class="p">,</span> <span class="p">()))</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="k">yield</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
 
@@ -257,6 +259,42 @@
 <span class="sd">        :returns: A list of all the Key objects in this bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Bucket.iterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.iterator">[docs]</a>    <span class="k">def</span> <span class="nf">iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">versions</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an iterator used to find keys in the bucket.</span>
+
+<span class="sd">        :type prefix: string or None</span>
+<span class="sd">        :param prefix: optional prefix used to filter keys.</span>
+
+<span class="sd">        :type delimiter: string or None</span>
+<span class="sd">        :param delimiter: optional delimter, used with ``prefix`` to</span>
+<span class="sd">                          emulate hierarchy.</span>
+
+<span class="sd">        :type max_results: integer or None</span>
+<span class="sd">        :param max_results: maximum number of keys to return.</span>
+
+<span class="sd">        :type versions: boolean or None</span>
+<span class="sd">        :param versions: whether object versions should be returned as</span>
+<span class="sd">                         separate keys.</span>
+
+<span class="sd">        :rtype: :class:`_KeyIterator`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
+
+        <span class="k">if</span> <span class="n">delimiter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;delimiter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">delimiter</span>
+
+        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
+
+        <span class="k">if</span> <span class="n">versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;versions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versions</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.new_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.new_key">[docs]</a>    <span class="k">def</span> <span class="nf">new_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Given path name (or Key), return a :class:`.storage.key.Key` object.</span>
@@ -753,8 +791,7 @@
             <span class="n">doa</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">recursive</span><span class="p">:</span>
-            <span class="n">iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
                 <span class="n">key</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
                 <span class="n">key</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span></div></div>
 </pre></div>
