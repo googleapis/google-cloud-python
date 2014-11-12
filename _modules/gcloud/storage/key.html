@@ -373,7 +373,7 @@
 
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s">&#39;uploadType&#39;</span><span class="p">:</span> <span class="s">&#39;resumable&#39;</span><span class="p">,</span>
-            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">urllib</span><span class="o">.</span><span class="n">quote_plus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="n">upload_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
