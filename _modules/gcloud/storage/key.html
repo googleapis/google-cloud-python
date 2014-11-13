@@ -104,7 +104,7 @@
     <span class="sd">&quot;&quot;&quot;A wrapper around Cloud Storage&#39;s concept of an ``Object``.&quot;&quot;&quot;</span>
 
     <span class="n">CUSTOM_PROPERTY_ACCESSORS</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="s">&#39;get_acl()&#39;</span><span class="p">,</span>
+        <span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="s">&#39;acl&#39;</span><span class="p">,</span>
         <span class="s">&#39;cacheControl&#39;</span><span class="p">:</span> <span class="s">&#39;cache_control&#39;</span><span class="p">,</span>
         <span class="s">&#39;contentDisposition&#39;</span><span class="p">:</span> <span class="s">&#39;content_disposition&#39;</span><span class="p">,</span>
         <span class="s">&#39;contentEncoding&#39;</span><span class="p">:</span> <span class="s">&#39;content_encoding&#39;</span><span class="p">,</span>
@@ -471,7 +471,7 @@
 
 <span class="sd">        :returns: The current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 </div>

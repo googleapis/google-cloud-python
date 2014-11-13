@@ -90,12 +90,12 @@
 
 <span class="sd">:class:`gcloud.storage.bucket.Bucket` has a getting method that creates</span>
 <span class="sd">an ACL object under the hood, and you can interact with that using</span>
-<span class="sd">:func:`gcloud.storage.bucket.Bucket.get_acl`::</span>
+<span class="sd">:func:`gcloud.storage.bucket.Bucket.acl`::</span>
 
 <span class="sd">  &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">  &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
 <span class="sd">  &gt;&gt;&gt; bucket = connection.get_bucket(bucket_name)</span>
-<span class="sd">  &gt;&gt;&gt; acl = bucket.get_acl()</span>
+<span class="sd">  &gt;&gt;&gt; acl = bucket.acl</span>
 
 <span class="sd">Adding and removing permissions can be done with the following methods</span>
 <span class="sd">(in increasing order of granularity):</span>
@@ -260,12 +260,19 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span> <span class="o">=</span> <span class="p">{}</span>
 
+    <span class="k">def</span> <span class="nf">_ensure_loaded</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load if not already loaded.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+
 <div class="viewcode-block" id="ACL.reset"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove all entities from the ACL, and clear the ``loaded`` flag.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">False</span>
 </div>
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
+
         <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">get_roles</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">role</span><span class="p">:</span>
@@ -312,6 +319,7 @@
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True of the entity exists in the ACL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span>
 </div>
 <div class="viewcode-block" id="ACL.get_entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.get_entity">[docs]</a>    <span class="k">def</span> <span class="nf">get_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -328,6 +336,7 @@
 <span class="sd">        :returns: The corresponding entity or the value provided</span>
 <span class="sd">                  to ``default``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">),</span> <span class="n">default</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.add_entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.add_entity">[docs]</a>    <span class="k">def</span> <span class="nf">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
@@ -336,8 +345,8 @@
 <span class="sd">        :type entity: :class:`_ACLEntity`</span>
 <span class="sd">        :param entity: The entity to add to this ACL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">)]</span> <span class="o">=</span> <span class="n">entity</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
 </div>
 <div class="viewcode-block" id="ACL.entity"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.entity">[docs]</a>    <span class="k">def</span> <span class="nf">entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for creating an Entity.</span>
@@ -420,6 +429,7 @@
 <span class="sd">        :rtype: list of :class:`_ACLEntity` objects</span>
 <span class="sd">        :returns: A list of all Entity objects.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="ACL.reload"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -469,11 +479,9 @@
 
         <span class="n">url_path</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">)</span>
         <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">url_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="p">[</span><span class="s">&#39;items&#39;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-
-        <span class="c"># Even if we fetch no entries, the ACL is still loaded.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
 
         <span class="k">return</span> <span class="bp">self</span>
 </div>
@@ -495,7 +503,7 @@
 
 <span class="sd">          &gt;&gt;&gt; bucket1 = connection.get_bucket(bucket1_name)</span>
 <span class="sd">          &gt;&gt;&gt; bucket2 = connection.get_bucket(bucket2_name)</span>
-<span class="sd">          &gt;&gt;&gt; bucket2.acl.save(bucket1.get_acl())</span>
+<span class="sd">          &gt;&gt;&gt; bucket2.acl.save(bucket1.acl)</span>
 
 <span class="sd">        :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.</span>
 <span class="sd">        :param acl: The ACL object to save.  If left blank, this will save</span>
@@ -577,11 +585,9 @@
 
         <span class="n">url_path</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/acl&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">path</span>
         <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">url_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="p">[</span><span class="s">&#39;items&#39;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-
-        <span class="c"># Even if we fetch no entries, the ACL is still loaded.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
 
         <span class="k">return</span> <span class="bp">self</span>
 </div>

@@ -632,7 +632,7 @@ just a name of a bucket.  It always returns the object:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'cors': 'get_cors()', 'name': 'name', 'location': 'location', 'owner': 'owner', 'timeCreated': 'time_created', 'storageClass': 'storage_class', 'acl': 'get_acl()', 'projectNumber': 'project_number', 'etag': 'etag', 'logging': 'get_logging()', 'lifecycle': 'get_lifecycle()', 'versioning': 'versioning_enabled', 'selfLink': 'self_link', 'id': 'id', 'metageneration': 'metageneration', 'defaultObjectAcl': 'get_default_object_acl()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'cors': 'get_cors()', 'selfLink': 'self_link', 'id': 'id', 'acl': 'acl', 'projectNumber': 'project_number', 'location': 'location', 'etag': 'etag', 'defaultObjectAcl': 'get_default_object_acl()', 'versioning': 'versioning_enabled', 'timeCreated': 'time_created', 'name': 'name', 'logging': 'get_logging()', 'metageneration': 'metageneration', 'owner': 'owner', 'lifecycle': 'get_lifecycle()', 'storageClass': 'storage_class'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -1398,7 +1398,7 @@ unique path of the object in the bucket.</li>
 
 <dl class="attribute">
 <dt id="gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'mediaLink': 'media_link', 'componentCount': 'component_count', 'metageneration': 'metageneration', 'owner': 'owner', 'size': 'size', 'contentDisposition': 'content_disposition', 'storageClass': 'storage_class', 'timeDeleted': 'time_deleted', 'acl': 'get_acl()', 'name': 'name', 'updated': 'updated', 'etag': 'etag', 'generation': 'generation', 'selfLink': 'self_link', 'id': 'id', 'contentEncoding': 'content_encoding', 'contentLanguage': 'content_language', 'cacheControl': 'cache_control', 'contentType': 'content_type'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'contentDisposition': 'content_disposition', 'id': 'id', 'updated': 'updated', 'contentLanguage': 'content_language', 'acl': 'acl', 'componentCount': 'component_count', 'etag': 'etag', 'mediaLink': 'media_link', 'storageClass': 'storage_class', 'size': 'size', 'name': 'name', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'timeDeleted': 'time_deleted', 'owner': 'owner', 'contentEncoding': 'content_encoding', 'contentType': 'content_type', 'cacheControl': 'cache_control', 'generation': 'generation'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -2199,11 +2199,11 @@ API documents for details.</p>
 <p>Manipulate access control lists that Cloud Storage provides.</p>
 <p><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> has a getting method that creates
 an ACL object under the hood, and you can interact with that using
-<tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.get_acl()</span></tt>:</p>
+<a class="reference internal" href="#gcloud.storage.bucket.Bucket.acl" title="gcloud.storage.bucket.Bucket.acl"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.acl()</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_acl</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span>
 </pre></div>
 </div>
 <p>Adding and removing permissions can be done with the following methods
@@ -2607,7 +2607,7 @@ currently set on the Bucket object:</p>
 one bucket to another:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket1</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket1_name</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket2_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">bucket1</span><span class="o">.</span><span class="n">get_acl</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">bucket1</span><span class="o">.</span><span class="n">acl</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
