@@ -874,6 +874,7 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(after)
         bucket = self._makeOne(connection, NAME)
         bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = True
         bucket.make_public()
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
@@ -920,7 +921,8 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def get_acl(self):
+            @property
+            def acl(self):
                 return self
 
             def all(self):
@@ -944,6 +946,7 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(after, {'items': [{'name': KEY}]})
         bucket = self._makeOne(connection, NAME)
         bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = True
         bucket._iterator_class = _Iterator
         bucket.make_public(recursive=True)
         self.assertEqual(list(bucket.acl), permissive)

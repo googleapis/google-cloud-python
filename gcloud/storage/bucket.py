@@ -50,7 +50,7 @@ class Bucket(_PropertyMixin):
     _iterator_class = _KeyIterator
 
     CUSTOM_PROPERTY_ACCESSORS = {
-        'acl': 'get_acl()',
+        'acl': 'acl',
         'cors': 'get_cors()',
         'defaultObjectAcl': 'get_default_object_acl()',
         'etag': 'etag',
@@ -694,7 +694,7 @@ class Bucket(_PropertyMixin):
         :param future: If True, this will make all objects created in the
                        future public as well.
         """
-        self.get_acl().all().grant_read()
+        self.acl.all().grant_read()
         self.acl.save()
 
         if future:
@@ -704,5 +704,5 @@ class Bucket(_PropertyMixin):
 
         if recursive:
             for key in self:
-                key.get_acl().all().grant_read()
+                key.acl.all().grant_read()
                 key.save_acl()

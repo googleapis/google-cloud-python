@@ -117,25 +117,6 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'foo': 'Foo'})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_get_acl_not_yet_loaded(self):
-        class ACL(object):
-            loaded = False
-
-            def reload(self):
-                self.loaded = True
-
-        mixin = self._makeOne()
-        acl = mixin.acl = ACL()
-        self.assertTrue(mixin.get_acl() is acl)
-        self.assertTrue(acl.loaded)
-
-    def test_get_acl_already_loaded(self):
-        class ACL(object):
-            loaded = True
-        mixin = self._makeOne()
-        acl = mixin.acl = ACL()
-        self.assertTrue(mixin.get_acl() is acl)  # no 'reload'
-
 
 class TestPropertyBatch(unittest2.TestCase):
 
