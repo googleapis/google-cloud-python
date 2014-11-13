@@ -29,6 +29,7 @@ TEST_DISABLED_MESSAGES = [
     'missing-docstring',
     'no-init',
     'no-self-use',
+    'superfluous-parens',
     'too-few-public-methods',
     'too-many-locals',
     'too-many-public-methods',
