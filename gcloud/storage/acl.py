@@ -172,12 +172,19 @@ class ACL(object):
     def __init__(self):
         self.entities = {}
 
+    def _ensure_loaded(self):
+        """Load if not already loaded."""
+        if not self.loaded:
+            self.reload()
+
     def reset(self):
         """Remove all entities from the ACL, and clear the ``loaded`` flag."""
         self.entities.clear()
         self.loaded = False
 
     def __iter__(self):
+        self._ensure_loaded()
+
         for entity in self.entities.itervalues():
             for role in entity.get_roles():
                 if role:
@@ -224,6 +231,7 @@ class ACL(object):
         :rtype: bool
         :returns: True of the entity exists in the ACL.
         """
+        self._ensure_loaded()
         return str(entity) in self.entities
 
     def get_entity(self, entity, default=None):
@@ -240,6 +248,7 @@ class ACL(object):
         :returns: The corresponding entity or the value provided
                   to ``default``.
         """
+        self._ensure_loaded()
         return self.entities.get(str(entity), default)
 
     def add_entity(self, entity):
@@ -248,8 +257,8 @@ class ACL(object):
         :type entity: :class:`_ACLEntity`
         :param entity: The entity to add to this ACL.
         """
+        self._ensure_loaded()
         self.entities[str(entity)] = entity
-        self.loaded = True
 
     def entity(self, entity_type, identifier=None):
         """Factory method for creating an Entity.
@@ -332,6 +341,7 @@ class ACL(object):
         :rtype: list of :class:`_ACLEntity` objects
         :returns: A list of all Entity objects.
         """
+        self._ensure_loaded()
         return self.entities.values()
 
     def reload(self):
@@ -381,11 +391,9 @@ class BucketACL(ACL):
 
         url_path = '%s/%s' % (self.bucket.path, self._URL_PATH_ELEM)
         found = self.bucket.connection.api_request(method='GET', path=url_path)
+        self.loaded = True
         for entry in found['items']:
             self.add_entity(self.entity_from_dict(entry))
-
-        # Even if we fetch no entries, the ACL is still loaded.
-        self.loaded = True
 
         return self
 
@@ -489,11 +497,9 @@ class ObjectACL(ACL):
 
         url_path = '%s/acl' % self.key.path
         found = self.key.connection.api_request(method='GET', path=url_path)
+        self.loaded = True
         for entry in found['items']:
             self.add_entity(self.entity_from_dict(entry))
-
-        # Even if we fetch no entries, the ACL is still loaded.
-        self.loaded = True
 
         return self
 
