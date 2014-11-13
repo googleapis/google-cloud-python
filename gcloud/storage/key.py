@@ -16,7 +16,7 @@ class Key(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
 
     CUSTOM_PROPERTY_ACCESSORS = {
-        'acl': 'get_acl()',
+        'acl': 'acl',
         'cacheControl': 'cache_control',
         'contentDisposition': 'content_disposition',
         'contentEncoding': 'content_encoding',
@@ -383,7 +383,7 @@ class Key(_PropertyMixin):
 
         :returns: The current object.
         """
-        self.get_acl().all().grant_read()
+        self.acl.all().grant_read()
         self.acl.save()
         return self
 

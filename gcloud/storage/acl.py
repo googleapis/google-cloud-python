@@ -2,12 +2,12 @@
 
 :class:`gcloud.storage.bucket.Bucket` has a getting method that creates
 an ACL object under the hood, and you can interact with that using
-:func:`gcloud.storage.bucket.Bucket.get_acl`::
+:func:`gcloud.storage.bucket.Bucket.acl`::
 
   >>> from gcloud import storage
   >>> connection = storage.get_connection(project, email, key_path)
   >>> bucket = connection.get_bucket(bucket_name)
-  >>> acl = bucket.get_acl()
+  >>> acl = bucket.acl
 
 Adding and removing permissions can be done with the following methods
 (in increasing order of granularity):
@@ -407,7 +407,7 @@ class BucketACL(ACL):
 
           >>> bucket1 = connection.get_bucket(bucket1_name)
           >>> bucket2 = connection.get_bucket(bucket2_name)
-          >>> bucket2.acl.save(bucket1.get_acl())
+          >>> bucket2.acl.save(bucket1.acl)
 
         :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.
         :param acl: The ACL object to save.  If left blank, this will save

@@ -138,15 +138,6 @@ class _PropertyMixin(object):
 
         return self.properties.get(field, default)
 
-    def get_acl(self):
-        """Get ACL as an object.
-
-        :returns: An ACL object for the current object.
-        """
-        if not self.acl.loaded:
-            self.acl.reload()
-        return self.acl
-
 
 class _PropertyBatch(object):
     """Context manager: Batch updates to object's ``_patch_properties``

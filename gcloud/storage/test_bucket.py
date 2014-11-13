@@ -920,7 +920,8 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def get_acl(self):
+            @property
+            def acl(self):
                 return self
 
             def all(self):
