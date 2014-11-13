@@ -24,6 +24,7 @@ TEST_RC = 'pylintrc_reduced'
 TEST_DISABLED_MESSAGES = [
     'attribute-defined-outside-init',
     'exec-used',
+    'import-error',
     'invalid-name',
     'missing-docstring',
     'no-init',
