@@ -16,6 +16,7 @@ from gcloud.connection import Connection as _Base
 from gcloud.storage import exceptions
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
+import six
 
 
 def _utcnow():  # pragma: NO COVER testing replaces
@@ -415,7 +416,7 @@ class Connection(_Base):
 
         # Support Python 2 and 3.
         try:
-            string_type = basestring
+            string_type = six.string_types
         except NameError:  # pragma: NO COVER PY3k
             string_type = str
 
@@ -537,7 +538,7 @@ def _get_expiration_seconds(expiration):
         # Turn the datetime into a timestamp (seconds, not microseconds).
         expiration = int(calendar.timegm(expiration.timetuple()))
 
-    if not isinstance(expiration, (int, long)):
+    if not isinstance(expiration, six.integer_types):
         raise TypeError('Expected an integer timestamp, datetime, or '
                         'timedelta. Got %s' % type(expiration))
     return expiration

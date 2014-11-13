@@ -1,10 +1,13 @@
 """Script to populate datastore with regression test data."""
+from __future__ import print_function
 
 
 from gcloud import datastore
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import regression_utils
+import six
+from six.moves import zip
 
 
 ANCESTOR = {'kind': 'Book', 'name': 'GoT'}
@@ -28,43 +31,43 @@ KEY_PATHS = [
 ]
 CHARACTERS = [
     {
-        'name': u'Rickard',
-        'family': u'Stark',
+        'name': six.u('Rickard'),
+        'family': six.u('Stark'),
         'appearances': 0,
         'alive': False,
     }, {
-        'name': u'Eddard',
-        'family': u'Stark',
+        'name': six.u('Eddard'),
+        'family': six.u('Stark'),
         'appearances': 9,
         'alive': False,
     }, {
-        'name': u'Catelyn',
-        'family': [u'Stark', u'Tully'],
+        'name': six.u('Catelyn'),
+        'family': [six.u('Stark'), six.u('Tully')],
         'appearances': 26,
         'alive': False,
     }, {
-        'name': u'Arya',
-        'family': u'Stark',
+        'name': six.u('Arya'),
+        'family': six.u('Stark'),
         'appearances': 33,
         'alive': True,
     }, {
-        'name': u'Sansa',
-        'family': u'Stark',
+        'name': six.u('Sansa'),
+        'family': six.u('Stark'),
         'appearances': 31,
         'alive': True,
     }, {
-        'name': u'Robb',
-        'family': u'Stark',
+        'name': six.u('Robb'),
+        'family': six.u('Stark'),
         'appearances': 22,
         'alive': False,
     }, {
-        'name': u'Bran',
-        'family': u'Stark',
+        'name': six.u('Bran'),
+        'family': six.u('Stark'),
         'appearances': 25,
         'alive': True,
     }, {
-        'name': u'Jon Snow',
-        'family': u'Stark',
+        'name': six.u('Jon Snow'),
+        'family': six.u('Stark'),
         'appearances': 32,
         'alive': True,
     },
@@ -82,8 +85,8 @@ def add_characters():
             entity = datastore.entity.Entity(dataset=dataset).key(key)
             entity.update(character)
             entity.save()
-            print 'Adding Character %s %s' % (character['name'],
-                                              character['family'])
+            print('Adding Character %s %s' % (character['name'],
+                                              character['family']))
 
 
 if __name__ == '__main__':

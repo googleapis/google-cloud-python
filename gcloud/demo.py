@@ -4,6 +4,7 @@ import itertools
 import os.path
 import sys
 import time
+from six.moves import input
 
 
 class DemoRunner(object):
@@ -36,7 +37,7 @@ class DemoRunner(object):
         interact('(Hit CTRL-D to exit...)', local=self.LOCALS)
 
     def wait(self):
-        raw_input()
+        input()
 
     @classmethod
     def get_line_type(cls, line):
@@ -50,9 +51,14 @@ class DemoRunner(object):
             return None
         return len(line) - len(line.lstrip())
 
+    def _print(self, text='', newline=True):
+        sys.stdout.write(text)
+        if newline:
+            sys.stdout.write('\n')
+
     def write(self, lines):
-        print
-        print '\n'.join(lines),
+        self._print()
+        self._print('\n'.join(lines), False)
         self.wait()
 
     def code(self, lines):
@@ -69,9 +75,9 @@ class DemoRunner(object):
 
             # Print the prefix for the line depending on the indentation level.
             if indent == 0:
-                print '>>> ',
+                self._print('>>> ', False)
             elif indent > 0:
-                print '\n... ',
+                self._print('\n... ', False)
             elif indent is None:
                 continue
 

@@ -9,6 +9,7 @@ from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
 from gcloud.storage.key import Key
+import six
 
 
 class _KeyIterator(Iterator):
@@ -226,7 +227,7 @@ class Bucket(_PropertyMixin):
 
         # Support Python 2 and 3.
         try:
-            string_type = basestring
+            string_type = six.string_types
         except NameError:  # pragma: NO COVER PY3k
             string_type = str
 

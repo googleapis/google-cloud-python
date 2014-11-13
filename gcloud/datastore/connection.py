@@ -406,7 +406,7 @@ class Connection(connection.Connection):
 
         insert.key.CopyFrom(key_pb)
 
-        for name, value in properties.iteritems():
+        for name, value in properties.items():
             prop = insert.property.add()
             # Set the name of the property.
             prop.name = name

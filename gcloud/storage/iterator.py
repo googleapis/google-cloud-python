@@ -49,7 +49,7 @@ class Iterator(object):
         self.next_page_token = None
         self.extra_params = extra_params or {}
         reserved_in_use = self.RESERVED_PARAMS.intersection(
-            self.extra_params.keys())
+            self.extra_params)
         if reserved_in_use:
             raise ValueError(('Using a reserved parameter',
                               reserved_in_use))

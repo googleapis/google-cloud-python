@@ -7,6 +7,7 @@ from gcloud import datastore
 # repository root is the current directory.
 from regression import populate_datastore
 from regression import regression_utils
+import six
 
 
 class TestDatastore(unittest2.TestCase):
@@ -45,10 +46,10 @@ class TestDatastoreSave(TestDatastore):
 
     def _get_post(self, name=None, key_id=None, post_content=None):
         post_content = post_content or {
-            'title': u'How to make the perfect pizza in your grill',
-            'tags': [u'pizza', u'grill'],
+            'title': six.u('How to make the perfect pizza in your grill'),
+            'tags': [six.u('pizza'), six.u('grill')],
             'publishedAt': datetime.datetime(2001, 1, 1, tzinfo=pytz.utc),
-            'author': u'Silvano',
+            'author': six.u('Silvano'),
             'isDraft': False,
             'wordCount': 400,
             'rating': 5.0,
@@ -86,8 +87,8 @@ class TestDatastoreSave(TestDatastore):
                          entity.key().namespace())
 
         # Check the data is the same.
-        retrieved_dict = dict(retrieved_entity.items())
-        entity_dict = dict(entity.items())
+        retrieved_dict = dict(list(retrieved_entity.items()))
+        entity_dict = dict(list(entity.items()))
         self.assertEqual(retrieved_dict, entity_dict)
 
     def test_post_with_name(self):
@@ -107,10 +108,10 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity1)
 
             second_post_content = {
-                'title': u'How to make the perfect homemade pasta',
-                'tags': [u'pasta', u'homemade'],
+                'title': six.u('How to make the perfect homemade pasta'),
+                'tags': [six.u('pasta'), six.u('homemade')],
                 'publishedAt': datetime.datetime(2001, 1, 1),
-                'author': u'Silvano',
+                'author': six.u('Silvano'),
                 'isDraft': False,
                 'wordCount': 450,
                 'rating': 4.5,
@@ -134,7 +135,7 @@ class TestDatastoreSaveKeys(TestDatastore):
     def test_save_key_self_reference(self):
         key = datastore.key.Key.from_path('Person', 'name')
         entity = self.dataset.entity(kind=None).key(key)
-        entity['fullName'] = u'Full name'
+        entity['fullName'] = six.u('Full name')
         entity['linkedTo'] = key  # Self reference.
 
         entity.save()
@@ -240,16 +241,16 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
         arya_entity = entities[0]
-        arya_dict = dict(arya_entity.items())
+        arya_dict = dict(list(arya_entity.items()))
         self.assertEqual(arya_dict, {'name': 'Arya', 'family': 'Stark'})
 
         catelyn_stark_entity = entities[2]
-        catelyn_stark_dict = dict(catelyn_stark_entity.items())
+        catelyn_stark_dict = dict(list(catelyn_stark_entity.items()))
         self.assertEqual(catelyn_stark_dict,
                          {'name': 'Catelyn', 'family': 'Stark'})
 
         catelyn_tully_entity = entities[3]
-        catelyn_tully_dict = dict(catelyn_tully_entity.items())
+        catelyn_tully_dict = dict(list(catelyn_tully_entity.items()))
         self.assertEqual(catelyn_tully_dict,
                          {'name': 'Catelyn', 'family': 'Tully'})
 
@@ -264,7 +265,7 @@ class TestDatastoreQuery(TestDatastore):
                          catelyn_tully_key._dataset_id)
 
         sansa_entity = entities[8]
-        sansa_dict = dict(sansa_entity.items())
+        sansa_dict = dict(list(sansa_entity.items()))
         self.assertEqual(sansa_dict, {'name': 'Sansa', 'family': 'Stark'})
 
     def test_query_paginate_with_offset(self):
@@ -333,7 +334,7 @@ class TestDatastoreTransaction(TestDatastore):
     def test_transaction(self):
         key = datastore.key.Key.from_path('Company', 'Google')
         entity = self.dataset.entity(kind=None).key(key)
-        entity['url'] = u'www.google.com'
+        entity['url'] = six.u('www.google.com')
 
         with self.dataset.transaction():
             retrieved_entity = self.dataset.get_entity(key)
@@ -343,7 +344,7 @@ class TestDatastoreTransaction(TestDatastore):
 
         # This will always return after the transaction.
         retrieved_entity = self.dataset.get_entity(key)
-        retrieved_dict = dict(retrieved_entity.items())
-        entity_dict = dict(entity.items())
+        retrieved_dict = dict(list(retrieved_entity.items()))
+        entity_dict = dict(list(entity.items()))
         self.assertEqual(retrieved_dict, entity_dict)
         retrieved_entity.delete()

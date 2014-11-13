@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import sys
 
@@ -21,12 +22,12 @@ Please check the Contributing guide for instructions.
 def get_environ(require_datastore=False, require_storage=False):
     if require_datastore:
         if DATASET_ID is None or CLIENT_EMAIL is None or KEY_FILENAME is None:
-            print >> sys.stderr, ENVIRON_ERROR_MSG
+            print(ENVIRON_ERROR_MSG, file=sys.stderr)
             sys.exit(1)
 
     if require_storage:
         if PROJECT_ID is None or CLIENT_EMAIL is None or KEY_FILENAME is None:
-            print >> sys.stderr, ENVIRON_ERROR_MSG
+            print(ENVIRON_ERROR_MSG, file=sys.stderr)
             sys.exit(1)
 
     return {
