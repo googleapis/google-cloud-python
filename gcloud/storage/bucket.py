@@ -225,13 +225,7 @@ class Bucket(_PropertyMixin):
         if isinstance(key, Key):
             return key
 
-        # Support Python 2 and 3.
-        try:
-            string_type = six.string_types
-        except NameError:  # pragma: NO COVER PY3k
-            string_type = str
-
-        if isinstance(key, string_type):
+        if isinstance(key, six.string_types):
             return Key(bucket=self, name=key)
 
         raise TypeError('Invalid key: %s' % key)
