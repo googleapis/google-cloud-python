@@ -18,6 +18,7 @@ REQUIREMENTS = [
     'pycrypto',
     'pyopenssl',
     'pytz',
+    'six',
 ]
 
 setup(
