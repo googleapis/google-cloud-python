@@ -1,13 +1,13 @@
 """Script to populate datastore with regression test data."""
 from __future__ import print_function
 
+import six
+from six.moves import zip
 
 from gcloud import datastore
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import regression_utils
-import six
-from six.moves import zip
 
 
 ANCESTOR = {'kind': 'Book', 'name': 'GoT'}
