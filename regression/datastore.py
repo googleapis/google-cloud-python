@@ -87,8 +87,8 @@ class TestDatastoreSave(TestDatastore):
                          entity.key().namespace())
 
         # Check the data is the same.
-        retrieved_dict = dict(list(retrieved_entity.items()))
-        entity_dict = dict(list(entity.items()))
+        retrieved_dict = dict(retrieved_entity.items())
+        entity_dict = dict(entity.items())
         self.assertEqual(retrieved_dict, entity_dict)
 
     def test_post_with_name(self):
@@ -241,16 +241,16 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
         arya_entity = entities[0]
-        arya_dict = dict(list(arya_entity.items()))
+        arya_dict = dict(arya_entity.items())
         self.assertEqual(arya_dict, {'name': 'Arya', 'family': 'Stark'})
 
         catelyn_stark_entity = entities[2]
-        catelyn_stark_dict = dict(list(catelyn_stark_entity.items()))
+        catelyn_stark_dict = dict(catelyn_stark_entity.items())
         self.assertEqual(catelyn_stark_dict,
                          {'name': 'Catelyn', 'family': 'Stark'})
 
         catelyn_tully_entity = entities[3]
-        catelyn_tully_dict = dict(list(catelyn_tully_entity.items()))
+        catelyn_tully_dict = dict(catelyn_tully_entity.items())
         self.assertEqual(catelyn_tully_dict,
                          {'name': 'Catelyn', 'family': 'Tully'})
 
@@ -265,7 +265,7 @@ class TestDatastoreQuery(TestDatastore):
                          catelyn_tully_key._dataset_id)
 
         sansa_entity = entities[8]
-        sansa_dict = dict(list(sansa_entity.items()))
+        sansa_dict = dict(sansa_entity.items())
         self.assertEqual(sansa_dict, {'name': 'Sansa', 'family': 'Stark'})
 
     def test_query_paginate_with_offset(self):
@@ -344,7 +344,7 @@ class TestDatastoreTransaction(TestDatastore):
 
         # This will always return after the transaction.
         retrieved_entity = self.dataset.get_entity(key)
-        retrieved_dict = dict(list(retrieved_entity.items()))
-        entity_dict = dict(list(entity.items()))
+        retrieved_dict = dict(retrieved_entity.items())
+        entity_dict = dict(entity.items())
         self.assertEqual(retrieved_dict, entity_dict)
         retrieved_entity.delete()
