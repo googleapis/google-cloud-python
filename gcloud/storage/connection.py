@@ -414,13 +414,7 @@ class Connection(_Base):
         if isinstance(bucket, Bucket):
             return bucket
 
-        # Support Python 2 and 3.
-        try:
-            string_type = six.string_types
-        except NameError:  # pragma: NO COVER PY3k
-            string_type = str
-
-        if isinstance(bucket, string_type):
+        if isinstance(bucket, six.string_types):
             return Bucket(connection=self, name=bucket)
 
         raise TypeError('Invalid bucket: %s' % bucket)
