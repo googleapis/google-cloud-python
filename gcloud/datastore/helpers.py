@@ -2,7 +2,6 @@
 
 The non-private functions are part of the API.
 """
-import six
 __all__ = ('entity_from_protobuf', 'key_from_protobuf')
 
 import calendar
@@ -10,6 +9,7 @@ import datetime
 
 from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
+import six
 
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
