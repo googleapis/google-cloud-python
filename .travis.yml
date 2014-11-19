@@ -17,3 +17,13 @@ script:
 
 after_success:
   - tox -e coveralls
+
+deploy:
+  provider: pypi
+  user: silvolu
+  password:
+    secure: keSFPLzVj/yAAJ8kw4m+U5kpIiGqubpDqhcHPlGAvMohFMIO4D8ffgCqJdbhQshTtb/wiS5ajK1KNpEzq4BKD/5oRXuj/sIRTMENzX/azUXkT/bADLEGocyfE4/NAGQ9mcDOmHntjt7UUhYN6H87rgex22er4V1vD5tGf5Kc1HU=
+  on:
+    tags: true
+    repo: GoogleCloudPlatform/gcloud-python
+    branch: master
