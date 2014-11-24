@@ -66,6 +66,7 @@
   <ul>
 <li><a class="reference internal" href="#">Cloud Datastore in 10 seconds</a><ul>
 <li><a class="reference internal" href="#install-the-library">Install the library</a></li>
+<li><a class="reference internal" href="#run-the-demo">Run the demo</a></li>
 <li><a class="reference internal" href="#try-it-yourself">Try it yourself</a></li>
 <li><a class="reference internal" href="#ok-that-s-it">OK, that&#8217;s it!</a></li>
 </ul>
@@ -120,6 +121,26 @@ You can install the library quickly with <tt class="docutils literal"><span clas
 <div class="highlight-python"><div class="highlight"><pre>$ pip install gcloud
 </pre></div>
 </div>
+</div>
+<div class="section" id="run-the-demo">
+<h2>Run the demo<a class="headerlink" href="#run-the-demo" title="Permalink to this headline">¶</a></h2>
+<p>In order to run the demo, you need to have registred an actual <tt class="docutils literal"><span class="pre">gcloud</span></tt>
+project and so you&#8217;ll need to provide some environment variables to facilitate
+authentication to your project:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></tt>: Developers Console project ID (e.g.
+bamboo-shift-455).</li>
+<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_DATASET_ID</span></tt>: The name of the dataset your tests connect to.
+This is typically the same as <tt class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_CLIENT_EMAIL</span></tt>: The email for the service account you&#8217;re
+authenticating with</li>
+<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_KEY_FILE</span></tt>: The path to an encrypted key file.
+See private key
+<a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">docs</a>
+for explanation on how to get a private key.</li>
+</ul>
+</div></blockquote>
 <p>Run the
 <a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/gcloud/datastore/demo/demo.py">example script</a>
 included in the package:</p>
