@@ -7,8 +7,8 @@ except ImportError:
     from distutils.core import setup, find_packages
 
 
-if sys.version_info <= (2, 4):
-    raise Exception('Requires Python Version 2.5 or above... exiting.')
+if sys.version_info <= (2, 5):
+    raise Exception('Requires Python Version 2.6 or above... exiting.')
 
 
 REQUIREMENTS = [
@@ -43,7 +43,6 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.5',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Topic :: Internet',
