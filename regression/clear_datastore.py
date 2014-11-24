@@ -1,5 +1,4 @@
 """Script to populate datastore with regression test data."""
-from __future__ import print_function
 
 
 # This assumes the command is being run via tox hence the

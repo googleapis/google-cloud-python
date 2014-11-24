@@ -1,5 +1,4 @@
 """Script to populate datastore with regression test data."""
-from __future__ import print_function
 
 from six.moves import zip
 
