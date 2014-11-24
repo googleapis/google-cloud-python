@@ -4,11 +4,11 @@ from gcloud import datastore
 
 __all__ = ['get_dataset', 'CLIENT_EMAIL', 'DATASET_ID', 'PRIVATE_KEY_PATH']
 
-CLIENT_EMAIL = ('754762820716-gimou6egs2hq1rli7el2t621a1b04t9i'
-                '@developer.gserviceaccount.com')
-DATASET_ID = 'gcloud-datastore-demo'
-PRIVATE_KEY_PATH = os.path.join(os.path.dirname(__file__), 'demo.key')
+
+DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
+CLIENT_EMAIL = os.getenv('GCLOUD_TESTS_CLIENT_EMAIL')
+KEY_FILENAME = os.getenv('GCLOUD_TESTS_KEY_FILE')
 
 
 def get_dataset():  # pragma NO COVER
-    return datastore.get_dataset(DATASET_ID, CLIENT_EMAIL, PRIVATE_KEY_PATH)
+    return datastore.get_dataset(DATASET_ID, CLIENT_EMAIL, KEY_FILENAME)

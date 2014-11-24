@@ -4,11 +4,10 @@ from gcloud import storage
 
 __all__ = ['get_connection', 'CLIENT_EMAIL', 'PRIVATE_KEY_PATH', 'PROJECT']
 
-CLIENT_EMAIL = ('606734090113-6ink7iugcv89da9sru7lii8bs3i0obqg@'
-                'developer.gserviceaccount.com')
-PRIVATE_KEY_PATH = os.path.join(os.path.dirname(__file__), 'demo.key')
-PROJECT = 'gcloud-storage-demo'
+PROJECT_ID = os.getenv('GCLOUD_TESTS_PROJECT_ID')
+CLIENT_EMAIL = os.getenv('GCLOUD_TESTS_CLIENT_EMAIL')
+KEY_FILENAME = os.getenv('GCLOUD_TESTS_KEY_FILE')
 
 
 def get_connection():  # pragma NO COVER.
-    return storage.get_connection(PROJECT, CLIENT_EMAIL, PRIVATE_KEY_PATH)
+    return storage.get_connection(PROJECT_ID, CLIENT_EMAIL, KEY_FILENAME)
