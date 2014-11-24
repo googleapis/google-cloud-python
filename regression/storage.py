@@ -82,6 +82,9 @@ class TestStorageFiles(TestStorage):
         'big': {
             'path': 'regression/data/five-mb-file.zip',
         },
+        'simple': {
+            'path': 'regression/data/simple.txt',
+        }
     }
 
     @staticmethod
@@ -201,6 +204,82 @@ class TestStorageListFiles(TestStorageFiles):
         response = iterator.get_next_page_response()
         last_keys = list(iterator.get_items_from_response(response))
         self.assertEqual(len(last_keys), truncation_size)
+
+
+class TestStoragePseudoHierarchy(TestStorageFiles):
+
+    FILENAMES = [
+        'file01.txt',
+        'parent/file11.txt',
+        'parent/child/file21.txt',
+        'parent/child/file22.txt',
+        'parent/child/grand/file31.txt',
+        'parent/child/other/file32.txt',
+        ]
+
+    @classmethod
+    def setUpClass(cls):
+        super(TestStoragePseudoHierarchy, cls).setUpClass()
+        # Make sure bucket empty before beginning.
+        for key in cls.bucket:
+            key.delete()
+
+        simple_path = cls.FILES['simple']['path']
+        key = cls.bucket.upload_file(simple_path, key=cls.FILENAMES[0])
+        cls.suite_keys_to_delete = [key]
+        for filename in cls.FILENAMES[1:]:
+            new_key = cls.bucket.copy_key(key, cls.bucket, filename)
+            cls.suite_keys_to_delete.append(new_key)
+
+    @classmethod
+    def tearDownClass(cls):
+        for key in cls.suite_keys_to_delete:
+            key.delete()
+
+    def test_root_level_w_delimiter(self):
+        iterator = self.bucket.iterator(delimiter='/')
+        response = iterator.get_next_page_response()
+        keys = list(iterator.get_items_from_response(response))
+        self.assertEqual([key.name for key in keys], ['file01.txt'])
+        self.assertEqual(iterator.page_number, 1)
+        self.assertTrue(iterator.next_page_token is None)
+        self.assertEqual(iterator.prefixes, ('parent/',))
+
+    def test_first_level(self):
+        iterator = self.bucket.iterator(delimiter='/', prefix='parent/')
+        response = iterator.get_next_page_response()
+        keys = list(iterator.get_items_from_response(response))
+        self.assertEqual([key.name for key in keys], ['parent/file11.txt'])
+        self.assertEqual(iterator.page_number, 1)
+        self.assertTrue(iterator.next_page_token is None)
+        self.assertEqual(iterator.prefixes, ('parent/child/',))
+
+    def test_second_level(self):
+        iterator = self.bucket.iterator(delimiter='/', prefix='parent/child/')
+        response = iterator.get_next_page_response()
+        keys = list(iterator.get_items_from_response(response))
+        self.assertEqual([key.name for key in keys],
+                         ['parent/child/file21.txt',
+                          'parent/child/file22.txt'])
+        self.assertEqual(iterator.page_number, 1)
+        self.assertTrue(iterator.next_page_token is None)
+        self.assertEqual(iterator.prefixes,
+                         ('parent/child/grand/', 'parent/child/other/'))
+
+    def test_third_level(self):
+        # Pseudo-hierarchy can be arbitrarily deep, subject to the limit
+        # of 1024 characters in the UTF-8 encoded name:
+        # https://cloud.google.com/storage/docs/bucketnaming#objectnames
+        # Exercise a layer deeper to illustrate this.
+        iterator = self.bucket.iterator(delimiter='/',
+                                        prefix='parent/child/grand/')
+        response = iterator.get_next_page_response()
+        keys = list(iterator.get_items_from_response(response))
+        self.assertEqual([key.name for key in keys],
+                         ['parent/child/grand/file31.txt'])
+        self.assertEqual(iterator.page_number, 1)
+        self.assertTrue(iterator.next_page_token is None)
+        self.assertEqual(iterator.prefixes, ())
 
 
 class TestStorageSignURLs(TestStorageFiles):
