@@ -267,6 +267,10 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
                          ('parent/child/grand/', 'parent/child/other/'))
 
     def test_third_level(self):
+        # Pseudo-hierarchy can be arbitrarily deep, subject to the limit
+        # of 1024 characters in the UTF-8 encoded name:
+        # https://cloud.google.com/storage/docs/bucketnaming#objectnames
+        # Exercise a layer deeper to illustrate this.
         iterator = self.bucket.iterator(delimiter='/',
                                         prefix='parent/child/grand/')
         response = iterator.get_next_page_response()
