@@ -1,5 +1,4 @@
 import unittest2
-import six
 
 
 class TestQuery(unittest2.TestCase):
@@ -76,7 +75,7 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
         query = self._makeOne()
-        after = query.filter('firstname =', six.u('John'))
+        after = query.filter('firstname =', u'John')
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         q_pb = after.to_protobuf()
@@ -85,18 +84,18 @@ class TestQuery(unittest2.TestCase):
         f_pb, = list(q_pb.filter.composite_filter.filter)
         p_pb = f_pb.property_filter
         self.assertEqual(p_pb.property.name, 'firstname')
-        self.assertEqual(p_pb.value.string_value, six.u('John'))
+        self.assertEqual(p_pb.value.string_value, u'John')
         self.assertEqual(p_pb.operator, datastore_pb.PropertyFilter.EQUAL)
 
     def test_filter_w_all_operators(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
         query = self._makeOne()
-        query = query.filter('leq_prop <=', six.u('val1'))
-        query = query.filter('geq_prop >=', six.u('val2'))
-        query = query.filter('lt_prop <', six.u('val3'))
-        query = query.filter('gt_prop >', six.u('val4'))
-        query = query.filter('eq_prop =', six.u('val5'))
+        query = query.filter('leq_prop <=', u'val1')
+        query = query.filter('geq_prop >=', u'val2')
+        query = query.filter('lt_prop <', u'val3')
+        query = query.filter('gt_prop >', u'val4')
+        query = query.filter('eq_prop =', u'val5')
 
         query_pb = query.to_protobuf()
         pb_values = [
@@ -121,8 +120,8 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore.entity import Entity
         query = self._makeOne()
         other = Entity()
-        other['firstname'] = six.u('John')
-        other['lastname'] = six.u('Smith')
+        other['firstname'] = u'John'
+        other['lastname'] = u'Smith'
         after = query.filter('other =', other)
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
@@ -135,9 +134,9 @@ class TestQuery(unittest2.TestCase):
         props = sorted(other_pb.property, key=operator.attrgetter('name'))
         self.assertEqual(len(props), 2)
         self.assertEqual(props[0].name, 'firstname')
-        self.assertEqual(props[0].value.string_value, six.u('John'))
+        self.assertEqual(props[0].value.string_value, u'John')
         self.assertEqual(props[1].name, 'lastname')
-        self.assertEqual(props[1].value.string_value, six.u('Smith'))
+        self.assertEqual(props[1].value.string_value, u'Smith')
 
     def test_ancestor_w_non_key_non_list(self):
         query = self._makeOne()
@@ -147,7 +146,7 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
-        _NAME = six.u('NAME')
+        _NAME = u'NAME'
         key = Key(path=[{'kind': _KIND, 'id': _ID}])
         query = self._makeOne().filter('name =', _NAME)
         after = query.ancestor(key)
@@ -209,7 +208,7 @@ class TestQuery(unittest2.TestCase):
     def test_ancestor_clears_existing_ancestor_query_w_others(self):
         _KIND = 'KIND'
         _ID = 123
-        _NAME = six.u('NAME')
+        _NAME = u'NAME'
         query = self._makeOne().filter('name =', _NAME)
         between = query.ancestor([_KIND, _ID])
         after = between.ancestor(None)
@@ -288,7 +287,7 @@ class TestQuery(unittest2.TestCase):
         path_element.id = _ID
         prop = entity_pb.property.add()
         prop.name = 'foo'
-        prop.value.string_value = six.u('Foo')
+        prop.value.string_value = u'Foo'
         connection = _Connection(entity_pb)
         dataset = _Dataset(_DATASET, connection)
         query = self._makeOne(_KIND, dataset)
@@ -316,7 +315,7 @@ class TestQuery(unittest2.TestCase):
         path_element.id = _ID
         prop = entity_pb.property.add()
         prop.name = 'foo'
-        prop.value.string_value = six.u('Foo')
+        prop.value.string_value = u'Foo'
         connection = _Connection(entity_pb)
         connection._cursor = _CURSOR
         dataset = _Dataset(_DATASET, connection)

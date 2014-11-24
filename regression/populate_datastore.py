@@ -1,7 +1,6 @@
 """Script to populate datastore with regression test data."""
 from __future__ import print_function
 
-import six
 from six.moves import zip
 
 from gcloud import datastore
@@ -31,43 +30,43 @@ KEY_PATHS = [
 ]
 CHARACTERS = [
     {
-        'name': six.u('Rickard'),
-        'family': six.u('Stark'),
+        'name': u'Rickard',
+        'family': u'Stark',
         'appearances': 0,
         'alive': False,
     }, {
-        'name': six.u('Eddard'),
-        'family': six.u('Stark'),
+        'name': u'Eddard',
+        'family': u'Stark',
         'appearances': 9,
         'alive': False,
     }, {
-        'name': six.u('Catelyn'),
-        'family': [six.u('Stark'), six.u('Tully')],
+        'name': u'Catelyn',
+        'family': [u'Stark', u'Tully'],
         'appearances': 26,
         'alive': False,
     }, {
-        'name': six.u('Arya'),
-        'family': six.u('Stark'),
+        'name': u'Arya',
+        'family': u'Stark',
         'appearances': 33,
         'alive': True,
     }, {
-        'name': six.u('Sansa'),
-        'family': six.u('Stark'),
+        'name': u'Sansa',
+        'family': u'Stark',
         'appearances': 31,
         'alive': True,
     }, {
-        'name': six.u('Robb'),
-        'family': six.u('Stark'),
+        'name': u'Robb',
+        'family': u'Stark',
         'appearances': 22,
         'alive': False,
     }, {
-        'name': six.u('Bran'),
-        'family': six.u('Stark'),
+        'name': u'Bran',
+        'family': u'Stark',
         'appearances': 25,
         'alive': True,
     }, {
-        'name': six.u('Jon Snow'),
-        'family': six.u('Stark'),
+        'name': u'Jon Snow',
+        'family': u'Stark',
         'appearances': 32,
         'alive': True,
     },

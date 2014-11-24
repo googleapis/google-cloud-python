@@ -7,7 +7,6 @@ from gcloud import datastore
 # repository root is the current directory.
 from regression import populate_datastore
 from regression import regression_utils
-import six
 
 
 class TestDatastore(unittest2.TestCase):
@@ -46,10 +45,10 @@ class TestDatastoreSave(TestDatastore):
 
     def _get_post(self, name=None, key_id=None, post_content=None):
         post_content = post_content or {
-            'title': six.u('How to make the perfect pizza in your grill'),
-            'tags': [six.u('pizza'), six.u('grill')],
+            'title': u'How to make the perfect pizza in your grill',
+            'tags': [u'pizza', u'grill'],
             'publishedAt': datetime.datetime(2001, 1, 1, tzinfo=pytz.utc),
-            'author': six.u('Silvano'),
+            'author': u'Silvano',
             'isDraft': False,
             'wordCount': 400,
             'rating': 5.0,
@@ -108,10 +107,10 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity1)
 
             second_post_content = {
-                'title': six.u('How to make the perfect homemade pasta'),
-                'tags': [six.u('pasta'), six.u('homemade')],
+                'title': u'How to make the perfect homemade pasta',
+                'tags': [u'pasta', u'homemade'],
                 'publishedAt': datetime.datetime(2001, 1, 1),
-                'author': six.u('Silvano'),
+                'author': u'Silvano',
                 'isDraft': False,
                 'wordCount': 450,
                 'rating': 4.5,
@@ -135,7 +134,7 @@ class TestDatastoreSaveKeys(TestDatastore):
     def test_save_key_self_reference(self):
         key = datastore.key.Key.from_path('Person', 'name')
         entity = self.dataset.entity(kind=None).key(key)
-        entity['fullName'] = six.u('Full name')
+        entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
         entity.save()
@@ -334,7 +333,7 @@ class TestDatastoreTransaction(TestDatastore):
     def test_transaction(self):
         key = datastore.key.Key.from_path('Company', 'Google')
         entity = self.dataset.entity(kind=None).key(key)
-        entity['url'] = six.u('www.google.com')
+        entity['url'] = u'www.google.com'
 
         with self.dataset.transaction():
             retrieved_entity = self.dataset.get_entity(key)

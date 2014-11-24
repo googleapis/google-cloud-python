@@ -1,5 +1,4 @@
 import unittest2
-import six
 
 
 class Test_entity_from_protobuf(unittest2.TestCase):
@@ -201,9 +200,9 @@ class Test__pb_attr_value(unittest2.TestCase):
         self.assertEqual(value, b'bytes')
 
     def test_unicode(self):
-        name, value = self._callFUT(six.u('str'))
+        name, value = self._callFUT(u'str')
         self.assertEqual(name, 'string_value')
-        self.assertEqual(value, six.u('str'))
+        self.assertEqual(value, u'str')
 
     def test_entity(self):
         from gcloud.datastore.entity import Entity
@@ -277,8 +276,8 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(self._callFUT(pb), b'str')
 
     def test_unicode(self):
-        pb = self._makePB('string_value', six.u('str'))
-        self.assertEqual(self._callFUT(pb), six.u('str'))
+        pb = self._makePB('string_value', u'str')
+        self.assertEqual(self._callFUT(pb), u'str')
 
     def test_entity(self):
         from gcloud.datastore.datastore_v1_pb2 import Value
@@ -376,9 +375,9 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self._callFUT(pb, (1 << 63) - 1)
         self._callFUT(pb, 'str')
         self._callFUT(pb, b'str')
-        self._callFUT(pb, six.u('str'))
+        self._callFUT(pb, u'str')
         self._callFUT(pb, entity)
-        self._callFUT(pb, [six.u('a'), 0, 3.14])
+        self._callFUT(pb, [u'a', 0, 3.14])
 
         self._callFUT(pb, None)
         self.assertEqual(len(pb.ListFields()), 0)
@@ -422,9 +421,9 @@ class Test_set_protobuf_value(unittest2.TestCase):
 
     def test_unicode(self):
         pb = self._makePB()
-        self._callFUT(pb, six.u('str'))
+        self._callFUT(pb, u'str')
         value = pb.string_value
-        self.assertEqual(value, six.u('str'))
+        self.assertEqual(value, u'str')
 
     def test_entity_empty_wo_key(self):
         from gcloud.datastore.entity import Entity
@@ -444,18 +443,18 @@ class Test_set_protobuf_value(unittest2.TestCase):
         pb = self._makePB()
         key = Key(path=[{'kind': 'KIND', 'id': 123}])
         entity = Entity().key(key)
-        entity['foo'] = six.u('Foo')
+        entity['foo'] = u'Foo'
         self._callFUT(pb, entity)
         value = pb.entity_value
         self.assertEqual(value.key, key.to_protobuf())
         props = list(value.property)
         self.assertEqual(len(props), 1)
         self.assertEqual(props[0].name, 'foo')
-        self.assertEqual(props[0].value.string_value, six.u('Foo'))
+        self.assertEqual(props[0].value.string_value, u'Foo')
 
     def test_list(self):
         pb = self._makePB()
-        values = [six.u('a'), 0, 3.14]
+        values = [u'a', 0, 3.14]
         self._callFUT(pb, values)
         marshalled = pb.list_value
         self.assertEqual(len(marshalled), len(values))
