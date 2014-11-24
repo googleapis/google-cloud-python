@@ -4,6 +4,7 @@
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import regression_utils
+from six.moves import input
 
 
 FETCH_MAX = 20
@@ -62,8 +63,8 @@ def remove_kind(dataset, kind):
             return
 
         # Now that we have all results, we seek to delete.
-        print 'Deleting keys:'
-        print results
+        print('Deleting keys:')
+        print(results)
 
         ancestors = get_ancestors(results)
         if len(ancestors) > TRANSACTION_MAX_GROUPS:
@@ -76,11 +77,11 @@ def remove_kind(dataset, kind):
 
 
 def remove_all_entities():
-    print 'This command will remove all entities for the following kinds:'
-    print '\n'.join(['- ' + val for val in ALL_KINDS])
-    response = raw_input('Is this OK [y/n]? ')
+    print('This command will remove all entities for the following kinds:')
+    print('\n'.join(['- ' + val for val in ALL_KINDS]))
+    response = input('Is this OK [y/n]? ')
     if response.lower() != 'y':
-        print 'Doing nothing.'
+        print('Doing nothing.')
         return
 
     dataset = regression_utils.get_dataset()

@@ -1,5 +1,6 @@
 """Script to populate datastore with regression test data."""
 
+from six.moves import zip
 
 from gcloud import datastore
 # This assumes the command is being run via tox hence the
@@ -82,8 +83,8 @@ def add_characters():
             entity = datastore.entity.Entity(dataset=dataset).key(key)
             entity.update(character)
             entity.save()
-            print 'Adding Character %s %s' % (character['name'],
-                                              character['family'])
+            print('Adding Character %s %s' % (character['name'],
+                                              character['family']))
 
 
 if __name__ == '__main__':

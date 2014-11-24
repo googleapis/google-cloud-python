@@ -9,6 +9,7 @@ import datetime
 
 from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
+import six
 
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
@@ -117,17 +118,17 @@ def _pb_attr_value(val):
         # Regardless of what timezone is on the value, convert it to UTC.
         val = val.astimezone(pytz.utc)
         # Convert the datetime to a microsecond timestamp.
-        value = long(calendar.timegm(val.timetuple()) * 1e6) + val.microsecond
+        value = int(calendar.timegm(val.timetuple()) * 1e6) + val.microsecond
     elif isinstance(val, Key):
         name, value = 'key', val.to_protobuf()
     elif isinstance(val, bool):
         name, value = 'boolean', val
     elif isinstance(val, float):
         name, value = 'double', val
-    elif isinstance(val, (int, long)):
+    elif isinstance(val, six.integer_types):
         INT_VALUE_CHECKER.CheckValue(val)   # Raise an exception if invalid.
-        name, value = 'integer', long(val)  # Always cast to a long.
-    elif isinstance(val, unicode):
+        name, value = 'integer', int(val)  # Always cast to an integer.
+    elif isinstance(val, six.text_type):
         name, value = 'string', val
     elif isinstance(val, (bytes, str)):
         name, value = 'blob', val
@@ -239,7 +240,7 @@ def _set_protobuf_value(value_pb, val):
         key = val.key()
         if key is not None:
             e_pb.key.CopyFrom(key.to_protobuf())
-        for item_key, value in val.iteritems():
+        for item_key, value in val.items():
             p_pb = e_pb.property.add()
             p_pb.name = item_key
             _set_protobuf_value(p_pb.value, value)

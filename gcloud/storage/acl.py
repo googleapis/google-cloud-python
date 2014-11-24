@@ -185,7 +185,7 @@ class ACL(object):
     def __iter__(self):
         self._ensure_loaded()
 
-        for entity in self.entities.itervalues():
+        for entity in self.entities.values():
             for role in entity.get_roles():
                 if role:
                     yield {'entity': str(entity), 'role': role}
@@ -342,7 +342,7 @@ class ACL(object):
         :returns: A list of all Entity objects.
         """
         self._ensure_loaded()
-        return self.entities.values()
+        return list(self.entities.values())
 
     def reload(self):
         """Reload the ACL data from Cloud Storage.

@@ -8,9 +8,7 @@ except ImportError:
 
 
 if sys.version_info <= (2, 4):
-    ERROR = 'Requires Python Version 2.5 or above... exiting.'
-    print >> sys.stderr, ERROR
-    sys.exit(1)
+    raise Exception('Requires Python Version 2.5 or above... exiting.')
 
 
 REQUIREMENTS = [
@@ -20,6 +18,7 @@ REQUIREMENTS = [
     'pycrypto',
     'pyopenssl',
     'pytz',
+    'six',
 ]
 
 setup(

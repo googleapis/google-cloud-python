@@ -3,6 +3,8 @@
 import copy
 from itertools import izip
 
+import six
+
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
 
@@ -100,7 +102,7 @@ class Key(object):
 
         for kind, id_or_name in izip(items, items):
             entry = {'kind': kind}
-            if isinstance(id_or_name, basestring):
+            if isinstance(id_or_name, six.string_types):
                 entry['name'] = id_or_name
             else:
                 entry['id'] = id_or_name

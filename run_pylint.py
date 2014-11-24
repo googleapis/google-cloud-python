@@ -22,16 +22,18 @@ IGNORED_FILES = [
 PRODUCTION_RC = 'pylintrc_default'
 TEST_RC = 'pylintrc_reduced'
 TEST_DISABLED_MESSAGES = [
+    'attribute-defined-outside-init',
+    'exec-used',
+    'import-error',
     'invalid-name',
     'missing-docstring',
-    'too-many-public-methods',
-    'too-few-public-methods',
-    'attribute-defined-outside-init',
-    'unbalanced-tuple-unpacking',
-    'too-many-locals',
-    'exec-used',
     'no-init',
     'no-self-use',
+    'superfluous-parens',
+    'too-few-public-methods',
+    'too-many-locals',
+    'too-many-public-methods',
+    'unbalanced-tuple-unpacking',
 ]
 TEST_RC_ADDITIONS = {
     'MESSAGES CONTROL': {
