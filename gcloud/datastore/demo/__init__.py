@@ -2,7 +2,7 @@
 import os
 from gcloud import datastore
 
-__all__ = ['get_dataset', 'CLIENT_EMAIL', 'DATASET_ID', 'PRIVATE_KEY_PATH']
+__all__ = ['get_dataset', 'CLIENT_EMAIL', 'DATASET_ID', 'KEY_FILENAME']
 
 
 DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
