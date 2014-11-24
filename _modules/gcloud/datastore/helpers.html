@@ -97,6 +97,7 @@
 
 <span class="kn">from</span> <span class="nn">google.protobuf.internal.type_checkers</span> <span class="kn">import</span> <span class="n">Int64ValueChecker</span>
 <span class="kn">import</span> <span class="nn">pytz</span>
+<span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
@@ -205,17 +206,17 @@
         <span class="c"># Regardless of what timezone is on the value, convert it to UTC.</span>
         <span class="n">val</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
         <span class="c"># Convert the datetime to a microsecond timestamp.</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="nb">long</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span> <span class="o">+</span> <span class="n">val</span><span class="o">.</span><span class="n">microsecond</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span> <span class="o">*</span> <span class="mf">1e6</span><span class="p">)</span> <span class="o">+</span> <span class="n">val</span><span class="o">.</span><span class="n">microsecond</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">Key</span><span class="p">):</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;boolean&#39;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;double&#39;</span><span class="p">,</span> <span class="n">val</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">)):</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
         <span class="n">INT_VALUE_CHECKER</span><span class="o">.</span><span class="n">CheckValue</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>   <span class="c"># Raise an exception if invalid.</span>
-        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;integer&#39;</span><span class="p">,</span> <span class="nb">long</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>  <span class="c"># Always cast to a long.</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">unicode</span><span class="p">):</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;integer&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>  <span class="c"># Always cast to an integer.</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">):</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;string&#39;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#39;blob&#39;</span><span class="p">,</span> <span class="n">val</span>
@@ -327,7 +328,7 @@
         <span class="n">key</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">key</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">e_pb</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
-        <span class="k">for</span> <span class="n">item_key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">item_key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">p_pb</span> <span class="o">=</span> <span class="n">e_pb</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
             <span class="n">p_pb</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">item_key</span>
             <span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">p_pb</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>

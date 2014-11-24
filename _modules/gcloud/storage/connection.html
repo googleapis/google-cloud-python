@@ -104,6 +104,7 @@
 <span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
+<span class="kn">import</span> <span class="nn">six</span>
 
 
 <span class="k">def</span> <span class="nf">_utcnow</span><span class="p">():</span>  <span class="c"># pragma: NO COVER testing replaces</span>
@@ -501,13 +502,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">bucket</span>
 
-        <span class="c"># Support Python 2 and 3.</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">string_type</span> <span class="o">=</span> <span class="nb">basestring</span>
-        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>  <span class="c"># pragma: NO COVER PY3k</span>
-            <span class="n">string_type</span> <span class="o">=</span> <span class="nb">str</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
 
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Invalid bucket: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">bucket</span><span class="p">)</span>
@@ -625,7 +620,7 @@
         <span class="c"># Turn the datetime into a timestamp (seconds, not microseconds).</span>
         <span class="n">expiration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">expiration</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()))</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected an integer timestamp, datetime, or &#39;</span>
                         <span class="s">&#39;timedelta. Got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">expiration</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">expiration</span>

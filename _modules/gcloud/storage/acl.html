@@ -273,7 +273,7 @@
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">get_roles</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">role</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="p">{</span><span class="s">&#39;entity&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">),</span> <span class="s">&#39;role&#39;</span><span class="p">:</span> <span class="n">role</span><span class="p">}</span>
@@ -430,7 +430,7 @@
 <span class="sd">        :returns: A list of all Entity objects.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 </div>
 <div class="viewcode-block" id="ACL.reload"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.acl.ACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.</span>

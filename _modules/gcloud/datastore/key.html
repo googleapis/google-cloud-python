@@ -91,6 +91,8 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">izip</span>
 
+<span class="kn">import</span> <span class="nn">six</span>
+
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 
 
@@ -188,7 +190,7 @@
 
         <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">id_or_name</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
             <span class="n">entry</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;kind&#39;</span><span class="p">:</span> <span class="n">kind</span><span class="p">}</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
                 <span class="n">entry</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">entry</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>

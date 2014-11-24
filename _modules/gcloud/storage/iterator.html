@@ -137,7 +137,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span> <span class="o">=</span> <span class="n">extra_params</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">reserved_in_use</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESERVED_PARAMS</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extra_params</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">reserved_in_use</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s">&#39;Using a reserved parameter&#39;</span><span class="p">,</span>
                               <span class="n">reserved_in_use</span><span class="p">))</span>

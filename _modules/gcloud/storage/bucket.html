@@ -97,6 +97,7 @@
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.key</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">import</span> <span class="nn">six</span>
 
 
 <span class="k">class</span> <span class="nc">_KeyIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
@@ -312,13 +313,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">Key</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">key</span>
 
-        <span class="c"># Support Python 2 and 3.</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">string_type</span> <span class="o">=</span> <span class="nb">basestring</span>
-        <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>  <span class="c"># pragma: NO COVER PY3k</span>
-            <span class="n">string_type</span> <span class="o">=</span> <span class="nb">str</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">string_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Key</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
 
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Invalid key: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
