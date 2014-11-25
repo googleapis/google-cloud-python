@@ -14,6 +14,9 @@ import subprocess
 import sys
 
 
+IGNORED_DIRECTORIES = [
+    '_gcloud_vendor',
+]
 IGNORED_FILES = [
     'gcloud/datastore/datastore_v1_pb2.py',
     'docs/conf.py',
@@ -73,6 +76,9 @@ def make_test_rc(base_rc_filename, additions_dict, target_filename):
 
 def valid_filename(filename):
     """Checks if a file is a Python file and is not ignored."""
+    for directory in IGNORED_DIRECTORIES:
+        if filename.startswith(directory):
+            return False
     return (filename.endswith('.py') and
             filename not in IGNORED_FILES)
 
