@@ -15,7 +15,7 @@ import sys
 
 
 IGNORED_DIRECTORIES = [
-    '_gcloud_vendor',
+    '_gcloud_vendor/',
 ]
 IGNORED_FILES = [
     'gcloud/datastore/datastore_v1_pb2.py',
