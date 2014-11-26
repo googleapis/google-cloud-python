@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Keys &mdash; gcloud 0.02.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/github.min.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.02.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.02.2 documentation" href="index.html" />
+    <link rel="next" title="Transactions" href="datastore-transactions.html" />
+    <link rel="prev" title="Entities" href="datastore-entities.html" /> 
+  </head>
+  <body>
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">                    
+          <li>
+            <a href=" 
+https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+        <h1 class="page-title">Python</h1>
+
+          <div class="versions">
+            <span class="v-current">0.02.2</span>
+            <!--
+            <a href="versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              See version History
+            </a href="versions.html">
+          </div><!-- end of .versions -->
+      </header>
+                
+      <section class="content">
+        
+  <div class="section" id="module-gcloud.datastore.key">
+<span id="keys"></span><h1>Keys<a class="headerlink" href="#module-gcloud.datastore.key" title="Permalink to this headline">#</a></h1>
+<p>Create / interact with gcloud datastore keys.</p>
+<dl class="class">
+<dt id="gcloud.datastore.key.Key">
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.key.</tt><tt class="descname">Key</tt><big>(</big><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>An immutable representation of a datastore Key.</p>
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Constructor / initializer for a key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key.</li>
+<li><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
+&#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</li>
+<li><strong>dataset</strong> &#8211; The dataset ID assigned by back-end for the key.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The key&#8217;s <tt class="docutils literal"><span class="pre">_dataset_id</span></tt> field must be None for keys created
+by application code.  The
+<a class="reference internal" href="datastore-api.html#gcloud.datastore.helpers.key_from_protobuf" title="gcloud.datastore.helpers.key_from_protobuf"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.helpers.key_from_protobuf()</span></tt></a> factory
+will be set the field to an appropriate value for keys returned
+from the datastore backend.  The application <strong>must</strong> treat any
+value set by the back-end as opaque.</p>
+</div>
+</dd></dl>
+
+<p>Constructor / initializer for a key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key.</li>
+<li><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
+&#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</li>
+<li><strong>dataset</strong> &#8211; The dataset ID assigned by back-end for the key.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The key&#8217;s <tt class="docutils literal"><span class="pre">_dataset_id</span></tt> field must be None for keys created
+by application code.  The
+<a class="reference internal" href="datastore-api.html#gcloud.datastore.helpers.key_from_protobuf" title="gcloud.datastore.helpers.key_from_protobuf"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.helpers.key_from_protobuf()</span></tt></a> factory
+will be set the field to an appropriate value for keys returned
+from the datastore backend.  The application <strong>must</strong> treat any
+value set by the back-end as opaque.</p>
+</div>
+<dl class="classmethod">
+<dt id="gcloud.datastore.key.Key.from_path">
+<em class="property">classmethod </em><tt class="descname">from_path</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.from_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for creating a key based on a path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt>) &#8211; sequence of even length, where the first of each pair is a
+string representing the &#8216;kind&#8217; of the path element, and
+the second of the pair is either a string (for the path
+element&#8217;s name) or an integer (for its id).</li>
+<li><strong>kwargs</strong> (<tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt>) &#8211; Other named parameters which can be passed to
+<a class="reference internal" href="#gcloud.datastore.key.Key.__init__" title="gcloud.datastore.key.Key.__init__"><tt class="xref py py-func docutils literal"><span class="pre">Key.__init__()</span></tt></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.id">
+<tt class="descname">id</tt><big>(</big><em>id_to_set=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id" title="Permalink to this definition">#</a></dt>
+<dd><p>ID setter / getter.  Based on the last element of path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_to_set</strong> (<tt class="xref py py-class docutils literal"><span class="pre">int</span></tt>) &#8211; The new ID for the key.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">int</span></tt> (for getter)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given id (setter);
+or self&#8217;s id (getter).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.id_or_name">
+<tt class="descname">id_or_name</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id_or_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id_or_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Getter.  Based on the last element of path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">int</span></tt> (if &#8216;id&#8217; is set); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (the &#8216;name&#8217;)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the last element of the key&#8217;s path has either an &#8216;id&#8217;
+or a &#8216;name&#8217;.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.is_partial">
+<tt class="descname">is_partial</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.is_partial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.is_partial" title="Permalink to this definition">#</a></dt>
+<dd><p>Boolean test: is the key fully mapped onto a backend entity?</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">bool</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the last element of the key&#8217;s path does not have
+an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.kind">
+<tt class="descname">kind</tt><big>(</big><em>kind=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.kind" title="Permalink to this definition">#</a></dt>
+<dd><p>Kind setter / getter.  Based on the last element of path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The new kind for the key.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given kind (setter);
+or self&#8217;s kind (getter).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.name">
+<tt class="descname">name</tt><big>(</big><em>name=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name setter / getter.  Based on the last element of path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The new name for the key.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given name (setter);
+or self&#8217;s name (getter).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.namespace">
+<tt class="descname">namespace</tt><big>(</big><em>namespace=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Namespace setter / getter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given namespace
+(setter); or self&#8217;s namespace (getter).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.parent">
+<tt class="descname">parent</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.parent" title="Permalink to this definition">#</a></dt>
+<dd><p>Getter:  return a new key for the next highest element in path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a new <cite>Key</cite> instance, whose path consists of all but the last
+element of self&#8217;s path.  If self has only one path element,
+return None.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.path">
+<tt class="descname">path</tt><big>(</big><em>path=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Path setter / getter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
+&#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given path (setter);
+or self&#8217;s path (getter).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.to_protobuf">
+<tt class="descname">to_protobuf</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.to_protobuf" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a protobuf corresponding to the key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The Protobuf representing the key.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <ul><li><a href="index.html">gcloud</a></li></ul>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+</ul>
+
+        <ul class="external-links">
+          <li>
+            <a href="" title="Python on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python issues on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="" title="gcloud on StackOverflow">
+              <img src="_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              gcloud
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python package manager">
+              <img src="_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              Package Manager
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
+  </body>
+</html>

@@ -1,90 +1,76 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud 0.1 documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud 0.02.2 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/github.min.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.1',
+        VERSION:     '0.02.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../_static/sidebar.js"></script>
-    <link rel="top" title="gcloud 0.1 documentation" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.02.2 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
-  <body role="document" class="two-column docs"><a href="https://github.com/GoogleCloudPlatform/gcloud-python"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="_static/forkme.png" alt="Fork me on GitHub"></a>
-    <div id="sandbar">
-      <header id="gc-googlebar">
-      <a id="gc-logo" href="../../../index.html">
-        <img src="_static/cloudplatform-horizontal.png" alt="Google">
+  <body>
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
         </a>
-        <form class="gc-search" action="search.html" method="GET">
-          <div class="searchbox" style="width: 429px;">
-            <span class="button button-blue mini">Google Cloud Python API</span>
-            <input type="hidden" name="check_keywords" value="yes">
-            <input type="hidden" name="area" value="default">
-            <input type="text" name="q" class="q" id="q" value=""
-              placeholder="Search" autocomplete="off" style="width: 263px;">
-          </div>
-          <button class="button button-blue" style="top: 0px; left: 444px;">
-          <img src="_static/search.png" alt="Search">
-        </button>
-
-        <input type="hidden" name="p" id="search_project" value="/compute">
-
-      </form>
-      </header>
-    </div>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">                    
+          <li>
+            <a href=" 
+https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+    </header><!-- end of .page-header -->
     
-<div id="gc-wrapper">
-  <div id="gc-appbar">
-    <h1><a href="../../../index.html">gcloud 0.1 documentation</a></h1>
-  </div>
-    <div id="gc-main" class="main">
-      <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
+      <article class="main lang-page" role="main">
 
-            <h3>All API Docs</h3>
-            <nav class="gc-toc">
-            <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../common-api.html">Cloud Common</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-getting-started.html">Getting started with Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-quickstart.html">Cloud Datastore in 10 seconds</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting-started.html">Getting started with gcloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-getting-started.html">Getting started with Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-quickstart.html">Cloud Storage in 10 seconds</a></li>
-</ul>
+      <header class="docs-header">
+        <h1 class="page-title">Python</h1>
 
-            </nav>
-            
-            
-        </div>
-      </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main" id="gc-content">
-            
+          <div class="versions">
+            <span class="v-current">0.02.2</span>
+            <!--
+            <a href="versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              See version History
+            </a href="versions.html">
+          </div><!-- end of .versions -->
+      </header>
+                
+      <section class="content">
+        
   <h1>Source code for gcloud.storage.bucket</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud storage buckets.&quot;&quot;&quot;</span>
 
@@ -127,7 +113,7 @@
             <span class="k">yield</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class representing a Bucket on Cloud Storage.</span>
 
 <span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
@@ -166,7 +152,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Bucket.from_dict"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">bucket_dict</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.from_dict"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">bucket_dict</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a new bucket from a dictionary of data from Cloud Storage.</span>
 
 <span class="sd">        :type bucket_dict: dict</span>
@@ -188,21 +174,21 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.acl">[docs]</a>    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.acl"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.acl">[docs]</a>    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create our ACL on demand.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">BucketACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.default_object_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.default_object_acl">[docs]</a>    <span class="k">def</span> <span class="nf">default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.default_object_acl"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.default_object_acl">[docs]</a>    <span class="k">def</span> <span class="nf">default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create our defaultObjectACL on demand.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_object_acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_default_object_acl</span> <span class="o">=</span> <span class="n">DefaultObjectACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_object_acl</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.connection">[docs]</a>    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.connection"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.connection">[docs]</a>    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter property for the connection to use with this Bucket.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.storage.connection.Connection`</span>
@@ -211,14 +197,14 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.path"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.path">[docs]</a>    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.path"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.path">[docs]</a>    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The URL path to this bucket.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot determine path without bucket name.&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="s">&#39;/b/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 </div>
-<div class="viewcode-block" id="Bucket.get_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.get_key"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a key object by name.</span>
 
 <span class="sd">        This will return None if the key doesn&#39;t exist::</span>
@@ -246,7 +232,7 @@
         <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
 </div>
-<div class="viewcode-block" id="Bucket.get_all_keys"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_all_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.get_all_keys"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_all_keys">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List all the keys in this bucket.</span>
 
 <span class="sd">        This will **not** retrieve all the data for all the keys, it</span>
@@ -261,7 +247,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.iterator"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.iterator">[docs]</a>    <span class="k">def</span> <span class="nf">iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Bucket.iterator"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.iterator">[docs]</a>    <span class="k">def</span> <span class="nf">iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                  <span class="n">versions</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an iterator used to find keys in the bucket.</span>
 
@@ -297,7 +283,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.new_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.new_key">[docs]</a>    <span class="k">def</span> <span class="nf">new_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.new_key"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.new_key">[docs]</a>    <span class="k">def</span> <span class="nf">new_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Given path name (or Key), return a :class:`.storage.key.Key` object.</span>
 
 <span class="sd">        This is really useful when you&#39;re not sure if you have a Key</span>
@@ -318,7 +304,7 @@
 
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Invalid key: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this bucket.</span>
 
 <span class="sd">        The bucket **must** be empty in order to delete it.  If the</span>
@@ -340,7 +326,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.delete_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.delete_key">[docs]</a>    <span class="k">def</span> <span class="nf">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.delete_key"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_key">[docs]</a>    <span class="k">def</span> <span class="nf">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a key from the current bucket.</span>
 
 <span class="sd">        If the key isn&#39;t found,</span>
@@ -376,7 +362,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">key</span>
 </div>
-<div class="viewcode-block" id="Bucket.delete_keys"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.delete_keys">[docs]</a>    <span class="k">def</span> <span class="nf">delete_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.delete_keys"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_keys">[docs]</a>    <span class="k">def</span> <span class="nf">delete_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a list of keys from the current bucket.</span>
 
 <span class="sd">        Uses :func:`Bucket.delete_key` to delete each individual key.</span>
@@ -401,7 +387,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span>
 </div>
-<div class="viewcode-block" id="Bucket.copy_key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.copy_key">[docs]</a>    <span class="k">def</span> <span class="nf">copy_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.copy_key"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.copy_key">[docs]</a>    <span class="k">def</span> <span class="nf">copy_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Copy the given key to the given bucket, optionally with a new name.</span>
 
 <span class="sd">        :type key: string or :class:`gcloud.storage.key.Key`</span>
@@ -424,7 +410,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_key</span>
 </div>
-<div class="viewcode-block" id="Bucket.upload_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.upload_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.upload_file"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.upload_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Shortcut method to upload a file into this bucket.</span>
 
 <span class="sd">        Use this method to quickly put a local file in Cloud Storage.</span>
@@ -464,7 +450,7 @@
         <span class="n">key</span><span class="o">.</span><span class="n">upload_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">key</span>
 </div>
-<div class="viewcode-block" id="Bucket.upload_file_object"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.upload_file_object">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.upload_file_object"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.upload_file_object">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Shortcut method to upload a file object into this bucket.</span>
 
 <span class="sd">        Use this method to quickly put a local file in Cloud Storage.</span>
@@ -504,7 +490,7 @@
             <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.get_cors"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_cors">[docs]</a>    <span class="k">def</span> <span class="nf">get_cors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.get_cors"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_cors">[docs]</a>    <span class="k">def</span> <span class="nf">get_cors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve CORS policies configured for this bucket.</span>
 
 <span class="sd">        See: http://www.w3.org/TR/cors/ and</span>
@@ -515,7 +501,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">policy</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">policy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;cors&#39;</span><span class="p">,</span> <span class="p">())]</span>
 </div>
-<div class="viewcode-block" id="Bucket.update_cors"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.update_cors">[docs]</a>    <span class="k">def</span> <span class="nf">update_cors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.update_cors"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.update_cors">[docs]</a>    <span class="k">def</span> <span class="nf">update_cors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update CORS policies configured for this bucket.</span>
 
 <span class="sd">        See: http://www.w3.org/TR/cors/ and</span>
@@ -526,7 +512,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;cors&#39;</span><span class="p">:</span> <span class="n">entries</span><span class="p">})</span>
 </div>
-<div class="viewcode-block" id="Bucket.get_default_object_acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_default_object_acl">[docs]</a>    <span class="k">def</span> <span class="nf">get_default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.get_default_object_acl"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_default_object_acl">[docs]</a>    <span class="k">def</span> <span class="nf">get_default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the current Default Object ACL rules.</span>
 
 <span class="sd">        If the acl isn&#39;t available locally, this method will reload it from</span>
@@ -540,7 +526,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_object_acl</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.etag"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.etag">[docs]</a>    <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.etag"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.etag">[docs]</a>    <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ETag for the bucket.</span>
 
 <span class="sd">        See: http://tools.ietf.org/html/rfc2616#section-3.11 and</span>
@@ -551,7 +537,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;etag&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.id"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.id"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ID for the bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
@@ -560,7 +546,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
 </div>
-<div class="viewcode-block" id="Bucket.get_lifecycle"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_lifecycle">[docs]</a>    <span class="k">def</span> <span class="nf">get_lifecycle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.get_lifecycle"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_lifecycle">[docs]</a>    <span class="k">def</span> <span class="nf">get_lifecycle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve lifecycle rules configured for this bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/lifecycle and</span>
@@ -572,7 +558,7 @@
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lifecycle&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">rule</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;rule&#39;</span><span class="p">,</span> <span class="p">())]</span>
 </div>
-<div class="viewcode-block" id="Bucket.update_lifecycle"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.update_lifecycle">[docs]</a>    <span class="k">def</span> <span class="nf">update_lifecycle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.update_lifecycle"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.update_lifecycle">[docs]</a>    <span class="k">def</span> <span class="nf">update_lifecycle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update CORS policies configured for this bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/lifecycle and</span>
@@ -592,7 +578,7 @@
 <span class="sd">    :rtype: string</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Bucket.get_logging"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.get_logging">[docs]</a>    <span class="k">def</span> <span class="nf">get_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.get_logging"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_logging">[docs]</a>    <span class="k">def</span> <span class="nf">get_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return info about access logging for this bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/accesslogs#status</span>
@@ -605,7 +591,7 @@
         <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">info</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="Bucket.enable_logging"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.enable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">enable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">object_prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.enable_logging"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.enable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">enable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">object_prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable access logging for this bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/accesslogs#delivery</span>
@@ -619,7 +605,7 @@
         <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;logBucket&#39;</span><span class="p">:</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="s">&#39;logObjectPrefix&#39;</span><span class="p">:</span> <span class="n">object_prefix</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;logging&#39;</span><span class="p">:</span> <span class="n">info</span><span class="p">})</span>
 </div>
-<div class="viewcode-block" id="Bucket.disable_logging"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.disable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">disable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.disable_logging"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.disable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">disable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disable access logging for this bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/accesslogs#disabling</span>
@@ -627,7 +613,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;logging&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">})</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.metageneration"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.metageneration">[docs]</a>    <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.metageneration"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.metageneration">[docs]</a>    <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the metageneration for the bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
@@ -637,7 +623,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;metageneration&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.owner"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.owner">[docs]</a>    <span class="k">def</span> <span class="nf">owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.owner"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.owner">[docs]</a>    <span class="k">def</span> <span class="nf">owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve info about the owner of the bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
@@ -648,7 +634,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;owner&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.project_number"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.project_number">[docs]</a>    <span class="k">def</span> <span class="nf">project_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.project_number"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.project_number">[docs]</a>    <span class="k">def</span> <span class="nf">project_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the number of the project to which the bucket is assigned.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
@@ -658,7 +644,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;projectNumber&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.self_link"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.self_link">[docs]</a>    <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.self_link"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.self_link">[docs]</a>    <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the URI for the bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
@@ -668,7 +654,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;selfLink&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.storage_class"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.storage_class"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the storage class for the bucket.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
@@ -680,7 +666,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;storageClass&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Bucket.time_created"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.time_created">[docs]</a>    <span class="k">def</span> <span class="nf">time_created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.time_created"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.time_created">[docs]</a>    <span class="k">def</span> <span class="nf">time_created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the timestamp at which the bucket was created.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
@@ -704,7 +690,7 @@
         <span class="k">return</span> <span class="n">versioning</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;enabled&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
 
     <span class="nd">@versioning_enabled.setter</span>
-<div class="viewcode-block" id="Bucket.versioning_enabled"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.versioning_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">versioning_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.versioning_enabled"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.versioning_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">versioning_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable versioning for this bucket.</span>
 
 <span class="sd">        See:  https://cloud.google.com/storage/docs/object-versioning for</span>
@@ -715,7 +701,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;versioning&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;enabled&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)}})</span>
 </div>
-<div class="viewcode-block" id="Bucket.configure_website"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.configure_website">[docs]</a>    <span class="k">def</span> <span class="nf">configure_website</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_page_suffix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">not_found_page</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.configure_website"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.configure_website">[docs]</a>    <span class="k">def</span> <span class="nf">configure_website</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_page_suffix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">not_found_page</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure website-related properties.</span>
 
 <span class="sd">        See: https://developers.google.com/storage/docs/website-configuration</span>
@@ -758,7 +744,7 @@
         <span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.disable_website"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.disable_website">[docs]</a>    <span class="k">def</span> <span class="nf">disable_website</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.disable_website"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.disable_website">[docs]</a>    <span class="k">def</span> <span class="nf">disable_website</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disable the website configuration for this bucket.</span>
 
 <span class="sd">        This is really just a shortcut for setting the website-related</span>
@@ -766,7 +752,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.make_public"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.bucket.Bucket.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.make_public"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a bucket public.</span>
 
 <span class="sd">        :type recursive: bool</span>
@@ -791,18 +777,54 @@
                 <span class="n">key</span><span class="o">.</span><span class="n">save_acl</span><span class="p">()</span></div></div>
 </pre></div>
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    </div>
-  </div>
-    <footer id="gc-footer" class="footer" role="contentinfo">
-    <div id="gc-copyright">
-        &copy; Copyright 2014, JJ Geewax.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
-      </div>
-    </footer>
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <ul><li><a href="../../../index.html">gcloud</a></li></ul>
+        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-acl.html">ACL</a></li>
+</ul>
+
+        <ul class="external-links">
+          <li>
+            <a href="" title="Python on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python issues on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="" title="gcloud on StackOverflow">
+              <img src="_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              gcloud
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python package manager">
+              <img src="_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              Package Manager
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
   </body>
 </html>

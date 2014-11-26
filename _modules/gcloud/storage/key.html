@@ -1,90 +1,76 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.key &mdash; gcloud 0.1 documentation</title>
+    <title>gcloud.storage.key &mdash; gcloud 0.02.2 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/github.min.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.1',
+        VERSION:     '0.02.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../_static/sidebar.js"></script>
-    <link rel="top" title="gcloud 0.1 documentation" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.02.2 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
-  <body role="document" class="two-column docs"><a href="https://github.com/GoogleCloudPlatform/gcloud-python"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="_static/forkme.png" alt="Fork me on GitHub"></a>
-    <div id="sandbar">
-      <header id="gc-googlebar">
-      <a id="gc-logo" href="../../../index.html">
-        <img src="_static/cloudplatform-horizontal.png" alt="Google">
+  <body>
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
         </a>
-        <form class="gc-search" action="search.html" method="GET">
-          <div class="searchbox" style="width: 429px;">
-            <span class="button button-blue mini">Google Cloud Python API</span>
-            <input type="hidden" name="check_keywords" value="yes">
-            <input type="hidden" name="area" value="default">
-            <input type="text" name="q" class="q" id="q" value=""
-              placeholder="Search" autocomplete="off" style="width: 263px;">
-          </div>
-          <button class="button button-blue" style="top: 0px; left: 444px;">
-          <img src="_static/search.png" alt="Search">
-        </button>
-
-        <input type="hidden" name="p" id="search_project" value="/compute">
-
-      </form>
-      </header>
-    </div>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">                    
+          <li>
+            <a href=" 
+https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+    </header><!-- end of .page-header -->
     
-<div id="gc-wrapper">
-  <div id="gc-appbar">
-    <h1><a href="../../../index.html">gcloud 0.1 documentation</a></h1>
-  </div>
-    <div id="gc-main" class="main">
-      <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
+      <article class="main lang-page" role="main">
 
-            <h3>All API Docs</h3>
-            <nav class="gc-toc">
-            <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../common-api.html">Cloud Common</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-getting-started.html">Getting started with Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-quickstart.html">Cloud Datastore in 10 seconds</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting-started.html">Getting started with gcloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-getting-started.html">Getting started with Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-quickstart.html">Cloud Storage in 10 seconds</a></li>
-</ul>
+      <header class="docs-header">
+        <h1 class="page-title">Python</h1>
 
-            </nav>
-            
-            
-        </div>
-      </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main" id="gc-content">
-            
+          <div class="versions">
+            <span class="v-current">0.02.2</span>
+            <!--
+            <a href="versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              See version History
+            </a href="versions.html">
+          </div><!-- end of .versions -->
+      </header>
+                
+      <section class="content">
+        
   <h1>Source code for gcloud.storage.key</h1><div class="highlight"><pre>
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud storage keys.&quot;&quot;&quot;</span>
 
@@ -100,7 +86,7 @@
 <span class="kn">from</span> <span class="nn">gcloud.storage.exceptions</span> <span class="kn">import</span> <span class="n">StorageError</span>
 
 
-<div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
+<div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A wrapper around Cloud Storage&#39;s concept of an ``Object``.&quot;&quot;&quot;</span>
 
     <span class="n">CUSTOM_PROPERTY_ACCESSORS</span> <span class="o">=</span> <span class="p">{</span>
@@ -151,14 +137,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.acl"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.acl">[docs]</a>    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.acl"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.acl">[docs]</a>    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create our ACL on demand.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">ObjectACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span>
 </div>
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Key.from_dict"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">key_dict</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.from_dict"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">key_dict</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate a :class:`Key` from data returned by the JSON API.</span>
 
 <span class="sd">        :type key_dict: dict</span>
@@ -184,7 +170,7 @@
         <span class="k">return</span> <span class="s">&#39;&lt;Key: </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.connection">[docs]</a>    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.connection"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.connection">[docs]</a>    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter property for the connection to use with this Key.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.storage.connection.Connection` or None</span>
@@ -194,7 +180,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.path"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.path">[docs]</a>    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.path"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.path">[docs]</a>    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter property for the URL path to this Key.</span>
 
 <span class="sd">        :rtype: string</span>
@@ -208,7 +194,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.public_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.public_url">[docs]</a>    <span class="k">def</span> <span class="nf">public_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.public_url"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.public_url">[docs]</a>    <span class="k">def</span> <span class="nf">public_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The public URL for this key&#39;s object.</span>
 
 <span class="sd">        :rtype: `string`</span>
@@ -219,7 +205,7 @@
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">quoted_name</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
 </div>
-<div class="viewcode-block" id="Key.generate_signed_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.generate_signed_url"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a signed URL for this key.</span>
 
 <span class="sd">        If you have a key that you want to allow access to for a set</span>
@@ -247,7 +233,7 @@
                                                    <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">,</span>
                                                    <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Key.exists"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.exists"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this key exists.</span>
 
 <span class="sd">        :rtype: bool</span>
@@ -255,7 +241,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 </div>
-<div class="viewcode-block" id="Key.rename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.rename">[docs]</a>    <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.rename"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.rename">[docs]</a>    <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Renames this key using copy and delete operations.</span>
 
 <span class="sd">        Effectively, copies key to the same bucket with a new name, then</span>
@@ -276,7 +262,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_key</span>
 </div>
-<div class="viewcode-block" id="Key.delete"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.delete"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a key from Cloud Storage.</span>
 
 <span class="sd">        :rtype: :class:`Key`</span>
@@ -287,7 +273,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Key.download_to_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.download_to_file"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this key into a file-like object.</span>
 
 <span class="sd">        :type file_obj: file</span>
@@ -301,7 +287,7 @@
     <span class="c"># NOTE: Alias for boto-like API.</span></div>
     <span class="n">get_contents_to_file</span> <span class="o">=</span> <span class="n">download_to_file</span>
 
-<div class="viewcode-block" id="Key.download_to_filename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.download_to_filename"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this key into a named file.</span>
 
 <span class="sd">        :type filename: string</span>
@@ -315,7 +301,7 @@
     <span class="c"># NOTE: Alias for boto-like API.</span></div>
     <span class="n">get_contents_to_filename</span> <span class="o">=</span> <span class="n">download_to_filename</span>
 
-<div class="viewcode-block" id="Key.download_as_string"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.download_as_string"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this key as a string.</span>
 
 <span class="sd">        :rtype: string</span>
@@ -329,7 +315,7 @@
     <span class="c"># NOTE: Alias for boto-like API.</span></div>
     <span class="n">get_contents_as_string</span> <span class="o">=</span> <span class="n">download_as_string</span>
 
-<div class="viewcode-block" id="Key.upload_from_file"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Key.upload_from_file"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                          <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this key from a file-like object.</span>
 
@@ -409,7 +395,7 @@
     <span class="c"># NOTE: Alias for boto-like API.</span></div>
     <span class="n">set_contents_from_file</span> <span class="o">=</span> <span class="n">upload_from_file</span>
 
-<div class="viewcode-block" id="Key.upload_from_filename"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.upload_from_filename"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this key&#39;s contents from the content of f named file.</span>
 
 <span class="sd">        .. note::</span>
@@ -435,7 +421,7 @@
     <span class="c"># NOTE: Alias for boto-like API.</span></div>
     <span class="n">set_contents_from_filename</span> <span class="o">=</span> <span class="n">upload_from_filename</span>
 
-<div class="viewcode-block" id="Key.upload_from_string"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;text/plain&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.upload_from_string"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;text/plain&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload contents of this key from the provided string.</span>
 
 <span class="sd">        .. note::</span>
@@ -466,7 +452,7 @@
     <span class="c"># NOTE: Alias for boto-like API.</span></div>
     <span class="n">set_contents_from_string</span> <span class="o">=</span> <span class="n">upload_from_string</span>
 
-<div class="viewcode-block" id="Key.make_public"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.make_public"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this key public giving all users read access.</span>
 
 <span class="sd">        :returns: The current object.</span>
@@ -530,7 +516,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.component_count"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.component_count">[docs]</a>    <span class="k">def</span> <span class="nf">component_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.component_count"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.component_count">[docs]</a>    <span class="k">def</span> <span class="nf">component_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Number of underlying components that make up this object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -540,7 +526,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;componentCount&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.etag"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.etag">[docs]</a>    <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.etag"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.etag">[docs]</a>    <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ETag for the object.</span>
 
 <span class="sd">        See: http://tools.ietf.org/html/rfc2616#section-3.11 and</span>
@@ -551,7 +537,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;etag&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.generation"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.generation">[docs]</a>    <span class="k">def</span> <span class="nf">generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.generation"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.generation">[docs]</a>    <span class="k">def</span> <span class="nf">generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the generation for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -561,7 +547,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;generation&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.id"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.id"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ID for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -580,7 +566,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.media_link"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.media_link">[docs]</a>    <span class="k">def</span> <span class="nf">media_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.media_link"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.media_link">[docs]</a>    <span class="k">def</span> <span class="nf">media_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the media download URI for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -600,7 +586,7 @@
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;metadata&#39;</span><span class="p">])</span>
 
     <span class="nd">@metadata.setter</span>
-<div class="viewcode-block" id="Key.metadata"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.metadata">[docs]</a>    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.metadata"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.metadata">[docs]</a>    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update arbitrary/application specific metadata for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -610,7 +596,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;metadata&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.metageneration"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.metageneration">[docs]</a>    <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.metageneration"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.metageneration">[docs]</a>    <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the metageneration for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -620,7 +606,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;metageneration&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.owner"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.owner">[docs]</a>    <span class="k">def</span> <span class="nf">owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.owner"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.owner">[docs]</a>    <span class="k">def</span> <span class="nf">owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve info about the owner of the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -631,7 +617,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;owner&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.self_link"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.self_link">[docs]</a>    <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.self_link"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.self_link">[docs]</a>    <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the URI for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -641,7 +627,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;selfLink&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.size"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.size"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Size of the object,  in bytes.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -651,7 +637,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;size&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.storage_class"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.storage_class"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the storage class for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects and</span>
@@ -663,7 +649,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;storageClass&#39;</span><span class="p">]</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.time_deleted"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.time_deleted">[docs]</a>    <span class="k">def</span> <span class="nf">time_deleted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.time_deleted"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.time_deleted">[docs]</a>    <span class="k">def</span> <span class="nf">time_deleted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the timestamp at which the object was deleted.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -675,7 +661,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;timeDeleted&#39;</span><span class="p">)</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.updated"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.key.Key.updated">[docs]</a>    <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.updated"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.updated">[docs]</a>    <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the timestamp at which the object was updated.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -780,18 +766,54 @@
         <span class="k">raise</span> <span class="n">StorageError</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 </pre></div>
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    </div>
-  </div>
-    <footer id="gc-footer" class="footer" role="contentinfo">
-    <div id="gc-copyright">
-        &copy; Copyright 2014, JJ Geewax.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
-      </div>
-    </footer>
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <ul><li><a href="../../../index.html">gcloud</a></li></ul>
+        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-acl.html">ACL</a></li>
+</ul>
+
+        <ul class="external-links">
+          <li>
+            <a href="" title="Python on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python issues on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="" title="gcloud on StackOverflow">
+              <img src="_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              gcloud
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python package manager">
+              <img src="_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              Package Manager
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
   </body>
 </html>

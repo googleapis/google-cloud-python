@@ -1,208 +1,184 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Google Cloud Python API &mdash; gcloud 0.1 documentation</title>
+    <title>Getting started &mdash; gcloud 0.02.2 documentation</title>
     
-    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/github.min.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1',
+        VERSION:     '0.02.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/sidebar.js"></script>
-    <link rel="top" title="gcloud 0.1 documentation" href="#" />
-    <link rel="next" title="Cloud Common" href="common-api.html" /> 
+    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.02.2 documentation" href="#" />
+    <link rel="next" title="Datastore" href="datastore-api.html" /> 
   </head>
-  <body role="document" class="two-column docs"><a href="https://github.com/GoogleCloudPlatform/gcloud-python"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="_static/forkme.png" alt="Fork me on GitHub"></a>
-    <div id="sandbar">
-      <header id="gc-googlebar">
-      <a id="gc-logo" href="#">
-        <img src="_static/cloudplatform-horizontal.png" alt="Google">
+  <body>
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
         </a>
-        <form class="gc-search" action="search.html" method="GET">
-          <div class="searchbox" style="width: 429px;">
-            <span class="button button-blue mini">Google Cloud Python API</span>
-            <input type="hidden" name="check_keywords" value="yes">
-            <input type="hidden" name="area" value="default">
-            <input type="text" name="q" class="q" id="q" value=""
-              placeholder="Search" autocomplete="off" style="width: 263px;">
-          </div>
-          <button class="button button-blue" style="top: 0px; left: 444px;">
-          <img src="_static/search.png" alt="Search">
-        </button>
-
-        <input type="hidden" name="p" id="search_project" value="/compute">
-
-      </form>
-      </header>
-    </div>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">                    
+          <li>
+            <a href=" 
+https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+    </header><!-- end of .page-header -->
     
-<div id="gc-wrapper">
-  <div id="gc-appbar">
-    <h1><a href="#">gcloud 0.1 documentation</a></h1>
-  </div>
-    <div id="gc-main" class="main">
-      <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<nav class="gc-toc">
-  <ul><li><a href="#">gCloud Documentation</a></li></ul>
-  <ul>
-<li><a class="reference internal" href="#">Google Cloud Python API</a><ul>
-<li><a class="reference internal" href="#getting-started">Getting started</a></li>
-<li><a class="reference internal" href="#services">Services</a></li>
-<li><a class="reference internal" href="#common-modules">Common modules</a></li>
-<li><a class="reference internal" href="#how-to-contribute">How to contribute</a></li>
-</ul>
-</li>
-</ul>
+      <article class="main lang-page" role="main">
 
-  </nav>
+      <header class="docs-header">
+        <h1 class="page-title">Python</h1>
 
-            <h3>All API Docs</h3>
-            <nav class="gc-toc">
-            <ul>
-<li class="toctree-l1"><a class="reference internal" href="common-api.html">Cloud Common</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-getting-started.html">Getting started with Cloud Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-quickstart.html">Cloud Datastore in 10 seconds</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting started with gcloud</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-getting-started.html">Getting started with Cloud Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-quickstart.html">Cloud Storage in 10 seconds</a></li>
-</ul>
-
-            </nav>
-            
-            
-        </div>
-      </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main" id="gc-content">
-            
+          <div class="versions">
+            <span class="v-current">0.02.2</span>
+            <!--
+            <a href="versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              See version History
+            </a href="versions.html">
+          </div><!-- end of .versions -->
+      </header>
+                
+      <section class="content">
+        
   <div class="toctree-wrapper compound">
 </div>
-<div class="section" id="google-cloud-python-api">
-<h1>Google Cloud Python API<a class="headerlink" href="#google-cloud-python-api" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This library is <strong>still under construction</strong>
-and is <strong>not</strong> the official Google Cloud Python API client library.</p>
-</div>
 <div class="section" id="getting-started">
-<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>If you&#8217;ve never used <tt class="docutils literal"><span class="pre">gcloud</span></tt> before,
-you should probably take a look at
-<a class="reference internal" href="getting-started.html"><em>Getting started with gcloud</em></a>.</p>
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h1>
+<p>The <tt class="docutils literal"><span class="pre">gcloud</span></tt> library is <tt class="docutils literal"><span class="pre">pip</span></tt> install-able:</p>
+<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> pip install gcloud
+</pre></div>
 </div>
-<div class="section" id="services">
-<h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
-<div class="service topic">
-<p class="topic-title first">Cloud Datastore</p>
-<a class="reference external image-reference" href="datastore-api.html"><img alt="_images/datastore-logo.png" src="_images/datastore-logo.png" /></a>
-<ul class="simple">
-<li>Google&#8217;s <a class="reference external" href="https://developers.google.com/datastore/">official documentation</a></li>
-<li><a class="reference internal" href="datastore-quickstart.html"><em>Cloud Datastore in 10 seconds</em></a></li>
-<li><a class="reference internal" href="datastore-getting-started.html"><em>Getting started with Cloud Datastore</em></a></li>
-<li><a class="reference internal" href="datastore-api.html"><em>Cloud Datastore API Documentation</em></a></li>
-</ul>
+<p>If you have trouble installing
+<tt class="docutils literal"><span class="pre">pycrypto</span></tt> or <tt class="docutils literal"><span class="pre">pyopenssl</span></tt>
+(and you&#8217;re on Ubuntu),
+you can try install the precompiled packages:</p>
+<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> sudo apt-get install python-crypto python-openssl
+</pre></div>
 </div>
-<div class="service topic">
-<p class="topic-title first">Cloud Storage</p>
-<a class="reference external image-reference" href="storage-api.html"><img alt="_images/storage-logo.png" src="_images/storage-logo.png" /></a>
-<ul class="simple">
-<li>Google&#8217;s <a class="reference external" href="https://developers.google.com/storage/">official documentation</a></li>
-<li><a class="reference internal" href="storage-quickstart.html"><em>Cloud Storage in 10 seconds</em></a></li>
-<li><a class="reference internal" href="storage-getting-started.html"><em>Getting started with Cloud Storage</em></a></li>
-<li><a class="reference internal" href="storage-api.html"><em>Cloud Storage API Documentation</em></a></li>
-</ul>
+<p>If you want to install everything with <tt class="docutils literal"><span class="pre">pip</span></tt>,
+try installing the <tt class="docutils literal"><span class="pre">dev</span></tt> packages beforehand:</p>
+<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> sudo apt-get install python-dev libssl-dev
+</pre></div>
 </div>
-<div class="service topic">
-<p class="topic-title first">Compute Engine</p>
-<a class="reference external image-reference" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/34"><img alt="_images/compute-logo.png" src="_images/compute-logo.png" /></a>
-<ul class="simple">
-<li>Google&#8217;s <a class="reference external" href="https://developers.google.com/compute/">official documentation</a></li>
-<li>Coming soon...</li>
-</ul>
+<p>If you want to install <cite>gcloud-python</cite> from source,
+you can clone the repository from GitHub:</p>
+<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
+<span class="gp">$</span> <span class="nb">cd </span>gcloud-python
+<span class="gp">$</span> python setup.py install
+</pre></div>
 </div>
-<div class="service topic">
-<p class="topic-title first">Cloud SQL</p>
-<a class="reference external image-reference" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/35"><img alt="_images/cloudsql-logo.png" src="_images/cloudsql-logo.png" /></a>
-<ul class="simple">
-<li>Google&#8217;s <a class="reference external" href="https://developers.google.com/cloud-sql/">official documentation</a></li>
-<li>Coming soon...</li>
-</ul>
-</div>
-<div class="service topic">
-<p class="topic-title first">Big Query</p>
-<a class="reference external image-reference" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/36"><img alt="_images/bigquery-logo.png" src="_images/bigquery-logo.png" /></a>
-<ul class="simple">
-<li>Google&#8217;s <a class="reference external" href="https://developers.google.com/bigquery/">official documentation</a></li>
-<li>Coming soon...</li>
-</ul>
+<hr class="docutils" />
+<div class="section" id="cloud-datastore">
+<h2>Cloud Datastore<a class="headerlink" href="#cloud-datastore" title="Permalink to this headline">#</a></h2>
+<p><a class="reference external" href="https://developers.google.com/datastore/">Google Cloud Datastore</a> is a fully managed, schemaless database for storing non-relational data.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span>
+    <span class="s">&#39;&lt;your-project-id&gt;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;&lt;service-account-email&gt;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;/path/to/your/key&#39;</span><span class="p">)</span>
+<span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
+<span class="n">entity</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Your name&#39;</span>
+<span class="n">entity</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="common-modules">
-<h2>Common modules<a class="headerlink" href="#common-modules" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference internal" href="common-api.html"><em>Common Module API Documentation</em></a></li>
-</ul>
+<div class="section" id="cloud-storage">
+<h2>Cloud Storage<a class="headerlink" href="#cloud-storage" title="Permalink to this headline">#</a></h2>
+<p><a class="reference external" href="https://developers.google.com/storage/">Google Cloud Storage</a> allows you to store data on Google infrastructure.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
+<span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span>
+    <span class="s">&#39;&lt;your-bucket-name&gt;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;&lt;your-project-id&gt;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;&lt;service-account-email&gt;&#39;</span><span class="p">,</span>
+    <span class="s">&#39;/path/to/your/key&#39;</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="s">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">upload_contents_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="section" id="how-to-contribute">
-<h2>How to contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h2>
-<p>Want to help out?
-That&#8217;s awesome.
-The library is open source
-and <a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python">lives on GitHub</a>.
-Open an issue
-or fork the library and submit a pull request.</p>
-<p>Keep in mind that before we can accept any pull requests
-we have to jump through a couple of legal hurdles,
-primarily a Contributor License Agreement (CLA):</p>
-<ul class="simple">
-<li><strong>If you are an individual writing original source code</strong>
-and you&#8217;re sure you own the intellectual property,
-then you&#8217;ll need to sign an <a class="reference external" href="http://code.google.com/legal/individual-cla-v1.0.html">individual CLA</a>.</li>
-<li><strong>If you work for a company that wants to allow you to contribute your work</strong>,
-then you&#8217;ll need to sign a <a class="reference external" href="http://code.google.com/legal/corporate-cla-v1.0.html">corporate CLA</a>.</li>
-</ul>
-<p>Follow either of the two links above to access the appropriate CLA
-and instructions for how to sign and return it.
-Once we receive it, we&#8217;ll be able to accept your pull requests.</p>
 </div>
 </div>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    </div>
-  </div>
-    <footer id="gc-footer" class="footer" role="contentinfo">
-    <div id="gc-copyright">
-        &copy; Copyright 2014, JJ Geewax.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
-      </div>
-    </footer>
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <ul><li><a href="#">gcloud</a></li></ul>
+        <ul>
+<li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+</ul>
+
+        <ul class="external-links">
+          <li>
+            <a href="" title="Python on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python issues on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="" title="gcloud on StackOverflow">
+              <img src="_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              gcloud
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python package manager">
+              <img src="_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              Package Manager
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
   </body>
 </html>

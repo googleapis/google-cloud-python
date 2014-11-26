@@ -2,44 +2,43 @@
  * sidebar.js
  * ~~~~~~~~~~
  *
- * This script makes the Sphinx sidebar collapsible and implements intelligent
- * scrolling.
+ * This script makes the Sphinx sidebar collapsible.
  *
- * .sphinxsidebar contains .sphinxsidebarwrapper.  This script adds in
- * .sphixsidebar, after .sphinxsidebarwrapper, the #sidebarbutton used to
- * collapse and expand the sidebar.
+ * .sphinxsidebar contains .sphinxsidebarwrapper.  This script adds
+ * in .sphixsidebar, after .sphinxsidebarwrapper, the #sidebarbutton
+ * used to collapse and expand the sidebar.
  *
- * When the sidebar is collapsed the .sphinxsidebarwrapper is hidden and the
- * width of the sidebar and the margin-left of the document are decreased.
- * When the sidebar is expanded the opposite happens.  This script saves a
- * per-browser/per-session cookie used to remember the position of the sidebar
- * among the pages.  Once the browser is closed the cookie is deleted and the
- * position reset to the default (expanded).
+ * When the sidebar is collapsed the .sphinxsidebarwrapper is hidden
+ * and the width of the sidebar and the margin-left of the document
+ * are decreased. When the sidebar is expanded the opposite happens.
+ * This script saves a per-browser/per-session cookie used to
+ * remember the position of the sidebar among the pages.
+ * Once the browser is closed the cookie is deleted and the position
+ * reset to the default (expanded).
  *
- * :copyright: Copyright 2007-2011 by the Sphinx team, see AUTHORS.
+ * :copyright: Copyright 2007-2014 by the Sphinx team, see AUTHORS.
  * :license: BSD, see LICENSE for details.
  *
  */
 
 $(function() {
-  $.expr[':'].onscreen = function(obj){
-    obj = jQuery(obj);
-    return obj.position().top < jQuery(window).height() && obj.position().top < jQuery(window).width();
-  };
-
-  $.expr[':'].offscreen = function(obj){
-    obj = jQuery(obj);
-    return obj.position().top > jQuery(window).height() && obj.position().top > jQuery(window).width();
-  };
+  
+  
+  
+  
+  
+  
+  
 
   // global elements used by the functions.
   // the 'sidebarbutton' element is defined as global after its
   // creation, in the add_sidebar_button function
-  var jwindow = $(window);
-  var jdocument = $(document);
   var bodywrapper = $('.bodywrapper');
   var sidebar = $('.sphinxsidebar');
   var sidebarwrapper = $('.sphinxsidebarwrapper');
+
+  // for some reason, the document has no sidebar; do not run into errors
+  if (!sidebar.length) return;
 
   // original margin-left of the bodywrapper and width of the sidebar
   // with the sidebar expanded
@@ -52,15 +51,8 @@ $(function() {
   var ssb_width_collapsed = '.8em';
 
   // colors used by the current theme
-  var dark_color = '#AAAAAA';
-  var light_color = '#CCCCCC';
-
-  function get_viewport_height() {
-    if (window.innerHeight)
-      return window.innerHeight;
-    else
-      return jwindow.height();
-  }
+  var dark_color = $('.related').css('background-color');
+  var light_color = $('.document').css('background-color');
 
   function sidebar_is_collapsed() {
     return sidebarwrapper.is(':not(:visible)');
@@ -71,8 +63,6 @@ $(function() {
       expand_sidebar();
     else
       collapse_sidebar();
-    // adjust the scrolling of the sidebar
-    scroll_sidebar();
   }
 
   function collapse_sidebar() {
@@ -81,8 +71,7 @@ $(function() {
     bodywrapper.css('margin-left', bw_margin_collapsed);
     sidebarbutton.css({
         'margin-left': '0',
-        'height': bodywrapper.height(),
-        'border-radius': '5px'
+        'height': bodywrapper.height()
     });
     sidebarbutton.find('span').text('»');
     sidebarbutton.attr('title', _('Expand sidebar'));
@@ -95,13 +84,10 @@ $(function() {
     sidebarwrapper.show();
     sidebarbutton.css({
         'margin-left': ssb_width_expanded-12,
-        'height': bodywrapper.height(),
-        'border-radius': '0 5px 5px 0'
+        'height': bodywrapper.height()
     });
     sidebarbutton.find('span').text('«');
     sidebarbutton.attr('title', _('Collapse sidebar'));
-    //sidebarwrapper.css({'padding-top':
-    //  Math.max(window.pageYOffset - sidebarwrapper.offset().top, 10)});
     document.cookie = 'sidebar=expanded';
   }
 
@@ -113,30 +99,30 @@ $(function() {
     });
     // create the button
     sidebar.append(
-      '<div id="sidebarbutton"><span>&laquo;</span></div>'
+        '<div id="sidebarbutton"><span>&laquo;</span></div>'
     );
     var sidebarbutton = $('#sidebarbutton');
+    light_color = sidebarbutton.css('background-color');
     // find the height of the viewport to center the '<<' in the page
-    var viewport_height = get_viewport_height();
-    var sidebar_offset = sidebar.offset().top;
-    var sidebar_height = Math.max(bodywrapper.height(), sidebar.height());
+    var viewport_height;
+    if (window.innerHeight)
+ 	  viewport_height = window.innerHeight;
+    else
+	  viewport_height = $(window).height();
     sidebarbutton.find('span').css({
         'display': 'block',
-        'position': 'fixed',
-        'top': Math.min(viewport_height/2, sidebar_height/2 + sidebar_offset) - 10
+        'margin-top': (viewport_height - sidebar.position().top - 20) / 2
     });
 
     sidebarbutton.click(toggle_sidebar);
     sidebarbutton.attr('title', _('Collapse sidebar'));
     sidebarbutton.css({
-        'border-radius': '0 5px 5px 0',
-        'color': '#444444',
-        'background-color': '#CCCCCC',
+        'color': '#FFFFFF',
+        'border-left': '1px solid ' + dark_color,
         'font-size': '1.2em',
         'cursor': 'pointer',
-        'height': sidebar_height,
+        'height': bodywrapper.height(),
         'padding-top': '1px',
-        'padding-left': '1px',
         'margin-left': ssb_width_expanded - 12
     });
 
@@ -156,7 +142,7 @@ $(function() {
     var items = document.cookie.split(';');
     for(var k=0; k<items.length; k++) {
       var key_val = items[k].split('=');
-      var key = key_val[0];
+      var key = key_val[0].replace(/ /, "");  // strip leading spaces
       if (key == 'sidebar') {
         var value = key_val[1];
         if ((value == 'collapsed') && (!sidebar_is_collapsed()))
@@ -167,39 +153,7 @@ $(function() {
     }
   }
 
-  //add_sidebar_button();
-  //var sidebarbutton = $('#sidebarbutton');
-  //set_position_from_cookie();
-
-  var original_sidebar_offset = sidebar.position()['top'];
-
-  /* intelligent scrolling */
-  function scroll_sidebar() {
-    var sidebar_height = sidebarwrapper.height();
-    var viewport_height = get_viewport_height();
-    var offset = sidebar.position()['top'];
-    var wintop = jwindow.scrollTop();
-    var winbot = wintop + viewport_height;
-    var curtop = sidebarwrapper.position()['top'];
-    var curbot = curtop + sidebar_height;
-
-    // Is sidebar off the screen?
-    var is_sliding = (sidebar.css('position') == 'fixed');
-
-    if (is_sliding) {
-      // See if we should stop sliding...
-      if (wintop < original_sidebar_offset) {
-        sidebar.css('position', 'relative');
-      }
-    } else {
-      // See if we should start sliding...
-      if (wintop > offset) {
-        sidebar.css({
-          position: 'fixed',
-          top: '0'
-        });
-      }
-    }
-  }
-  jwindow.scroll(scroll_sidebar);
+  add_sidebar_button();
+  var sidebarbutton = $('#sidebarbutton');
+  set_position_from_cookie();
 });
