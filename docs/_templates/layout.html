@@ -1,88 +1,10 @@
-{% set script_files = script_files + ['_static/sidebar.js'] %}
-{% set css_files = css_files + ['_static/custom.css'] %}
+{% extends "basic/layout.html" %}
+{% set script_files = ['_static/js/vendor/modernizr-2.6.2.min.js'] %}
+{% set css_files = css_files + ['_static/css/normalize.css', '_static/css/github.min.css'] %}
 
 {%- block doctype -%}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 {%- endblock %}
-{%- set reldelim1 = reldelim1 is not defined and ' &raquo;' or reldelim1 %}
-{%- set reldelim2 = reldelim2 is not defined and ' |' or reldelim2 %}
-{%- set render_sidebar = (not embedded) and (not theme_nosidebar|tobool) and
-                         (sidebars != []) %}
-{%- set url_root = pathto('', 1) %}
-{# XXX necessary? #}
-{%- if url_root == '#' %}{% set url_root = '' %}{% endif %}
-{%- if not embedded and docstitle %}
-  {%- set titlesuffix = " &mdash; "|safe + docstitle|e %}
-{%- else %}
-  {%- set titlesuffix = "" %}
-{%- endif %}
-
-{%- macro relbar() %}
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>{{ _('Navigation') }}</h3>
-      <ul>
-        {%- for rellink in rellinks %}
-        <li class="right" {% if loop.first %}style="margin-right: 10px"{% endif %}>
-        <a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags|e }}"
-          {{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a>
-        {%- if not loop.first %}{{ reldelim2 }}{% endif %}</li>
-        {%- endfor %}
-        {%- block rootrellink %}
-        <li><a href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a>{{ reldelim1 }}</li>
-        {%- endblock %}
-        {%- for parent in parents %}
-        <li><a href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }}</a>{{ reldelim1 }}</li>
-        {%- endfor %}
-        {%- block relbaritems %} {% endblock %}
-      </ul>
-    </div>
-{%- endmacro %}
-
-{%- macro sidebar() %}
-      {%- if render_sidebar %}
-      <div id="gc-sidebar" class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-          {%- block sidebarlogo %}
-          {%- if logo %}
-            <p class="logo"><a href="{{ pathto(master_doc) }}">
-              <img class="logo" src="{{ pathto('_static/' + logo, 1) }}" alt="Logo"/>
-            </a></p>
-          {%- endif %}
-          {%- endblock %}
-          {%- if sidebars != None %}
-            {#- new style sidebar: explicitly include/exclude templates #}
-            {%- for sidebartemplate in sidebars %}
-            {%- include sidebartemplate %}
-            {%- endfor %}
-          {%- else %}
-            {#- old style sidebars: using blocks -- should be deprecated #}
-            {%- block sidebartoc %}
-            {%- include "localtoc.html" %}
-            {%- endblock %}
-
-            <h3>All API Docs</h3>
-            <nav class="gc-toc">
-            {{ toctree(includehidden=True, maxdepth=1, titles_only=True) }}
-            </nav>
-
-            {%- block sidebarrel %}
-            {# include "relations.html" #}
-            {%- endblock %}
-            {%- block sidebarsourcelink %}
-            {# include "sourcelink.html" #}
-            {%- endblock %}
-            {%- if customsidebar %}
-            {%- include customsidebar %}
-            {%- endif %}
-            {%- block sidebarsearch %}
-            {#- include "searchbox.html" #}
-            {%- endblock %}
-          {%- endif %}
-        </div>
-      </div>
-      {%- endif %}
-{%- endmacro %}
 
 {%- macro script() %}
     <script type="text/javascript">
@@ -107,132 +29,124 @@
     {%- endfor %}
 {%- endmacro %}
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset={{ encoding }}" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- TODO(silvano): add description --> 
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     {{ metatags }}
     {%- block htmltitle %}
     <title>{{ title|striptags|e }}{{ titlesuffix }}</title>
     {%- endblock %}
     {{ css() }}
-    {%- if not embedded %}
     {{ script() }}
-    {%- if use_opensearch %}
-    <link rel="search" type="application/opensearchdescription+xml"
-          title="{% trans docstitle=docstitle|e %}Search within {{ docstitle }}{% endtrans %}"
-          href="{{ pathto('_static/opensearch.xml', 1) }}"/>
-    {%- endif %}
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono|Roboto:300,400,700,700italic,400italic|Open+Sans:300' rel='stylesheet' type='text/css'>
     {%- if favicon %}
     <link rel="shortcut icon" href="{{ pathto('_static/' + favicon, 1) }}"/>
     {%- endif %}
-    {%- endif %}
-{%- block linktags %}
-    {%- if hasdoc('about') %}
-    <link rel="author" title="{{ _('About these documents') }}" href="{{ pathto('about') }}" />
-    {%- endif %}
-    {%- if hasdoc('genindex') %}
-    <link rel="index" title="{{ _('Index') }}" href="{{ pathto('genindex') }}" />
-    {%- endif %}
-    {%- if hasdoc('search') %}
-    <link rel="search" title="{{ _('Search') }}" href="{{ pathto('search') }}" />
-    {%- endif %}
-    {%- if hasdoc('copyright') %}
-    <link rel="copyright" title="{{ _('Copyright') }}" href="{{ pathto('copyright') }}" />
-    {%- endif %}
-    <link rel="top" title="{{ docstitle|e }}" href="{{ pathto('index') }}" />
-    {%- if parents %}
-    <link rel="up" title="{{ parents[-1].title|striptags|e }}" href="{{ parents[-1].link|e }}" />
-    {%- endif %}
-    {%- if next %}
-    <link rel="next" title="{{ next.title|striptags|e }}" href="{{ next.link|e }}" />
-    {%- endif %}
-    {%- if prev %}
-    <link rel="prev" title="{{ prev.title|striptags|e }}" href="{{ prev.link|e }}" />
-    {%- endif %}
-{%- endblock %}
-{%- block extrahead %} {% endblock %}
+    {%- block extrahead %} {% endblock %}
   </head>
-  <body role="document" class="two-column docs">
-    {%- block github_fork -%}
-    <a href="https://github.com/GoogleCloudPlatform/gcloud-python"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 999;" src="_static/forkme.png" alt="Fork me on GitHub"></a>
-    {%- endblock -%}
+  <body class="lang-page">
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
     {%- block header %}
-    <div id="sandbar">
-      <header id="gc-googlebar">
-      <a id="gc-logo" href="{{ pathto('index') }}">
-        <img src="_static/cloudplatform-horizontal.png" alt="Google">
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
         </a>
-        <form class="gc-search" action="search.html" method="GET">
-          <div class="searchbox" style="width: 429px;">
-            <span class="button button-blue mini">Google Cloud Python API</span>
-            <input type="hidden" name="check_keywords" value="yes">
-            <input type="hidden" name="area" value="default">
-            <input type="text" name="q" class="q" id="q" value=""
-              placeholder="Search" autocomplete="off" style="width: 263px;">
-          </div>
-          <button class="button button-blue" style="top: 0px; left: 444px;">
-          <img src="_static/search.png" alt="Search">
-        </button>
-
-        <input type="hidden" name="p" id="search_project" value="/compute">
-
-      </form>
-      </header>
-    </div>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">                    
+          <li>
+            <a href=" 
+https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+    </header><!-- end of .page-header -->
     {% endblock %}
 
-{%- block relbar1 %}{# relbar() #}{% endblock %}
+    {# Silence the sidebar and relbars. #}
+    {% block sidebar1 %}{% endblock %}
+    {% block relbar1 %}{% endblock %}
+    {% block relbar2 %}{% endblock %}
 
-{%- block content %}
-<div id="gc-wrapper">
-  <div id="gc-appbar">
-    <h1><a href="{{ pathto('index') }}">{{ docstitle|e }}</a></h1>
-  </div>
-    <div id="gc-main" class="main">
-      {%- block sidebar1 %}{{ sidebar() }}{% endblock %}
+    {%- block content %}
+      <article class="main lang-page" role="main">
 
-    <div class="document">
-  {%- block document %}
-      <div class="documentwrapper">
-      {%- if render_sidebar %}
-        <div class="bodywrapper">
-      {%- endif %}
-          <div class="body" role="main" id="gc-content">
-            {% block body %} {% endblock %}
-          </div>
-      {%- if render_sidebar %}
-        </div>
-      {%- endif %}
-      </div>
-  {%- endblock %}
+      <header class="docs-header">
+        <h1 class="page-title">Python</h1>
 
-  {%- block sidebar2 %}{# sidebar() #}{% endblock %}
-      <div class="clearer"></div>
-    </div>
-    </div>
-  </div>
-{%- endblock %}
+          <div class="versions">
+            <span class="v-current">{{ release|e }}</span>
+            <!--
+            <a href="versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              See version History
+            </a href="versions.html">
+          </div><!-- end of .versions -->
+      </header>
+                
+      <section class="content">
+        {% block body %} {% endblock %}
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <ul><li><a href="{{ pathto('index') }}">gcloud</a></li></ul>
+        {{ toctree(includehidden=True, maxdepth=1, titles_only=True) }}
+        <ul class="external-links">
+          <li>
+            <a href="" title="Python on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python issues on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="" title="gcloud on StackOverflow">
+              <img src="_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              gcloud
+            </a>
+          </li>
+          <li>
+            <a href="" title="Python package manager">
+              <img src="_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              Package Manager
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
 
-{%- block relbar2 %}{# relbar() #}{% endblock %}
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  {% endblock %}
 
-{%- block footer %}
-    <footer id="gc-footer" class="footer" role="contentinfo">
-    {%- if show_copyright %}
-    <div id="gc-copyright">
-    {%- if hasdoc('copyright') %}
-        {% trans path=pathto('copyright'), copyright=copyright|e %}&copy; <a href="{{ path }}">Copyright</a> {{ copyright }}.{% endtrans %}
-      {%- else %}
-        {% trans copyright=copyright|e %}&copy; Copyright {{ copyright }}.{% endtrans %}
-      {%- endif %}
-    {%- endif %}
-    {%- if last_updated %}
-      {% trans last_updated=last_updated|e %}Last updated on {{ last_updated }}.{% endtrans %}
-    {%- endif %}
-    {%- if show_sphinx %}
-      {% trans sphinx_version=sphinx_version|e %}Created using <a href="http://sphinx-doc.org/">Sphinx</a> {{ sphinx_version }}.{% endtrans %}
-      </div>
-      {%- endif %}
-    </footer>
-{%- endblock %}
+  {# Silence the footer #}
+  {% block footer %}{% endblock %}
+
   </body>
 </html>

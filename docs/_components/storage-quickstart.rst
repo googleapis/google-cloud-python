@@ -1,8 +1,8 @@
 Cloud Storage in 10 seconds
-===========================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install the library
--------------------
+^^^^^^^^^^^^^^^^^^^
 
 The source code for the library
 (and demo code)
@@ -12,7 +12,7 @@ You can install the library quickly with ``pip``::
   $ pip install gcloud
 
 Run the demo
-------------
+^^^^^^^^^^^^
 
 In order to run the demo, you need to have registred an actual ``gcloud``
 project and so you'll need to provide some environment variables to facilitate
@@ -41,7 +41,7 @@ a demonstration of using ``gcloud.storage``
 to read and write data to Google Cloud Storage.
 
 Try it yourself
----------------
+^^^^^^^^^^^^^^^
 
 You can interact with a demo dataset
 in a Python interactive shell.
@@ -79,8 +79,4 @@ you can create buckets and keys::
   >>> connection = storage.get_connection(
   >>>     demo.PROJECT_NAME, demo.CLIENT_EMAIL, demo.PRIVATE_KEY_PATH)
 
-OK, that's it!
---------------
-
-And you can always check out
-the :doc:`storage-api`.
+----
