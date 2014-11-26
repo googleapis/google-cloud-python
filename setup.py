@@ -23,7 +23,7 @@ REQUIREMENTS = [
 
 setup(
     name='gcloud',
-    version='0.02.2',
+    version='0.3.0',
     description='API Client library for Google Cloud',
     author='JJ Geewax',
     author_email='jj@geewax.org',
@@ -32,8 +32,6 @@ setup(
     packages=find_packages(),
     license='Apache 2.0',
     platforms='Posix; MacOS X; Windows',
-    package_data={'': ['gcloud/datastore/demo.key',
-                       'gcloud/storage/demo.key']},
     include_package_data=True,
     zip_safe=False,
     install_requires=REQUIREMENTS,
