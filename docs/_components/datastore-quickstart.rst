@@ -1,18 +1,8 @@
 Cloud Datastore in 10 seconds
-=============================
-
-.. note::
-  This will use a **shared** dataset,
-  which means any data you save
-  will be available to anyone.
-  If you want to create your own dataset,
-  follow the
-  (pretty simple)
-  instructions in the
-  :doc:`datastore-getting-started`.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install the library
--------------------
+^^^^^^^^^^^^^^^^^^^
 
 The source code for the library
 (and demo code)
@@ -22,7 +12,7 @@ You can install the library quickly with ``pip``::
   $ pip install gcloud
 
 Run the demo
-------------
+^^^^^^^^^^^^
 
 In order to run the demo, you need to have registred an actual ``gcloud``
 project and so you'll need to provide some environment variables to facilitate
@@ -50,7 +40,7 @@ You just read and wrote a bunch of data
 to the Cloud Datastore.
 
 Try it yourself
----------------
+^^^^^^^^^^^^^^^
 
 You can interact with a demo dataset
 in a Python interactive shell.
@@ -81,12 +71,4 @@ you can create entities and save them::
   >>> dataset = datastore.get_dataset(
   >>>     demo.DATASET_ID, demo.CLIENT_EMAIL, demo.PRIVATE_KEY_PATH)
 
-OK, that's it!
---------------
-
-Next,
-take a look at the :doc:`datastore-getting-started`
-to see how to create your own project and dataset.
-
-And you can always check out
-the :doc:`datastore-api`.
+----

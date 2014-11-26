@@ -1,111 +1,58 @@
-:maxdepth: 1
-
 .. toctree::
+  :maxdepth: 0
   :hidden:
 
-  common-api
   datastore-api
-  datastore-getting-started
-  datastore-quickstart
-  getting-started
+  datastore-dataset
+  datastore-entities
+  datastore-keys
+  datastore-transactions
+  datastore-queries
   storage-api
-  storage-getting-started
-  storage-quickstart
+  storage-buckets
+  storage-keys
+  storage-acl
 
-
-Google Cloud Python API
-=======================
-
-.. warning::
-  This library is **still under construction**
-  and is **not** the official Google Cloud Python API client library.
 
 Getting started
 ---------------
 
-If you've never used ``gcloud`` before,
-you should probably take a look at
-:doc:`getting-started`.
+.. include:: _components/getting-started.rst
 
-Services
---------
+Cloud Datastore
+~~~~~~~~~~~~~~~
 
-.. topic:: Cloud Datastore
-  :class: service
+`Google Cloud Datastore`_ is a fully managed, schemaless database for storing non-relational data.
 
-  .. image:: /_static/datastore-logo.png
-    :target: datastore-api.html
+.. _Google Cloud Datastore: https://developers.google.com/datastore/
 
-  - Google's `official documentation <https://developers.google.com/datastore/>`__
-  - :doc:`datastore-quickstart`
-  - :doc:`datastore-getting-started`
-  - :doc:`Cloud Datastore API Documentation <datastore-api>`
+.. code-block:: python
 
-.. topic:: Cloud Storage
-  :class: service
+  from gcloud import datastore
+  dataset = datastore.get_dataset(
+      '<your-project-id>',
+      '<service-account-email>',
+      '/path/to/your/key')
+  entity = dataset.entity('Person')
+  entity['name'] = 'Your name'
+  entity['age'] = 25
+  entity.save()
 
-  .. image:: /_static/storage-logo.png
-    :target: storage-api.html
+Cloud Storage
+~~~~~~~~~~~~~
 
-  - Google's `official documentation <https://developers.google.com/storage/>`__
-  - :doc:`storage-quickstart`
-  - :doc:`Getting started with Cloud Storage <storage-getting-started>`
-  - :doc:`Cloud Storage API Documentation <storage-api>`
+`Google Cloud Storage`_ allows you to store data on Google infrastructure.
 
-.. topic:: Compute Engine
-  :class: service
+.. _Google Cloud Storage: https://developers.google.com/storage/
 
-  .. image:: /_static/compute-logo.png
-    :target: https://github.com/GoogleCloudPlatform/gcloud-python/issues/34
-
-  - Google's `official documentation <https://developers.google.com/compute/>`__
-  - Coming soon...
-
-.. topic:: Cloud SQL
-  :class: service
-
-  .. image:: /_static/cloudsql-logo.png
-    :target: https://github.com/GoogleCloudPlatform/gcloud-python/issues/35
-
-  - Google's `official documentation <https://developers.google.com/cloud-sql/>`__
-  - Coming soon...
-
-.. topic:: Big Query
-  :class: service
-
-  .. image:: /_static/bigquery-logo.png
-    :target: https://github.com/GoogleCloudPlatform/gcloud-python/issues/36
-
-  - Google's `official documentation <https://developers.google.com/bigquery/>`__
-  - Coming soon...
-
-Common modules
---------------
-
-- :doc:`Common Module API Documentation <common-api>`
-
-How to contribute
------------------
-
-Want to help out?
-That's awesome.
-The library is open source
-and `lives on GitHub <https://github.com/GoogleCloudPlatform/gcloud-python>`_.
-Open an issue
-or fork the library and submit a pull request.
-
-Keep in mind that before we can accept any pull requests
-we have to jump through a couple of legal hurdles,
-primarily a Contributor License Agreement (CLA):
-
-- **If you are an individual writing original source code**
-  and you're sure you own the intellectual property,
-  then you'll need to sign an `individual CLA
-  <http://code.google.com/legal/individual-cla-v1.0.html>`_.
-- **If you work for a company that wants to allow you to contribute your work**,
-  then you'll need to sign a `corporate CLA
-  <http://code.google.com/legal/corporate-cla-v1.0.html>`_.
-
-Follow either of the two links above to access the appropriate CLA
-and instructions for how to sign and return it.
-Once we receive it, we'll be able to accept your pull requests.
+.. code-block:: python
+  
+  from gcloud import storage
+  bucket = storage.get_bucket(
+      '<your-bucket-name>',
+      '<your-project-id>',
+      '<service-account-email>',
+      '/path/to/your/key')
+  key = bucket.new_key('my-test-file.txt')
+  key = key.upload_contents_from_string('this is test content!')
+  
