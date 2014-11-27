@@ -151,6 +151,7 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
+
 class _Connection(object):
     _called_with = None
 
