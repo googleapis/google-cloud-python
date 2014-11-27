@@ -4,6 +4,7 @@ from gcloud.datastore import helpers
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
+from gcloud.datastore.key import Key
 
 
 class Dataset(object):
@@ -107,16 +108,26 @@ class Dataset(object):
         kwargs['dataset'] = self
         return Transaction(*args, **kwargs)
 
-    def get_entity(self, key):
+    def get_entity(self, key_or_path):
         """Retrieves entity from the dataset, along with its attributes.
 
-        :type key: :class:`gcloud.datastore.key.Key`
-        :param item_name: The name of the item to retrieve.
+        :type key_or_path: :class:`gcloud.datastore.key.Key` or path
+        :param key_or_path: The name of the item to retrieve or sequence of 
+                            even length, where the first of each pair is a
+                            string representing the 'kind' of the path element, 
+                            and the second of the pair is either a string (for 
+                            the path element's name) or an integer (for its id).
 
         :rtype: :class:`gcloud.datastore.entity.Entity` or ``None``
         :return: The requested entity, or ``None`` if there was no match found.
         """
-        entities = self.get_entities([key])
+
+        if isinstance(key_or_path, Key):
+            entities = self.get_entities([key_or_path])
+        else:
+            key = Key.from_path(*key_or_path)
+            entities = self.get_entities([key])
+
         if entities:
             return entities[0]
 
