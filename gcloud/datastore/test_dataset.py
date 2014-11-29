@@ -155,15 +155,7 @@ class TestDataset(unittest2.TestCase):
         from gcloud.datastore.connection import datastore_pb
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
-        ID = 1234
         entity_pb = datastore_pb.Entity()
-        entity_pb.key.partition_id.dataset_id = DATASET_ID
-        path_element = entity_pb.key.path_element.add()
-        path_element.kind = KIND
-        path_element.id = ID
-        prop = entity_pb.property.add()
-        prop.name = 'foo'
-        prop.value.string_value = 'Foo'
         connection = _Connection(entity_pb)
         dataset = self._makeOne(DATASET_ID, connection)
         with self.assertRaises(ValueError):
