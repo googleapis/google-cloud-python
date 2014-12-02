@@ -415,7 +415,11 @@ class Connection(connection.Connection):
             helpers._set_protobuf_value(prop.value, value)
 
             if name in exclude_from_indexes:
-                prop.value.indexed = False
+                if not isinstance(value, list):
+                    prop.value.indexed = False
+
+                for sub_value in prop.value.list_value:
+                    sub_value.indexed = False
 
         # If this is in a transaction, we should just return True. The
         # transaction will handle assigning any keys as necessary.
