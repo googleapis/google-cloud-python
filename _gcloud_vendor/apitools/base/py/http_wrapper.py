@@ -14,8 +14,8 @@ import urlparse
 
 import httplib2
 
-from apitools.base.py import exceptions
-from apitools.base.py import util
+from _gcloud_vendor.apitools.base.py import exceptions
+from _gcloud_vendor.apitools.base.py import util
 
 __all__ = [
     'GetHttp',

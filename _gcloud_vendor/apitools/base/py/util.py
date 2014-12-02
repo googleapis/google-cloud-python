@@ -9,7 +9,7 @@ import types
 import urllib
 import urllib2
 
-from apitools.base.py import exceptions
+from _gcloud_vendor.apitools.base.py import exceptions
 
 __all__ = [
     'DetectGae',
