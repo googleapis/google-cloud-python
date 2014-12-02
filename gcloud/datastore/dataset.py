@@ -91,8 +91,10 @@ class Dataset(object):
         :rtype: :class:`gcloud.datastore.entity.Entity`
         :returns: a new Entity instance, bound to this dataset.
         """
-        return Entity(dataset=self, kind=kind,
-                      exclude_from_indexes=exclude_from_indexes)
+
+        if isinstance(kind, basestring):       
+            return Entity(dataset=self, kind=kind,
+                        exclude_from_indexes=exclude_from_indexes)
 
     def transaction(self, *args, **kwargs):
         """Create a transaction bound to this dataset.
