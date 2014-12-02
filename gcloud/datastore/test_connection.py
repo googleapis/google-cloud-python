@@ -707,6 +707,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(upsert.key, key_pb)
         props = list(upsert.property)
         self.assertEqual(len(props), 2)
+        props.sort(key=lambda i: i.name, reverse=True)
         self.assertEqual(props[0].name, 'foo')
         self.assertEqual(props[0].value.string_value, u'Foo')
         self.assertEqual(props[0].value.indexed, False)
