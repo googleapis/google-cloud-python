@@ -686,7 +686,8 @@ class TestConnection(unittest2.TestCase):
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo', 'bar': [u'bar1', u'bar2']},
+        result = conn.save_entity(DATASET_ID, key_pb,
+                                  {'foo': u'Foo', 'bar': [u'bar1', u'bar2']},
                                   exclude_from_indexes=['foo', 'bar'])
         self.assertEqual(result, True)
         cw = http._called_with
