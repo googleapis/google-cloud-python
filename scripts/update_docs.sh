@@ -23,10 +23,19 @@ git submodule add -b gh-pages \
     ghpages
 cp -R docs/_build/html/* ghpages/
 cd ghpages
+# allow "git add" to fail if there aren't new files.
+set +e
 git add .
-# Commit to gh-pages branch to apply changes.
-git config user.name "selfiebot"
-git commit -m "Update docs after merge to master."
-git push \
-    "https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME}" \
-    HEAD:gh-pages
+set -e
+git status
+# H/T: https://github.com/dhermes
+if [[ -n "$(git status --porcelain)" ]]; then
+    # Commit to gh-pages branch to apply changes.
+    git config user.name "selfiebot"
+    git commit -m "Update docs after merge to master."
+    git push \
+        "https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME}" \
+        HEAD:gh-pages
+else
+    echo "Nothing to commit. Exiting without pushing changes."
+fi
