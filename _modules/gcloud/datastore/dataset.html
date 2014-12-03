@@ -78,6 +78,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 
 
 <div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -181,16 +182,27 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="n">Transaction</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Dataset.get_entity"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.get_entity">[docs]</a>    <span class="k">def</span> <span class="nf">get_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="Dataset.get_entity"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.get_entity">[docs]</a>    <span class="k">def</span> <span class="nf">get_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key_or_path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieves entity from the dataset, along with its attributes.</span>
 
-<span class="sd">        :type key: :class:`gcloud.datastore.key.Key`</span>
-<span class="sd">        :param item_name: The name of the item to retrieve.</span>
+<span class="sd">        :type key_or_path: :class:`gcloud.datastore.key.Key` or path</span>
+<span class="sd">        :param key_or_path: The name of the item to retrieve or sequence</span>
+<span class="sd">                            of even length, where the first of each pair</span>
+<span class="sd">                            is a string representing the &#39;kind&#39; of the</span>
+<span class="sd">                            path element, and the second of the pair is</span>
+<span class="sd">                            either a string (for the path element&#39;s name)</span>
+<span class="sd">                            or an integer (for its id).</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.entity.Entity` or ``None``</span>
 <span class="sd">        :return: The requested entity, or ``None`` if there was no match found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">entities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_entities</span><span class="p">([</span><span class="n">key</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key_or_path</span><span class="p">,</span> <span class="n">Key</span><span class="p">):</span>
+            <span class="n">entities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_entities</span><span class="p">([</span><span class="n">key_or_path</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="o">*</span><span class="n">key_or_path</span><span class="p">)</span>
+            <span class="n">entities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_entities</span><span class="p">([</span><span class="n">key</span><span class="p">])</span>
+
         <span class="k">if</span> <span class="n">entities</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </div>

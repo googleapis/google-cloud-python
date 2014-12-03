@@ -174,13 +174,18 @@ be indexed.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.get_entity">
-<tt class="descname">get_entity</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_entity" title="Permalink to this definition">#</a></dt>
+<tt class="descname">get_entity</tt><big>(</big><em>key_or_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves entity from the dataset, along with its attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>item_name</strong> &#8211; The name of the item to retrieve.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key_or_path</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> or path) &#8211; The name of the item to retrieve or sequence
+of even length, where the first of each pair
+is a string representing the &#8216;kind&#8217; of the
+path element, and the second of the pair is
+either a string (for the path element&#8217;s name)
+or an integer (for its id).</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a> or <tt class="docutils literal"><span class="pre">None</span></tt></td>
 </tr>
