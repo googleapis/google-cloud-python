@@ -152,11 +152,9 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(result['foo'], 'Foo')
 
     def test_get_entity_odd_nonetype(self):
-        from gcloud.datastore.connection import datastore_pb
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
-        entity_pb = datastore_pb.Entity()
-        connection = _Connection(entity_pb)
+        connection = _Connection()
         dataset = self._makeOne(DATASET_ID, connection)
         with self.assertRaises(ValueError):
             dataset.get_entity([KIND])
