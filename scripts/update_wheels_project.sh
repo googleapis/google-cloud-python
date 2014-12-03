@@ -44,9 +44,18 @@ echo "${TRAVIS_COMMIT}" > ${FRESH_REPO_DIR}/LATEST_COMMIT
 # Display git status and push LATEST_COMMIT. #
 ##############################################
 cd ${FRESH_REPO_DIR}
-git add LATEST_COMMIT
 
+# allow "git add" to fail if there aren't new files.
+# this can happen if we re-run builds on travis.
+set +e
+git add LATEST_COMMIT
+set -e
 git status
-git commit -m "Main project gcloud-python has been updated."
-git status
-git push origin master
+# H/T: https://github.com/dhermes
+if [[ -n "$(git status --porcelain)" ]]; then
+    git commit -m "Main project gcloud-python has been updated."
+    git status
+    git push origin master
+else
+    echo "Nothing to commit. Exiting without pushing changes."
+fi
