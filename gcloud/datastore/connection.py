@@ -407,6 +407,9 @@ class Connection(connection.Connection):
         insert.key.CopyFrom(key_pb)
 
         for name, value in properties.items():
+            if isinstance(value, list) and len(value) == 0:
+                continue
+
             prop = insert.property.add()
             # Set the name of the property.
             prop.name = name
