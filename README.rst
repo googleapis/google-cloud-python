@@ -1,7 +1,7 @@
 Google Cloud Python Client
 ==========================
 
-    Python idiomatic client for Google Cloud Platform services.
+    'Python<https://cloud.google.com/appengine/docs/python/>' idiomatic client for 'Google Cloud Platform<https://cloud.google.com/>' services.
 
 |build| |coverage|
 ------------------
@@ -29,7 +29,7 @@ Quickstart
 Google Cloud Datastore
 ----------------------
 
-`Google Cloud Datastore <https://developers.google.com/datastore/>`__ is
+`Google Cloud Datastore <https://cloud.google.com/datastore/docs>`__ is
 a fully managed, schemaless database for storing non-relational data.
 Cloud Datastore automatically scales with your users and supports ACID
 transactions, high availability of reads and writes, strong consistency
@@ -37,7 +37,7 @@ for reads and ancestor queries, and eventual consistency for all other
 queries.
 
 See the `Google Cloud Datastore
-docs <https://developers.google.com/datastore/docs/activate>`__ for more
+docs <https://cloud.google.com/datastore/docs/activate>`__ for more
 details on how to activate Cloud Datastore for your project.
 
 See `the gcloud-python API
@@ -63,9 +63,9 @@ you to store data on Google infrastructure with very high reliability,
 performance and availability, and can be used to distribute large data
 objects to users via direct download.
 
-You need to create a Google Cloud Storage bucket to use this client
+You need to create a 'Google Cloud Storage<https://cloud.google.com/storage/>' bucket to use this client
 library. Follow the steps on the `Google Cloud Storage
-docs <https://developers.google.com/storage/docs/cloud-console#_creatingbuckets>`__
+docs <https://cloud.google.com/storage/docs/cloud-console#_creatingbuckets>`__
 to learn how to create a bucket.
 
 See `the gcloud-python API
