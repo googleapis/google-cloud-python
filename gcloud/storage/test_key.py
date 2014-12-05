@@ -236,12 +236,47 @@ class Test_Key(unittest2.TestCase):
         fetched = key.download_as_string()
         self.assertEqual(fetched, 'abcdef')
 
-    def test_upload_from_file(self):
+    def test_upload_from_file_simple(self):
         import httplib
         from tempfile import NamedTemporaryFile
         from urlparse import parse_qsl
         from urlparse import urlsplit
+        KEY = 'key'
+        DATA = 'ABCDEF'
+        response = {'status': httplib.OK}
+        connection = _Connection(
+            (response, ''),
+        )
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.CHUNK_SIZE = 5
+        with NamedTemporaryFile() as fh:
+            fh.write(DATA)
+            fh.flush()
+            key.upload_from_file(fh, rewind=True)
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
+        self.assertEqual(rq[0]['method'], 'POST')
+        uri = rq[0]['uri']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/upload/storage/v1/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'media', 'name': 'key'})
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        self.assertEqual(headers['Content-Length'], '6')
+        self.assertEqual(headers['Content-Type'], 'application/unknown')
+
+    def test_upload_from_file_resumable(self):
+        import httplib
+        from tempfile import NamedTemporaryFile
+        from urlparse import parse_qsl
+        from urlparse import urlsplit
+        from gcloud._testing import _Monkey
         from _gcloud_vendor.apitools.base.py import http_wrapper
+        from _gcloud_vendor.apitools.base.py import transfer
         KEY = 'key'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
@@ -257,10 +292,12 @@ class Test_Key(unittest2.TestCase):
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
-        with NamedTemporaryFile() as fh:
-            fh.write(DATA)
-            fh.flush()
-            key.upload_from_file(fh, rewind=True)
+        # Set the threshhold low enough that we force a resumable uploada.
+        with _Monkey(transfer, _RESUMABLE_UPLOAD_THRESHOLD=5):
+            with NamedTemporaryFile() as fh:
+                fh.write(DATA)
+                fh.flush()
+                key.upload_from_file(fh, rewind=True)
         rq = connection.http._requested
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -268,7 +305,7 @@ class Test_Key(unittest2.TestCase):
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(path, '/resumable/upload/storage/v1/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'resumable', 'name': 'key'})
         headers = dict(
@@ -317,32 +354,19 @@ class Test_Key(unittest2.TestCase):
             fh.flush()
             key.upload_from_file(fh, rewind=True)
         rq = connection.http._requested
-        self.assertEqual(len(rq), 3)
+        self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(path, '/upload/storage/v1/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': 'parent/child'})
+                         {'uploadType': 'media', 'name': 'parent/child'})
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
-        self.assertEqual(headers['X-Upload-Content-Length'], '6')
-        self.assertEqual(headers['X-Upload-Content-Type'],
-                         'application/unknown')
-        self.assertEqual(rq[1]['method'], 'PUT')
-        self.assertEqual(rq[1]['uri'], UPLOAD_URL)
-        self.assertEqual(rq[1]['body'], DATA[:5])
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[1]['headers'].items()])
-        self.assertEqual(headers['Content-Range'], 'bytes 0-4/6')
-        self.assertEqual(rq[2]['method'], 'PUT')
-        self.assertEqual(rq[2]['uri'], UPLOAD_URL)
-        self.assertEqual(rq[2]['body'], DATA[5:])
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[2]['headers'].items()])
-        self.assertEqual(headers['Content-Range'], 'bytes 5-5/6')
+        self.assertEqual(headers['Content-Length'], '6')
+        self.assertEqual(headers['Content-Type'], 'application/unknown')
 
     def test_upload_from_filename(self):
         import httplib
@@ -370,32 +394,19 @@ class Test_Key(unittest2.TestCase):
             fh.flush()
             key.upload_from_filename(fh.name)
         rq = connection.http._requested
-        self.assertEqual(len(rq), 3)
+        self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(path, '/upload/storage/v1/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': 'key'})
+                         {'uploadType': 'media', 'name': 'key'})
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
-        self.assertEqual(headers['X-Upload-Content-Length'], '6')
-        self.assertEqual(headers['X-Upload-Content-Type'],
-                         'image/jpeg')
-        self.assertEqual(rq[1]['method'], 'PUT')
-        self.assertEqual(rq[1]['uri'], UPLOAD_URL)
-        self.assertEqual(rq[1]['body'], DATA[:5])
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[1]['headers'].items()])
-        self.assertEqual(headers['Content-Range'], 'bytes 0-4/6')
-        self.assertEqual(rq[2]['method'], 'PUT')
-        self.assertEqual(rq[2]['uri'], UPLOAD_URL)
-        self.assertEqual(rq[2]['body'], DATA[5:])
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[2]['headers'].items()])
-        self.assertEqual(headers['Content-Range'], 'bytes 5-5/6')
+        self.assertEqual(headers['Content-Length'], '6')
+        self.assertEqual(headers['Content-Type'], 'image/jpeg')
 
     def test_upload_from_string(self):
         import httplib
@@ -419,32 +430,19 @@ class Test_Key(unittest2.TestCase):
         key.CHUNK_SIZE = 5
         key.upload_from_string(DATA)
         rq = connection.http._requested
-        self.assertEqual(len(rq), 3)
+        self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(path, '/upload/storage/v1/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': 'key'})
+                         {'uploadType': 'media', 'name': 'key'})
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
-        self.assertEqual(headers['X-Upload-Content-Length'], '6')
-        self.assertEqual(headers['X-Upload-Content-Type'],
-                         'text/plain')
-        self.assertEqual(rq[1]['method'], 'PUT')
-        self.assertEqual(rq[1]['uri'], UPLOAD_URL)
-        self.assertEqual(rq[1]['body'], DATA[:5])
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[1]['headers'].items()])
-        self.assertEqual(headers['Content-Range'], 'bytes 0-4/6')
-        self.assertEqual(rq[2]['method'], 'PUT')
-        self.assertEqual(rq[2]['uri'], UPLOAD_URL)
-        self.assertEqual(rq[2]['body'], DATA[5:])
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[2]['headers'].items()])
-        self.assertEqual(headers['Content-Range'], 'bytes 5-5/6')
+        self.assertEqual(headers['Content-Length'], '6')
+        self.assertEqual(headers['Content-Type'], 'text/plain')
 
     def test_make_public(self):
         from gcloud.storage.acl import _ACLEntity

@@ -6,10 +6,8 @@ import os
 from StringIO import StringIO
 import urllib
 
-from _gcloud_vendor.apitools.base.py.http_wrapper import Request
-from _gcloud_vendor.apitools.base.py.transfer import Upload
-from _gcloud_vendor.apitools.base.py.transfer import Download
-from _gcloud_vendor.apitools.base.py.transfer import _RESUMABLE_UPLOAD
+from _gcloud_vendor.apitools.base.py import http_wrapper
+from _gcloud_vendor.apitools.base.py import transfer
 
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
@@ -212,12 +210,12 @@ class Key(_PropertyMixin):
         :raises: :class:`gcloud.storage.exceptions.NotFound`
         """
         # Use apitools 'Download' facility.
-        download = Download.FromStream(file_obj, auto_transfer=False)
+        download = transfer.Download.FromStream(file_obj, auto_transfer=False)
         download.chunksize = self.CHUNK_SIZE
         download_url = self.connection.build_api_url(
             path=self.path, query_params={'alt': 'media'})
         headers = {'Range': 'bytes=0-%d' % (self.CHUNK_SIZE - 1)}
-        request = Request(download_url, 'POST', headers)
+        request = http_wrapper.Request(download_url, 'POST', headers)
 
         download.InitializeDownload(request, self.connection.http)
 
@@ -259,7 +257,7 @@ class Key(_PropertyMixin):
     get_contents_as_string = download_as_string
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
-                         content_type=None):
+                         content_type=None, num_retries=6):
         """Upload the contents of this key from a file-like object.
 
         .. note::
@@ -292,41 +290,43 @@ class Key(_PropertyMixin):
 
         # Get the basic stats about the file.
         total_bytes = size or os.fstat(file_obj.fileno()).st_size
+        conn = self.connection
         headers = {
-            # Base headers
             'Accept': 'application/json',
             'Accept-Encoding': 'gzip, deflate',
-            'User-Agent': self.connection.USER_AGENT,
-            # resumable upload headers.
-            'X-Upload-Content-Type': content_type or 'application/unknown',
-            'X-Upload-Content-Length': total_bytes,
+            'User-Agent': conn.USER_AGENT,
         }
 
-        query_params = {
-            'uploadType': 'resumable',
-            'name': self.name,
-        }
+        upload = transfer.Upload(file_obj,
+                                 content_type or 'application/unknown',
+                                 total_bytes, auto_transfer=False,
+                                 chunksize=self.CHUNK_SIZE)
 
-        upload_url = self.connection.build_api_url(
-            path=self.bucket.path + '/o',
-            query_params=query_params,
-            api_base_url=self.connection.API_BASE_URL + '/upload')
+        url_builder = _UrlBuilder(bucket_name=self.bucket.name,
+                                  object_name=self.name)
+        upload_config = _UploadConfig()
+
+        # Temporary URL, until we know simple vs. resumable.
+        upload_url = conn.build_api_url(
+            path=self.bucket.path + '/o')
 
         # Use apitools 'Upload' facility.
-        request = Request(upload_url, 'POST', headers)
+        request = http_wrapper.Request(upload_url, 'POST', headers)
 
-        upload = Upload(file_obj, content_type or 'application/unknown',
-                        total_bytes, auto_transfer=False,
-                        chunksize=self.CHUNK_SIZE)
-        upload.strategy = _RESUMABLE_UPLOAD
-
-        upload.InitializeUpload(request, self.connection.http)
+        upload.ConfigureRequest(upload_config, request, url_builder)
+        path = url_builder.relative_path.format(bucket=self.bucket.name)
+        query_params = url_builder.query_params
+        request.url = conn.build_api_url(path=path, query_params=query_params)
+        upload.InitializeUpload(request, conn.http)
 
         # Should we be passing callbacks through from caller?  We can't
         # pass them as None, because apitools wants to print to the console
         # by default.
-        upload.StreamInChunks(callback=lambda *args: None,
-                              finish_callback=lambda *args: None)
+        if upload.strategy == transfer._RESUMABLE_UPLOAD:
+            upload.StreamInChunks(callback=lambda *args: None,
+                                  finish_callback=lambda *args: None)
+        else:
+            http_wrapper.MakeRequest(conn.http, request, retries=num_retries)
 
     # NOTE: Alias for boto-like API.
     set_contents_from_file = upload_from_file
@@ -606,3 +606,34 @@ class Key(_PropertyMixin):
         :returns: timestamp in RFC 3339 format.
         """
         return self.properties['updated']
+
+
+class _UploadConfig(object):
+    """ Faux message FBO apitools' 'ConfigureRequest'.
+
+    Values extracted from apitools
+    'samples/storage_sample/storage/storage_v1_client.py'
+    """
+    accept = ['*/*']
+    max_size = None
+    resumable_multipart = True
+    resumable_path = u'/resumable/upload/storage/v1/b/{bucket}/o'
+    simple_multipart = True
+    simple_path = u'/upload/storage/v1/b/{bucket}/o'
+
+
+class _UrlBuilder(object):
+    """Faux builder FBO apitools' 'ConfigureRequest'
+    """
+    def __init__(self, bucket_name, object_name):
+        self.query_params = {'name': object_name}
+        self._bucket_name = bucket_name
+        self._relative_path = ''
+
+    @property
+    def relative_path(self):
+        return self._relative_path.format(bucket=self._bucket_name)
+
+    @relative_path.setter
+    def relative_path(self, value):
+        self._relative_path = value
