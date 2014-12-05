@@ -623,8 +623,7 @@ class _UploadConfig(object):
 
 
 class _UrlBuilder(object):
-    """Faux builder FBO apitools' 'ConfigureRequest'
-    """
+    """Faux builder FBO apitools' 'ConfigureRequest'"""
     def __init__(self, bucket_name, object_name):
         self.query_params = {'name': object_name}
         self._bucket_name = bucket_name
@@ -632,8 +631,13 @@ class _UrlBuilder(object):
 
     @property
     def relative_path(self):
+        """Inject bucket name into path."""
         return self._relative_path.format(bucket=self._bucket_name)
 
     @relative_path.setter
     def relative_path(self, value):
+        """Allow update of path template.
+
+        ``value`` should be a string template taking ``{bucket}``.
+        """
         self._relative_path = value
