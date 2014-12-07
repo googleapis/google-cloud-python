@@ -4,6 +4,7 @@ from gcloud.datastore import helpers
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
+from gcloud.datastore.key import Key
 
 
 class Dataset(object):
@@ -78,12 +79,17 @@ class Dataset(object):
         kwargs['dataset'] = self
         return Query(*args, **kwargs)
 
-    def entity(self, kind, exclude_from_indexes=()):
+    def entity(self, kind_key_path, exclude_from_indexes=()):
         """Create an entity bound to this dataset.
 
-        :type kind: string
+        :type kind_key_path: string, :class:`glcouddatastore.key.Key`, or path
         :param kind: the "kind" of the new entity (see
                  https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers)
+                     or put the "key" you want to set on the entity or the
+                     "sequence" of even length, where the first of each pair
+                     is a string representing the 'kind' of the path element,
+                     and the second of the pair is either a string (for the
+                     path element's name) or an integer (for its id).
 
         :param exclude_from_indexes: names of fields whose values are not to
                                      be indexed.
@@ -92,9 +98,26 @@ class Dataset(object):
         :returns: a new Entity instance, bound to this dataset.
         """
 
-        if isinstance(kind, basestring):       
-            return Entity(dataset=self, kind=kind,
-                        exclude_from_indexes=exclude_from_indexes)
+        if isinstance(kind_key_path, basestring):
+            return Entity(
+                dataset=self, kind=kind_key_path,
+                exclude_from_indexes=exclude_from_indexes)
+
+        elif isinstance(kind_key_path, Key):
+            kind = kind_key_path.kind()
+            return Entity(
+                dataset=self, kind=kind,
+                exclude_from_indexes=exclude_from_indexes).key(kind_key_path)
+
+        elif isinstance(kind_key_path, list):
+            key = Key.from_path(*kind_key_path)
+            kind = key.kind()
+            return Entity(
+                dataset=self, kind=kind,
+                exclude_from_indexes=exclude_from_indexes).key(key)
+
+        else:
+            raise ValueError('Must pass a kind, key or path.')
 
     def transaction(self, *args, **kwargs):
         """Create a transaction bound to this dataset.
