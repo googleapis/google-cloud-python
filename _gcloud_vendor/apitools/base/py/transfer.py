@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 """Upload and download support for apitools."""
+from __future__ import print_function
 
 import email.generator as email_generator
 import email.mime.multipart as mime_multipart
 import email.mime.nonmultipart as mime_nonmultipart
-import httplib
 import io
 import json
 import mimetypes
 import os
 import StringIO
 import threading
+
+from six.moves import http_client
 
 from _gcloud_vendor.apitools.base.py import exceptions
 from _gcloud_vendor.apitools.base.py import http_wrapper
@@ -38,7 +40,7 @@ class _Transfer(object):
     self.__url = None
 
     self.auto_transfer = auto_transfer
-    self.chunksize = chunksize or 1048576L
+    self.chunksize = chunksize or 1048576
 
   def __repr__(self):
     return str(self)
@@ -121,10 +123,10 @@ class Download(_Transfer):
     chunksize: default chunksize to use for transfers.
   """
   _ACCEPTABLE_STATUSES = set((
-      httplib.OK,
-      httplib.NO_CONTENT,
-      httplib.PARTIAL_CONTENT,
-      httplib.REQUESTED_RANGE_NOT_SATISFIABLE,
+      http_client.OK,
+      http_client.NO_CONTENT,
+      http_client.PARTIAL_CONTENT,
+      http_client.REQUESTED_RANGE_NOT_SATISFIABLE,
   ))
   _REQUIRED_SERIALIZATION_KEYS = set((
       'auto_transfer', 'progress', 'total_size', 'url'))
@@ -242,13 +244,13 @@ class Download(_Transfer):
   @staticmethod
   def _ArgPrinter(response, unused_download):
     if 'content-range' in response.info:
-      print 'Received %s' % response.info['content-range']
+      print('Received %s' % response.info['content-range'])
     else:
-      print 'Received %d bytes' % len(response)
+      print('Received %d bytes' % len(response))
 
   @staticmethod
   def _CompletePrinter(*unused_args):
-    print 'Download complete'
+    print('Download complete')
 
   def __NormalizeStartEnd(self, start, end=None):
     if end is not None:
@@ -290,10 +292,10 @@ class Download(_Transfer):
     """Process this response (by updating self and writing to self.stream)."""
     if response.status_code not in self._ACCEPTABLE_STATUSES:
       raise exceptions.TransferInvalidError(response.content)
-    if response.status_code in (httplib.OK, httplib.PARTIAL_CONTENT):
+    if response.status_code in (http_client.OK, http_client.PARTIAL_CONTENT):
       self.stream.write(response.content)
       self.__progress += len(response)
-    elif response.status_code == httplib.NO_CONTENT:
+    elif response.status_code == http_client.NO_CONTENT:
       # It's important to write something to the stream for the case
       # of a 0-byte download to a file, as otherwise python won't
       # create the file.
@@ -348,7 +350,7 @@ class Download(_Transfer):
                                    additional_headers=additional_headers)
       response = self.__ProcessResponse(response)
       self._ExecuteCallback(callback, response)
-      if (response.status_code == httplib.OK or
+      if (response.status_code == http_client.OK or
           self.progress >= self.total_size):
         break
     self._ExecuteCallback(finish_callback, response)
@@ -591,7 +593,7 @@ class Upload(_Transfer):
         self.http, refresh_request, redirections=0)
     range_header = refresh_response.info.get(
         'Range', refresh_response.info.get('range'))
-    if refresh_response.status_code in (httplib.OK, httplib.CREATED):
+    if refresh_response.status_code in (http_client.OK, http_client.CREATED):
       self.__complete = True
     elif refresh_response.status_code == http_wrapper.RESUME_INCOMPLETE:
       if range_header is None:
@@ -619,7 +621,7 @@ class Upload(_Transfer):
       http_request.url = client.FinalizeTransferUrl(http_request.url)
     self.EnsureUninitialized()
     http_response = http_wrapper.MakeRequest(http, http_request)
-    if http_response.status_code != httplib.OK:
+    if http_response.status_code != http_client.OK:
       raise exceptions.HttpError.FromResponse(http_response)
 
     self.__server_chunk_granularity = http_response.info.get(
@@ -651,11 +653,11 @@ class Upload(_Transfer):
 
   @staticmethod
   def _ArgPrinter(response, unused_upload):
-    print 'Sent %s' % response.info['range']
+    print('Sent %s' % response.info['range'])
 
   @staticmethod
   def _CompletePrinter(*unused_args):
-    print 'Upload complete'
+    print('Upload complete')
 
   def StreamInChunks(self, callback=None, finish_callback=None,
                      additional_headers=None):
@@ -674,7 +676,7 @@ class Upload(_Transfer):
     while not self.complete:
       response = self.__SendChunk(self.stream.tell(),
                                   additional_headers=additional_headers)
-      if response.status_code in (httplib.OK, httplib.CREATED):
+      if response.status_code in (http_client.OK, http_client.CREATED):
         self.__complete = True
         break
       self.__progress = self.__GetLastByte(response.info['range'])
@@ -703,10 +705,10 @@ class Upload(_Transfer):
       request.headers.update(additional_headers)
 
     response = http_wrapper.MakeRequest(self.bytes_http, request)
-    if response.status_code not in (httplib.OK, httplib.CREATED,
+    if response.status_code not in (http_client.OK, http_client.CREATED,
                                     http_wrapper.RESUME_INCOMPLETE):
       raise exceptions.HttpError.FromResponse(response)
-    if response.status_code in (httplib.OK, httplib.CREATED):
+    if response.status_code in (http_client.OK, http_client.CREATED):
       return response
     # TODO(craigcitro): Add retries on no progress?
     last_byte = self.__GetLastByte(response.info['range'])

@@ -2,12 +2,13 @@
 """Assorted utilities shared between parts of apitools."""
 
 import collections
-import httplib
 import os
 import random
-import types
 import urllib
 import urllib2
+
+import six
+from six.moves import http_client
 
 from _gcloud_vendor.apitools.base.py import exceptions
 
@@ -46,13 +47,13 @@ def DetectGce():
     o = urllib2.urlopen('http://metadata.google.internal')
   except urllib2.URLError:
     return False
-  return (o.getcode() == httplib.OK and
+  return (o.getcode() == http_client.OK and
           o.headers.get('metadata-flavor') == 'Google')
 
 
 def NormalizeScopes(scope_spec):
   """Normalize scope_spec to a set of strings."""
-  if isinstance(scope_spec, types.StringTypes):
+  if isinstance(scope_spec, six.string_types):
     return set(scope_spec.split(' '))
   elif isinstance(scope_spec, collections.Iterable):
     return set(scope_spec)
@@ -99,7 +100,7 @@ def ExpandRelativePath(method_config, params, relative_path=None):
       raise exceptions.InvalidUserInputError(
           'Request missing required parameter %s' % param)
     try:
-      if not isinstance(value, basestring):
+      if not isinstance(value, six.string_types):
         value = str(value)
       path = path.replace(param_template,
                           urllib.quote(value.encode('utf_8'), reserved_chars))
