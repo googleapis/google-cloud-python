@@ -123,6 +123,17 @@ class TestStorageWriteFiles(TestStorageFiles):
         key._properties.clear()  # force a reload
         self.assertEqual(key.md5_hash, file_data['hash'])
 
+    def test_small_file_write_from_filename(self):
+        key = self.bucket.new_key('LargeFile')
+        self.assertEqual(key._properties, {})
+
+        file_data = self.FILES['simple']
+        key.upload_from_filename(file_data['path'])
+        self.case_keys_to_delete.append(key)
+
+        key._properties.clear()  # force a reload
+        self.assertEqual(key.md5_hash, file_data['hash'])
+
     def test_write_metadata(self):
         key = self.bucket.upload_file(self.FILES['logo']['path'])
         self.case_keys_to_delete.append(key)
