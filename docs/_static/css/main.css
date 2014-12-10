@@ -662,6 +662,10 @@ h2 .headerlink:hover {
   cursor: pointer;
 }
 
+.viewcode-link {
+  float: right;
+}
+
 /*
  Page Title
 */
