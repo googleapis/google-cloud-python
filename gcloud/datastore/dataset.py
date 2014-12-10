@@ -10,24 +10,20 @@ from gcloud.datastore.key import Key
 class Dataset(object):
     """A dataset in the Cloud Datastore.
 
-    This class acts as an abstraction of a single dataset
-    in the Cloud Datastore.
+    This class acts as an abstraction of a single dataset in the Cloud
+    Datastore.
 
-    A dataset is analogous to a database
-    in relational database world,
-    and corresponds to a single project
-    using the Cloud Datastore.
+    A dataset is analogous to a database in relational database world,
+    and corresponds to a single project using the Cloud Datastore.
 
-    Typically, you would only have one of these per connection
-    however it didn't seem right to collapse the functionality
-    of a connection and a dataset together into a single class.
+    Typically, you would only have one of these per connection however
+    it didn't seem right to collapse the functionality of a connection
+    and a dataset together into a single class.
 
-    Datasets (like :class:`gcloud.datastore.query.Query`)
-    are immutable.
-    That is, you cannot change the ID and connection
-    references.
-    If you need to modify the connection or ID,
-    it's recommended to construct a new :class:`Dataset`.
+    Datasets (like :class:`gcloud.datastore.query.Query`) are immutable.
+    That is, you cannot change the ID and connection references.  If you
+    need to modify the connection or ID, it's recommended to construct a
+    new :class:`Dataset`.
 
     :type id: string
     :param id: The ID of the dataset (your project ID)

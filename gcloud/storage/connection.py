@@ -30,12 +30,14 @@ def _utcnow():  # pragma: NO COVER testing replaces
 class Connection(_Base):
     """A connection to Google Cloud Storage via the JSON REST API.
 
-    This class should understand only the basic types (and protobufs)
-    in method arguments, however should be capable of returning advanced types.
+    This class should understand only the basic types (and protobufs) in
+    method arguments, however should be capable of returning advanced
+    types.
 
-    See :class:`gcloud.connection.Connection` for a full list of parameters.
-    :class:`Connection` differs only in needing a project name
-    (which you specify when creating a project in the Cloud Console).
+    See :class:`gcloud.connection.Connection` for a full list of
+    parameters.  :class:`Connection` differs only in needing a project
+    name (which you specify when creating a project in the Cloud
+    Console).
 
     A typical use of this is to operate on
     :class:`gcloud.storage.bucket.Bucket` objects::
@@ -486,8 +488,9 @@ class Connection(_Base):
 class _BucketIterator(Iterator):
     """An iterator listing all buckets.
 
-    You shouldn't have to use this directly, but instead should use the helper
-    methods on :class:`gcloud.storage.connection.Connection` objects.
+    You shouldn't have to use this directly, but instead should use the
+    helper methods on :class:`gcloud.storage.connection.Connection`
+    objects.
 
     :type connection: :class:`gcloud.storage.connection.Connection`
     :param connection: The connection to use for querying the list of buckets.

@@ -235,8 +235,8 @@ class Bucket(_PropertyMixin):
 
         The bucket **must** be empty in order to delete it.  If the
         bucket doesn't exist, this will raise a
-        :class:`gcloud.storage.exceptions.NotFound`.  If the bucket
-        is not empty, this will raise an Exception.
+        :class:`gcloud.storage.exceptions.NotFound`.  If the bucket is
+        not empty, this will raise an Exception.
 
         If you want to delete a non-empty bucket you can pass in a force
         parameter set to true.  This will iterate through the bucket's
@@ -255,8 +255,8 @@ class Bucket(_PropertyMixin):
     def delete_key(self, key):
         """Deletes a key from the current bucket.
 
-        If the key isn't found,
-        this will throw a :class:`gcloud.storage.exceptions.NotFound`.
+        If the key isn't found, raise a
+        :class:`gcloud.storage.exceptions.NotFound`.
 
         For example::
 

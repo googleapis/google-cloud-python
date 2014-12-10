@@ -7,15 +7,12 @@ from gcloud.datastore import helpers
 class Transaction(object):
     """An abstraction representing datastore Transactions.
 
-    Transactions can be used
-    to build up a bulk mutuation
-    as well as provide isolation.
+    Transactions can be used to build up a bulk mutuation as well as
+    provide isolation.
 
-    For example,
-    the following snippet of code
-    will put the two ``save`` operations
-    (either ``insert_auto_id`` or ``upsert``)
-    into the same mutation, and execute those within a transaction::
+    For example, the following snippet of code will put the two ``save``
+    operations (either ``insert_auto_id`` or ``upsert``) into the same
+    mutation, and execute those within a transaction::
 
       >>> from gcloud import datastore
       >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
@@ -32,45 +29,39 @@ class Transaction(object):
       ...   do_some_work()
       ...   raise Exception() # rolls back
 
-    If the transaction block exists without an exception,
-    it will commit by default.
+    If the transaction block exists without an exception, it will commit
+    by default.
 
-    .. warning::
-      Inside a transaction,
-      automatically assigned IDs for entities
-      will not be available at save time!
-      That means,
-      if you try::
+    .. warning:: Inside a transaction, automatically assigned IDs for
+       entities will not be available at save time!  That means, if you
+       try::
 
-        >>> with dataset.transaction():
-        ...   entity = dataset.entity('Thing').save()
+         >>> with dataset.transaction():
+         ...   entity = dataset.entity('Thing').save()
 
-      ``entity`` won't have a complete Key
-      until the transaction is committed.
+       ``entity`` won't have a complete Key until the transaction is
+       committed.
 
-      Once you exit the transaction (or call ``commit()``),
-      the automatically generated ID will be assigned
-      to the entity::
+       Once you exit the transaction (or call ``commit()``), the
+       automatically generated ID will be assigned to the entity::
 
-        >>> with dataset.transaction():
-        ...   entity = dataset.entity('Thing')
-        ...   entity.save()
-        ...   assert entity.key().is_partial()  # There is no ID on this key.
-        >>> assert not entity.key().is_partial()  # There *is* an ID.
+         >>> with dataset.transaction():
+         ...   entity = dataset.entity('Thing')
+         ...   entity.save()
+         ...   assert entity.key().is_partial()  # There is no ID on this key.
+         >>> assert not entity.key().is_partial()  # There *is* an ID.
 
-    .. warning::
-      If you're using the automatically generated ID functionality,
-      it's important that you only use
-      :func:`gcloud.datastore.entity.Entity.save`
-      rather than using
-      :func:`gcloud.datastore.connection.Connection.save_entity` directly.
+    .. warning:: If you're using the automatically generated ID
+       functionality, it's important that you only use
+       :func:`gcloud.datastore.entity.Entity.save` rather than using
+       :func:`gcloud.datastore.connection.Connection.save_entity`
+       directly.
 
-      If you mix the two,
-      the results will have extra IDs generated
-      and it could jumble things up.
+       If you mix the two, the results will have extra IDs generated and
+       it could jumble things up.
 
-    If you don't want to use the context manager
-    you can initialize a transaction manually::
+    If you don't want to use the context manager you can initialize a
+    transaction manually::
 
       >>> transaction = dataset.transaction()
       >>> transaction.begin()
@@ -83,14 +74,10 @@ class Transaction(object):
       ... else:
       ...   transaction.commit()
 
-    For now,
-    this library will enforce a rule of
-    one transaction per connection.
-    That is,
-    If you want to work with two transactions at the same time
-    (for whatever reason),
-    that must happen over two separate
-    :class:`gcloud.datastore.connection.Connection` s.
+    For now, this library will enforce a rule of one transaction per
+    connection.  That is, If you want to work with two transactions at
+    the same time (for whatever reason), that must happen over two
+    separate :class:`gcloud.datastore.connection.Connection` s.
 
     For example, this is perfectly valid::
 
@@ -108,9 +95,9 @@ class Transaction(object):
       ...   with dataset.transaction():
       ...     dataset.entity('Thing').save()
 
-    Technically, it looks like the Protobuf API supports this type of pattern,
-    however it makes the code particularly messy.
-    If you really need to nest transactions, try::
+    Technically, it looks like the Protobuf API supports this type of
+    pattern, however it makes the code particularly messy.  If you
+    really need to nest transactions, try::
 
       >>> from gcloud import datastore
       >>> dataset1 = datastore.get_dataset('dataset-id', email, key_path)
@@ -160,14 +147,11 @@ class Transaction(object):
     def mutation(self):
         """Getter for the current mutation.
 
-        Every transaction is committed
-        with a single Mutation
+        Every transaction is committed with a single Mutation
         representing the 'work' to be done as part of the transaction.
-        Inside a transaction,
-        calling ``save()`` on an entity
-        builds up the mutation.
-        This getter returns the Mutation protobuf
-        that has been built-up so far.
+        Inside a transaction, calling ``save()`` on an entity builds up
+        the mutation.  This getter returns the Mutation protobuf that
+        has been built-up so far.
 
         :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`
         :returns: The Mutation protobuf to be sent in the commit request.
@@ -177,27 +161,25 @@ class Transaction(object):
     def add_auto_id_entity(self, entity):
         """Adds an entity to the list of entities to update with IDs.
 
-        When an entity has a partial key,
-        calling ``save()`` adds an insert_auto_id entry in the mutation.
-        In order to make sure we update the Entity
-        once the transaction is committed,
-        we need to keep track of which entities to update
-        (and the order is important).
+        When an entity has a partial key, calling ``save()`` adds an
+        insert_auto_id entry in the mutation.  In order to make sure we
+        update the Entity once the transaction is committed, we need to
+        keep track of which entities to update (and the order is
+        important).
 
-        When you call ``save()`` on an entity inside a transaction,
-        if the entity has a partial key,
-        it adds itself to the list of entities to be updated
-        once the transaction is committed
-        by calling this method.
+        When you call ``save()`` on an entity inside a transaction, if
+        the entity has a partial key, it adds itself to the list of
+        entities to be updated once the transaction is committed by
+        calling this method.
         """
         self._auto_id_entities.append(entity)
 
     def begin(self):
         """Begins a transaction.
 
-        This method is called automatically when entering a with statement,
-        however it can be called explicitly
-        if you don't want to use a context manager.
+        This method is called automatically when entering a with
+        statement, however it can be called explicitly if you don't want
+        to use a context manager.
         """
         self._id = self.connection().begin_transaction(self.dataset().id())
         self.connection().transaction(self)
@@ -218,8 +200,8 @@ class Transaction(object):
         """Commits the transaction.
 
         This is called automatically upon exiting a with statement,
-        however it can be called explicitly
-        if you don't want to use a context manager.
+        however it can be called explicitly if you don't want to use a
+        context manager.
 
         This method has necessary side-effects:
 

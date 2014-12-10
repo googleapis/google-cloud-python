@@ -1,19 +1,4 @@
-"""Class for representing a single entity in the Cloud Datastore.
-
-Entities are akin to rows in a relational database,
-storing the actual instance of data.
-
-Each entity is officially represented with
-a :class:`gcloud.datastore.key.Key` class,
-however it is possible that you might create
-an Entity with only a partial Key
-(that is, a Key with a Kind,
-and possibly a parent, but without an ID).
-
-Entities in this API act like dictionaries
-with extras built in that allow you to
-delete or persist the data stored on the entity.
-"""
+"""Class for representing a single entity in the Cloud Datastore."""
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.key import Key
@@ -28,42 +13,40 @@ class NoDataset(RuntimeError):
 
 
 class Entity(dict):
-    """:type dataset: :class:`gcloud.datastore.dataset.Dataset`
-    :param dataset: The dataset in which this entity belongs.
+    """Entities are akin to rows in a relational database
 
-    :type kind: string
-    :param kind: The kind of entity this is, akin to a table name in a
-                 relational database.
+    An entity storing the actual instance of data.
+
+    Each entity is officially represented with a
+    :class:`gcloud.datastore.key.Key` class, however it is possible that
+    you might create an Entity with only a partial Key (that is, a Key
+    with a Kind, and possibly a parent, but without an ID).  In such a
+    case, the datastore service will automatically assign an ID to the
+    partial key.
+
+    Entities in this API act like dictionaries with extras built in that
+    allow you to delete or persist the data stored on the entity.
 
     Entities are mutable and act like a subclass of a dictionary.
     This means you could take an existing entity and change the key
     to duplicate the object.
 
-    This can be used on its own, however it is likely easier to use
-    the shortcut methods provided by :class:`gcloud.datastore.dataset.Dataset`
-    such as:
-
-    - :func:`gcloud.datastore.dataset.Dataset.entity` to create a new entity.
-
-      >>> dataset.entity('MyEntityKind')
-      <Entity[{'kind': 'MyEntityKind'}] {}>
-
-    - :func:`gcloud.datastore.dataset.Dataset.get_entity`
-      to retrieve an existing entity.
+    Use :func:`gcloud.datastore.dataset.Dataset.get_entity`
+    to retrieve an existing entity.
 
       >>> dataset.get_entity(key)
       <Entity[{'kind': 'EntityKind', id: 1234}] {'property': 'value'}>
 
-    You can the set values on the entity
-    just like you would on any other dictionary.
+    You can the set values on the entity just like you would on any
+    other dictionary.
 
     >>> entity['age'] = 20
     >>> entity['name'] = 'JJ'
     >>> entity
     <Entity[{'kind': 'EntityKind', id: 1234}] {'age': 20, 'name': 'JJ'}>
 
-    And you can cast an entity to a regular Python dictionary
-    with the `dict` builtin:
+    And you can convert an entity to a regular Python dictionary with the
+    `dict` builtin:
 
     >>> dict(entity)
     {'age': 20, 'name': 'JJ'}
@@ -77,6 +60,13 @@ class Entity(dict):
        again.  Values which are "bytes" ('str' in Python2, 'bytes' in
        Python3), will be saved using the 'blob_value' field, without
        any decoding / encoding step.
+
+    :type dataset: :class:`gcloud.datastore.dataset.Dataset`
+    :param dataset: The dataset in which this entity belongs.
+
+    :type kind: string
+    :param kind: The kind of entity this is, akin to a table name in a
+                 relational database.
 
     :type dataset: :class:`gcloud.datastore.dataset.Dataset`, or None
     :param dataset: the Dataset instance associated with this entity.
@@ -101,15 +91,15 @@ class Entity(dict):
     def dataset(self):
         """Get the :class:`.dataset.Dataset` in which this entity belongs.
 
-        :rtype: :class:`gcloud.datastore.dataset.Dataset`
-        :returns: The Dataset containing the entity if there is a key,
-                  else None.
-
         .. note::
           This is based on the :class:`gcloud.datastore.key.Key` set on the
           entity. That means that if you have no key set, the dataset might
           be `None`. It also means that if you change the key on the entity,
           this will refer to that key's dataset.
+
+        :rtype: :class:`gcloud.datastore.dataset.Dataset`
+        :returns: The Dataset containing the entity if there is a key,
+                  else None.
         """
         return self._dataset
 
@@ -139,12 +129,10 @@ class Entity(dict):
         """Get the kind of the current entity.
 
         .. note::
-          This relies entirely on
-          the :class:`gcloud.datastore.key.Key`
-          set on the entity.
-          That means that we're not storing the kind of the entity at all,
-          just the properties and a pointer to a Key
-          which knows its Kind.
+          This relies entirely on the :class:`gcloud.datastore.key.Key`
+          set on the entity.  That means that we're not storing the kind
+          of the entity at all, just the properties and a pointer to a
+          Key which knows its Kind.
         """
 
         if self._key:
@@ -161,8 +149,7 @@ class Entity(dict):
     def from_key(cls, key, dataset=None):
         """Create entity based on :class:`.datastore.key.Key`.
 
-        .. note::
-          This is a factory method.
+        .. note:: This is a factory method.
 
         :type key: :class:`gcloud.datastore.key.Key`
         :param key: The key for the entity.
