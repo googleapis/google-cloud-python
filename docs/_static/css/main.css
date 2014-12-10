@@ -601,6 +601,14 @@ h2, h3 {
   padding: 8px;
 }
 
+.admonition {
+  background-color: #f8f8f8;
+}
+
+.admonition pre {
+  background-color: #eeeeee !important;
+}
+
 .docs-header {
     position: relative;
     padding: 7em 2em 4em;
