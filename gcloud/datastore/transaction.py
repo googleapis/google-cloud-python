@@ -16,7 +16,7 @@ class Transaction(object):
 
       >>> from gcloud import datastore
       >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
-      >>> with dataset.transaction(bulk_mutation=True)  # The default.
+      >>> with dataset.transaction()
       ...   entity1.save()
       ...   entity2.save()
 
