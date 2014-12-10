@@ -261,7 +261,6 @@ class Key(_PropertyMixin):
         """Upload the contents of this key from a file-like object.
 
         .. note::
-
            The effect of uploading to an existing key depends on the
            "versioning" and "lifecycle" policies defined on the key's
            bucket.  In the absence of those policies, upload will
@@ -335,7 +334,6 @@ class Key(_PropertyMixin):
         """Upload this key's contents from the content of f named file.
 
         .. note::
-
            The effect of uploading to an existing key depends on the
            "versioning" and "lifecycle" policies defined on the key's
            bucket.  In the absence of those policies, upload will
@@ -361,7 +359,6 @@ class Key(_PropertyMixin):
         """Upload contents of this key from the provided string.
 
         .. note::
-
            The effect of uploading to an existing key depends on the
            "versioning" and "lifecycle" policies defined on the key's
            bucket.  In the absence of those policies, upload will
