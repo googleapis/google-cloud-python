@@ -179,62 +179,73 @@ class Test_Key(unittest2.TestCase):
         self.assertFalse(key.exists())
 
     def test_download_to_file(self):
+        import httplib
         from StringIO import StringIO
-        from gcloud._testing import _Monkey
-        from gcloud.storage import key as MUT
-        _CHUNKS = ['abc', 'def']
         KEY = 'key'
-        connection = _Connection()
+        chunk1_response = {'status': httplib.PARTIAL_CONTENT,
+                           'content-range': 'bytes 0-2/6'}
+        chunk2_response = {'status': httplib.OK,
+                           'content-range': 'bytes 3-5/6'}
+        connection = _Connection(
+            (chunk1_response, 'abc'),
+            (chunk2_response, 'def'),
+        )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
+        key.CHUNK_SIZE = 3
         fh = StringIO()
-        with _Monkey(MUT, _KeyDataIterator=lambda self: iter(_CHUNKS)):
-            key.download_to_file(fh)
-        self.assertEqual(fh.getvalue(), ''.join(_CHUNKS))
+        key.download_to_file(fh)
+        self.assertEqual(fh.getvalue(), 'abcdef')
 
     def test_download_to_filename(self):
+        import httplib
         from tempfile import NamedTemporaryFile
-        from gcloud._testing import _Monkey
-        from gcloud.storage import key as MUT
-        _CHUNKS = ['abc', 'def']
         KEY = 'key'
-        connection = _Connection()
+        chunk1_response = {'status': httplib.PARTIAL_CONTENT,
+                           'content-range': 'bytes 0-2/6'}
+        chunk2_response = {'status': httplib.OK,
+                           'content-range': 'bytes 3-5/6'}
+        connection = _Connection(
+            (chunk1_response, 'abc'),
+            (chunk2_response, 'def'),
+        )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
-        with _Monkey(MUT, _KeyDataIterator=lambda self: iter(_CHUNKS)):
-            with NamedTemporaryFile() as f:
-                key.download_to_filename(f.name)
-                f.flush()
-                with open(f.name) as g:
-                    wrote = g.read()
-        self.assertEqual(wrote, ''.join(_CHUNKS))
+        key.CHUNK_SIZE = 3
+        with NamedTemporaryFile() as f:
+            key.download_to_filename(f.name)
+            f.flush()
+            with open(f.name) as g:
+                wrote = g.read()
+        self.assertEqual(wrote, 'abcdef')
 
     def test_download_as_string(self):
-        from gcloud._testing import _Monkey
-        from gcloud.storage import key as MUT
-        _CHUNKS = ['abc', 'def']
+        import httplib
         KEY = 'key'
-        connection = _Connection()
+        chunk1_response = {'status': httplib.PARTIAL_CONTENT,
+                           'content-range': 'bytes 0-2/6'}
+        chunk2_response = {'status': httplib.OK,
+                           'content-range': 'bytes 3-5/6'}
+        connection = _Connection(
+            (chunk1_response, 'abc'),
+            (chunk2_response, 'def'),
+        )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
-        with _Monkey(MUT, _KeyDataIterator=lambda self: iter(_CHUNKS)):
-            fetched = key.download_as_string()
-        self.assertEqual(fetched, ''.join(_CHUNKS))
+        key.CHUNK_SIZE = 3
+        fetched = key.download_as_string()
+        self.assertEqual(fetched, 'abcdef')
 
-    def test_upload_from_file(self):
+    def test_upload_from_file_simple(self):
+        import httplib
         from tempfile import NamedTemporaryFile
         from urlparse import parse_qsl
         from urlparse import urlsplit
         KEY = 'key'
-        UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
-        loc_response = {'location': UPLOAD_URL}
-        chunk1_response = {}
-        chunk2_response = {}
+        response = {'status': httplib.OK}
         connection = _Connection(
-            (loc_response, ''),
-            (chunk1_response, ''),
-            (chunk2_response, ''),
+            (response, ''),
         )
         bucket = _Bucket(connection)
         key = self._makeOne(bucket, KEY)
@@ -243,40 +254,93 @@ class Test_Key(unittest2.TestCase):
             fh.write(DATA)
             fh.flush()
             key.upload_from_file(fh, rewind=True)
-        rq = connection._requested
-        self.assertEqual(len(rq), 3)
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['url']
+        uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(path, '/upload/storage/v1/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': 'key'})
-        self.assertEqual(rq[0]['headers'],
-                         {'X-Upload-Content-Length': 6,
-                          'X-Upload-Content-Type': 'application/unknown'})
-        self.assertEqual(rq[1]['method'], 'POST')
-        self.assertEqual(rq[1]['url'], UPLOAD_URL)
-        self.assertEqual(rq[1]['content_type'], 'text/plain')
-        self.assertEqual(rq[1]['data'], DATA[:5])
-        self.assertEqual(rq[1]['headers'], {'Content-Range': 'bytes 0-4/6'})
-        self.assertEqual(rq[2]['method'], 'POST')
-        self.assertEqual(rq[2]['url'], UPLOAD_URL)
-        self.assertEqual(rq[2]['content_type'], 'text/plain')
-        self.assertEqual(rq[2]['data'], DATA[5:])
-        self.assertEqual(rq[2]['headers'], {'Content-Range': 'bytes 5-5/6'})
+                         {'uploadType': 'media', 'name': 'key'})
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        self.assertEqual(headers['Content-Length'], '6')
+        self.assertEqual(headers['Content-Type'], 'application/unknown')
 
-    def test_upload_from_file_w_slash_in_name(self):
+    def test_upload_from_file_resumable(self):
+        import httplib
         from tempfile import NamedTemporaryFile
         from urlparse import parse_qsl
         from urlparse import urlsplit
+        from gcloud._testing import _Monkey
+        from _gcloud_vendor.apitools.base.py import http_wrapper
+        from _gcloud_vendor.apitools.base.py import transfer
+        KEY = 'key'
+        UPLOAD_URL = 'http://example.com/upload/name/key'
+        DATA = 'ABCDEF'
+        loc_response = {'status': httplib.OK, 'location': UPLOAD_URL}
+        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
+                           'range': 'bytes 0-4'}
+        chunk2_response = {'status': httplib.OK}
+        connection = _Connection(
+            (loc_response, ''),
+            (chunk1_response, ''),
+            (chunk2_response, ''),
+        )
+        bucket = _Bucket(connection)
+        key = self._makeOne(bucket, KEY)
+        key.CHUNK_SIZE = 5
+        # Set the threshhold low enough that we force a resumable uploada.
+        with _Monkey(transfer, _RESUMABLE_UPLOAD_THRESHOLD=5):
+            with NamedTemporaryFile() as fh:
+                fh.write(DATA)
+                fh.flush()
+                key.upload_from_file(fh, rewind=True)
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 3)
+        self.assertEqual(rq[0]['method'], 'POST')
+        uri = rq[0]['uri']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/resumable/upload/storage/v1/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'resumable', 'name': 'key'})
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        self.assertEqual(headers['X-Upload-Content-Length'], '6')
+        self.assertEqual(headers['X-Upload-Content-Type'],
+                         'application/unknown')
+        self.assertEqual(rq[1]['method'], 'PUT')
+        self.assertEqual(rq[1]['uri'], UPLOAD_URL)
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[1]['headers'].items()])
+        self.assertEqual(rq[1]['body'], DATA[:5])
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[1]['headers'].items()])
+        self.assertEqual(headers['Content-Range'], 'bytes 0-4/6')
+        self.assertEqual(rq[2]['method'], 'PUT')
+        self.assertEqual(rq[2]['uri'], UPLOAD_URL)
+        self.assertEqual(rq[2]['body'], DATA[5:])
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[2]['headers'].items()])
+        self.assertEqual(headers['Content-Range'], 'bytes 5-5/6')
+
+    def test_upload_from_file_w_slash_in_name(self):
+        import httplib
+        from tempfile import NamedTemporaryFile
+        from urlparse import parse_qsl
+        from urlparse import urlsplit
+        from _gcloud_vendor.apitools.base.py import http_wrapper
         KEY = 'parent/child'
         UPLOAD_URL = 'http://example.com/upload/name/parent%2Fchild'
         DATA = 'ABCDEF'
-        loc_response = {'location': UPLOAD_URL}
-        chunk1_response = {}
-        chunk2_response = {}
+        loc_response = {'status': httplib.OK, 'location': UPLOAD_URL}
+        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
+                           'range': 'bytes 0-4'}
+        chunk2_response = {'status': httplib.OK}
         connection = _Connection(
             (loc_response, ''),
             (chunk1_response, ''),
@@ -289,40 +353,34 @@ class Test_Key(unittest2.TestCase):
             fh.write(DATA)
             fh.flush()
             key.upload_from_file(fh, rewind=True)
-        rq = connection._requested
-        self.assertEqual(len(rq), 3)
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['url']
+        uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(path, '/upload/storage/v1/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': 'parent/child'})
-        self.assertEqual(rq[0]['headers'],
-                         {'X-Upload-Content-Length': 6,
-                          'X-Upload-Content-Type': 'application/unknown'})
-        self.assertEqual(rq[1]['method'], 'POST')
-        self.assertEqual(rq[1]['url'], UPLOAD_URL)
-        self.assertEqual(rq[1]['content_type'], 'text/plain')
-        self.assertEqual(rq[1]['data'], DATA[:5])
-        self.assertEqual(rq[1]['headers'], {'Content-Range': 'bytes 0-4/6'})
-        self.assertEqual(rq[2]['method'], 'POST')
-        self.assertEqual(rq[2]['url'], UPLOAD_URL)
-        self.assertEqual(rq[2]['content_type'], 'text/plain')
-        self.assertEqual(rq[2]['data'], DATA[5:])
-        self.assertEqual(rq[2]['headers'], {'Content-Range': 'bytes 5-5/6'})
+                         {'uploadType': 'media', 'name': 'parent/child'})
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        self.assertEqual(headers['Content-Length'], '6')
+        self.assertEqual(headers['Content-Type'], 'application/unknown')
 
     def test_upload_from_filename(self):
+        import httplib
         from tempfile import NamedTemporaryFile
         from urlparse import parse_qsl
         from urlparse import urlsplit
+        from _gcloud_vendor.apitools.base.py import http_wrapper
         KEY = 'key'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
-        loc_response = {'location': UPLOAD_URL}
-        chunk1_response = {}
-        chunk2_response = {}
+        loc_response = {'status': httplib.OK, 'location': UPLOAD_URL}
+        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
+                           'range': 'bytes 0-4'}
+        chunk2_response = {'status': httplib.OK}
         connection = _Connection(
             (loc_response, ''),
             (chunk1_response, ''),
@@ -335,39 +393,33 @@ class Test_Key(unittest2.TestCase):
             fh.write(DATA)
             fh.flush()
             key.upload_from_filename(fh.name)
-        rq = connection._requested
-        self.assertEqual(len(rq), 3)
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['url']
+        uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(path, '/upload/storage/v1/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': 'key'})
-        self.assertEqual(rq[0]['headers'],
-                         {'X-Upload-Content-Length': 6,
-                          'X-Upload-Content-Type': 'image/jpeg'})
-        self.assertEqual(rq[1]['method'], 'POST')
-        self.assertEqual(rq[1]['url'], UPLOAD_URL)
-        self.assertEqual(rq[1]['content_type'], 'text/plain')
-        self.assertEqual(rq[1]['data'], DATA[:5])
-        self.assertEqual(rq[1]['headers'], {'Content-Range': 'bytes 0-4/6'})
-        self.assertEqual(rq[2]['method'], 'POST')
-        self.assertEqual(rq[2]['url'], UPLOAD_URL)
-        self.assertEqual(rq[2]['content_type'], 'text/plain')
-        self.assertEqual(rq[2]['data'], DATA[5:])
-        self.assertEqual(rq[2]['headers'], {'Content-Range': 'bytes 5-5/6'})
+                         {'uploadType': 'media', 'name': 'key'})
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        self.assertEqual(headers['Content-Length'], '6')
+        self.assertEqual(headers['Content-Type'], 'image/jpeg')
 
     def test_upload_from_string(self):
+        import httplib
         from urlparse import parse_qsl
         from urlparse import urlsplit
+        from _gcloud_vendor.apitools.base.py import http_wrapper
         KEY = 'key'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = 'ABCDEF'
-        loc_response = {'location': UPLOAD_URL}
-        chunk1_response = {}
-        chunk2_response = {}
+        loc_response = {'status': httplib.OK, 'location': UPLOAD_URL}
+        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
+                           'range': 'bytes 0-4'}
+        chunk2_response = {'status': httplib.OK}
         connection = _Connection(
             (loc_response, ''),
             (chunk1_response, ''),
@@ -377,29 +429,20 @@ class Test_Key(unittest2.TestCase):
         key = self._makeOne(bucket, KEY)
         key.CHUNK_SIZE = 5
         key.upload_from_string(DATA)
-        rq = connection._requested
-        self.assertEqual(len(rq), 3)
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['url']
+        uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(path, '/upload/storage/v1/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': 'key'})
-        self.assertEqual(rq[0]['headers'],
-                         {'X-Upload-Content-Length': 6,
-                          'X-Upload-Content-Type': 'text/plain'})
-        self.assertEqual(rq[1]['method'], 'POST')
-        self.assertEqual(rq[1]['url'], UPLOAD_URL)
-        self.assertEqual(rq[1]['content_type'], 'text/plain')
-        self.assertEqual(rq[1]['data'], DATA[:5])
-        self.assertEqual(rq[1]['headers'], {'Content-Range': 'bytes 0-4/6'})
-        self.assertEqual(rq[2]['method'], 'POST')
-        self.assertEqual(rq[2]['url'], UPLOAD_URL)
-        self.assertEqual(rq[2]['content_type'], 'text/plain')
-        self.assertEqual(rq[2]['data'], DATA[5:])
-        self.assertEqual(rq[2]['headers'], {'Content-Range': 'bytes 5-5/6'})
+                         {'uploadType': 'media', 'name': 'key'})
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        self.assertEqual(headers['Content-Length'], '6')
+        self.assertEqual(headers['Content-Type'], 'text/plain')
 
     def test_make_public(self):
         from gcloud.storage.acl import _ACLEntity
@@ -737,189 +780,30 @@ class Test_Key(unittest2.TestCase):
         self.assertEqual(key.updated, UPDATED)
 
 
-class Test__KeyDataIterator(unittest2.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.storage.key import _KeyDataIterator
-        return _KeyDataIterator
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test_ctor(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        self.assertTrue(iterator.key is key)
-        self.assertEqual(iterator._bytes_written, 0)
-        self.assertEqual(iterator._total_bytes, None)
-
-    def test__iter__(self):
-        response1 = _Response(status=200)
-        response1['content-range'] = '0-9/15'
-        response2 = _Response(status=200)
-        response2['content-range'] = '10-14/15'
-        connection = _Connection(
-            (response1, '0123456789'),
-            (response2, '01234'),
-        )
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        chunks = list(iterator)
-        self.assertEqual(len(chunks), 2)
-        self.assertEqual(chunks[0], '0123456789')
-        self.assertEqual(chunks[1], '01234')
-        self.assertEqual(iterator._bytes_written, 15)
-        self.assertEqual(iterator._total_bytes, 15)
-        kws = connection._requested
-        self.assertEqual(kws[0]['method'], 'GET')
-        self.assertEqual(kws[0]['url'],
-                         'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kws[0]['headers'], {'Range': 'bytes=0-9'})
-        self.assertEqual(kws[1]['method'], 'GET')
-        self.assertEqual(kws[1]['url'],
-                         'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kws[1]['headers'], {'Range': 'bytes=10-'})
-
-    def test_reset(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        iterator._bytes_written = 10
-        iterator._total_bytes = 1000
-        iterator.reset()
-        self.assertEqual(iterator._bytes_written, 0)
-        self.assertEqual(iterator._total_bytes, None)
-
-    def test_has_more_data_new(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        self.assertTrue(iterator.has_more_data())
-
-    def test_has_more_data_invalid(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        iterator._bytes_written = 10  # no _total_bytes.
-        self.assertRaises(ValueError, iterator.has_more_data)
-
-    def test_has_more_data_true(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        iterator._bytes_written = 10
-        iterator._total_bytes = 1000
-        self.assertTrue(iterator.has_more_data())
-
-    def test_has_more_data_false(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        iterator._bytes_written = 1000
-        iterator._total_bytes = 1000
-        self.assertFalse(iterator.has_more_data())
-
-    def test_get_headers_new(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        headers = iterator.get_headers()
-        self.assertEqual(len(headers), 1)
-        self.assertEqual(headers['Range'], 'bytes=0-9')
-
-    def test_get_headers_ok(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        iterator._bytes_written = 10
-        iterator._total_bytes = 1000
-        headers = iterator.get_headers()
-        self.assertEqual(len(headers), 1)
-        self.assertEqual(headers['Range'], 'bytes=10-19')
-
-    def test_get_headers_off_end(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        iterator._bytes_written = 95
-        iterator._total_bytes = 100
-        headers = iterator.get_headers()
-        self.assertEqual(len(headers), 1)
-        self.assertEqual(headers['Range'], 'bytes=95-')
-
-    def test_get_url(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        self.assertEqual(iterator.get_url(),
-                         'http://example.com/b/name/o/key?alt=media')
-
-    def test_get_next_chunk_underflow(self):
-        connection = _Connection()
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        iterator._bytes_written = iterator._total_bytes = 10
-        self.assertRaises(RuntimeError, iterator.get_next_chunk)
-
-    def test_get_next_chunk_200(self):
-        response = _Response(status=200)
-        response['content-range'] = '0-9/100'
-        connection = _Connection((response, 'CHUNK'))
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        chunk = iterator.get_next_chunk()
-        self.assertEqual(chunk, 'CHUNK')
-        self.assertEqual(iterator._bytes_written, len(chunk))
-        self.assertEqual(iterator._total_bytes, 100)
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['url'],
-                         'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kw['headers'], {'Range': 'bytes=0-9'})
-
-    def test_get_next_chunk_206(self):
-        response = _Response(status=206)
-        connection = _Connection((response, 'CHUNK'))
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        iterator._total_bytes = 1000
-        chunk = iterator.get_next_chunk()
-        self.assertEqual(chunk, 'CHUNK')
-        self.assertEqual(iterator._bytes_written, len(chunk))
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['url'],
-                         'http://example.com/b/name/o/key?alt=media')
-        self.assertEqual(kw['headers'], {'Range': 'bytes=0-9'})
-
-    def test_get_next_chunk_416(self):
-        from gcloud.storage.exceptions import StorageError
-        response = _Response(status=416)
-        connection = _Connection((response, ''))
-        key = _Key(connection)
-        iterator = self._makeOne(key)
-        iterator._total_bytes = 1000
-        self.assertRaises(StorageError, iterator.get_next_chunk)
-
-
-class _Connection(object):
-    API_BASE_URL = 'http://example.com'
+class _Responder(object):
 
     def __init__(self, *responses):
-        self._responses = responses
+        self._responses = responses[:]
         self._requested = []
-        self._signed = []
 
-    def make_request(self, **kw):
+    def _respond(self, **kw):
         self._requested.append(kw)
         response, self._responses = self._responses[0], self._responses[1:]
         return response
+
+
+class _Connection(_Responder):
+
+    API_BASE_URL = 'http://example.com'
+    USER_AGENT = 'testing 1.2.3'
+
+    def __init__(self, *responses):
+        super(_Connection, self).__init__(*responses)
+        self._signed = []
+        self.http = _HTTP(*responses)
 
     def api_request(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
+        return self._respond(**kw)
 
     def build_api_url(self, path, query_params=None,
                       api_base_url=API_BASE_URL):
@@ -936,12 +820,11 @@ class _Connection(object):
                 '&Expiration=%s' % expiration)
 
 
-class _Key(object):
-    CHUNK_SIZE = 10
-    path = '/b/name/o/key'
+class _HTTP(_Responder):
 
-    def __init__(self, connection):
-        self.connection = connection
+    def request(self, uri, method, headers, body, **kw):
+        return self._respond(uri=uri, method=method, headers=headers,
+                             body=body, **kw)
 
 
 class _Bucket(object):
@@ -963,9 +846,3 @@ class _Bucket(object):
     def delete_key(self, key):
         del self._keys[key.name]
         self._deleted.append(key.name)
-
-
-class _Response(dict):
-    @property
-    def status(self):
-        return self['status']

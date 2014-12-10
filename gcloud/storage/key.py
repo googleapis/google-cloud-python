@@ -6,10 +6,12 @@ import os
 from StringIO import StringIO
 import urllib
 
+from _gcloud_vendor.apitools.base.py import http_wrapper
+from _gcloud_vendor.apitools.base.py import transfer
+
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
-from gcloud.storage.exceptions import StorageError
 
 
 class Key(_PropertyMixin):
@@ -207,8 +209,21 @@ class Key(_PropertyMixin):
 
         :raises: :class:`gcloud.storage.exceptions.NotFound`
         """
-        for chunk in _KeyDataIterator(self):
-            file_obj.write(chunk)
+        # Use apitools 'Download' facility.
+        download = transfer.Download.FromStream(file_obj, auto_transfer=False)
+        download.chunksize = self.CHUNK_SIZE
+        download_url = self.connection.build_api_url(
+            path=self.path, query_params={'alt': 'media'})
+        headers = {'Range': 'bytes=0-%d' % (self.CHUNK_SIZE - 1)}
+        request = http_wrapper.Request(download_url, 'POST', headers)
+
+        download.InitializeDownload(request, self.connection.http)
+
+        # Should we be passing callbacks through from caller?  We can't
+        # pass them as None, because apitools wants to print to the console
+        # by default.
+        download.StreamInChunks(callback=lambda *args: None,
+                                finish_callback=lambda *args: None)
 
     # NOTE: Alias for boto-like API.
     get_contents_to_file = download_to_file
@@ -242,7 +257,7 @@ class Key(_PropertyMixin):
     get_contents_as_string = download_as_string
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
-                         content_type=None):
+                         content_type=None, num_retries=6):
         """Upload the contents of this key from a file-like object.
 
         .. note::
@@ -275,48 +290,43 @@ class Key(_PropertyMixin):
 
         # Get the basic stats about the file.
         total_bytes = size or os.fstat(file_obj.fileno()).st_size
-        bytes_uploaded = 0
-
-        # Set up a resumable upload session.
+        conn = self.connection
         headers = {
-            'X-Upload-Content-Type': content_type or 'application/unknown',
-            'X-Upload-Content-Length': total_bytes,
+            'Accept': 'application/json',
+            'Accept-Encoding': 'gzip, deflate',
+            'User-Agent': conn.USER_AGENT,
         }
 
-        query_params = {
-            'uploadType': 'resumable',
-            'name': self.name,
-        }
+        upload = transfer.Upload(file_obj,
+                                 content_type or 'application/unknown',
+                                 total_bytes, auto_transfer=False,
+                                 chunksize=self.CHUNK_SIZE)
 
-        upload_url = self.connection.build_api_url(
-            path=self.bucket.path + '/o',
-            query_params=query_params,
-            api_base_url=self.connection.API_BASE_URL + '/upload')
+        url_builder = _UrlBuilder(bucket_name=self.bucket.name,
+                                  object_name=self.name)
+        upload_config = _UploadConfig()
 
-        response, _ = self.connection.make_request(
-            method='POST', url=upload_url,
-            headers=headers)
+        # Temporary URL, until we know simple vs. resumable.
+        upload_url = conn.build_api_url(
+            path=self.bucket.path + '/o')
 
-        # Get the resumable upload URL.
-        upload_url = response['location']
+        # Use apitools 'Upload' facility.
+        request = http_wrapper.Request(upload_url, 'POST', headers)
 
-        while bytes_uploaded < total_bytes:
-            # Construct the range header.
-            data = file_obj.read(self.CHUNK_SIZE)
-            chunk_size = len(data)
+        upload.ConfigureRequest(upload_config, request, url_builder)
+        path = url_builder.relative_path.format(bucket=self.bucket.name)
+        query_params = url_builder.query_params
+        request.url = conn.build_api_url(path=path, query_params=query_params)
+        upload.InitializeUpload(request, conn.http)
 
-            start = bytes_uploaded
-            end = bytes_uploaded + chunk_size - 1
-
-            headers = {
-                'Content-Range': 'bytes %d-%d/%d' % (start, end, total_bytes),
-            }
-
-            response, _ = self.connection.make_request(
-                content_type='text/plain',
-                method='POST', url=upload_url, headers=headers, data=data)
-
-            bytes_uploaded += chunk_size
+        # Should we be passing callbacks through from caller?  We can't
+        # pass them as None, because apitools wants to print to the console
+        # by default.
+        if upload.strategy == transfer._RESUMABLE_UPLOAD:
+            upload.StreamInChunks(callback=lambda *args: None,
+                                  finish_callback=lambda *args: None)
+        else:
+            http_wrapper.MakeRequest(conn.http, request, retries=num_retries)
 
     # NOTE: Alias for boto-like API.
     set_contents_from_file = upload_from_file
@@ -598,95 +608,36 @@ class Key(_PropertyMixin):
         return self.properties['updated']
 
 
-class _KeyDataIterator(object):
-    """An iterator listing data stored in a key.
+class _UploadConfig(object):
+    """ Faux message FBO apitools' 'ConfigureRequest'.
 
-    You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`gcloud.storage.key.Key` objects.
-
-    :type key: :class:`gcloud.storage.key.Key`
-    :param key: The key from which to list data..
+    Values extracted from apitools
+    'samples/storage_sample/storage/storage_v1_client.py'
     """
+    accept = ['*/*']
+    max_size = None
+    resumable_multipart = True
+    resumable_path = u'/resumable/upload/storage/v1/b/{bucket}/o'
+    simple_multipart = True
+    simple_path = u'/upload/storage/v1/b/{bucket}/o'
 
-    def __init__(self, key):
-        self.key = key
-        # NOTE: These variables will be initialized by reset().
-        self._bytes_written = None
-        self._total_bytes = None
-        self.reset()
 
-    def __iter__(self):
-        while self.has_more_data():
-            yield self.get_next_chunk()
+class _UrlBuilder(object):
+    """Faux builder FBO apitools' 'ConfigureRequest'"""
+    def __init__(self, bucket_name, object_name):
+        self.query_params = {'name': object_name}
+        self._bucket_name = bucket_name
+        self._relative_path = ''
 
-    def reset(self):
-        """Resets the iterator to the beginning."""
-        self._bytes_written = 0
-        self._total_bytes = None
+    @property
+    def relative_path(self):
+        """Inject bucket name into path."""
+        return self._relative_path.format(bucket=self._bucket_name)
 
-    def has_more_data(self):
-        """Determines whether or not this iterator has more data to read.
+    @relative_path.setter
+    def relative_path(self, value):
+        """Allow update of path template.
 
-        :rtype: bool
-        :returns: Whether the iterator has more data or not.
+        ``value`` should be a string template taking ``{bucket}``.
         """
-        if self._bytes_written == 0:
-            return True
-        elif not self._total_bytes:
-            # self._total_bytes **should** be set by this point.
-            # If it isn't, something is wrong.
-            raise ValueError('Size of object is unknown.')
-        else:
-            return self._bytes_written < self._total_bytes
-
-    def get_headers(self):
-        """Gets range header(s) for next chunk of data.
-
-        :rtype: dict
-        :returns: A dictionary of query parameters.
-        """
-        start = self._bytes_written
-        end = self._bytes_written + self.key.CHUNK_SIZE - 1
-
-        if self._total_bytes and end > self._total_bytes:
-            end = ''
-
-        return {'Range': 'bytes=%s-%s' % (start, end)}
-
-    def get_url(self):
-        """Gets URL to read next chunk of data.
-
-        :rtype: string
-        :returns: A URL.
-        """
-        return self.key.connection.build_api_url(
-            path=self.key.path, query_params={'alt': 'media'})
-
-    def get_next_chunk(self):
-        """Gets the next chunk of data.
-
-        Uses CHUNK_SIZE to determine how much data to get.
-
-        :rtype: string
-        :returns: The chunk of data read from the key.
-        :raises: :class:`RuntimeError` if no more data or
-                 :class:`gcloud.storage.exceptions.StorageError` in the
-                 case of an unexpected response status code.
-        """
-        if not self.has_more_data():
-            raise RuntimeError('No more data in this iterator. Try resetting.')
-
-        response, content = self.key.connection.make_request(
-            method='GET', url=self.get_url(), headers=self.get_headers())
-
-        if response.status in (200, 206):
-            self._bytes_written += len(content)
-
-            if 'content-range' in response:
-                content_range = response['content-range']
-                self._total_bytes = int(content_range.rsplit('/', 1)[1])
-
-            return content
-
-        # Expected a 200 or a 206. Got something else, which is unknown.
-        raise StorageError(response)
+        self._relative_path = value

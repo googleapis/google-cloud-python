@@ -6,13 +6,14 @@ currently httplib2.
 """
 
 import collections
-import httplib
 import logging
 import socket
 import time
 import urlparse
 
 import httplib2
+from six.moves import http_client
+from six.moves import range
 
 from _gcloud_vendor.apitools.base.py import exceptions
 from _gcloud_vendor.apitools.base.py import util
@@ -28,10 +29,10 @@ __all__ = [
 RESUME_INCOMPLETE = 308
 TOO_MANY_REQUESTS = 429
 _REDIRECT_STATUS_CODES = (
-    httplib.MOVED_PERMANENTLY,
-    httplib.FOUND,
-    httplib.SEE_OTHER,
-    httplib.TEMPORARY_REDIRECT,
+    http_client.MOVED_PERMANENTLY,
+    http_client.FOUND,
+    http_client.SEE_OTHER,
+    http_client.TEMPORARY_REDIRECT,
     RESUME_INCOMPLETE,
 )
 
@@ -129,7 +130,7 @@ def MakeRequest(http, http_request, retries=5, redirections=5):
     url_scheme = urlparse.urlsplit(http_request.url).scheme
     if url_scheme and url_scheme in http.connections:
       connection_type = http.connections[url_scheme]
-  for retry in xrange(retries + 1):
+  for retry in range(retries + 1):
     # Note that the str() calls here are important for working around
     # some funny business with message construction and unicode in
     # httplib itself. See, eg,
@@ -140,7 +141,7 @@ def MakeRequest(http, http_request, retries=5, redirections=5):
           str(http_request.url), method=str(http_request.http_method),
           body=http_request.body, headers=http_request.headers,
           redirections=redirections, connection_type=connection_type)
-    except httplib.BadStatusLine as e:
+    except http_client.BadStatusLine as e:
       logging.error('Caught BadStatusLine from httplib, retrying: %s', e)
       exc = e
     except socket.error as e:
@@ -148,7 +149,7 @@ def MakeRequest(http, http_request, retries=5, redirections=5):
         raise
       logging.error('Caught socket error, retrying: %s', e)
       exc = e
-    except httplib.IncompleteRead as e:
+    except http_client.IncompleteRead as e:
       if http_request.http_method != 'GET':
         raise
       logging.error('Caught IncompleteRead error, retrying: %s', e)
@@ -161,7 +162,7 @@ def MakeRequest(http, http_request, retries=5, redirections=5):
         break
       logging.info('Retrying request to url <%s> after status code %s.',
                    response.request_url, response.status_code)
-    elif isinstance(exc, httplib.IncompleteRead):
+    elif isinstance(exc, http_client.IncompleteRead):
       logging.info('Retrying request to url <%s> after incomplete read.',
                    str(http_request.url))
     else:
