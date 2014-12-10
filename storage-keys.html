@@ -104,7 +104,7 @@ unique path of the object in the bucket.</li>
 
 <dl class="attribute">
 <dt id="gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'selfLink': 'self_link', 'etag': 'etag', 'updated': 'updated', 'id': 'id', 'owner': 'owner', 'metageneration': 'metageneration', 'contentDisposition': 'content_disposition', 'timeDeleted': 'time_deleted', 'componentCount': 'component_count', 'acl': 'acl', 'mediaLink': 'media_link', 'generation': 'generation', 'contentType': 'content_type', 'contentLanguage': 'content_language', 'contentEncoding': 'content_encoding', 'size': 'size', 'name': 'name', 'storageClass': 'storage_class', 'cacheControl': 'cache_control'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'contentLanguage': 'content_language', 'contentEncoding': 'content_encoding', 'contentType': 'content_type', 'generation': 'generation', 'mediaLink': 'media_link', 'storageClass': 'storage_class', 'cacheControl': 'cache_control', 'id': 'id', 'name': 'name', 'owner': 'owner', 'metageneration': 'metageneration', 'updated': 'updated', 'selfLink': 'self_link', 'etag': 'etag', 'size': 'size', 'componentCount': 'component_count', 'acl': 'acl', 'contentDisposition': 'content_disposition', 'timeDeleted': 'time_deleted'}</em><a class="headerlink" href="#gcloud.storage.key.Key.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -663,7 +663,7 @@ could be a very (temporarily) costly or a very slow operation.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.set_contents_from_file">
-<tt class="descname">set_contents_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_file" title="Permalink to this definition">#</a></dt>
+<tt class="descname">set_contents_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em>, <em>num_retries=6</em><big>)</big><a class="headerlink" href="#gcloud.storage.key.Key.set_contents_from_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload the contents of this key from a file-like object.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -815,7 +815,7 @@ has a &#8220;live&#8221; version.</td>
 
 <dl class="method">
 <dt id="gcloud.storage.key.Key.upload_from_file">
-<tt class="descname">upload_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.upload_from_file" title="Permalink to this definition">#</a></dt>
+<tt class="descname">upload_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em>, <em>num_retries=6</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/key.html#Key.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.key.Key.upload_from_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload the contents of this key from a file-like object.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
