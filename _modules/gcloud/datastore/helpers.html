@@ -152,17 +152,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="k">def</span> <span class="nf">_pb_attr_value</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Given a value, return the protobuf attribute name and proper value.</span>
 
-<span class="sd">    The Protobuf API uses different attribute names</span>
-<span class="sd">    based on value types rather than inferring the type.</span>
-<span class="sd">    This function simply determines the proper attribute name</span>
-<span class="sd">    based on the type of the value provided</span>
-<span class="sd">    and returns the attribute name</span>
-<span class="sd">    as well as a properly formatted value.</span>
+<span class="sd">    The Protobuf API uses different attribute names based on value types</span>
+<span class="sd">    rather than inferring the type.  This function simply determines the</span>
+<span class="sd">    proper attribute name based on the type of the value provided and</span>
+<span class="sd">    returns the attribute name as well as a properly formatted value.</span>
 
-<span class="sd">    Certain value types need to be coerced into a different type (such as a</span>
-<span class="sd">    `datetime.datetime` into an integer timestamp, or a</span>
-<span class="sd">    `gcloud.datastore.key.Key` into a Protobuf representation.</span>
-<span class="sd">    This function handles that for you.</span>
+<span class="sd">    Certain value types need to be coerced into a different type (such</span>
+<span class="sd">    as a `datetime.datetime` into an integer timestamp, or a</span>
+<span class="sd">    `gcloud.datastore.key.Key` into a Protobuf representation.  This</span>
+<span class="sd">    function handles that for you.</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">       Values which are &quot;text&quot; (&#39;unicode&#39; in Python2, &#39;str&#39; in Python3) map</span>
@@ -219,9 +217,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="k">def</span> <span class="nf">_get_value_from_value_pb</span><span class="p">(</span><span class="n">value_pb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Given a protobuf for a Value, get the correct value.</span>
 
-<span class="sd">    The Cloud Datastore Protobuf API returns a Property Protobuf</span>
-<span class="sd">    which has one value set and the rest blank.</span>
-<span class="sd">    This function retrieves the the one value provided.</span>
+<span class="sd">    The Cloud Datastore Protobuf API returns a Property Protobuf which</span>
+<span class="sd">    has one value set and the rest blank.  This function retrieves the</span>
+<span class="sd">    the one value provided.</span>
 
 <span class="sd">    Some work is done to coerce the return value into a more useful type</span>
 <span class="sd">    (particularly in the case of a timestamp value, or a key value).</span>
@@ -269,9 +267,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="k">def</span> <span class="nf">_get_value_from_property_pb</span><span class="p">(</span><span class="n">property_pb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Given a protobuf for a Property, get the correct value.</span>
 
-<span class="sd">    The Cloud Datastore Protobuf API returns a Property Protobuf</span>
-<span class="sd">    which has one value set and the rest blank.</span>
-<span class="sd">    This function retrieves the the one value provided.</span>
+<span class="sd">    The Cloud Datastore Protobuf API returns a Property Protobuf which</span>
+<span class="sd">    has one value set and the rest blank.  This function retrieves the</span>
+<span class="sd">    the one value provided.</span>
 
 <span class="sd">    Some work is done to coerce the return value into a more useful type</span>
 <span class="sd">    (particularly in the case of a timestamp value, or a key value).</span>
@@ -287,11 +285,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="k">def</span> <span class="nf">_set_protobuf_value</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Assign &#39;val&#39; to the correct subfield of &#39;value_pb&#39;.</span>
 
-<span class="sd">    The Protobuf API uses different attribute names</span>
-<span class="sd">    based on value types rather than inferring the type.</span>
+<span class="sd">    The Protobuf API uses different attribute names based on value types</span>
+<span class="sd">    rather than inferring the type.</span>
 
-<span class="sd">    Some value types (entities, keys, lists) cannot be directly assigned;</span>
-<span class="sd">    this function handles them correctly.</span>
+<span class="sd">    Some value types (entities, keys, lists) cannot be directly</span>
+<span class="sd">    assigned; this function handles them correctly.</span>
 
 <span class="sd">    :type value_pb: :class:`gcloud.datastore.datastore_v1_pb2.Value`</span>
 <span class="sd">    :param value_pb: The value protobuf to which the value is being assigned.</span>

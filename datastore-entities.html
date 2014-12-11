@@ -75,65 +75,39 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   <div class="section" id="module-gcloud.datastore.entity">
 <span id="entities"></span><h1>Entities<a class="headerlink" href="#module-gcloud.datastore.entity" title="Permalink to this headline">#</a></h1>
 <p>Class for representing a single entity in the Cloud Datastore.</p>
-<p>Entities are akin to rows in a relational database,
-storing the actual instance of data.</p>
-<p>Each entity is officially represented with
-a <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> class,
-however it is possible that you might create
-an Entity with only a partial Key
-(that is, a Key with a Kind,
-and possibly a parent, but without an ID).</p>
-<p>Entities in this API act like dictionaries
-with extras built in that allow you to
-delete or persist the data stored on the entity.</p>
 <dl class="class">
 <dt id="gcloud.datastore.entity.Entity">
 <em class="property">class </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">Entity</tt><big>(</big><em>dataset=None</em>, <em>kind=None</em>, <em>exclude_from_indexes=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset</strong> (<a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>) &#8211; The dataset in which this entity belongs.</li>
-<li><strong>kind</strong> (<em>string</em>) &#8211; The kind of entity this is, akin to a table name in a
-relational database.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<p>Entities are akin to rows in a relational database</p>
+<p>An entity storing the actual instance of data.</p>
+<p>Each entity is officially represented with a
+<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> class, however it is possible that
+you might create an Entity with only a partial Key (that is, a Key
+with a Kind, and possibly a parent, but without an ID).  In such a
+case, the datastore service will automatically assign an ID to the
+partial key.</p>
+<p>Entities in this API act like dictionaries with extras built in that
+allow you to delete or persist the data stored on the entity.</p>
 <p>Entities are mutable and act like a subclass of a dictionary.
 This means you could take an existing entity and change the key
 to duplicate the object.</p>
-<p>This can be used on its own, however it is likely easier to use
-the shortcut methods provided by <a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>
-such as:</p>
-<ul>
-<li><p class="first"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset.entity" title="gcloud.datastore.dataset.Dataset.entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.entity()</span></tt></a> to create a new entity.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;MyEntityKind&#39;</span><span class="p">)</span>
-<span class="go">&lt;Entity[{&#39;kind&#39;: &#39;MyEntityKind&#39;}] {}&gt;</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset.get_entity" title="gcloud.datastore.dataset.Dataset.get_entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.get_entity()</span></tt></a>
+<p>Use <a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset.get_entity" title="gcloud.datastore.dataset.Dataset.get_entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.get_entity()</span></tt></a>
 to retrieve an existing entity.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">&lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
 </pre></div>
 </div>
-</li>
-</ul>
-<p>You can the set values on the entity
-just like you would on any other dictionary.</p>
+<p>You can the set values on the entity just like you would on any
+other dictionary.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;JJ&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span>
 <span class="go">&lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}&gt;</span>
 </pre></div>
 </div>
-<p>And you can cast an entity to a regular Python dictionary
-with the <cite>dict</cite> builtin:</p>
+<p>And you can convert an entity to a regular Python dictionary with the
+<cite>dict</cite> builtin:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">dict</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 <span class="go">{&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}</span>
 </pre></div>
@@ -153,8 +127,11 @@ any decoding / encoding step.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset</strong> (<a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>, or None) &#8211; the Dataset instance associated with this entity.</li>
-<li><strong>kind</strong> (<em>str</em>) &#8211; the &#8220;kind&#8221; of the entity (see
+<li><strong>dataset</strong> (<a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>, or None) &#8211; The dataset in which this entity belongs.</li>
+<li><strong>kind</strong> (<em>str</em>) &#8211; The kind of entity this is, akin to a table name in a
+relational database.</li>
+<li><strong>dataset</strong> &#8211; the Dataset instance associated with this entity.</li>
+<li><strong>kind</strong> &#8211; the &#8220;kind&#8221; of the entity (see
 <a class="reference external" href="https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers">https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers</a>)</li>
 <li><strong>exclude_from_indexes</strong> &#8211; names of fields whose values are not to be
 indexed for this entity.</li>
@@ -167,6 +144,13 @@ indexed for this entity.</li>
 <dt id="gcloud.datastore.entity.Entity.dataset">
 <tt class="descname">dataset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the <a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">dataset.Dataset</span></tt></a> in which this entity belongs.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is based on the <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> set on the
+entity. That means that if you have no key set, the dataset might
+be <cite>None</cite>. It also means that if you change the key on the entity,
+this will refer to that key&#8217;s dataset.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -178,13 +162,6 @@ else None.</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This is based on the <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> set on the
-entity. That means that if you have no key set, the dataset might
-be <cite>None</cite>. It also means that if you change the key on the entity,
-this will refer to that key&#8217;s dataset.</p>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -265,12 +242,10 @@ object (on set).</td>
 <dd><p>Get the kind of the current entity.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This relies entirely on
-the <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>
-set on the entity.
-That means that we&#8217;re not storing the kind of the entity at all,
-just the properties and a pointer to a Key
-which knows its Kind.</p>
+<p class="last">This relies entirely on the <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>
+set on the entity.  That means that we&#8217;re not storing the kind
+of the entity at all, just the properties and a pointer to a
+Key which knows its Kind.</p>
 </div>
 </dd></dl>
 

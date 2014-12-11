@@ -233,10 +233,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        Maps the ``DatastoreService.Lookup`` protobuf RPC.</span>
 
 <span class="sd">        This method deals only with protobufs</span>
-<span class="sd">        (:class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
-<span class="sd">        and</span>
-<span class="sd">        :class:`gcloud.datastore.datastore_v1_pb2.Entity`)</span>
-<span class="sd">        and is used under the hood for methods like</span>
+<span class="sd">        (:class:`gcloud.datastore.datastore_v1_pb2.Key` and</span>
+<span class="sd">        :class:`gcloud.datastore.datastore_v1_pb2.Entity`) and is used</span>
+<span class="sd">        under the hood for methods like</span>
 <span class="sd">        :func:`gcloud.datastore.dataset.Dataset.get_entity`:</span>
 
 <span class="sd">        &gt;&gt;&gt; from gcloud import datastore</span>
@@ -298,12 +297,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        Maps the ``DatastoreService.RunQuery`` protobuf RPC.</span>
 
-<span class="sd">        Given a Query protobuf,</span>
-<span class="sd">        sends a ``runQuery`` request to the Cloud Datastore API</span>
-<span class="sd">        and returns a list of entity protobufs matching the query.</span>
+<span class="sd">        Given a Query protobuf, sends a ``runQuery`` request to the</span>
+<span class="sd">        Cloud Datastore API and returns a list of entity protobufs</span>
+<span class="sd">        matching the query.</span>
 
-<span class="sd">        You typically wouldn&#39;t use this method directly,</span>
-<span class="sd">        in favor of the :func:`gcloud.datastore.query.Query.fetch` method.</span>
+<span class="sd">        You typically wouldn&#39;t use this method directly, in favor of the</span>
+<span class="sd">        :func:`gcloud.datastore.query.Query.fetch` method.</span>
 
 <span class="sd">        Under the hood, the :class:`gcloud.datastore.query.Query` class</span>
 <span class="sd">        uses this method to fetch data:</span>
@@ -511,9 +510,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Delete keys from a dataset in the Cloud Datastore.</span>
 
 <span class="sd">        This method deals only with</span>
-<span class="sd">        :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs</span>
-<span class="sd">        and not with any of the other abstractions.</span>
-<span class="sd">        For example, it&#39;s used under the hood in the</span>
+<span class="sd">        :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs and not</span>
+<span class="sd">        with any of the other abstractions.  For example, it&#39;s used</span>
+<span class="sd">        under the hood in the</span>
 <span class="sd">        :func:`gcloud.datastore.entity.Entity.delete` method.</span>
 
 <span class="sd">        :type dataset_id: string</span>

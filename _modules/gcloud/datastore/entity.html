@@ -72,22 +72,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
       <section class="content">
         
   <h1>Source code for gcloud.datastore.entity</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;Class for representing a single entity in the Cloud Datastore.</span>
-
-<span class="sd">Entities are akin to rows in a relational database,</span>
-<span class="sd">storing the actual instance of data.</span>
-
-<span class="sd">Each entity is officially represented with</span>
-<span class="sd">a :class:`gcloud.datastore.key.Key` class,</span>
-<span class="sd">however it is possible that you might create</span>
-<span class="sd">an Entity with only a partial Key</span>
-<span class="sd">(that is, a Key with a Kind,</span>
-<span class="sd">and possibly a parent, but without an ID).</span>
-
-<span class="sd">Entities in this API act like dictionaries</span>
-<span class="sd">with extras built in that allow you to</span>
-<span class="sd">delete or persist the data stored on the entity.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Class for representing a single entity in the Cloud Datastore.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
@@ -102,42 +87,40 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 </div>
 <div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;:type dataset: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">    :param dataset: The dataset in which this entity belongs.</span>
+    <span class="sd">&quot;&quot;&quot;Entities are akin to rows in a relational database</span>
 
-<span class="sd">    :type kind: string</span>
-<span class="sd">    :param kind: The kind of entity this is, akin to a table name in a</span>
-<span class="sd">                 relational database.</span>
+<span class="sd">    An entity storing the actual instance of data.</span>
+
+<span class="sd">    Each entity is officially represented with a</span>
+<span class="sd">    :class:`gcloud.datastore.key.Key` class, however it is possible that</span>
+<span class="sd">    you might create an Entity with only a partial Key (that is, a Key</span>
+<span class="sd">    with a Kind, and possibly a parent, but without an ID).  In such a</span>
+<span class="sd">    case, the datastore service will automatically assign an ID to the</span>
+<span class="sd">    partial key.</span>
+
+<span class="sd">    Entities in this API act like dictionaries with extras built in that</span>
+<span class="sd">    allow you to delete or persist the data stored on the entity.</span>
 
 <span class="sd">    Entities are mutable and act like a subclass of a dictionary.</span>
 <span class="sd">    This means you could take an existing entity and change the key</span>
 <span class="sd">    to duplicate the object.</span>
 
-<span class="sd">    This can be used on its own, however it is likely easier to use</span>
-<span class="sd">    the shortcut methods provided by :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">    such as:</span>
-
-<span class="sd">    - :func:`gcloud.datastore.dataset.Dataset.entity` to create a new entity.</span>
-
-<span class="sd">      &gt;&gt;&gt; dataset.entity(&#39;MyEntityKind&#39;)</span>
-<span class="sd">      &lt;Entity[{&#39;kind&#39;: &#39;MyEntityKind&#39;}] {}&gt;</span>
-
-<span class="sd">    - :func:`gcloud.datastore.dataset.Dataset.get_entity`</span>
-<span class="sd">      to retrieve an existing entity.</span>
+<span class="sd">    Use :func:`gcloud.datastore.dataset.Dataset.get_entity`</span>
+<span class="sd">    to retrieve an existing entity.</span>
 
 <span class="sd">      &gt;&gt;&gt; dataset.get_entity(key)</span>
 <span class="sd">      &lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
 
-<span class="sd">    You can the set values on the entity</span>
-<span class="sd">    just like you would on any other dictionary.</span>
+<span class="sd">    You can the set values on the entity just like you would on any</span>
+<span class="sd">    other dictionary.</span>
 
 <span class="sd">    &gt;&gt;&gt; entity[&#39;age&#39;] = 20</span>
 <span class="sd">    &gt;&gt;&gt; entity[&#39;name&#39;] = &#39;JJ&#39;</span>
 <span class="sd">    &gt;&gt;&gt; entity</span>
 <span class="sd">    &lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}&gt;</span>
 
-<span class="sd">    And you can cast an entity to a regular Python dictionary</span>
-<span class="sd">    with the `dict` builtin:</span>
+<span class="sd">    And you can convert an entity to a regular Python dictionary with the</span>
+<span class="sd">    `dict` builtin:</span>
 
 <span class="sd">    &gt;&gt;&gt; dict(entity)</span>
 <span class="sd">    {&#39;age&#39;: 20, &#39;name&#39;: &#39;JJ&#39;}</span>
@@ -151,6 +134,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">       again.  Values which are &quot;bytes&quot; (&#39;str&#39; in Python2, &#39;bytes&#39; in</span>
 <span class="sd">       Python3), will be saved using the &#39;blob_value&#39; field, without</span>
 <span class="sd">       any decoding / encoding step.</span>
+
+<span class="sd">    :type dataset: :class:`gcloud.datastore.dataset.Dataset`</span>
+<span class="sd">    :param dataset: The dataset in which this entity belongs.</span>
+
+<span class="sd">    :type kind: string</span>
+<span class="sd">    :param kind: The kind of entity this is, akin to a table name in a</span>
+<span class="sd">                 relational database.</span>
 
 <span class="sd">    :type dataset: :class:`gcloud.datastore.dataset.Dataset`, or None</span>
 <span class="sd">    :param dataset: the Dataset instance associated with this entity.</span>
@@ -175,15 +165,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Entity.dataset"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the :class:`.dataset.Dataset` in which this entity belongs.</span>
 
-<span class="sd">        :rtype: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">        :returns: The Dataset containing the entity if there is a key,</span>
-<span class="sd">                  else None.</span>
-
 <span class="sd">        .. note::</span>
 <span class="sd">          This is based on the :class:`gcloud.datastore.key.Key` set on the</span>
 <span class="sd">          entity. That means that if you have no key set, the dataset might</span>
 <span class="sd">          be `None`. It also means that if you change the key on the entity,</span>
 <span class="sd">          this will refer to that key&#39;s dataset.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.datastore.dataset.Dataset`</span>
+<span class="sd">        :returns: The Dataset containing the entity if there is a key,</span>
+<span class="sd">                  else None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>
 </div>
@@ -213,12 +203,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Get the kind of the current entity.</span>
 
 <span class="sd">        .. note::</span>
-<span class="sd">          This relies entirely on</span>
-<span class="sd">          the :class:`gcloud.datastore.key.Key`</span>
-<span class="sd">          set on the entity.</span>
-<span class="sd">          That means that we&#39;re not storing the kind of the entity at all,</span>
-<span class="sd">          just the properties and a pointer to a Key</span>
-<span class="sd">          which knows its Kind.</span>
+<span class="sd">          This relies entirely on the :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">          set on the entity.  That means that we&#39;re not storing the kind</span>
+<span class="sd">          of the entity at all, just the properties and a pointer to a</span>
+<span class="sd">          Key which knows its Kind.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
@@ -235,8 +223,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Entity.from_key"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.from_key">[docs]</a>    <span class="k">def</span> <span class="nf">from_key</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create entity based on :class:`.datastore.key.Key`.</span>
 
-<span class="sd">        .. note::</span>
-<span class="sd">          This is a factory method.</span>
+<span class="sd">        .. note:: This is a factory method.</span>
 
 <span class="sd">        :type key: :class:`gcloud.datastore.key.Key`</span>
 <span class="sd">        :param key: The key for the entity.</span>

@@ -80,21 +80,17 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <em class="property">class </em><tt class="descclassname">gcloud.datastore.dataset.</tt><tt class="descname">Dataset</tt><big>(</big><em>id</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A dataset in the Cloud Datastore.</p>
-<p>This class acts as an abstraction of a single dataset
-in the Cloud Datastore.</p>
-<p>A dataset is analogous to a database
-in relational database world,
-and corresponds to a single project
-using the Cloud Datastore.</p>
-<p>Typically, you would only have one of these per connection
-however it didn&#8217;t seem right to collapse the functionality
-of a connection and a dataset together into a single class.</p>
-<p>Datasets (like <a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a>)
-are immutable.
-That is, you cannot change the ID and connection
-references.
-If you need to modify the connection or ID,
-it&#8217;s recommended to construct a new <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">Dataset</span></tt></a>.</p>
+<p>This class acts as an abstraction of a single dataset in the Cloud
+Datastore.</p>
+<p>A dataset is analogous to a database in relational database world,
+and corresponds to a single project using the Cloud Datastore.</p>
+<p>Typically, you would only have one of these per connection however
+it didn&#8217;t seem right to collapse the functionality of a connection
+and a dataset together into a single class.</p>
+<p>Datasets (like <a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a>) are immutable.
+That is, you cannot change the ID and connection references.  If you
+need to modify the connection or ID, it&#8217;s recommended to construct a
+new <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">Dataset</span></tt></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

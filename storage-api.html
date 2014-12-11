@@ -267,11 +267,13 @@ account).</li>
 <em class="property">class </em><tt class="descclassname">gcloud.storage.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>project</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></p>
 <p>A connection to Google Cloud Storage via the JSON REST API.</p>
-<p>This class should understand only the basic types (and protobufs)
-in method arguments, however should be capable of returning advanced types.</p>
-<p>See <tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt> for a full list of parameters.
-<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">Connection</span></tt></a> differs only in needing a project name
-(which you specify when creating a project in the Cloud Console).</p>
+<p>This class should understand only the basic types (and protobufs) in
+method arguments, however should be capable of returning advanced
+types.</p>
+<p>See <tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt> for a full list of
+parameters.  <a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">Connection</span></tt></a> differs only in needing a project
+name (which you specify when creating a project in the Cloud
+Console).</p>
 <p>A typical use of this is to operate on
 <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> objects:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>

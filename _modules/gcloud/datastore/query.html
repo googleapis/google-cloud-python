@@ -84,12 +84,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Query"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query">[docs]</a><span class="k">class</span> <span class="nc">Query</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Query against the Cloud Datastore.</span>
 
-<span class="sd">    This class serves as an abstraction for creating</span>
-<span class="sd">    a query over data stored in the Cloud Datastore.</span>
+<span class="sd">    This class serves as an abstraction for creating a query over data</span>
+<span class="sd">    stored in the Cloud Datastore.</span>
 
-<span class="sd">    Each :class:`Query` object is immutable,</span>
-<span class="sd">    and a clone is returned whenever</span>
-<span class="sd">    any part of the query is modified::</span>
+<span class="sd">    Each :class:`Query` object is immutable, and a clone is returned</span>
+<span class="sd">    whenever any part of the query is modified::</span>
 
 <span class="sd">      &gt;&gt;&gt; query = Query(&#39;MyKind&#39;)</span>
 <span class="sd">      &gt;&gt;&gt; limited_query = query.limit(10)</span>
@@ -98,12 +97,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">      &gt;&gt;&gt; limited_query.limit() == 10</span>
 <span class="sd">      True</span>
 
-<span class="sd">    You typically won&#39;t construct a :class:`Query`</span>
-<span class="sd">    by initializing it like ``Query(&#39;MyKind&#39;, dataset=...)``</span>
-<span class="sd">    but instead use the helper</span>
-<span class="sd">    :func:`gcloud.datastore.dataset.Dataset.query` method</span>
-<span class="sd">    which generates a query that can be executed</span>
-<span class="sd">    without any additional work::</span>
+<span class="sd">    You typically won&#39;t construct a :class:`Query` by initializing it</span>
+<span class="sd">    like ``Query(&#39;MyKind&#39;, dataset=...)`` but instead use the helper</span>
+<span class="sd">    :func:`gcloud.datastore.dataset.Dataset.query` method which</span>
+<span class="sd">    generates a query that can be executed without any additional work::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
 <span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
@@ -235,10 +232,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Query.ancestor"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.ancestor">[docs]</a>    <span class="k">def</span> <span class="nf">ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ancestor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Filter the query based on an ancestor.</span>
 
-<span class="sd">        This will return a clone of the current :class:`Query`</span>
-<span class="sd">        filtered by the ancestor provided.</span>
-
-<span class="sd">        For example::</span>
+<span class="sd">        This will return a clone of the current :class:`Query` filtered</span>
+<span class="sd">        by the ancestor provided.  For example::</span>
 
 <span class="sd">          &gt;&gt;&gt; parent_key = Key.from_path(&#39;Person&#39;, &#39;1&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; query = dataset.query(&#39;Person&#39;)</span>
@@ -303,10 +298,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Get or set the Kind of the Query.</span>
 
 <span class="sd">        .. note::</span>
-<span class="sd">          This is an **additive** operation.</span>
-<span class="sd">          That is, if the Query is set for kinds A and B,</span>
-<span class="sd">          and you call ``.kind(&#39;C&#39;)``,</span>
-<span class="sd">          it will query for kinds A, B, *and*, C.</span>
+<span class="sd">          This is an **additive** operation.  That is, if the Query is</span>
+<span class="sd">          set for kinds A and B, and you call ``.kind(&#39;C&#39;)``, it will</span>
+<span class="sd">          query for kinds A, B, *and*, C.</span>
 
 <span class="sd">        :type kinds: string</span>
 <span class="sd">        :param kinds: The entity kinds for which to query.</span>
@@ -327,7 +321,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Query.limit"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.limit">[docs]</a>    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get or set the limit of the Query.</span>
 
-<span class="sd">        This is the maximum number of rows (Entities) to return for this Query.</span>
+<span class="sd">        This is the maximum number of rows (Entities) to return for this</span>
+<span class="sd">        Query.</span>
 
 <span class="sd">        This is a hybrid getter / setter, used as::</span>
 
@@ -376,9 +371,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Query.fetch"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.fetch">[docs]</a>    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Executes the Query and returns all matching entities.</span>
 
-<span class="sd">        This makes an API call to the Cloud Datastore, sends the Query as a</span>
-<span class="sd">        protobuf, parses the responses to Entity protobufs, and then converts</span>
-<span class="sd">        them to :class:`gcloud.datastore.entity.Entity` objects.</span>
+<span class="sd">        This makes an API call to the Cloud Datastore, sends the Query</span>
+<span class="sd">        as a protobuf, parses the responses to Entity protobufs, and</span>
+<span class="sd">        then converts them to :class:`gcloud.datastore.entity.Entity`</span>
+<span class="sd">        objects.</span>
 
 <span class="sd">        For example::</span>
 
@@ -427,8 +423,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Query.cursor"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.cursor">[docs]</a>    <span class="k">def</span> <span class="nf">cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns cursor ID</span>
 
-<span class="sd">        .. Caution:: Invoking this method on a query that has not yet been</span>
-<span class="sd">          executed will raise a RuntimeError.</span>
+<span class="sd">        .. warning:: Invoking this method on a query that has not yet</span>
+<span class="sd">           been executed will raise a RuntimeError.</span>
 
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: base64-encoded cursor ID string denoting the last position</span>

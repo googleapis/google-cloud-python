@@ -410,9 +410,9 @@ its transport.</td>
 <tt class="descname">delete_entities</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.delete_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.delete_entities" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete keys from a dataset in the Cloud Datastore.</p>
 <p>This method deals only with
-<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt> protobufs
-and not with any of the other abstractions.
-For example, it&#8217;s used under the hood in the
+<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt> protobufs and not
+with any of the other abstractions.  For example, it&#8217;s used
+under the hood in the
 <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity.delete" title="gcloud.datastore.entity.Entity.delete"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.entity.Entity.delete()</span></tt></a> method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -441,10 +441,9 @@ For example, it&#8217;s used under the hood in the
 <dd><p>Lookup keys from a dataset in the Cloud Datastore.</p>
 <p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.Lookup</span></tt> protobuf RPC.</p>
 <p>This method deals only with protobufs
-(<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>
-and
-<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>)
-and is used under the hood for methods like
+(<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt> and
+<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>) and is used
+under the hood for methods like
 <a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset.get_entity" title="gcloud.datastore.dataset.Dataset.get_entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.get_entity()</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
@@ -528,11 +527,11 @@ if the connection isn&#8217;t currently in a transaction.</p>
 <tt class="descname">run_query</tt><big>(</big><em>dataset_id</em>, <em>query_pb</em>, <em>namespace=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.run_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.run_query" title="Permalink to this definition">#</a></dt>
 <dd><p>Run a query on the Cloud Datastore.</p>
 <p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.RunQuery</span></tt> protobuf RPC.</p>
-<p>Given a Query protobuf,
-sends a <tt class="docutils literal"><span class="pre">runQuery</span></tt> request to the Cloud Datastore API
-and returns a list of entity protobufs matching the query.</p>
-<p>You typically wouldn&#8217;t use this method directly,
-in favor of the <a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query.fetch" title="gcloud.datastore.query.Query.fetch"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.query.Query.fetch()</span></tt></a> method.</p>
+<p>Given a Query protobuf, sends a <tt class="docutils literal"><span class="pre">runQuery</span></tt> request to the
+Cloud Datastore API and returns a list of entity protobufs
+matching the query.</p>
+<p>You typically wouldn&#8217;t use this method directly, in favor of the
+<a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query.fetch" title="gcloud.datastore.query.Query.fetch"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.query.Query.fetch()</span></tt></a> method.</p>
 <p>Under the hood, the <a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a> class
 uses this method to fetch data:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
@@ -596,7 +595,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fabdfdebc50&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f8b3d4eac50&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

@@ -84,24 +84,20 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A dataset in the Cloud Datastore.</span>
 
-<span class="sd">    This class acts as an abstraction of a single dataset</span>
-<span class="sd">    in the Cloud Datastore.</span>
+<span class="sd">    This class acts as an abstraction of a single dataset in the Cloud</span>
+<span class="sd">    Datastore.</span>
 
-<span class="sd">    A dataset is analogous to a database</span>
-<span class="sd">    in relational database world,</span>
-<span class="sd">    and corresponds to a single project</span>
-<span class="sd">    using the Cloud Datastore.</span>
+<span class="sd">    A dataset is analogous to a database in relational database world,</span>
+<span class="sd">    and corresponds to a single project using the Cloud Datastore.</span>
 
-<span class="sd">    Typically, you would only have one of these per connection</span>
-<span class="sd">    however it didn&#39;t seem right to collapse the functionality</span>
-<span class="sd">    of a connection and a dataset together into a single class.</span>
+<span class="sd">    Typically, you would only have one of these per connection however</span>
+<span class="sd">    it didn&#39;t seem right to collapse the functionality of a connection</span>
+<span class="sd">    and a dataset together into a single class.</span>
 
-<span class="sd">    Datasets (like :class:`gcloud.datastore.query.Query`)</span>
-<span class="sd">    are immutable.</span>
-<span class="sd">    That is, you cannot change the ID and connection</span>
-<span class="sd">    references.</span>
-<span class="sd">    If you need to modify the connection or ID,</span>
-<span class="sd">    it&#39;s recommended to construct a new :class:`Dataset`.</span>
+<span class="sd">    Datasets (like :class:`gcloud.datastore.query.Query`) are immutable.</span>
+<span class="sd">    That is, you cannot change the ID and connection references.  If you</span>
+<span class="sd">    need to modify the connection or ID, it&#39;s recommended to construct a</span>
+<span class="sd">    new :class:`Dataset`.</span>
 
 <span class="sd">    :type id: string</span>
 <span class="sd">    :param id: The ID of the dataset (your project ID)</span>

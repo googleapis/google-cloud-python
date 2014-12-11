@@ -309,8 +309,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        The bucket **must** be empty in order to delete it.  If the</span>
 <span class="sd">        bucket doesn&#39;t exist, this will raise a</span>
-<span class="sd">        :class:`gcloud.storage.exceptions.NotFound`.  If the bucket</span>
-<span class="sd">        is not empty, this will raise an Exception.</span>
+<span class="sd">        :class:`gcloud.storage.exceptions.NotFound`.  If the bucket is</span>
+<span class="sd">        not empty, this will raise an Exception.</span>
 
 <span class="sd">        If you want to delete a non-empty bucket you can pass in a force</span>
 <span class="sd">        parameter set to true.  This will iterate through the bucket&#39;s</span>
@@ -329,8 +329,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Bucket.delete_key"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_key">[docs]</a>    <span class="k">def</span> <span class="nf">delete_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a key from the current bucket.</span>
 
-<span class="sd">        If the key isn&#39;t found,</span>
-<span class="sd">        this will throw a :class:`gcloud.storage.exceptions.NotFound`.</span>
+<span class="sd">        If the key isn&#39;t found, raise a</span>
+<span class="sd">        :class:`gcloud.storage.exceptions.NotFound`.</span>
 
 <span class="sd">        For example::</span>
 
