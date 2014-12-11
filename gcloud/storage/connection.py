@@ -91,7 +91,7 @@ class Connection(_Base):
         return self.lookup(bucket_name) is not None
 
     def build_api_url(self, path, query_params=None, api_base_url=None,
-                      api_version=None):
+                      api_version=None, upload=False):
         """Construct an API url given a few components, some optional.
 
         Typically, you shouldn't need to use this method.
@@ -112,9 +112,16 @@ class Connection(_Base):
                             Typically you shouldn't provide this and instead
                             use the default for the library.
 
+        :type upload: boolean
+        :param upload: True if the URL is for uploading purposes.
+
         :rtype: string
         :returns: The URL assembled from the pieces provided.
         """
+        api_base_url = api_base_url or self.API_BASE_URL
+        if upload:
+            api_base_url += '/upload'
+
         url = self.API_URL_TEMPLATE.format(
             api_base_url=(api_base_url or self.API_BASE_URL),
             api_version=(api_version or self.API_VERSION),

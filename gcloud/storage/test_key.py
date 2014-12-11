@@ -191,7 +191,9 @@ class Test_Key(unittest2.TestCase):
             (chunk2_response, 'def'),
         )
         bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
+        MEDIA_LINK = 'http://example.com/media/'
+        properties = {'mediaLink': MEDIA_LINK}
+        key = self._makeOne(bucket, KEY, properties)
         key.CHUNK_SIZE = 3
         fh = StringIO()
         key.download_to_file(fh)
@@ -210,7 +212,9 @@ class Test_Key(unittest2.TestCase):
             (chunk2_response, 'def'),
         )
         bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
+        MEDIA_LINK = 'http://example.com/media/'
+        properties = {'mediaLink': MEDIA_LINK}
+        key = self._makeOne(bucket, KEY, properties)
         key.CHUNK_SIZE = 3
         with NamedTemporaryFile() as f:
             key.download_to_filename(f.name)
@@ -231,7 +235,9 @@ class Test_Key(unittest2.TestCase):
             (chunk2_response, 'def'),
         )
         bucket = _Bucket(connection)
-        key = self._makeOne(bucket, KEY)
+        MEDIA_LINK = 'http://example.com/media/'
+        properties = {'mediaLink': MEDIA_LINK}
+        key = self._makeOne(bucket, KEY, properties)
         key.CHUNK_SIZE = 3
         fetched = key.download_as_string()
         self.assertEqual(fetched, 'abcdef')
@@ -261,7 +267,7 @@ class Test_Key(unittest2.TestCase):
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/upload/storage/v1/b/name/o')
+        self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': 'key'})
         headers = dict(
@@ -305,7 +311,7 @@ class Test_Key(unittest2.TestCase):
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/resumable/upload/storage/v1/b/name/o')
+        self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'resumable', 'name': 'key'})
         headers = dict(
@@ -360,7 +366,7 @@ class Test_Key(unittest2.TestCase):
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/upload/storage/v1/b/name/o')
+        self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': 'parent/child'})
         headers = dict(
@@ -400,7 +406,7 @@ class Test_Key(unittest2.TestCase):
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/upload/storage/v1/b/name/o')
+        self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': 'key'})
         headers = dict(
@@ -436,7 +442,7 @@ class Test_Key(unittest2.TestCase):
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
-        self.assertEqual(path, '/upload/storage/v1/b/name/o')
+        self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'media', 'name': 'key'})
         headers = dict(
@@ -806,10 +812,13 @@ class _Connection(_Responder):
         return self._respond(**kw)
 
     def build_api_url(self, path, query_params=None,
-                      api_base_url=API_BASE_URL):
+                      api_base_url=API_BASE_URL, upload=False):
         from urllib import urlencode
         from urlparse import urlsplit
         from urlparse import urlunsplit
+        # mimic the build_api_url interface, but avoid unused param and
+        # missed coverage errors
+        upload = not upload  # pragma NO COVER
         qs = urlencode(query_params or {})
         scheme, netloc, _, _, _ = urlsplit(api_base_url)
         return urlunsplit((scheme, netloc, path, qs, ''))

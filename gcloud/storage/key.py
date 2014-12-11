@@ -209,13 +209,14 @@ class Key(_PropertyMixin):
 
         :raises: :class:`gcloud.storage.exceptions.NotFound`
         """
+
+        download_url = self.media_link
+
         # Use apitools 'Download' facility.
         download = transfer.Download.FromStream(file_obj, auto_transfer=False)
         download.chunksize = self.CHUNK_SIZE
-        download_url = self.connection.build_api_url(
-            path=self.path, query_params={'alt': 'media'})
         headers = {'Range': 'bytes=0-%d' % (self.CHUNK_SIZE - 1)}
-        request = http_wrapper.Request(download_url, 'POST', headers)
+        request = http_wrapper.Request(download_url, 'GET', headers)
 
         download.InitializeDownload(request, self.connection.http)
 
@@ -308,15 +309,16 @@ class Key(_PropertyMixin):
 
         # Temporary URL, until we know simple vs. resumable.
         upload_url = conn.build_api_url(
-            path=self.bucket.path + '/o')
+            path=self.bucket.path + '/o', upload=True)
 
         # Use apitools 'Upload' facility.
         request = http_wrapper.Request(upload_url, 'POST', headers)
 
         upload.ConfigureRequest(upload_config, request, url_builder)
-        path = url_builder.relative_path.format(bucket=self.bucket.name)
         query_params = url_builder.query_params
-        request.url = conn.build_api_url(path=path, query_params=query_params)
+        request.url = conn.build_api_url(path=self.bucket.path + '/o',
+                                         query_params=query_params,
+                                         upload=True)
         upload.InitializeUpload(request, conn.http)
 
         # Should we be passing callbacks through from caller?  We can't
@@ -628,16 +630,3 @@ class _UrlBuilder(object):
         self.query_params = {'name': object_name}
         self._bucket_name = bucket_name
         self._relative_path = ''
-
-    @property
-    def relative_path(self):
-        """Inject bucket name into path."""
-        return self._relative_path.format(bucket=self._bucket_name)
-
-    @relative_path.setter
-    def relative_path(self, value):
-        """Allow update of path template.
-
-        ``value`` should be a string template taking ``{bucket}``.
-        """
-        self._relative_path = value
