@@ -10,12 +10,11 @@ from gcloud.datastore.key import Key
 class Query(object):
     """A Query against the Cloud Datastore.
 
-    This class serves as an abstraction for creating
-    a query over data stored in the Cloud Datastore.
+    This class serves as an abstraction for creating a query over data
+    stored in the Cloud Datastore.
 
-    Each :class:`Query` object is immutable,
-    and a clone is returned whenever
-    any part of the query is modified::
+    Each :class:`Query` object is immutable, and a clone is returned
+    whenever any part of the query is modified::
 
       >>> query = Query('MyKind')
       >>> limited_query = query.limit(10)
@@ -24,12 +23,10 @@ class Query(object):
       >>> limited_query.limit() == 10
       True
 
-    You typically won't construct a :class:`Query`
-    by initializing it like ``Query('MyKind', dataset=...)``
-    but instead use the helper
-    :func:`gcloud.datastore.dataset.Dataset.query` method
-    which generates a query that can be executed
-    without any additional work::
+    You typically won't construct a :class:`Query` by initializing it
+    like ``Query('MyKind', dataset=...)`` but instead use the helper
+    :func:`gcloud.datastore.dataset.Dataset.query` method which
+    generates a query that can be executed without any additional work::
 
       >>> from gcloud import datastore
       >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
@@ -161,10 +158,8 @@ class Query(object):
     def ancestor(self, ancestor):
         """Filter the query based on an ancestor.
 
-        This will return a clone of the current :class:`Query`
-        filtered by the ancestor provided.
-
-        For example::
+        This will return a clone of the current :class:`Query` filtered
+        by the ancestor provided.  For example::
 
           >>> parent_key = Key.from_path('Person', '1')
           >>> query = dataset.query('Person')
@@ -229,10 +224,9 @@ class Query(object):
         """Get or set the Kind of the Query.
 
         .. note::
-          This is an **additive** operation.
-          That is, if the Query is set for kinds A and B,
-          and you call ``.kind('C')``,
-          it will query for kinds A, B, *and*, C.
+          This is an **additive** operation.  That is, if the Query is
+          set for kinds A and B, and you call ``.kind('C')``, it will
+          query for kinds A, B, *and*, C.
 
         :type kinds: string
         :param kinds: The entity kinds for which to query.
@@ -253,7 +247,8 @@ class Query(object):
     def limit(self, limit=None):
         """Get or set the limit of the Query.
 
-        This is the maximum number of rows (Entities) to return for this Query.
+        This is the maximum number of rows (Entities) to return for this
+        Query.
 
         This is a hybrid getter / setter, used as::
 
@@ -302,9 +297,10 @@ class Query(object):
     def fetch(self, limit=None):
         """Executes the Query and returns all matching entities.
 
-        This makes an API call to the Cloud Datastore, sends the Query as a
-        protobuf, parses the responses to Entity protobufs, and then converts
-        them to :class:`gcloud.datastore.entity.Entity` objects.
+        This makes an API call to the Cloud Datastore, sends the Query
+        as a protobuf, parses the responses to Entity protobufs, and
+        then converts them to :class:`gcloud.datastore.entity.Entity`
+        objects.
 
         For example::
 
@@ -353,8 +349,8 @@ class Query(object):
     def cursor(self):
         """Returns cursor ID
 
-        .. Caution:: Invoking this method on a query that has not yet been
-          executed will raise a RuntimeError.
+        .. warning:: Invoking this method on a query that has not yet
+           been executed will raise a RuntimeError.
 
         :rtype: string
         :returns: base64-encoded cursor ID string denoting the last position

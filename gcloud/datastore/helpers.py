@@ -78,17 +78,15 @@ def key_from_protobuf(pb):
 def _pb_attr_value(val):
     """Given a value, return the protobuf attribute name and proper value.
 
-    The Protobuf API uses different attribute names
-    based on value types rather than inferring the type.
-    This function simply determines the proper attribute name
-    based on the type of the value provided
-    and returns the attribute name
-    as well as a properly formatted value.
+    The Protobuf API uses different attribute names based on value types
+    rather than inferring the type.  This function simply determines the
+    proper attribute name based on the type of the value provided and
+    returns the attribute name as well as a properly formatted value.
 
-    Certain value types need to be coerced into a different type (such as a
-    `datetime.datetime` into an integer timestamp, or a
-    `gcloud.datastore.key.Key` into a Protobuf representation.
-    This function handles that for you.
+    Certain value types need to be coerced into a different type (such
+    as a `datetime.datetime` into an integer timestamp, or a
+    `gcloud.datastore.key.Key` into a Protobuf representation.  This
+    function handles that for you.
 
     .. note::
        Values which are "text" ('unicode' in Python2, 'str' in Python3) map
@@ -145,9 +143,9 @@ def _pb_attr_value(val):
 def _get_value_from_value_pb(value_pb):
     """Given a protobuf for a Value, get the correct value.
 
-    The Cloud Datastore Protobuf API returns a Property Protobuf
-    which has one value set and the rest blank.
-    This function retrieves the the one value provided.
+    The Cloud Datastore Protobuf API returns a Property Protobuf which
+    has one value set and the rest blank.  This function retrieves the
+    the one value provided.
 
     Some work is done to coerce the return value into a more useful type
     (particularly in the case of a timestamp value, or a key value).
@@ -195,9 +193,9 @@ def _get_value_from_value_pb(value_pb):
 def _get_value_from_property_pb(property_pb):
     """Given a protobuf for a Property, get the correct value.
 
-    The Cloud Datastore Protobuf API returns a Property Protobuf
-    which has one value set and the rest blank.
-    This function retrieves the the one value provided.
+    The Cloud Datastore Protobuf API returns a Property Protobuf which
+    has one value set and the rest blank.  This function retrieves the
+    the one value provided.
 
     Some work is done to coerce the return value into a more useful type
     (particularly in the case of a timestamp value, or a key value).
@@ -213,11 +211,11 @@ def _get_value_from_property_pb(property_pb):
 def _set_protobuf_value(value_pb, val):
     """Assign 'val' to the correct subfield of 'value_pb'.
 
-    The Protobuf API uses different attribute names
-    based on value types rather than inferring the type.
+    The Protobuf API uses different attribute names based on value types
+    rather than inferring the type.
 
-    Some value types (entities, keys, lists) cannot be directly assigned;
-    this function handles them correctly.
+    Some value types (entities, keys, lists) cannot be directly
+    assigned; this function handles them correctly.
 
     :type value_pb: :class:`gcloud.datastore.datastore_v1_pb2.Value`
     :param value_pb: The value protobuf to which the value is being assigned.

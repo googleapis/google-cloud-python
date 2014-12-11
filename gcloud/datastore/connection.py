@@ -159,10 +159,9 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
 
         This method deals only with protobufs
-        (:class:`gcloud.datastore.datastore_v1_pb2.Key`
-        and
-        :class:`gcloud.datastore.datastore_v1_pb2.Entity`)
-        and is used under the hood for methods like
+        (:class:`gcloud.datastore.datastore_v1_pb2.Key` and
+        :class:`gcloud.datastore.datastore_v1_pb2.Entity`) and is used
+        under the hood for methods like
         :func:`gcloud.datastore.dataset.Dataset.get_entity`:
 
         >>> from gcloud import datastore
@@ -224,12 +223,12 @@ class Connection(connection.Connection):
 
         Maps the ``DatastoreService.RunQuery`` protobuf RPC.
 
-        Given a Query protobuf,
-        sends a ``runQuery`` request to the Cloud Datastore API
-        and returns a list of entity protobufs matching the query.
+        Given a Query protobuf, sends a ``runQuery`` request to the
+        Cloud Datastore API and returns a list of entity protobufs
+        matching the query.
 
-        You typically wouldn't use this method directly,
-        in favor of the :func:`gcloud.datastore.query.Query.fetch` method.
+        You typically wouldn't use this method directly, in favor of the
+        :func:`gcloud.datastore.query.Query.fetch` method.
 
         Under the hood, the :class:`gcloud.datastore.query.Query` class
         uses this method to fetch data:
@@ -437,9 +436,9 @@ class Connection(connection.Connection):
         """Delete keys from a dataset in the Cloud Datastore.
 
         This method deals only with
-        :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs
-        and not with any of the other abstractions.
-        For example, it's used under the hood in the
+        :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs and not
+        with any of the other abstractions.  For example, it's used
+        under the hood in the
         :func:`gcloud.datastore.entity.Entity.delete` method.
 
         :type dataset_id: string
