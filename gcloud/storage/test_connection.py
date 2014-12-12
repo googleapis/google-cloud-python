@@ -150,6 +150,18 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(parms['project'], PROJECT)
         self.assertEqual(parms['bar'], 'baz')
 
+    def test_build_api_url_w_upload(self):
+        PROJECT = 'project'
+        conn = self._makeOne(PROJECT)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'upload',
+            'storage',
+            conn.API_VERSION,
+            'foo?project=%s' % PROJECT,
+        ])
+        self.assertEqual(conn.build_api_url('/foo', upload=True), URI)
+
     def test_make_request_no_data_no_content_type_no_headers(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
