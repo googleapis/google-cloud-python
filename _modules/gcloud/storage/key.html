@@ -283,13 +283,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span>
+
         <span class="c"># Use apitools &#39;Download&#39; facility.</span>
         <span class="n">download</span> <span class="o">=</span> <span class="n">transfer</span><span class="o">.</span><span class="n">Download</span><span class="o">.</span><span class="n">FromStream</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">auto_transfer</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
         <span class="n">download</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CHUNK_SIZE</span>
-        <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;alt&#39;</span><span class="p">:</span> <span class="s">&#39;media&#39;</span><span class="p">})</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Range&#39;</span><span class="p">:</span> <span class="s">&#39;bytes=0-</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CHUNK_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)}</span>
-        <span class="n">request</span> <span class="o">=</span> <span class="n">http_wrapper</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">http_wrapper</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
         <span class="n">download</span><span class="o">.</span><span class="n">InitializeDownload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
 
@@ -381,15 +382,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="c"># Temporary URL, until we know simple vs. resumable.</span>
         <span class="n">upload_url</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">)</span>
+            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
         <span class="c"># Use apitools &#39;Upload&#39; facility.</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">http_wrapper</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
         <span class="n">upload</span><span class="o">.</span><span class="n">ConfigureRequest</span><span class="p">(</span><span class="n">upload_config</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_builder</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">url_builder</span><span class="o">.</span><span class="n">relative_path</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">query_params</span> <span class="o">=</span> <span class="n">url_builder</span><span class="o">.</span><span class="n">query_params</span>
-        <span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span>
+                                         <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+                                         <span class="n">upload</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
         <span class="n">upload</span><span class="o">.</span><span class="n">InitializeUpload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">conn</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
 
         <span class="c"># Should we be passing callbacks through from caller?  We can&#39;t</span>
@@ -699,19 +701,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">object_name</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bucket_name</span> <span class="o">=</span> <span class="n">bucket_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_relative_path</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">relative_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Inject bucket name into path.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relative_path</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bucket_name</span><span class="p">)</span>
-
-    <span class="nd">@relative_path.setter</span>
-    <span class="k">def</span> <span class="nf">relative_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Allow update of path template.</span>
-
-<span class="sd">        ``value`` should be a string template taking ``{bucket}``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_relative_path</span> <span class="o">=</span> <span class="n">value</span>
 </pre></div>
 
       </section><!-- end of .content -->

@@ -375,7 +375,7 @@ that cannot be done.  Default is True.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.build_api_url">
-<tt class="descname">build_api_url</tt><big>(</big><em>path</em>, <em>query_params=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.build_api_url" title="Permalink to this definition">#</a></dt>
+<tt class="descname">build_api_url</tt><big>(</big><em>path</em>, <em>query_params=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em>, <em>upload=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.build_api_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct an API url given a few components, some optional.</p>
 <p>Typically, you shouldn&#8217;t need to use this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -391,6 +391,7 @@ Typically you won&#8217;t have to provide this.</li>
 <li><strong>api_version</strong> (<em>string</em>) &#8211; The version of the API to call.
 Typically you shouldn&#8217;t provide this and instead
 use the default for the library.</li>
+<li><strong>upload</strong> (<em>boolean</em>) &#8211; True if the URL is for uploading purposes.</li>
 </ul>
 </td>
 </tr>

@@ -167,7 +167,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 
 <div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                      <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                      <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct an API url given a few components, some optional.</span>
 
 <span class="sd">        Typically, you shouldn&#39;t need to use this method.</span>
@@ -188,9 +188,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                            Typically you shouldn&#39;t provide this and instead</span>
 <span class="sd">                            use the default for the library.</span>
 
+<span class="sd">        :type upload: boolean</span>
+<span class="sd">        :param upload: True if the URL is for uploading purposes.</span>
+
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The URL assembled from the pieces provided.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">api_base_url</span> <span class="o">=</span> <span class="n">api_base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_BASE_URL</span>
+        <span class="k">if</span> <span class="n">upload</span><span class="p">:</span>
+            <span class="n">api_base_url</span> <span class="o">+=</span> <span class="s">&#39;/upload&#39;</span>
+
         <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">api_base_url</span><span class="o">=</span><span class="p">(</span><span class="n">api_base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_BASE_URL</span><span class="p">),</span>
             <span class="n">api_version</span><span class="o">=</span><span class="p">(</span><span class="n">api_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">),</span>
