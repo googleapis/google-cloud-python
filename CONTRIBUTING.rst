@@ -164,7 +164,7 @@ Running Regression Tests
     bamboo-shift-455).
   - ``GCLOUD_TESTS_DATASET_ID``: The name of the dataset your tests connect to.
     This is typically the same as ``GCLOUD_TESTS_PROJECT_ID``.
-  - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to an encrypted JSON file;
+  - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to a JSON key file;
     see ``regression/app_credentials.json.sample`` as an example. Such a file
     can be downloaded directly from the developer's console by clicking
     "Generate new JSON key". See private key
