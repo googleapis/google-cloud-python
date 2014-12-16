@@ -17,16 +17,56 @@
 from oauth2client import client
 
 
-def get_for_service_account(client_email, private_key_path, scope=None):
+def get_credentials():
+    """Gets credentials implicitly from the current environment.
+
+    .. note::
+      You should not need to use this function directly. Instead, use the
+      helper methods provided in
+      :func:`gcloud.datastore.__init__.get_connection` and
+      :func:`gcloud.datastore.__init__.get_dataset` which use this method
+      under the hood.
+
+    Checks environment in order of precedence:
+    - Google App Engine (production and testing)
+    - Environment variable GOOGLE_APPLICATION_CREDENTIALS pointing to
+      a file with stored credentials information.
+    - Stored "well known" file associated with `gcloud` command line tool.
+    - Google Compute Engine production environment.
+
+    The file referred to in GOOGLE_APPLICATION_CREDENTIALS is expected to
+    contain information about credentials that are ready to use. This means
+    either service account information or user account information with
+    a ready-to-use refresh token:
+        {                                       {
+            'type': 'authorized_user',              'type': 'service_account',
+            'client_id': '...',                     'client_id': '...',
+            'client_secret': '...',       OR        'client_email': '...',
+            'refresh_token': '...,                  'private_key_id': '...',
+        }                                           'private_key': '...',
+                                                }
+    The second of these is simply a JSON key downloaded from the Google APIs
+    console. The first is a close cousin of the "client secrets" JSON file
+    used by `oauth2client.clientsecrets` but differs in formatting.
+
+    :rtype: :class:`oauth2client.client.GoogleCredentials`,
+            :class:`oauth2client.appengine.AppAssertionCredentials`,
+            :class:`oauth2client.gce.AppAssertionCredentials`,
+            :class:`oauth2client.service_account._ServiceAccountCredentials`
+    :returns: A new credentials instance corresponding to the implicit
+              environment.
+    """
+    return client.GoogleCredentials.get_application_default()
+
+
+def get_for_service_account_p12(client_email, private_key_path, scope=None):
     """Gets the credentials for a service account.
 
     .. note::
-      You should not need to use this function directly.
-      Instead, use the helper methods provided in
-      :func:`gcloud.datastore.__init__.get_connection`
-      and
-      :func:`gcloud.datastore.__init__.get_dataset`
-      which use this method under the hood.
+      This method is not used by default, instead :func:`get_credentials`
+      is used. This method is intended to be used when the environments is
+      known explicitly and detecting the environment implicitly would be
+      superfluous.
 
     :type client_email: string
     :param client_email: The e-mail attached to the service account.
@@ -34,7 +74,7 @@ def get_for_service_account(client_email, private_key_path, scope=None):
     :type private_key_path: string
     :param private_key_path: The path to a private key file (this file was
                              given to you when you created the service
-                             account).
+                             account). This file must be in P12 format.
 
     :type scope: string or tuple of strings
     :param scope: The scope against which to authenticate. (Different services

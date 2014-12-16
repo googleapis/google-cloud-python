@@ -29,7 +29,7 @@ class Transaction(object):
     mutation, and execute those within a transaction::
 
       >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
+      >>> dataset = datastore.get_dataset('dataset-id')
       >>> with dataset.transaction()
       ...   entity1.save()
       ...   entity2.save()
@@ -38,7 +38,7 @@ class Transaction(object):
     exits with an error::
 
       >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
+      >>> dataset = datastore.get_dataset('dataset-id')
       >>> with dataset.transaction() as t:
       ...   do_some_work()
       ...   raise Exception() # rolls back
@@ -96,14 +96,14 @@ class Transaction(object):
     For example, this is perfectly valid::
 
       >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
+      >>> dataset = datastore.get_dataset('dataset-id')
       >>> with dataset.transaction():
       ...   dataset.entity('Thing').save()
 
     However, this **wouldn't** be acceptable::
 
       >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
+      >>> dataset = datastore.get_dataset('dataset-id')
       >>> with dataset.transaction():
       ...   dataset.entity('Thing').save()
       ...   with dataset.transaction():
@@ -114,8 +114,8 @@ class Transaction(object):
     really need to nest transactions, try::
 
       >>> from gcloud import datastore
-      >>> dataset1 = datastore.get_dataset('dataset-id', email, key_path)
-      >>> dataset2 = datastore.get_dataset('dataset-id', email, key_path)
+      >>> dataset1 = datastore.get_dataset('dataset-id1')
+      >>> dataset2 = datastore.get_dataset('dataset-id2')
       >>> with dataset1.transaction():
       ...   dataset1.entity('Thing').save()
       ...   with dataset2.transaction():

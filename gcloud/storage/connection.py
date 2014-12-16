@@ -24,6 +24,8 @@ from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from OpenSSL import crypto
+from oauth2client import client
+from oauth2client import service_account
 import pytz
 
 from gcloud.connection import Connection as _Base
@@ -39,6 +41,71 @@ def _utcnow():  # pragma: NO COVER testing replaces
     NOTE: on the module namespace so tests can replace it.
     """
     return datetime.datetime.utcnow()
+
+
+def _get_pem_key(credentials):
+    """Gets RSA key for a PEM payload from a credentials object.
+
+    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
+                       :class:`service_account._ServiceAccountCredentials`
+    :param credentials: The credentials used to create an RSA key
+                        for signing text.
+
+    :rtype: :class:`Crypto.PublicKey.RSA._RSAobj`
+    :returns: An RSA object used to sign text.
+    :raises: `TypeError` if `credentials` is the wrong type.
+    """
+    if isinstance(credentials, client.SignedJwtAssertionCredentials):
+        # Take our PKCS12 (.p12) key and make it into a RSA key we can use.
+        pkcs12 = crypto.load_pkcs12(
+            base64.b64decode(credentials.private_key),
+            'notasecret')
+        pem_text = crypto.dump_privatekey(
+            crypto.FILETYPE_PEM, pkcs12.get_privatekey())
+    elif isinstance(credentials, service_account._ServiceAccountCredentials):
+        pem_text = credentials._private_key_pkcs8_text
+    else:
+        raise TypeError((credentials,
+                         'not a valid service account credentials type'))
+
+    return RSA.importKey(pem_text)
+
+
+def _get_signed_query_params(credentials, expiration, signature_string):
+    """Gets query parameters for creating a signed URL.
+
+    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
+                       :class:`service_account._ServiceAccountCredentials`
+    :param credentials: The credentials used to create an RSA key
+                        for signing text.
+
+    :type expiration: int or long
+    :param expiration: When the signed URL should expire.
+
+    :type signature_string: string
+    :param signature_string: The string to be signed by the credentials.
+
+    :rtype: dict
+    :returns: Query parameters matching the signing credentials with a
+              signed payload.
+    """
+    pem_key = _get_pem_key(credentials)
+    # Sign the string with the RSA key.
+    signer = PKCS1_v1_5.new(pem_key)
+    signature_hash = SHA256.new(signature_string)
+    signature_bytes = signer.sign(signature_hash)
+    signature = base64.b64encode(signature_bytes)
+
+    if isinstance(credentials, client.SignedJwtAssertionCredentials):
+        service_account_name = credentials.service_account_name
+    elif isinstance(credentials, service_account._ServiceAccountCredentials):
+        service_account_name = credentials._service_account_email
+    # We know one of the above must occur since `_get_pem_key` fails if not.
+    return {
+        'GoogleAccessId': service_account_name,
+        'Expires': str(expiration),
+        'Signature': signature,
+    }
 
 
 class Connection(_Base):
@@ -57,7 +124,7 @@ class Connection(_Base):
     :class:`gcloud.storage.bucket.Bucket` objects::
 
       >>> from gcloud import storage
-      >>> connection = storage.get_connection(project, email, key_path)
+      >>> connection = storage.get_connection(project)
       >>> bucket = connection.create_bucket('my-bucket-name')
 
     You can then delete this bucket::
@@ -276,7 +343,7 @@ class Connection(_Base):
         operations are identical::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> for bucket in connection.get_all_buckets():
           >>>   print bucket
           >>> # ... is the same as ...
@@ -301,7 +368,7 @@ class Connection(_Base):
 
           >>> from gcloud import storage
           >>> from gcloud.storage import exceptions
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> try:
           >>>   bucket = connection.get_bucket('my-bucket')
           >>> except exceptions.NotFound:
@@ -325,7 +392,7 @@ class Connection(_Base):
         than catching an exception::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('doesnt-exist')
           >>> print bucket
           None
@@ -350,7 +417,7 @@ class Connection(_Base):
         For example::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, client, key_path)
+          >>> connection = storage.get_connection(project)
           >>> bucket = connection.create_bucket('my-bucket')
           >>> print bucket
           <Bucket: my-bucket>
@@ -375,7 +442,7 @@ class Connection(_Base):
         a bucket object::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> connection.delete_bucket('my-bucket')
           True
 
@@ -479,26 +546,10 @@ class Connection(_Base):
             str(expiration),
             resource])
 
-        # Take our PKCS12 (.p12) key and make it into a RSA key we can use...
-        pkcs12 = crypto.load_pkcs12(
-            base64.b64decode(self.credentials.private_key),
-            'notasecret')
-        pem = crypto.dump_privatekey(
-            crypto.FILETYPE_PEM, pkcs12.get_privatekey())
-        pem_key = RSA.importKey(pem)
-
-        # Sign the string with the RSA key.
-        signer = PKCS1_v1_5.new(pem_key)
-        signature_hash = SHA256.new(signature_string)
-        signature_bytes = signer.sign(signature_hash)
-        signature = base64.b64encode(signature_bytes)
-
         # Set the right query parameters.
-        query_params = {
-            'GoogleAccessId': self.credentials.service_account_name,
-            'Expires': str(expiration),
-            'Signature': signature,
-        }
+        query_params = _get_signed_query_params(self.credentials,
+                                                expiration,
+                                                signature_string)
 
         # Return the built URL.
         return '{endpoint}{resource}?{querystring}'.format(

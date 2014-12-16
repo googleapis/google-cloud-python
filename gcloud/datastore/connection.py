@@ -180,7 +180,7 @@ class Connection(connection.Connection):
 
         >>> from gcloud import datastore
         >>> from gcloud.datastore.key import Key
-        >>> connection = datastore.get_connection(email, key_path)
+        >>> connection = datastore.get_connection()
         >>> dataset = connection.dataset('dataset-id')
         >>> key = Key(dataset=dataset).kind('MyKind').id(1234)
 
@@ -248,7 +248,7 @@ class Connection(connection.Connection):
         uses this method to fetch data:
 
         >>> from gcloud import datastore
-        >>> connection = datastore.get_connection(email, key_path)
+        >>> connection = datastore.get_connection()
         >>> dataset = connection.dataset('dataset-id')
         >>> query = dataset.query().kind('MyKind').filter('property =', 'val')
 
