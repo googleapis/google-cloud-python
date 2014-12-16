@@ -103,10 +103,7 @@ you can clone the repository from GitHub:</p>
 <h2>Cloud Datastore<a class="headerlink" href="#cloud-datastore" title="Permalink to this headline">#</a></h2>
 <p><a class="reference external" href="https://developers.google.com/datastore/">Google Cloud Datastore</a> is a fully managed, schemaless database for storing non-relational data.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span>
-    <span class="s">&#39;&lt;your-project-id&gt;&#39;</span><span class="p">,</span>
-    <span class="s">&#39;&lt;service-account-email&gt;&#39;</span><span class="p">,</span>
-    <span class="s">&#39;/path/to/your/key&#39;</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;&lt;dataset-id&gt;&#39;</span><span class="p">)</span>
 <span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
 <span class="n">entity</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Your name&#39;</span>
 <span class="n">entity</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
@@ -118,11 +115,7 @@ you can clone the repository from GitHub:</p>
 <h2>Cloud Storage<a class="headerlink" href="#cloud-storage" title="Permalink to this headline">#</a></h2>
 <p><a class="reference external" href="https://developers.google.com/storage/">Google Cloud Storage</a> allows you to store data on Google infrastructure.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span>
-    <span class="s">&#39;&lt;your-bucket-name&gt;&#39;</span><span class="p">,</span>
-    <span class="s">&#39;&lt;your-project-id&gt;&#39;</span><span class="p">,</span>
-    <span class="s">&#39;&lt;service-account-email&gt;&#39;</span><span class="p">,</span>
-    <span class="s">&#39;/path/to/your/key&#39;</span><span class="p">)</span>
+<span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;&lt;your-bucket-name&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;your-project-id&gt;&#39;</span><span class="p">)</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="s">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">upload_contents_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
 </pre></div>

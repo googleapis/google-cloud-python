@@ -99,12 +99,12 @@ authentication to your project:</p>
 bamboo-shift-455).</li>
 <li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_DATASET_ID</span></tt>: The name of the dataset your tests connect to.
 This is typically the same as <tt class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_CLIENT_EMAIL</span></tt>: The email for the service account you&#8217;re
-authenticating with</li>
-<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_KEY_FILE</span></tt>: The path to an encrypted key file.
-See private key
+<li><tt class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></tt>: The path to a JSON key file;
+see <tt class="docutils literal"><span class="pre">regression/app_credentials.json.sample</span></tt> as an example. Such a file
+can be downloaded directly from the developer&#8217;s console by clicking
+&#8220;Generate new JSON key&#8221;. See private key
 <a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">docs</a>
-for explanation on how to get a private key.</li>
+for more details.</li>
 </ul>
 </div></blockquote>
 <p>Run the
@@ -144,8 +144,7 @@ you can create entities and save them:</p>
 <p>The <tt class="docutils literal"><span class="pre">get_dataset</span></tt> method is just a shortcut for:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">demo</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">demo</span><span class="o">.</span><span class="n">DATASET_ID</span><span class="p">,</span> <span class="n">demo</span><span class="o">.</span><span class="n">CLIENT_EMAIL</span><span class="p">,</span> <span class="n">demo</span><span class="o">.</span><span class="n">PRIVATE_KEY_PATH</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">demo</span><span class="o">.</span><span class="n">DATASET_ID</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -157,9 +156,7 @@ you can create entities and save them:</p>
 <p>Shortcut methods for getting set up with Google Cloud Datastore.</p>
 <p>You&#8217;ll typically use these to get started with the API:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id-here&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                                <span class="s">&#39;long-email@googleapis.com&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                                <span class="s">&#39;/path/to/private.key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id-here&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Then do other things...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">)</span>
@@ -190,12 +187,12 @@ which represents a lookup or search over the rows in the datastore.</li>
 
 <dl class="function">
 <dt id="gcloud.datastore.__init__.get_connection">
-<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_connection</tt><big>(</big><em>client_email</em>, <em>private_key_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_connection" title="Permalink to this definition">#</a></dt>
+<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_connection</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Shortcut method to establish a connection to the Cloud Datastore.</p>
 <p>Use this if you are going to access several datasets
 with the same set of credentials (unlikely):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset1</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset1&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset2&#39;</span><span class="p">)</span>
 </pre></div>
@@ -204,19 +201,9 @@ with the same set of credentials (unlikely):</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account).</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A connection defined with the proper credentials.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A connection defined with the proper credentials.</td>
 </tr>
 </tbody>
 </table>
@@ -224,13 +211,13 @@ account).</li>
 
 <dl class="function">
 <dt id="gcloud.datastore.__init__.get_dataset">
-<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_dataset</tt><big>(</big><em>dataset_id</em>, <em>client_email</em>, <em>private_key_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_dataset" title="Permalink to this definition">#</a></dt>
+<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_dataset</tt><big>(</big><em>dataset_id</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Establish a connection to a particular dataset in the Cloud Datastore.</p>
 <p>This is a shortcut method for creating a connection and using it
 to connect to a dataset.</p>
 <p>You&#8217;ll generally use this as the first call to working with the API:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Now you can do things with the dataset.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;TestKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
 <span class="go">[...]</span>
@@ -240,23 +227,14 @@ to connect to a dataset.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The id of the dataset you want to use.
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_id</strong> (<em>string</em>) &#8211; The id of the dataset you want to use.
 This is akin to a database name
 and is usually the same as your Cloud Datastore project
-name.</li>
-<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account).</li>
-</ul>
-</td>
+name.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dataset with a connection using the provided credentials.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dataset with a connection using the provided credentials.</td>
 </tr>
 </tbody>
 </table>
@@ -447,7 +425,7 @@ under the hood for methods like
 <a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset.get_entity" title="gcloud.datastore.dataset.Dataset.get_entity"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.get_entity()</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
 </pre></div>
@@ -535,7 +513,7 @@ matching the query.</p>
 <p>Under the hood, the <a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a> class
 uses this method to fetch data:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;property =&#39;</span><span class="p">,</span> <span class="s">&#39;val&#39;</span><span class="p">)</span>
 </pre></div>
@@ -595,7 +573,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f3944116cb0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f613c5e0c00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

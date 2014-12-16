@@ -254,7 +254,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        &gt;&gt;&gt; from gcloud import datastore</span>
 <span class="sd">        &gt;&gt;&gt; from gcloud.datastore.key import Key</span>
-<span class="sd">        &gt;&gt;&gt; connection = datastore.get_connection(email, key_path)</span>
+<span class="sd">        &gt;&gt;&gt; connection = datastore.get_connection()</span>
 <span class="sd">        &gt;&gt;&gt; dataset = connection.dataset(&#39;dataset-id&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; key = Key(dataset=dataset).kind(&#39;MyKind&#39;).id(1234)</span>
 
@@ -322,7 +322,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        uses this method to fetch data:</span>
 
 <span class="sd">        &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">        &gt;&gt;&gt; connection = datastore.get_connection(email, key_path)</span>
+<span class="sd">        &gt;&gt;&gt; connection = datastore.get_connection()</span>
 <span class="sd">        &gt;&gt;&gt; dataset = connection.dataset(&#39;dataset-id&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; query = dataset.query().kind(&#39;MyKind&#39;).filter(&#39;property =&#39;, &#39;val&#39;)</span>
 

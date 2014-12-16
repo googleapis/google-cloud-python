@@ -91,10 +91,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">You&#39;ll typically use these to get started with the API:</span>
 
 <span class="sd">&gt;&gt;&gt; import gcloud.storage</span>
-<span class="sd">&gt;&gt;&gt; bucket = gcloud.storage.get_bucket(&#39;bucket-id-here&#39;,</span>
-<span class="sd">                                       &#39;project-id&#39;,</span>
-<span class="sd">                                       &#39;long-email@googleapis.com&#39;,</span>
-<span class="sd">                                       &#39;/path/to/private.key&#39;)</span>
+<span class="sd">&gt;&gt;&gt; bucket = gcloud.storage.get_bucket(&#39;bucket-id-here&#39;, &#39;project-id&#39;)</span>
 <span class="sd">&gt;&gt;&gt; # Then do other things...</span>
 <span class="sd">&gt;&gt;&gt; key = bucket.get_key(&#39;/remote/path/to/file.txt&#39;)</span>
 <span class="sd">&gt;&gt;&gt; print key.get_contents_as_string()</span>
@@ -116,51 +113,44 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;0.1&#39;</span>
 
+<span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
+
+
 <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/devstorage.full_control&#39;</span><span class="p">,</span>
          <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span><span class="p">,</span>
          <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_write&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>
+<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to Cloud Storage.</span>
 
 <span class="sd">    Use this if you are going to access several buckets with the same</span>
 <span class="sd">    set of credentials:</span>
 
 <span class="sd">    &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">    &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">    &gt;&gt;&gt; bucket1 = connection.get_bucket(&#39;bucket1&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; bucket2 = connection.get_bucket(&#39;bucket2&#39;)</span>
 
 <span class="sd">    :type project: string</span>
 <span class="sd">    :param project: The name of the project to connect to.</span>
 
-<span class="sd">    :type client_email: string</span>
-<span class="sd">    :param client_email: The e-mail attached to the service account.</span>
-
-<span class="sd">    :type private_key_path: string</span>
-<span class="sd">    :param private_key_path: The path to a private key file (this file was</span>
-<span class="sd">                             given to you when you created the service</span>
-<span class="sd">                             account).</span>
-
 <span class="sd">    :rtype: :class:`gcloud.storage.connection.Connection`</span>
 <span class="sd">    :returns: A connection defined with the proper credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
-    <span class="kn">from</span> <span class="nn">gcloud.storage.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-
-    <span class="n">svc_account_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">get_for_service_account</span><span class="p">(</span>
-        <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">SCOPE</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">svc_account_credentials</span><span class="p">)</span>
+    <span class="n">implicit_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">get_credentials</span><span class="p">()</span>
+    <span class="n">scoped_credentials</span> <span class="o">=</span> <span class="n">implicit_credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">SCOPE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="get_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_bucket">[docs]</a><span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>
+<div class="viewcode-block" id="get_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_bucket">[docs]</a><span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to a particular bucket.</span>
 
 <span class="sd">    You&#39;ll generally use this as the first call to working with the API:</span>
 
 <span class="sd">    &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">    &gt;&gt;&gt; bucket = storage.get_bucket(project, bucket_name, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; bucket = storage.get_bucket(project, bucket_name)</span>
 <span class="sd">    &gt;&gt;&gt; # Now you can do things with the bucket.</span>
 <span class="sd">    &gt;&gt;&gt; bucket.exists(&#39;/path/to/file.txt&#39;)</span>
 <span class="sd">    False</span>
@@ -172,18 +162,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type project: string</span>
 <span class="sd">    :param project: The name of the project to connect to.</span>
 
-<span class="sd">    :type client_email: string</span>
-<span class="sd">    :param client_email: The e-mail attached to the service account.</span>
-
-<span class="sd">    :type private_key_path: string</span>
-<span class="sd">    :param private_key_path: The path to a private key file (this file was</span>
-<span class="sd">                             given to you when you created the service</span>
-<span class="sd">                             account).</span>
-
 <span class="sd">    :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">    :returns: A bucket with a connection using the provided credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">)</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span></div>
 </pre></div>
 

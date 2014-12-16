@@ -91,9 +91,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">You&#39;ll typically use these to get started with the API:</span>
 
 <span class="sd">&gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">&gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id-here&#39;,</span>
-<span class="sd">...                                 &#39;long-email@googleapis.com&#39;,</span>
-<span class="sd">...                                 &#39;/path/to/private.key&#39;)</span>
+<span class="sd">&gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id-here&#39;)</span>
 <span class="sd">&gt;&gt;&gt; # Then do other things...</span>
 <span class="sd">&gt;&gt;&gt; query = dataset.query().kind(&#39;EntityKind&#39;)</span>
 <span class="sd">&gt;&gt;&gt; entity = dataset.entity(&#39;EntityKind&#39;)</span>
@@ -127,37 +125,30 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">&quot;&quot;&quot;The scope required for authenticating as a Cloud Datastore consumer.&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>
+<span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
+
+
+<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to the Cloud Datastore.</span>
 
 <span class="sd">    Use this if you are going to access several datasets</span>
 <span class="sd">    with the same set of credentials (unlikely):</span>
 
 <span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">    &gt;&gt;&gt; connection = datastore.get_connection(email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; connection = datastore.get_connection()</span>
 <span class="sd">    &gt;&gt;&gt; dataset1 = connection.dataset(&#39;dataset1&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; dataset2 = connection.dataset(&#39;dataset2&#39;)</span>
-
-<span class="sd">    :type client_email: string</span>
-<span class="sd">    :param client_email: The e-mail attached to the service account.</span>
-
-<span class="sd">    :type private_key_path: string</span>
-<span class="sd">    :param private_key_path: The path to a private key file (this file was</span>
-<span class="sd">                             given to you when you created the service</span>
-<span class="sd">                             account).</span>
 
 <span class="sd">    :rtype: :class:`gcloud.datastore.connection.Connection`</span>
 <span class="sd">    :returns: A connection defined with the proper credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
-    <span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-
-    <span class="n">svc_account_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">get_for_service_account</span><span class="p">(</span>
-        <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">,</span> <span class="n">scope</span><span class="o">=</span><span class="n">SCOPE</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">svc_account_credentials</span><span class="p">)</span>
+    <span class="n">implicit_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">get_credentials</span><span class="p">()</span>
+    <span class="n">scoped_credentials</span> <span class="o">=</span> <span class="n">implicit_credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">SCOPE</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="get_dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_dataset">[docs]</a><span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">):</span>
+<div class="viewcode-block" id="get_dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_dataset">[docs]</a><span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Establish a connection to a particular dataset in the Cloud Datastore.</span>
 
 <span class="sd">    This is a shortcut method for creating a connection and using it</span>
@@ -166,7 +157,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    You&#39;ll generally use this as the first call to working with the API:</span>
 
 <span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">    &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">    &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; # Now you can do things with the dataset.</span>
 <span class="sd">    &gt;&gt;&gt; dataset.query().kind(&#39;TestKind&#39;).fetch()</span>
 <span class="sd">    [...]</span>
@@ -177,18 +168,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                       and is usually the same as your Cloud Datastore project</span>
 <span class="sd">                       name.</span>
 
-<span class="sd">    :type client_email: string</span>
-<span class="sd">    :param client_email: The e-mail attached to the service account.</span>
-
-<span class="sd">    :type private_key_path: string</span>
-<span class="sd">    :param private_key_path: The path to a private key file (this file was</span>
-<span class="sd">                             given to you when you created the service</span>
-<span class="sd">                             account).</span>
-
 <span class="sd">    :rtype: :class:`gcloud.datastore.dataset.Dataset`</span>
 <span class="sd">    :returns: A dataset with a connection using the provided credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">)</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span></div>
 </pre></div>
 

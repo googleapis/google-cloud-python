@@ -99,12 +99,12 @@ authentication to your project:</p>
 bamboo-shift-455).</li>
 <li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_DATASET_ID</span></tt>: The name of the dataset your tests connect to.
 This is typically the same as <tt class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_CLIENT_EMAIL</span></tt>: The email for the service account you&#8217;re
-authenticating with</li>
-<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_KEY_FILE</span></tt>: The path to an encrypted key file.
-See private key
+<li><tt class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></tt>: The path to a JSON key file;
+see <tt class="docutils literal"><span class="pre">regression/app_credentials.json.sample</span></tt> as an example. Such a file
+can be downloaded directly from the developer&#8217;s console by clicking
+&#8220;Generate new JSON key&#8221;. See private key
 <a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">docs</a>
-for explanation on how to get a private key.</li>
+for more details.</li>
 </ul>
 </div></blockquote>
 <p>Run the
@@ -152,8 +152,7 @@ you can create buckets and keys:</p>
 <p>The <tt class="docutils literal"><span class="pre">get_connection</span></tt> method is just a shortcut for:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">demo</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">demo</span><span class="o">.</span><span class="n">PROJECT_NAME</span><span class="p">,</span> <span class="n">demo</span><span class="o">.</span><span class="n">CLIENT_EMAIL</span><span class="p">,</span> <span class="n">demo</span><span class="o">.</span><span class="n">PRIVATE_KEY_PATH</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">demo</span><span class="o">.</span><span class="n">PROJECT_ID</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -165,10 +164,7 @@ you can create buckets and keys:</p>
 <p>Shortcut methods for getting set up with Google Cloud Storage.</p>
 <p>You&#8217;ll typically use these to get started with the API:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;bucket-id-here&#39;</span><span class="p">,</span>
-<span class="go">                                       &#39;project-id&#39;,</span>
-<span class="go">                                       &#39;long-email@googleapis.com&#39;,</span>
-<span class="go">                                       &#39;/path/to/private.key&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;bucket-id-here&#39;</span><span class="p">,</span> <span class="s">&#39;project-id&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Then do other things...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="s">&#39;/remote/path/to/file.txt&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">key</span><span class="o">.</span><span class="n">get_contents_as_string</span><span class="p">()</span>
@@ -188,11 +184,11 @@ machine).</li>
 </ul>
 <dl class="function">
 <dt id="gcloud.storage.__init__.get_bucket">
-<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">get_bucket</tt><big>(</big><em>bucket_name</em>, <em>project</em>, <em>client_email</em>, <em>private_key_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_bucket" title="Permalink to this definition">#</a></dt>
+<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">get_bucket</tt><big>(</big><em>bucket_name</em>, <em>project</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Shortcut method to establish a connection to a particular bucket.</p>
 <p>You&#8217;ll generally use this as the first call to working with the API:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Now you can do things with the bucket.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s">&#39;/path/to/file.txt&#39;</span><span class="p">)</span>
 <span class="go">False</span>
@@ -206,10 +202,6 @@ machine).</li>
 <li><strong>bucket_name</strong> (<em>string</em>) &#8211; The id of the bucket you want to use.
 This is akin to a disk name on a file system.</li>
 <li><strong>project</strong> (<em>string</em>) &#8211; The name of the project to connect to.</li>
-<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account).</li>
 </ul>
 </td>
 </tr>
@@ -225,12 +217,12 @@ account).</li>
 
 <dl class="function">
 <dt id="gcloud.storage.__init__.get_connection">
-<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">get_connection</tt><big>(</big><em>project</em>, <em>client_email</em>, <em>private_key_path</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_connection" title="Permalink to this definition">#</a></dt>
+<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">get_connection</tt><big>(</big><em>project</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Shortcut method to establish a connection to Cloud Storage.</p>
 <p>Use this if you are going to access several buckets with the same
 set of credentials:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket1</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;bucket1&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;bucket2&#39;</span><span class="p">)</span>
 </pre></div>
@@ -239,20 +231,11 @@ set of credentials:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<em>string</em>) &#8211; The name of the project to connect to.</li>
-<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account).</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> (<em>string</em>) &#8211; The name of the project to connect to.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a></p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A connection defined with the proper credentials.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A connection defined with the proper credentials.</td>
 </tr>
 </tbody>
 </table>
@@ -277,7 +260,7 @@ Console).</p>
 <p>A typical use of this is to operate on
 <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> objects:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket-name&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -411,7 +394,7 @@ use the default for the library.</li>
 <dd><p>Create a new bucket.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span>
 <span class="go">&lt;Bucket: my-bucket&gt;</span>
@@ -441,7 +424,7 @@ there is a confict (bucket already exists, invalid name, etc.)</td>
 <p>You can use this method to delete a bucket by name, or to delete
 a bucket object:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
@@ -527,7 +510,7 @@ bucket.</p>
 <p>You can also iterate over the connection object, so these two
 operations are identical:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">bucket</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># ... is the same as ...</span>
@@ -559,7 +542,7 @@ isn&#8217;t found (like <tt class="docutils literal"><span class="pre">{}.get('.
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
@@ -589,7 +572,7 @@ isn&#8217;t found (like <tt class="docutils literal"><span class="pre">{}.get('.
 <p>You can use this if you would rather checking for a None value
 than catching an exception:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">key_path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;doesnt-exist&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span>
 <span class="go">None</span>

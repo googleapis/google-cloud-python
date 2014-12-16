@@ -224,7 +224,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        This will return None if the key doesn&#39;t exist::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_key(&#39;/path/to/key.txt&#39;)</span>
 <span class="sd">          &lt;Key: my-bucket, /path/to/key.txt&gt;</span>
@@ -350,7 +350,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; from gcloud.storage import exceptions</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_keys()</span>
 <span class="sd">          [&lt;Key: my-bucket, my-file.txt&gt;]</span>
@@ -432,7 +432,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        For example::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;, &#39;remote-text-file.txt&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_keys()</span>
@@ -443,7 +443,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        path)::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_keys()</span>
@@ -472,7 +472,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        For example::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(open(&#39;~/my-file.txt&#39;), &#39;remote-text-file.txt&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_keys()</span>
@@ -483,7 +483,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        path)::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(open(&#39;~/my-file.txt&#39;))</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_keys()</span>
@@ -729,8 +729,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        of an index page and a page to use when a key isn&#39;t found::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email,</span>
-<span class="sd">                                                  private_key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(bucket_name)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.configure_website(&#39;index.html&#39;, &#39;404.html&#39;)</span>
 

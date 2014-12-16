@@ -98,6 +98,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">Crypto.PublicKey</span> <span class="kn">import</span> <span class="n">RSA</span>
 <span class="kn">from</span> <span class="nn">Crypto.Signature</span> <span class="kn">import</span> <span class="n">PKCS1_v1_5</span>
 <span class="kn">from</span> <span class="nn">OpenSSL</span> <span class="kn">import</span> <span class="n">crypto</span>
+<span class="kn">from</span> <span class="nn">oauth2client</span> <span class="kn">import</span> <span class="n">client</span>
+<span class="kn">from</span> <span class="nn">oauth2client</span> <span class="kn">import</span> <span class="n">service_account</span>
 <span class="kn">import</span> <span class="nn">pytz</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.connection</span> <span class="kn">import</span> <span class="n">Connection</span> <span class="k">as</span> <span class="n">_Base</span>
@@ -113,6 +115,71 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    NOTE: on the module namespace so tests can replace it.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_get_pem_key</span><span class="p">(</span><span class="n">credentials</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets RSA key for a PEM payload from a credentials object.</span>
+
+<span class="sd">    :type credentials: :class:`client.SignedJwtAssertionCredentials`,</span>
+<span class="sd">                       :class:`service_account._ServiceAccountCredentials`</span>
+<span class="sd">    :param credentials: The credentials used to create an RSA key</span>
+<span class="sd">                        for signing text.</span>
+
+<span class="sd">    :rtype: :class:`Crypto.PublicKey.RSA._RSAobj`</span>
+<span class="sd">    :returns: An RSA object used to sign text.</span>
+<span class="sd">    :raises: `TypeError` if `credentials` is the wrong type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">SignedJwtAssertionCredentials</span><span class="p">):</span>
+        <span class="c"># Take our PKCS12 (.p12) key and make it into a RSA key we can use.</span>
+        <span class="n">pkcs12</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">load_pkcs12</span><span class="p">(</span>
+            <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">private_key</span><span class="p">),</span>
+            <span class="s">&#39;notasecret&#39;</span><span class="p">)</span>
+        <span class="n">pem_text</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">dump_privatekey</span><span class="p">(</span>
+            <span class="n">crypto</span><span class="o">.</span><span class="n">FILETYPE_PEM</span><span class="p">,</span> <span class="n">pkcs12</span><span class="o">.</span><span class="n">get_privatekey</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">service_account</span><span class="o">.</span><span class="n">_ServiceAccountCredentials</span><span class="p">):</span>
+        <span class="n">pem_text</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">_private_key_pkcs8_text</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">((</span><span class="n">credentials</span><span class="p">,</span>
+                         <span class="s">&#39;not a valid service account credentials type&#39;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">RSA</span><span class="o">.</span><span class="n">importKey</span><span class="p">(</span><span class="n">pem_text</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_signed_query_params</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">signature_string</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets query parameters for creating a signed URL.</span>
+
+<span class="sd">    :type credentials: :class:`client.SignedJwtAssertionCredentials`,</span>
+<span class="sd">                       :class:`service_account._ServiceAccountCredentials`</span>
+<span class="sd">    :param credentials: The credentials used to create an RSA key</span>
+<span class="sd">                        for signing text.</span>
+
+<span class="sd">    :type expiration: int or long</span>
+<span class="sd">    :param expiration: When the signed URL should expire.</span>
+
+<span class="sd">    :type signature_string: string</span>
+<span class="sd">    :param signature_string: The string to be signed by the credentials.</span>
+
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    :returns: Query parameters matching the signing credentials with a</span>
+<span class="sd">              signed payload.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pem_key</span> <span class="o">=</span> <span class="n">_get_pem_key</span><span class="p">(</span><span class="n">credentials</span><span class="p">)</span>
+    <span class="c"># Sign the string with the RSA key.</span>
+    <span class="n">signer</span> <span class="o">=</span> <span class="n">PKCS1_v1_5</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">pem_key</span><span class="p">)</span>
+    <span class="n">signature_hash</span> <span class="o">=</span> <span class="n">SHA256</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">signature_string</span><span class="p">)</span>
+    <span class="n">signature_bytes</span> <span class="o">=</span> <span class="n">signer</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">signature_hash</span><span class="p">)</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">signature_bytes</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">SignedJwtAssertionCredentials</span><span class="p">):</span>
+        <span class="n">service_account_name</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">service_account_name</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">service_account</span><span class="o">.</span><span class="n">_ServiceAccountCredentials</span><span class="p">):</span>
+        <span class="n">service_account_name</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">_service_account_email</span>
+    <span class="c"># We know one of the above must occur since `_get_pem_key` fails if not.</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">&#39;GoogleAccessId&#39;</span><span class="p">:</span> <span class="n">service_account_name</span><span class="p">,</span>
+        <span class="s">&#39;Expires&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
+        <span class="s">&#39;Signature&#39;</span><span class="p">:</span> <span class="n">signature</span><span class="p">,</span>
+    <span class="p">}</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">_Base</span><span class="p">):</span>
@@ -131,7 +198,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :class:`gcloud.storage.bucket.Bucket` objects::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">      &gt;&gt;&gt; bucket = connection.create_bucket(&#39;my-bucket-name&#39;)</span>
 
 <span class="sd">    You can then delete this bucket::</span>
@@ -350,7 +417,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        operations are identical::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; for bucket in connection.get_all_buckets():</span>
 <span class="sd">          &gt;&gt;&gt;   print bucket</span>
 <span class="sd">          &gt;&gt;&gt; # ... is the same as ...</span>
@@ -375,7 +442,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; from gcloud.storage import exceptions</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; try:</span>
 <span class="sd">          &gt;&gt;&gt;   bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; except exceptions.NotFound:</span>
@@ -399,7 +466,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        than catching an exception::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;doesnt-exist&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket</span>
 <span class="sd">          None</span>
@@ -424,7 +491,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        For example::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, client, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.create_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket</span>
 <span class="sd">          &lt;Bucket: my-bucket&gt;</span>
@@ -449,7 +516,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        a bucket object::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project, email, key_path)</span>
+<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; connection.delete_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          True</span>
 
@@ -553,26 +620,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
             <span class="n">resource</span><span class="p">])</span>
 
-        <span class="c"># Take our PKCS12 (.p12) key and make it into a RSA key we can use...</span>
-        <span class="n">pkcs12</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">load_pkcs12</span><span class="p">(</span>
-            <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">private_key</span><span class="p">),</span>
-            <span class="s">&#39;notasecret&#39;</span><span class="p">)</span>
-        <span class="n">pem</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">dump_privatekey</span><span class="p">(</span>
-            <span class="n">crypto</span><span class="o">.</span><span class="n">FILETYPE_PEM</span><span class="p">,</span> <span class="n">pkcs12</span><span class="o">.</span><span class="n">get_privatekey</span><span class="p">())</span>
-        <span class="n">pem_key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">importKey</span><span class="p">(</span><span class="n">pem</span><span class="p">)</span>
-
-        <span class="c"># Sign the string with the RSA key.</span>
-        <span class="n">signer</span> <span class="o">=</span> <span class="n">PKCS1_v1_5</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">pem_key</span><span class="p">)</span>
-        <span class="n">signature_hash</span> <span class="o">=</span> <span class="n">SHA256</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">signature_string</span><span class="p">)</span>
-        <span class="n">signature_bytes</span> <span class="o">=</span> <span class="n">signer</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">signature_hash</span><span class="p">)</span>
-        <span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">signature_bytes</span><span class="p">)</span>
-
         <span class="c"># Set the right query parameters.</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s">&#39;GoogleAccessId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="o">.</span><span class="n">service_account_name</span><span class="p">,</span>
-            <span class="s">&#39;Expires&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
-            <span class="s">&#39;Signature&#39;</span><span class="p">:</span> <span class="n">signature</span><span class="p">,</span>
-        <span class="p">}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="n">_get_signed_query_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
+                                                <span class="n">expiration</span><span class="p">,</span>
+                                                <span class="n">signature_string</span><span class="p">)</span>
 
         <span class="c"># Return the built URL.</span>
         <span class="k">return</span> <span class="s">&#39;{endpoint}{resource}?{querystring}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>

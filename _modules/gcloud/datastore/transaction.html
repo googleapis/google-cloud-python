@@ -103,7 +103,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    mutation, and execute those within a transaction::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
 <span class="sd">      &gt;&gt;&gt; with dataset.transaction()</span>
 <span class="sd">      ...   entity1.save()</span>
 <span class="sd">      ...   entity2.save()</span>
@@ -112,7 +112,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    exits with an error::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
 <span class="sd">      &gt;&gt;&gt; with dataset.transaction() as t:</span>
 <span class="sd">      ...   do_some_work()</span>
 <span class="sd">      ...   raise Exception() # rolls back</span>
@@ -170,14 +170,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    For example, this is perfectly valid::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
 <span class="sd">      &gt;&gt;&gt; with dataset.transaction():</span>
 <span class="sd">      ...   dataset.entity(&#39;Thing&#39;).save()</span>
 
 <span class="sd">    However, this **wouldn&#39;t** be acceptable::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
 <span class="sd">      &gt;&gt;&gt; with dataset.transaction():</span>
 <span class="sd">      ...   dataset.entity(&#39;Thing&#39;).save()</span>
 <span class="sd">      ...   with dataset.transaction():</span>
@@ -188,8 +188,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    really need to nest transactions, try::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset1 = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
-<span class="sd">      &gt;&gt;&gt; dataset2 = datastore.get_dataset(&#39;dataset-id&#39;, email, key_path)</span>
+<span class="sd">      &gt;&gt;&gt; dataset1 = datastore.get_dataset(&#39;dataset-id1&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; dataset2 = datastore.get_dataset(&#39;dataset-id2&#39;)</span>
 <span class="sd">      &gt;&gt;&gt; with dataset1.transaction():</span>
 <span class="sd">      ...   dataset1.entity(&#39;Thing&#39;).save()</span>
 <span class="sd">      ...   with dataset2.transaction():</span>
