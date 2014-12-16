@@ -606,6 +606,7 @@ class TestConnection(unittest2.TestCase):
         import base64
         import urlparse
         from gcloud._testing import _Monkey
+        from gcloud.test_credentials import _Credentials
         from gcloud.storage import connection as MUT
 
         ENDPOINT = 'http://api.example.com'
@@ -619,8 +620,17 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT, _Credentials())
         conn.API_ACCESS_ENDPOINT = ENDPOINT
 
+        def _get_signed_query_params(*args):
+            credentials, expiration = args[:2]
+            return {
+                'GoogleAccessId': credentials.service_account_name,
+                'Expires': str(expiration),
+                'Signature': SIGNED,
+            }
+
         with _Monkey(MUT, crypto=crypto, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
-                     SHA256=sha256):
+                     SHA256=sha256,
+                     _get_signed_query_params=_get_signed_query_params):
             url = conn.generate_signed_url(RESOURCE, 1000)
 
         scheme, netloc, path, qs, frag = urlparse.urlsplit(url)
@@ -753,6 +763,135 @@ class Test__get_expiration_seconds(unittest2.TestCase):
         self.assertEqual(result, utc_seconds + 86400)
 
 
+class Test__get_pem_key(unittest2.TestCase):
+
+    def _callFUT(self, credentials):
+        from gcloud.storage.connection import _get_pem_key
+        return _get_pem_key(credentials)
+
+    def test_bad_argument(self):
+        self.assertRaises(TypeError, self._callFUT, None)
+
+    def test_signed_jwt_for_p12(self):
+        from oauth2client import client
+        from gcloud._testing import _Monkey
+        from gcloud.storage import connection as MUT
+
+        scopes = []
+        credentials = client.SignedJwtAssertionCredentials(
+            'dummy_service_account_name', 'dummy_private_key_text', scopes)
+        crypto = _Crypto()
+        rsa = _RSA()
+        with _Monkey(MUT, crypto=crypto, RSA=rsa):
+            result = self._callFUT(credentials)
+        self.assertEqual(result, 'imported:__PEM__')
+
+    def test_service_account_via_json_key(self):
+        from oauth2client import service_account
+        from gcloud._testing import _Monkey
+        from gcloud.storage import connection as MUT
+
+        scopes = []
+
+        PRIVATE_TEXT = 'dummy_private_key_pkcs8_text'
+
+        def _get_private_key(private_key_pkcs8_text):
+            return private_key_pkcs8_text
+
+        with _Monkey(service_account, _get_private_key=_get_private_key):
+            credentials = service_account._ServiceAccountCredentials(
+                'dummy_service_account_id', 'dummy_service_account_email',
+                'dummy_private_key_id', PRIVATE_TEXT, scopes)
+
+        rsa = _RSA()
+        with _Monkey(MUT, RSA=rsa):
+            result = self._callFUT(credentials)
+
+        expected = 'imported:%s' % (PRIVATE_TEXT,)
+        self.assertEqual(result, expected)
+
+
+class Test__get_signed_query_params(unittest2.TestCase):
+
+    def _callFUT(self, credentials, expiration, signature_string):
+        from gcloud.storage.connection import _get_signed_query_params
+        return _get_signed_query_params(credentials, expiration,
+                                        signature_string)
+
+    def test_wrong_type(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import connection as MUT
+
+        crypto = _Crypto()
+        pkcs_v1_5 = _PKCS1_v1_5()
+        rsa = _RSA()
+        sha256 = _SHA256()
+
+        def _get_pem_key(credentials):
+            return credentials
+
+        BAD_CREDENTIALS = None
+        EXPIRATION = '100'
+        SIGNATURE_STRING = 'dummy_signature'
+        with _Monkey(MUT, crypto=crypto, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
+                     SHA256=sha256, _get_pem_key=_get_pem_key):
+            self.assertRaises(NameError, self._callFUT,
+                              BAD_CREDENTIALS, EXPIRATION, SIGNATURE_STRING)
+
+    def _run_test_with_credentials(self, credentials, account_name):
+        import base64
+        from gcloud._testing import _Monkey
+        from gcloud.storage import connection as MUT
+
+        crypto = _Crypto()
+        pkcs_v1_5 = _PKCS1_v1_5()
+        rsa = _RSA()
+        sha256 = _SHA256()
+
+        EXPIRATION = '100'
+        SIGNATURE_STRING = 'dummy_signature'
+        with _Monkey(MUT, crypto=crypto, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
+                     SHA256=sha256):
+            result = self._callFUT(credentials, EXPIRATION, SIGNATURE_STRING)
+
+        self.assertEqual(sha256._signature_string, SIGNATURE_STRING)
+        SIGNED = base64.b64encode('DEADBEEF')
+        expected_query = {
+            'Expires': EXPIRATION,
+            'GoogleAccessId': account_name,
+            'Signature': SIGNED,
+        }
+        self.assertEqual(result, expected_query)
+
+    def test_signed_jwt_for_p12(self):
+        from oauth2client import client
+
+        scopes = []
+        ACCOUNT_NAME = 'dummy_service_account_name'
+        credentials = client.SignedJwtAssertionCredentials(
+            ACCOUNT_NAME, 'dummy_private_key_text', scopes)
+        self._run_test_with_credentials(credentials, ACCOUNT_NAME)
+
+    def test_service_account_via_json_key(self):
+        from oauth2client import service_account
+        from gcloud._testing import _Monkey
+
+        scopes = []
+
+        PRIVATE_TEXT = 'dummy_private_key_pkcs8_text'
+
+        def _get_private_key(private_key_pkcs8_text):
+            return private_key_pkcs8_text
+
+        ACCOUNT_NAME = 'dummy_service_account_email'
+        with _Monkey(service_account, _get_private_key=_get_private_key):
+            credentials = service_account._ServiceAccountCredentials(
+                'dummy_service_account_id', ACCOUNT_NAME,
+                'dummy_private_key_id', PRIVATE_TEXT, scopes)
+
+        self._run_test_with_credentials(credentials, ACCOUNT_NAME)
+
+
 class Http(object):
 
     _called_with = None
@@ -765,16 +904,6 @@ class Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
-
-
-class _Credentials(object):
-
-    service_account_name = 'testing@example.com'
-
-    @property
-    def private_key(self):
-        import base64
-        return base64.b64encode('SEEKRIT')
 
 
 class _Crypto(object):

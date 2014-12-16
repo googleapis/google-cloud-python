@@ -164,22 +164,18 @@ Running Regression Tests
     bamboo-shift-455).
   - ``GCLOUD_TESTS_DATASET_ID``: The name of the dataset your tests connect to.
     This is typically the same as ``GCLOUD_TESTS_PROJECT_ID``.
-  - ``GCLOUD_TESTS_CLIENT_EMAIL``: The email for the service account you're
-    authenticating with
-  - ``GCLOUD_TESTS_KEY_FILE``: The path to an encrypted key file.
-    See private key
+  - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to an encrypted JSON file;
+    see ``regression/app_credentials.json.sample`` as an example. Such a file
+    can be downloaded directly from the developer's console by clicking
+    "Generate new JSON key". See private key
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
-    for explanation on how to get a private key.
+    for more details.
 
 - Examples of these can be found in ``regression/local_test_setup.sample``. We
   recommend copying this to ``regression/local_test_setup``, editing the values
   and sourcing them into your environment::
 
    $ source regression/local_test_setup
-
-- The ``GCLOUD_TESTS_KEY_FILE`` value should point to a valid path (relative or
-  absolute) on your system where the key file for your service account can
-  be found.
 
 - For datastore tests, you'll need to create composite
   `indexes <https://cloud.google.com/datastore/docs/tools/indexconfig>`__
@@ -194,8 +190,10 @@ Running Regression Tests
    $ export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
    # Authenticate the gcloud tool with your account.
-   $ gcloud auth activate-service-account $GCLOUD_TESTS_CLIENT_EMAIL \
-   > --key-file=$GCLOUD_TESTS_KEY_FILE
+   $ SERVICE_ACCOUNT_EMAIL="some-account@developer.gserviceaccount.com"
+   $ P12_CREDENTIALS_FILE="path/to/keyfile.p12"
+   $ gcloud auth activate-service-account $SERVICE_ACCOUNT_EMAIL \
+   > --key-file=$P12_CREDENTIALS_FILE
 
    # Create the indexes
    $ gcloud preview datastore create-indexes regression/data/ \

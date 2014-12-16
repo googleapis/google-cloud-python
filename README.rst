@@ -48,9 +48,7 @@ Library.
 .. code:: python
 
     from gcloud import datastore
-    dataset = datastore.get_dataset('dataset-id-here',
-                                    'long-email@googleapis.com',
-                                    '/path/to/private.key')
+    dataset = datastore.get_dataset('dataset-id-here')
     # Then do other things...
     query = dataset.query().kind('EntityKind')
     entity = dataset.entity('EntityKind')
@@ -75,9 +73,7 @@ to learn how to connect to the Cloud Storage using this Client Library.
 .. code:: python
 
     import gcloud.storage
-    bucket = gcloud.storage.get_bucket('bucket-id-here',
-                                        'long-email@googleapis.com',
-                                        '/path/to/private.key')
+    bucket = gcloud.storage.get_bucket('bucket-id-here', 'project-id')
     # Then do other things...
     key = bucket.get_key('/remote/path/to/file.txt')
     print key.get_contents_as_string()

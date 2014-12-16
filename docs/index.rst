@@ -29,10 +29,7 @@ Cloud Datastore
 .. code-block:: python
 
   from gcloud import datastore
-  dataset = datastore.get_dataset(
-      '<your-project-id>',
-      '<service-account-email>',
-      '/path/to/your/key')
+  dataset = datastore.get_dataset('<dataset-id>')
   entity = dataset.entity('Person')
   entity['name'] = 'Your name'
   entity['age'] = 25
@@ -46,13 +43,8 @@ Cloud Storage
 .. _Google Cloud Storage: https://developers.google.com/storage/
 
 .. code-block:: python
-  
+
   from gcloud import storage
-  bucket = storage.get_bucket(
-      '<your-bucket-name>',
-      '<your-project-id>',
-      '<service-account-email>',
-      '/path/to/your/key')
+  bucket = storage.get_bucket('<your-bucket-name>', '<your-project-id>')
   key = bucket.new_key('my-test-file.txt')
   key = key.upload_contents_from_string('this is test content!')
-  

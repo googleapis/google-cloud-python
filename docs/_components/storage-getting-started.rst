@@ -45,7 +45,7 @@ The first step in accessing Cloud Storage
 is to create a connection to the service::
 
   >>> from gcloud import storage
-  >>> connection = storage.get_connection(project_name, email, key_path)
+  >>> connection = storage.get_connection(project_name)
 
 We're going to use this
 :class:`connection <gcloud.storage.connection.Connection>` object

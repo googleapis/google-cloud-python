@@ -150,7 +150,7 @@ class Bucket(_PropertyMixin):
         This will return None if the key doesn't exist::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> print bucket.get_key('/path/to/key.txt')
           <Key: my-bucket, /path/to/key.txt>
@@ -276,7 +276,7 @@ class Bucket(_PropertyMixin):
 
           >>> from gcloud import storage
           >>> from gcloud.storage import exceptions
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> print bucket.get_all_keys()
           [<Key: my-bucket, my-file.txt>]
@@ -358,7 +358,7 @@ class Bucket(_PropertyMixin):
         For example::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> bucket.upload_file('~/my-file.txt', 'remote-text-file.txt')
           >>> print bucket.get_all_keys()
@@ -369,7 +369,7 @@ class Bucket(_PropertyMixin):
         path)::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> bucket.upload_file('~/my-file.txt')
           >>> print bucket.get_all_keys()
@@ -398,7 +398,7 @@ class Bucket(_PropertyMixin):
         For example::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> bucket.upload_file(open('~/my-file.txt'), 'remote-text-file.txt')
           >>> print bucket.get_all_keys()
@@ -409,7 +409,7 @@ class Bucket(_PropertyMixin):
         path)::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email, key_path)
+          >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> bucket.upload_file(open('~/my-file.txt'))
           >>> print bucket.get_all_keys()
@@ -655,8 +655,7 @@ class Bucket(_PropertyMixin):
         of an index page and a page to use when a key isn't found::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project, email,
-                                                  private_key_path)
+          >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket(bucket_name)
           >>> bucket.configure_website('index.html', '404.html')
 

@@ -22,12 +22,12 @@ authentication to your project:
     bamboo-shift-455).
   - ``GCLOUD_TESTS_DATASET_ID``: The name of the dataset your tests connect to.
     This is typically the same as ``GCLOUD_TESTS_PROJECT_ID``.
-  - ``GCLOUD_TESTS_CLIENT_EMAIL``: The email for the service account you're
-    authenticating with
-  - ``GCLOUD_TESTS_KEY_FILE``: The path to an encrypted key file.
-    See private key
+  - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to an encrypted JSON file;
+    see ``regression/app_credentials.json.sample`` as an example. Such a file
+    can be downloaded directly from the developer's console by clicking
+    "Generate new JSON key". See private key
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
-    for explanation on how to get a private key.
+    for more details.
 
 Run the
 `example script <https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/gcloud/datastore/demo/demo.py>`_
@@ -68,7 +68,6 @@ you can create entities and save them::
 
   >>> from gcloud import datastore
   >>> from gcloud.datastore import demo
-  >>> dataset = datastore.get_dataset(
-  >>>     demo.DATASET_ID, demo.CLIENT_EMAIL, demo.PRIVATE_KEY_PATH)
+  >>> dataset = datastore.get_dataset(demo.DATASET_ID)
 
 ----

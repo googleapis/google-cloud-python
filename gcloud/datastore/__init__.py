@@ -17,9 +17,7 @@
 You'll typically use these to get started with the API:
 
 >>> from gcloud import datastore
->>> dataset = datastore.get_dataset('dataset-id-here',
-...                                 'long-email@googleapis.com',
-...                                 '/path/to/private.key')
+>>> dataset = datastore.get_dataset('dataset-id-here')
 >>> # Then do other things...
 >>> query = dataset.query().kind('EntityKind')
 >>> entity = dataset.entity('EntityKind')
@@ -53,37 +51,30 @@ SCOPE = ('https://www.googleapis.com/auth/datastore ',
 """The scope required for authenticating as a Cloud Datastore consumer."""
 
 
-def get_connection(client_email, private_key_path):
+from gcloud import credentials
+from gcloud.datastore.connection import Connection
+
+
+def get_connection():
     """Shortcut method to establish a connection to the Cloud Datastore.
 
     Use this if you are going to access several datasets
     with the same set of credentials (unlikely):
 
     >>> from gcloud import datastore
-    >>> connection = datastore.get_connection(email, key_path)
+    >>> connection = datastore.get_connection()
     >>> dataset1 = connection.dataset('dataset1')
     >>> dataset2 = connection.dataset('dataset2')
-
-    :type client_email: string
-    :param client_email: The e-mail attached to the service account.
-
-    :type private_key_path: string
-    :param private_key_path: The path to a private key file (this file was
-                             given to you when you created the service
-                             account).
 
     :rtype: :class:`gcloud.datastore.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    from gcloud import credentials
-    from gcloud.datastore.connection import Connection
-
-    svc_account_credentials = credentials.get_for_service_account(
-        client_email, private_key_path, scope=SCOPE)
-    return Connection(credentials=svc_account_credentials)
+    implicit_credentials = credentials.get_credentials()
+    scoped_credentials = implicit_credentials.create_scoped(SCOPE)
+    return Connection(credentials=scoped_credentials)
 
 
-def get_dataset(dataset_id, client_email, private_key_path):
+def get_dataset(dataset_id):
     """Establish a connection to a particular dataset in the Cloud Datastore.
 
     This is a shortcut method for creating a connection and using it
@@ -92,7 +83,7 @@ def get_dataset(dataset_id, client_email, private_key_path):
     You'll generally use this as the first call to working with the API:
 
     >>> from gcloud import datastore
-    >>> dataset = datastore.get_dataset('dataset-id', email, key_path)
+    >>> dataset = datastore.get_dataset('dataset-id')
     >>> # Now you can do things with the dataset.
     >>> dataset.query().kind('TestKind').fetch()
     [...]
@@ -103,16 +94,8 @@ def get_dataset(dataset_id, client_email, private_key_path):
                        and is usually the same as your Cloud Datastore project
                        name.
 
-    :type client_email: string
-    :param client_email: The e-mail attached to the service account.
-
-    :type private_key_path: string
-    :param private_key_path: The path to a private key file (this file was
-                             given to you when you created the service
-                             account).
-
     :rtype: :class:`gcloud.datastore.dataset.Dataset`
     :returns: A dataset with a connection using the provided credentials.
     """
-    connection = get_connection(client_email, private_key_path)
+    connection = get_connection()
     return connection.dataset(dataset_id)
