@@ -613,10 +613,6 @@ class TestConnection(unittest2.TestCase):
         RESOURCE = '/name/key'
         PROJECT = 'project'
         SIGNED = base64.b64encode('DEADBEEF')
-        crypto = _Crypto()
-        rsa = _RSA()
-        pkcs_v1_5 = _PKCS1_v1_5()
-        sha256 = _SHA256()
         conn = self._makeOne(PROJECT, _Credentials())
         conn.API_ACCESS_ENDPOINT = ENDPOINT
 
@@ -628,9 +624,7 @@ class TestConnection(unittest2.TestCase):
                 'Signature': SIGNED,
             }
 
-        with _Monkey(MUT, crypto=crypto, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
-                     SHA256=sha256,
-                     _get_signed_query_params=_get_signed_query_params):
+        with _Monkey(MUT, _get_signed_query_params=_get_signed_query_params):
             url = conn.generate_signed_url(RESOURCE, 1000)
 
         scheme, netloc, path, qs, frag = urlparse.urlsplit(url)
