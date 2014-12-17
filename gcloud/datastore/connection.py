@@ -219,6 +219,12 @@ class Connection(connection.Connection):
                   If multiple keys were provided and no results matched,
                   this will return an empty list.
         """
+        if missing is not None and missing != []:
+            raise ValueError('missing must be None or an empty list')
+
+        if deferred is not None and deferred != []:
+            raise ValueError('deferred must be None or an empty list')
+
         lookup_request = datastore_pb.LookupRequest()
 
         single_key = isinstance(key_pbs, datastore_pb.Key)

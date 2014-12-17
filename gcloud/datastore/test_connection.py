@@ -329,6 +329,16 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(keys[0], key_pb1)
         self.assertEqual(keys[1], key_pb2)
 
+    def test_lookup_multiple_keys_w_missing_non_empty(self):
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        conn = self._makeOne()
+        missing = ['this', 'list', 'is', 'not', 'empty']
+        self.assertRaises(ValueError,
+            conn.lookup, DATASET_ID, [key_pb1, key_pb2], missing=missing)
+
     def test_lookup_multiple_keys_w_deferred(self):
         from gcloud.datastore.connection import datastore_pb
         from gcloud.datastore.key import Key
@@ -367,6 +377,16 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(keys), 2)
         self.assertEqual(keys[0], key_pb1)
         self.assertEqual(keys[1], key_pb2)
+
+    def test_lookup_multiple_keys_w_deferred_non_empty(self):
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        conn = self._makeOne()
+        deferred = ['this', 'list', 'is', 'not', 'empty']
+        self.assertRaises(ValueError,
+            conn.lookup, DATASET_ID, [key_pb1, key_pb2], deferred=deferred)
 
     def test_lookup_multiple_keys_w_deferred_from_backend_but_not_passed(self):
         from gcloud.datastore.connection import datastore_pb
