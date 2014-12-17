@@ -167,7 +167,7 @@ class Connection(connection.Connection):
         kwargs['connection'] = self
         return Dataset(*args, **kwargs)
 
-    def lookup(self, dataset_id, key_pbs):
+    def lookup(self, dataset_id, key_pbs, missing=None, deferred=None):
         """Lookup keys from a dataset in the Cloud Datastore.
 
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
@@ -201,6 +201,16 @@ class Connection(connection.Connection):
                        (or a single Key)
         :param key_pbs: The key (or keys) to retrieve from the datastore.
 
+        :type missing: list or None.
+        :param missing: If a list is passed, the key-only entities returned
+                        by the backend as "missing" will be copied into it.
+                        Use only as a keyword param.
+
+        :type deferred: list or None.
+        :param deferred: If a list is passed, the keys returned
+                        by the backend as "deferred" will be copied into it.
+                        Use only as a keyword param.
+
         :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Entity`
                 (or a single Entity)
         :returns: The entities corresponding to the keys provided.
@@ -219,10 +229,32 @@ class Connection(connection.Connection):
         for key_pb in key_pbs:
             lookup_request.key.add().CopyFrom(key_pb)
 
-        lookup_response = self._rpc(dataset_id, 'lookup', lookup_request,
-                                    datastore_pb.LookupResponse)
+        results = []
+        while True:  # loop against possible deferred.
+            lookup_response = self._rpc(dataset_id, 'lookup', lookup_request,
+                                        datastore_pb.LookupResponse)
 
-        results = [result.entity for result in lookup_response.found]
+            results.extend(
+                [result.entity for result in lookup_response.found])
+
+            if missing is not None:
+                missing.extend(
+                    [result.entity for result in lookup_response.missing])
+
+            if deferred is not None:
+                deferred.extend([key for key in lookup_response.deferred])
+                break
+
+            if lookup_response.deferred:  # retry
+                for old_key in list(lookup_request.key):
+                    lookup_request.key.remove(old_key)
+                for def_key in lookup_response.deferred:
+                    lookup_request.key.add().CopyFrom(def_key)
+            else:
+                break
+
+            # Hmm, should we sleep here?  Asked in:
+            # https://github.com/GoogleCloudPlatform/gcloud-python/issues/306#issuecomment-67377587
 
         if single_key:
             if results:

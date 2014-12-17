@@ -306,6 +306,145 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(keys[0], key_pb1)
         self.assertEqual(keys[1], key_pb2)
 
+    def test_lookup_multiple_keys_w_missing(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        rsp_pb = datastore_pb.LookupResponse()
+        er_1 = rsp_pb.missing.add()
+        er_1.entity.key.CopyFrom(key_pb1)
+        er_2 = rsp_pb.missing.add()
+        er_2.entity.key.CopyFrom(key_pb2)
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        missing = []
+        result = conn.lookup(DATASET_ID, [key_pb1, key_pb2], missing=missing)
+        self.assertEqual(result, [])
+        self.assertEqual([missed.key for missed in missing],
+                         [key_pb1, key_pb2])
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 2)
+        self.assertEqual(keys[0], key_pb1)
+        self.assertEqual(keys[1], key_pb2)
+
+    def test_lookup_multiple_keys_w_deferred(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        rsp_pb = datastore_pb.LookupResponse()
+        rsp_pb.deferred.add().CopyFrom(key_pb1)
+        rsp_pb.deferred.add().CopyFrom(key_pb2)
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        deferred = []
+        result = conn.lookup(DATASET_ID, [key_pb1, key_pb2], deferred=deferred)
+        self.assertEqual(result, [])
+        self.assertEqual([def_key for def_key in deferred], [key_pb1, key_pb2])
+        cw = http._called_with
+        self.assertEqual(cw['uri'], URI)
+        self.assertEqual(cw['method'], 'POST')
+        self.assertEqual(cw['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 2)
+        self.assertEqual(keys[0], key_pb1)
+        self.assertEqual(keys[1], key_pb2)
+
+    def test_lookup_multiple_keys_w_deferred_from_backend_but_not_passed(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        rsp_pb1 = datastore_pb.LookupResponse()
+        entity1 = datastore_pb.Entity()
+        entity1.key.CopyFrom(key_pb1)
+        rsp_pb1.found.add(entity=entity1)
+        rsp_pb1.deferred.add().CopyFrom(key_pb2)
+        rsp_pb2 = datastore_pb.LookupResponse()
+        entity2 = datastore_pb.Entity()
+        entity2.key.CopyFrom(key_pb2)
+        rsp_pb2.found.add(entity=entity2)
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
+        http = conn._http = HttpMultiple(
+            ({'status': '200'}, rsp_pb1.SerializeToString()),
+            ({'status': '200'}, rsp_pb2.SerializeToString()),
+            )
+        found = conn.lookup(DATASET_ID, [key_pb1, key_pb2])
+        self.assertEqual(len(found), 2)
+        self.assertEqual(found[0].key.path_element[0].kind, 'Kind')
+        self.assertEqual(found[0].key.path_element[0].id, 1234)
+        self.assertEqual(found[1].key.path_element[0].kind, 'Kind')
+        self.assertEqual(found[1].key.path_element[0].id, 2345)
+        cw = http._called_with
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        self.assertEqual(len(cw), 2)
+        self.assertEqual(cw[0]['uri'], URI)
+        self.assertEqual(cw[0]['method'], 'POST')
+        self.assertEqual(cw[0]['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw[0]['headers']['User-Agent'], conn.USER_AGENT)
+        request.ParseFromString(cw[0]['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 2)
+        self.assertEqual(keys[0], key_pb1)
+        self.assertEqual(keys[1], key_pb2)
+
+        self.assertEqual(cw[1]['uri'], URI)
+        self.assertEqual(cw[1]['method'], 'POST')
+        self.assertEqual(cw[1]['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(cw[1]['headers']['User-Agent'], conn.USER_AGENT)
+        request.ParseFromString(cw[1]['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 1)
+        self.assertEqual(keys[0], key_pb2)
+
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore.connection import datastore_pb
         from gcloud.datastore.query import Query
@@ -901,3 +1040,15 @@ class Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._headers, self._content
+
+
+class HttpMultiple(object):
+
+    def __init__(self, *responses):
+        self._called_with = []
+        self._responses = list(responses)
+
+    def request(self, **kw):
+        self._called_with.append(kw)
+        result, self._responses = self._responses[0], self._responses[1:]
+        return result

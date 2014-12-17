@@ -76,39 +76,6 @@ class TestDataset(unittest2.TestCase):
         self.assertIsInstance(transaction, Transaction)
         self.assertTrue(transaction.dataset() is dataset)
 
-    def test_get_entities_miss(self):
-        from gcloud.datastore.key import Key
-        DATASET_ID = 'DATASET'
-        connection = _Connection()
-        dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(path=[{'kind': 'Kind', 'id': 1234}])
-        self.assertEqual(dataset.get_entities([key]), [])
-
-    def test_get_entities_hit(self):
-        from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.key import Key
-        DATASET_ID = 'DATASET'
-        KIND = 'Kind'
-        ID = 1234
-        PATH = [{'kind': KIND, 'id': ID}]
-        entity_pb = datastore_pb.Entity()
-        entity_pb.key.partition_id.dataset_id = DATASET_ID
-        path_element = entity_pb.key.path_element.add()
-        path_element.kind = KIND
-        path_element.id = ID
-        prop = entity_pb.property.add()
-        prop.name = 'foo'
-        prop.value.string_value = 'Foo'
-        connection = _Connection(entity_pb)
-        dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(path=PATH)
-        result, = dataset.get_entities([key])
-        key = result.key()
-        self.assertEqual(key._dataset_id, DATASET_ID)
-        self.assertEqual(key.path(), PATH)
-        self.assertEqual(list(result), ['foo'])
-        self.assertEqual(result['foo'], 'Foo')
-
     def test_get_entity_miss(self):
         from gcloud.datastore.key import Key
         DATASET_ID = 'DATASET'
@@ -175,13 +142,91 @@ class TestDataset(unittest2.TestCase):
         with self.assertRaises(TypeError):
             dataset.get_entity(None)
 
+    def test_get_entities_miss(self):
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        connection = _Connection()
+        dataset = self._makeOne(DATASET_ID, connection)
+        key = Key(path=[{'kind': 'Kind', 'id': 1234}])
+        self.assertEqual(dataset.get_entities([key]), [])
+
+    def test_get_entities_miss_w_missing(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+        missed = datastore_pb.Entity()
+        missed.key.partition_id.dataset_id = DATASET_ID
+        path_element = missed.key.path_element.add()
+        path_element.kind = KIND
+        path_element.id = ID
+        connection = _Connection()
+        connection._missing = [missed]
+        dataset = self._makeOne(DATASET_ID, connection)
+        key = Key(path=PATH, dataset_id=DATASET_ID)
+        missing = []
+        entities = dataset.get_entities([key], missing=missing)
+        self.assertEqual(entities, [])
+        self.assertEqual([missed.key().to_protobuf() for missed in missing],
+                         [key.to_protobuf()])
+
+    def test_get_entities_miss_w_deferred(self):
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+        connection = _Connection()
+        dataset = self._makeOne(DATASET_ID, connection)
+        key = Key(path=PATH, dataset_id=DATASET_ID)
+        connection._deferred = [key.to_protobuf()]
+        deferred = []
+        entities = dataset.get_entities([key], deferred=deferred)
+        self.assertEqual(entities, [])
+        self.assertEqual([def_key.to_protobuf() for def_key in deferred],
+                         [key.to_protobuf()])
+
+    def test_get_entities_hit(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+        entity_pb = datastore_pb.Entity()
+        entity_pb.key.partition_id.dataset_id = DATASET_ID
+        path_element = entity_pb.key.path_element.add()
+        path_element.kind = KIND
+        path_element.id = ID
+        prop = entity_pb.property.add()
+        prop.name = 'foo'
+        prop.value.string_value = 'Foo'
+        connection = _Connection(entity_pb)
+        dataset = self._makeOne(DATASET_ID, connection)
+        key = Key(path=PATH)
+        result, = dataset.get_entities([key])
+        key = result.key()
+        self.assertEqual(key._dataset_id, DATASET_ID)
+        self.assertEqual(key.path(), PATH)
+        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result['foo'], 'Foo')
+
 
 class _Connection(object):
     _called_with = None
+    _missing = _deferred = ()
 
     def __init__(self, *result):
         self._result = list(result)
 
     def lookup(self, **kw):
         self._called_with = kw
+        missing = kw.pop('missing', None)
+        if missing is not None:
+            missing.extend(self._missing)
+        deferred = kw.pop('deferred', None)
+        if deferred is not None:
+            deferred.extend(self._deferred)
         return self._result
