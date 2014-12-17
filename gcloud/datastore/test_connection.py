@@ -336,7 +336,8 @@ class TestConnection(unittest2.TestCase):
         key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
         conn = self._makeOne()
         missing = ['this', 'list', 'is', 'not', 'empty']
-        self.assertRaises(ValueError,
+        self.assertRaises(
+            ValueError,
             conn.lookup, DATASET_ID, [key_pb1, key_pb2], missing=missing)
 
     def test_lookup_multiple_keys_w_deferred(self):
@@ -385,7 +386,8 @@ class TestConnection(unittest2.TestCase):
         key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
         conn = self._makeOne()
         deferred = ['this', 'list', 'is', 'not', 'empty']
-        self.assertRaises(ValueError,
+        self.assertRaises(
+            ValueError,
             conn.lookup, DATASET_ID, [key_pb1, key_pb2], deferred=deferred)
 
     def test_lookup_multiple_keys_w_deferred_from_backend_but_not_passed(self):
