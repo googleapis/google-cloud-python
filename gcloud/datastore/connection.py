@@ -201,13 +201,13 @@ class Connection(connection.Connection):
                        (or a single Key)
         :param key_pbs: The key (or keys) to retrieve from the datastore.
 
-        :type missing: list or None.
-        :param missing: If a list is passed, the key-only entities returned
-                        by the backend as "missing" will be copied into it.
-                        Use only as a keyword param.
+        :type missing: an empty list or None.
+        :param missing: If a list is passed, the key-only entity protobufs
+                        returned by the backend as "missing" will be copied
+                        into it.  Use only as a keyword param.
 
-        :type deferred: list or None.
-        :param deferred: If a list is passed, the keys returned
+        :type deferred: an empty list or None.
+        :param deferred: If a list is passed, the key protobufs returned
                         by the backend as "deferred" will be copied into it.
                         Use only as a keyword param.
 

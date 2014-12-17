@@ -148,12 +148,12 @@ class Dataset(object):
         :type key: list of :class:`gcloud.datastore.key.Key`
         :param item_name: The name of the item to retrieve.
 
-        :type missing: list or None.
+        :type missing: an empty list or None.
         :param missing: If a list is passed, the key-only entities returned
                         by the backend as "missing" will be copied into it.
                         Use only as a keyword param.
 
-        :type deferred: list or None.
+        :type deferred: an empty list or None.
         :param deferred: If a list is passed, the keys returned
                         by the backend as "deferred" will be copied into it.
                         Use only as a keyword param.
