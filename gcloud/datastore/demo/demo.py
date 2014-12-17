@@ -46,11 +46,11 @@ query = dataset.query().kind('Thing')
 print(query.limit(2).fetch())
 
 # Now let's check for Thing entities named 'Computer'
-print(query.filter('name =', 'Computer').fetch())
+print(query.filter('name', '=', 'Computer').fetch())
 
 # If you want to filter by multiple attributes,
 # you can string .filter() calls together.
-print(query.filter('name =', 'Computer').filter('age =', 10).fetch())
+print(query.filter('name', '=', 'Computer').filter('age', '=', 10).fetch())
 
 # You can also work inside a transaction.
 # (Check the official docs for explanations of what's happening here.)
