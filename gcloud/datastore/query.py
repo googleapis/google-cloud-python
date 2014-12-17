@@ -69,7 +69,7 @@ class Query(object):
         self._dataset = dataset
         self._namespace = namespace
         self._pb = datastore_pb.Query()
-        self._cursor = None
+        self._cursor = self._more_results = None
         self._offset = 0
 
         if kind:
@@ -85,6 +85,7 @@ class Query(object):
                                namespace=self._namespace)
         clone._pb.CopyFrom(self._pb)
         clone._cursor = self._cursor
+        clone._more_results = self._more_results
         return clone
 
     def namespace(self):
@@ -347,21 +348,22 @@ class Query(object):
             dataset_id=self.dataset().id(),
             namespace=self._namespace,
             )
-        # NOTE: `query_results` contains two extra values that we don't use,
-        #       namely `more_results` and `skipped_results`. The value of
-        #       `more_results` is unusable because it always returns an enum
+        # NOTE: `query_results` contains an extra value that we don't use,
+        #       namely `skipped_results`.
+        #
+        # NOTE: The value of `more_results` is not currently useful because
+        #       the back-end always returns an enum
         #       value of MORE_RESULTS_AFTER_LIMIT even if there are no more
         #       results. See
         #       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280
         #       for discussion.
-        entity_pbs, end_cursor = query_results[:2]
+        entity_pbs, self._cursor, self._more_results = query_results[:3]
 
-        self._cursor = end_cursor
         return [helpers.entity_from_protobuf(entity, dataset=self.dataset())
                 for entity in entity_pbs]
 
     def cursor(self):
-        """Returns cursor ID
+        """Returns cursor ID from most recent ``fetch()``.
 
         .. warning:: Invoking this method on a query that has not yet
            been executed will raise a RuntimeError.
@@ -373,6 +375,28 @@ class Query(object):
         if not self._cursor:
             raise RuntimeError('No cursor')
         return base64.b64encode(self._cursor)
+
+    def more_results(self):
+        """Returns ``more_results`` flag from most recent ``fetch()``.
+
+        .. warning:: Invoking this method on a query that has not yet
+           been executed will raise a RuntimeError.
+
+        .. note::
+
+           The `more_results` is not currently useful because it is
+           always returned by the back-end as ``MORE_RESULTS_AFTER_LIMIT``
+           even if there are no more results. See
+           https://github.com/GoogleCloudPlatform/gcloud-python/issues/280
+           for discussion.
+
+        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.
+                                QueryResultBatch.MoreResultsType`
+        :returns: enumerated value:  are there more results available.
+        """
+        if self._more_results is None:
+            raise RuntimeError('No results')
+        return self._more_results
 
     def with_cursor(self, start_cursor, end_cursor=None):
         """Specifies the starting / ending positions in a query's result set.
