@@ -116,7 +116,7 @@ generates a query that can be executed without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;': 3, '=': 5, '&lt;': 1, '&gt;=': 4, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;=': 4, '&lt;=': 2, '&gt;': 3, '&lt;': 1, '=': 5}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -157,7 +157,7 @@ however a query may only have one ancestor at a time.</p>
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.cursor">
 <tt class="descname">cursor</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.cursor" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns cursor ID</p>
+<dd><p>Returns cursor ID from most recent <tt class="docutils literal"><span class="pre">fetch()</span></tt>.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Invoking this method on a query that has not yet
@@ -363,6 +363,36 @@ Query.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current limit.
 If a limit is provided, returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
 with that limit set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.query.Query.more_results">
+<tt class="descname">more_results</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.more_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.more_results" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns <tt class="docutils literal"><span class="pre">more_results</span></tt> flag from most recent <tt class="docutils literal"><span class="pre">fetch()</span></tt>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Invoking this method on a query that has not yet
+been executed will raise a RuntimeError.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <cite>more_results</cite> is not currently useful because it is
+always returned by the back-end as <tt class="docutils literal"><span class="pre">MORE_RESULTS_AFTER_LIMIT</span></tt>
+even if there are no more results. See
+<a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/280">https://github.com/GoogleCloudPlatform/gcloud-python/issues/280</a>
+for discussion.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.</span>
+<span class="pre">QueryResultBatch.MoreResultsType</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">enumerated value:  are there more results available.</td>
 </tr>
 </tbody>
 </table>
