@@ -181,15 +181,12 @@ class TestDatastoreQuery(TestDatastore):
     def test_limit_queries(self):
         limit = 5
         query = self._base_query().limit(limit)
-        # Verify there is not cursor before fetch().
-        self.assertRaises(RuntimeError, query.cursor)
 
         # Fetch characters.
-        character_entities = query.fetch()
+        character_entities, cursor, _ = query.fetch_page()
         self.assertEqual(len(character_entities), limit)
 
         # Check cursor after fetch.
-        cursor = query.cursor()
         self.assertTrue(cursor is not None)
 
         # Fetch next batch of characters.
@@ -286,18 +283,15 @@ class TestDatastoreQuery(TestDatastore):
         offset = 2
         limit = 3
         page_query = query.offset(offset).limit(limit).order('appearances')
-        # Make sure no query set before fetch.
-        self.assertRaises(RuntimeError, page_query.cursor)
 
         # Fetch characters.
-        entities = page_query.fetch()
+        entities, cursor, _ = page_query.fetch_page()
         self.assertEqual(len(entities), limit)
         self.assertEqual(entities[0]['name'], 'Robb')
         self.assertEqual(entities[1]['name'], 'Bran')
         self.assertEqual(entities[2]['name'], 'Catelyn')
 
         # Use cursor to begin next query.
-        cursor = page_query.cursor()
         next_query = page_query.with_cursor(cursor).offset(0)
         self.assertEqual(next_query.limit(), limit)
         # Fetch next set of characters.
@@ -312,15 +306,12 @@ class TestDatastoreQuery(TestDatastore):
         offset = 2
         limit = 2
         page_query = query.offset(offset).limit(limit).order('appearances')
-        # Make sure no query set before fetch.
-        self.assertRaises(RuntimeError, page_query.cursor)
 
         # Fetch characters.
-        entities = page_query.fetch()
+        entities, cursor, _ = page_query.fetch_page()
         self.assertEqual(len(entities), limit)
 
         # Use cursor to create a fresh query.
-        cursor = page_query.cursor()
         fresh_query = self._base_query()
         fresh_query = fresh_query.order('appearances').with_cursor(cursor)
 

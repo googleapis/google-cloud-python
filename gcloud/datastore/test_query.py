@@ -28,7 +28,7 @@ class TestQuery(unittest2.TestCase):
     def test_ctor_defaults(self):
         query = self._getTargetClass()()
         self.assertEqual(query.dataset(), None)
-        self.assertEqual(list(query.kind()), [])
+        self.assertEqual(query.kind(), None)
         self.assertEqual(query.limit(), 0)
         self.assertEqual(query.namespace(), None)
 
@@ -41,8 +41,7 @@ class TestQuery(unittest2.TestCase):
         dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND, dataset, _NAMESPACE)
         self.assertTrue(query.dataset() is dataset)
-        kq_pb, = list(query.kind())
-        self.assertEqual(kq_pb.name, _KIND)
+        self.assertEqual(query.kind(), _KIND)
         self.assertEqual(query.namespace(), _NAMESPACE)
 
     def test__clone(self):
@@ -50,22 +49,15 @@ class TestQuery(unittest2.TestCase):
 
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        _CURSOR = 'DEADBEEF'
-        _MORE_RESULTS = 2
         _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND, dataset, _NAMESPACE)
-        query._cursor = _CURSOR
-        query._more_results = _MORE_RESULTS
         clone = query._clone()
         self.assertFalse(clone is query)
         self.assertTrue(isinstance(clone, self._getTargetClass()))
         self.assertTrue(clone.dataset() is dataset)
         self.assertEqual(clone.namespace(), _NAMESPACE)
-        kq_pb, = list(clone.kind())
-        self.assertEqual(kq_pb.name, _KIND)
-        self.assertEqual(clone._cursor, _CURSOR)
-        self.assertEqual(clone._more_results, _MORE_RESULTS)
+        self.assertEqual(clone.kind(), _KIND)
 
     def test_to_protobuf_empty(self):
         query = self._makeOne()
@@ -260,8 +252,7 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         self.assertTrue(after.dataset() is dataset)
-        kq_pb, = list(after.kind())
-        self.assertEqual(kq_pb.name, _KIND)
+        self.assertEqual(after.kind(), _KIND)
 
     def test_kind_setter_w_existing(self):
         from gcloud.datastore.dataset import Dataset
@@ -274,9 +265,7 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         self.assertTrue(after.dataset() is dataset)
-        kq_pb1, kq_pb2 = list(after.kind())
-        self.assertEqual(kq_pb1.name, _KIND_BEFORE)
-        self.assertEqual(kq_pb2.name, _KIND_AFTER)
+        self.assertEqual(after.kind(), [_KIND_BEFORE, _KIND_AFTER])
 
     def test_limit_setter_wo_existing(self):
         from gcloud.datastore.dataset import Dataset
@@ -290,8 +279,7 @@ class TestQuery(unittest2.TestCase):
         self.assertTrue(isinstance(after, self._getTargetClass()))
         self.assertTrue(after.dataset() is dataset)
         self.assertEqual(after.limit(), _LIMIT)
-        kq_pb, = list(after.kind())
-        self.assertEqual(kq_pb.name, _KIND)
+        self.assertEqual(after.kind(), _KIND)
 
     def test_dataset_setter(self):
         from gcloud.datastore.dataset import Dataset
@@ -303,39 +291,15 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         self.assertTrue(after.dataset() is dataset)
-        kq_pb, = list(query.kind())
-        self.assertEqual(kq_pb.name, _KIND)
+        self.assertEqual(query.kind(), _KIND)
 
-    def test_fetch_default_limit(self):
-        from gcloud.datastore.datastore_v1_pb2 import Entity
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        _ID = 123
-        entity_pb = Entity()
-        path_element = entity_pb.key.path_element.add()
-        path_element.kind = _KIND
-        path_element.id = _ID
-        prop = entity_pb.property.add()
-        prop.name = 'foo'
-        prop.value.string_value = u'Foo'
-        connection = _Connection(entity_pb)
-        dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
-        entities = query.fetch()
-        self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key().path(),
-                         [{'kind': _KIND, 'id': _ID}])
-        expected_called_with = {
-            'dataset_id': _DATASET,
-            'query_pb': query.to_protobuf(),
-            'namespace': None,
-        }
-        self.assertEqual(connection._called_with, expected_called_with)
-
-    def test_fetch_explicit_limit(self):
+    def _fetch_page_helper(self, cursor=b'\x00', limit=None, more_results=True,
+                           _more_pb=None, use_fetch=False):
         import base64
         from gcloud.datastore.datastore_v1_pb2 import Entity
-        _CURSOR = 'CURSOR'
+        _CURSOR_FOR_USER = (None if cursor is None
+                            else base64.b64encode(cursor))
+        _MORE_RESULTS = more_results
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 123
@@ -347,60 +311,58 @@ class TestQuery(unittest2.TestCase):
         prop = entity_pb.property.add()
         prop.name = 'foo'
         prop.value.string_value = u'Foo'
-        connection = _Connection(entity_pb)
-        connection._cursor = _CURSOR
+        if _more_pb is None:
+            connection = _Connection(entity_pb)
+        else:
+            connection = _Connection(entity_pb, _more=_more_pb)
+        connection._cursor = cursor
         dataset = _Dataset(_DATASET, connection)
+
         query = self._makeOne(_KIND, dataset, _NAMESPACE)
-        limited = query.limit(13)
-        entities = query.fetch(13)
-        self.assertEqual(query.cursor(), base64.b64encode(_CURSOR))
-        self.assertEqual(query.more_results(), connection._more)
+        if use_fetch:
+            entities = query.fetch(limit)
+        else:
+            entities, cursor, more_results = query.fetch_page(limit)
+            self.assertEqual(cursor, _CURSOR_FOR_USER)
+            self.assertEqual(more_results, _MORE_RESULTS)
+
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].key().path(),
                          [{'kind': _KIND, 'id': _ID}])
+        limited_query = query
+        if limit is not None:
+            limited_query = query.limit(limit)
         expected_called_with = {
             'dataset_id': _DATASET,
-            'query_pb': limited.to_protobuf(),
+            'query_pb': limited_query.to_protobuf(),
             'namespace': _NAMESPACE,
         }
         self.assertEqual(connection._called_with, expected_called_with)
 
-    def test_more_results_not_fetched(self):
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        connection = _Connection()
-        dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
-        self.assertRaises(RuntimeError, query.more_results)
+    def test_fetch_page_default_limit(self):
+        self._fetch_page_helper()
 
-    def test_more_results_fetched(self):
-        _MORE_RESULTS = 2
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        connection = _Connection()
-        dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
-        query._more_results = _MORE_RESULTS
-        self.assertEqual(query.more_results(), _MORE_RESULTS)
+    def test_fetch_defaults(self):
+        self._fetch_page_helper(use_fetch=True)
 
-    def test_cursor_not_fetched(self):
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        connection = _Connection()
-        dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
-        self.assertRaises(RuntimeError, query.cursor)
+    def test_fetch_page_explicit_limit(self):
+        self._fetch_page_helper(cursor='CURSOR', limit=13)
 
-    def test_cursor_fetched(self):
-        import base64
-        _CURSOR = 'CURSOR'
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        connection = _Connection()
-        dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
-        query._cursor = _CURSOR
-        self.assertEqual(query.cursor(), base64.b64encode(_CURSOR))
+    def test_fetch_page_no_more_results(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+        self._fetch_page_helper(cursor='CURSOR', limit=13, more_results=False,
+                                _more_pb=no_more)
+
+    def test_fetch_page_more_results_ill_formed(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        not_finished = datastore_pb.QueryResultBatch.NOT_FINISHED
+        # Try a valid enum but not allowed.
+        self.assertRaises(ValueError, self._fetch_page_helper,
+                          _more_pb=not_finished)
+        # Try an invalid enum but not allowed.
+        self.assertRaises(ValueError, self._fetch_page_helper,
+                          _more_pb=object())
 
     def test_with_cursor_neither(self):
         _DATASET = 'DATASET'
@@ -423,7 +385,9 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         q_pb = after.to_protobuf()
         self.assertEqual(q_pb.start_cursor, _CURSOR)
+        self.assertEqual(after.start_cursor, _CURSOR_B64)
         self.assertEqual(q_pb.end_cursor, '')
+        self.assertEqual(after.end_cursor, None)
 
     def test_with_cursor_w_end(self):
         import base64
@@ -438,7 +402,9 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         q_pb = after.to_protobuf()
         self.assertEqual(q_pb.start_cursor, '')
+        self.assertEqual(after.start_cursor, None)
         self.assertEqual(q_pb.end_cursor, _CURSOR)
+        self.assertEqual(after.end_cursor, _CURSOR_B64)
 
     def test_with_cursor_w_both(self):
         import base64
@@ -455,7 +421,9 @@ class TestQuery(unittest2.TestCase):
         self.assertFalse(after is query)
         q_pb = after.to_protobuf()
         self.assertEqual(q_pb.start_cursor, _START)
+        self.assertEqual(after.start_cursor, _START_B64)
         self.assertEqual(q_pb.end_cursor, _END)
+        self.assertEqual(after.end_cursor, _END_B64)
 
     def test_order_empty(self):
         _KIND = 'KIND'
@@ -598,13 +566,17 @@ class _Dataset(object):
 
 
 class _Connection(object):
+
     _called_with = None
-    _cursor = ''
-    _more = 2
+    _cursor = b'\x00'
     _skipped = 0
 
-    def __init__(self, *result):
+    def __init__(self, *result, **kwargs):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+
         self._result = list(result)
+        more_default = datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
+        self._more = kwargs.get('_more', more_default)
 
     def run_query(self, **kw):
         self._called_with = kw

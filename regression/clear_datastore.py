@@ -32,16 +32,15 @@ ALL_KINDS = [
 TRANSACTION_MAX_GROUPS = 5
 
 
-def fetch_keys(dataset, kind, fetch_max=FETCH_MAX, query=None):
+def fetch_keys(dataset, kind, fetch_max=FETCH_MAX, query=None, cursor=None):
     if query is None:
         query = dataset.query(kind=kind).limit(
             fetch_max).projection(['__key__'])
-    # Make new query with start cursor if a previously set cursor
-    # exists.
-    if query._cursor is not None:
-        query = query.with_cursor(query.cursor())
+    # Make new query with start cursor. Will be ignored if None.
+    query = query.with_cursor(cursor)
 
-    return query, query.fetch()
+    entities, cursor, _ = query.fetch_page()
+    return query, entities, cursor
 
 
 def get_ancestors(entities):
@@ -67,10 +66,11 @@ def remove_kind(dataset, kind):
     with dataset.transaction():
         results = []
 
-        query, curr_results = fetch_keys(dataset, kind)
+        query, curr_results, cursor = fetch_keys(dataset, kind)
         results.extend(curr_results)
         while curr_results:
-            query, curr_results = fetch_keys(dataset, kind, query=query)
+            query, curr_results, cursor = fetch_keys(
+                dataset, kind, query=query, cursor=cursor)
             results.extend(curr_results)
 
         if not results:

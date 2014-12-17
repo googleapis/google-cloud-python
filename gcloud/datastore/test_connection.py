@@ -449,8 +449,13 @@ class TestConnection(unittest2.TestCase):
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
+        CURSOR = b'\x00'
         q_pb = Query(KIND, DATASET_ID).to_protobuf()
         rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb.batch.end_cursor = CURSOR
+        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+        rsp_pb.batch.more_results = no_more
+        rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
         URI = '/'.join([
             conn.API_BASE_URL,
@@ -463,7 +468,7 @@ class TestConnection(unittest2.TestCase):
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb)
         self.assertEqual(pbs, [])
-        self.assertEqual(end, '')
+        self.assertEqual(end, CURSOR)
         self.assertTrue(more)
         self.assertEqual(skipped, 0)
         cw = http._called_with
