@@ -152,17 +152,28 @@ be indexed.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.get_entities">
-<tt class="descname">get_entities</tt><big>(</big><em>keys</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_entities" title="Permalink to this definition">#</a></dt>
+<tt class="descname">get_entities</tt><big>(</big><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_entities" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves entities from the dataset, along with their attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>item_name</strong> &#8211; The name of the item to retrieve.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>item_name</strong> &#8211; The name of the item to retrieve.</li>
+<li><strong>missing</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the key-only entities returned
+by the backend as &#8220;missing&#8221; will be copied into it.
+Use only as a keyword param.</li>
+<li><strong>deferred</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the keys returned
+by the backend as &#8220;deferred&#8221; will be copied into it.
+Use only as a keyword param.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The requested entities.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested entities.</p>
+</td>
 </tr>
 </tbody>
 </table>

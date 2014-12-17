@@ -241,7 +241,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;connection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Lookup keys from a dataset in the Cloud Datastore.</span>
 
 <span class="sd">        Maps the ``DatastoreService.Lookup`` protobuf RPC.</span>
@@ -275,6 +275,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                       (or a single Key)</span>
 <span class="sd">        :param key_pbs: The key (or keys) to retrieve from the datastore.</span>
 
+<span class="sd">        :type missing: an empty list or None.</span>
+<span class="sd">        :param missing: If a list is passed, the key-only entity protobufs</span>
+<span class="sd">                        returned by the backend as &quot;missing&quot; will be copied</span>
+<span class="sd">                        into it.  Use only as a keyword param.</span>
+
+<span class="sd">        :type deferred: an empty list or None.</span>
+<span class="sd">        :param deferred: If a list is passed, the key protobufs returned</span>
+<span class="sd">                        by the backend as &quot;deferred&quot; will be copied into it.</span>
+<span class="sd">                        Use only as a keyword param.</span>
+
 <span class="sd">        :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Entity`</span>
 <span class="sd">                (or a single Entity)</span>
 <span class="sd">        :returns: The entities corresponding to the keys provided.</span>
@@ -283,6 +293,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                  If multiple keys were provided and no results matched,</span>
 <span class="sd">                  this will return an empty list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">missing</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;missing must be None or an empty list&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">deferred</span> <span class="o">!=</span> <span class="p">[]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;deferred must be None or an empty list&#39;</span><span class="p">)</span>
+
         <span class="n">lookup_request</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">LookupRequest</span><span class="p">()</span>
 
         <span class="n">single_key</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key_pbs</span><span class="p">,</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Key</span><span class="p">)</span>
@@ -293,10 +309,28 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">for</span> <span class="n">key_pb</span> <span class="ow">in</span> <span class="n">key_pbs</span><span class="p">:</span>
             <span class="n">lookup_request</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 
-        <span class="n">lookup_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="s">&#39;lookup&#39;</span><span class="p">,</span> <span class="n">lookup_request</span><span class="p">,</span>
-                                    <span class="n">datastore_pb</span><span class="o">.</span><span class="n">LookupResponse</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>  <span class="c"># loop against possible deferred.</span>
+            <span class="n">lookup_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="s">&#39;lookup&#39;</span><span class="p">,</span> <span class="n">lookup_request</span><span class="p">,</span>
+                                        <span class="n">datastore_pb</span><span class="o">.</span><span class="n">LookupResponse</span><span class="p">)</span>
 
-        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">lookup_response</span><span class="o">.</span><span class="n">found</span><span class="p">]</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">result</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">lookup_response</span><span class="o">.</span><span class="n">found</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">missing</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">result</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">lookup_response</span><span class="o">.</span><span class="n">missing</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">deferred</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">lookup_response</span><span class="o">.</span><span class="n">deferred</span><span class="p">])</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">lookup_response</span><span class="o">.</span><span class="n">deferred</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="c"># We have deferred keys, and the user didn&#39;t ask to know about</span>
+            <span class="c"># them, so retry (but only with the deferred ones).</span>
+            <span class="n">_copy_deferred_keys</span><span class="p">(</span><span class="n">lookup_request</span><span class="p">,</span> <span class="n">lookup_response</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">single_key</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
@@ -549,7 +583,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">mutation</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">True</span></div></div>
+        <span class="k">return</span> <span class="bp">True</span>
+
+</div></div>
+<span class="k">def</span> <span class="nf">_copy_deferred_keys</span><span class="p">(</span><span class="n">lookup_request</span><span class="p">,</span> <span class="n">lookup_response</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Clear requested keys and copy deferred keys back in.</span>
+
+<span class="sd">    Helper ``Connection.lookup()``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">old_key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">lookup_request</span><span class="o">.</span><span class="n">key</span><span class="p">):</span>
+        <span class="n">lookup_request</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old_key</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">def_key</span> <span class="ow">in</span> <span class="n">lookup_response</span><span class="o">.</span><span class="n">deferred</span><span class="p">:</span>
+        <span class="n">lookup_request</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">def_key</span><span class="p">)</span>
 </pre></div>
 
       </section><!-- end of .content -->
