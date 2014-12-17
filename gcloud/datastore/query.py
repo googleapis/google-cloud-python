@@ -104,58 +104,51 @@ class Query(object):
         """
         return self._pb
 
-    def filter(self, expression, value):
-        """Filter the query based on an expression and a value.
+    def filter(self, property_name, operator, value):
+        """Filter the query based on a property name, operator and a value.
 
         This will return a clone of the current :class:`Query`
         filtered by the expression and value provided.
 
         Expressions take the form of::
 
-          .filter('<property> <operator>', <value>)
+          .filter('<property>', '<operator>', <value>)
 
         where property is a property stored on the entity in the datastore
         and operator is one of ``OPERATORS``
         (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``)::
 
           >>> query = Query('Person')
-          >>> filtered_query = query.filter('name =', 'James')
-          >>> filtered_query = query.filter('age >', 50)
+          >>> filtered_query = query.filter('name', '=', 'James')
+          >>> filtered_query = query.filter('age', '>', 50)
 
         Because each call to ``.filter()`` returns a cloned ``Query`` object
         we are able to string these together::
 
           >>> query = Query('Person').filter(
-          ...     'name =', 'James').filter('age >', 50)
+          ...     'name', '=', 'James').filter('age', '>', 50)
 
-        :type expression: string
-        :param expression: An expression of a property and an
-                           operator (ie, ``=``).
+        :type property_name: string
+        :param property_name: A property name.
+
+        :type operator: string
+        :param operator: One of ``=``, ``<``, ``<=``, ``>``, ``>=``.
 
         :type value: integer, string, boolean, float, None, datetime
         :param value: The value to filter on.
 
         :rtype: :class:`Query`
         :returns: A Query filtered by the expression and value provided.
+        :raises: `ValueError` if `operation` is not one of the specified
+                 values.
         """
         clone = self._clone()
 
-        # Take an expression like 'property >=', and parse it into
-        # useful pieces.
-        property_name, operator = None, None
-        expression = expression.strip()
-
-        # Use None to split on *any* whitespace.
-        expr_pieces = expression.rsplit(None, 1)
-        if len(expr_pieces) == 2:
-            property_name, operator = expr_pieces
-            property_name = property_name.strip()
-
-        # If no whitespace in `expression`, `operator` will be `None` and
-        # self.OPERATORS[None] will be `None` as well.
         pb_op_enum = self.OPERATORS.get(operator)
         if pb_op_enum is None:
-            raise ValueError('Invalid expression: "%s"' % expression)
+            error_message = 'Invalid expression: "%s"' % (operator,)
+            choices_message = 'Please use one of: =, <, <=, >, >=.'
+            raise ValueError(error_message, choices_message)
 
         # Build a composite filter AND'd together.
         composite_filter = clone._pb.filter.composite_filter
@@ -321,7 +314,7 @@ class Query(object):
 
           >>> from gcloud import datastore
           >>> dataset = datastore.get_dataset('dataset-id')
-          >>> query = dataset.query('Person').filter('name =', 'Sally')
+          >>> query = dataset.query('Person').filter('name', '=', 'Sally')
           >>> query.fetch()
           [<Entity object>, <Entity object>, ...]
           >>> query.fetch(1)

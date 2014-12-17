@@ -250,7 +250,8 @@ class Connection(connection.Connection):
         >>> from gcloud import datastore
         >>> connection = datastore.get_connection()
         >>> dataset = connection.dataset('dataset-id')
-        >>> query = dataset.query().kind('MyKind').filter('property =', 'val')
+        >>> query = dataset.query().kind('MyKind').filter(
+        ...     'property', '=', 'val')
 
         Using the `fetch`` method...
 

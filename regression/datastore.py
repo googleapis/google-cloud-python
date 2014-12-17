@@ -155,7 +155,7 @@ class TestDatastoreSaveKeys(TestDatastore):
         self.case_entities_to_delete.append(entity)
 
         query = self.dataset.query('Person').filter(
-            'linkedTo =', key).limit(2)
+            'linkedTo', '=', key).limit(2)
 
         stored_persons = query.fetch()
         self.assertEqual(len(stored_persons), 1)
@@ -199,7 +199,7 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(new_character_entities), characters_remaining)
 
     def test_query_simple_filter(self):
-        query = self._base_query().filter('appearances >=', 20)
+        query = self._base_query().filter('appearances', '>=', 20)
         expected_matches = 6
         # We expect 6, but allow the query to get 1 extra.
         entities = query.fetch(limit=expected_matches + 1)
@@ -207,7 +207,7 @@ class TestDatastoreQuery(TestDatastore):
 
     def test_query_multiple_filters(self):
         query = self._base_query().filter(
-            'appearances >=', 26).filter('family =', 'Stark')
+            'appearances', '>=', 26).filter('family', '=', 'Stark')
         expected_matches = 4
         # We expect 4, but allow the query to get 1 extra.
         entities = query.fetch(limit=expected_matches + 1)
@@ -225,7 +225,7 @@ class TestDatastoreQuery(TestDatastore):
         rickard_key = datastore.key.Key(
             path=[populate_datastore.ANCESTOR, populate_datastore.RICKARD])
 
-        query = self._base_query().filter('__key__ =', rickard_key)
+        query = self._base_query().filter('__key__', '=', rickard_key)
         expected_matches = 1
         # We expect 1, but allow the query to get 1 extra.
         entities = query.fetch(limit=expected_matches + 1)

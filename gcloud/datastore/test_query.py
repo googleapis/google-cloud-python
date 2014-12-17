@@ -80,19 +80,15 @@ class TestQuery(unittest2.TestCase):
         kq_pb, = list(q_pb.kind)
         self.assertEqual(kq_pb.name, _KIND)
 
-    def test_filter_w_no_operator(self):
-        query = self._makeOne()
-        self.assertRaises(ValueError, query.filter, 'firstname', 'John')
-
     def test_filter_w_unknown_operator(self):
         query = self._makeOne()
-        self.assertRaises(ValueError, query.filter, 'firstname ~~', 'John')
+        self.assertRaises(ValueError, query.filter, 'firstname', '~~', 'John')
 
     def test_filter_w_known_operator(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
         query = self._makeOne()
-        after = query.filter('firstname =', u'John')
+        after = query.filter('firstname', '=', u'John')
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         q_pb = after.to_protobuf()
@@ -108,11 +104,11 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
         query = self._makeOne()
-        query = query.filter('leq_prop <=', u'val1')
-        query = query.filter('geq_prop >=', u'val2')
-        query = query.filter('lt_prop <', u'val3')
-        query = query.filter('gt_prop >', u'val4')
-        query = query.filter('eq_prop =', u'val5')
+        query = query.filter('leq_prop', '<=', u'val1')
+        query = query.filter('geq_prop', '>=', u'val2')
+        query = query.filter('lt_prop', '<', u'val3')
+        query = query.filter('gt_prop', '>', u'val4')
+        query = query.filter('eq_prop', '=', u'val5')
 
         query_pb = query.to_protobuf()
         pb_values = [
@@ -139,7 +135,7 @@ class TestQuery(unittest2.TestCase):
         other = Entity()
         other['firstname'] = u'John'
         other['lastname'] = u'Smith'
-        after = query.filter('other =', other)
+        after = query.filter('other', '=', other)
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         q_pb = after.to_protobuf()
@@ -155,6 +151,23 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(props[1].name, 'lastname')
         self.assertEqual(props[1].value.string_value, u'Smith')
 
+    def test_filter_w_whitespace_property_name(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+
+        query = self._makeOne()
+        PROPERTY_NAME = '  property with lots of space '
+        after = query.filter(PROPERTY_NAME, '=', u'John')
+        self.assertFalse(after is query)
+        self.assertTrue(isinstance(after, self._getTargetClass()))
+        q_pb = after.to_protobuf()
+        self.assertEqual(q_pb.filter.composite_filter.operator,
+                         datastore_pb.CompositeFilter.AND)
+        f_pb, = list(q_pb.filter.composite_filter.filter)
+        p_pb = f_pb.property_filter
+        self.assertEqual(p_pb.property.name, PROPERTY_NAME)
+        self.assertEqual(p_pb.value.string_value, u'John')
+        self.assertEqual(p_pb.operator, datastore_pb.PropertyFilter.EQUAL)
+
     def test_ancestor_w_non_key_non_list(self):
         query = self._makeOne()
         self.assertRaises(TypeError, query.ancestor, object())
@@ -165,7 +178,7 @@ class TestQuery(unittest2.TestCase):
         _ID = 123
         _NAME = u'NAME'
         key = Key(path=[{'kind': _KIND, 'id': _ID}])
-        query = self._makeOne().filter('name =', _NAME)
+        query = self._makeOne().filter('name', '=', _NAME)
         after = query.ancestor(key)
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
@@ -226,7 +239,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 123
         _NAME = u'NAME'
-        query = self._makeOne().filter('name =', _NAME)
+        query = self._makeOne().filter('name', '=', _NAME)
         between = query.ancestor([_KIND, _ID])
         after = between.ancestor(None)
         self.assertFalse(after is query)
