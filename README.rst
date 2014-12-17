@@ -19,6 +19,14 @@ If you need support for other Google APIs, check out the `Google APIs
 Python Client
 library <https://github.com/google/google-api-python-client>`__.
 
+Versioning
+----------
+This library follows `Semantic Versioning <http://semver.org/>`__.
+
+It is currently in major version zero (0.y.z), which means that
+anything may change at any time and the public API should not be 
+considered stable. 
+
 Quickstart
 ----------
 
