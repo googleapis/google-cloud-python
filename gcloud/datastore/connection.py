@@ -253,9 +253,6 @@ class Connection(connection.Connection):
             else:
                 break
 
-            # Hmm, should we sleep here?  Asked in:
-            # https://github.com/GoogleCloudPlatform/gcloud-python/issues/306#issuecomment-67377587
-
         if single_key:
             if results:
                 return results[0]
