@@ -51,10 +51,12 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _CURSOR = 'DEADBEEF'
+        _MORE_RESULTS = 2
         _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND, dataset, _NAMESPACE)
         query._cursor = _CURSOR
+        query._more_results = _MORE_RESULTS
         clone = query._clone()
         self.assertFalse(clone is query)
         self.assertTrue(isinstance(clone, self._getTargetClass()))
@@ -63,6 +65,7 @@ class TestQuery(unittest2.TestCase):
         kq_pb, = list(clone.kind())
         self.assertEqual(kq_pb.name, _KIND)
         self.assertEqual(clone._cursor, _CURSOR)
+        self.assertEqual(clone._more_results, _MORE_RESULTS)
 
     def test_to_protobuf_empty(self):
         query = self._makeOne()
@@ -317,6 +320,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(connection._called_with, expected_called_with)
 
     def test_fetch_explicit_limit(self):
+        import base64
         from gcloud.datastore.datastore_v1_pb2 import Entity
         _CURSOR = 'CURSOR'
         _DATASET = 'DATASET'
@@ -336,7 +340,8 @@ class TestQuery(unittest2.TestCase):
         query = self._makeOne(_KIND, dataset, _NAMESPACE)
         limited = query.limit(13)
         entities = query.fetch(13)
-        self.assertEqual(query._cursor, _CURSOR)
+        self.assertEqual(query.cursor(), base64.b64encode(_CURSOR))
+        self.assertEqual(query.more_results(), connection._more)
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].key().path(),
                          [{'kind': _KIND, 'id': _ID}])
@@ -346,6 +351,24 @@ class TestQuery(unittest2.TestCase):
             'namespace': _NAMESPACE,
         }
         self.assertEqual(connection._called_with, expected_called_with)
+
+    def test_more_results_not_fetched(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        connection = _Connection()
+        dataset = _Dataset(_DATASET, connection)
+        query = self._makeOne(_KIND, dataset)
+        self.assertRaises(RuntimeError, query.more_results)
+
+    def test_more_results_fetched(self):
+        _MORE_RESULTS = 2
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        connection = _Connection()
+        dataset = _Dataset(_DATASET, connection)
+        query = self._makeOne(_KIND, dataset)
+        query._more_results = _MORE_RESULTS
+        self.assertEqual(query.more_results(), _MORE_RESULTS)
 
     def test_cursor_not_fetched(self):
         _DATASET = 'DATASET'
@@ -564,7 +587,7 @@ class _Dataset(object):
 class _Connection(object):
     _called_with = None
     _cursor = ''
-    _more = True
+    _more = 2
     _skipped = 0
 
     def __init__(self, *result):
