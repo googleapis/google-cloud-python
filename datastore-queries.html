@@ -116,7 +116,7 @@ generates a query that can be executed without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<tt class="descname">OPERATORS</tt><em class="property"> = {'&lt;=': 2, '&lt;': 1, '&gt;': 3, '=': 5, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;': 3, '&gt;=': 4, '&lt;=': 2, '&lt;': 1, '=': 5}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -214,7 +214,7 @@ objects.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name =&#39;</span><span class="p">,</span> <span class="s">&#39;Sally&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Sally&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
 <span class="go">[&lt;Entity object&gt;, &lt;Entity object&gt;, ...]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -242,26 +242,26 @@ before it is executed.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.filter">
-<tt class="descname">filter</tt><big>(</big><em>expression</em>, <em>value</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.filter" title="Permalink to this definition">#</a></dt>
-<dd><p>Filter the query based on an expression and a value.</p>
+<tt class="descname">filter</tt><big>(</big><em>property_name</em>, <em>operator</em>, <em>value</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Filter the query based on a property name, operator and a value.</p>
 <p>This will return a clone of the current <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
 filtered by the expression and value provided.</p>
 <p>Expressions take the form of:</p>
-<div class="highlight-python"><div class="highlight"><pre>.filter(&#39;&lt;property&gt; &lt;operator&gt;&#39;, &lt;value&gt;)
+<div class="highlight-python"><div class="highlight"><pre>.filter(&#39;&lt;property&gt;&#39;, &#39;&lt;operator&gt;&#39;, &lt;value&gt;)
 </pre></div>
 </div>
 <p>where property is a property stored on the entity in the datastore
 and operator is one of <tt class="docutils literal"><span class="pre">OPERATORS</span></tt>
 (ie, <tt class="docutils literal"><span class="pre">=</span></tt>, <tt class="docutils literal"><span class="pre">&lt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;=</span></tt>, <tt class="docutils literal"><span class="pre">&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&gt;=</span></tt>):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name =&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;age &gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Because each call to <tt class="docutils literal"><span class="pre">.filter()</span></tt> returns a cloned <tt class="docutils literal"><span class="pre">Query</span></tt> object
 we are able to string these together:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s">&#39;name =&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;age &gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -269,8 +269,8 @@ we are able to string these together:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>expression</strong> (<em>string</em>) &#8211; An expression of a property and an
-operator (ie, <tt class="docutils literal"><span class="pre">=</span></tt>).</li>
+<li><strong>property_name</strong> (<em>string</em>) &#8211; A property name.</li>
+<li><strong>operator</strong> (<em>string</em>) &#8211; One of <tt class="docutils literal"><span class="pre">=</span></tt>, <tt class="docutils literal"><span class="pre">&lt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;=</span></tt>, <tt class="docutils literal"><span class="pre">&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&gt;=</span></tt>.</li>
 <li><strong>value</strong> (<em>integer, string, boolean, float, None, datetime</em>) &#8211; The value to filter on.</li>
 </ul>
 </td>
@@ -278,7 +278,11 @@ operator (ie, <tt class="docutils literal"><span class="pre">=</span></tt>).</li
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A Query filtered by the expression and value provided.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A Query filtered by the expression and value provided.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><cite>ValueError</cite> if <cite>operation</cite> is not one of the specified
+values.</p>
 </td>
 </tr>
 </tbody>

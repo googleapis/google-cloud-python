@@ -178,58 +178,51 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span>
 </div>
-<div class="viewcode-block" id="Query.filter"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expression</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Filter the query based on an expression and a value.</span>
+<div class="viewcode-block" id="Query.filter"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">property_name</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter the query based on a property name, operator and a value.</span>
 
 <span class="sd">        This will return a clone of the current :class:`Query`</span>
 <span class="sd">        filtered by the expression and value provided.</span>
 
 <span class="sd">        Expressions take the form of::</span>
 
-<span class="sd">          .filter(&#39;&lt;property&gt; &lt;operator&gt;&#39;, &lt;value&gt;)</span>
+<span class="sd">          .filter(&#39;&lt;property&gt;&#39;, &#39;&lt;operator&gt;&#39;, &lt;value&gt;)</span>
 
 <span class="sd">        where property is a property stored on the entity in the datastore</span>
 <span class="sd">        and operator is one of ``OPERATORS``</span>
 <span class="sd">        (ie, ``=``, ``&lt;``, ``&lt;=``, ``&gt;``, ``&gt;=``)::</span>
 
 <span class="sd">          &gt;&gt;&gt; query = Query(&#39;Person&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; filtered_query = query.filter(&#39;name =&#39;, &#39;James&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; filtered_query = query.filter(&#39;age &gt;&#39;, 50)</span>
+<span class="sd">          &gt;&gt;&gt; filtered_query = query.filter(&#39;name&#39;, &#39;=&#39;, &#39;James&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; filtered_query = query.filter(&#39;age&#39;, &#39;&gt;&#39;, 50)</span>
 
 <span class="sd">        Because each call to ``.filter()`` returns a cloned ``Query`` object</span>
 <span class="sd">        we are able to string these together::</span>
 
 <span class="sd">          &gt;&gt;&gt; query = Query(&#39;Person&#39;).filter(</span>
-<span class="sd">          ...     &#39;name =&#39;, &#39;James&#39;).filter(&#39;age &gt;&#39;, 50)</span>
+<span class="sd">          ...     &#39;name&#39;, &#39;=&#39;, &#39;James&#39;).filter(&#39;age&#39;, &#39;&gt;&#39;, 50)</span>
 
-<span class="sd">        :type expression: string</span>
-<span class="sd">        :param expression: An expression of a property and an</span>
-<span class="sd">                           operator (ie, ``=``).</span>
+<span class="sd">        :type property_name: string</span>
+<span class="sd">        :param property_name: A property name.</span>
+
+<span class="sd">        :type operator: string</span>
+<span class="sd">        :param operator: One of ``=``, ``&lt;``, ``&lt;=``, ``&gt;``, ``&gt;=``.</span>
 
 <span class="sd">        :type value: integer, string, boolean, float, None, datetime</span>
 <span class="sd">        :param value: The value to filter on.</span>
 
 <span class="sd">        :rtype: :class:`Query`</span>
 <span class="sd">        :returns: A Query filtered by the expression and value provided.</span>
+<span class="sd">        :raises: `ValueError` if `operation` is not one of the specified</span>
+<span class="sd">                 values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
 
-        <span class="c"># Take an expression like &#39;property &gt;=&#39;, and parse it into</span>
-        <span class="c"># useful pieces.</span>
-        <span class="n">property_name</span><span class="p">,</span> <span class="n">operator</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
-        <span class="n">expression</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
-        <span class="c"># Use None to split on *any* whitespace.</span>
-        <span class="n">expr_pieces</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">expr_pieces</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">property_name</span><span class="p">,</span> <span class="n">operator</span> <span class="o">=</span> <span class="n">expr_pieces</span>
-            <span class="n">property_name</span> <span class="o">=</span> <span class="n">property_name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-
-        <span class="c"># If no whitespace in `expression`, `operator` will be `None` and</span>
-        <span class="c"># self.OPERATORS[None] will be `None` as well.</span>
         <span class="n">pb_op_enum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPERATORS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">pb_op_enum</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid expression: &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="n">expression</span><span class="p">)</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="s">&#39;Invalid expression: &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">operator</span><span class="p">,)</span>
+            <span class="n">choices_message</span> <span class="o">=</span> <span class="s">&#39;Please use one of: =, &lt;, &lt;=, &gt;, &gt;=.&#39;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">,</span> <span class="n">choices_message</span><span class="p">)</span>
 
         <span class="c"># Build a composite filter AND&#39;d together.</span>
         <span class="n">composite_filter</span> <span class="o">=</span> <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">composite_filter</span>
@@ -395,7 +388,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import datastore</span>
 <span class="sd">          &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; query = dataset.query(&#39;Person&#39;).filter(&#39;name =&#39;, &#39;Sally&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; query = dataset.query(&#39;Person&#39;).filter(&#39;name&#39;, &#39;=&#39;, &#39;Sally&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; query.fetch()</span>
 <span class="sd">          [&lt;Entity object&gt;, &lt;Entity object&gt;, ...]</span>
 <span class="sd">          &gt;&gt;&gt; query.fetch(1)</span>
