@@ -245,13 +245,12 @@ class Connection(connection.Connection):
                 deferred.extend([key for key in lookup_response.deferred])
                 break
 
-            if lookup_response.deferred:  # retry
-                for old_key in list(lookup_request.key):
-                    lookup_request.key.remove(old_key)
-                for def_key in lookup_response.deferred:
-                    lookup_request.key.add().CopyFrom(def_key)
-            else:
+            if not lookup_response.deferred:
                 break
+
+            # We have deferred keys, and the user didn't ask to know about
+            # them, so retry (but only with the deferred ones).
+            _copy_deferred_keys(lookup_request, lookup_response)
 
         if single_key:
             if results:
@@ -504,3 +503,14 @@ class Connection(connection.Connection):
             self.commit(dataset_id, mutation)
 
         return True
+
+
+def _copy_deferred_keys(lookup_request, lookup_response):
+    """Clear requested keys and copy deferred keys back in.
+
+    Helper ``Connection.lookup()``.
+    """
+    for old_key in list(lookup_request.key):
+        lookup_request.key.remove(old_key)
+    for def_key in lookup_response.deferred:
+        lookup_request.key.add().CopyFrom(def_key)
