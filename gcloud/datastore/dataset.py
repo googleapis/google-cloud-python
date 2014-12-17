@@ -142,19 +142,40 @@ class Dataset(object):
         if entities:
             return entities[0]
 
-    def get_entities(self, keys):
+    def get_entities(self, keys, missing=None, deferred=None):
         """Retrieves entities from the dataset, along with their attributes.
 
         :type key: list of :class:`gcloud.datastore.key.Key`
         :param item_name: The name of the item to retrieve.
+
+        :type missing: an empty list or None.
+        :param missing: If a list is passed, the key-only entities returned
+                        by the backend as "missing" will be copied into it.
+                        Use only as a keyword param.
+
+        :type deferred: an empty list or None.
+        :param deferred: If a list is passed, the keys returned
+                        by the backend as "deferred" will be copied into it.
+                        Use only as a keyword param.
 
         :rtype: list of :class:`gcloud.datastore.entity.Entity`
         :return: The requested entities.
         """
         entity_pbs = self.connection().lookup(
             dataset_id=self.id(),
-            key_pbs=[k.to_protobuf() for k in keys]
+            key_pbs=[k.to_protobuf() for k in keys],
+            missing=missing, deferred=deferred,
         )
+
+        if missing is not None:
+            missing[:] = [
+                helpers.entity_from_protobuf(missed_pb, dataset=self)
+                for missed_pb in missing]
+
+        if deferred is not None:
+            deferred[:] = [
+                helpers.key_from_protobuf(deferred_pb)
+                for deferred_pb in deferred]
 
         entities = []
         for entity_pb in entity_pbs:

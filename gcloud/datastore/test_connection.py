@@ -25,6 +25,14 @@ class TestConnection(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
+    def _verifyProtobufCall(self, called_with, URI, conn):
+        self.assertEqual(called_with['uri'], URI)
+        self.assertEqual(called_with['method'], 'POST')
+        self.assertEqual(called_with['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(called_with['headers']['User-Agent'],
+                         conn.USER_AGENT)
+
     def test_ctor_defaults(self):
         conn = self._makeOne()
         self.assertEqual(conn.credentials, None)
@@ -75,12 +83,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
         self.assertEqual(conn._request(DATASET_ID, METHOD, DATA), 'CONTENT')
-        self.assertEqual(http._called_with['uri'], URI)
-        self.assertEqual(http._called_with['method'], 'POST')
-        self.assertEqual(http._called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(http._called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+        self._verifyProtobufCall(http._called_with, URI, conn)
         self.assertEqual(http._called_with['body'], DATA)
 
     def test__request_not_200(self):
@@ -126,12 +129,7 @@ class TestConnection(unittest2.TestCase):
         response = conn._rpc(DATASET_ID, METHOD, ReqPB(), RspPB)
         self.assertTrue(isinstance(response, RspPB))
         self.assertEqual(response._pb, 'CONTENT')
-        self.assertEqual(http._called_with['uri'], URI)
-        self.assertEqual(http._called_with['method'], 'POST')
-        self.assertEqual(http._called_with['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(http._called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+        self._verifyProtobufCall(http._called_with, URI, conn)
         self.assertEqual(http._called_with['body'], REQPB)
 
     def test_build_api_url_w_default_base_version(self):
@@ -225,11 +223,7 @@ class TestConnection(unittest2.TestCase):
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.lookup(DATASET_ID, key_pb), None)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -261,11 +255,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(found.key.path_element[0].kind, 'Kind')
         self.assertEqual(found.key.path_element[0].id, 1234)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -293,6 +283,89 @@ class TestConnection(unittest2.TestCase):
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.lookup(DATASET_ID, [key_pb1, key_pb2]), [])
         cw = http._called_with
+        self._verifyProtobufCall(cw, URI, conn)
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 2)
+        self.assertEqual(keys[0], key_pb1)
+        self.assertEqual(keys[1], key_pb2)
+
+    def test_lookup_multiple_keys_w_missing(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        rsp_pb = datastore_pb.LookupResponse()
+        er_1 = rsp_pb.missing.add()
+        er_1.entity.key.CopyFrom(key_pb1)
+        er_2 = rsp_pb.missing.add()
+        er_2.entity.key.CopyFrom(key_pb2)
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        missing = []
+        result = conn.lookup(DATASET_ID, [key_pb1, key_pb2], missing=missing)
+        self.assertEqual(result, [])
+        self.assertEqual([missed.key for missed in missing],
+                         [key_pb1, key_pb2])
+        cw = http._called_with
+        self._verifyProtobufCall(cw, URI, conn)
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 2)
+        self.assertEqual(keys[0], key_pb1)
+        self.assertEqual(keys[1], key_pb2)
+
+    def test_lookup_multiple_keys_w_missing_non_empty(self):
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        conn = self._makeOne()
+        missing = ['this', 'list', 'is', 'not', 'empty']
+        self.assertRaises(
+            ValueError,
+            conn.lookup, DATASET_ID, [key_pb1, key_pb2], missing=missing)
+
+    def test_lookup_multiple_keys_w_deferred(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        rsp_pb = datastore_pb.LookupResponse()
+        rsp_pb.deferred.add().CopyFrom(key_pb1)
+        rsp_pb.deferred.add().CopyFrom(key_pb2)
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        deferred = []
+        result = conn.lookup(DATASET_ID, [key_pb1, key_pb2], deferred=deferred)
+        self.assertEqual(result, [])
+        self.assertEqual([def_key for def_key in deferred], [key_pb1, key_pb2])
+        cw = http._called_with
+        self._verifyProtobufCall(cw, URI, conn)
         self.assertEqual(cw['uri'], URI)
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers']['Content-Type'],
@@ -305,6 +378,70 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(keys), 2)
         self.assertEqual(keys[0], key_pb1)
         self.assertEqual(keys[1], key_pb2)
+
+    def test_lookup_multiple_keys_w_deferred_non_empty(self):
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        conn = self._makeOne()
+        deferred = ['this', 'list', 'is', 'not', 'empty']
+        self.assertRaises(
+            ValueError,
+            conn.lookup, DATASET_ID, [key_pb1, key_pb2], deferred=deferred)
+
+    def test_lookup_multiple_keys_w_deferred_from_backend_but_not_passed(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        key_pb1 = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        key_pb2 = Key(path=[{'kind': 'Kind', 'id': 2345}]).to_protobuf()
+        rsp_pb1 = datastore_pb.LookupResponse()
+        entity1 = datastore_pb.Entity()
+        entity1.key.CopyFrom(key_pb1)
+        rsp_pb1.found.add(entity=entity1)
+        rsp_pb1.deferred.add().CopyFrom(key_pb2)
+        rsp_pb2 = datastore_pb.LookupResponse()
+        entity2 = datastore_pb.Entity()
+        entity2.key.CopyFrom(key_pb2)
+        rsp_pb2.found.add(entity=entity2)
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
+        http = conn._http = HttpMultiple(
+            ({'status': '200'}, rsp_pb1.SerializeToString()),
+            ({'status': '200'}, rsp_pb2.SerializeToString()),
+            )
+        found = conn.lookup(DATASET_ID, [key_pb1, key_pb2])
+        self.assertEqual(len(found), 2)
+        self.assertEqual(found[0].key.path_element[0].kind, 'Kind')
+        self.assertEqual(found[0].key.path_element[0].id, 1234)
+        self.assertEqual(found[1].key.path_element[0].kind, 'Kind')
+        self.assertEqual(found[1].key.path_element[0].id, 2345)
+        cw = http._called_with
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        self.assertEqual(len(cw), 2)
+
+        self._verifyProtobufCall(cw[0], URI, conn)
+        request.ParseFromString(cw[0]['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 2)
+        self.assertEqual(keys[0], key_pb1)
+        self.assertEqual(keys[1], key_pb2)
+
+        self._verifyProtobufCall(cw[1], URI, conn)
+        request.ParseFromString(cw[1]['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 1)
+        self.assertEqual(keys[0], key_pb2)
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore.connection import datastore_pb
@@ -330,11 +467,7 @@ class TestConnection(unittest2.TestCase):
         self.assertTrue(more)
         self.assertEqual(skipped, 0)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -366,11 +499,7 @@ class TestConnection(unittest2.TestCase):
         pbs = conn.run_query(DATASET_ID, q_pb, 'NS')[0]
         self.assertEqual(len(pbs), 1)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -402,11 +531,7 @@ class TestConnection(unittest2.TestCase):
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(DATASET_ID), TRANSACTION)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -431,11 +556,7 @@ class TestConnection(unittest2.TestCase):
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(DATASET_ID, True), TRANSACTION)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -468,11 +589,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(result.index_updates, 0)
         self.assertEqual(list(result.insert_auto_id_key), [])
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -511,11 +628,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(result.index_updates, 0)
         self.assertEqual(list(result.insert_auto_id_key), [])
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -564,11 +677,7 @@ class TestConnection(unittest2.TestCase):
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.rollback(DATASET_ID), None)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.RollbackRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -591,11 +700,7 @@ class TestConnection(unittest2.TestCase):
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.allocate_ids(DATASET_ID, []), [])
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.AllocateIdsRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -630,11 +735,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.allocate_ids(DATASET_ID, before_key_pbs),
                          after_key_pbs)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.AllocateIdsRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -660,11 +761,7 @@ class TestConnection(unittest2.TestCase):
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
         self.assertEqual(result, True)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -706,11 +803,7 @@ class TestConnection(unittest2.TestCase):
                                   exclude_from_indexes=['foo', 'bar'])
         self.assertEqual(result, True)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -762,11 +855,7 @@ class TestConnection(unittest2.TestCase):
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
         self.assertEqual(result, updated_key_pb)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -850,11 +939,7 @@ class TestConnection(unittest2.TestCase):
         result = conn.delete_entities(DATASET_ID, [key_pb])
         self.assertEqual(result, True)
         cw = http._called_with
-        self.assertEqual(cw['uri'], URI)
-        self.assertEqual(cw['method'], 'POST')
-        self.assertEqual(cw['headers']['Content-Type'],
-                         'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
@@ -901,3 +986,15 @@ class Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._headers, self._content
+
+
+class HttpMultiple(object):
+
+    def __init__(self, *responses):
+        self._called_with = []
+        self._responses = list(responses)
+
+    def request(self, **kw):
+        self._called_with.append(kw)
+        result, self._responses = self._responses[0], self._responses[1:]
+        return result
