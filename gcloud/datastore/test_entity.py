@@ -240,6 +240,10 @@ class _Key(object):
     _partial = False
     _path = None
 
+    def id(self, id_to_set):
+        self._called_id = id_to_set
+        return id_to_set
+
     def to_protobuf(self):
         return self._key
 

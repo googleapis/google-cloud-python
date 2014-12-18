@@ -42,17 +42,15 @@ class TestDatastoreAllocateIDs(TestDatastore):
 
     def test_allocate_ids(self):
         incomplete_key = datastore.key.Key(path=[{'kind': 'Kind'}])
-        incomplete_key_pb = incomplete_key.to_protobuf()
-        incomplete_key_pbs = [incomplete_key_pb] * 10
-
-        connection = self.dataset.connection()
-        allocated_key_pbs = connection.allocate_ids(self.dataset.id(),
-                                                    incomplete_key_pbs)
-        allocated_keys = [datastore.helpers.key_from_protobuf(key_pb)
-                          for key_pb in allocated_key_pbs]
+        allocated_keys = self.dataset.allocate_ids(incomplete_key, 10)
         self.assertEqual(len(allocated_keys), 10)
+
+        unique_ids = set()
         for key in allocated_keys:
+            unique_ids.add(key.id())
             self.assertFalse(key.is_partial())
+
+        self.assertEqual(len(unique_ids), 10)
 
 
 class TestDatastoreSave(TestDatastore):
