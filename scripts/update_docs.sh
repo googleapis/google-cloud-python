@@ -31,7 +31,8 @@ git status
 # H/T: https://github.com/dhermes
 if [[ -n "$(git status --porcelain)" ]]; then
     # Commit to gh-pages branch to apply changes.
-    git config user.name "selfiebot"
+    git config --global user.email "travis@travis-ci.org"
+    git config --global user.name "travis-ci"
     git commit -m "Update docs after merge to master."
     git push \
         "https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME}" \
