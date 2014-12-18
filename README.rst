@@ -3,8 +3,8 @@ Google Cloud Python Client
 
 Python idiomatic client for Google Cloud Platform services.
 
-|build| |coverage|
-------------------
+|build| |coverage| |pypi|
+-------------------------
 
 -  `Homepage`_
 
@@ -160,3 +160,5 @@ Apache 2.0 - See `LICENSE`_ for more information.
    :target: https://travis-ci.org/GoogleCloudPlatform/gcloud-python
 .. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/gcloud-python/badge.png?branch=master
    :target: https://coveralls.io/r/GoogleCloudPlatform/gcloud-python?branch=master
+.. |pypi| image:: https://img.shields.io/pypi/v/gcloud.svg
+   :target: https://pypi.python.org/pypi/gcloud
