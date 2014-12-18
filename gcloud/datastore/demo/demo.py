@@ -1,82 +1,181 @@
-# pragma NO COVER
-# Welcome to the gCloud Datastore Demo! (hit enter)
 
-# We're going to walk through some of the basics...
-# Don't worry though. You don't need to do anything, just keep hitting enter...
 
-# Let's start by importing the demo module and getting a dataset:
-from gcloud.datastore import demo
-dataset = demo.get_dataset()
+from connection import Connection
+from dataset import Dataset
 
-# Let's create a new entity of type "Thing" and name it 'Toy':
-toy = dataset.entity('Thing')
-toy.update({'name': 'Toy'})
 
-# Now let's save it to our datastore:
-toy.save()
+conn = Connection(credentials)
+d = Dataset('dataset-id-here', conn, namespace='demo')
+#defaults: namespace=None, force=False, read_option="DEFAULT"
+"""
+a dataset object has 4 mutators and 3 accessors for the datastore
+all mutations are immediately and synchronously applied
+to the datastore, note however that since the dataset<-->connection
+relationship is possibly many-to-one nothing prevents a user
+from creating multiple datasets with the same id.
+In this case the user is responsible for handling synchronicity
+"""
 
-# If we look it up by its key, we should find it...
-print(dataset.get_entities([toy.key()]))
+#the first three mutators upsert, insert, and update all have the same usage
+d.upsert(
+        ('ent','root', 'ent', 'treebeard'),
+        dict(hates_sarumon=True, age=9001), #defaults {}
+        unindexed=['talking_speed']) #defaults []
 
-# And we should be able to delete it...
-toy.delete()
+#upsert executes regardless of the state of the entity
+#update will fail on entities which are not in the datastore
+#update and upsert completely overwrite entities
+#insert will fail on entities which are already in the datastore
 
-# Since we deleted it, if we do another lookup it shouldn't be there again:
-print(dataset.get_entities([toy.key()]))
+#these three mutations can also insert using a partial id to automatically allocate and id
+nameless_orc_key = d.upsert(('orc','root','orc'), dict(is_alive=True))
+#the allocated key is returned in it's entirety
+#>>> print nameless_orc_key
+#('orc','root','orc',int)
 
-# Now let's try a more advanced query.
-# We'll start by look at all Thing entities:
-query = dataset.query().kind('Thing')
+d.delete('ent','root','ent','treebeard')
+#delete simply uses the key path to delete entities
 
-# Let's look at the first two.
-print(query.limit(2).fetch())
+nameless_orc_props = d.get(*nameless_orc_key)
+#get uses the same arguments, but returns the property dict
+print nameless_orc_props
+#{'is_alive':True}
 
-# Now let's check for Thing entities named 'Computer'
-print(query.filter('name =', 'Computer').fetch())
+#get_all() and query() will be covered later, but first...
+#what if you want to insert a large number of entities,
+#without slamming the datastore with calls
 
-# If you want to filter by multiple attributes,
-# you can string .filter() calls together.
-print(query.filter('name =', 'Computer').filter('age =', 10).fetch())
+"""
+calling d.batch_mutator() returns a batch mutator with the same
+initialization settings as the calling dataset
+BatchMutators have the same mutators with the same signature
+as Datasets, but do not have accessor methods
 
-# You can also work inside a transaction.
-# (Check the official docs for explanations of what's happening here.)
-with dataset.transaction():
-    print('Creating and savng an entity...')
-    thing = dataset.entity('Thing')
-    thing.key(thing.key().name('foo'))
-    thing['age'] = 10
-    thing.save()
+Instead of immediately applying mutations, BatchMutators
+accumulate them within a context, and apply the mutation
+upon exiting a context. As such, auto-allocated keys will
+not be returned upon insertion of partial keys.
+Instead, a user who wants to retrieve theys keys calls
+result() outside the context.
+"""
 
-    print('Creating and saving another entity...')
-    thing2 = dataset.entity('Thing')
-    thing2.key(thing2.key().name('bar'))
-    thing2['age'] = 15
-    thing2.save()
+b = d.batch_mutator()
 
-    print('Committing the transaction...')
+try:
+    b.insert(('orc','root','orc'))
+except:
+    print "mutations cannot be made outside of a context"
 
-# Now that the transaction is commited, let's delete the entities.
-print(thing.delete(), thing2.delete())
 
-# To rollback a transaction, just call .rollback()
-with dataset.transaction() as t:
-    thing = dataset.entity('Thing')
-    thing.key(thing.key().name('another'))
-    thing.save()
-    t.rollback()
+with b:
+    b.insert(('orc','root','orc', 'azog'), dict(is_alive=True))
 
-# Let's check if the entity was actually created:
-created = dataset.get_entities([thing.key()])
-print('yes' if created else 'no')
+    azog = d.get('orc','root','orc', 'azog')
+    #dataset methods can still be called within a context
+    #however, changes made by the BulkMutator are not visible
+    #until the context exits
+    print azog
+    #None
 
-# Remember, a key won't be complete until the transaction is commited.
-# That is, while inside the transaction block, thing.key() will be incomplete.
-with dataset.transaction():
-    thing = dataset.entity('Thing')
-    thing.save()
-    print(thing.key())  # This will be partial
+    #on the other hand, BulkMutators can effect data mutated by the
+    #dataset during the context
+    d.insert(('hobbit','root','hobbit','mary'), dict(underrated=True))
 
-print(thing.key())  # This will be complete
+    b.delete('hobbit','root','hobbit','mary')
 
-# Now let's delete the entity.
-thing.delete()
+    for i in range(0,100):
+        b.insert(('orc','root','orc'), dict(is_alive=True))
+
+
+nameless_orc_army = b.result()
+
+mary = d.get('hobbit','root','hobbit','mary')
+print mary
+#None
+
+#also note that result() does not include keys with user-
+#set names or ids
+print ('orc','root','orc','azog') in nameless_orc_army
+#False
+
+
+"""
+Transactions are objects that behave very similar to BatchMutators
+however, they also have the accessor methods from Dataset
+(and behave like transactions...)
+"""
+
+d.insert(('ent','root','ent','treebeard'), dict(age=9001))
+
+t = d.transaction()
+
+treebeard_props = d.get('ent','root','ent','treebeard')
+treebeard_props['age'] += 1
+d.update(('ent','root','ent','treebeard'), treebeard_props)
+
+# t takes a snapshot of d, so changes made to d after t is
+# initialized will not be visible inside the context
+
+
+
+with t:
+
+    d.upsert(('hobbit','root','hobbit','frodo'), dict(underrated=False))
+    #additionally, changes made while in the context will not be visible
+    #to transactional reads like t.get() or t.query()
+
+    frodo = t.get('hobbit','root','hobbit','frodo')
+    print frodo
+    #None
+
+    #if you need to get automatically allocate a key to mutate later in
+    #a transaction, you can call t.allocate_id(*key)
+
+    important_orc_key = t.allocate_id('orc','root','orc')
+    t.upsert(important_orc_key, dict(carrying="explosives!", is_alive=True))
+
+
+    treebeard_props = t.get('ent','root','ent','treebeard')
+    #t.get() gets 'younger' treebeard
+    treebeard_props['age'] += 1
+    d.update(('ent','root','ent','treebeard'), treebeard_props)
+
+treebeard_props = d.get('ent','root','ent', 'treebeard')
+
+print treebeard_props['age']
+#9002
+
+
+"""
+Using GQL is more consistent with the built-in-style of the library
+Query syntax uses ordered arguments as the number-args,
+and keyword arguments as the named-args, as well as a special arg
+called "cursor" which is used for fetching pages
+"""
+
+query_string = 'SELECT __key__ FROM @kind OFFSET @cursor WHERE HAS ANCESTOR @1 AND @2=@3'
+
+alive_orcs, more = d.query(
+        query_string,
+        'KEY(\'orc\', \'root\')',
+        'is_alive',
+        True,
+        kind='orc'
+        cursor=None)
+
+while(more):
+    more_alive_orcs, more = d.query(
+        query_string,
+        'KEY(\'orc\', \'root\')',
+        'is_alive',
+        True,
+        kind='orc'
+        cursor=more)
+
+    alive_orcs.extend(more_alive_orcs)
+
+print ('orc', 'root', 'orc', 'azog') in alive_orcs
+#True
+
+print important_orc_key in alive_orcs
+#True
