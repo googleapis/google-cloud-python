@@ -44,15 +44,13 @@ The main concepts with this API are:
   which represents a lookup or search over the rows in the datastore.
 """
 
-__version__ = '0.1.2'
+from gcloud import credentials
+from gcloud.datastore.connection import Connection
+
 
 SCOPE = ('https://www.googleapis.com/auth/datastore ',
          'https://www.googleapis.com/auth/userinfo.email')
 """The scope required for authenticating as a Cloud Datastore consumer."""
-
-
-from gcloud import credentials
-from gcloud.datastore.connection import Connection
 
 
 def get_connection():
