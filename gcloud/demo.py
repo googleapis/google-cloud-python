@@ -1,115 +1,181 @@
-# pragma NO COVER
-from code import interact
-import itertools
-import os.path
-import sys
-import time
-from six.moves import input
 
 
-class DemoRunner(object):
-    """An interactive runner of demo scripts."""
+from connection import Connection
+from dataset import Dataset
 
-    KEYPRESS_DELAY = 0.05
-    GLOBALS, LOCALS = globals(), locals()
-    CODE, COMMENT = 'code', 'comment'
 
-    def __init__(self, fp):
-        self.lines = [line.rstrip() for line in fp.readlines()]
+conn = Connection(credentials)
+d = Dataset('dataset-id-here', conn, namespace='demo')
+#defaults: namespace=None, force=False, read_option="DEFAULT"
+"""
+a dataset object has 4 mutators and 3 accessors for the datastore
+all mutations are immediately and synchronously applied
+to the datastore, note however that since the dataset<-->connection
+relationship is possibly many-to-one nothing prevents a user
+from creating multiple datasets with the same id.
+In this case the user is responsible for handling synchronicity
+"""
 
-    @classmethod
-    def from_module(cls, module):
-        path = os.path.join(os.path.dirname(module.__file__),
-                            'demo', 'demo.py')
+#the first three mutators upsert, insert, and update all have the same usage
+d.upsert(
+        ('ent','root', 'ent', 'treebeard'),
+        dict(hates_sarumon=True, age=9001), #defaults {}
+        unindexed=['talking_speed']) #defaults []
 
-        return cls(open(path, 'r'))
+#upsert executes regardless of the state of the entity
+#update will fail on entities which are not in the datastore
+#update and upsert completely overwrite entities
+#insert will fail on entities which are already in the datastore
 
-    def run(self):
-        line_groups = itertools.groupby(self.lines, self.get_line_type)
+#these three mutations can also insert using a partial id to automatically allocate and id
+nameless_orc_key = d.upsert(('orc','root','orc'), dict(is_alive=True))
+#the allocated key is returned in it's entirety
+#>>> print nameless_orc_key
+#('orc','root','orc',int)
 
-        for group_type, lines in line_groups:
-            if group_type == self.COMMENT:
-                self.write(lines)
+d.delete('ent','root','ent','treebeard')
+#delete simply uses the key path to delete entities
 
-            elif group_type == self.CODE:
-                self.code(lines)
+nameless_orc_props = d.get(*nameless_orc_key)
+#get uses the same arguments, but returns the property dict
+print nameless_orc_props
+#{'is_alive':True}
 
-        interact('(Hit CTRL-D to exit...)', local=self.LOCALS)
+#get_all() and query() will be covered later, but first...
+#what if you want to insert a large number of entities,
+#without slamming the datastore with calls
 
-    def wait(self):
-        input()
+"""
+calling d.batch_mutator() returns a batch mutator with the same
+initialization settings as the calling dataset
+BatchMutators have the same mutators with the same signature
+as Datasets, but do not have accessor methods
 
-    @classmethod
-    def get_line_type(cls, line):
-        if line.startswith('#'):
-            return cls.COMMENT
-        else:
-            return cls.CODE
+Instead of immediately applying mutations, BatchMutators
+accumulate them within a context, and apply the mutation
+upon exiting a context. As such, auto-allocated keys will
+not be returned upon insertion of partial keys.
+Instead, a user who wants to retrieve theys keys calls
+result() outside the context.
+"""
 
-    def get_indent_level(self, line):
-        if not line.strip():
-            return None
-        return len(line) - len(line.lstrip())
+b = d.batch_mutator()
 
-    def _print(self, text='', newline=True):
-        sys.stdout.write(text)
-        if newline:
-            sys.stdout.write('\n')
+try:
+    b.insert(('orc','root','orc'))
+except:
+    print "mutations cannot be made outside of a context"
 
-    def write(self, lines):
-        self._print()
-        self._print('\n'.join(lines), False)
-        self.wait()
 
-    def code(self, lines):
-        code_lines = []
+with b:
+    b.insert(('orc','root','orc', 'azog'), dict(is_alive=True))
 
-        for line in lines:
-            indent = self.get_indent_level(line)
+    azog = d.get('orc','root','orc', 'azog')
+    #dataset methods can still be called within a context
+    #however, changes made by the BulkMutator are not visible
+    #until the context exits
+    print azog
+    #None
 
-            # If we've completed a block,
-            # run whatever code was built up in code_lines.
-            if indent == 0:
-                self._execute_lines(code_lines)
-                code_lines = []
+    #on the other hand, BulkMutators can effect data mutated by the
+    #dataset during the context
+    d.insert(('hobbit','root','hobbit','mary'), dict(underrated=True))
 
-            # Print the prefix for the line depending on the indentation level.
-            if indent == 0:
-                self._print('>>> ', False)
-            elif indent > 0:
-                self._print('\n... ', False)
-            elif indent is None:
-                continue
+    b.delete('hobbit','root','hobbit','mary')
 
-            # Break the line into the code section and the comment section.
-            if '#' in line:
-                code, comment = line.split('#', 2)
-            else:
-                code, comment = line, None
+    for i in range(0,100):
+        b.insert(('orc','root','orc'), dict(is_alive=True))
 
-            # 'Type' out the comment section.
-            for char in code.rstrip():
-                time.sleep(self.KEYPRESS_DELAY)
-                sys.stdout.write(char)
-                sys.stdout.flush()
 
-            # Print the comment section (not typed out).
-            if comment:
-                sys.stdout.write('  # %s' % comment.strip())
+nameless_orc_army = b.result()
 
-            # Add the current line to the list of lines to be run
-            # in this block.
-            code_lines.append(line)
+mary = d.get('hobbit','root','hobbit','mary')
+print mary
+#None
 
-        # If we had any code built up that wasn't part of a completed block
-        # (ie, the lines ended with an indented line),
-        # run that code.
-        if code_lines:
-            self._execute_lines(code_lines)
+#also note that result() does not include keys with user-
+#set names or ids
+print ('orc','root','orc','azog') in nameless_orc_army
+#False
 
-    def _execute_lines(self, lines):
-        if lines:
-            self.wait()
 
-            # Yes, this is crazy unsafe... but it's demo code.
-            exec('\n'.join(lines), self.GLOBALS, self.LOCALS)
+"""
+Transactions are objects that behave very similar to BatchMutators
+however, they also have the accessor methods from Dataset
+(and behave like transactions...)
+"""
+
+d.insert(('ent','root','ent','treebeard'), dict(age=9001))
+
+t = d.transaction()
+
+treebeard_props = d.get('ent','root','ent','treebeard')
+treebeard_props['age'] += 1
+d.update(('ent','root','ent','treebeard'), treebeard_props)
+
+# t takes a snapshot of d, so changes made to d after t is
+# initialized will not be visible inside the context
+
+
+
+with t:
+
+    d.upsert(('hobbit','root','hobbit','frodo'), dict(underrated=False))
+    #additionally, changes made while in the context will not be visible
+    #to transactional reads like t.get() or t.query()
+
+    frodo = t.get('hobbit','root','hobbit','frodo')
+    print frodo
+    #None
+
+    #if you need to get automatically allocate a key to mutate later in
+    #a transaction, you can call t.allocate_id(*key)
+
+    important_orc_key = t.allocate_id('orc','root','orc')
+    t.upsert(important_orc_key, dict(carrying="explosives!", is_alive=True))
+
+
+    treebeard_props = t.get('ent','root','ent','treebeard')
+    #t.get() gets 'younger' treebeard
+    treebeard_props['age'] += 1
+    d.update(('ent','root','ent','treebeard'), treebeard_props)
+
+treebeard_props = d.get('ent','root','ent', 'treebeard')
+
+print treebeard_props['age']
+#9002
+
+
+"""
+Using GQL is more consistent with the built-in-style of the library
+Query syntax uses ordered arguments as the number-args,
+and keyword arguments as the named-args, as well as a special arg
+called "cursor" which is used for fetching pages
+"""
+
+query_string = 'SELECT __key__ FROM @kind OFFSET @cursor WHERE HAS ANCESTOR @1 AND @2=@3'
+
+alive_orcs, more = d.query(
+        query_string,
+        'KEY(\'orc\', \'root\')',
+        'is_alive',
+        True,
+        kind='orc'
+        cursor=None)
+
+while(more):
+    more_alive_orcs, more = d.query(
+        query_string,
+        'KEY(\'orc\', \'root\')',
+        'is_alive',
+        True,
+        kind='orc'
+        cursor=more)
+
+    alive_orcs.extend(more_alive_orcs)
+
+print ('orc', 'root', 'orc', 'azog') in alive_orcs
+#True
+
+print important_orc_key in alive_orcs
+#True
