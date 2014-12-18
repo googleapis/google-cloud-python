@@ -56,8 +56,11 @@ class Query(object):
     :param dataset: The namespace to which to restrict results.
     """
 
-    _MORE_RESULTS = datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
-    _NO_MORE_RESULTS = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+    _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
+    _FINISHED = (
+        datastore_pb.QueryResultBatch.NO_MORE_RESULTS,
+        datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
+    )
     OPERATORS = {
         '<=': datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL,
         '>=': datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL,
@@ -227,26 +230,24 @@ class Query(object):
 
         return clone
 
-    def kind(self, *kinds):
+    def kind(self, kind=None):
         """Get or set the Kind of the Query.
 
-        .. note::
-          This is an **additive** operation.  That is, if the Query is
-          set for kinds A and B, and you call ``.kind('C')``, it will
-          query for kinds A, B, *and*, C.
+        :type kind: string
+        :param kind: Optional. The entity kinds for which to query.
 
-        :type kinds: string
-        :param kinds: The entity kinds for which to query.
-
-        :rtype: string, list of strings, or :class:`Query`
-        :returns: If no arguments, returns the kind or list of kinds.
-                  If a kind is provided, returns a clone of the :class:`Query`
-                  with those kinds set.
+        :rtype: string or :class:`Query`
+        :returns: If `kind` is None, returns the kind. If a kind is provided,
+                  returns a clone of the :class:`Query` with that kind set.
+        :raises: `ValueError` from the getter if multiple kinds are set on
+                 the query.
         """
-        if kinds:
+        if kind is not None:
+            kinds = [kind]
             clone = self._clone()
-            for kind in kinds:
-                clone._pb.kind.add().name = kind
+            clone._pb.ClearField('kind')
+            for new_kind in kinds:
+                clone._pb.kind.add().name = new_kind
             return clone
         else:
             # In the proto definition for Query, `kind` is repeated.
@@ -255,7 +256,7 @@ class Query(object):
             if num_kinds == 1:
                 return kind_names[0]
             elif num_kinds > 1:
-                return kind_names
+                raise ValueError('Only a single kind can be set.')
 
     def limit(self, limit=None):
         """Get or set the limit of the Query.
@@ -343,7 +344,7 @@ class Query(object):
                   encoded cursor for paging and the third is a boolean
                   indicating if there are more results.
         :raises: `ValueError` if more_results is not one of the enums
-                 MORE_RESULTS_AFTER_LIMIT or NO_MORE_RESULTS.
+                 NOT_FINISHED, MORE_RESULTS_AFTER_LIMIT, NO_MORE_RESULTS.
         """
         clone = self
 
@@ -372,13 +373,11 @@ class Query(object):
 
         cursor = base64.b64encode(cursor_as_bytes)
 
-        if more_results_enum == self._MORE_RESULTS:
+        if more_results_enum == self._NOT_FINISHED:
             more_results = True
-        elif more_results_enum == self._NO_MORE_RESULTS:
+        elif more_results_enum in self._FINISHED:
             more_results = False
         else:
-            # Note this covers the value NOT_FINISHED since this fetch does
-            # not occur within a batch, we don't expect to see NOT_FINISHED.
             raise ValueError('Unexpected value returned for `more_results`.')
 
         return entities, cursor, more_results

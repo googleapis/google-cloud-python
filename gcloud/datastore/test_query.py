@@ -261,11 +261,22 @@ class TestQuery(unittest2.TestCase):
         _KIND_AFTER = 'KIND_AFTER'
         dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND_BEFORE, dataset)
+        self.assertEqual(query.kind(), _KIND_BEFORE)
         after = query.kind(_KIND_AFTER)
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
         self.assertTrue(after.dataset() is dataset)
-        self.assertEqual(after.kind(), [_KIND_BEFORE, _KIND_AFTER])
+        self.assertEqual(after.kind(), _KIND_AFTER)
+
+    def test_kind_getter_unset(self):
+        query = self._makeOne()
+        self.assertEqual(query.kind(), None)
+
+    def test_kind_getter_bad_pb(self):
+        query = self._makeOne()
+        query._pb.kind.add().name = 'foo'
+        query._pb.kind.add().name = 'bar'
+        self.assertRaises(ValueError, query.kind)
 
     def test_limit_setter_wo_existing(self):
         from gcloud.datastore.dataset import Dataset
@@ -293,8 +304,9 @@ class TestQuery(unittest2.TestCase):
         self.assertTrue(after.dataset() is dataset)
         self.assertEqual(query.kind(), _KIND)
 
-    def _fetch_page_helper(self, cursor=b'\x00', limit=None, more_results=True,
-                           _more_pb=None, use_fetch=False):
+    def _fetch_page_helper(self, cursor=b'\x00', limit=None,
+                           more_results=False, _more_pb=None,
+                           use_fetch=False):
         import base64
         from gcloud.datastore.datastore_v1_pb2 import Entity
         _CURSOR_FOR_USER = (None if cursor is None
@@ -351,16 +363,14 @@ class TestQuery(unittest2.TestCase):
     def test_fetch_page_no_more_results(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
-        self._fetch_page_helper(cursor='CURSOR', limit=13, more_results=False,
-                                _more_pb=no_more)
+        self._fetch_page_helper(cursor='CURSOR', limit=13, _more_pb=no_more)
 
-    def test_fetch_page_more_results_ill_formed(self):
+    def test_fetch_page_not_finished(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         not_finished = datastore_pb.QueryResultBatch.NOT_FINISHED
-        # Try a valid enum but not allowed.
-        self.assertRaises(ValueError, self._fetch_page_helper,
-                          _more_pb=not_finished)
-        # Try an invalid enum but not allowed.
+        self._fetch_page_helper(_more_pb=not_finished, more_results=True)
+
+    def test_fetch_page_more_results_invalid(self):
         self.assertRaises(ValueError, self._fetch_page_helper,
                           _more_pb=object())
 
