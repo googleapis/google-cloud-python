@@ -37,8 +37,6 @@ The main concepts with this API are:
   machine).
 """
 
-__version__ = '0.1'
-
 from gcloud import credentials
 from gcloud.storage.connection import Connection
 
