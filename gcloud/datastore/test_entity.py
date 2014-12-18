@@ -239,10 +239,13 @@ class _Key(object):
     _key = 'KEY'
     _partial = False
     _path = None
+    _id = None
 
     def id(self, id_to_set):
         self._called_id = id_to_set
-        return id_to_set
+        clone = _Key()
+        clone._id = id_to_set
+        return clone
 
     def to_protobuf(self):
         return self._key

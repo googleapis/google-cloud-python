@@ -228,7 +228,7 @@ class TestDataset(unittest2.TestCase):
         result = DATASET.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
 
         # Check the IDs returned match _PathElementProto.
-        self.assertEqual(result, range(NUM_IDS))
+        self.assertEqual([key._id for key in result], range(NUM_IDS))
 
         # Check connection is called correctly.
         self.assertEqual(CONNECTION._called_dataset_id, DATASET_ID)
@@ -269,7 +269,7 @@ class _Connection(object):
         self._called_dataset_id = dataset_id
         self._called_key_pbs = key_pbs
         num_pbs = len(key_pbs)
-        return [_KeyProto(i) for i in xrange(num_pbs)]
+        return [_KeyProto(i) for i in range(num_pbs)]
 
 
 class _PathElementProto(object):
