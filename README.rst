@@ -1,7 +1,7 @@
 Google Cloud Python Client
 ==========================
 
-    Python idiomatic client for Google Cloud Platform services.
+Python idiomatic client for Google Cloud Platform services.
 
 |build| |coverage|
 ------------------
@@ -152,7 +152,9 @@ We also explicitly decided to support Python 3 beginning with version
 License
 -------
 
-Apache 2.0 - See `LICENSE <LICENSE>`__ for more information.
+Apache 2.0 - See `LICENSE`_ for more information.
+
+.. _LICENSE: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/LICENSE
 
 .. |build| image:: https://travis-ci.org/GoogleCloudPlatform/gcloud-python.svg?branch=master
    :target: https://travis-ci.org/GoogleCloudPlatform/gcloud-python
