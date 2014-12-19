@@ -253,14 +253,14 @@ class Connection(connection.Connection):
         for key_pb in key_pbs:
             lookup_request.key.add().CopyFrom(key_pb)
 
-        results, m_found, d_found = self._lookup(lookup_request, dataset_id,
-                                                 deferred is not None)
+        results, missing_found, deferred_found = self._lookup(
+            lookup_request, dataset_id, deferred is not None)
 
         if missing is not None:
-            missing.extend(m_found)
+            missing.extend(missing_found)
 
         if deferred is not None:
-            deferred.extend(d_found)
+            deferred.extend(deferred_found)
 
         if single_key:
             if results:
