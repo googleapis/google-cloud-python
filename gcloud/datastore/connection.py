@@ -559,7 +559,7 @@ class Connection(connection.Connection):
         if eventual:
             opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
         elif transaction:
-            opts.transaction = transaction
+            opts.transaction = transaction.id()
 
 
 def _copy_deferred_keys(lookup_request, lookup_response):
