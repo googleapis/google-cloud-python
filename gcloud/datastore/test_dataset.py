@@ -213,6 +213,40 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
+    def test_allocate_ids(self):
+        from gcloud.datastore.test_entity import _Key
+
+        INCOMPLETE_KEY = _Key()
+        PROTO_ID = object()
+        INCOMPLETE_KEY._key = _KeyProto(PROTO_ID)
+        INCOMPLETE_KEY._partial = True
+
+        CONNECTION = _Connection()
+        NUM_IDS = 2
+        DATASET_ID = 'foo'
+        DATASET = self._makeOne(DATASET_ID, connection=CONNECTION)
+        result = DATASET.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
+
+        # Check the IDs returned match _PathElementProto.
+        self.assertEqual([key._id for key in result], range(NUM_IDS))
+
+        # Check connection is called correctly.
+        self.assertEqual(CONNECTION._called_dataset_id, DATASET_ID)
+        self.assertEqual(len(CONNECTION._called_key_pbs), NUM_IDS)
+
+        # Check the IDs passed to Connection.allocate_ids.
+        key_paths = [key_pb.path_element[-1].id
+                     for key_pb in CONNECTION._called_key_pbs]
+        self.assertEqual(key_paths, [PROTO_ID] * NUM_IDS)
+
+    def test_allocate_ids_with_complete(self):
+        from gcloud.datastore.test_entity import _Key
+
+        COMPLETE_KEY = _Key()
+        DATASET = self._makeOne(None)
+        self.assertRaises(ValueError, DATASET.allocate_ids,
+                          COMPLETE_KEY, 2)
+
 
 class _Connection(object):
     _called_with = None
@@ -230,3 +264,21 @@ class _Connection(object):
         if deferred is not None:
             deferred.extend(self._deferred)
         return self._result
+
+    def allocate_ids(self, dataset_id, key_pbs):
+        self._called_dataset_id = dataset_id
+        self._called_key_pbs = key_pbs
+        num_pbs = len(key_pbs)
+        return [_KeyProto(i) for i in range(num_pbs)]
+
+
+class _PathElementProto(object):
+
+    def __init__(self, _id):
+        self.id = _id
+
+
+class _KeyProto(object):
+
+    def __init__(self, id_):
+        self.path_element = [_PathElementProto(id_)]
