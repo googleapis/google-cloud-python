@@ -68,6 +68,59 @@ class TestEntity(unittest2.TestCase):
         entity.key(key)
         self.assertTrue(entity.key() is key)
 
+    def test___delitem__exists(self):
+        entity = self._makeOne()
+        entity['foo'] = 'bar'
+        # This will cause an error (not a failure) if it doesn't work.
+        # Can't use a try-except because coverage.py doesn't like a branch
+        # which never occurs.
+        del entity['foo']
+
+    def test___delitem__not_exist(self):
+        entity = self._makeOne()
+        fail_occurred = False
+        try:
+            del entity['foo']
+        except KeyError:
+            fail_occurred = True
+        self.assertTrue(fail_occurred)
+
+    def test_clear_properties(self):
+        entity = self._makeOne()
+        entity['foo'] = 0
+        entity['bar'] = 1
+        self.assertEqual(entity.to_dict(), {'foo': 0, 'bar': 1})
+
+        entity.clear_properties()
+        self.assertEqual(entity.to_dict(), {})
+
+    def test_update_properties_dict(self):
+        entity = self._makeOne()
+        self.assertEqual(entity.to_dict(), {})
+
+        NEW_VALUES = {'prop1': 0, 'prop2': 1}
+        entity.update_properties(NEW_VALUES)
+        self.assertEqual(entity.to_dict(), NEW_VALUES)
+
+    def test_update_properties_keywords(self):
+        entity = self._makeOne()
+        self.assertEqual(entity.to_dict(), {})
+
+        NEW_VALUES = {'prop1': 0, 'prop2': 1}
+        entity.update_properties(**NEW_VALUES)
+        self.assertEqual(entity.to_dict(), NEW_VALUES)
+
+        entity.update_properties(prop1=10, prop2=11)
+        NEW_VALUES_AGAIN = {'prop1': 10, 'prop2': 11}
+        self.assertEqual(entity.to_dict(), NEW_VALUES_AGAIN)
+
+    def test_update_properties_invalid(self):
+        entity = self._makeOne()
+
+        dict1 = {'foo': 'bar'}
+        dict2 = {'baz': 'zip'}
+        self.assertRaises(TypeError, entity.update_properties, dict1, dict2)
+
     def test_from_key_wo_dataset(self):
         from gcloud.datastore.key import Key
 
@@ -125,8 +178,13 @@ class TestEntity(unittest2.TestCase):
 
     def test_reload_hit(self):
         dataset = _Dataset()
-        dataset['KEY'] = {'foo': 'Bar'}
+
+        fake_entity = self._makeOne(dataset=dataset)
+        fake_entity['foo'] = 'Bar'
+
         key = _Key()
+        dataset[key._key] = fake_entity
+
         entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'

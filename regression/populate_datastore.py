@@ -95,7 +95,7 @@ def add_characters():
                                   key_path, character))
             key = datastore.key.Key(path=key_path)
             entity = datastore.entity.Entity(dataset=dataset).key(key)
-            entity.update(character)
+            entity.update_properties(character)
             entity.save()
             print('Adding Character %s %s' % (character['name'],
                                               character['family']))

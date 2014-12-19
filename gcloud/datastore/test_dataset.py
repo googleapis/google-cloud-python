@@ -106,7 +106,7 @@ class TestDataset(unittest2.TestCase):
         key = result.key()
         self.assertEqual(key._dataset_id, DATASET_ID)
         self.assertEqual(key.path(), PATH)
-        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result.to_dict().keys(), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
     def test_get_entity_path(self):
@@ -129,7 +129,7 @@ class TestDataset(unittest2.TestCase):
         key = result.key()
         self.assertEqual(key._dataset_id, DATASET_ID)
         self.assertEqual(key.path(), PATH)
-        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result.to_dict().keys(), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
     def test_get_entity_odd_nonetype(self):
@@ -210,7 +210,7 @@ class TestDataset(unittest2.TestCase):
         key = result.key()
         self.assertEqual(key._dataset_id, DATASET_ID)
         self.assertEqual(key.path(), PATH)
-        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result.to_dict().keys(), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
     def test_allocate_ids(self):
