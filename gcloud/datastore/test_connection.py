@@ -268,7 +268,7 @@ class TestConnection(unittest2.TestCase):
         TRANSACTION = 'TRANSACTION'
         key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         conn = self._makeOne()
-        conn.transaction(TRANSACTION)
+        conn.transaction(Transaction(TRANSACTION))
         self.assertRaises(
             ValueError, conn.lookup, DATASET_ID, key_pb, eventual=True)
 
@@ -281,7 +281,7 @@ class TestConnection(unittest2.TestCase):
         key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
-        conn.transaction(TRANSACTION)
+        conn.transaction(Transaction(TRANSACTION))
         URI = '/'.join([
             conn.API_BASE_URL,
             'datastore',
@@ -569,7 +569,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
-        conn.transaction(TRANSACTION)
+        conn.transaction(Transaction(TRANSACTION))
         URI = '/'.join([
             conn.API_BASE_URL,
             'datastore',
@@ -610,7 +610,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
-        conn.transaction(TRANSACTION)
+        conn.transaction(Transaction(TRANSACTION))
         self.assertRaises(
             ValueError, conn.run_query, DATASET_ID, q_pb, eventual=True)
 
@@ -1174,3 +1174,12 @@ class HttpMultiple(object):
         self._called_with.append(kw)
         result, self._responses = self._responses[0], self._responses[1:]
         return result
+
+
+class Transaction(object):
+
+    def __init__(self, id):
+        self._id = id
+
+    def id(self):
+        return self._id
