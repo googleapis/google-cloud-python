@@ -56,6 +56,11 @@ class Query(object):
     :param dataset: The namespace to which to restrict results.
     """
 
+    _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
+    _FINISHED = (
+        datastore_pb.QueryResultBatch.NO_MORE_RESULTS,
+        datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
+    )
     OPERATORS = {
         '<=': datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL,
         '>=': datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL,
@@ -69,7 +74,6 @@ class Query(object):
         self._dataset = dataset
         self._namespace = namespace
         self._pb = datastore_pb.Query()
-        self._cursor = self._more_results = None
         self._offset = 0
 
         if kind:
@@ -84,8 +88,6 @@ class Query(object):
         clone = self.__class__(dataset=self._dataset,
                                namespace=self._namespace)
         clone._pb.CopyFrom(self._pb)
-        clone._cursor = self._cursor
-        clone._more_results = self._more_results
         return clone
 
     def namespace(self):
@@ -228,29 +230,33 @@ class Query(object):
 
         return clone
 
-    def kind(self, *kinds):
+    def kind(self, kind=None):
         """Get or set the Kind of the Query.
 
-        .. note::
-          This is an **additive** operation.  That is, if the Query is
-          set for kinds A and B, and you call ``.kind('C')``, it will
-          query for kinds A, B, *and*, C.
-
-        :type kinds: string
-        :param kinds: The entity kinds for which to query.
+        :type kind: string
+        :param kind: Optional. The entity kinds for which to query.
 
         :rtype: string or :class:`Query`
-        :returns: If no arguments, returns the kind.
-                  If a kind is provided, returns a clone of the :class:`Query`
-                  with those kinds set.
+        :returns: If `kind` is None, returns the kind. If a kind is provided,
+                  returns a clone of the :class:`Query` with that kind set.
+        :raises: `ValueError` from the getter if multiple kinds are set on
+                 the query.
         """
-        if kinds:
+        if kind is not None:
+            kinds = [kind]
             clone = self._clone()
-            for kind in kinds:
-                clone._pb.kind.add().name = kind
+            clone._pb.ClearField('kind')
+            for new_kind in kinds:
+                clone._pb.kind.add().name = new_kind
             return clone
         else:
-            return self._pb.kind
+            # In the proto definition for Query, `kind` is repeated.
+            kind_names = [kind_expr.name for kind_expr in self._pb.kind]
+            num_kinds = len(kind_names)
+            if num_kinds == 1:
+                return kind_names[0]
+            elif num_kinds > 1:
+                raise ValueError('Only a single kind can be set.')
 
     def limit(self, limit=None):
         """Get or set the limit of the Query.
@@ -302,13 +308,84 @@ class Query(object):
         else:
             return self._dataset
 
-    def fetch(self, limit=None):
-        """Executes the Query and returns all matching entities.
+    def fetch_page(self, limit=None):
+        """Executes the Query and returns matching entities, and paging info.
+
+        In addition to the fetched entities, it also returns a cursor to allow
+        paging through a results set and a boolean `more_results` indicating
+        if there are any more.
 
         This makes an API call to the Cloud Datastore, sends the Query
         as a protobuf, parses the responses to Entity protobufs, and
         then converts them to :class:`gcloud.datastore.entity.Entity`
         objects.
+
+        For example::
+
+          >>> from gcloud import datastore
+          >>> dataset = datastore.get_dataset('dataset-id')
+          >>> query = dataset.query('Person').filter('name', '=', 'Sally')
+          >>> query.fetch_page()
+          [<Entity object>, <Entity object>, ...], 'cursorbase64', True
+          >>> query.fetch_page(1)
+          [<Entity object>], 'cursorbase64', True
+          >>> query.limit()
+          None
+
+        :type limit: integer
+        :param limit: An optional limit to apply temporarily to this query.
+                      That is, the Query itself won't be altered,
+                      but the limit will be applied to the query
+                      before it is executed.
+
+        :rtype: tuple of mixed types
+        :returns: The first entry is a :class:`gcloud.datastore.entity.Entity`
+                  list matching this query's criteria. The second is a base64
+                  encoded cursor for paging and the third is a boolean
+                  indicating if there are more results.
+        :raises: `ValueError` if more_results is not one of the enums
+                 NOT_FINISHED, MORE_RESULTS_AFTER_LIMIT, NO_MORE_RESULTS.
+        """
+        clone = self
+
+        if limit:
+            clone = self.limit(limit)
+
+        query_results = self.dataset().connection().run_query(
+            query_pb=clone.to_protobuf(),
+            dataset_id=self.dataset().id(),
+            namespace=self._namespace,
+            )
+        # NOTE: `query_results` contains an extra value that we don't use,
+        #       namely `skipped_results`.
+        #
+        # NOTE: The value of `more_results` is not currently useful because
+        #       the back-end always returns an enum
+        #       value of MORE_RESULTS_AFTER_LIMIT even if there are no more
+        #       results. See
+        #       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280
+        #       for discussion.
+        entity_pbs, cursor_as_bytes, more_results_enum = query_results[:3]
+
+        entities = [helpers.entity_from_protobuf(entity,
+                                                 dataset=self.dataset())
+                    for entity in entity_pbs]
+
+        cursor = base64.b64encode(cursor_as_bytes)
+
+        if more_results_enum == self._NOT_FINISHED:
+            more_results = True
+        elif more_results_enum in self._FINISHED:
+            more_results = False
+        else:
+            raise ValueError('Unexpected value returned for `more_results`.')
+
+        return entities, cursor, more_results
+
+    def fetch(self, limit=None):
+        """Executes the Query and returns matching entities
+
+        This calls `fetch_page()` but does not use the paging information.
 
         For example::
 
@@ -331,65 +408,26 @@ class Query(object):
         :rtype: list of :class:`gcloud.datastore.entity.Entity`'s
         :returns: The list of entities matching this query's criteria.
         """
-        clone = self
+        entities, _, _ = self.fetch_page(limit=limit)
+        return entities
 
-        if limit:
-            clone = self.limit(limit)
+    @property
+    def start_cursor(self):
+        """Property to encode start cursor bytes as base64."""
+        if not self._pb.HasField('start_cursor'):
+            return None
 
-        query_results = self.dataset().connection().run_query(
-            query_pb=clone.to_protobuf(),
-            dataset_id=self.dataset().id(),
-            namespace=self._namespace,
-            )
-        # NOTE: `query_results` contains an extra value that we don't use,
-        #       namely `skipped_results`.
-        #
-        # NOTE: The value of `more_results` is not currently useful because
-        #       the back-end always returns an enum
-        #       value of MORE_RESULTS_AFTER_LIMIT even if there are no more
-        #       results. See
-        #       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280
-        #       for discussion.
-        entity_pbs, self._cursor, self._more_results = query_results[:3]
+        start_as_bytes = self._pb.start_cursor
+        return base64.b64encode(start_as_bytes)
 
-        return [helpers.entity_from_protobuf(entity, dataset=self.dataset())
-                for entity in entity_pbs]
+    @property
+    def end_cursor(self):
+        """Property to encode end cursor bytes as base64."""
+        if not self._pb.HasField('end_cursor'):
+            return None
 
-    def cursor(self):
-        """Returns cursor ID from most recent ``fetch()``.
-
-        .. warning:: Invoking this method on a query that has not yet
-           been executed will raise a RuntimeError.
-
-        :rtype: string
-        :returns: base64-encoded cursor ID string denoting the last position
-                  consumed in the query's result set.
-        """
-        if not self._cursor:
-            raise RuntimeError('No cursor')
-        return base64.b64encode(self._cursor)
-
-    def more_results(self):
-        """Returns ``more_results`` flag from most recent ``fetch()``.
-
-        .. warning:: Invoking this method on a query that has not yet
-           been executed will raise a RuntimeError.
-
-        .. note::
-
-           The `more_results` is not currently useful because it is
-           always returned by the back-end as ``MORE_RESULTS_AFTER_LIMIT``
-           even if there are no more results. See
-           https://github.com/GoogleCloudPlatform/gcloud-python/issues/280
-           for discussion.
-
-        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.
-                                QueryResultBatch.MoreResultsType`
-        :returns: enumerated value:  are there more results available.
-        """
-        if self._more_results is None:
-            raise RuntimeError('No results')
-        return self._more_results
+        end_as_bytes = self._pb.end_cursor
+        return base64.b64encode(end_as_bytes)
 
     def with_cursor(self, start_cursor, end_cursor=None):
         """Specifies the starting / ending positions in a query's result set.

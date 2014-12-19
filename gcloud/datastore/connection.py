@@ -289,10 +289,13 @@ class Connection(connection.Connection):
 
         Using the `fetch`` method...
 
-        >>> query.fetch()
+        >>> entities, cursor, more_results = query.fetch_page()
+        >>> entities
         [<list of Entity unmarshalled from protobuf>]
-        >>> query.cursor()
+        >>> cursor
         <string containing cursor where fetch stopped>
+        >>> more_results
+        <boolean of more results>
 
         Under the hood this is doing...
 
@@ -318,7 +321,7 @@ class Connection(connection.Connection):
                              datastore_pb.RunQueryResponse)
         return (
             [e.entity for e in response.batch.entity_result],
-            response.batch.end_cursor,
+            response.batch.end_cursor,  # Assume response always has cursor.
             response.batch.more_results,
             response.batch.skipped_results,
         )
