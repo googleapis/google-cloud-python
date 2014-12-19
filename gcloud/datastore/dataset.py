@@ -145,8 +145,8 @@ class Dataset(object):
     def get_entities(self, keys, missing=None, deferred=None):
         """Retrieves entities from the dataset, along with their attributes.
 
-        :type key: list of :class:`gcloud.datastore.key.Key`
-        :param item_name: The name of the item to retrieve.
+        :type keys: list of :class:`gcloud.datastore.key.Key`
+        :param keys: List of keys to be retrieved.
 
         :type missing: an empty list or None.
         :param missing: If a list is passed, the key-only entities returned
