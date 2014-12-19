@@ -633,7 +633,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="n">eventual</span><span class="p">:</span>
             <span class="n">opts</span><span class="o">.</span><span class="n">read_consistency</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">ReadOptions</span><span class="o">.</span><span class="n">EVENTUAL</span>
         <span class="k">elif</span> <span class="n">transaction</span><span class="p">:</span>
-            <span class="n">opts</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction</span>
+            <span class="n">opts</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
 
 </div>
 <span class="k">def</span> <span class="nf">_copy_deferred_keys</span><span class="p">(</span><span class="n">lookup_request</span><span class="p">,</span> <span class="n">lookup_response</span><span class="p">):</span>
