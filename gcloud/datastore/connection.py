@@ -240,9 +240,8 @@ class Connection(connection.Connection):
         lookup_request = datastore_pb.LookupRequest()
 
         opts = lookup_request.read_options
-        ro_enum = datastore_pb.ReadOptions.ReadConsistency
         if eventual:
-            opts.read_consistency = ro_enum.Value('EVENTUAL')
+            opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
         elif transaction:
             opts.transaction = transaction
 
@@ -358,9 +357,8 @@ class Connection(connection.Connection):
 
         request = datastore_pb.RunQueryRequest()
         opts = request.read_options
-        ro_enum = datastore_pb.ReadOptions.ReadConsistency
         if eventual:
-            opts.read_consistency = ro_enum.Value('EVENTUAL')
+            opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
         elif transaction:
             opts.transaction = transaction
 

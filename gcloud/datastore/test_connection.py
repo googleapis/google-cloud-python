@@ -257,9 +257,8 @@ class TestConnection(unittest2.TestCase):
         keys = list(request.key)
         self.assertEqual(len(keys), 1)
         self.assertEqual(keys[0], key_pb)
-        ro_enum = datastore_pb.ReadOptions.ReadConsistency
         self.assertEqual(request.read_options.read_consistency,
-                         ro_enum.Value('EVENTUAL'))
+                         datastore_pb.ReadOptions.EVENTUAL)
         self.assertEqual(request.read_options.transaction, '')
 
     def test_lookup_single_key_empty_response_w_eventual_and_transaction(self):
@@ -551,9 +550,8 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace, '')
         self.assertEqual(request.query, q_pb)
-        ro_enum = datastore_pb.ReadOptions.ReadConsistency
         self.assertEqual(request.read_options.read_consistency,
-                         ro_enum.Value('EVENTUAL'))
+                         datastore_pb.ReadOptions.EVENTUAL)
         self.assertEqual(request.read_options.transaction, '')
 
     def test_run_query_wo_eventual_w_transaction(self):
@@ -593,9 +591,8 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace, '')
         self.assertEqual(request.query, q_pb)
-        ro_enum = datastore_pb.ReadOptions.ReadConsistency
         self.assertEqual(request.read_options.read_consistency,
-                         ro_enum.Value('DEFAULT'))
+                         datastore_pb.ReadOptions.DEFAULT)
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_run_query_w_eventual_and_transaction(self):
