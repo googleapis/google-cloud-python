@@ -23,8 +23,10 @@ _ID = 1234
 class TestEntity(unittest2.TestCase):
 
     def _getTargetClass(self):
+        from gcloud.datastore import _implicit_environ
         from gcloud.datastore.entity import Entity
 
+        _implicit_environ.DATASET = None
         return Entity
 
     def _makeOne(self, dataset=_MARKER, kind=_KIND, exclude_from_indexes=()):
@@ -323,6 +325,13 @@ class _Dataset(dict):
         super(_Dataset, self).__init__()
         self._connection = connection
 
+    def __bool__(self):
+        # Make sure the objects are Truth-y since an empty
+        # dict with _connection set will still be False-y.
+        return True
+
+    __nonzero__ = __bool__
+
     def id(self):
         return _DATASET_ID
 
@@ -331,6 +340,12 @@ class _Dataset(dict):
 
     def get_entity(self, key):
         return self.get(key)
+
+    def get_entities(self, keys):
+        return [self.get(key) for key in keys]
+
+    def allocate_ids(self, incomplete_key, num_ids):
+        return [incomplete_key.id(i + 1) for i in range(num_ids)]
 
 
 class _Connection(object):

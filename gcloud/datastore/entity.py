@@ -14,6 +14,7 @@
 
 """Class for representing a single entity in the Cloud Datastore."""
 
+from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.key import Key
 
@@ -26,7 +27,7 @@ class NoDataset(RuntimeError):
     """Exception raised by Entity methods which require a dataset."""
 
 
-class Entity(object):
+class Entity(_implicit_environ._DatastoreBase):
     """Entities are akin to rows in a relational database
 
     An entity storing the actual instance of data.
@@ -93,7 +94,7 @@ class Entity(object):
     """
 
     def __init__(self, dataset=None, kind=None, exclude_from_indexes=()):
-        self._dataset = dataset
+        super(Entity, self).__init__(dataset=dataset)
         self._data = {}
         if kind:
             self._key = Key().kind(kind)

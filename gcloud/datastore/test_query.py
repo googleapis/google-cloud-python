@@ -18,8 +18,10 @@ import unittest2
 class TestQuery(unittest2.TestCase):
 
     def _getTargetClass(self):
+        from gcloud.datastore import _implicit_environ
         from gcloud.datastore.query import Query
 
+        _implicit_environ.DATASET = None
         return Query
 
     def _makeOne(self, kind=None, dataset=None, namespace=None):

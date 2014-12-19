@@ -44,13 +44,33 @@ The main concepts with this API are:
   which represents a lookup or search over the rows in the datastore.
 """
 
+import os
+
 from gcloud import credentials
+from gcloud.datastore import _implicit_environ
 from gcloud.datastore.connection import Connection
 
 
 SCOPE = ('https://www.googleapis.com/auth/datastore ',
          'https://www.googleapis.com/auth/userinfo.email')
 """The scope required for authenticating as a Cloud Datastore consumer."""
+
+_DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
+
+
+def _set_dataset_from_environ():
+    """Determines auth settings from local enviroment.
+
+    Currently only supports enviroment variable but will implicitly
+    support App Engine, Compute Engine and other environments in
+    the future.
+
+    Local environment variable used is:
+    - GCLOUD_DATASET_ID
+    """
+    local_dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
+    if local_dataset_id is not None:
+        _implicit_environ.DATASET = get_dataset(local_dataset_id)
 
 
 def get_connection():
@@ -97,3 +117,58 @@ def get_dataset(dataset_id):
     """
     connection = get_connection()
     return connection.dataset(dataset_id)
+
+
+def _require_dataset():
+    """Convenience method to ensure DATASET is set.
+
+    :rtype: :class:`gcloud.datastore.dataset.Dataset`
+    :returns: A dataset based on the current environment.
+    :raises: :class:`EnvironmentError` if DATASET is not set.
+    """
+    if _implicit_environ.DATASET is None:
+        raise EnvironmentError('Dataset could not be implied.')
+    return _implicit_environ.DATASET
+
+
+def get_entity(key):
+    """Retrieves entity from implicit dataset, along with its attributes.
+
+    :type key: :class:`gcloud.datastore.key.Key`
+    :param key: The name of the item to retrieve.
+
+    :rtype: :class:`gcloud.datastore.entity.Entity` or ``None``
+    :return: The requested entity, or ``None`` if there was no match found.
+    """
+    return _require_dataset().get_entity(key)
+
+
+def get_entities(keys):
+    """Retrieves entities from implied dataset, along with their attributes.
+
+    :type keys: list of :class:`gcloud.datastore.key.Key`
+    :param keys: The name of the item to retrieve.
+
+    :rtype: list of :class:`gcloud.datastore.entity.Entity`
+    :return: The requested entities.
+    """
+    return _require_dataset().get_entities(keys)
+
+
+def allocate_ids(incomplete_key, num_ids):
+    """Allocates a list of IDs from a partial key.
+
+    :type incomplete_key: A :class:`gcloud.datastore.key.Key`
+    :param incomplete_key: The partial key to use as base for allocated IDs.
+
+    :type num_ids: A :class:`int`.
+    :param num_ids: The number of IDs to allocate.
+
+    :rtype: list of :class:`gcloud.datastore.key.Key`
+    :return: The (complete) keys allocated with `incomplete_key` as root.
+    """
+    return _require_dataset().allocate_ids(incomplete_key, num_ids)
+
+
+# Set DATASET if it can be implied from the environment.
+_set_dataset_from_environ()

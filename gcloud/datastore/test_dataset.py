@@ -227,7 +227,7 @@ class TestDataset(unittest2.TestCase):
         DATASET = self._makeOne(DATASET_ID, connection=CONNECTION)
         result = DATASET.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
 
-        # Check the IDs returned match _PathElementProto.
+        # Check the IDs returned match.
         self.assertEqual([key._id for key in result], range(NUM_IDS))
 
         # Check connection is called correctly.

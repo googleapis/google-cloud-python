@@ -17,23 +17,20 @@ import pytz
 import unittest2
 
 from gcloud import datastore
+datastore._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+datastore._set_dataset_from_environ()
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import populate_datastore
-from regression import regression_utils
 
 
 class TestDatastore(unittest2.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        cls.dataset = regression_utils.get_dataset()
 
     def setUp(self):
         self.case_entities_to_delete = []
 
     def tearDown(self):
-        with self.dataset.transaction():
+        with datastore.transaction.Transaction():
             for entity in self.case_entities_to_delete:
                 entity.delete()
 
@@ -42,15 +39,17 @@ class TestDatastoreAllocateIDs(TestDatastore):
 
     def test_allocate_ids(self):
         incomplete_key = datastore.key.Key(path=[{'kind': 'Kind'}])
-        allocated_keys = self.dataset.allocate_ids(incomplete_key, 10)
-        self.assertEqual(len(allocated_keys), 10)
+        num_ids = 10
+        allocated_keys = datastore.allocate_ids(incomplete_key, num_ids)
+        self.assertEqual(len(allocated_keys), num_ids)
 
         unique_ids = set()
         for key in allocated_keys:
             unique_ids.add(key.id())
-            self.assertFalse(key.is_partial())
+            self.assertEqual(key.name(), None)
+            self.assertNotEqual(key.id(), None)
 
-        self.assertEqual(len(unique_ids), 10)
+        self.assertEqual(len(unique_ids), num_ids)
 
 
 class TestDatastoreSave(TestDatastore):
@@ -65,8 +64,8 @@ class TestDatastoreSave(TestDatastore):
             'wordCount': 400,
             'rating': 5.0,
         }
-        # Create an entity with the given content in our dataset.
-        entity = self.dataset.entity(kind='Post')
+        # Create an entity with the given content.
+        entity = datastore.entity.Entity(kind='Post')
         entity.update_properties(post_content)
 
         # Update the entity key.
@@ -91,7 +90,7 @@ class TestDatastoreSave(TestDatastore):
             self.assertEqual(entity.key().name(), name)
         if key_id is not None:
             self.assertEqual(entity.key().id(), key_id)
-        retrieved_entity = self.dataset.get_entity(entity.key())
+        retrieved_entity = datastore.get_entity(entity.key())
         # Check the keys are the same.
         self.assertEqual(retrieved_entity.key().path(), entity.key().path())
         self.assertEqual(retrieved_entity.key().namespace(),
@@ -110,7 +109,7 @@ class TestDatastoreSave(TestDatastore):
         self._generic_test_post()
 
     def test_save_multiple(self):
-        with self.dataset.transaction():
+        with datastore.transaction.Transaction():
             entity1 = self._get_post()
             entity1.save()
             # Register entity to be deleted.
@@ -131,11 +130,11 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity2)
 
         keys = [entity1.key(), entity2.key()]
-        matches = self.dataset.get_entities(keys)
+        matches = datastore.get_entities(keys)
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
-        posts = self.dataset.query('Post').limit(2).fetch()
+        posts = datastore.query.Query(kind='Post').limit(2).fetch()
         self.assertEqual(posts, [])
 
 
@@ -143,14 +142,14 @@ class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
         key = datastore.key.Key.from_path('Person', 'name')
-        entity = self.dataset.entity(kind=None).key(key)
+        entity = datastore.entity.Entity(kind=None).key(key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
         entity.save()
         self.case_entities_to_delete.append(entity)
 
-        query = self.dataset.query('Person').filter(
+        query = datastore.query.Query(kind='Person').filter(
             'linkedTo', '=', key).limit(2)
 
         stored_persons = query.fetch()
@@ -172,7 +171,8 @@ class TestDatastoreQuery(TestDatastore):
             path=[populate_datastore.ANCESTOR])
 
     def _base_query(self):
-        return self.dataset.query('Character').ancestor(self.ANCESTOR_KEY)
+        return datastore.query.Query(kind='Character').ancestor(
+            self.ANCESTOR_KEY)
 
     def test_limit_queries(self):
         limit = 5
@@ -331,16 +331,16 @@ class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
         key = datastore.key.Key.from_path('Company', 'Google')
-        entity = self.dataset.entity(kind=None).key(key)
+        entity = datastore.entity.Entity(kind=None).key(key)
         entity['url'] = u'www.google.com'
 
-        with self.dataset.transaction():
-            retrieved_entity = self.dataset.get_entity(key)
+        with datastore.transaction.Transaction():
+            retrieved_entity = datastore.get_entity(key)
             if retrieved_entity is None:
                 entity.save()
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.
-        retrieved_entity = self.dataset.get_entity(key)
+        retrieved_entity = datastore.get_entity(key)
         self.assertEqual(retrieved_entity.to_dict(), entity.to_dict())
         retrieved_entity.delete()
