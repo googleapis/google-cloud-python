@@ -130,6 +130,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :param dataset: The namespace to which to restrict results.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">_NOT_FINISHED</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NOT_FINISHED</span>
+    <span class="n">_FINISHED</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">datastore_pb</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NO_MORE_RESULTS</span><span class="p">,</span>
+        <span class="n">datastore_pb</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">MORE_RESULTS_AFTER_LIMIT</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">OPERATORS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">&#39;&lt;=&#39;</span><span class="p">:</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">LESS_THAN_OR_EQUAL</span><span class="p">,</span>
         <span class="s">&#39;&gt;=&#39;</span><span class="p">:</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">GREATER_THAN_OR_EQUAL</span><span class="p">,</span>
@@ -143,7 +148,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Query</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_more_results</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">if</span> <span class="n">kind</span><span class="p">:</span>
@@ -158,8 +162,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="p">,</span>
                                <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">)</span>
         <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="p">)</span>
-        <span class="n">clone</span><span class="o">.</span><span class="n">_cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span>
-        <span class="n">clone</span><span class="o">.</span><span class="n">_more_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_more_results</span>
         <span class="k">return</span> <span class="n">clone</span>
 
 <div class="viewcode-block" id="Query.namespace"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.namespace">[docs]</a>    <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -302,29 +304,33 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">return</span> <span class="n">clone</span>
 </div>
-<div class="viewcode-block" id="Query.kind"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.kind">[docs]</a>    <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kinds</span><span class="p">):</span>
+<div class="viewcode-block" id="Query.kind"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.kind">[docs]</a>    <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get or set the Kind of the Query.</span>
 
-<span class="sd">        .. note::</span>
-<span class="sd">          This is an **additive** operation.  That is, if the Query is</span>
-<span class="sd">          set for kinds A and B, and you call ``.kind(&#39;C&#39;)``, it will</span>
-<span class="sd">          query for kinds A, B, *and*, C.</span>
-
-<span class="sd">        :type kinds: string</span>
-<span class="sd">        :param kinds: The entity kinds for which to query.</span>
+<span class="sd">        :type kind: string</span>
+<span class="sd">        :param kind: Optional. The entity kinds for which to query.</span>
 
 <span class="sd">        :rtype: string or :class:`Query`</span>
-<span class="sd">        :returns: If no arguments, returns the kind.</span>
-<span class="sd">                  If a kind is provided, returns a clone of the :class:`Query`</span>
-<span class="sd">                  with those kinds set.</span>
+<span class="sd">        :returns: If `kind` is None, returns the kind. If a kind is provided,</span>
+<span class="sd">                  returns a clone of the :class:`Query` with that kind set.</span>
+<span class="sd">        :raises: `ValueError` from the getter if multiple kinds are set on</span>
+<span class="sd">                 the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">kinds</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">kinds</span> <span class="o">=</span> <span class="p">[</span><span class="n">kind</span><span class="p">]</span>
             <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="n">kinds</span><span class="p">:</span>
-                <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">kind</span>
+            <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">ClearField</span><span class="p">(</span><span class="s">&#39;kind&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">new_kind</span> <span class="ow">in</span> <span class="n">kinds</span><span class="p">:</span>
+                <span class="n">clone</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">new_kind</span>
             <span class="k">return</span> <span class="n">clone</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">kind</span>
+            <span class="c"># In the proto definition for Query, `kind` is repeated.</span>
+            <span class="n">kind_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">kind_expr</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">kind_expr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">kind</span><span class="p">]</span>
+            <span class="n">num_kinds</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kind_names</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">num_kinds</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">kind_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">num_kinds</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Only a single kind can be set.&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Query.limit"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.limit">[docs]</a>    <span class="k">def</span> <span class="nf">limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get or set the limit of the Query.</span>
@@ -376,13 +382,84 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>
 </div>
-<div class="viewcode-block" id="Query.fetch"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.fetch">[docs]</a>    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Executes the Query and returns all matching entities.</span>
+<div class="viewcode-block" id="Query.fetch_page"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.fetch_page">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Executes the Query and returns matching entities, and paging info.</span>
+
+<span class="sd">        In addition to the fetched entities, it also returns a cursor to allow</span>
+<span class="sd">        paging through a results set and a boolean `more_results` indicating</span>
+<span class="sd">        if there are any more.</span>
 
 <span class="sd">        This makes an API call to the Cloud Datastore, sends the Query</span>
 <span class="sd">        as a protobuf, parses the responses to Entity protobufs, and</span>
 <span class="sd">        then converts them to :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">        objects.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">          &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">          &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; query = dataset.query(&#39;Person&#39;).filter(&#39;name&#39;, &#39;=&#39;, &#39;Sally&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; query.fetch_page()</span>
+<span class="sd">          [&lt;Entity object&gt;, &lt;Entity object&gt;, ...], &#39;cursorbase64&#39;, True</span>
+<span class="sd">          &gt;&gt;&gt; query.fetch_page(1)</span>
+<span class="sd">          [&lt;Entity object&gt;], &#39;cursorbase64&#39;, True</span>
+<span class="sd">          &gt;&gt;&gt; query.limit()</span>
+<span class="sd">          None</span>
+
+<span class="sd">        :type limit: integer</span>
+<span class="sd">        :param limit: An optional limit to apply temporarily to this query.</span>
+<span class="sd">                      That is, the Query itself won&#39;t be altered,</span>
+<span class="sd">                      but the limit will be applied to the query</span>
+<span class="sd">                      before it is executed.</span>
+
+<span class="sd">        :rtype: tuple of mixed types</span>
+<span class="sd">        :returns: The first entry is a :class:`gcloud.datastore.entity.Entity`</span>
+<span class="sd">                  list matching this query&#39;s criteria. The second is a base64</span>
+<span class="sd">                  encoded cursor for paging and the third is a boolean</span>
+<span class="sd">                  indicating if there are more results.</span>
+<span class="sd">        :raises: `ValueError` if more_results is not one of the enums</span>
+<span class="sd">                 NOT_FINISHED, MORE_RESULTS_AFTER_LIMIT, NO_MORE_RESULTS.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="k">if</span> <span class="n">limit</span><span class="p">:</span>
+            <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
+
+        <span class="n">query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span>
+            <span class="n">query_pb</span><span class="o">=</span><span class="n">clone</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">(),</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
+            <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="c"># NOTE: `query_results` contains an extra value that we don&#39;t use,</span>
+        <span class="c">#       namely `skipped_results`.</span>
+        <span class="c">#</span>
+        <span class="c"># NOTE: The value of `more_results` is not currently useful because</span>
+        <span class="c">#       the back-end always returns an enum</span>
+        <span class="c">#       value of MORE_RESULTS_AFTER_LIMIT even if there are no more</span>
+        <span class="c">#       results. See</span>
+        <span class="c">#       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280</span>
+        <span class="c">#       for discussion.</span>
+        <span class="n">entity_pbs</span><span class="p">,</span> <span class="n">cursor_as_bytes</span><span class="p">,</span> <span class="n">more_results_enum</span> <span class="o">=</span> <span class="n">query_results</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+
+        <span class="n">entities</span> <span class="o">=</span> <span class="p">[</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span>
+                                                 <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">())</span>
+                    <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">]</span>
+
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">cursor_as_bytes</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">more_results_enum</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NOT_FINISHED</span><span class="p">:</span>
+            <span class="n">more_results</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="n">more_results_enum</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_FINISHED</span><span class="p">:</span>
+            <span class="n">more_results</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Unexpected value returned for `more_results`.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">entities</span><span class="p">,</span> <span class="n">cursor</span><span class="p">,</span> <span class="n">more_results</span>
+</div>
+<div class="viewcode-block" id="Query.fetch"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.fetch">[docs]</a>    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Executes the Query and returns matching entities</span>
+
+<span class="sd">        This calls `fetch_page()` but does not use the paging information.</span>
 
 <span class="sd">        For example::</span>
 
@@ -405,65 +482,26 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: list of :class:`gcloud.datastore.entity.Entity`&#39;s</span>
 <span class="sd">        :returns: The list of entities matching this query&#39;s criteria.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span>
-
-        <span class="k">if</span> <span class="n">limit</span><span class="p">:</span>
-            <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span>
-
-        <span class="n">query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span>
-            <span class="n">query_pb</span><span class="o">=</span><span class="n">clone</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">(),</span>
-            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
-            <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="c"># NOTE: `query_results` contains an extra value that we don&#39;t use,</span>
-        <span class="c">#       namely `skipped_results`.</span>
-        <span class="c">#</span>
-        <span class="c"># NOTE: The value of `more_results` is not currently useful because</span>
-        <span class="c">#       the back-end always returns an enum</span>
-        <span class="c">#       value of MORE_RESULTS_AFTER_LIMIT even if there are no more</span>
-        <span class="c">#       results. See</span>
-        <span class="c">#       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280</span>
-        <span class="c">#       for discussion.</span>
-        <span class="n">entity_pbs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_more_results</span> <span class="o">=</span> <span class="n">query_results</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="p">[</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">())</span>
-                <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">]</span>
+        <span class="n">entities</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_page</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">entities</span>
 </div>
-<div class="viewcode-block" id="Query.cursor"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.cursor">[docs]</a>    <span class="k">def</span> <span class="nf">cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns cursor ID from most recent ``fetch()``.</span>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Query.start_cursor"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.start_cursor">[docs]</a>    <span class="k">def</span> <span class="nf">start_cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Property to encode start cursor bytes as base64.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;start_cursor&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">None</span>
 
-<span class="sd">        .. warning:: Invoking this method on a query that has not yet</span>
-<span class="sd">           been executed will raise a RuntimeError.</span>
-
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: base64-encoded cursor ID string denoting the last position</span>
-<span class="sd">                  consumed in the query&#39;s result set.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;No cursor&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cursor</span><span class="p">)</span>
+        <span class="n">start_as_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">start_cursor</span>
+        <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">start_as_bytes</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Query.more_results"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.more_results">[docs]</a>    <span class="k">def</span> <span class="nf">more_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns ``more_results`` flag from most recent ``fetch()``.</span>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Query.end_cursor"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.end_cursor">[docs]</a>    <span class="k">def</span> <span class="nf">end_cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Property to encode end cursor bytes as base64.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;end_cursor&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">None</span>
 
-<span class="sd">        .. warning:: Invoking this method on a query that has not yet</span>
-<span class="sd">           been executed will raise a RuntimeError.</span>
-
-<span class="sd">        .. note::</span>
-
-<span class="sd">           The `more_results` is not currently useful because it is</span>
-<span class="sd">           always returned by the back-end as ``MORE_RESULTS_AFTER_LIMIT``</span>
-<span class="sd">           even if there are no more results. See</span>
-<span class="sd">           https://github.com/GoogleCloudPlatform/gcloud-python/issues/280</span>
-<span class="sd">           for discussion.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.</span>
-<span class="sd">                                QueryResultBatch.MoreResultsType`</span>
-<span class="sd">        :returns: enumerated value:  are there more results available.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_more_results</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;No results&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_more_results</span>
+        <span class="n">end_as_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb</span><span class="o">.</span><span class="n">end_cursor</span>
+        <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">end_as_bytes</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Query.with_cursor"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.with_cursor">[docs]</a>    <span class="k">def</span> <span class="nf">with_cursor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_cursor</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Specifies the starting / ending positions in a query&#39;s result set.</span>

@@ -363,10 +363,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        Using the `fetch`` method...</span>
 
-<span class="sd">        &gt;&gt;&gt; query.fetch()</span>
+<span class="sd">        &gt;&gt;&gt; entities, cursor, more_results = query.fetch_page()</span>
+<span class="sd">        &gt;&gt;&gt; entities</span>
 <span class="sd">        [&lt;list of Entity unmarshalled from protobuf&gt;]</span>
-<span class="sd">        &gt;&gt;&gt; query.cursor()</span>
+<span class="sd">        &gt;&gt;&gt; cursor</span>
 <span class="sd">        &lt;string containing cursor where fetch stopped&gt;</span>
+<span class="sd">        &gt;&gt;&gt; more_results</span>
+<span class="sd">        &lt;boolean of more results&gt;</span>
 
 <span class="sd">        Under the hood this is doing...</span>
 
@@ -392,7 +395,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                              <span class="n">datastore_pb</span><span class="o">.</span><span class="n">RunQueryResponse</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">entity_result</span><span class="p">],</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">end_cursor</span><span class="p">,</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">end_cursor</span><span class="p">,</span>  <span class="c"># Assume response always has cursor.</span>
             <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">more_results</span><span class="p">,</span>
             <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">skipped_results</span><span class="p">,</span>
         <span class="p">)</span>

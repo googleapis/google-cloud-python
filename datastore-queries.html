@@ -116,7 +116,7 @@ generates a query that can be executed without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;': 3, '&gt;=': 4, '=': 5, '&lt;=': 2, '&lt;': 1}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">OPERATORS</tt><em class="property"> = {'=': 5, '&lt;': 1, '&gt;': 3, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -155,28 +155,6 @@ however a query may only have one ancestor at a time.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.query.Query.cursor">
-<tt class="descname">cursor</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.cursor" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns cursor ID from most recent <tt class="docutils literal"><span class="pre">fetch()</span></tt>.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Invoking this method on a query that has not yet
-been executed will raise a RuntimeError.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">base64-encoded cursor ID string denoting the last position
-consumed in the query&#8217;s result set.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.datastore.query.Query.dataset">
 <tt class="descname">dataset</tt><big>(</big><em>dataset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Get or set the <a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">datastore.dataset.Dataset</span></tt></a> for this Query.</p>
@@ -203,14 +181,17 @@ If a dataset is provided, returns a clone of the
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="gcloud.datastore.query.Query.end_cursor">
+<tt class="descname">end_cursor</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.end_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.end_cursor" title="Permalink to this definition">#</a></dt>
+<dd><p>Property to encode end cursor bytes as base64.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.fetch">
 <tt class="descname">fetch</tt><big>(</big><em>limit=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch" title="Permalink to this definition">#</a></dt>
-<dd><p>Executes the Query and returns all matching entities.</p>
-<p>This makes an API call to the Cloud Datastore, sends the Query
-as a protobuf, parses the responses to Entity protobufs, and
-then converts them to <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>
-objects.</p>
+<dd><p>Executes the Query and returns matching entities</p>
+<p>This calls <cite>fetch_page()</cite> but does not use the paging information.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
@@ -235,6 +216,52 @@ before it is executed.</td>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>&#8216;s</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of entities matching this query&#8217;s criteria.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.query.Query.fetch_page">
+<tt class="descname">fetch_page</tt><big>(</big><em>limit=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch_page" title="Permalink to this definition">#</a></dt>
+<dd><p>Executes the Query and returns matching entities, and paging info.</p>
+<p>In addition to the fetched entities, it also returns a cursor to allow
+paging through a results set and a boolean <cite>more_results</cite> indicating
+if there are any more.</p>
+<p>This makes an API call to the Cloud Datastore, sends the Query
+as a protobuf, parses the responses to Entity protobufs, and
+then converts them to <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>
+objects.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Sally&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch_page</span><span class="p">()</span>
+<span class="go">[&lt;Entity object&gt;, &lt;Entity object&gt;, ...], &#39;cursorbase64&#39;, True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch_page</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">[&lt;Entity object&gt;], &#39;cursorbase64&#39;, True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">limit</span><span class="p">()</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<em>integer</em>) &#8211; An optional limit to apply temporarily to this query.
+That is, the Query itself won&#8217;t be altered,
+but the limit will be applied to the query
+before it is executed.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple of mixed types</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The first entry is a <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>
+list matching this query&#8217;s criteria. The second is a base64
+encoded cursor for paging and the third is a boolean
+indicating if there are more results.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><cite>ValueError</cite> if more_results is not one of the enums
+NOT_FINISHED, MORE_RESULTS_AFTER_LIMIT, NO_MORE_RESULTS.</td>
 </tr>
 </tbody>
 </table>
@@ -321,25 +348,21 @@ of the <a class="reference internal" href="#gcloud.datastore.query.Query" title=
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.kind">
-<tt class="descname">kind</tt><big>(</big><em>*kinds</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.kind" title="Permalink to this definition">#</a></dt>
+<tt class="descname">kind</tt><big>(</big><em>kind=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.kind" title="Permalink to this definition">#</a></dt>
 <dd><p>Get or set the Kind of the Query.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This is an <strong>additive</strong> operation.  That is, if the Query is
-set for kinds A and B, and you call <tt class="docutils literal"><span class="pre">.kind('C')</span></tt>, it will
-query for kinds A, B, <em>and</em>, C.</p>
-</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kinds</strong> (<em>string</em>) &#8211; The entity kinds for which to query.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<em>string</em>) &#8211; Optional. The entity kinds for which to query.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the kind.
-If a kind is provided, returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
-with those kinds set.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If <cite>kind</cite> is None, returns the kind. If a kind is provided,
+returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that kind set.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><cite>ValueError</cite> from the getter if multiple kinds are set on
+the query.</td>
 </tr>
 </tbody>
 </table>
@@ -367,36 +390,6 @@ Query.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current limit.
 If a limit is provided, returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
 with that limit set.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.more_results">
-<tt class="descname">more_results</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.more_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.more_results" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns <tt class="docutils literal"><span class="pre">more_results</span></tt> flag from most recent <tt class="docutils literal"><span class="pre">fetch()</span></tt>.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Invoking this method on a query that has not yet
-been executed will raise a RuntimeError.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <cite>more_results</cite> is not currently useful because it is
-always returned by the back-end as <tt class="docutils literal"><span class="pre">MORE_RESULTS_AFTER_LIMIT</span></tt>
-even if there are no more results. See
-<a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/280">https://github.com/GoogleCloudPlatform/gcloud-python/issues/280</a>
-for discussion.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.</span>
-<span class="pre">QueryResultBatch.MoreResultsType</span></tt></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">enumerated value:  are there more results available.</td>
 </tr>
 </tbody>
 </table>
@@ -499,6 +492,12 @@ If a projection is provided, returns a clone of the
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.datastore.query.Query.start_cursor">
+<tt class="descname">start_cursor</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.start_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.start_cursor" title="Permalink to this definition">#</a></dt>
+<dd><p>Property to encode start cursor bytes as base64.</p>
 </dd></dl>
 
 <dl class="method">

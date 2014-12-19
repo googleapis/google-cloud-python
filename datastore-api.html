@@ -526,10 +526,13 @@ uses this method to fetch data:</p>
 </pre></div>
 </div>
 <p>Using the <cite>fetch`</cite> method...</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">entities</span><span class="p">,</span> <span class="n">cursor</span><span class="p">,</span> <span class="n">more_results</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">fetch_page</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entities</span>
 <span class="go">[&lt;list of Entity unmarshalled from protobuf&gt;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cursor</span>
 <span class="go">&lt;string containing cursor where fetch stopped&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">more_results</span>
+<span class="go">&lt;boolean of more results&gt;</span>
 </pre></div>
 </div>
 <p>Under the hood this is doing...</p>
@@ -580,7 +583,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fde4ac39c00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fa476fddc00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
