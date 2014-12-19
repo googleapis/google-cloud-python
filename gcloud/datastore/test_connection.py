@@ -231,6 +231,77 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(keys), 1)
         self.assertEqual(keys[0], key_pb)
 
+    def test_lookup_single_key_empty_response_w_eventual(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.LookupResponse()
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        self.assertEqual(conn.lookup(DATASET_ID, key_pb, eventual=True), None)
+        cw = http._called_with
+        self._verifyProtobufCall(cw, URI, conn)
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 1)
+        self.assertEqual(keys[0], key_pb)
+        self.assertEqual(request.read_options.read_consistency,
+                         datastore_pb.ReadOptions.EVENTUAL)
+        self.assertEqual(request.read_options.transaction, '')
+
+    def test_lookup_single_key_empty_response_w_eventual_and_transaction(self):
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        TRANSACTION = 'TRANSACTION'
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        conn = self._makeOne()
+        conn.transaction(TRANSACTION)
+        self.assertRaises(
+            ValueError, conn.lookup, DATASET_ID, key_pb, eventual=True)
+
+    def test_lookup_single_key_empty_response_w_transaction(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        TRANSACTION = 'TRANSACTION'
+        key_pb = Key(path=[{'kind': 'Kind', 'id': 1234}]).to_protobuf()
+        rsp_pb = datastore_pb.LookupResponse()
+        conn = self._makeOne()
+        conn.transaction(TRANSACTION)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        self.assertEqual(conn.lookup(DATASET_ID, key_pb), None)
+        cw = http._called_with
+        self._verifyProtobufCall(cw, URI, conn)
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 1)
+        self.assertEqual(keys[0], key_pb)
+        self.assertEqual(request.read_options.transaction, TRANSACTION)
+
     def test_lookup_single_key_nonempty_response(self):
         from gcloud.datastore.connection import datastore_pb
         from gcloud.datastore.key import Key
@@ -442,6 +513,106 @@ class TestConnection(unittest2.TestCase):
         keys = list(request.key)
         self.assertEqual(len(keys), 1)
         self.assertEqual(keys[0], key_pb2)
+
+    def test_run_query_w_eventual_no_transaction(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.query import Query
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Nonesuch'
+        CURSOR = b'\x00'
+        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb.batch.end_cursor = CURSOR
+        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+        rsp_pb.batch.more_results = no_more
+        rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'runQuery',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb,
+                                                 eventual=True)
+        self.assertEqual(pbs, [])
+        self.assertEqual(end, CURSOR)
+        self.assertTrue(more)
+        self.assertEqual(skipped, 0)
+        cw = http._called_with
+        self._verifyProtobufCall(cw, URI, conn)
+        rq_class = datastore_pb.RunQueryRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.partition_id.namespace, '')
+        self.assertEqual(request.query, q_pb)
+        self.assertEqual(request.read_options.read_consistency,
+                         datastore_pb.ReadOptions.EVENTUAL)
+        self.assertEqual(request.read_options.transaction, '')
+
+    def test_run_query_wo_eventual_w_transaction(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.query import Query
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Nonesuch'
+        CURSOR = b'\x00'
+        TRANSACTION = 'TRANSACTION'
+        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb.batch.end_cursor = CURSOR
+        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+        rsp_pb.batch.more_results = no_more
+        rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
+        conn = self._makeOne()
+        conn.transaction(TRANSACTION)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'runQuery',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb)
+        self.assertEqual(pbs, [])
+        self.assertEqual(end, CURSOR)
+        self.assertTrue(more)
+        self.assertEqual(skipped, 0)
+        cw = http._called_with
+        self._verifyProtobufCall(cw, URI, conn)
+        rq_class = datastore_pb.RunQueryRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.partition_id.namespace, '')
+        self.assertEqual(request.query, q_pb)
+        self.assertEqual(request.read_options.read_consistency,
+                         datastore_pb.ReadOptions.DEFAULT)
+        self.assertEqual(request.read_options.transaction, TRANSACTION)
+
+    def test_run_query_w_eventual_and_transaction(self):
+        from gcloud.datastore.connection import datastore_pb
+        from gcloud.datastore.query import Query
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Nonesuch'
+        CURSOR = b'\x00'
+        TRANSACTION = 'TRANSACTION'
+        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb.batch.end_cursor = CURSOR
+        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+        rsp_pb.batch.more_results = no_more
+        rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
+        conn = self._makeOne()
+        conn.transaction(TRANSACTION)
+        self.assertRaises(
+            ValueError, conn.run_query, DATASET_ID, q_pb, eventual=True)
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore.connection import datastore_pb

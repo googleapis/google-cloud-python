@@ -167,7 +167,8 @@ class Connection(connection.Connection):
         kwargs['connection'] = self
         return Dataset(*args, **kwargs)
 
-    def lookup(self, dataset_id, key_pbs, missing=None, deferred=None):
+    def lookup(self, dataset_id, key_pbs,
+               missing=None, deferred=None, eventual=False):
         """Lookup keys from a dataset in the Cloud Datastore.
 
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
@@ -211,6 +212,12 @@ class Connection(connection.Connection):
                         by the backend as "deferred" will be copied into it.
                         Use only as a keyword param.
 
+        :type eventual: bool
+        :param eventual: If False (the default), request ``STRONG`` read
+                        consistency.  If True, request ``EVENTUAL`` read
+                        consistency.  If the connection has a current
+                        transaction, this value *must* be false.
+
         :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Entity`
                 (or a single Entity)
         :returns: The entities corresponding to the keys provided.
@@ -218,6 +225,7 @@ class Connection(connection.Connection):
                   this will return None.
                   If multiple keys were provided and no results matched,
                   this will return an empty list.
+        :raises: ValueError if ``eventual`` is True
         """
         if missing is not None and missing != []:
             raise ValueError('missing must be None or an empty list')
@@ -226,6 +234,7 @@ class Connection(connection.Connection):
             raise ValueError('deferred must be None or an empty list')
 
         lookup_request = datastore_pb.LookupRequest()
+        self._set_read_options(lookup_request, eventual)
 
         single_key = isinstance(key_pbs, datastore_pb.Key)
 
@@ -235,28 +244,14 @@ class Connection(connection.Connection):
         for key_pb in key_pbs:
             lookup_request.key.add().CopyFrom(key_pb)
 
-        results = []
-        while True:  # loop against possible deferred.
-            lookup_response = self._rpc(dataset_id, 'lookup', lookup_request,
-                                        datastore_pb.LookupResponse)
+        results, missing_found, deferred_found = self._lookup(
+            lookup_request, dataset_id, deferred is not None)
 
-            results.extend(
-                [result.entity for result in lookup_response.found])
+        if missing is not None:
+            missing.extend(missing_found)
 
-            if missing is not None:
-                missing.extend(
-                    [result.entity for result in lookup_response.missing])
-
-            if deferred is not None:
-                deferred.extend([key for key in lookup_response.deferred])
-                break
-
-            if not lookup_response.deferred:
-                break
-
-            # We have deferred keys, and the user didn't ask to know about
-            # them, so retry (but only with the deferred ones).
-            _copy_deferred_keys(lookup_request, lookup_response)
+        if deferred is not None:
+            deferred.extend(deferred_found)
 
         if single_key:
             if results:
@@ -266,7 +261,7 @@ class Connection(connection.Connection):
 
         return results
 
-    def run_query(self, dataset_id, query_pb, namespace=None):
+    def run_query(self, dataset_id, query_pb, namespace=None, eventual=False):
         """Run a query on the Cloud Datastore.
 
         Maps the ``DatastoreService.RunQuery`` protobuf RPC.
@@ -310,8 +305,15 @@ class Connection(connection.Connection):
 
         :type namespace: string
         :param namespace: The namespace over which to run the query.
+
+        :type eventual: bool
+        :param eventual: If False (the default), request ``STRONG`` read
+                        consistency.  If True, request ``EVENTUAL`` read
+                        consistency.  If the connection has a current
+                        transaction, this value *must* be false.
         """
         request = datastore_pb.RunQueryRequest()
+        self._set_read_options(request, eventual)
 
         if namespace:
             request.partition_id.namespace = namespace
@@ -513,6 +515,51 @@ class Connection(connection.Connection):
             self.commit(dataset_id, mutation)
 
         return True
+
+    def _lookup(self, lookup_request, dataset_id, stop_on_deferred):
+        """Repeat lookup until all keys found (unless stop requested).
+
+        Helper method for ``lookup()``.
+        """
+        results = []
+        missing = []
+        deferred = []
+        while True:  # loop against possible deferred.
+            lookup_response = self._rpc(dataset_id, 'lookup', lookup_request,
+                                        datastore_pb.LookupResponse)
+
+            results.extend(
+                [result.entity for result in lookup_response.found])
+
+            missing.extend(
+                [result.entity for result in lookup_response.missing])
+
+            if stop_on_deferred:
+                deferred.extend([key for key in lookup_response.deferred])
+                break
+
+            if not lookup_response.deferred:
+                break
+
+            # We have deferred keys, and the user didn't ask to know about
+            # them, so retry (but only with the deferred ones).
+            _copy_deferred_keys(lookup_request, lookup_response)
+        return results, missing, deferred
+
+    def _set_read_options(self, request, eventual):
+        """Validate rules for read options, and assign to the request.
+
+        Helper method for ``lookup()`` and ``run_query``.
+        """
+        transaction = self.transaction()
+        if eventual and transaction:
+            raise ValueError('eventual must be False when in a transaction')
+
+        opts = request.read_options
+        if eventual:
+            opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
+        elif transaction:
+            opts.transaction = transaction
 
 
 def _copy_deferred_keys(lookup_request, lookup_response):
