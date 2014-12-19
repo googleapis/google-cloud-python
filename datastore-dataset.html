@@ -104,6 +104,33 @@ new <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title
 </tbody>
 </table>
 <dl class="method">
+<dt id="gcloud.datastore.dataset.Dataset.allocate_ids">
+<tt class="descname">allocate_ids</tt><big>(</big><em>incomplete_key</em>, <em>num_ids</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.allocate_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.allocate_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>Allocates a list of IDs from a partial key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>incomplete_key</strong> (A <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; Partial key to use as base for allocated IDs.</li>
+<li><strong>num_ids</strong> (A <tt class="xref py py-class docutils literal"><span class="pre">int</span></tt>.) &#8211; The number of IDs to allocate.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The (complete) keys allocated with <cite>incomplete_key</cite> as root.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><cite>ValueError</cite> if <cite>incomplete_key</cite> is not a partial key.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.connection">
 <tt class="descname">connection</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the current connection.</p>
