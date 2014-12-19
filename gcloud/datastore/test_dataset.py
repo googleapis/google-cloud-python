@@ -68,6 +68,40 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(entity.kind(), KIND)
         self.assertEqual(sorted(entity.exclude_from_indexes()), ['bar', 'foo'])
 
+    def test_entity_factory_key(self):
+        from gcloud.datastore.entity import Entity
+        from gcloud.datastore.key import Key
+        DATASET_ID = 'DATASET'
+        KIND = 'KIND'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+        dataset = self._makeOne(DATASET_ID)
+        key = Key(path=PATH)
+        entity = dataset.entity(key)
+        self.assertIsInstance(entity, Entity)
+        self.assertEqual(entity.kind(), KIND)
+        self.assertEqual(sorted(entity.exclude_from_indexes()), [])
+        self.assertEqual(entity.key().path(), PATH)
+
+    def test_entity_factory_path(self):
+        from gcloud.datastore.entity import Entity
+        DATASET_ID = 'DATASET'
+        KIND = 'KIND'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+        dataset = self._makeOne(DATASET_ID)
+        entity = dataset.entity([KIND, ID])
+        self.assertIsInstance(entity, Entity)
+        self.assertEqual(entity.kind(), KIND)
+        self.assertEqual(sorted(entity.exclude_from_indexes()), [])
+        self.assertEqual(entity.key().path(), PATH)
+
+    def test_entity_factory_odd_Nontype(self):
+        DATASET_ID = 'DATASET'
+        dataset = self._makeOne(DATASET_ID)
+        self.assertRaises(ValueError, dataset.entity, ['KIND'])
+        self.assertRaises(ValueError, dataset.entity, None)
+
     def test_transaction_factory(self):
         from gcloud.datastore.transaction import Transaction
         DATASET_ID = 'DATASET'
