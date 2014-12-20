@@ -26,7 +26,7 @@ class NoDataset(RuntimeError):
     """Exception raised by Entity methods which require a dataset."""
 
 
-class Entity(dict):
+class Entity(object):
     """Entities are akin to rows in a relational database
 
     An entity storing the actual instance of data.
@@ -41,9 +41,9 @@ class Entity(dict):
     Entities in this API act like dictionaries with extras built in that
     allow you to delete or persist the data stored on the entity.
 
-    Entities are mutable and act like a subclass of a dictionary.
-    This means you could take an existing entity and change the key
-    to duplicate the object.
+    Entities are mutable and properties can be set, updated and deleted
+    like keys in a dictionary. This means you could take an existing entity
+    and change the key to duplicate the object.
 
     Use :func:`gcloud.datastore.dataset.Dataset.get_entity`
     to retrieve an existing entity.
@@ -59,10 +59,9 @@ class Entity(dict):
     >>> entity
     <Entity[{'kind': 'EntityKind', id: 1234}] {'age': 20, 'name': 'JJ'}>
 
-    And you can convert an entity to a regular Python dictionary with the
-    `dict` builtin:
+    And you can convert an entity to a regular Python dictionary
 
-    >>> dict(entity)
+    >>> entity.to_dict()
     {'age': 20, 'name': 'JJ'}
 
     .. note::
@@ -94,13 +93,56 @@ class Entity(dict):
     """
 
     def __init__(self, dataset=None, kind=None, exclude_from_indexes=()):
-        super(Entity, self).__init__()
         self._dataset = dataset
+        self._data = {}
         if kind:
             self._key = Key().kind(kind)
         else:
             self._key = None
         self._exclude_from_indexes = set(exclude_from_indexes)
+
+    def __getitem__(self, item_name):
+        return self._data[item_name]
+
+    def __setitem__(self, item_name, value):
+        self._data[item_name] = value
+
+    def __delitem__(self, item_name):
+        del self._data[item_name]
+
+    def clear_properties(self):
+        """Clear all properties from the Entity."""
+        self._data.clear()
+
+    def update_properties(self, *args, **kwargs):
+        """Allows entity properties to be updated in bulk.
+
+        Either takes a single dictionary or uses the keywords passed in.
+
+          >>> entity
+          <Entity[{'kind': 'Foo', 'id': 1}] {}>
+          >>> entity.update_properties(prop1=u'bar', prop2=u'baz')
+          >>> entity
+          <Entity[{'kind': 'Foo', 'id': 1}] {'prop1': u'bar', 'prop2': u'baz'}>
+          >>> entity.update_properties({'prop1': 0, 'prop2': 1})
+          >>> entity
+          <Entity[{'kind': 'Foo', 'id': 1}] {'prop1': 0, 'prop2': 1}>
+
+        :raises: `TypeError` a mix of positional and keyword arguments are
+                 used or if more than one positional argument is used.
+        """
+        if args and kwargs or len(args) > 1:
+            raise TypeError('Only a single dictionary or keyword arguments '
+                            'may be used')
+        if args:
+            dict_arg, = args
+            self._data.update(dict_arg)
+        else:
+            self._data.update(kwargs)
+
+    def to_dict(self):
+        """Converts the stored properties to a dictionary."""
+        return self._data.copy()
 
     def dataset(self):
         """Get the :class:`.dataset.Dataset` in which this entity belongs.
@@ -215,7 +257,7 @@ class Entity(dict):
         entity = dataset.get_entity(key.to_protobuf())
 
         if entity:
-            self.update(entity)
+            self.update_properties(entity.to_dict())
         return self
 
     def save(self):
@@ -241,7 +283,7 @@ class Entity(dict):
         key_pb = connection.save_entity(
             dataset_id=dataset.id(),
             key_pb=key.to_protobuf(),
-            properties=dict(self),
+            properties=self._data,
             exclude_from_indexes=self.exclude_from_indexes())
 
         # If we are in a transaction and the current entity needs an
@@ -284,7 +326,6 @@ class Entity(dict):
 
     def __repr__(self):
         if self._key:
-            return '<Entity%s %s>' % (self._key.path(),
-                                      super(Entity, self).__repr__())
+            return '<Entity%s %r>' % (self._key.path(), self._data)
         else:
-            return '<Entity %s>' % (super(Entity, self).__repr__())
+            return '<Entity %r>' % (self._data,)

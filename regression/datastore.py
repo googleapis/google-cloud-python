@@ -67,7 +67,7 @@ class TestDatastoreSave(TestDatastore):
         }
         # Create an entity with the given content in our dataset.
         entity = self.dataset.entity(kind='Post')
-        entity.update(post_content)
+        entity.update_properties(post_content)
 
         # Update the entity key.
         key = None
@@ -98,9 +98,7 @@ class TestDatastoreSave(TestDatastore):
                          entity.key().namespace())
 
         # Check the data is the same.
-        retrieved_dict = dict(retrieved_entity.items())
-        entity_dict = dict(entity.items())
-        self.assertEqual(retrieved_dict, entity_dict)
+        self.assertEqual(retrieved_entity.to_dict(), entity.to_dict())
 
     def test_post_with_name(self):
         self._generic_test_post(name='post1')
@@ -249,17 +247,15 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
         arya_entity = entities[0]
-        arya_dict = dict(arya_entity.items())
-        self.assertEqual(arya_dict, {'name': 'Arya', 'family': 'Stark'})
+        self.assertEqual(arya_entity.to_dict(),
+                         {'name': 'Arya', 'family': 'Stark'})
 
         catelyn_stark_entity = entities[2]
-        catelyn_stark_dict = dict(catelyn_stark_entity.items())
-        self.assertEqual(catelyn_stark_dict,
+        self.assertEqual(catelyn_stark_entity.to_dict(),
                          {'name': 'Catelyn', 'family': 'Stark'})
 
         catelyn_tully_entity = entities[3]
-        catelyn_tully_dict = dict(catelyn_tully_entity.items())
-        self.assertEqual(catelyn_tully_dict,
+        self.assertEqual(catelyn_tully_entity.to_dict(),
                          {'name': 'Catelyn', 'family': 'Tully'})
 
         # Check both Catelyn keys are the same.
@@ -273,8 +269,8 @@ class TestDatastoreQuery(TestDatastore):
                          catelyn_tully_key._dataset_id)
 
         sansa_entity = entities[8]
-        sansa_dict = dict(sansa_entity.items())
-        self.assertEqual(sansa_dict, {'name': 'Sansa', 'family': 'Stark'})
+        self.assertEqual(sansa_entity.to_dict(),
+                         {'name': 'Sansa', 'family': 'Stark'})
 
     def test_query_paginate_with_offset(self):
         query = self._base_query()
@@ -346,7 +342,5 @@ class TestDatastoreTransaction(TestDatastore):
 
         # This will always return after the transaction.
         retrieved_entity = self.dataset.get_entity(key)
-        retrieved_dict = dict(retrieved_entity.items())
-        entity_dict = dict(entity.items())
-        self.assertEqual(retrieved_dict, entity_dict)
+        self.assertEqual(retrieved_entity.to_dict(), entity.to_dict())
         retrieved_entity.delete()

@@ -252,7 +252,7 @@ def _set_protobuf_value(value_pb, val):
         key = val.key()
         if key is not None:
             e_pb.key.CopyFrom(key.to_protobuf())
-        for item_key, value in val.items():
+        for item_key, value in val.to_dict().items():
             p_pb = e_pb.property.add()
             p_pb.name = item_key
             _set_protobuf_value(p_pb.value, value)
