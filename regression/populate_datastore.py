@@ -22,24 +22,18 @@ from gcloud import datastore
 from regression import regression_utils
 
 
-ANCESTOR = {'kind': 'Book', 'name': 'GoT'}
-RICKARD = {'kind': 'Character', 'name': 'Rickard'}
-EDDARD = {'kind': 'Character', 'name': 'Eddard'}
+ANCESTOR = ('Book', 'GoT')
+RICKARD = ANCESTOR + ('Character', 'Rickard')
+EDDARD = RICKARD + ('Character', 'Eddard')
 KEY_PATHS = [
-    [ANCESTOR, RICKARD],
-    [ANCESTOR, RICKARD, EDDARD],
-    [ANCESTOR,
-     {'kind': 'Character', 'name': 'Catelyn'}],
-    [ANCESTOR, RICKARD, EDDARD,
-     {'kind': 'Character', 'name': 'Arya'}],
-    [ANCESTOR, RICKARD, EDDARD,
-     {'kind': 'Character', 'name': 'Sansa'}],
-    [ANCESTOR, RICKARD, EDDARD,
-     {'kind': 'Character', 'name': 'Robb'}],
-    [ANCESTOR, RICKARD, EDDARD,
-     {'kind': 'Character', 'name': 'Bran'}],
-    [ANCESTOR, RICKARD, EDDARD,
-     {'kind': 'Character', 'name': 'Jon Snow'}],
+    RICKARD,
+    EDDARD,
+    ANCESTOR + ('Character', 'Catelyn'),
+    EDDARD + ('Character', 'Arya'),
+    EDDARD + ('Character', 'Sansa'),
+    EDDARD + ('Character', 'Robb'),
+    EDDARD + ('Character', 'Bran'),
+    EDDARD + ('Character', 'Jon Snow'),
 ]
 CHARACTERS = [
     {
@@ -90,12 +84,12 @@ def add_characters():
     dataset = regression_utils.get_dataset()
     with dataset.transaction():
         for key_path, character in zip(KEY_PATHS, CHARACTERS):
-            if key_path[-1]['name'] != character['name']:
+            if key_path[-1] != character['name']:
                 raise ValueError(('Character and key don\'t agree',
                                   key_path, character))
-            key = datastore.key.Key(path=key_path)
+            key = datastore.key.Key(*key_path, dataset_id=dataset.id())
             entity = datastore.entity.Entity(dataset=dataset).key(key)
-            entity.update(character)
+            entity.update_properties(character)
             entity.save()
             print('Adding Character %s %s' % (character['name'],
                                               character['family']))

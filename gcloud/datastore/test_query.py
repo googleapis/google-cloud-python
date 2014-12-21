@@ -18,8 +18,10 @@ import unittest2
 class TestQuery(unittest2.TestCase):
 
     def _getTargetClass(self):
+        from gcloud.datastore import _implicit_environ
         from gcloud.datastore.query import Query
 
+        _implicit_environ.DATASET = None
         return Query
 
     def _makeOne(self, kind=None, dataset=None, namespace=None):
@@ -160,16 +162,41 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.value.string_value, u'John')
         self.assertEqual(p_pb.operator, datastore_pb.PropertyFilter.EQUAL)
 
+    def test_filter___key__valid_key(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore import test_connection
+
+        query = self._makeOne()
+        key = Key('Foo', dataset_id='DATASET')
+        new_query = query.filter('__key__', '=', key)
+
+        query_pb = new_query._pb
+        all_filters = query_pb.filter.composite_filter.filter
+        self.assertEqual(len(all_filters), 1)
+
+        prop_filter = all_filters[0].property_filter
+        value_fields = prop_filter.value._fields
+        self.assertEqual(len(value_fields), 1)
+        field_name, field_value = value_fields.popitem()
+        self.assertEqual(field_name.name, 'key_value')
+
+        test_connection._compare_key_pb_after_request(
+            self, key.to_protobuf(), field_value)
+
+    def test_filter___key__invalid_value(self):
+        query = self._makeOne()
+        self.assertRaises(TypeError, query.filter, '__key__', '=', None)
+
     def test_ancestor_w_non_key_non_list(self):
         query = self._makeOne()
         self.assertRaises(TypeError, query.ancestor, object())
 
     def test_ancestor_wo_existing_ancestor_query_w_key_and_propfilter(self):
         from gcloud.datastore.key import Key
-        _KIND = 'KIND'
-        _ID = 123
+        from gcloud.datastore import test_connection
+
         _NAME = u'NAME'
-        key = Key(path=[{'kind': _KIND, 'id': _ID}])
+        key = Key('KIND', 123, dataset_id='DATASET')
         query = self._makeOne().filter('name', '=', _NAME)
         after = query.ancestor(key)
         self.assertFalse(after is query)
@@ -182,13 +209,14 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(p_pb.value.string_value, _NAME)
         p_pb = f_pb.property_filter
         self.assertEqual(p_pb.property.name, '__key__')
-        self.assertEqual(p_pb.value.key_value, key.to_protobuf())
+        test_connection._compare_key_pb_after_request(
+            self, key.to_protobuf(), p_pb.value.key_value)
 
     def test_ancestor_wo_existing_ancestor_query_w_key(self):
         from gcloud.datastore.key import Key
-        _KIND = 'KIND'
-        _ID = 123
-        key = Key(path=[{'kind': _KIND, 'id': _ID}])
+        from gcloud.datastore import test_connection
+
+        key = Key('KIND', 123, dataset_id='DATASET')
         query = self._makeOne()
         after = query.ancestor(key)
         self.assertFalse(after is query)
@@ -198,14 +226,23 @@ class TestQuery(unittest2.TestCase):
         f_pb, = list(q_pb.filter.composite_filter.filter)
         p_pb = f_pb.property_filter
         self.assertEqual(p_pb.property.name, '__key__')
-        self.assertEqual(p_pb.value.key_value, key.to_protobuf())
+        test_connection._compare_key_pb_after_request(
+            self, key.to_protobuf(), p_pb.value.key_value)
 
     def test_ancestor_wo_existing_ancestor_query_w_list(self):
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
+        from gcloud.datastore import test_connection
+
+        # Query doesn't have dataset attached.
+        query = self._makeOne()
+
+        # All keys will have dataset attached.
+        _implicit_environ.DATASET = Dataset('DATASET')
         _KIND = 'KIND'
         _ID = 123
-        key = Key(path=[{'kind': _KIND, 'id': _ID}])
-        query = self._makeOne()
+        key = Key(_KIND, _ID)
         after = query.ancestor([_KIND, _ID])
         self.assertFalse(after is query)
         self.assertTrue(isinstance(after, self._getTargetClass()))
@@ -214,12 +251,20 @@ class TestQuery(unittest2.TestCase):
         f_pb, = list(q_pb.filter.composite_filter.filter)
         p_pb = f_pb.property_filter
         self.assertEqual(p_pb.property.name, '__key__')
-        self.assertEqual(p_pb.value.key_value, key.to_protobuf())
+        test_connection._compare_key_pb_after_request(
+            self, key.to_protobuf(), p_pb.value.key_value)
 
     def test_ancestor_clears_existing_ancestor_query_w_only(self):
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.dataset import Dataset
+
         _KIND = 'KIND'
         _ID = 123
         query = self._makeOne()
+
+        # All keys will have dataset attached.
+        _implicit_environ.DATASET = Dataset('DATASET')
+
         between = query.ancestor([_KIND, _ID])
         after = between.ancestor(None)
         self.assertFalse(after is query)
@@ -228,10 +273,17 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(list(q_pb.filter.composite_filter.filter), [])
 
     def test_ancestor_clears_existing_ancestor_query_w_others(self):
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.dataset import Dataset
+
         _KIND = 'KIND'
         _ID = 123
         _NAME = u'NAME'
         query = self._makeOne().filter('name', '=', _NAME)
+
+        # All keys will have dataset attached.
+        _implicit_environ.DATASET = Dataset('DATASET')
+
         between = query.ancestor([_KIND, _ID])
         after = between.ancestor(None)
         self.assertFalse(after is query)
@@ -317,6 +369,7 @@ class TestQuery(unittest2.TestCase):
         _ID = 123
         _NAMESPACE = 'NAMESPACE'
         entity_pb = Entity()
+        entity_pb.key.partition_id.dataset_id = _DATASET
         path_element = entity_pb.key.path_element.add()
         path_element.kind = _KIND
         path_element.id = _ID
@@ -339,7 +392,7 @@ class TestQuery(unittest2.TestCase):
             self.assertEqual(more_results, _MORE_RESULTS)
 
         self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key().path(),
+        self.assertEqual(entities[0].key().path,
                          [{'kind': _KIND, 'id': _ID}])
         limited_query = query
         if limit is not None:

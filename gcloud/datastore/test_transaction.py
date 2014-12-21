@@ -38,6 +38,15 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(len(xact._auto_id_entities), 0)
         self.assertTrue(xact.connection() is connection)
 
+    def test_ctor_with_env(self):
+        SENTINEL_VAL = object()
+
+        from gcloud.datastore import _implicit_environ
+        _implicit_environ.DATASET = SENTINEL_VAL
+
+        transaction = self._makeOne(dataset=None)
+        self.assertEqual(transaction.dataset(), SENTINEL_VAL)
+
     def test_add_auto_id_entity(self):
         entity = _Entity()
         _DATASET = 'DATASET'
@@ -85,7 +94,8 @@ class TestTransaction(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 123
         connection = _Connection(234)
-        connection._commit_result = _CommitResult(_makeKey(_KIND, _ID))
+        connection._commit_result = _CommitResult(
+            _make_key(_KIND, _ID, _DATASET))
         dataset = _Dataset(_DATASET, connection)
         xact = self._makeOne(dataset)
         entity = _Entity()
@@ -148,10 +158,11 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.id(), None)
 
 
-def _makeKey(kind, id):
+def _make_key(kind, id, dataset_id):
     from gcloud.datastore.datastore_v1_pb2 import Key
 
     key = Key()
+    key.partition_id.dataset_id = dataset_id
     elem = key.path_element.add()
     elem.kind = kind
     elem.id = id
@@ -202,21 +213,11 @@ class _CommitResult(object):
         self.insert_auto_id_key = new_keys
 
 
-class _Key(object):
-    _path = None
-
-    def path(self, path):
-        self._path = path
-        return self
-
-
 class _Entity(object):
-    _marker = object()
 
     def __init__(self):
+        from gcloud.datastore.test_entity import _Key
         self._key = _Key()
 
-    def key(self, key=_marker):
-        if key is self._marker:
-            return self._key
+    def key(self, key=None):
         self._key = key

@@ -23,8 +23,10 @@ _ID = 1234
 class TestEntity(unittest2.TestCase):
 
     def _getTargetClass(self):
+        from gcloud.datastore import _implicit_environ
         from gcloud.datastore.entity import Entity
 
+        _implicit_environ.DATASET = None
         return Entity
 
     def _makeOne(self, dataset=_MARKER, kind=_KIND, exclude_from_indexes=()):
@@ -59,8 +61,8 @@ class TestEntity(unittest2.TestCase):
         entity = self._makeOne()
         key = entity.key()
         self.assertIsInstance(key, Key)
-        self.assertEqual(key._dataset_id, None)
-        self.assertEqual(key.kind(), _KIND)
+        self.assertEqual(key.dataset_id, entity.dataset().id())
+        self.assertEqual(key.kind, _KIND)
 
     def test_key_setter(self):
         entity = self._makeOne()
@@ -68,17 +70,70 @@ class TestEntity(unittest2.TestCase):
         entity.key(key)
         self.assertTrue(entity.key() is key)
 
+    def test___delitem__exists(self):
+        entity = self._makeOne()
+        entity['foo'] = 'bar'
+        # This will cause an error (not a failure) if it doesn't work.
+        # Can't use a try-except because coverage.py doesn't like a branch
+        # which never occurs.
+        del entity['foo']
+
+    def test___delitem__not_exist(self):
+        entity = self._makeOne()
+        fail_occurred = False
+        try:
+            del entity['foo']
+        except KeyError:
+            fail_occurred = True
+        self.assertTrue(fail_occurred)
+
+    def test_clear_properties(self):
+        entity = self._makeOne()
+        entity['foo'] = 0
+        entity['bar'] = 1
+        self.assertEqual(entity.to_dict(), {'foo': 0, 'bar': 1})
+
+        entity.clear_properties()
+        self.assertEqual(entity.to_dict(), {})
+
+    def test_update_properties_dict(self):
+        entity = self._makeOne()
+        self.assertEqual(entity.to_dict(), {})
+
+        NEW_VALUES = {'prop1': 0, 'prop2': 1}
+        entity.update_properties(NEW_VALUES)
+        self.assertEqual(entity.to_dict(), NEW_VALUES)
+
+    def test_update_properties_keywords(self):
+        entity = self._makeOne()
+        self.assertEqual(entity.to_dict(), {})
+
+        NEW_VALUES = {'prop1': 0, 'prop2': 1}
+        entity.update_properties(**NEW_VALUES)
+        self.assertEqual(entity.to_dict(), NEW_VALUES)
+
+        entity.update_properties(prop1=10, prop2=11)
+        NEW_VALUES_AGAIN = {'prop1': 10, 'prop2': 11}
+        self.assertEqual(entity.to_dict(), NEW_VALUES_AGAIN)
+
+    def test_update_properties_invalid(self):
+        entity = self._makeOne()
+
+        dict1 = {'foo': 'bar'}
+        dict2 = {'baz': 'zip'}
+        self.assertRaises(TypeError, entity.update_properties, dict1, dict2)
+
     def test_from_key_wo_dataset(self):
         from gcloud.datastore.key import Key
 
         klass = self._getTargetClass()
-        key = Key().kind(_KIND).id(_ID)
+        key = Key(_KIND, _ID, dataset_id='DATASET')
         entity = klass.from_key(key)
         self.assertTrue(entity.dataset() is None)
         self.assertEqual(entity.kind(), _KIND)
         key = entity.key()
-        self.assertEqual(key.kind(), _KIND)
-        self.assertEqual(key.id(), _ID)
+        self.assertEqual(key.kind, _KIND)
+        self.assertEqual(key.id, _ID)
 
     def test_from_key_w_dataset(self):
         from gcloud.datastore.dataset import Dataset
@@ -86,13 +141,13 @@ class TestEntity(unittest2.TestCase):
 
         klass = self._getTargetClass()
         dataset = Dataset(_DATASET_ID)
-        key = Key().kind(_KIND).id(_ID)
+        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
         entity = klass.from_key(key, dataset)
         self.assertTrue(entity.dataset() is dataset)
         self.assertEqual(entity.kind(), _KIND)
         key = entity.key()
-        self.assertEqual(key.kind(), _KIND)
-        self.assertEqual(key.id(), _ID)
+        self.assertEqual(key.kind, _KIND)
+        self.assertEqual(key.id, _ID)
 
     def test__must_key_no_key(self):
         from gcloud.datastore.entity import NoKey
@@ -125,8 +180,13 @@ class TestEntity(unittest2.TestCase):
 
     def test_reload_hit(self):
         dataset = _Dataset()
-        dataset['KEY'] = {'foo': 'Bar'}
+
+        fake_entity = self._makeOne(dataset=dataset)
+        fake_entity['foo'] = 'Bar'
+
         key = _Key()
+        dataset[key._key] = fake_entity
+
         entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
@@ -227,7 +287,7 @@ class TestEntity(unittest2.TestCase):
         connection = _Connection()
         dataset = _Dataset(connection)
         key = _Key()
-        key.path('/bar/baz')
+        key._path = '/bar/baz'
         entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
@@ -241,22 +301,35 @@ class _Key(object):
     _path = None
     _id = None
 
-    def id(self, id_to_set):
-        self._called_id = id_to_set
-        clone = _Key()
-        clone._id = id_to_set
-        return clone
+    def __init__(self):
+        self._called_complete_key = []
 
     def to_protobuf(self):
         return self._key
 
+    def complete_key(self, id_or_name):
+        self._called_complete_key.append(id_or_name)
+        clone = _Key()
+        clone._id = id_or_name
+        return clone
+
+    def compare_to_proto(self, key_pb):
+        # DJH: This is duplicated from Key.compare_to_proto.
+        self._path = []
+        for element in key_pb.path_element:
+            key_part = {}
+            for descriptor, value in element._fields.items():
+                key_part[descriptor.name] = value
+            self._path.append(key_part)
+        return self
+
+    @property
     def is_partial(self):
         return self._partial
 
-    def path(self, path=_MARKER):
-        if path is self._MARKER:
-            return self._path
-        self._path = path
+    @property
+    def path(self):
+        return self._path
 
 
 class _Dataset(dict):
@@ -264,6 +337,13 @@ class _Dataset(dict):
     def __init__(self, connection=None):
         super(_Dataset, self).__init__()
         self._connection = connection
+
+    def __bool__(self):
+        # Make sure the objects are Truth-y since an empty
+        # dict with _connection set will still be False-y.
+        return True
+
+    __nonzero__ = __bool__
 
     def id(self):
         return _DATASET_ID
@@ -273,6 +353,12 @@ class _Dataset(dict):
 
     def get_entity(self, key):
         return self.get(key)
+
+    def get_entities(self, keys):
+        return [self.get(key) for key in keys]
+
+    def allocate_ids(self, incomplete_key, num_ids):
+        return [incomplete_key.complete_key(i + 1) for i in range(num_ids)]
 
 
 class _Connection(object):

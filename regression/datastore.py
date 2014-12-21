@@ -17,23 +17,20 @@ import pytz
 import unittest2
 
 from gcloud import datastore
+datastore._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+datastore._set_dataset_from_environ()
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import populate_datastore
-from regression import regression_utils
 
 
 class TestDatastore(unittest2.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        cls.dataset = regression_utils.get_dataset()
 
     def setUp(self):
         self.case_entities_to_delete = []
 
     def tearDown(self):
-        with self.dataset.transaction():
+        with datastore.transaction.Transaction():
             for entity in self.case_entities_to_delete:
                 entity.delete()
 
@@ -41,16 +38,18 @@ class TestDatastore(unittest2.TestCase):
 class TestDatastoreAllocateIDs(TestDatastore):
 
     def test_allocate_ids(self):
-        incomplete_key = datastore.key.Key(path=[{'kind': 'Kind'}])
-        allocated_keys = self.dataset.allocate_ids(incomplete_key, 10)
-        self.assertEqual(len(allocated_keys), 10)
+        incomplete_key = datastore.key.Key('Kind')
+        num_ids = 10
+        allocated_keys = datastore.allocate_ids(incomplete_key, num_ids)
+        self.assertEqual(len(allocated_keys), num_ids)
 
         unique_ids = set()
         for key in allocated_keys:
-            unique_ids.add(key.id())
-            self.assertFalse(key.is_partial())
+            unique_ids.add(key.id)
+            self.assertEqual(key.name, None)
+            self.assertNotEqual(key.id, None)
 
-        self.assertEqual(len(unique_ids), 10)
+        self.assertEqual(len(unique_ids), num_ids)
 
 
 class TestDatastoreSave(TestDatastore):
@@ -65,16 +64,16 @@ class TestDatastoreSave(TestDatastore):
             'wordCount': 400,
             'rating': 5.0,
         }
-        # Create an entity with the given content in our dataset.
-        entity = self.dataset.entity(kind='Post')
-        entity.update(post_content)
+        # Create an entity with the given content.
+        entity = datastore.entity.Entity(kind='Post')
+        entity.update_properties(post_content)
 
         # Update the entity key.
         key = None
         if name is not None:
-            key = entity.key().name(name)
+            key = entity.key().complete_key(name)
         if key_id is not None:
-            key = entity.key().id(key_id)
+            key = entity.key().complete_key(key_id)
         if key is not None:
             entity.key(key)
 
@@ -88,19 +87,17 @@ class TestDatastoreSave(TestDatastore):
         self.case_entities_to_delete.append(entity)
 
         if name is not None:
-            self.assertEqual(entity.key().name(), name)
+            self.assertEqual(entity.key().name, name)
         if key_id is not None:
-            self.assertEqual(entity.key().id(), key_id)
-        retrieved_entity = self.dataset.get_entity(entity.key())
+            self.assertEqual(entity.key().id, key_id)
+        retrieved_entity = datastore.get_entity(entity.key())
         # Check the keys are the same.
-        self.assertEqual(retrieved_entity.key().path(), entity.key().path())
-        self.assertEqual(retrieved_entity.key().namespace(),
-                         entity.key().namespace())
+        self.assertEqual(retrieved_entity.key().path, entity.key().path)
+        self.assertEqual(retrieved_entity.key().namespace,
+                         entity.key().namespace)
 
         # Check the data is the same.
-        retrieved_dict = dict(retrieved_entity.items())
-        entity_dict = dict(entity.items())
-        self.assertEqual(retrieved_dict, entity_dict)
+        self.assertEqual(retrieved_entity.to_dict(), entity.to_dict())
 
     def test_post_with_name(self):
         self._generic_test_post(name='post1')
@@ -112,7 +109,7 @@ class TestDatastoreSave(TestDatastore):
         self._generic_test_post()
 
     def test_save_multiple(self):
-        with self.dataset.transaction():
+        with datastore.transaction.Transaction():
             entity1 = self._get_post()
             entity1.save()
             # Register entity to be deleted.
@@ -133,26 +130,26 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity2)
 
         keys = [entity1.key(), entity2.key()]
-        matches = self.dataset.get_entities(keys)
+        matches = datastore.get_entities(keys)
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
-        posts = self.dataset.query('Post').limit(2).fetch()
+        posts = datastore.query.Query(kind='Post').limit(2).fetch()
         self.assertEqual(posts, [])
 
 
 class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
-        key = datastore.key.Key.from_path('Person', 'name')
-        entity = self.dataset.entity(kind=None).key(key)
+        key = datastore.key.Key('Person', 'name')
+        entity = datastore.entity.Entity(kind=None).key(key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
         entity.save()
         self.case_entities_to_delete.append(entity)
 
-        query = self.dataset.query('Person').filter(
+        query = datastore.query.Query(kind='Person').filter(
             'linkedTo', '=', key).limit(2)
 
         stored_persons = query.fetch()
@@ -160,8 +157,8 @@ class TestDatastoreSaveKeys(TestDatastore):
 
         stored_person = stored_persons[0]
         self.assertEqual(stored_person['fullName'], entity['fullName'])
-        self.assertEqual(stored_person.key().path(), key.path())
-        self.assertEqual(stored_person.key().namespace(), key.namespace())
+        self.assertEqual(stored_person.key().path, key.path)
+        self.assertEqual(stored_person.key().namespace, key.namespace)
 
 
 class TestDatastoreQuery(TestDatastore):
@@ -170,11 +167,11 @@ class TestDatastoreQuery(TestDatastore):
     def setUpClass(cls):
         super(TestDatastoreQuery, cls).setUpClass()
         cls.CHARACTERS = populate_datastore.CHARACTERS
-        cls.ANCESTOR_KEY = datastore.key.Key(
-            path=[populate_datastore.ANCESTOR])
+        cls.ANCESTOR_KEY = datastore.key.Key(*populate_datastore.ANCESTOR)
 
     def _base_query(self):
-        return self.dataset.query('Character').ancestor(self.ANCESTOR_KEY)
+        return datastore.query.Query(kind='Character').ancestor(
+            self.ANCESTOR_KEY)
 
     def test_limit_queries(self):
         limit = 5
@@ -217,8 +214,7 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
     def test_query___key___filter(self):
-        rickard_key = datastore.key.Key(
-            path=[populate_datastore.ANCESTOR, populate_datastore.RICKARD])
+        rickard_key = datastore.key.Key(*populate_datastore.RICKARD)
 
         query = self._base_query().filter('__key__', '=', rickard_key)
         expected_matches = 1
@@ -249,32 +245,30 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
         arya_entity = entities[0]
-        arya_dict = dict(arya_entity.items())
-        self.assertEqual(arya_dict, {'name': 'Arya', 'family': 'Stark'})
+        self.assertEqual(arya_entity.to_dict(),
+                         {'name': 'Arya', 'family': 'Stark'})
 
         catelyn_stark_entity = entities[2]
-        catelyn_stark_dict = dict(catelyn_stark_entity.items())
-        self.assertEqual(catelyn_stark_dict,
+        self.assertEqual(catelyn_stark_entity.to_dict(),
                          {'name': 'Catelyn', 'family': 'Stark'})
 
         catelyn_tully_entity = entities[3]
-        catelyn_tully_dict = dict(catelyn_tully_entity.items())
-        self.assertEqual(catelyn_tully_dict,
+        self.assertEqual(catelyn_tully_entity.to_dict(),
                          {'name': 'Catelyn', 'family': 'Tully'})
 
         # Check both Catelyn keys are the same.
         catelyn_stark_key = catelyn_stark_entity.key()
         catelyn_tully_key = catelyn_tully_entity.key()
-        self.assertEqual(catelyn_stark_key.path(), catelyn_tully_key.path())
-        self.assertEqual(catelyn_stark_key.namespace(),
-                         catelyn_tully_key.namespace())
+        self.assertEqual(catelyn_stark_key.path, catelyn_tully_key.path)
+        self.assertEqual(catelyn_stark_key.namespace,
+                         catelyn_tully_key.namespace)
         # Also check the _dataset_id since both retrieved from datastore.
-        self.assertEqual(catelyn_stark_key._dataset_id,
-                         catelyn_tully_key._dataset_id)
+        self.assertEqual(catelyn_stark_key.dataset_id,
+                         catelyn_tully_key.dataset_id)
 
         sansa_entity = entities[8]
-        sansa_dict = dict(sansa_entity.items())
-        self.assertEqual(sansa_dict, {'name': 'Sansa', 'family': 'Stark'})
+        self.assertEqual(sansa_entity.to_dict(),
+                         {'name': 'Sansa', 'family': 'Stark'})
 
     def test_query_paginate_with_offset(self):
         query = self._base_query()
@@ -334,19 +328,17 @@ class TestDatastoreQuery(TestDatastore):
 class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
-        key = datastore.key.Key.from_path('Company', 'Google')
-        entity = self.dataset.entity(kind=None).key(key)
+        key = datastore.key.Key('Company', 'Google')
+        entity = datastore.entity.Entity(kind=None).key(key)
         entity['url'] = u'www.google.com'
 
-        with self.dataset.transaction():
-            retrieved_entity = self.dataset.get_entity(key)
+        with datastore.transaction.Transaction():
+            retrieved_entity = datastore.get_entity(key)
             if retrieved_entity is None:
                 entity.save()
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.
-        retrieved_entity = self.dataset.get_entity(key)
-        retrieved_dict = dict(retrieved_entity.items())
-        entity_dict = dict(entity.items())
-        self.assertEqual(retrieved_dict, entity_dict)
+        retrieved_entity = datastore.get_entity(key)
+        self.assertEqual(retrieved_entity.to_dict(), entity.to_dict())
         retrieved_entity.delete()

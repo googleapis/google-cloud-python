@@ -136,7 +136,7 @@ class Dataset(object):
         if isinstance(key_or_path, Key):
             entities = self.get_entities([key_or_path])
         else:
-            key = Key.from_path(*key_or_path)
+            key = Key(*key_or_path)
             entities = self.get_entities([key])
 
         if entities:
@@ -196,7 +196,7 @@ class Dataset(object):
         :return: The (complete) keys allocated with `incomplete_key` as root.
         :raises: `ValueError` if `incomplete_key` is not a partial key.
         """
-        if not incomplete_key.is_partial():
+        if not incomplete_key.is_partial:
             raise ValueError(('Key is not partial.', incomplete_key))
 
         incomplete_key_pb = incomplete_key.to_protobuf()
@@ -206,5 +206,5 @@ class Dataset(object):
             self.id(), incomplete_key_pbs)
         allocated_ids = [allocated_key_pb.path_element[-1].id
                          for allocated_key_pb in allocated_key_pbs]
-        return [incomplete_key.id(allocated_id)
+        return [incomplete_key.complete_key(allocated_id)
                 for allocated_id in allocated_ids]

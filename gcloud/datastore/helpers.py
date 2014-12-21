@@ -25,6 +25,7 @@ from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
 import six
 
+from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
@@ -65,19 +66,15 @@ def key_from_protobuf(pb):
     :rtype: :class:`gcloud.datastore.key.Key`
     :returns: a new `Key` instance
     """
-    path = []
+    path_args = []
     for element in pb.path_element:
-        element_dict = {'kind': element.kind}
-
+        path_args.append(element.kind)
         if element.HasField('id'):
-            element_dict['id'] = element.id
-
+            path_args.append(element.id)
         # This is safe: we expect proto objects returned will only have
         # one of `name` or `id` set.
         if element.HasField('name'):
-            element_dict['name'] = element.name
-
-        path.append(element_dict)
+            path_args.append(element.name)
 
     dataset_id = None
     if pb.partition_id.HasField('dataset_id'):
@@ -86,7 +83,7 @@ def key_from_protobuf(pb):
     if pb.partition_id.HasField('namespace'):
         namespace = pb.partition_id.namespace
 
-    return Key(path, namespace, dataset_id)
+    return Key(*path_args, namespace=namespace, dataset_id=dataset_id)
 
 
 def _pb_attr_value(val):
@@ -252,7 +249,7 @@ def _set_protobuf_value(value_pb, val):
         key = val.key()
         if key is not None:
             e_pb.key.CopyFrom(key.to_protobuf())
-        for item_key, value in val.items():
+        for item_key, value in val.to_dict().items():
             p_pb = e_pb.property.add()
             p_pb.name = item_key
             _set_protobuf_value(p_pb.value, value)
@@ -263,3 +260,44 @@ def _set_protobuf_value(value_pb, val):
             _set_protobuf_value(i_pb, item)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)
+
+
+def _prepare_key_for_request(key_pb):
+    """Add protobuf keys to a request object.
+
+    :type key_pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+    :param key_pb: A key to be added to a request.
+
+    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+    :returns: A key which will be added to a request. It will be the
+              original if nothing needs to be changed.
+    """
+    if key_pb.partition_id.HasField('dataset_id'):
+        # We remove the dataset_id from the protobuf. This is because
+        # the backend fails a request if the key contains un-prefixed
+        # dataset ID. The backend fails because requests to
+        #     /datastore/.../datasets/foo/...
+        # and
+        #     /datastore/.../datasets/s~foo/...
+        # both go to the datastore given by 's~foo'. So if the key
+        # protobuf in the request body has dataset_id='foo', the
+        # backend will reject since 'foo' != 's~foo'.
+        new_key_pb = datastore_pb.Key()
+        new_key_pb.CopyFrom(key_pb)
+        new_key_pb.partition_id.ClearField('dataset_id')
+        key_pb = new_key_pb
+    return key_pb
+
+
+def _add_keys_to_request(request_field_pb, key_pbs):
+    """Add protobuf keys to a request object.
+
+    :type request_field_pb: `RepeatedCompositeFieldContainer`
+    :param request_field_pb: A repeated proto field that contains keys.
+
+    :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
+    :param key_pbs: The keys to add to a request.
+    """
+    for key_pb in key_pbs:
+        key_pb = _prepare_key_for_request(key_pb)
+        request_field_pb.add().CopyFrom(key_pb)
