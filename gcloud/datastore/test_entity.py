@@ -61,8 +61,8 @@ class TestEntity(unittest2.TestCase):
         entity = self._makeOne()
         key = entity.key()
         self.assertIsInstance(key, Key)
-        self.assertEqual(key._dataset_id, None)
-        self.assertEqual(key.kind(), _KIND)
+        self.assertEqual(key.dataset_id, entity.dataset().id())
+        self.assertEqual(key.kind, _KIND)
 
     def test_key_setter(self):
         entity = self._makeOne()
@@ -127,13 +127,13 @@ class TestEntity(unittest2.TestCase):
         from gcloud.datastore.key import Key
 
         klass = self._getTargetClass()
-        key = Key().kind(_KIND).id(_ID)
+        key = Key(_KIND, _ID, dataset_id='DATASET')
         entity = klass.from_key(key)
         self.assertTrue(entity.dataset() is None)
         self.assertEqual(entity.kind(), _KIND)
         key = entity.key()
-        self.assertEqual(key.kind(), _KIND)
-        self.assertEqual(key.id(), _ID)
+        self.assertEqual(key.kind, _KIND)
+        self.assertEqual(key.id, _ID)
 
     def test_from_key_w_dataset(self):
         from gcloud.datastore.dataset import Dataset
@@ -141,13 +141,13 @@ class TestEntity(unittest2.TestCase):
 
         klass = self._getTargetClass()
         dataset = Dataset(_DATASET_ID)
-        key = Key().kind(_KIND).id(_ID)
+        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
         entity = klass.from_key(key, dataset)
         self.assertTrue(entity.dataset() is dataset)
         self.assertEqual(entity.kind(), _KIND)
         key = entity.key()
-        self.assertEqual(key.kind(), _KIND)
-        self.assertEqual(key.id(), _ID)
+        self.assertEqual(key.kind, _KIND)
+        self.assertEqual(key.id, _ID)
 
     def test__must_key_no_key(self):
         from gcloud.datastore.entity import NoKey
@@ -287,7 +287,7 @@ class TestEntity(unittest2.TestCase):
         connection = _Connection()
         dataset = _Dataset(connection)
         key = _Key()
-        key.path('/bar/baz')
+        key._path = '/bar/baz'
         entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
@@ -301,22 +301,35 @@ class _Key(object):
     _path = None
     _id = None
 
-    def id(self, id_to_set):
-        self._called_id = id_to_set
-        clone = _Key()
-        clone._id = id_to_set
-        return clone
+    def __init__(self):
+        self._called_complete_key = []
 
     def to_protobuf(self):
         return self._key
 
+    def complete_key(self, id_or_name):
+        self._called_complete_key.append(id_or_name)
+        clone = _Key()
+        clone._id = id_or_name
+        return clone
+
+    def compare_to_proto(self, key_pb):
+        # DJH: This is duplicated from Key.compare_to_proto.
+        self._path = []
+        for element in key_pb.path_element:
+            key_part = {}
+            for descriptor, value in element._fields.items():
+                key_part[descriptor.name] = value
+            self._path.append(key_part)
+        return self
+
+    @property
     def is_partial(self):
         return self._partial
 
-    def path(self, path=_MARKER):
-        if path is self._MARKER:
-            return self._path
-        self._path = path
+    @property
+    def path(self):
+        return self._path
 
 
 class _Dataset(dict):
@@ -345,7 +358,7 @@ class _Dataset(dict):
         return [self.get(key) for key in keys]
 
     def allocate_ids(self, incomplete_key, num_ids):
-        return [incomplete_key.id(i + 1) for i in range(num_ids)]
+        return [incomplete_key.complete_key(i + 1) for i in range(num_ids)]
 
 
 class _Connection(object):

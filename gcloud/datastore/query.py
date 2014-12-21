@@ -163,7 +163,14 @@ class Query(_implicit_environ._DatastoreBase):
         property_filter.operator = pb_op_enum
 
         # Set the value to filter on based on the type.
-        helpers._set_protobuf_value(property_filter.value, value)
+        if property_name == '__key__':
+            if not isinstance(value, Key):
+                raise TypeError('__key__ query requires a Key instance.')
+            key_pb = value.to_protobuf()
+            property_filter.value.key_value.CopyFrom(
+                helpers._prepare_key_for_request(key_pb))
+        else:
+            helpers._set_protobuf_value(property_filter.value, value)
         return clone
 
     def ancestor(self, ancestor):
@@ -172,7 +179,7 @@ class Query(_implicit_environ._DatastoreBase):
         This will return a clone of the current :class:`Query` filtered
         by the ancestor provided.  For example::
 
-          >>> parent_key = Key.from_path('Person', '1')
+          >>> parent_key = Key('Person', '1')
           >>> query = dataset.query('Person')
           >>> filtered_query = query.ancestor(parent_key)
 
@@ -213,7 +220,7 @@ class Query(_implicit_environ._DatastoreBase):
 
         # If a list was provided, turn it into a Key.
         if isinstance(ancestor, list):
-            ancestor = Key.from_path(*ancestor)
+            ancestor = Key(*ancestor)
 
         # If we don't have a Key value by now, something is wrong.
         if not isinstance(ancestor, Key):
@@ -227,7 +234,8 @@ class Query(_implicit_environ._DatastoreBase):
         ancestor_filter = composite_filter.filter.add().property_filter
         ancestor_filter.property.name = '__key__'
         ancestor_filter.operator = datastore_pb.PropertyFilter.HAS_ANCESTOR
-        ancestor_filter.value.key_value.CopyFrom(ancestor.to_protobuf())
+        ancestor_pb = helpers._prepare_key_for_request(ancestor.to_protobuf())
+        ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
 
         return clone
 

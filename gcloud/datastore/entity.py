@@ -97,7 +97,10 @@ class Entity(_implicit_environ._DatastoreBase):
         super(Entity, self).__init__(dataset=dataset)
         self._data = {}
         if kind:
-            self._key = Key().kind(kind)
+            # This is temporary since the dataset will eventually be 100%
+            # removed from the Entity and the Dataset class may be
+            # destroyed.
+            self._key = Key(kind, dataset_id=self.dataset().id())
         else:
             self._key = None
         self._exclude_from_indexes = set(exclude_from_indexes)
@@ -193,7 +196,7 @@ class Entity(_implicit_environ._DatastoreBase):
         """
 
         if self._key:
-            return self._key.kind()
+            return self._key.kind
 
     def exclude_from_indexes(self):
         """Names of fields which are *not* to be indexed for this entity.
@@ -284,29 +287,18 @@ class Entity(_implicit_environ._DatastoreBase):
         key_pb = connection.save_entity(
             dataset_id=dataset.id(),
             key_pb=key.to_protobuf(),
-            properties=self._data,
+            properties=self.to_dict(),
             exclude_from_indexes=self.exclude_from_indexes())
 
         # If we are in a transaction and the current entity needs an
         # automatically assigned ID, tell the transaction where to put that.
         transaction = connection.transaction()
-        if transaction and key.is_partial():
+        if transaction and key.is_partial:
             transaction.add_auto_id_entity(self)
 
         if isinstance(key_pb, datastore_pb.Key):
-            # Update the path (which may have been altered).
-            # NOTE: The underlying namespace can't have changed in a save().
-            #       The value of the dataset ID may have changed from implicit
-            #       (i.e. None, with the ID implied from the dataset.Dataset
-            #       object associated with the Entity/Key), but if it was
-            #       implicit before the save() we leave it as implicit.
-            path = []
-            for element in key_pb.path_element:
-                key_part = {}
-                for descriptor, value in element._fields.items():
-                    key_part[descriptor.name] = value
-                path.append(key_part)
-            self._key = key.path(path)
+            # Update the key (which may have been altered).
+            self._key = self.key().compare_to_proto(key_pb)
 
         return self
 
@@ -327,6 +319,6 @@ class Entity(_implicit_environ._DatastoreBase):
 
     def __repr__(self):
         if self._key:
-            return '<Entity%s %r>' % (self._key.path(), self._data)
+            return '<Entity%s %r>' % (self._key.path, self._data)
         else:
             return '<Entity %r>' % (self._data,)

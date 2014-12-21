@@ -241,8 +241,7 @@ class Connection(connection.Connection):
         if single_key:
             key_pbs = [key_pbs]
 
-        for key_pb in key_pbs:
-            lookup_request.key.add().CopyFrom(key_pb)
+        helpers._add_keys_to_request(lookup_request.key, key_pbs)
 
         results, missing_found, deferred_found = self._lookup(
             lookup_request, dataset_id, deferred is not None)
@@ -417,8 +416,7 @@ class Connection(connection.Connection):
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
         request = datastore_pb.AllocateIdsRequest()
-        for key_pb in key_pbs:
-            request.key.add().CopyFrom(key_pb)
+        helpers._add_keys_to_request(request.key, key_pbs)
         # Nothing to do with this response, so just execute the method.
         response = self._rpc(dataset_id, 'allocateIds', request,
                              datastore_pb.AllocateIdsResponse)
@@ -444,8 +442,14 @@ class Connection(connection.Connection):
 
         :type exclude_from_indexes: sequence of str
         :param exclude_from_indexes: Names of properties *not* to be indexed.
+
+        :rtype: bool or :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :returns: True if the save succeeds, unless a new ID has been
+                  automatically allocated. In the auto ID case, the newly
+                  created key protobuf is returned.
         """
         mutation = self.mutation()
+        key_pb = helpers._prepare_key_for_request(key_pb)
 
         # If the Key is complete, we should upsert
         # instead of using insert_auto_id.
@@ -506,10 +510,7 @@ class Connection(connection.Connection):
         :returns: True
         """
         mutation = self.mutation()
-
-        for key_pb in key_pbs:
-            delete = mutation.delete.add()
-            delete.CopyFrom(key_pb)
+        helpers._add_keys_to_request(mutation.delete, key_pbs)
 
         if not self.transaction():
             self.commit(dataset_id, mutation)
