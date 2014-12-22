@@ -14,6 +14,7 @@
 
 """Class for representing a single entity in the Cloud Datastore."""
 
+from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.key import Key
 
@@ -95,7 +96,9 @@ class Entity(dict):
 
     def __init__(self, dataset=None, kind=None, exclude_from_indexes=()):
         super(Entity, self).__init__()
-        self._dataset = dataset
+        # Does not inherit from object, so we don't use
+        # _implicit_environ._DatastoreBase to avoid split MRO.
+        self._dataset = dataset or _implicit_environ.DATASET
         if kind:
             self._key = Key().kind(kind)
         else:

@@ -20,7 +20,10 @@ class Test_entity_from_protobuf(unittest2.TestCase):
     _MARKER = object()
 
     def _callFUT(self, val, dataset=_MARKER):
+        from gcloud.datastore import _implicit_environ
         from gcloud.datastore.helpers import entity_from_protobuf
+
+        _implicit_environ.DATASET = None
 
         if dataset is self._MARKER:
             return entity_from_protobuf(val)

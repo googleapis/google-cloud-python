@@ -14,11 +14,12 @@
 
 """Create / interact with gcloud datastore transactions."""
 
+from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 
 
-class Transaction(object):
+class Transaction(_implicit_environ._DatastoreBase):
     """An abstraction representing datastore Transactions.
 
     Transactions can be used to build up a bulk mutuation as well as
@@ -125,8 +126,9 @@ class Transaction(object):
     :param dataset: The dataset to which this :class:`Transaction` belongs.
     """
 
-    def __init__(self, dataset):
-        self._dataset = dataset
+    def __init__(self, dataset=None):
+        super(Transaction, self).__init__(dataset=dataset)
+        # If self._dataset is None, using this transaction will fail.
         self._id = None
         self._mutation = datastore_pb.Mutation()
         self._auto_id_entities = []
