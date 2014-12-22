@@ -1,4 +1,4 @@
-# PyLint config for 'gcloud' *library* code. 
+# PyLint config for 'gcloud' *library* code.
 #
 # NOTES:
 #
@@ -65,14 +65,14 @@ ignore =
 # DEFAULT:  disable=
 # RATIONALE:
 # - maybe-no-member:  bi-modal functions confuse pylint type inference.
-# - no-member:  indirections in protobuf-generated code 
+# - no-member:  indirections in protobuf-generated code
 # - protected-access: helpers use '_foo' of classes from generated code.
 # - redefined-builtin:  use of 'id', 'type', 'filter' args in API-bound funcs;
 #                       use of 'NotImplemented' to map HTTP response code.
 # - similarities:  'Bucket' and 'Key' define 'metageneration' and 'owner' with
 #                  identical implementation but different docstrings.
 # - star-args:  standard Python idioms for varargs:
-#                  ancestor = Key.from_path(*ancestor)
+#                  ancestor = Query().filter(*order_props)
 disable =
     maybe-no-member,
     no-member,
@@ -201,7 +201,7 @@ max-module-lines=1500
 
 # Good variable names which should always be accepted, separated by a comma
 # DEFAULT:  good-names=i,j,k,ex,Run,_
-# RATIONALE:  'pb' and 'id' have well-understood meainings in the code. 
+# RATIONALE:  'pb' and 'id' have well-understood meainings in the code.
 good-names = i, j, k, ex, Run, _,
              pb,
              id,

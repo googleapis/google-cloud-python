@@ -102,39 +102,6 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(elems[2].name, '')
         self.assertEqual(elems[2].id, 0)
 
-    def test_from_path_empty(self):
-        key = self._getTargetClass().from_path()
-        self.assertEqual(key._dataset_id, None)
-        self.assertEqual(key.namespace(), None)
-        self.assertEqual(key.kind(), '')
-        self.assertEqual(key.path(), [{'kind': ''}])
-
-    def test_from_path_single_element(self):
-        self.assertRaises(ValueError, self._getTargetClass().from_path, 'abc')
-
-    def test_from_path_three_elements(self):
-        self.assertRaises(ValueError, self._getTargetClass().from_path,
-                          'abc', 'def', 'ghi')
-
-    def test_from_path_two_elements_second_string(self):
-        key = self._getTargetClass().from_path('abc', 'def')
-        self.assertEqual(key.kind(), 'abc')
-        self.assertEqual(key.path(), [{'kind': 'abc', 'name': 'def'}])
-
-    def test_from_path_two_elements_second_int(self):
-        key = self._getTargetClass().from_path('abc', 123)
-        self.assertEqual(key.kind(), 'abc')
-        self.assertEqual(key.path(), [{'kind': 'abc', 'id': 123}])
-
-    def test_from_path_nested(self):
-        key = self._getTargetClass().from_path('abc', 'def', 'ghi', 123)
-        self.assertEqual(key.kind(), 'ghi')
-        expected_path = [
-            {'kind': 'abc', 'name': 'def'},
-            {'kind': 'ghi', 'id': 123},
-        ]
-        self.assertEqual(key.path(), expected_path)
-
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne()
         self.assertTrue(key.is_partial())
@@ -282,9 +249,13 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(key.parent(), None)
 
     def test_parent_explicit_top_level(self):
-        key = self._getTargetClass().from_path('abc', 'def')
+        key = self._makeOne(path=[{'kind': 'abc', 'name': 'def'}])
         self.assertEqual(key.parent(), None)
 
     def test_parent_explicit_nested(self):
-        key = self._getTargetClass().from_path('abc', 'def', 'ghi', 123)
-        self.assertEqual(key.parent().path(), [{'kind': 'abc', 'name': 'def'}])
+        parent_part = {'kind': 'abc', 'name': 'def'}
+        key = self._makeOne(path=[
+            parent_part,
+            {'kind': 'ghi', 'id': 123},
+        ])
+        self.assertEqual(key.parent().path(), [parent_part])

@@ -146,7 +146,7 @@ class TestDatastoreSave(TestDatastore):
 class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
-        key = datastore.key.Key.from_path('Person', 'name')
+        key = datastore.key.Key(path=[{'kind': 'Person', 'name': 'name'}])
         entity = datastore.entity.Entity(kind=None).key(key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
@@ -337,7 +337,7 @@ class TestDatastoreQuery(TestDatastore):
 class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
-        key = datastore.key.Key.from_path('Company', 'Google')
+        key = datastore.key.Key(path=[{'kind': 'Company', 'name': 'Google'}])
         entity = datastore.entity.Entity(kind=None).key(key)
         entity['url'] = u'www.google.com'
 

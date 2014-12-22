@@ -109,39 +109,6 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
-    def test_get_entity_path(self):
-        from gcloud.datastore.connection import datastore_pb
-        DATASET_ID = 'DATASET'
-        KIND = 'Kind'
-        ID = 1234
-        PATH = [{'kind': KIND, 'id': ID}]
-        entity_pb = datastore_pb.Entity()
-        entity_pb.key.partition_id.dataset_id = DATASET_ID
-        path_element = entity_pb.key.path_element.add()
-        path_element.kind = KIND
-        path_element.id = ID
-        prop = entity_pb.property.add()
-        prop.name = 'foo'
-        prop.value.string_value = 'Foo'
-        connection = _Connection(entity_pb)
-        dataset = self._makeOne(DATASET_ID, connection)
-        result = dataset.get_entity([KIND, ID])
-        key = result.key()
-        self.assertEqual(key._dataset_id, DATASET_ID)
-        self.assertEqual(key.path(), PATH)
-        self.assertEqual(list(result), ['foo'])
-        self.assertEqual(result['foo'], 'Foo')
-
-    def test_get_entity_odd_nonetype(self):
-        DATASET_ID = 'DATASET'
-        KIND = 'Kind'
-        connection = _Connection()
-        dataset = self._makeOne(DATASET_ID, connection)
-        with self.assertRaises(ValueError):
-            dataset.get_entity([KIND])
-        with self.assertRaises(TypeError):
-            dataset.get_entity(None)
-
     def test_get_entities_miss(self):
         from gcloud.datastore.key import Key
         DATASET_ID = 'DATASET'
