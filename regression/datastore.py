@@ -74,9 +74,9 @@ class TestDatastoreSave(TestDatastore):
         # Update the entity key.
         key = None
         if name is not None:
-            key = datastore.key.Key('Post', name)
+            key = entity.key().complete_key(name)
         if key_id is not None:
-            key = datastore.key.Key('Post', key_id)
+            key = entity.key().complete_key(key_id)
         if key is not None:
             entity.key(key)
 

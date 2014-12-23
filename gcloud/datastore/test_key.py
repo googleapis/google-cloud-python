@@ -62,6 +62,30 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(clone.kind, _KIND)
         self.assertEqual(clone.path, _PATH)
 
+    def test_complete_key_on_partial_w_id(self):
+        key = self._makeOne('KIND')
+        _ID = 1234
+        new_key = key.complete_key(_ID)
+        self.assertFalse(key is new_key)
+        self.assertEqual(new_key.id, _ID)
+        self.assertEqual(new_key.name, None)
+
+    def test_complete_key_on_partial_w_name(self):
+        key = self._makeOne('KIND')
+        _NAME = 'NAME'
+        new_key = key.complete_key(_NAME)
+        self.assertFalse(key is new_key)
+        self.assertEqual(new_key.id, None)
+        self.assertEqual(new_key.name, _NAME)
+
+    def test_complete_key_on_partial_w_invalid(self):
+        key = self._makeOne('KIND')
+        self.assertRaises(ValueError, key.complete_key, object())
+
+    def test_complete_key_on_complete(self):
+        key = self._makeOne('KIND', 1234)
+        self.assertRaises(ValueError, key.complete_key, 5678)
+
     def test_to_protobuf_defaults(self):
         from gcloud.datastore.datastore_v1_pb2 import Key as KeyPB
         _KIND = 'KIND'

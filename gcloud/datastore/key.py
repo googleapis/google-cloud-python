@@ -127,6 +127,32 @@ class Key(object):
         """
         return copy.deepcopy(self)
 
+    def complete_key(self, id_or_name):
+        """Creates new key from existing partial key by adding final ID/name.
+
+        :rtype: :class:`gcloud.datastore.key.Key`
+        :returns: A new `Key` instance with the same data as the current one
+                  and an extra ID or name added.
+        :raises: `ValueError` if the current key is not partial or if
+                 `id_or_name` is not a string or integer.
+        """
+        if not self.is_partial:
+            raise ValueError('Only a partial key can be completed.')
+
+        id_or_name_key = None
+        if isinstance(id_or_name, six.string_types):
+            id_or_name_key = 'name'
+        elif isinstance(id_or_name, six.integer_types):
+            id_or_name_key = 'id'
+        else:
+            raise ValueError(id_or_name,
+                             'ID/name was not a string or integer.')
+
+        new_key = self._clone()
+        new_key._path[-1][id_or_name_key] = id_or_name
+        new_key._flat_path += (id_or_name,)
+        return new_key
+
     def to_protobuf(self):
         """Return a protobuf corresponding to the key.
 
