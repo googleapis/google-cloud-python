@@ -63,8 +63,8 @@ class Transaction(_implicit_environ._DatastoreBase):
          >>> with dataset.transaction():
          ...   entity = dataset.entity('Thing')
          ...   entity.save()
-         ...   assert entity.key().is_partial()  # There is no ID on this key.
-         >>> assert not entity.key().is_partial()  # There *is* an ID.
+         ...   assert entity.key().is_partial  # There is no ID on this key.
+         >>> assert not entity.key().is_partial  # There *is* an ID.
 
     .. warning:: If you're using the automatically generated ID
        functionality, it's important that you only use
@@ -235,7 +235,10 @@ class Transaction(_implicit_environ._DatastoreBase):
             for i, entity in enumerate(self._auto_id_entities):
                 key_pb = result.insert_auto_id_key[i]
                 key = helpers.key_from_protobuf(key_pb)
-                entity.key(entity.key().path(key.path()))
+                # This is a temporary hack. Will be addressed in 451 #6.
+                new_key = entity.key()._clone()
+                new_key._path = key.path
+                entity.key(key)
 
         # Tell the connection that the transaction is over.
         self.connection().transaction(None)

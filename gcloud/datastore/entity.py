@@ -100,7 +100,7 @@ class Entity(dict):
         # _implicit_environ._DatastoreBase to avoid split MRO.
         self._dataset = dataset or _implicit_environ.DATASET
         if kind:
-            self._key = Key().kind(kind)
+            self._key = Key(path=[{'kind': kind}])
         else:
             self._key = None
         self._exclude_from_indexes = set(exclude_from_indexes)
@@ -153,7 +153,7 @@ class Entity(dict):
         """
 
         if self._key:
-            return self._key.kind()
+            return self._key.kind
 
     def exclude_from_indexes(self):
         """Names of fields which are *not* to be indexed for this entity.
@@ -250,7 +250,7 @@ class Entity(dict):
         # If we are in a transaction and the current entity needs an
         # automatically assigned ID, tell the transaction where to put that.
         transaction = connection.transaction()
-        if transaction and key.is_partial():
+        if transaction and key.is_partial:
             transaction.add_auto_id_entity(self)
 
         if isinstance(key_pb, datastore_pb.Key):
@@ -266,7 +266,10 @@ class Entity(dict):
                 for descriptor, value in element._fields.items():
                     key_part[descriptor.name] = value
                 path.append(key_part)
-            self._key = key.path(path)
+            # This is temporary. Will be addressed throughout #451.
+            clone = key._clone()
+            clone._path = path
+            self._key = clone
 
         return self
 
@@ -287,7 +290,7 @@ class Entity(dict):
 
     def __repr__(self):
         if self._key:
-            return '<Entity%s %s>' % (self._key.path(),
+            return '<Entity%s %s>' % (self._key.path,
                                       super(Entity, self).__repr__())
         else:
             return '<Entity %s>' % (super(Entity, self).__repr__())

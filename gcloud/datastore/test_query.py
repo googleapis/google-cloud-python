@@ -336,7 +336,7 @@ class TestQuery(unittest2.TestCase):
             self.assertEqual(more_results, _MORE_RESULTS)
 
         self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key().path(),
+        self.assertEqual(entities[0].key().path,
                          [{'kind': _KIND, 'id': _ID}])
         limited_query = query
         if limit is not None:

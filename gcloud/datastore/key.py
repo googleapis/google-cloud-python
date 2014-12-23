@@ -70,13 +70,13 @@ class Key(object):
         """
         key = datastore_pb.Key()
 
-        if self._dataset_id is not None:
-            key.partition_id.dataset_id = self._dataset_id
+        if self.dataset_id is not None:
+            key.partition_id.dataset_id = self.dataset_id
 
         if self._namespace:
             key.partition_id.namespace = self._namespace
 
-        for item in self.path():
+        for item in self.path:
             element = key.path_element.add()
             if 'kind' in item:
                 element.kind = item['kind']
@@ -87,121 +87,100 @@ class Key(object):
 
         return key
 
+    @property
     def is_partial(self):
-        """Boolean test: is the key fully mapped onto a backend entity?
+        """Boolean indicating if the key has an ID (or name).
 
         :rtype: :class:`bool`
         :returns: True if the last element of the key's path does not have
                   an 'id' or a 'name'.
         """
-        return self.id_or_name() is None
+        return self.id_or_name is None
 
-    def namespace(self, namespace=None):
-        """Namespace setter / getter.
+    @property
+    def namespace(self):
+        """Namespace getter.
 
-        :type namespace: :class:`str`
-        :param namespace: A namespace identifier for the key.
-
-        :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
-        :returns: a new key, cloned from self., with the given namespace
-                  (setter); or self's namespace (getter).
+        :rtype: :class:`str`
+        :returns: The namespace of the current key.
         """
-        if namespace:
-            clone = self._clone()
-            clone._namespace = namespace
-            return clone
-        else:
-            return self._namespace
+        return self._namespace
 
-    def path(self, path=None):
-        """Path setter / getter.
+    @property
+    def path(self):
+        """Path getter.
 
-        :type path: sequence of dicts
-        :param path: Each dict must have keys 'kind' (a string) and optionally
-                     'name' (a string) or 'id' (an integer).
+        Returns a copy so that the key remains immutable.
 
-        :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
-        :returns: a new key, cloned from self., with the given path (setter);
-                 or self's path (getter).
+        :rtype: :class:`str`
+        :returns: The (key) path of the current key.
         """
-        if path:
-            clone = self._clone()
-            clone._path = path
-            return clone
-        else:
-            return self._path
+        return copy.deepcopy(self._path)
 
-    def kind(self, kind=None):
-        """Kind setter / getter.  Based on the last element of path.
+    @property
+    def kind(self):
+        """Kind getter. Based on the last element of path.
 
-        :type kind: :class:`str`
-        :param kind: The new kind for the key.
-
-        :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
-        :returns: a new key, cloned from self., with the given kind (setter);
-                 or self's kind (getter).
+        :rtype: :class:`str`
+        :returns: The kind of the current key.
         """
-        if kind:
-            clone = self._clone()
-            clone._path[-1]['kind'] = kind
-            return clone
-        elif self.path():
-            return self._path[-1]['kind']
+        if self.path:
+            return self.path[-1].get('kind')
 
-    def id(self, id_to_set=None):
-        """ID setter / getter.  Based on the last element of path.
+    @property
+    def id(self):
+        """ID getter. Based on the last element of path.
 
-        :type id_to_set: :class:`int`
-        :param id_to_set: The new ID for the key.
-
-        :rtype: :class:`Key` (for setter); or :class:`int` (for getter)
-        :returns: a new key, cloned from self., with the given id (setter);
-                  or self's id (getter).
+        :rtype: :class:`int`
+        :returns: The (integer) ID of the key.
         """
-        if id_to_set:
-            clone = self._clone()
-            clone._path[-1]['id'] = id_to_set
-            return clone
-        elif self.path():
-            return self._path[-1].get('id')
+        if self.path:
+            return self.path[-1].get('id')
 
-    def name(self, name=None):
-        """Name setter / getter.  Based on the last element of path.
+    @property
+    def name(self):
+        """Name getter. Based on the last element of path.
 
-        :type kind: :class:`str`
-        :param kind: The new name for the key.
-
-        :rtype: :class:`Key` (for setter); or :class:`str` (for getter)
-        :returns: a new key, cloned from self., with the given name (setter);
-                 or self's name (getter).
+        :rtype: :class:`str`
+        :returns: The (string) name of the key.
         """
-        if name:
-            clone = self._clone()
-            clone._path[-1]['name'] = name
-            return clone
-        elif self.path():
-            return self._path[-1].get('name')
+        if self.path:
+            return self.path[-1].get('name')
 
+    @property
     def id_or_name(self):
-        """Getter.  Based on the last element of path.
+        """Getter. Based on the last element of path.
 
-        :rtype: :class:`int` (if 'id' is set); or :class:`str` (the 'name')
-        :returns: True if the last element of the key's path has either an 'id'
+        :rtype: :class:`int` (if 'id') or :class:`str` (if 'name')
+        :returns: The last element of the key's path if it is either an 'id'
                   or a 'name'.
         """
-        return self.id() or self.name()
+        return self.id or self.name
 
+    @property
+    def dataset_id(self):
+        """Dataset ID getter.
+
+        :rtype: :class:`str`
+        :returns: The key's dataset.
+        """
+        return self._dataset_id
+
+    @property
     def parent(self):
         """Getter:  return a new key for the next highest element in path.
 
         :rtype: :class:`gcloud.datastore.key.Key`
         :returns: a new `Key` instance, whose path consists of all but the last
                   element of self's path.  If self has only one path element,
-                  return None.
+                  returns None.
         """
         if len(self._path) <= 1:
             return None
-        return self.path(self.path()[:-1])
+        # This is temporary. Will be addressed throughout #451.
+        clone = self._clone()
+        clone._path = self.path[:-1]
+        return clone
 
     def __repr__(self):
-        return '<Key%s>' % self.path()
+        return '<Key%s>' % self.path

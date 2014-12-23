@@ -45,7 +45,7 @@ def fetch_keys(dataset, kind, fetch_max=FETCH_MAX, query=None, cursor=None):
 
 def get_ancestors(entities):
     # NOTE: A key will always have at least one path element.
-    key_roots = [entity.key().path()[0] for entity in entities]
+    key_roots = [entity.key().path[0] for entity in entities]
     # Turn into hashable type so we can use set to get unique roots.
     # Also sorted the items() to ensure uniqueness.
     key_roots = [tuple(sorted(root.items())) for root in key_roots]

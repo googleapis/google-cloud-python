@@ -48,9 +48,9 @@ class TestDatastoreAllocateIDs(TestDatastore):
 
         unique_ids = set()
         for key in allocated_keys:
-            unique_ids.add(key.id())
-            self.assertEqual(key.name(), None)
-            self.assertNotEqual(key.id(), None)
+            unique_ids.add(key.id)
+            self.assertEqual(key.name, None)
+            self.assertNotEqual(key.id, None)
 
         self.assertEqual(len(unique_ids), num_ids)
 
@@ -74,9 +74,9 @@ class TestDatastoreSave(TestDatastore):
         # Update the entity key.
         key = None
         if name is not None:
-            key = entity.key().name(name)
+            key = datastore.key.Key(path=[{'kind': 'Post', 'name': name}])
         if key_id is not None:
-            key = entity.key().id(key_id)
+            key = datastore.key.Key(path=[{'kind': 'Post', 'id': key_id}])
         if key is not None:
             entity.key(key)
 
@@ -90,14 +90,14 @@ class TestDatastoreSave(TestDatastore):
         self.case_entities_to_delete.append(entity)
 
         if name is not None:
-            self.assertEqual(entity.key().name(), name)
+            self.assertEqual(entity.key().name, name)
         if key_id is not None:
-            self.assertEqual(entity.key().id(), key_id)
+            self.assertEqual(entity.key().id, key_id)
         retrieved_entity = datastore.get_entity(entity.key())
         # Check the keys are the same.
-        self.assertEqual(retrieved_entity.key().path(), entity.key().path())
-        self.assertEqual(retrieved_entity.key().namespace(),
-                         entity.key().namespace())
+        self.assertEqual(retrieved_entity.key().path, entity.key().path)
+        self.assertEqual(retrieved_entity.key().namespace,
+                         entity.key().namespace)
 
         # Check the data is the same.
         retrieved_dict = dict(retrieved_entity.items())
@@ -162,8 +162,8 @@ class TestDatastoreSaveKeys(TestDatastore):
 
         stored_person = stored_persons[0]
         self.assertEqual(stored_person['fullName'], entity['fullName'])
-        self.assertEqual(stored_person.key().path(), key.path())
-        self.assertEqual(stored_person.key().namespace(), key.namespace())
+        self.assertEqual(stored_person.key().path, key.path)
+        self.assertEqual(stored_person.key().namespace, key.namespace)
 
 
 class TestDatastoreQuery(TestDatastore):
@@ -268,12 +268,12 @@ class TestDatastoreQuery(TestDatastore):
         # Check both Catelyn keys are the same.
         catelyn_stark_key = catelyn_stark_entity.key()
         catelyn_tully_key = catelyn_tully_entity.key()
-        self.assertEqual(catelyn_stark_key.path(), catelyn_tully_key.path())
-        self.assertEqual(catelyn_stark_key.namespace(),
-                         catelyn_tully_key.namespace())
-        # Also check the _dataset_id since both retrieved from datastore.
-        self.assertEqual(catelyn_stark_key._dataset_id,
-                         catelyn_tully_key._dataset_id)
+        self.assertEqual(catelyn_stark_key.path, catelyn_tully_key.path)
+        self.assertEqual(catelyn_stark_key.namespace,
+                         catelyn_tully_key.namespace)
+        # Also check the dataset_id since both retrieved from datastore.
+        self.assertEqual(catelyn_stark_key.dataset_id,
+                         catelyn_tully_key.dataset_id)
 
         sansa_entity = entities[8]
         sansa_dict = dict(sansa_entity.items())
