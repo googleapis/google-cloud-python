@@ -58,19 +58,26 @@ SCOPE = ('https://www.googleapis.com/auth/datastore ',
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 
 
-def _set_dataset_from_environ():
+def set_default_dataset(dataset_id=None):
     """Determines auth settings from local enviroment.
 
-    Currently only supports enviroment variable but will implicitly
-    support App Engine, Compute Engine and other environments in
-    the future.
+    Sets a default dataset either explicitly or via the local
+    enviroment. Currently only supports enviroment variable but will
+    implicitly support App Engine, Compute Engine and other environments
+    in the future.
 
     Local environment variable used is:
     - GCLOUD_DATASET_ID
+
+    :type dataset_id: :class:`str`.
+    :param dataset_id: Optional. The dataset ID to use for the default
+                       dataset.
     """
-    local_dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
-    if local_dataset_id is not None:
-        _implicit_environ.DATASET = get_dataset(local_dataset_id)
+    if dataset_id is None:
+        dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
+
+    if dataset_id is not None:
+        _implicit_environ.DATASET = get_dataset(dataset_id)
 
 
 def get_connection():
@@ -127,7 +134,7 @@ def _require_dataset():
     :raises: :class:`EnvironmentError` if DATASET is not set.
     """
     if _implicit_environ.DATASET is None:
-        raise EnvironmentError('Dataset could not be implied.')
+        raise EnvironmentError('Dataset could not be inferred.')
     return _implicit_environ.DATASET
 
 
@@ -168,7 +175,3 @@ def allocate_ids(incomplete_key, num_ids):
     :return: The (complete) keys allocated with `incomplete_key` as root.
     """
     return _require_dataset().allocate_ids(incomplete_key, num_ids)
-
-
-# Set DATASET if it can be implied from the environment.
-_set_dataset_from_environ()

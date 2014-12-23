@@ -96,7 +96,7 @@ class Entity(dict):
 
     def __init__(self, dataset=None, kind=None, exclude_from_indexes=()):
         super(Entity, self).__init__()
-        # Does not inherit from object, so we don't use
+        # Does not inherit directly from object, so we don't use
         # _implicit_environ._DatastoreBase to avoid split MRO.
         self._dataset = dataset or _implicit_environ.DATASET
         if kind:

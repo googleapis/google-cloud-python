@@ -13,15 +13,18 @@
 # limitations under the License.
 
 import datetime
+import os
 import pytz
 import unittest2
 
 from gcloud import datastore
-datastore._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
-datastore._set_dataset_from_environ()
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import populate_datastore
+
+
+DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
+datastore.set_default_dataset(dataset_id=DATASET_ID)
 
 
 class TestDatastore(unittest2.TestCase):

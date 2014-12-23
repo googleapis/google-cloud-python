@@ -17,11 +17,17 @@ import unittest2
 
 class TestQuery(unittest2.TestCase):
 
-    def _getTargetClass(self):
+    def setUp(self):
         from gcloud.datastore import _implicit_environ
-        from gcloud.datastore.query import Query
-
+        self._replaced_dataset = _implicit_environ.DATASET
         _implicit_environ.DATASET = None
+
+    def tearDown(self):
+        from gcloud.datastore import _implicit_environ
+        _implicit_environ.DATASET = self._replaced_dataset
+
+    def _getTargetClass(self):
+        from gcloud.datastore.query import Query
         return Query
 
     def _makeOne(self, kind=None, dataset=None, namespace=None):
