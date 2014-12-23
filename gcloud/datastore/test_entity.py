@@ -287,12 +287,7 @@ class _Dataset(dict):
         return [self.get(key) for key in keys]
 
     def allocate_ids(self, incomplete_key, num_ids):
-        def clone_with_new_id(key, new_id):
-            clone = key._clone()
-            clone._path[-1]['id'] = new_id
-            return clone
-        return [clone_with_new_id(incomplete_key, i + 1)
-                for i in range(num_ids)]
+        return [incomplete_key.complete_key(i + 1) for i in range(num_ids)]
 
 
 class _Connection(object):

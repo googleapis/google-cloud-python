@@ -153,6 +153,92 @@ class Key(object):
         new_key._flat_path += (id_or_name,)
         return new_key
 
+    def _validate_protobuf_dataset_id(self, protobuf):
+        """Checks that dataset ID on protobuf matches current one.
+
+        The value of the dataset ID may have changed from unprefixed
+        (e.g. 'foo') to prefixed (e.g. 's~foo' or 'e~foo').
+
+        :type protobuf: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :param protobuf: A protobuf representation of the key. Expected to be
+                         returned after a datastore operation.
+
+        :rtype: :class:`str`
+        """
+        proto_dataset_id = protobuf.partition_id.dataset_id
+        if proto_dataset_id == self.dataset_id:
+            return
+
+        # Since they don't match, we check to see if `proto_dataset_id` has a
+        # prefix.
+        unprefixed = None
+        prefix = proto_dataset_id[:2]
+        if prefix in ('s~', 'e~'):
+            unprefixed = proto_dataset_id[2:]
+
+        if unprefixed != self.dataset_id:
+            raise ValueError('Dataset ID on protobuf does not match.',
+                             proto_dataset_id, self.dataset_id)
+
+    def compare_to_proto(self, protobuf):
+        """Checks current key against a protobuf; updates if partial.
+
+        If the current key is partial, returns a new key that has been
+        completed otherwise returns the current key.
+
+        The value of the dataset ID may have changed from implicit (i.e. None,
+        with the ID implied from the dataset.Dataset object associated with the
+        Entity/Key), but if it was implicit before, we leave it as implicit.
+
+        :type protobuf: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :param protobuf: A protobuf representation of the key. Expected to be
+                         returned after a datastore operation.
+
+        :rtype: :class:`gcloud.datastore.key.Key`
+        :returns: The current key if not partial.
+        :raises: `ValueError` if the namespace or dataset ID of `protobuf`
+                 don't match the current values or if the path from `protobuf`
+                 doesn't match.
+        """
+        if self.namespace is None:
+            if protobuf.partition_id.HasField('namespace'):
+                raise ValueError('Namespace unset on key but set on protobuf.')
+        elif protobuf.partition_id.namespace != self.namespace:
+            raise ValueError('Namespace on protobuf does not match.',
+                             protobuf.partition_id.namespace, self.namespace)
+
+        # Check that dataset IDs match if not implicit.
+        if self.dataset_id is not None:
+            self._validate_protobuf_dataset_id(protobuf)
+
+        path = []
+        for element in protobuf.path_element:
+            key_part = {}
+            for descriptor, value in element._fields.items():
+                key_part[descriptor.name] = value
+            path.append(key_part)
+
+        if path == self.path:
+            return self
+
+        if not self.is_partial:
+            raise ValueError('Proto path does not match completed key.',
+                             path, self.path)
+
+        last_part = path[-1]
+        id_or_name = None
+        if 'id' in last_part:
+            id_or_name = last_part.pop('id')
+        elif 'name' in last_part:
+            id_or_name = last_part.pop('name')
+
+        # We have edited path by popping from the last part, so check again.
+        if path != self.path:
+            raise ValueError('Proto path does not match partial key.',
+                             path, self.path)
+
+        return self.complete_key(id_or_name)
+
     def to_protobuf(self):
         """Return a protobuf corresponding to the key.
 
