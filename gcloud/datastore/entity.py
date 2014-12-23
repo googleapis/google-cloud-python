@@ -100,7 +100,7 @@ class Entity(dict):
         # _implicit_environ._DatastoreBase to avoid split MRO.
         self._dataset = dataset or _implicit_environ.DATASET
         if kind:
-            self._key = Key(path=[{'kind': kind}])
+            self._key = Key(kind)
         else:
             self._key = None
         self._exclude_from_indexes = set(exclude_from_indexes)

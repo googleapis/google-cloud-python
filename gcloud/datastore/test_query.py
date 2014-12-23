@@ -178,7 +178,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 123
         _NAME = u'NAME'
-        key = Key(path=[{'kind': _KIND, 'id': _ID}])
+        key = Key(_KIND, _ID)
         query = self._makeOne().filter('name', '=', _NAME)
         after = query.ancestor(key)
         self.assertFalse(after is query)
@@ -197,7 +197,7 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
-        key = Key(path=[{'kind': _KIND, 'id': _ID}])
+        key = Key(_KIND, _ID)
         query = self._makeOne()
         after = query.ancestor(key)
         self.assertFalse(after is query)
@@ -213,7 +213,7 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore.key import Key
         _KIND = 'KIND'
         _ID = 123
-        key = Key(path=[{'kind': _KIND, 'id': _ID}])
+        key = Key(_KIND, _ID)
         query = self._makeOne()
         between = query.ancestor(key)
         after = between.ancestor(None)
@@ -227,7 +227,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 123
         _NAME = u'NAME'
-        key = Key(path=[{'kind': _KIND, 'id': _ID}])
+        key = Key(_KIND, _ID)
         query = self._makeOne().filter('name', '=', _NAME)
         between = query.ancestor(key)
         after = between.ancestor(None)

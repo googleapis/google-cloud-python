@@ -81,7 +81,7 @@ class TestDataset(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         connection = _Connection()
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(path=[{'kind': 'Kind', 'id': 1234}])
+        key = Key('Kind', 1234, dataset_id=DATASET_ID)
         self.assertEqual(dataset.get_entity(key), None)
 
     def test_get_entity_hit(self):
@@ -101,7 +101,7 @@ class TestDataset(unittest2.TestCase):
         prop.value.string_value = 'Foo'
         connection = _Connection(entity_pb)
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(path=PATH)
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
         result = dataset.get_entity(key)
         key = result.key()
         self.assertEqual(key.dataset_id, DATASET_ID)
@@ -114,7 +114,7 @@ class TestDataset(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         connection = _Connection()
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(path=[{'kind': 'Kind', 'id': 1234}])
+        key = Key('Kind', 1234, dataset_id=DATASET_ID)
         self.assertEqual(dataset.get_entities([key]), [])
 
     def test_get_entities_miss_w_missing(self):
@@ -123,7 +123,6 @@ class TestDataset(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
         ID = 1234
-        PATH = [{'kind': KIND, 'id': ID}]
         missed = datastore_pb.Entity()
         missed.key.partition_id.dataset_id = DATASET_ID
         path_element = missed.key.path_element.add()
@@ -132,7 +131,7 @@ class TestDataset(unittest2.TestCase):
         connection = _Connection()
         connection._missing = [missed]
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(path=PATH, dataset_id=DATASET_ID)
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
         missing = []
         entities = dataset.get_entities([key], missing=missing)
         self.assertEqual(entities, [])
@@ -142,12 +141,9 @@ class TestDataset(unittest2.TestCase):
     def test_get_entities_miss_w_deferred(self):
         from gcloud.datastore.key import Key
         DATASET_ID = 'DATASET'
-        KIND = 'Kind'
-        ID = 1234
-        PATH = [{'kind': KIND, 'id': ID}]
         connection = _Connection()
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(path=PATH, dataset_id=DATASET_ID)
+        key = Key('Kind', 1234, dataset_id=DATASET_ID)
         connection._deferred = [key.to_protobuf()]
         deferred = []
         entities = dataset.get_entities([key], deferred=deferred)
@@ -172,21 +168,22 @@ class TestDataset(unittest2.TestCase):
         prop.value.string_value = 'Foo'
         connection = _Connection(entity_pb)
         dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(path=PATH)
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
         result, = dataset.get_entities([key])
-        key = result.key()
-        self.assertEqual(key.dataset_id, DATASET_ID)
-        self.assertEqual(key.path, PATH)
+        new_key = result.key()
+        self.assertFalse(new_key is key)
+        self.assertEqual(new_key.dataset_id, DATASET_ID)
+        self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
     def test_allocate_ids(self):
         from gcloud.datastore.key import Key
 
-        INCOMPLETE_KEY = Key(path=[{'kind': 'foo'}])
+        DATASET_ID = 'DATASET'
+        INCOMPLETE_KEY = Key('KIND', dataset_id=DATASET_ID)
         CONNECTION = _Connection()
         NUM_IDS = 2
-        DATASET_ID = 'foo'
         DATASET = self._makeOne(DATASET_ID, connection=CONNECTION)
         result = DATASET.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
 
