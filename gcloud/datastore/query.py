@@ -516,6 +516,14 @@ class Query(object):
             clone._pb.projection.add().property.name = projection_name
         return clone
 
+    def keys(self):
+        """Adds a projection to get keys only
+
+        :rtype: :class:`Query`
+        :returns: A new Query instance only returns entity keys
+        """
+        return self.projection(['__key__'])
+
     def offset(self, offset=None):
         """Adds offset to the query to allow pagination.
 
