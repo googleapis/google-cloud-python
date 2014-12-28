@@ -643,7 +643,7 @@ class TestConnection(unittest2.TestCase):
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo', 'bar': []})
         self.assertEqual(result, True)
         cw = http._called_with
         self.assertEqual(cw['uri'], URI)
