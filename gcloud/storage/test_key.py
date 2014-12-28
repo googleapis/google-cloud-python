@@ -215,6 +215,9 @@ class Test_Key(unittest2.TestCase):
 
     def test_download_to_filename(self):
         import httplib
+        import os
+        import time
+        import datetime
         from tempfile import NamedTemporaryFile
         KEY = 'key'
         chunk1_response = {'status': httplib.PARTIAL_CONTENT,
@@ -227,7 +230,8 @@ class Test_Key(unittest2.TestCase):
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
-        properties = {'mediaLink': MEDIA_LINK}
+        properties = {'mediaLink': MEDIA_LINK,
+                      'updated': '2014-12-06T13:13:50.690Z'}
         key = self._makeOne(bucket, KEY, properties)
         key.CHUNK_SIZE = 3
         with NamedTemporaryFile() as f:
@@ -235,7 +239,13 @@ class Test_Key(unittest2.TestCase):
             f.flush()
             with open(f.name) as g:
                 wrote = g.read()
+                mtime = os.path.getmtime(f.name)
+                updatedTime = time.mktime(datetime.datetime.strptime(
+                                          key.properties['updated'],
+                                          '%Y-%m-%dT%H:%M:%S.%fz')
+                                          .timetuple())
         self.assertEqual(wrote, 'abcdef')
+        self.assertEqual(mtime, updatedTime)
 
     def test_download_as_string(self):
         import httplib
