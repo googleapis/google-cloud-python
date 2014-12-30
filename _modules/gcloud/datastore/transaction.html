@@ -137,8 +137,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">         &gt;&gt;&gt; with dataset.transaction():</span>
 <span class="sd">         ...   entity = dataset.entity(&#39;Thing&#39;)</span>
 <span class="sd">         ...   entity.save()</span>
-<span class="sd">         ...   assert entity.key().is_partial()  # There is no ID on this key.</span>
-<span class="sd">         &gt;&gt;&gt; assert not entity.key().is_partial()  # There *is* an ID.</span>
+<span class="sd">         ...   assert entity.key().is_partial  # There is no ID on this key.</span>
+<span class="sd">         &gt;&gt;&gt; assert not entity.key().is_partial  # There *is* an ID.</span>
 
 <span class="sd">    .. warning:: If you&#39;re using the automatically generated ID</span>
 <span class="sd">       functionality, it&#39;s important that you only use</span>
@@ -309,7 +309,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entity</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_id_entities</span><span class="p">):</span>
                 <span class="n">key_pb</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">insert_auto_id_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
-                <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">()))</span>
+                <span class="c"># This is a temporary hack. Will be addressed in 451 #6.</span>
+                <span class="n">new_key</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+                <span class="n">new_key</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">path</span>
+                <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
         <span class="c"># Tell the connection that the transaction is over.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">transaction</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>

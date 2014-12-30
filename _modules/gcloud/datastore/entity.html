@@ -174,7 +174,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="c"># _implicit_environ._DatastoreBase to avoid split MRO.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span>
         <span class="k">if</span> <span class="n">kind</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="p">[{</span><span class="s">&#39;kind&#39;</span><span class="p">:</span> <span class="n">kind</span><span class="p">}])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_from_indexes</span><span class="p">)</span>
@@ -227,7 +227,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="o">.</span><span class="n">kind</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="o">.</span><span class="n">kind</span>
 </div>
 <div class="viewcode-block" id="Entity.exclude_from_indexes"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.exclude_from_indexes">[docs]</a>    <span class="k">def</span> <span class="nf">exclude_from_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Names of fields which are *not* to be indexed for this entity.</span>
@@ -324,7 +324,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="c"># If we are in a transaction and the current entity needs an</span>
         <span class="c"># automatically assigned ID, tell the transaction where to put that.</span>
         <span class="n">transaction</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">transaction</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">transaction</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
             <span class="n">transaction</span><span class="o">.</span><span class="n">add_auto_id_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key_pb</span><span class="p">,</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Key</span><span class="p">):</span>
@@ -340,7 +340,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                 <span class="k">for</span> <span class="n">descriptor</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">_fields</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="n">key_part</span><span class="p">[</span><span class="n">descriptor</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
                 <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key_part</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="c"># This is temporary. Will be addressed throughout #451.</span>
+            <span class="n">clone</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+            <span class="n">clone</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">clone</span>
 
         <span class="k">return</span> <span class="bp">self</span>
 </div>
@@ -361,7 +364,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;&lt;Entity</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="o">.</span><span class="n">path</span><span class="p">(),</span>
+            <span class="k">return</span> <span class="s">&#39;&lt;Entity</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
                                       <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__repr__</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="s">&#39;&lt;Entity </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__repr__</span><span class="p">())</span></div>

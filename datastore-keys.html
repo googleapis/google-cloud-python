@@ -133,46 +133,59 @@ will be set the field to an appropriate value for keys
 returned from the datastore backend.  The application
 <strong>must</strong> treat any value set by the back-end as opaque.</p>
 </div>
-<dl class="method">
-<dt id="gcloud.datastore.key.Key.id">
-<tt class="descname">id</tt><big>(</big><em>id_to_set=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id" title="Permalink to this definition">#</a></dt>
-<dd><p>ID setter / getter.  Based on the last element of path.</p>
+<dl class="attribute">
+<dt id="gcloud.datastore.key.Key.dataset_id">
+<tt class="descname">dataset_id</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.dataset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Dataset ID getter.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_to_set</strong> (<tt class="xref py py-class docutils literal"><span class="pre">int</span></tt>) &#8211; The new ID for the key.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">int</span></tt> (for getter)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given id (setter);
-or self&#8217;s id (getter).</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key&#8217;s dataset.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.datastore.key.Key.id_or_name">
-<tt class="descname">id_or_name</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id_or_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id_or_name" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter.  Based on the last element of path.</p>
+<dl class="attribute">
+<dt id="gcloud.datastore.key.Key.id">
+<tt class="descname">id</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id" title="Permalink to this definition">#</a></dt>
+<dd><p>ID getter. Based on the last element of path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">int</span></tt> (if &#8216;id&#8217; is set); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (the &#8216;name&#8217;)</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">int</span></tt></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the last element of the key&#8217;s path has either an &#8216;id&#8217;
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (integer) ID of the key.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.datastore.key.Key.id_or_name">
+<tt class="descname">id_or_name</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id_or_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id_or_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Getter. Based on the last element of path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">int</span></tt> (if &#8216;id&#8217;) or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (if &#8216;name&#8217;)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The last element of the key&#8217;s path if it is either an &#8216;id&#8217;
 or a &#8216;name&#8217;.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.key.Key.is_partial">
-<tt class="descname">is_partial</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.is_partial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.is_partial" title="Permalink to this definition">#</a></dt>
-<dd><p>Boolean test: is the key fully mapped onto a backend entity?</p>
+<tt class="descname">is_partial</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.is_partial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.is_partial" title="Permalink to this definition">#</a></dt>
+<dd><p>Boolean indicating if the key has an ID (or name).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -186,66 +199,57 @@ an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.key.Key.kind">
-<tt class="descname">kind</tt><big>(</big><em>kind=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.kind" title="Permalink to this definition">#</a></dt>
-<dd><p>Kind setter / getter.  Based on the last element of path.</p>
+<tt class="descname">kind</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.kind" title="Permalink to this definition">#</a></dt>
+<dd><p>Kind getter. Based on the last element of path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The new kind for the key.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given kind (setter);
-or self&#8217;s kind (getter).</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The kind of the current key.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.key.Key.name">
-<tt class="descname">name</tt><big>(</big><em>name=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.name" title="Permalink to this definition">#</a></dt>
-<dd><p>Name setter / getter.  Based on the last element of path.</p>
+<tt class="descname">name</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name getter. Based on the last element of path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; The new name for the key.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given name (setter);
-or self&#8217;s name (getter).</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (string) name of the key.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.key.Key.namespace">
-<tt class="descname">namespace</tt><big>(</big><em>namespace=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.namespace" title="Permalink to this definition">#</a></dt>
-<dd><p>Namespace setter / getter.</p>
+<tt class="descname">namespace</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Namespace getter.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given namespace
-(setter); or self&#8217;s namespace (getter).</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The namespace of the current key.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.key.Key.parent">
-<tt class="descname">parent</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.parent" title="Permalink to this definition">#</a></dt>
+<tt class="descname">parent</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.parent" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter:  return a new key for the next highest element in path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -255,27 +259,24 @@ or self&#8217;s name (getter).</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a new <cite>Key</cite> instance, whose path consists of all but the last
 element of self&#8217;s path.  If self has only one path element,
-return None.</td>
+returns None.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.key.Key.path">
-<tt class="descname">path</tt><big>(</big><em>path=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.path" title="Permalink to this definition">#</a></dt>
-<dd><p>Path setter / getter.</p>
+<tt class="descname">path</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.path" title="Permalink to this definition">#</a></dt>
+<dd><p>Path getter.</p>
+<p>Returns a copy so that the key remains immutable.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
-&#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> (for setter); or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (for getter)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new key, cloned from self., with the given path (setter);
-or self&#8217;s path (getter).</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (key) path of the current key.</td>
 </tr>
 </tbody>
 </table>

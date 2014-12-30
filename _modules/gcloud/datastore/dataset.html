@@ -260,7 +260,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: The (complete) keys allocated with `incomplete_key` as root.</span>
 <span class="sd">        :raises: `ValueError` if `incomplete_key` is not a partial key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s">&#39;Key is not partial.&#39;</span><span class="p">,</span> <span class="n">incomplete_key</span><span class="p">))</span>
 
         <span class="n">incomplete_key_pb</span> <span class="o">=</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
@@ -270,7 +270,19 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span> <span class="n">incomplete_key_pbs</span><span class="p">)</span>
         <span class="n">allocated_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">allocated_key_pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
                          <span class="k">for</span> <span class="n">allocated_key_pb</span> <span class="ow">in</span> <span class="n">allocated_key_pbs</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">allocated_id</span><span class="p">)</span>
+
+        <span class="c"># This method is temporary and will move over to Key in</span>
+        <span class="c"># part 5 of #451.</span>
+        <span class="k">def</span> <span class="nf">create_new_key</span><span class="p">(</span><span class="n">new_id</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Temporary method to complete `incomplete_key`.</span>
+
+<span class="sd">            Uses `incomplete_key` from outside scope.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">clone</span> <span class="o">=</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+            <span class="n">clone</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_id</span>
+            <span class="k">return</span> <span class="n">clone</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">create_new_key</span><span class="p">(</span><span class="n">allocated_id</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">allocated_id</span> <span class="ow">in</span> <span class="n">allocated_ids</span><span class="p">]</span></div></div>
 </pre></div>
 

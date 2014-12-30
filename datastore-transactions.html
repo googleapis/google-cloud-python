@@ -119,8 +119,8 @@ automatically generated ID will be assigned to the entity:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">dataset</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
 <span class="gp">... </span>  <span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">)</span>
 <span class="gp">... </span>  <span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-<span class="gp">... </span>  <span class="k">assert</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">is_partial</span><span class="p">()</span>  <span class="c"># There is no ID on this key.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">is_partial</span><span class="p">()</span>  <span class="c"># There *is* an ID.</span>
+<span class="gp">... </span>  <span class="k">assert</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There is no ID on this key.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There *is* an ID.</span>
 </pre></div>
 </div>
 </div>
