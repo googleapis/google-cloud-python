@@ -172,22 +172,15 @@ class Query(_implicit_environ._DatastoreBase):
         This will return a clone of the current :class:`Query` filtered
         by the ancestor provided.  For example::
 
-          >>> parent_key = Key.from_path('Person', '1')
+          >>> parent_key = Key(path=[{'kind': 'Person', 'name': '1'}])
           >>> query = dataset.query('Person')
           >>> filtered_query = query.ancestor(parent_key)
-
-        If you don't have a :class:`gcloud.datastore.key.Key` but just
-        know the path, you can provide that as well::
-
-          >>> query = dataset.query('Person')
-          >>> filtered_query = query.ancestor(['Person', '1'])
 
         Each call to ``.ancestor()`` returns a cloned :class:`Query`,
         however a query may only have one ancestor at a time.
 
-        :type ancestor: :class:`gcloud.datastore.key.Key` or list
-        :param ancestor: Either a Key or a path of the form
-                         ``['Kind', 'id or name', 'Kind', 'id or name', ...]``.
+        :type ancestor: :class:`gcloud.datastore.key.Key`
+        :param ancestor: A Key to an entity
 
         :rtype: :class:`Query`
         :returns: A Query filtered by the ancestor provided.
@@ -211,13 +204,9 @@ class Query(_implicit_environ._DatastoreBase):
         if not ancestor:
             return clone
 
-        # If a list was provided, turn it into a Key.
-        if isinstance(ancestor, list):
-            ancestor = Key.from_path(*ancestor)
-
         # If we don't have a Key value by now, something is wrong.
         if not isinstance(ancestor, Key):
-            raise TypeError('Expected list or Key, got %s.' % type(ancestor))
+            raise TypeError('Expected Key, got %s.' % type(ancestor))
 
         # Get the composite filter and add a new property filter.
         composite_filter = clone._pb.filter.composite_filter

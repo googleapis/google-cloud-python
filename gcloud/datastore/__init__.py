@@ -145,7 +145,7 @@ def get_entity(key):
     :param key: The name of the item to retrieve.
 
     :rtype: :class:`gcloud.datastore.entity.Entity` or ``None``
-    :return: The requested entity, or ``None`` if there was no match found.
+    :returns: The requested entity, or ``None`` if there was no match found.
     """
     return _require_dataset().get_entity(key)
 
@@ -157,7 +157,7 @@ def get_entities(keys):
     :param keys: The name of the item to retrieve.
 
     :rtype: list of :class:`gcloud.datastore.entity.Entity`
-    :return: The requested entities.
+    :returns: The requested entities.
     """
     return _require_dataset().get_entities(keys)
 
@@ -172,6 +172,6 @@ def allocate_ids(incomplete_key, num_ids):
     :param num_ids: The number of IDs to allocate.
 
     :rtype: list of :class:`gcloud.datastore.key.Key`
-    :return: The (complete) keys allocated with `incomplete_key` as root.
+    :returns: The (complete) keys allocated with `incomplete_key` as root.
     """
     return _require_dataset().allocate_ids(incomplete_key, num_ids)

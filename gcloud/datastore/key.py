@@ -15,9 +15,6 @@
 """Create / interact with gcloud datastore keys."""
 
 import copy
-from itertools import izip
-
-import six
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
@@ -89,40 +86,6 @@ class Key(object):
                 element.name = item['name']
 
         return key
-
-    @classmethod
-    def from_path(cls, *args, **kwargs):
-        """Factory method for creating a key based on a path.
-
-        :type args: :class:`tuple`
-        :param args: sequence of even length, where the first of each pair is a
-                     string representing the 'kind' of the path element, and
-                     the second of the pair is either a string (for the path
-                     element's name) or an integer (for its id).
-
-        :type kwargs: :class:`dict`
-        :param kwargs: Other named parameters which can be passed to
-                       :func:`Key.__init__`.
-
-        :rtype: :class:`gcloud.datastore.key.Key`
-        :returns: a new :class:`Key` instance
-        """
-        if len(args) % 2:
-            raise ValueError('Must pass an even number of args.')
-
-        path = []
-        items = iter(args)
-
-        for kind, id_or_name in izip(items, items):
-            entry = {'kind': kind}
-            if isinstance(id_or_name, six.string_types):
-                entry['name'] = id_or_name
-            else:
-                entry['id'] = id_or_name
-            path.append(entry)
-
-        kwargs['path'] = path
-        return cls(**kwargs)
 
     def is_partial(self):
         """Boolean test: is the key fully mapped onto a backend entity?
