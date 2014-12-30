@@ -133,34 +133,6 @@ will be set the field to an appropriate value for keys
 returned from the datastore backend.  The application
 <strong>must</strong> treat any value set by the back-end as opaque.</p>
 </div>
-<dl class="classmethod">
-<dt id="gcloud.datastore.key.Key.from_path">
-<em class="property">classmethod </em><tt class="descname">from_path</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.from_path" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for creating a key based on a path.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt>) &#8211; sequence of even length, where the first of each pair is a
-string representing the &#8216;kind&#8217; of the path element, and
-the second of the pair is either a string (for the path
-element&#8217;s name) or an integer (for its id).</li>
-<li><strong>kwargs</strong> (<tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt>) &#8211; Other named parameters which can be passed to
-<a class="reference internal" href="#gcloud.datastore.key.Key.__init__" title="gcloud.datastore.key.Key.__init__"><tt class="xref py py-func docutils literal"><span class="pre">Key.__init__()</span></tt></a>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">Key</span></tt></a> instance</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.id">
 <tt class="descname">id</tt><big>(</big><em>id_to_set=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.id" title="Permalink to this definition">#</a></dt>
