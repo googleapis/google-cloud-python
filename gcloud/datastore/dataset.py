@@ -120,7 +120,7 @@ class Dataset(object):
     def get_entity(self, key):
         """Retrieves entity from the dataset, along with its attributes.
 
-        :type key: :class:`gcloud.datastore.key.Key` or path
+        :type key: :class:`gcloud.datastore.key.Key`
         :param key: The key of the entity to be retrieved.
 
         :rtype: :class:`gcloud.datastore.entity.Entity` or `NoneType`

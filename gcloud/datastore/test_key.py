@@ -41,6 +41,36 @@ class TestKey(unittest2.TestCase):
         with _Monkey(_implicit_environ, DATASET=None):
             self.assertRaises(ValueError, klass, 'KIND')
 
+    def test_ctor_parent(self):
+        _PARENT_KIND = 'KIND1'
+        _PARENT_ID = 1234
+        _PARENT_DATASET = 'DATASET-ALT'
+        _PARENT_NAMESPACE = 'NAMESPACE'
+        parent_key = self._makeOne(_PARENT_KIND, _PARENT_ID,
+                                   dataset_id=_PARENT_DATASET,
+                                   namespace=_PARENT_NAMESPACE)
+        _CHILD_KIND = 'KIND2'
+        _CHILD_ID = 2345
+        _PATH = [
+            {'kind': _PARENT_KIND, 'id': _PARENT_ID},
+            {'kind': _CHILD_KIND, 'id': _CHILD_ID},
+        ]
+        key = self._makeOne(_CHILD_KIND, _CHILD_ID, parent=parent_key)
+        self.assertEqual(key.dataset_id, parent_key.dataset_id)
+        self.assertEqual(key.namespace, parent_key.namespace)
+        self.assertEqual(key.kind, _CHILD_KIND)
+        self.assertEqual(key.path, _PATH)
+        self.assertTrue(key.parent is parent_key)
+
+    def test_ctor_partial_parent(self):
+        parent_key = self._makeOne('KIND')
+        with self.assertRaises(ValueError):
+            self._makeOne('KIND2', 1234, parent=parent_key)
+
+    def test_ctor_parent_bad_type(self):
+        with self.assertRaises(AttributeError):
+            self._makeOne('KIND2', 1234, parent=('KIND1', 1234))
+
     def test_ctor_explicit(self):
         _DATASET = 'DATASET-ALT'
         _NAMESPACE = 'NAMESPACE'
