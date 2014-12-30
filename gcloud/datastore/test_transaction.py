@@ -38,6 +38,15 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(len(xact._auto_id_entities), 0)
         self.assertTrue(xact.connection() is connection)
 
+    def test_ctor_with_env(self):
+        SENTINEL_VAL = object()
+
+        from gcloud.datastore import _implicit_environ
+        _implicit_environ.DATASET = SENTINEL_VAL
+
+        transaction = self._makeOne(dataset=None)
+        self.assertEqual(transaction.dataset(), SENTINEL_VAL)
+
     def test_add_auto_id_entity(self):
         entity = _Entity()
         _DATASET = 'DATASET'

@@ -16,12 +16,13 @@
 
 import base64
 
+from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.key import Key
 
 
-class Query(object):
+class Query(_implicit_environ._DatastoreBase):
     """A Query against the Cloud Datastore.
 
     This class serves as an abstraction for creating a query over data
@@ -71,7 +72,7 @@ class Query(object):
     """Mapping of operator strings and their protobuf equivalents."""
 
     def __init__(self, kind=None, dataset=None, namespace=None):
-        self._dataset = dataset
+        super(Query, self).__init__(dataset=dataset)
         self._namespace = namespace
         self._pb = datastore_pb.Query()
         self._offset = 0

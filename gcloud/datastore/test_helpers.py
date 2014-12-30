@@ -19,6 +19,15 @@ class Test_entity_from_protobuf(unittest2.TestCase):
 
     _MARKER = object()
 
+    def setUp(self):
+        from gcloud.datastore import _implicit_environ
+        self._replaced_dataset = _implicit_environ.DATASET
+        _implicit_environ.DATASET = None
+
+    def tearDown(self):
+        from gcloud.datastore import _implicit_environ
+        _implicit_environ.DATASET = self._replaced_dataset
+
     def _callFUT(self, val, dataset=_MARKER):
         from gcloud.datastore.helpers import entity_from_protobuf
 
