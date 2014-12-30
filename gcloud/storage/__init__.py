@@ -22,7 +22,7 @@ You'll typically use these to get started with the API:
 >>> key = bucket.get_key('/remote/path/to/file.txt')
 >>> print key.get_contents_as_string()
 >>> key.set_contents_from_string('New contents!')
->>> bucket.upload_file('/local/path.txt', '/remote/path/storage.txt')
+>>> bucket.upload_file('/remote/path/storage.txt', '/local/path.txt')
 
 The main concepts with this API are:
 
