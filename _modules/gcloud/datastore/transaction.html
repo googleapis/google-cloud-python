@@ -88,11 +88,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud datastore transactions.&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 
 
-<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">_implicit_environ</span><span class="o">.</span><span class="n">_DatastoreBase</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An abstraction representing datastore Transactions.</span>
 
 <span class="sd">    Transactions can be used to build up a bulk mutuation as well as</span>
@@ -199,8 +200,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :param dataset: The dataset to which this :class:`Transaction` belongs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="c"># If self._dataset is None, using this transaction will fail.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Mutation</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_auto_id_entities</span> <span class="o">=</span> <span class="p">[]</span>

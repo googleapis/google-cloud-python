@@ -118,7 +118,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">  which represents a lookup or search over the rows in the datastore.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 
 
@@ -126,7 +129,31 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
          <span class="s">&#39;https://www.googleapis.com/auth/userinfo.email&#39;</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;The scope required for authenticating as a Cloud Datastore consumer.&quot;&quot;&quot;</span>
 
+<span class="n">_DATASET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;GCLOUD_DATASET_ID&#39;</span>
 
+
+<div class="viewcode-block" id="set_default_dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.set_default_dataset">[docs]</a><span class="k">def</span> <span class="nf">set_default_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determines auth settings from local enviroment.</span>
+
+<span class="sd">    Sets a default dataset either explicitly or via the local</span>
+<span class="sd">    enviroment. Currently only supports enviroment variable but will</span>
+<span class="sd">    implicitly support App Engine, Compute Engine and other environments</span>
+<span class="sd">    in the future.</span>
+
+<span class="sd">    Local environment variable used is:</span>
+<span class="sd">    - GCLOUD_DATASET_ID</span>
+
+<span class="sd">    :type dataset_id: :class:`str`.</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID to use for the default</span>
+<span class="sd">                       dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_DATASET_ENV_VAR_NAME</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+
+</div>
 <div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to the Cloud Datastore.</span>
 
@@ -170,7 +197,58 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :returns: A dataset with a connection using the provided credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_require_dataset</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Convenience method to ensure DATASET is set.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.datastore.dataset.Dataset`</span>
+<span class="sd">    :returns: A dataset based on the current environment.</span>
+<span class="sd">    :raises: :class:`EnvironmentError` if DATASET is not set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Dataset could not be inferred.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span>
+
+
+<div class="viewcode-block" id="get_entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_entity">[docs]</a><span class="k">def</span> <span class="nf">get_entity</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves entity from implicit dataset, along with its attributes.</span>
+
+<span class="sd">    :type key: :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param key: The name of the item to retrieve.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.datastore.entity.Entity` or ``None``</span>
+<span class="sd">    :return: The requested entity, or ``None`` if there was no match found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_require_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_entities"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_entities">[docs]</a><span class="k">def</span> <span class="nf">get_entities</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves entities from implied dataset, along with their attributes.</span>
+
+<span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param keys: The name of the item to retrieve.</span>
+
+<span class="sd">    :rtype: list of :class:`gcloud.datastore.entity.Entity`</span>
+<span class="sd">    :return: The requested entities.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_require_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">get_entities</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="allocate_ids"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.allocate_ids">[docs]</a><span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="p">,</span> <span class="n">num_ids</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Allocates a list of IDs from a partial key.</span>
+
+<span class="sd">    :type incomplete_key: A :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param incomplete_key: The partial key to use as base for allocated IDs.</span>
+
+<span class="sd">    :type num_ids: A :class:`int`.</span>
+<span class="sd">    :param num_ids: The number of IDs to allocate.</span>
+
+<span class="sd">    :rtype: list of :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :return: The (complete) keys allocated with `incomplete_key` as root.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_require_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="p">,</span> <span class="n">num_ids</span><span class="p">)</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
