@@ -214,9 +214,8 @@ class _CommitResult(object):
 class _Key(object):
     _path = None
 
-    def path(self, path):
-        self._path = path
-        return self
+    def _clone(self):
+        return _Key()
 
 
 class _Entity(object):

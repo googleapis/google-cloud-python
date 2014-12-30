@@ -173,4 +173,4 @@ class Test_implicit_behavior(unittest2.TestCase):
             result = gcloud.datastore.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
 
         # Check the IDs returned.
-        self.assertEqual([key.id() for key in result], range(1, NUM_IDS + 1))
+        self.assertEqual([key.id for key in result], range(1, NUM_IDS + 1))

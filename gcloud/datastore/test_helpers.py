@@ -53,10 +53,10 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(entity.kind(), _KIND)
         self.assertEqual(entity['foo'], 'Foo')
         key = entity.key()
-        self.assertEqual(key._dataset_id, _DATASET_ID)
-        self.assertEqual(key.namespace(), None)
-        self.assertEqual(key.kind(), _KIND)
-        self.assertEqual(key.id(), _ID)
+        self.assertEqual(key.dataset_id, _DATASET_ID)
+        self.assertEqual(key.namespace, None)
+        self.assertEqual(key.kind, _KIND)
+        self.assertEqual(key.id, _ID)
 
     def test_w_dataset(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -77,10 +77,10 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(entity.kind(), _KIND)
         self.assertEqual(entity['foo'], 'Foo')
         key = entity.key()
-        self.assertEqual(key._dataset_id, _DATASET_ID)
-        self.assertEqual(key.namespace(), None)
-        self.assertEqual(key.kind(), _KIND)
-        self.assertEqual(key.id(), _ID)
+        self.assertEqual(key.dataset_id, _DATASET_ID)
+        self.assertEqual(key.namespace, None)
+        self.assertEqual(key.kind, _KIND)
+        self.assertEqual(key.id, _ID)
 
 
 class Test_key_from_protobuf(unittest2.TestCase):
@@ -110,15 +110,15 @@ class Test_key_from_protobuf(unittest2.TestCase):
         _DATASET = 'DATASET'
         pb = self._makePB(_DATASET)
         key = self._callFUT(pb)
-        self.assertEqual(key._dataset_id, _DATASET)
-        self.assertEqual(key.namespace(), None)
+        self.assertEqual(key.dataset_id, _DATASET)
+        self.assertEqual(key.namespace, None)
 
     def test_w_namespace_in_pb(self):
         _NAMESPACE = 'NAMESPACE'
         pb = self._makePB(namespace=_NAMESPACE)
         key = self._callFUT(pb)
-        self.assertEqual(key._dataset_id, None)
-        self.assertEqual(key.namespace(), _NAMESPACE)
+        self.assertEqual(key.dataset_id, None)
+        self.assertEqual(key.namespace, _NAMESPACE)
 
     def test_w_path_in_pb(self):
         _DATASET = 'DATASET'
@@ -138,7 +138,7 @@ class Test_key_from_protobuf(unittest2.TestCase):
         ]
         pb = self._makePB(path=_PATH)
         key = self._callFUT(pb)
-        self.assertEqual(key.path(), _PATH)
+        self.assertEqual(key.path, _PATH)
 
 
 class Test__pb_attr_value(unittest2.TestCase):

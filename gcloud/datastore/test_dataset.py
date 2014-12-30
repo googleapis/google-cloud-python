@@ -104,8 +104,8 @@ class TestDataset(unittest2.TestCase):
         key = Key(path=PATH)
         result = dataset.get_entity(key)
         key = result.key()
-        self.assertEqual(key._dataset_id, DATASET_ID)
-        self.assertEqual(key.path(), PATH)
+        self.assertEqual(key.dataset_id, DATASET_ID)
+        self.assertEqual(key.path, PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
@@ -175,19 +175,15 @@ class TestDataset(unittest2.TestCase):
         key = Key(path=PATH)
         result, = dataset.get_entities([key])
         key = result.key()
-        self.assertEqual(key._dataset_id, DATASET_ID)
-        self.assertEqual(key.path(), PATH)
+        self.assertEqual(key.dataset_id, DATASET_ID)
+        self.assertEqual(key.path, PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
     def test_allocate_ids(self):
-        from gcloud.datastore.test_entity import _Key
+        from gcloud.datastore.key import Key
 
-        INCOMPLETE_KEY = _Key()
-        PROTO_ID = object()
-        INCOMPLETE_KEY._key = _KeyProto(PROTO_ID)
-        INCOMPLETE_KEY._partial = True
-
+        INCOMPLETE_KEY = Key(path=[{'kind': 'foo'}])
         CONNECTION = _Connection()
         NUM_IDS = 2
         DATASET_ID = 'foo'
@@ -195,16 +191,11 @@ class TestDataset(unittest2.TestCase):
         result = DATASET.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
 
         # Check the IDs returned match.
-        self.assertEqual([key._id for key in result], range(NUM_IDS))
+        self.assertEqual([key.id for key in result], range(NUM_IDS))
 
         # Check connection is called correctly.
         self.assertEqual(CONNECTION._called_dataset_id, DATASET_ID)
         self.assertEqual(len(CONNECTION._called_key_pbs), NUM_IDS)
-
-        # Check the IDs passed to Connection.allocate_ids.
-        key_paths = [key_pb.path_element[-1].id
-                     for key_pb in CONNECTION._called_key_pbs]
-        self.assertEqual(key_paths, [PROTO_ID] * NUM_IDS)
 
     def test_allocate_ids_with_complete(self):
         from gcloud.datastore.test_entity import _Key
