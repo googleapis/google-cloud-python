@@ -45,6 +45,8 @@ class TestKey(unittest2.TestCase):
 
     def test_ctor_bad_id_or_name(self):
         self.assertRaises(ValueError, self._makeOne, 'KIND', object())
+        self.assertRaises(ValueError, self._makeOne, 'KIND', None)
+        self.assertRaises(ValueError, self._makeOne, 'KIND', 10, 'KIND2', None)
 
     def test__clone(self):
         _DATASET = 'DATASET'

@@ -90,9 +90,10 @@ class Key(object):
 
         kind_list = path_args[::2]
         id_or_name_list = path_args[1::2]
+        # Dummy sentinel value to pad incomplete key to even length path.
+        partial_ending = object()
         if len(path_args) % 2 == 1:
-            # Add dummy None to be ignored below.
-            id_or_name_list += (None,)
+            id_or_name_list += (partial_ending,)
 
         result = []
         for kind, id_or_name in izip(kind_list, id_or_name_list):
@@ -106,7 +107,7 @@ class Key(object):
                 curr_key_part['name'] = id_or_name
             elif isinstance(id_or_name, six.integer_types):
                 curr_key_part['id'] = id_or_name
-            elif id_or_name is not None:
+            elif id_or_name is not partial_ending:
                 raise ValueError(id_or_name,
                                  'ID/name was not a string or integer.')
 
