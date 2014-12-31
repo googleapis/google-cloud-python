@@ -433,6 +433,10 @@ class Connection(connection.Connection):
            will be replaced by those passed in 'properties';  properties
            not passed in 'properties' no longer be set for the entity.
 
+        .. note::
+           When saving an entity to the backend, properties whose value are
+           Empty lists or none cannot be saved and will be ignore.
+
         :type dataset_id: string
         :param dataset_id: The dataset in which to save the entity.
 
@@ -460,6 +464,9 @@ class Connection(connection.Connection):
         insert.key.CopyFrom(key_pb)
 
         for name, value in properties.items():
+            if isinstance(value, list) and len(value) == 0:
+                continue
+
             prop = insert.property.add()
             # Set the name of the property.
             prop.name = name
