@@ -109,6 +109,15 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
+    def test_get_entity_bad_type(self):
+        DATASET_ID = 'DATASET'
+        connection = _Connection()
+        dataset = self._makeOne(DATASET_ID, connection)
+        with self.assertRaises(AttributeError):
+            dataset.get_entity(None)
+        with self.assertRaises(AttributeError):
+            dataset.get_entity([])
+
     def test_get_entities_miss(self):
         from gcloud.datastore.key import Key
         DATASET_ID = 'DATASET'

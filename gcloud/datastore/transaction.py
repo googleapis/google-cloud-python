@@ -16,7 +16,6 @@
 
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-from gcloud.datastore import helpers
 
 
 class Transaction(_implicit_environ._DatastoreBase):
@@ -234,11 +233,8 @@ class Transaction(_implicit_environ._DatastoreBase):
             # For any of the auto-id entities, make sure we update their keys.
             for i, entity in enumerate(self._auto_id_entities):
                 key_pb = result.insert_auto_id_key[i]
-                key = helpers.key_from_protobuf(key_pb)
-                # This is a temporary hack. Will be addressed in 451 #6.
-                new_key = entity.key()._clone()
-                new_key._path = key.path
-                entity.key(key)
+                new_id = key_pb.path_element[-1].id
+                entity.key(entity.key().completed_key(new_id))
 
         # Tell the connection that the transaction is over.
         self.connection().transaction(None)

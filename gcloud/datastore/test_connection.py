@@ -235,7 +235,7 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 1)
-        self.assertEqual(keys[0], key_pb)
+        _compare_key_pb_after_request(self, key_pb, keys[0])
 
     def test_lookup_single_key_empty_response_w_eventual(self):
         from gcloud.datastore.connection import datastore_pb
@@ -261,7 +261,7 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 1)
-        self.assertEqual(keys[0], key_pb)
+        _compare_key_pb_after_request(self, key_pb, keys[0])
         self.assertEqual(request.read_options.read_consistency,
                          datastore_pb.ReadOptions.EVENTUAL)
         self.assertEqual(request.read_options.transaction, '')
@@ -301,7 +301,7 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 1)
-        self.assertEqual(keys[0], key_pb)
+        _compare_key_pb_after_request(self, key_pb, keys[0])
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_lookup_single_key_nonempty_response(self):
@@ -333,7 +333,7 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 1)
-        self.assertEqual(keys[0], key_pb)
+        _compare_key_pb_after_request(self, key_pb, keys[0])
 
     def test_lookup_multiple_keys_empty_response(self):
         from gcloud.datastore.connection import datastore_pb
@@ -360,8 +360,8 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 2)
-        self.assertEqual(keys[0], key_pb1)
-        self.assertEqual(keys[1], key_pb2)
+        _compare_key_pb_after_request(self, key_pb1, keys[0])
+        _compare_key_pb_after_request(self, key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_missing(self):
         from gcloud.datastore.connection import datastore_pb
@@ -396,8 +396,8 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 2)
-        self.assertEqual(keys[0], key_pb1)
-        self.assertEqual(keys[1], key_pb2)
+        _compare_key_pb_after_request(self, key_pb1, keys[0])
+        _compare_key_pb_after_request(self, key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_missing_non_empty(self):
         DATASET_ID = 'DATASET'
@@ -444,8 +444,8 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 2)
-        self.assertEqual(keys[0], key_pb1)
-        self.assertEqual(keys[1], key_pb2)
+        _compare_key_pb_after_request(self, key_pb1, keys[0])
+        _compare_key_pb_after_request(self, key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_deferred_non_empty(self):
         DATASET_ID = 'DATASET'
@@ -500,8 +500,8 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw[0]['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 2)
-        self.assertEqual(keys[0], key_pb1)
-        self.assertEqual(keys[1], key_pb2)
+        _compare_key_pb_after_request(self, key_pb1, keys[0])
+        _compare_key_pb_after_request(self, key_pb2, keys[1])
 
         self._verifyProtobufCall(cw[1], URI, conn)
         request.ParseFromString(cw[1]['body'])
@@ -907,7 +907,9 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb.AllocateIdsRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(list(request.key), before_key_pbs)
+        self.assertEqual(len(request.key), len(before_key_pbs))
+        for key_before, key_after in zip(before_key_pbs, request.key):
+            _compare_key_pb_after_request(self, key_before, key_after)
 
     def test_save_entity_wo_transaction_w_upsert(self):
         from gcloud.datastore.connection import datastore_pb
@@ -938,7 +940,7 @@ class TestConnection(unittest2.TestCase):
         upserts = list(mutation.upsert)
         self.assertEqual(len(upserts), 1)
         upsert = upserts[0]
-        self.assertEqual(upsert.key, key_pb)
+        _compare_key_pb_after_request(self, key_pb, upsert.key)
         props = list(upsert.property)
         self.assertEqual(len(props), 1)
         self.assertEqual(props[0].name, 'foo')
@@ -979,7 +981,7 @@ class TestConnection(unittest2.TestCase):
         upserts = list(mutation.upsert)
         self.assertEqual(len(upserts), 1)
         upsert = upserts[0]
-        self.assertEqual(upsert.key, key_pb)
+        _compare_key_pb_after_request(self, key_pb, upsert.key)
         props = sorted(upsert.property,
                        key=operator.attrgetter('name'),
                        reverse=True)
@@ -1028,7 +1030,7 @@ class TestConnection(unittest2.TestCase):
         mutation = request.mutation
         inserts = list(mutation.insert_auto_id)
         insert = inserts[0]
-        self.assertEqual(insert.key, key_pb)
+        _compare_key_pb_after_request(self, key_pb, insert.key)
         props = list(insert.property)
         self.assertEqual(len(props), 1)
         self.assertEqual(props[0].name, 'foo')
@@ -1112,7 +1114,7 @@ class TestConnection(unittest2.TestCase):
         deletes = list(mutation.delete)
         self.assertEqual(len(deletes), 1)
         delete = deletes[0]
-        self.assertEqual(delete, key_pb)
+        _compare_key_pb_after_request(self, key_pb, delete)
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_delete_entities_w_transaction(self):
@@ -1168,3 +1170,13 @@ class Transaction(object):
 
     def id(self):
         return self._id
+
+
+def _compare_key_pb_after_request(test, key_before, key_after):
+    test.assertFalse(key_after.partition_id.HasField('dataset_id'))
+    test.assertEqual(key_before.partition_id.namespace,
+                     key_after.partition_id.namespace)
+    test.assertEqual(len(key_before.path_element),
+                     len(key_after.path_element))
+    for elt1, elt2 in zip(key_before.path_element, key_after.path_element):
+        test.assertEqual(elt1, elt2)

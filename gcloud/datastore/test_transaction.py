@@ -94,7 +94,8 @@ class TestTransaction(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 123
         connection = _Connection(234)
-        connection._commit_result = _CommitResult(_makeKey(_KIND, _ID))
+        connection._commit_result = _CommitResult(
+            _make_key(_KIND, _ID, _DATASET))
         dataset = _Dataset(_DATASET, connection)
         xact = self._makeOne(dataset)
         entity = _Entity()
@@ -157,10 +158,11 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.id(), None)
 
 
-def _makeKey(kind, id):
+def _make_key(kind, id, dataset_id):
     from gcloud.datastore.datastore_v1_pb2 import Key
 
     key = Key()
+    key.partition_id.dataset_id = dataset_id
     elem = key.path_element.add()
     elem.kind = kind
     elem.id = id
@@ -211,20 +213,13 @@ class _CommitResult(object):
         self.insert_auto_id_key = new_keys
 
 
-class _Key(object):
-    _path = None
-
-    def _clone(self):
-        return _Key()
-
-
 class _Entity(object):
-    _marker = object()
 
     def __init__(self):
-        self._key = _Key()
+        from gcloud.datastore.key import Key
+        self._key = Key('KIND', dataset_id='DATASET')
 
-    def key(self, key=_marker):
-        if key is self._marker:
-            return self._key
-        self._key = key
+    def key(self, key=None):
+        if key is not None:
+            self._key = key
+        return self._key
