@@ -87,7 +87,7 @@ def add_characters():
             if key_path[-1] != character['name']:
                 raise ValueError(('Character and key don\'t agree',
                                   key_path, character))
-            key = datastore.key.Key(*key_path)
+            key = datastore.key.Key(*key_path, dataset_id=dataset.id())
             entity = datastore.entity.Entity(dataset=dataset).key(key)
             entity.update(character)
             entity.save()

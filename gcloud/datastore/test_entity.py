@@ -61,7 +61,7 @@ class TestEntity(unittest2.TestCase):
         entity = self._makeOne()
         key = entity.key()
         self.assertIsInstance(key, Key)
-        self.assertEqual(key.dataset_id, None)
+        self.assertEqual(key.dataset_id, entity.dataset().id())
         self.assertEqual(key.kind, _KIND)
 
     def test_key_setter(self):
@@ -196,7 +196,7 @@ class TestEntity(unittest2.TestCase):
         connection = _Connection()
         connection._save_result = (True, _ID)
         dataset = _Dataset(connection)
-        key = Key('KIND', dataset_id='DATASET')
+        key = Key('KIND', dataset_id=_DATASET_ID)
         entity = self._makeOne(dataset, exclude_from_indexes=['foo'])
         entity.key(key)
         entity['foo'] = 'Foo'

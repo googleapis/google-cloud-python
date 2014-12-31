@@ -17,8 +17,15 @@ import unittest2
 
 class TestKey(unittest2.TestCase):
 
+    def setUp(self):
+        self._DEFAULT_DATASET = 'DATASET'
+
     def _getTargetClass(self):
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
+
+        _implicit_environ.DATASET = Dataset(self._DEFAULT_DATASET)
         return Key
 
     def _makeOne(self, *args, **kwargs):
@@ -27,14 +34,22 @@ class TestKey(unittest2.TestCase):
     def test_ctor_empty(self):
         self.assertRaises(ValueError, self._makeOne)
 
+    def test_ctor_no_dataset(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+        klass = self._getTargetClass()
+        with _Monkey(_implicit_environ, DATASET=None):
+            self.assertRaises(ValueError, klass, 'KIND')
+
     def test_ctor_explicit(self):
-        _DATASET = 'DATASET'
+        _DATASET = 'DATASET-ALT'
         _NAMESPACE = 'NAMESPACE'
         _KIND = 'KIND'
         _ID = 1234
         _PATH = [{'kind': _KIND, 'id': _ID}]
         key = self._makeOne(_KIND, _ID, namespace=_NAMESPACE,
                             dataset_id=_DATASET)
+        self.assertNotEqual(_DATASET, self._DEFAULT_DATASET)
         self.assertEqual(key.dataset_id, _DATASET)
         self.assertEqual(key.namespace, _NAMESPACE)
         self.assertEqual(key.kind, _KIND)
@@ -49,7 +64,7 @@ class TestKey(unittest2.TestCase):
         self.assertRaises(ValueError, self._makeOne, 'KIND', 10, 'KIND2', None)
 
     def test__clone(self):
-        _DATASET = 'DATASET'
+        _DATASET = 'DATASET-ALT'
         _NAMESPACE = 'NAMESPACE'
         _KIND = 'KIND'
         _ID = 1234
@@ -94,8 +109,7 @@ class TestKey(unittest2.TestCase):
         self.assertTrue(isinstance(pb, KeyPB))
 
         # Check partition ID.
-        self.assertEqual(pb.partition_id.dataset_id, '')
-        self.assertFalse(pb.partition_id.HasField('dataset_id'))
+        self.assertEqual(pb.partition_id.dataset_id, self._DEFAULT_DATASET)
         self.assertEqual(pb.partition_id.namespace, '')
         self.assertFalse(pb.partition_id.HasField('namespace'))
 
@@ -108,7 +122,7 @@ class TestKey(unittest2.TestCase):
         self.assertFalse(elem.HasField('id'))
 
     def test_to_protobuf_w_explicit_dataset(self):
-        _DATASET = 'DATASET'
+        _DATASET = 'DATASET-ALT'
         key = self._makeOne('KIND', dataset_id=_DATASET)
         pb = key.to_protobuf()
         self.assertEqual(pb.partition_id.dataset_id, _DATASET)
@@ -139,7 +153,6 @@ class TestKey(unittest2.TestCase):
         # on this? The backend certainly will.
         key._path[-1].pop('kind')
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.dataset_id, '')
         self.assertFalse(pb.path_element[0].HasField('kind'))
 
     def test_is_partial_no_name_or_id(self):

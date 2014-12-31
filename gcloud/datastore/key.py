@@ -18,6 +18,7 @@ import copy
 from itertools import izip
 import six
 
+from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
 
@@ -56,24 +57,31 @@ class Key(object):
                           passed as a keyword argument.
 
         :type dataset_id: string
-        :param dataset_id: The dataset ID associated with the key. Can only be
-                           passed as a keyword argument.
-
-        # This note will be obsolete by the end of #451.
-
-        .. note::
-           The key's ``_dataset_id`` field must be None for keys created
-           by application code.  The
-           :func:`gcloud.datastore.helpers.key_from_protobuf` factory
-           will be set the field to an appropriate value for keys
-           returned from the datastore backend.  The application
-           **must** treat any value set by the back-end as opaque.
+        :param dataset_id: The dataset ID associated with the key. Required,
+                           unless the implicit dataset ID has been set. Can
+                           only be passed as a keyword argument.
         """
         self._path = self._parse_path(path_args)
         self._flat_path = path_args
         self._parent = None
         self._namespace = kwargs.get('namespace')
         self._dataset_id = kwargs.get('dataset_id')
+        self._validate_dataset_id()
+
+    def _validate_dataset_id(self):
+        """Ensures the dataset ID is set.
+
+        If unset, attempts to imply the ID from the environment.
+
+        :raises: `ValueError` if there is no `dataset_id` and none
+                 can be implied.
+        """
+        if self._dataset_id is None:
+            if _implicit_environ.DATASET is not None:
+                # This assumes DATASET.id() is not None.
+                self._dataset_id = _implicit_environ.DATASET.id()
+            else:
+                raise ValueError('A Key must have a dataset ID set.')
 
     @staticmethod
     def _parse_path(path_args):
@@ -160,9 +168,7 @@ class Key(object):
         :returns: The Protobuf representing the key.
         """
         key = datastore_pb.Key()
-
-        if self.dataset_id is not None:
-            key.partition_id.dataset_id = self.dataset_id
+        key.partition_id.dataset_id = self.dataset_id
 
         if self.namespace:
             key.partition_id.namespace = self.namespace
@@ -297,4 +303,4 @@ class Key(object):
         return self._parent
 
     def __repr__(self):
-        return '<Key%s>' % self.path
+        return '<Key%s, dataset=%s>' % (self.path, self.dataset_id)

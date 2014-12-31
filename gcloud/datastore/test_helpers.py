@@ -90,10 +90,11 @@ class Test_key_from_protobuf(unittest2.TestCase):
 
         return key_from_protobuf(val)
 
-    def _makePB(self, dataset_id, namespace=None, path=()):
+    def _makePB(self, dataset_id=None, namespace=None, path=()):
         from gcloud.datastore.datastore_v1_pb2 import Key
         pb = Key()
-        pb.partition_id.dataset_id = dataset_id
+        if dataset_id is not None:
+            pb.partition_id.dataset_id = dataset_id
         if namespace is not None:
             pb.partition_id.namespace = namespace
         for elem in path:
@@ -130,6 +131,10 @@ class Test_key_from_protobuf(unittest2.TestCase):
         pb = self._makePB(path=_PATH, dataset_id='DATASET')
         key = self._callFUT(pb)
         self.assertEqual(key.path, _PATH)
+
+    def test_w_nothing_in_pb(self):
+        pb = self._makePB()
+        self.assertRaises(ValueError, self._callFUT, pb)
 
 
 class Test__pb_attr_value(unittest2.TestCase):
@@ -465,3 +470,28 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(marshalled[0].string_value, values[0])
         self.assertEqual(marshalled[1].integer_value, values[1])
         self.assertEqual(marshalled[2].double_value, values[2])
+
+
+class Test__prepare_key_for_request(unittest2.TestCase):
+
+    def _callFUT(self, key_pb):
+        from gcloud.datastore.helpers import _prepare_key_for_request
+
+        return _prepare_key_for_request(key_pb)
+
+    def test_prepare_dataset_valid(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        key = datastore_pb.Key()
+        key.partition_id.dataset_id = 'foo'
+        new_key = self._callFUT(key)
+        self.assertFalse(new_key is key)
+
+        key_without = datastore_pb.Key()
+        new_key.ClearField('partition_id')
+        self.assertEqual(new_key, key_without)
+
+    def test_prepare_dataset_unset(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        key = datastore_pb.Key()
+        new_key = self._callFUT(key)
+        self.assertTrue(new_key is key)
