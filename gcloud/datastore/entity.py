@@ -15,7 +15,6 @@
 """Class for representing a single entity in the Cloud Datastore."""
 
 from gcloud.datastore import _implicit_environ
-from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.key import Key
 
 
@@ -241,7 +240,7 @@ class Entity(dict):
         key = self._must_key
         dataset = self._must_dataset
         connection = dataset.connection()
-        key_pb = connection.save_entity(
+        assigned, new_id = connection.save_entity(
             dataset_id=dataset.id(),
             key_pb=key.to_protobuf(),
             properties=dict(self),
@@ -253,9 +252,9 @@ class Entity(dict):
         if transaction and key.is_partial:
             transaction.add_auto_id_entity(self)
 
-        if isinstance(key_pb, datastore_pb.Key):
+        if assigned:
             # Update the key (which may have been altered).
-            self.key(self.key().compare_to_proto(key_pb))
+            self.key(self.key().completed_key(new_id))
 
         return self
 

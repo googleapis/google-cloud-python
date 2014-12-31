@@ -444,6 +444,11 @@ class Connection(connection.Connection):
 
         :type exclude_from_indexes: sequence of str
         :param exclude_from_indexes: Names of properties *not* to be indexed.
+
+        :rtype: :class:`tuple`
+        :returns: The pair (`assigned`, `new_id`) where `assigned` is a boolean
+                  indicating if a new ID has been assigned and `new_id` is
+                  either `None` or an integer that has been assigned.
         """
         mutation = self.mutation()
 
@@ -477,14 +482,18 @@ class Connection(connection.Connection):
         # If this is in a transaction, we should just return True. The
         # transaction will handle assigning any keys as necessary.
         if self.transaction():
-            return True
+            return False, None
 
         result = self.commit(dataset_id, mutation)
-        # If this was an auto-assigned ID, return the new Key.
+        # If this was an auto-assigned ID, return the new Key. We don't
+        # verify that this matches the original `key_pb` but trust the
+        # backend to uphold the values sent (e.g. dataset ID).
         if auto_id:
-            return result.insert_auto_id_key[0]
+            inserted_key_pb = result.insert_auto_id_key[0]
+            # Assumes the backend has set `id` without checking HasField('id').
+            return True, inserted_key_pb.path_element[-1].id
 
-        return True
+        return False, None
 
     def delete_entities(self, dataset_id, key_pbs):
         """Delete keys from a dataset in the Cloud Datastore.

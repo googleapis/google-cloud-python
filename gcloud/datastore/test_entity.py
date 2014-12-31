@@ -194,7 +194,7 @@ class TestEntity(unittest2.TestCase):
         key_pb.partition_id.dataset_id = _DATASET_ID
         key_pb.path_element.add(kind=_KIND, id=_ID)
         connection = _Connection()
-        connection._save_result = key_pb
+        connection._save_result = (True, _ID)
         dataset = _Dataset(connection)
         key = Key('KIND', dataset_id='DATASET')
         entity = self._makeOne(dataset, exclude_from_indexes=['foo'])
@@ -287,12 +287,12 @@ class _Dataset(dict):
         return [self.get(key) for key in keys]
 
     def allocate_ids(self, incomplete_key, num_ids):
-        return [incomplete_key.complete_key(i + 1) for i in range(num_ids)]
+        return [incomplete_key.completed_key(i + 1) for i in range(num_ids)]
 
 
 class _Connection(object):
     _transaction = _saved = _deleted = None
-    _save_result = True
+    _save_result = (False, None)
 
     def transaction(self):
         return self._transaction

@@ -926,7 +926,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
-        self.assertEqual(result, True)
+        self.assertEqual(result, (False, None))
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.CommitRequest
@@ -967,7 +967,7 @@ class TestConnection(unittest2.TestCase):
         result = conn.save_entity(DATASET_ID, key_pb,
                                   {'foo': u'Foo', 'bar': [u'bar1', u'bar2']},
                                   exclude_from_indexes=['foo', 'bar'])
-        self.assertEqual(result, True)
+        self.assertEqual(result, (False, None))
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.CommitRequest
@@ -1018,7 +1018,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
-        self.assertEqual(result, updated_key_pb)
+        self.assertEqual(result, (True, 1234))
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.CommitRequest
@@ -1054,7 +1054,7 @@ class TestConnection(unittest2.TestCase):
         conn.transaction(Xact())
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
-        self.assertEqual(result, True)
+        self.assertEqual(result, (False, None))
         self.assertEqual(http._called_with, None)
         mutation = conn.mutation()
         self.assertEqual(len(mutation.upsert), 1)
@@ -1077,7 +1077,7 @@ class TestConnection(unittest2.TestCase):
         conn.transaction(Xact())
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result = conn.save_entity(DATASET_ID, key_pb, {'foo': nested})
-        self.assertEqual(result, True)
+        self.assertEqual(result, (False, None))
         self.assertEqual(http._called_with, None)
         mutation = conn.mutation()
         self.assertEqual(len(mutation.upsert), 1)
