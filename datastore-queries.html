@@ -116,7 +116,7 @@ generates a query that can be executed without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<tt class="descname">OPERATORS</tt><em class="property"> = {'&lt;': 1, '=': 5, '&gt;': 3, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;=': 4, '&lt;': 1, '&gt;': 3, '&lt;=': 2, '=': 5}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -126,7 +126,7 @@ generates a query that can be executed without any additional work:</p>
 <dd><p>Filter the query based on an ancestor.</p>
 <p>This will return a clone of the current <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> filtered
 by the ancestor provided.  For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">parent_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="p">[{</span><span class="s">&#39;kind&#39;</span><span class="p">:</span> <span class="s">&#39;Person&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;1&#39;</span><span class="p">}])</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">parent_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">ancestor</span><span class="p">(</span><span class="n">parent_key</span><span class="p">)</span>
 </pre></div>

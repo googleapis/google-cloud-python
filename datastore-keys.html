@@ -77,27 +77,47 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>Create / interact with gcloud datastore keys.</p>
 <dl class="class">
 <dt id="gcloud.datastore.key.Key">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.key.</tt><tt class="descname">Key</tt><big>(</big><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.key.</tt><tt class="descname">Key</tt><big>(</big><em>*path_args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>An immutable representation of a datastore Key.</p>
+<p>To create a basic key:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<span class="go">&lt;Key[{&#39;kind&#39;: &#39;EntityKind&#39;, &#39;id&#39;: 1234}]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">)</span>
+<span class="go">&lt;Key[{&#39;kind&#39;: &#39;EntityKind&#39;, &#39;name&#39;: &#39;foo&#39;}]&gt;</span>
+</pre></div>
+</div>
+<p>To create a key with a parent:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Parent&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;, &#39;id&#39;: 1234}]&gt;</span>
+</pre></div>
+</div>
+<p>To create a paritial key:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Parent&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;Child&#39;</span><span class="p">)</span>
+<span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;}]&gt;</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.__init__">
-<tt class="descname">__init__</tt><big>(</big><em>path=None</em>, <em>namespace=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.__init__" title="Permalink to this definition">#</a></dt>
+<tt class="descname">__init__</tt><big>(</big><em>*path_args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Constructor / initializer for a key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key.</li>
-<li><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
-&#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</li>
-<li><strong>dataset</strong> &#8211; The dataset ID assigned by back-end for the key.</li>
+<li><strong>path_args</strong> (<em>tuple of strings and ints</em>) &#8211; May represent a partial (odd length) or full (even
+length) key path.</li>
+<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key. Can only be
+passed as a keyword argument.</li>
+<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset ID associated with the key. Can only be
+passed as a keyword argument.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<p># This note will be obsolete by the end of #451.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The key&#8217;s <tt class="docutils literal"><span class="pre">_dataset_id</span></tt> field must be None for keys created
@@ -115,15 +135,18 @@ returned from the datastore backend.  The application
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key.</li>
-<li><strong>path</strong> (<em>sequence of dicts</em>) &#8211; Each dict must have keys &#8216;kind&#8217; (a string) and optionally
-&#8216;name&#8217; (a string) or &#8216;id&#8217; (an integer).</li>
-<li><strong>dataset</strong> &#8211; The dataset ID assigned by back-end for the key.</li>
+<li><strong>path_args</strong> (<em>tuple of strings and ints</em>) &#8211; May represent a partial (odd length) or full (even
+length) key path.</li>
+<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key. Can only be
+passed as a keyword argument.</li>
+<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset ID associated with the key. Can only be
+passed as a keyword argument.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<p># This note will be obsolete by the end of #451.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The key&#8217;s <tt class="docutils literal"><span class="pre">_dataset_id</span></tt> field must be None for keys created
@@ -144,6 +167,22 @@ returned from the datastore backend.  The application
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key&#8217;s dataset.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.datastore.key.Key.flat_path">
+<tt class="descname">flat_path</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.flat_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.flat_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Getter for the key path as a tuple.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt> of string and int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The tuple of elements in the path.</td>
 </tr>
 </tbody>
 </table>
@@ -250,7 +289,7 @@ an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
 <dl class="attribute">
 <dt id="gcloud.datastore.key.Key.parent">
 <tt class="descname">parent</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.parent" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter:  return a new key for the next highest element in path.</p>
+<dd><p>The parent of the current key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
