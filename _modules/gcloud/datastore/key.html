@@ -201,6 +201,32 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
+<div class="viewcode-block" id="Key.completed_key"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.completed_key">[docs]</a>    <span class="k">def</span> <span class="nf">completed_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_or_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates new key from existing partial key by adding final ID/name.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">        :returns: A new `Key` instance with the same data as the current one</span>
+<span class="sd">                  and an extra ID or name added.</span>
+<span class="sd">        :raises: `ValueError` if the current key is not partial or if</span>
+<span class="sd">                 `id_or_name` is not a string or integer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Only a partial key can be completed.&#39;</span><span class="p">)</span>
+
+        <span class="n">id_or_name_key</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
+            <span class="n">id_or_name_key</span> <span class="o">=</span> <span class="s">&#39;name&#39;</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
+            <span class="n">id_or_name_key</span> <span class="o">=</span> <span class="s">&#39;id&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span>
+                             <span class="s">&#39;ID/name was not a string or integer.&#39;</span><span class="p">)</span>
+
+        <span class="n">new_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
+        <span class="n">new_key</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">id_or_name_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>
+        <span class="n">new_key</span><span class="o">.</span><span class="n">_flat_path</span> <span class="o">+=</span> <span class="p">(</span><span class="n">id_or_name</span><span class="p">,)</span>
+        <span class="k">return</span> <span class="n">new_key</span>
+</div>
 <div class="viewcode-block" id="Key.to_protobuf"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.to_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a protobuf corresponding to the key.</span>
 

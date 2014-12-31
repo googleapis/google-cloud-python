@@ -156,6 +156,26 @@ will be set the field to an appropriate value for keys
 returned from the datastore backend.  The application
 <strong>must</strong> treat any value set by the back-end as opaque.</p>
 </div>
+<dl class="method">
+<dt id="gcloud.datastore.key.Key.completed_key">
+<tt class="descname">completed_key</tt><big>(</big><em>id_or_name</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.completed_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.completed_key" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates new key from existing partial key by adding final ID/name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new <cite>Key</cite> instance with the same data as the current one
+and an extra ID or name added.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><cite>ValueError</cite> if the current key is not partial or if
+<cite>id_or_name</cite> is not a string or integer.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="gcloud.datastore.key.Key.dataset_id">
 <tt class="descname">dataset_id</tt><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.dataset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.dataset_id" title="Permalink to this definition">#</a></dt>
