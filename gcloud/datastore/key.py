@@ -153,8 +153,14 @@ class Key(object):
             # We know that _parent.path() will return a copy.
             child_path = self._parent.path + child_path
             self._flat_path = self._parent.flat_path + self._flat_path
-            self._namespace = self._namespace or self._parent.namespace
-            self._dataset_id = self._dataset_id or self._parent.dataset_id
+            if (self._namespace is not None and
+                    self._namespace != self._parent.namespace):
+                raise ValueError('Child namespace must agree with parent\'s.')
+            self._namespace = self._parent.namespace
+            if (self._dataset_id is not None and
+                    self._dataset_id != self._parent.dataset_id):
+                raise ValueError('Child dataset ID must agree with parent\'s.')
+            self._dataset_id = self._parent.dataset_id
 
         return child_path
 
@@ -168,8 +174,9 @@ class Key(object):
         :rtype: :class:`gcloud.datastore.key.Key`
         :returns: A new `Key` instance with the same data as the current one.
         """
-        return Key(*self.flat_path, parent=self.parent,
-                   dataset_id=self.dataset_id, namespace=self.namespace)
+        return self.__class__(*self.flat_path, parent=self.parent,
+                              dataset_id=self.dataset_id,
+                              namespace=self.namespace)
 
     def completed_key(self, id_or_name):
         """Creates new key from existing partial key by adding final ID/name.
@@ -321,8 +328,8 @@ class Key(object):
         else:
             parent_args = self.flat_path[:-2]
         if parent_args:
-            return Key(*parent_args, dataset_id=self.dataset_id,
-                       namespace=self.namespace)
+            return self.__class__(*parent_args, dataset_id=self.dataset_id,
+                                  namespace=self.namespace)
 
     @property
     def parent(self):

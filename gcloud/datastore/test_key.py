@@ -71,6 +71,16 @@ class TestKey(unittest2.TestCase):
         with self.assertRaises(AttributeError):
             self._makeOne('KIND2', 1234, parent=('KIND1', 1234))
 
+    def test_ctor_parent_bad_namespace(self):
+        parent_key = self._makeOne('KIND', 1234, namespace='FOO')
+        with self.assertRaises(ValueError):
+            self._makeOne('KIND2', 1234, namespace='BAR', parent=parent_key)
+
+    def test_ctor_parent_bad_dataset_id(self):
+        parent_key = self._makeOne('KIND', 1234, dataset_id='FOO')
+        with self.assertRaises(ValueError):
+            self._makeOne('KIND2', 1234, dataset_id='BAR', parent=parent_key)
+
     def test_ctor_explicit(self):
         _DATASET = 'DATASET-ALT'
         _NAMESPACE = 'NAMESPACE'
