@@ -60,12 +60,18 @@ class Key(object):
         :param dataset_id: The dataset ID associated with the key. Required,
                            unless the implicit dataset ID has been set. Can
                            only be passed as a keyword argument.
+
+        :type parent: :class:`gcloud.datastore.key.Key`
+        :param parent: The parent of the key. Can only be passed as a
+                       keyword argument.
         """
-        self._path = self._parse_path(path_args)
         self._flat_path = path_args
-        self._parent = None
+        self._parent = kwargs.get('parent')
         self._namespace = kwargs.get('namespace')
         self._dataset_id = kwargs.get('dataset_id')
+        # _flat_path, _parent, _namespace and _dataset_id must be set before
+        # _combine_args() is called.
+        self._path = self._combine_args()
         self._validate_dataset_id()
 
     def _validate_dataset_id(self):
@@ -86,6 +92,11 @@ class Key(object):
     @staticmethod
     def _parse_path(path_args):
         """Parses positional arguments into key path with kinds and IDs.
+
+        :type path_args: :class:`tuple`
+        :param path_args: A tuple from positional arguments. Should be
+                          alternating list of kinds (string) and id/name
+                          parts (int or string).
 
         :rtype: list of dict
         :returns: A list of key parts with kind and id or name set.
@@ -123,17 +134,49 @@ class Key(object):
 
         return result
 
+    def _combine_args(self):
+        """Sets protected data by combining raw data set from the constructor.
+
+        If a _parent is set, updates the _flat_path and sets the
+        _namespace and _dataset_id if not already set.
+
+        :rtype: list of dict
+        :returns: A list of key parts with kind and id or name set.
+        :raises: `ValueError` if the parent key is not complete.
+        """
+        child_path = self._parse_path(self._flat_path)
+
+        if self._parent is not None:
+            if self._parent.is_partial:
+                raise ValueError('Parent key must be complete.')
+
+            # We know that _parent.path() will return a copy.
+            child_path = self._parent.path + child_path
+            self._flat_path = self._parent.flat_path + self._flat_path
+            if (self._namespace is not None and
+                    self._namespace != self._parent.namespace):
+                raise ValueError('Child namespace must agree with parent\'s.')
+            self._namespace = self._parent.namespace
+            if (self._dataset_id is not None and
+                    self._dataset_id != self._parent.dataset_id):
+                raise ValueError('Child dataset ID must agree with parent\'s.')
+            self._dataset_id = self._parent.dataset_id
+
+        return child_path
+
     def _clone(self):
         """Duplicates the Key.
 
-        We make a shallow copy of the :class:`gcloud.datastore.dataset.Dataset`
-        because it holds a reference an authenticated connection,
-        which we don't want to lose.
+        Most attributes are simple types, so don't require copying. Other
+        attributes like `parent` are long-lived and so we re-use them rather
+        than creating copies.
 
         :rtype: :class:`gcloud.datastore.key.Key`
-        :returns: a new `Key` instance
+        :returns: A new `Key` instance with the same data as the current one.
         """
-        return copy.deepcopy(self)
+        return self.__class__(*self.flat_path, parent=self.parent,
+                              dataset_id=self.dataset_id,
+                              namespace=self.namespace)
 
     def completed_key(self, id_or_name):
         """Creates new key from existing partial key by adding final ID/name.
@@ -285,8 +328,8 @@ class Key(object):
         else:
             parent_args = self.flat_path[:-2]
         if parent_args:
-            return Key(*parent_args, dataset_id=self.dataset_id,
-                       namespace=self.namespace)
+            return self.__class__(*parent_args, dataset_id=self.dataset_id,
+                                  namespace=self.namespace)
 
     @property
     def parent(self):
