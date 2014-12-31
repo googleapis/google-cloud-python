@@ -196,17 +196,5 @@ class Dataset(object):
             self.id(), incomplete_key_pbs)
         allocated_ids = [allocated_key_pb.path_element[-1].id
                          for allocated_key_pb in allocated_key_pbs]
-
-        # This method is temporary and will move over to Key in
-        # part 5 of #451.
-        def create_new_key(new_id):
-            """Temporary method to complete `incomplete_key`.
-
-            Uses `incomplete_key` from outside scope.
-            """
-            clone = incomplete_key._clone()
-            clone._path[-1]['id'] = new_id
-            return clone
-
-        return [create_new_key(allocated_id)
+        return [incomplete_key.completed_key(allocated_id)
                 for allocated_id in allocated_ids]
