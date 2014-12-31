@@ -57,8 +57,9 @@ class Key(object):
                           passed as a keyword argument.
 
         :type dataset_id: string
-        :param dataset_id: The dataset ID associated with the key. This is
-                           required. Can only be passed as a keyword argument.
+        :param dataset_id: The dataset ID associated with the key. Required,
+                           unless the implicit dataset ID has been set. Can
+                           only be passed as a keyword argument.
         """
         self._path = self._parse_path(path_args)
         self._flat_path = path_args
