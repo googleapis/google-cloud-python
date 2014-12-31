@@ -74,7 +74,7 @@ class TestEntity(unittest2.TestCase):
         from gcloud.datastore.key import Key
 
         klass = self._getTargetClass()
-        key = Key(path=[{'kind': _KIND, 'id': _ID}])
+        key = Key(_KIND, _ID, dataset_id='DATASET')
         entity = klass.from_key(key)
         self.assertTrue(entity.dataset() is None)
         self.assertEqual(entity.kind(), _KIND)
@@ -88,7 +88,7 @@ class TestEntity(unittest2.TestCase):
 
         klass = self._getTargetClass()
         dataset = Dataset(_DATASET_ID)
-        key = Key(path=[{'kind': _KIND, 'id': _ID}])
+        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
         entity = klass.from_key(key, dataset)
         self.assertTrue(entity.dataset() is dataset)
         self.assertEqual(entity.kind(), _KIND)
@@ -196,8 +196,7 @@ class TestEntity(unittest2.TestCase):
         connection = _Connection()
         connection._save_result = key_pb
         dataset = _Dataset(connection)
-        key = Key()
-        # key_pb_before = key.to_protobuf()
+        key = Key('KIND', dataset_id='DATASET')
         entity = self._makeOne(dataset, exclude_from_indexes=['foo'])
         entity.key(key)
         entity['foo'] = 'Foo'

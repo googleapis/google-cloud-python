@@ -41,7 +41,7 @@ class TestDatastore(unittest2.TestCase):
 class TestDatastoreAllocateIDs(TestDatastore):
 
     def test_allocate_ids(self):
-        incomplete_key = datastore.key.Key(path=[{'kind': 'Kind'}])
+        incomplete_key = datastore.key.Key('Kind')
         num_ids = 10
         allocated_keys = datastore.allocate_ids(incomplete_key, num_ids)
         self.assertEqual(len(allocated_keys), num_ids)
@@ -74,9 +74,9 @@ class TestDatastoreSave(TestDatastore):
         # Update the entity key.
         key = None
         if name is not None:
-            key = datastore.key.Key(path=[{'kind': 'Post', 'name': name}])
+            key = datastore.key.Key('Post', name)
         if key_id is not None:
-            key = datastore.key.Key(path=[{'kind': 'Post', 'id': key_id}])
+            key = datastore.key.Key('Post', key_id)
         if key is not None:
             entity.key(key)
 
@@ -146,7 +146,7 @@ class TestDatastoreSave(TestDatastore):
 class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
-        key = datastore.key.Key(path=[{'kind': 'Person', 'name': 'name'}])
+        key = datastore.key.Key('Person', 'name')
         entity = datastore.entity.Entity(kind=None).key(key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
@@ -172,8 +172,7 @@ class TestDatastoreQuery(TestDatastore):
     def setUpClass(cls):
         super(TestDatastoreQuery, cls).setUpClass()
         cls.CHARACTERS = populate_datastore.CHARACTERS
-        cls.ANCESTOR_KEY = datastore.key.Key(
-            path=[populate_datastore.ANCESTOR])
+        cls.ANCESTOR_KEY = datastore.key.Key(*populate_datastore.ANCESTOR)
 
     def _base_query(self):
         return datastore.query.Query(kind='Character').ancestor(
@@ -220,8 +219,7 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
     def test_query___key___filter(self):
-        rickard_key = datastore.key.Key(
-            path=[populate_datastore.ANCESTOR, populate_datastore.RICKARD])
+        rickard_key = datastore.key.Key(*populate_datastore.RICKARD)
 
         query = self._base_query().filter('__key__', '=', rickard_key)
         expected_matches = 1
@@ -337,7 +335,7 @@ class TestDatastoreQuery(TestDatastore):
 class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
-        key = datastore.key.Key(path=[{'kind': 'Company', 'name': 'Google'}])
+        key = datastore.key.Key('Company', 'Google')
         entity = datastore.entity.Entity(kind=None).key(key)
         entity['url'] = u'www.google.com'
 

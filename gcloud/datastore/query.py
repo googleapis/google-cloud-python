@@ -172,7 +172,7 @@ class Query(_implicit_environ._DatastoreBase):
         This will return a clone of the current :class:`Query` filtered
         by the ancestor provided.  For example::
 
-          >>> parent_key = Key(path=[{'kind': 'Person', 'name': '1'}])
+          >>> parent_key = Key('Person', '1')
           >>> query = dataset.query('Person')
           >>> filtered_query = query.ancestor(parent_key)
 

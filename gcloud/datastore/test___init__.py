@@ -167,9 +167,9 @@ class Test_implicit_behavior(unittest2.TestCase):
         from gcloud._testing import _Monkey
 
         CUSTOM_DATASET = _Dataset()
-        INCOMPLETE_KEY = Key()
         NUM_IDS = 2
         with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET):
+            INCOMPLETE_KEY = Key('KIND')
             result = gcloud.datastore.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
 
         # Check the IDs returned.

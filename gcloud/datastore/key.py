@@ -15,6 +15,8 @@
 """Create / interact with gcloud datastore keys."""
 
 import copy
+from itertools import izip
+import six
 
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
@@ -22,21 +24,42 @@ from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 class Key(object):
     """An immutable representation of a datastore Key.
 
+    To create a basic key:
+
+      >>> Key('EntityKind', 1234)
+      <Key[{'kind': 'EntityKind', 'id': 1234}]>
+      >>> Key('EntityKind', 'foo')
+      <Key[{'kind': 'EntityKind', 'name': 'foo'}]>
+
+    To create a key with a parent:
+
+      >>> Key('Parent', 'foo', 'Child', 1234)
+      <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child', 'id': 1234}]>
+
+    To create a paritial key:
+
+      >>> Key('Parent', 'foo', 'Child')
+      <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child'}]>
+
     .. automethod:: __init__
     """
 
-    def __init__(self, path=None, namespace=None, dataset_id=None):
+    def __init__(self, *path_args, **kwargs):
         """Constructor / initializer for a key.
 
-        :type namespace: :class:`str`
-        :param namespace: A namespace identifier for the key.
+        :type path_args: tuple of strings and ints
+        :param path_args: May represent a partial (odd length) or full (even
+                          length) key path.
 
-        :type path: sequence of dicts
-        :param path: Each dict must have keys 'kind' (a string) and optionally
-                     'name' (a string) or 'id' (an integer).
+        :type namespace: :class:`str`
+        :param namespace: A namespace identifier for the key. Can only be
+                          passed as a keyword argument.
 
         :type dataset_id: string
-        :param dataset: The dataset ID assigned by back-end for the key.
+        :param dataset_id: The dataset ID associated with the key. Can only be
+                           passed as a keyword argument.
+
+        # This note will be obsolete by the end of #451.
 
         .. note::
            The key's ``_dataset_id`` field must be None for keys created
@@ -46,10 +69,51 @@ class Key(object):
            returned from the datastore backend.  The application
            **must** treat any value set by the back-end as opaque.
         """
-        self._path = path or [{'kind': ''}]
+        self._path = self._parse_path(path_args)
+        self._flat_path = path_args
         self._parent = None
-        self._namespace = namespace
-        self._dataset_id = dataset_id
+        self._namespace = kwargs.get('namespace')
+        self._dataset_id = kwargs.get('dataset_id')
+
+    @staticmethod
+    def _parse_path(path_args):
+        """Parses positional arguments into key path with kinds and IDs.
+
+        :rtype: list of dict
+        :returns: A list of key parts with kind and id or name set.
+        :raises: `ValueError` if there are no `path_args`, if one of the
+                 kinds is not a string or if one of the IDs/names is not
+                 a string or an integer.
+        """
+        if len(path_args) == 0:
+            raise ValueError('Key path must not be empty.')
+
+        kind_list = path_args[::2]
+        id_or_name_list = path_args[1::2]
+        # Dummy sentinel value to pad incomplete key to even length path.
+        partial_ending = object()
+        if len(path_args) % 2 == 1:
+            id_or_name_list += (partial_ending,)
+
+        result = []
+        for kind, id_or_name in izip(kind_list, id_or_name_list):
+            curr_key_part = {}
+            if isinstance(kind, six.string_types):
+                curr_key_part['kind'] = kind
+            else:
+                raise ValueError(kind, 'Kind was not a string.')
+
+            if isinstance(id_or_name, six.string_types):
+                curr_key_part['name'] = id_or_name
+            elif isinstance(id_or_name, six.integer_types):
+                curr_key_part['id'] = id_or_name
+            elif id_or_name is not partial_ending:
+                raise ValueError(id_or_name,
+                                 'ID/name was not a string or integer.')
+
+            result.append(curr_key_part)
+
+        return result
 
     def _clone(self):
         """Duplicates the Key.
@@ -74,8 +138,8 @@ class Key(object):
         if self.dataset_id is not None:
             key.partition_id.dataset_id = self.dataset_id
 
-        if self._namespace:
-            key.partition_id.namespace = self._namespace
+        if self.namespace:
+            key.partition_id.namespace = self.namespace
 
         for item in self.path:
             element = key.path_element.add()
@@ -119,14 +183,22 @@ class Key(object):
         return copy.deepcopy(self._path)
 
     @property
+    def flat_path(self):
+        """Getter for the key path as a tuple.
+
+        :rtype: :class:`tuple` of string and int
+        :returns: The tuple of elements in the path.
+        """
+        return self._flat_path
+
+    @property
     def kind(self):
         """Kind getter. Based on the last element of path.
 
         :rtype: :class:`str`
         :returns: The kind of the current key.
         """
-        if self.path:
-            return self.path[-1].get('kind')
+        return self.path[-1]['kind']
 
     @property
     def id(self):
@@ -135,8 +207,7 @@ class Key(object):
         :rtype: :class:`int`
         :returns: The (integer) ID of the key.
         """
-        if self.path:
-            return self.path[-1].get('id')
+        return self.path[-1].get('id')
 
     @property
     def name(self):
@@ -145,8 +216,7 @@ class Key(object):
         :rtype: :class:`str`
         :returns: The (string) name of the key.
         """
-        if self.path:
-            return self.path[-1].get('name')
+        return self.path[-1].get('name')
 
     @property
     def id_or_name(self):
@@ -178,14 +248,17 @@ class Key(object):
                   element of self's path. If self has only one path element,
                   returns None.
         """
-        parent_path = self.path[:-1]
-        if parent_path:
-            return Key(path=parent_path, dataset_id=self.dataset_id,
+        if self.is_partial:
+            parent_args = self.flat_path[:-1]
+        else:
+            parent_args = self.flat_path[:-2]
+        if parent_args:
+            return Key(*parent_args, dataset_id=self.dataset_id,
                        namespace=self.namespace)
 
     @property
     def parent(self):
-        """Getter:  return a new key for the next highest element in path.
+        """The parent of the current key.
 
         :rtype: :class:`gcloud.datastore.key.Key` or `NoneType`
         :returns: a new `Key` instance, whose path consists of all but the last

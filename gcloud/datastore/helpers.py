@@ -65,19 +65,15 @@ def key_from_protobuf(pb):
     :rtype: :class:`gcloud.datastore.key.Key`
     :returns: a new `Key` instance
     """
-    path = []
+    path_args = []
     for element in pb.path_element:
-        element_dict = {'kind': element.kind}
-
+        path_args.append(element.kind)
         if element.HasField('id'):
-            element_dict['id'] = element.id
-
+            path_args.append(element.id)
         # This is safe: we expect proto objects returned will only have
         # one of `name` or `id` set.
         if element.HasField('name'):
-            element_dict['name'] = element.name
-
-        path.append(element_dict)
+            path_args.append(element.name)
 
     dataset_id = None
     if pb.partition_id.HasField('dataset_id'):
@@ -86,7 +82,7 @@ def key_from_protobuf(pb):
     if pb.partition_id.HasField('namespace'):
         namespace = pb.partition_id.namespace
 
-    return Key(path, namespace, dataset_id)
+    return Key(*path_args, namespace=namespace, dataset_id=dataset_id)
 
 
 def _pb_attr_value(val):
