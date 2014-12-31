@@ -134,12 +134,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :param dataset_id: The dataset ID associated with the key. Required,</span>
 <span class="sd">                           unless the implicit dataset ID has been set. Can</span>
 <span class="sd">                           only be passed as a keyword argument.</span>
+
+<span class="sd">        :type parent: :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">        :param parent: The parent of the key. Can only be passed as a</span>
+<span class="sd">                       keyword argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_path</span><span class="p">(</span><span class="n">path_args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_flat_path</span> <span class="o">=</span> <span class="n">path_args</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;parent&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;namespace&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;dataset_id&#39;</span><span class="p">)</span>
+        <span class="c"># _flat_path, _parent, _namespace and _dataset_id must be set before</span>
+        <span class="c"># _combine_args() is called.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combine_args</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_dataset_id</span><span class="p">()</span>
 </div>
     <span class="k">def</span> <span class="nf">_validate_dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -160,6 +166,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_path</span><span class="p">(</span><span class="n">path_args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parses positional arguments into key path with kinds and IDs.</span>
+
+<span class="sd">        :type path_args: :class:`tuple`</span>
+<span class="sd">        :param path_args: A tuple from positional arguments. Should be</span>
+<span class="sd">                          alternating list of kinds (string) and id/name</span>
+<span class="sd">                          parts (int or string).</span>
 
 <span class="sd">        :rtype: list of dict</span>
 <span class="sd">        :returns: A list of key parts with kind and id or name set.</span>
@@ -197,17 +208,49 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">return</span> <span class="n">result</span>
 
+    <span class="k">def</span> <span class="nf">_combine_args</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets protected data by combining raw data set from the constructor.</span>
+
+<span class="sd">        If a _parent is set, updates the _flat_path and sets the</span>
+<span class="sd">        _namespace and _dataset_id if not already set.</span>
+
+<span class="sd">        :rtype: list of dict</span>
+<span class="sd">        :returns: A list of key parts with kind and id or name set.</span>
+<span class="sd">        :raises: `ValueError` if the parent key is not complete.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">child_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_flat_path</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Parent key must be complete.&#39;</span><span class="p">)</span>
+
+            <span class="c"># We know that _parent.path() will return a copy.</span>
+            <span class="n">child_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="n">child_path</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_flat_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">flat_path</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flat_path</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">namespace</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Child namespace must agree with parent</span><span class="se">\&#39;</span><span class="s">s.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">namespace</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Child dataset ID must agree with parent</span><span class="se">\&#39;</span><span class="s">s.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">dataset_id</span>
+
+        <span class="k">return</span> <span class="n">child_path</span>
+
     <span class="k">def</span> <span class="nf">_clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Duplicates the Key.</span>
 
-<span class="sd">        We make a shallow copy of the :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">        because it holds a reference an authenticated connection,</span>
-<span class="sd">        which we don&#39;t want to lose.</span>
+<span class="sd">        Most attributes are simple types, so don&#39;t require copying. Other</span>
+<span class="sd">        attributes like `parent` are long-lived and so we re-use them rather</span>
+<span class="sd">        than creating copies.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.key.Key`</span>
-<span class="sd">        :returns: a new `Key` instance</span>
+<span class="sd">        :returns: A new `Key` instance with the same data as the current one.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">flat_path</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span>
+                              <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+                              <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Key.completed_key"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.completed_key">[docs]</a>    <span class="k">def</span> <span class="nf">completed_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_or_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates new key from existing partial key by adding final ID/name.</span>
@@ -359,8 +402,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">else</span><span class="p">:</span>
             <span class="n">parent_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flat_path</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">parent_args</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Key</span><span class="p">(</span><span class="o">*</span><span class="n">parent_args</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
-                       <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="o">*</span><span class="n">parent_args</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+                                  <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Key.parent"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.parent">[docs]</a>    <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
