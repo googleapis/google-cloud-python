@@ -661,12 +661,20 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset in which to save the entity.</li>
 <li><strong>key_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The complete or partial key for the entity.</li>
 <li><strong>properties</strong> (<em>dict</em>) &#8211; The properties to store on the entity.</li>
 <li><strong>exclude_from_indexes</strong> (<em>sequence of str</em>) &#8211; Names of properties <em>not</em> to be indexed.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The pair (<cite>assigned</cite>, <cite>new_id</cite>) where <cite>assigned</cite> is a boolean
+indicating if a new ID has been assigned and <cite>new_id</cite> is
+either <cite>None</cite> or an integer that has been assigned.</p>
 </td>
 </tr>
 </tbody>
@@ -675,7 +683,7 @@ not passed in &#8216;properties&#8217; no longer be set for the entity.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f1b8c639c00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f5915e37c00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
