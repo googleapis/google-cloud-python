@@ -121,6 +121,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">           **must** treat any value set by the back-end as opaque.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span> <span class="ow">or</span> <span class="p">[{</span><span class="s">&#39;kind&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">}]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
 </div>
@@ -240,21 +241,35 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
 </div>
+    <span class="k">def</span> <span class="nf">_make_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a parent key for the current path.</span>
+
+<span class="sd">        Extracts all but the last element in the key path and creates a new</span>
+<span class="sd">        key, while still matching the namespace and the dataset ID.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.datastore.key.Key` or `NoneType`</span>
+<span class="sd">        :returns: a new `Key` instance, whose path consists of all but the last</span>
+<span class="sd">                  element of self&#39;s path. If self has only one path element,</span>
+<span class="sd">                  returns None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parent_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">parent_path</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Key</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">parent_path</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+                       <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
+
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Key.parent"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.parent">[docs]</a>    <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter:  return a new key for the next highest element in path.</span>
 
-<span class="sd">        :rtype: :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">        :rtype: :class:`gcloud.datastore.key.Key` or `NoneType`</span>
 <span class="sd">        :returns: a new `Key` instance, whose path consists of all but the last</span>
 <span class="sd">                  element of self&#39;s path.  If self has only one path element,</span>
 <span class="sd">                  returns None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span>
-        <span class="c"># This is temporary. Will be addressed throughout #451.</span>
-        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
-        <span class="n">clone</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">clone</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_parent</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
 </div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;&lt;Key</span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span></div>
