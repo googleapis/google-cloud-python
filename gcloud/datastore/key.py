@@ -47,6 +47,7 @@ class Key(object):
            **must** treat any value set by the back-end as opaque.
         """
         self._path = path or [{'kind': ''}]
+        self._parent = None
         self._namespace = namespace
         self._dataset_id = dataset_id
 
@@ -166,21 +167,35 @@ class Key(object):
         """
         return self._dataset_id
 
+    def _make_parent(self):
+        """Creates a parent key for the current path.
+
+        Extracts all but the last element in the key path and creates a new
+        key, while still matching the namespace and the dataset ID.
+
+        :rtype: :class:`gcloud.datastore.key.Key` or `NoneType`
+        :returns: a new `Key` instance, whose path consists of all but the last
+                  element of self's path. If self has only one path element,
+                  returns None.
+        """
+        parent_path = self.path[:-1]
+        if parent_path:
+            return Key(path=parent_path, dataset_id=self.dataset_id,
+                       namespace=self.namespace)
+
     @property
     def parent(self):
         """Getter:  return a new key for the next highest element in path.
 
-        :rtype: :class:`gcloud.datastore.key.Key`
+        :rtype: :class:`gcloud.datastore.key.Key` or `NoneType`
         :returns: a new `Key` instance, whose path consists of all but the last
                   element of self's path.  If self has only one path element,
                   returns None.
         """
-        if len(self._path) <= 1:
-            return None
-        # This is temporary. Will be addressed throughout #451.
-        clone = self._clone()
-        clone._path = self.path[:-1]
-        return clone
+        if self._parent is None:
+            self._parent = self._make_parent()
+
+        return self._parent
 
     def __repr__(self):
         return '<Key%s>' % self.path

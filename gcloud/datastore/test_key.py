@@ -186,3 +186,14 @@ class TestKey(unittest2.TestCase):
             {'kind': 'ghi', 'id': 123},
         ])
         self.assertEqual(key.parent.path, [parent_part])
+
+    def test_parent_multiple_calls(self):
+        _PARENT_KIND = 'KIND1'
+        _PARENT_ID = 1234
+        _PARENT_PATH = {'kind': _PARENT_KIND, 'id': _PARENT_ID}
+        _PATH = [_PARENT_PATH, {'kind': 'KIND2'}]
+        key = self._makeOne(path=_PATH)
+        parent = key.parent
+        self.assertEqual(parent.path, [_PARENT_PATH])
+        new_parent = key.parent
+        self.assertTrue(parent is new_parent)
