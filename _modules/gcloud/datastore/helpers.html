@@ -99,6 +99,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">pytz</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 
@@ -333,6 +334,47 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">i_pb</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c"># scalar, just assign</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add protobuf keys to a request object.</span>
+
+<span class="sd">    :type key_pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
+<span class="sd">    :param key_pb: A key to be added to a request.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
+<span class="sd">    :returns: A key which will be added to a request. It will be the</span>
+<span class="sd">              original if nothing needs to be changed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key_pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;dataset_id&#39;</span><span class="p">):</span>
+        <span class="c"># We remove the dataset_id from the protobuf. This is because</span>
+        <span class="c"># the backend fails a request if the key contains un-prefixed</span>
+        <span class="c"># dataset ID. The backend fails because requests to</span>
+        <span class="c">#     /datastore/.../datasets/foo/...</span>
+        <span class="c"># and</span>
+        <span class="c">#     /datastore/.../datasets/s~foo/...</span>
+        <span class="c"># both go to the datastore given by &#39;s~foo&#39;. So if the key</span>
+        <span class="c"># protobuf in the request body has dataset_id=&#39;foo&#39;, the</span>
+        <span class="c"># backend will reject since &#39;foo&#39; != &#39;s~foo&#39;.</span>
+        <span class="n">new_key_pb</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Key</span><span class="p">()</span>
+        <span class="n">new_key_pb</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
+        <span class="n">new_key_pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">ClearField</span><span class="p">(</span><span class="s">&#39;dataset_id&#39;</span><span class="p">)</span>
+        <span class="n">key_pb</span> <span class="o">=</span> <span class="n">new_key_pb</span>
+    <span class="k">return</span> <span class="n">key_pb</span>
+
+
+<span class="k">def</span> <span class="nf">_add_keys_to_request</span><span class="p">(</span><span class="n">request_field_pb</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add protobuf keys to a request object.</span>
+
+<span class="sd">    :type request_field_pb: `RepeatedCompositeFieldContainer`</span>
+<span class="sd">    :param request_field_pb: A repeated proto field that contains keys.</span>
+
+<span class="sd">    :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
+<span class="sd">    :param key_pbs: The keys to add to a request.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">key_pb</span> <span class="ow">in</span> <span class="n">key_pbs</span><span class="p">:</span>
+        <span class="n">key_pb</span> <span class="o">=</span> <span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
+        <span class="n">request_field_pb</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 </pre></div>
 
       </section><!-- end of .content -->

@@ -237,7 +237,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">property_filter</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">pb_op_enum</span>
 
         <span class="c"># Set the value to filter on based on the type.</span>
-        <span class="n">helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">property_filter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">property_name</span> <span class="o">==</span> <span class="s">&#39;__key__&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Key</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;__key__ query requires a Key instance.&#39;</span><span class="p">)</span>
+            <span class="n">key_pb</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
+            <span class="n">property_filter</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span>
+                <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">property_filter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">clone</span>
 </div>
 <div class="viewcode-block" id="Query.ancestor"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.ancestor">[docs]</a>    <span class="k">def</span> <span class="nf">ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ancestor</span><span class="p">):</span>
@@ -290,7 +297,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">ancestor_filter</span> <span class="o">=</span> <span class="n">composite_filter</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">property_filter</span>
         <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;__key__&#39;</span>
         <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">HAS_ANCESTOR</span>
-        <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">ancestor</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
+        <span class="n">ancestor_pb</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">ancestor</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
+        <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">ancestor_pb</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">clone</span>
 </div>

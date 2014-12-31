@@ -90,7 +90,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 
 
 <div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">_implicit_environ</span><span class="o">.</span><span class="n">_DatastoreBase</span><span class="p">):</span>
@@ -308,11 +307,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="c"># For any of the auto-id entities, make sure we update their keys.</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entity</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_auto_id_entities</span><span class="p">):</span>
                 <span class="n">key_pb</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">insert_auto_id_key</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
-                <span class="c"># This is a temporary hack. Will be addressed in 451 #6.</span>
-                <span class="n">new_key</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
-                <span class="n">new_key</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">path</span>
-                <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="n">new_id</span> <span class="o">=</span> <span class="n">key_pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+                <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">new_id</span><span class="p">))</span>
 
         <span class="c"># Tell the connection that the transaction is over.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">transaction</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>

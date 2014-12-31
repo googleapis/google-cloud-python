@@ -315,8 +315,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="n">single_key</span><span class="p">:</span>
             <span class="n">key_pbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">key_pbs</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">key_pb</span> <span class="ow">in</span> <span class="n">key_pbs</span><span class="p">:</span>
-            <span class="n">lookup_request</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
+        <span class="n">helpers</span><span class="o">.</span><span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">lookup_request</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>
 
         <span class="n">results</span><span class="p">,</span> <span class="n">missing_found</span><span class="p">,</span> <span class="n">deferred_found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup</span><span class="p">(</span>
             <span class="n">lookup_request</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span>
@@ -491,8 +490,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: An equal number of keys,  with IDs filled in by the backend.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">AllocateIdsRequest</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">key_pb</span> <span class="ow">in</span> <span class="n">key_pbs</span><span class="p">:</span>
-            <span class="n">request</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
+        <span class="n">helpers</span><span class="o">.</span><span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>
         <span class="c"># Nothing to do with this response, so just execute the method.</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="s">&#39;allocateIds&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                              <span class="n">datastore_pb</span><span class="o">.</span><span class="n">AllocateIdsResponse</span><span class="p">)</span>
@@ -525,6 +523,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                  either `None` or an integer that has been assigned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
+        <span class="n">key_pb</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 
         <span class="c"># If the Key is complete, we should upsert</span>
         <span class="c"># instead of using insert_auto_id.</span>
@@ -589,10 +588,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
-
-        <span class="k">for</span> <span class="n">key_pb</span> <span class="ow">in</span> <span class="n">key_pbs</span><span class="p">:</span>
-            <span class="n">delete</span> <span class="o">=</span> <span class="n">mutation</span><span class="o">.</span><span class="n">delete</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
-            <span class="n">delete</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
+        <span class="n">helpers</span><span class="o">.</span><span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">mutation</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">mutation</span><span class="p">)</span>

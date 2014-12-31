@@ -173,7 +173,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="c"># _implicit_environ._DatastoreBase to avoid split MRO.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span>
         <span class="k">if</span> <span class="n">kind</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">kind</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_from_indexes</span><span class="p">)</span>
