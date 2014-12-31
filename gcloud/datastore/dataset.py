@@ -196,5 +196,5 @@ class Dataset(object):
             self.id(), incomplete_key_pbs)
         allocated_ids = [allocated_key_pb.path_element[-1].id
                          for allocated_key_pb in allocated_key_pbs]
-        return [incomplete_key.complete_key(allocated_id)
+        return [incomplete_key.completed_key(allocated_id)
                 for allocated_id in allocated_ids]

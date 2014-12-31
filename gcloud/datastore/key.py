@@ -127,7 +127,7 @@ class Key(object):
         """
         return copy.deepcopy(self)
 
-    def complete_key(self, id_or_name):
+    def completed_key(self, id_or_name):
         """Creates new key from existing partial key by adding final ID/name.
 
         :rtype: :class:`gcloud.datastore.key.Key`
