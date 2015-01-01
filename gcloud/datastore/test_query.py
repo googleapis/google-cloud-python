@@ -552,6 +552,15 @@ class TestQuery(unittest2.TestCase):
         after = before.projection(_PROJECTION2)
         self.assertEqual(after.projection(), _PROJECTION2)
 
+    def test_keys(self):
+        _KIND = 'KIND'
+        before = self._makeOne(_KIND)
+        after = before.keys()
+        projection_pb = list(after.to_protobuf().projection)
+        self.assertEqual(len(projection_pb), 1)
+        prop_pb = projection_pb[0]
+        self.assertEqual(prop_pb.property.name, '__key__')
+
     def test_set_offset(self):
         _KIND = 'KIND'
         _OFFSET = 42
