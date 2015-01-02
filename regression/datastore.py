@@ -18,7 +18,6 @@ import pytz
 import unittest2
 
 from gcloud import datastore
-from gcloud.datastore.connection import allocate_ids
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
@@ -49,9 +48,7 @@ class TestDatastoreAllocateIDs(TestDatastore):
     def test_allocate_ids(self):
         incomplete_key = Key('Kind')
         num_ids = 10
-        connection = datastore.get_connection()
-        allocated_keys = allocate_ids(incomplete_key, num_ids,
-                                      connection, DATASET_ID)
+        allocated_keys = datastore.allocate_ids(incomplete_key, num_ids)
         self.assertEqual(len(allocated_keys), num_ids)
 
         unique_ids = set()

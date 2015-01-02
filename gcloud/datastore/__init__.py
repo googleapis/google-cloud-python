@@ -146,6 +146,18 @@ def _require_dataset():
     return _implicit_environ.DATASET
 
 
+def _require_connection():
+    """Convenience method to ensure CONNECTION is set.
+
+    :rtype: :class:`gcloud.datastore.connection.Connection`
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if CONNECTION is not set.
+    """
+    if _implicit_environ.CONNECTION is None:
+        raise EnvironmentError('Connection could not be inferred.')
+    return _implicit_environ.CONNECTION
+
+
 def get_entities(keys):
     """Retrieves entities from implied dataset, along with their attributes.
 
@@ -156,3 +168,21 @@ def get_entities(keys):
     :returns: The requested entities.
     """
     return _require_dataset().get_entities(keys)
+
+
+def allocate_ids(incomplete_key, num_ids):
+    """Allocates a list of IDs from a partial key.
+
+    :type incomplete_key: A :class:`gcloud.datastore.key.Key`
+    :param incomplete_key: The partial key to use as base for allocated IDs.
+
+    :type num_ids: A :class:`int`.
+    :param num_ids: The number of IDs to allocate.
+
+    :rtype: list of :class:`gcloud.datastore.key.Key`
+    :returns: The (complete) keys allocated with `incomplete_key` as root.
+    """
+    dataset = _require_dataset()
+    connection = _require_connection()
+    return connection_module.allocate_ids(incomplete_key, num_ids,
+                                          connection, dataset.id())

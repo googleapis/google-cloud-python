@@ -151,20 +151,43 @@ class Test_get_dataset(unittest2.TestCase):
 
 class Test_implicit_behavior(unittest2.TestCase):
 
-    def test__require_dataset(self):
+    def test__require_dataset_value_unset(self):
         import gcloud.datastore
         from gcloud.datastore import _implicit_environ
-        original_dataset = _implicit_environ.DATASET
+        from gcloud._testing import _Monkey
 
-        try:
-            _implicit_environ.DATASET = None
-            self.assertRaises(EnvironmentError,
-                              gcloud.datastore._require_dataset)
-            NEW_DATASET = object()
-            _implicit_environ.DATASET = NEW_DATASET
-            self.assertEqual(gcloud.datastore._require_dataset(), NEW_DATASET)
-        finally:
-            _implicit_environ.DATASET = original_dataset
+        with _Monkey(_implicit_environ, DATASET=None):
+            with self.assertRaises(EnvironmentError):
+                gcloud.datastore._require_dataset()
+
+    def test__require_dataset_value_set(self):
+        import gcloud.datastore
+        from gcloud.datastore import _implicit_environ
+        from gcloud._testing import _Monkey
+
+        FAKE_DATASET = object()
+        with _Monkey(_implicit_environ, DATASET=FAKE_DATASET):
+            stored_dataset = gcloud.datastore._require_dataset()
+        self.assertTrue(stored_dataset is FAKE_DATASET)
+
+    def test__require_connection_value_unset(self):
+        import gcloud.datastore
+        from gcloud.datastore import _implicit_environ
+        from gcloud._testing import _Monkey
+
+        with _Monkey(_implicit_environ, CONNECTION=None):
+            with self.assertRaises(EnvironmentError):
+                gcloud.datastore._require_connection()
+
+    def test__require_connection_value_set(self):
+        import gcloud.datastore
+        from gcloud.datastore import _implicit_environ
+        from gcloud._testing import _Monkey
+
+        FAKE_CONNECTION = object()
+        with _Monkey(_implicit_environ, CONNECTION=FAKE_CONNECTION):
+            stored_connection = gcloud.datastore._require_connection()
+        self.assertTrue(stored_connection is FAKE_CONNECTION)
 
     def test_get_entities(self):
         import gcloud.datastore
@@ -181,3 +204,22 @@ class Test_implicit_behavior(unittest2.TestCase):
         with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET):
             result = gcloud.datastore.get_entities(DUMMY_KEYS)
         self.assertTrue(result == DUMMY_VALS)
+
+    def test_allocate_ids(self):
+        import gcloud.datastore
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_dataset import _Connection
+        from gcloud.datastore.test_entity import _Dataset
+        from gcloud._testing import _Monkey
+
+        CUSTOM_DATASET = _Dataset()
+        CUSTOM_CONNECTION = _Connection()
+        NUM_IDS = 2
+        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET,
+                     CONNECTION=CUSTOM_CONNECTION):
+            INCOMPLETE_KEY = Key('KIND')
+            result = gcloud.datastore.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
+
+        # Check the IDs returned.
+        self.assertEqual([key.id for key in result], range(NUM_IDS))
