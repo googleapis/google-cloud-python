@@ -264,7 +264,8 @@ class _Key(object):
     def path(self):
         return self._path
 
-    def get(self):
+    def get(self, connection=None):
+        self._connection_used = connection
         return self._stored
 
 

@@ -213,7 +213,8 @@ class Entity(dict):
           exist only locally.
         """
         key = self._must_key
-        entity = key.get()
+        connection = self._must_dataset.connection()
+        entity = key.get(connection=connection)
 
         if entity:
             self.update(entity)
