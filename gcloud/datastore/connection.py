@@ -14,13 +14,13 @@
 
 """Connections to gcloud datastore API servers."""
 
-from gcloud import connection
+from gcloud import connection as base_connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.dataset import Dataset
 
 
-class Connection(connection.Connection):
+class Connection(base_connection.Connection):
     """A connection to the Google Cloud Datastore via the Protobuf API.
 
     This class should understand only the basic types (and protobufs)
@@ -125,7 +125,7 @@ class Connection(connection.Connection):
             api_version=(api_version or cls.API_VERSION),
             dataset_id=dataset_id, method=method)
 
-    def transaction(self, transaction=connection.Connection._EMPTY):
+    def transaction(self, transaction=base_connection.Connection._EMPTY):
         """Getter/setter for the connection's transaction object.
 
         :type transaction: :class:`gcloud.datastore.transaction.Transaction`,
@@ -575,3 +575,35 @@ def _copy_deferred_keys(lookup_request, lookup_response):
         lookup_request.key.remove(old_key)
     for def_key in lookup_response.deferred:
         lookup_request.key.add().CopyFrom(def_key)
+
+
+def allocate_ids(incomplete_key, num_ids, connection, dataset_id):
+    """Allocates a list of IDs from a partial key.
+
+    :type incomplete_key: A :class:`gcloud.datastore.key.Key`
+    :param incomplete_key: Partial key to use as base for allocated IDs.
+
+    :type num_ids: A :class:`int`.
+    :param num_ids: The number of IDs to allocate.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: The connection used to allocate IDs.
+
+    :type dataset_id: :class:`str`.
+    :param dataset_id: The ID of the dataset used to allocate.
+
+    :rtype: list of :class:`gcloud.datastore.key.Key`
+    :returns: The (complete) keys allocated with `incomplete_key` as root.
+    :raises: `ValueError` if `incomplete_key` is not a partial key.
+    """
+    if not incomplete_key.is_partial:
+        raise ValueError(('Key is not partial.', incomplete_key))
+
+    incomplete_key_pb = incomplete_key.to_protobuf()
+    incomplete_key_pbs = [incomplete_key_pb] * num_ids
+
+    allocated_key_pbs = connection.allocate_ids(dataset_id, incomplete_key_pbs)
+    allocated_ids = [allocated_key_pb.path_element[-1].id
+                     for allocated_key_pb in allocated_key_pbs]
+    return [incomplete_key.completed_key(allocated_id)
+            for allocated_id in allocated_ids]

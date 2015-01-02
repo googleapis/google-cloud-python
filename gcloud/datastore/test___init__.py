@@ -181,19 +181,3 @@ class Test_implicit_behavior(unittest2.TestCase):
         with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET):
             result = gcloud.datastore.get_entities(DUMMY_KEYS)
         self.assertTrue(result == DUMMY_VALS)
-
-    def test_allocate_ids(self):
-        import gcloud.datastore
-        from gcloud.datastore import _implicit_environ
-        from gcloud.datastore.key import Key
-        from gcloud.datastore.test_entity import _Dataset
-        from gcloud._testing import _Monkey
-
-        CUSTOM_DATASET = _Dataset()
-        NUM_IDS = 2
-        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET):
-            INCOMPLETE_KEY = Key('KIND')
-            result = gcloud.datastore.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
-
-        # Check the IDs returned.
-        self.assertEqual([key.id for key in result], range(1, NUM_IDS + 1))

@@ -274,9 +274,6 @@ class _Dataset(dict):
     def get_entities(self, keys):
         return [self.get(key) for key in keys]
 
-    def allocate_ids(self, incomplete_key, num_ids):
-        return [incomplete_key.completed_key(i + 1) for i in range(num_ids)]
-
 
 class _Connection(object):
     _transaction = _saved = _deleted = None

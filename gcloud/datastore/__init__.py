@@ -48,7 +48,7 @@ import os
 
 from gcloud import credentials
 from gcloud.datastore import _implicit_environ
-from gcloud.datastore.connection import Connection
+from gcloud.datastore import connection as connection_module
 
 
 SCOPE = ('https://www.googleapis.com/auth/datastore ',
@@ -104,7 +104,7 @@ def get_connection():
     """
     implicit_credentials = credentials.get_credentials()
     scoped_credentials = implicit_credentials.create_scoped(SCOPE)
-    return Connection(credentials=scoped_credentials)
+    return connection_module.Connection(credentials=scoped_credentials)
 
 
 def get_dataset(dataset_id):
@@ -156,18 +156,3 @@ def get_entities(keys):
     :returns: The requested entities.
     """
     return _require_dataset().get_entities(keys)
-
-
-def allocate_ids(incomplete_key, num_ids):
-    """Allocates a list of IDs from a partial key.
-
-    :type incomplete_key: A :class:`gcloud.datastore.key.Key`
-    :param incomplete_key: The partial key to use as base for allocated IDs.
-
-    :type num_ids: A :class:`int`.
-    :param num_ids: The number of IDs to allocate.
-
-    :rtype: list of :class:`gcloud.datastore.key.Key`
-    :returns: The (complete) keys allocated with `incomplete_key` as root.
-    """
-    return _require_dataset().allocate_ids(incomplete_key, num_ids)
