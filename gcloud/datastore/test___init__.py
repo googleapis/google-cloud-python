@@ -89,6 +89,43 @@ class Test_set_default_dataset(unittest2.TestCase):
         self._test_with_environ({}, DATASET_ID, dataset_id=DATASET_ID)
 
 
+class Test_set_default_connection(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore import _implicit_environ
+        self._replaced_connection = _implicit_environ.CONNECTION
+        _implicit_environ.CONNECTION = None
+
+    def tearDown(self):
+        from gcloud.datastore import _implicit_environ
+        _implicit_environ.CONNECTION = self._replaced_connection
+
+    def _callFUT(self, connection=None):
+        from gcloud.datastore import set_default_connection
+        return set_default_connection(connection=connection)
+
+    def test_set_explicit(self):
+        from gcloud.datastore import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+        fake_cnxn = object()
+        self._callFUT(connection=fake_cnxn)
+        self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
+
+    def test_set_implicit(self):
+        from gcloud._testing import _Monkey
+        from gcloud import datastore
+        from gcloud.datastore import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+
+        fake_cnxn = object()
+        with _Monkey(datastore, get_connection=lambda: fake_cnxn):
+            self._callFUT()
+
+        self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
+
+
 class Test_get_dataset(unittest2.TestCase):
 
     def _callFUT(self, dataset_id):
