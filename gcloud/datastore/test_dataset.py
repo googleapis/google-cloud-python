@@ -157,6 +157,11 @@ class _Connection(object):
         num_pbs = len(key_pbs)
         return [_KeyProto(i) for i in range(num_pbs)]
 
+    def delete_entities(self, dataset_id, key_pbs):
+        self._called_dataset_id = dataset_id
+        self._called_key_pbs = key_pbs
+        return True
+
 
 class _PathElementProto(object):
 

@@ -243,14 +243,45 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(entity.items(), [('foo', 'Foo')])
         self.assertTrue(entity.key() is key)
 
-    def test_get_explicit_connection_partial_key(self):
+    def test_get_no_connection(self):
+        from gcloud.datastore import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+        key = self._makeOne('KIND', 1234)
+        with self.assertRaises(AttributeError):
+            key.get()
+
+    def test_delete_explicit_connection(self):
         from gcloud.datastore.test_dataset import _Connection
 
-        cnxn_lookup_result = []
-        cnxn = _Connection(*cnxn_lookup_result)
-        key = self._makeOne('KIND')
-        with self.assertRaises(ValueError):
-            key.get(connection=cnxn)
+        cnxn = _Connection()
+        key = self._makeOne('KIND', 1234)
+        result = key.delete(connection=cnxn)
+        self.assertEqual(result, None)
+        self.assertEqual(cnxn._called_dataset_id, self._DEFAULT_DATASET)
+        self.assertEqual(cnxn._called_key_pbs, [key.to_protobuf()])
+
+    def test_delete_implicit_connection(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.test_dataset import _Connection
+
+        cnxn = _Connection()
+        key = self._makeOne('KIND', 1234)
+        with _Monkey(_implicit_environ, CONNECTION=cnxn):
+            result = key.delete()
+
+        self.assertEqual(result, None)
+        self.assertEqual(cnxn._called_dataset_id, self._DEFAULT_DATASET)
+        self.assertEqual(cnxn._called_key_pbs, [key.to_protobuf()])
+
+    def test_delete_no_connection(self):
+        from gcloud.datastore import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+        key = self._makeOne('KIND', 1234)
+        with self.assertRaises(AttributeError):
+            key.delete()
 
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne('KIND')

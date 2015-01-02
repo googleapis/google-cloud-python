@@ -40,7 +40,7 @@ class TestDatastore(unittest2.TestCase):
     def tearDown(self):
         with Transaction():
             for entity in self.case_entities_to_delete:
-                entity.delete()
+                entity.key().delete()
 
 
 class TestDatastoreAllocateIDs(TestDatastore):
@@ -358,7 +358,7 @@ class TestDatastoreTransaction(TestDatastore):
 
         # This will always return after the transaction.
         retrieved_entity = key.get()
+        self.case_entities_to_delete.append(retrieved_entity)
         retrieved_dict = dict(retrieved_entity.items())
         entity_dict = dict(entity.items())
         self.assertEqual(retrieved_dict, entity_dict)
-        retrieved_entity.delete()

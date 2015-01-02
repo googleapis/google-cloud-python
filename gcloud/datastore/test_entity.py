@@ -213,23 +213,6 @@ class TestEntity(unittest2.TestCase):
 
         self.assertEqual(entity.key()._path, [{'kind': _KIND, 'id': _ID}])
 
-    def test_delete_no_key(self):
-        from gcloud.datastore.entity import NoKey
-
-        entity = self._makeOne(None, None)
-        entity['foo'] = 'Foo'
-        self.assertRaises(NoKey, entity.delete)
-
-    def test_delete(self):
-        connection = _Connection()
-        dataset = _Dataset(connection)
-        key = _Key()
-        entity = self._makeOne(dataset)
-        entity.key(key)
-        entity['foo'] = 'Foo'
-        self.assertTrue(entity.delete() is None)
-        self.assertEqual(connection._deleted, (_DATASET_ID, ['KEY']))
-
     def test___repr___no_key_empty(self):
         entity = self._makeOne(None, None)
         self.assertEqual(repr(entity), '<Entity {}>')
@@ -307,9 +290,6 @@ class _Connection(object):
         self._saved = (dataset_id, key_pb, properties,
                        tuple(exclude_from_indexes))
         return self._save_result
-
-    def delete_entities(self, dataset_id, key_pbs):
-        self._deleted = (dataset_id, key_pbs)
 
 
 class _Transaction(object):
