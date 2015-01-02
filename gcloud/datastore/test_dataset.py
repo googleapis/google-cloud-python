@@ -40,48 +40,6 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(dataset.id(), DATASET_ID)
         self.assertTrue(dataset.connection() is CONNECTION)
 
-    def test_get_entity_miss(self):
-        from gcloud.datastore.key import Key
-        DATASET_ID = 'DATASET'
-        connection = _Connection()
-        dataset = self._makeOne(DATASET_ID, connection)
-        key = Key('Kind', 1234, dataset_id=DATASET_ID)
-        self.assertEqual(dataset.get_entity(key), None)
-
-    def test_get_entity_hit(self):
-        from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.key import Key
-        DATASET_ID = 'DATASET'
-        KIND = 'Kind'
-        ID = 1234
-        PATH = [{'kind': KIND, 'id': ID}]
-        entity_pb = datastore_pb.Entity()
-        entity_pb.key.partition_id.dataset_id = DATASET_ID
-        path_element = entity_pb.key.path_element.add()
-        path_element.kind = KIND
-        path_element.id = ID
-        prop = entity_pb.property.add()
-        prop.name = 'foo'
-        prop.value.string_value = 'Foo'
-        connection = _Connection(entity_pb)
-        dataset = self._makeOne(DATASET_ID, connection)
-        key = Key(KIND, ID, dataset_id=DATASET_ID)
-        result = dataset.get_entity(key)
-        key = result.key()
-        self.assertEqual(key.dataset_id, DATASET_ID)
-        self.assertEqual(key.path, PATH)
-        self.assertEqual(list(result), ['foo'])
-        self.assertEqual(result['foo'], 'Foo')
-
-    def test_get_entity_bad_type(self):
-        DATASET_ID = 'DATASET'
-        connection = _Connection()
-        dataset = self._makeOne(DATASET_ID, connection)
-        with self.assertRaises(AttributeError):
-            dataset.get_entity(None)
-        with self.assertRaises(AttributeError):
-            dataset.get_entity([])
-
     def test_get_entities_miss(self):
         from gcloud.datastore.key import Key
         DATASET_ID = 'DATASET'

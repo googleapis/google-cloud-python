@@ -29,6 +29,7 @@ from regression import populate_datastore
 
 DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
 datastore.set_default_dataset(dataset_id=DATASET_ID)
+datastore.set_default_connection()
 
 
 class TestDatastore(unittest2.TestCase):
@@ -97,11 +98,9 @@ class TestDatastoreSave(TestDatastore):
             self.assertEqual(entity.key().name, name)
         if key_id is not None:
             self.assertEqual(entity.key().id, key_id)
-        retrieved_entity = datastore.get_entity(entity.key())
+        retrieved_entity = entity.key().get()
         # Check the keys are the same.
-        self.assertEqual(retrieved_entity.key().path, entity.key().path)
-        self.assertEqual(retrieved_entity.key().namespace,
-                         entity.key().namespace)
+        self.assertTrue(retrieved_entity.key() is entity.key())
 
         # Check the data is the same.
         retrieved_dict = dict(retrieved_entity.items())
@@ -352,13 +351,13 @@ class TestDatastoreTransaction(TestDatastore):
         entity['url'] = u'www.google.com'
 
         with Transaction():
-            retrieved_entity = datastore.get_entity(key)
+            retrieved_entity = key.get()
             if retrieved_entity is None:
                 entity.save()
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.
-        retrieved_entity = datastore.get_entity(key)
+        retrieved_entity = key.get()
         retrieved_dict = dict(retrieved_entity.items())
         entity_dict = dict(entity.items())
         self.assertEqual(retrieved_dict, entity_dict)

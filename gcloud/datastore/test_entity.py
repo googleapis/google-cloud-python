@@ -118,6 +118,7 @@ class TestEntity(unittest2.TestCase):
     def test_reload_miss(self):
         dataset = _Dataset()
         key = _Key()
+        key._stored = None  # Explicit miss.
         entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
@@ -127,13 +128,15 @@ class TestEntity(unittest2.TestCase):
 
     def test_reload_hit(self):
         dataset = _Dataset()
-        dataset['KEY'] = {'foo': 'Bar'}
         key = _Key()
+        NEW_VAL = 'Baz'
+        key._stored = {'foo': NEW_VAL}
         entity = self._makeOne(dataset)
         entity.key(key)
         entity['foo'] = 'Foo'
         self.assertTrue(entity.reload() is entity)
-        self.assertEqual(entity['foo'], 'Bar')
+        self.assertEqual(entity['foo'], NEW_VAL)
+        self.assertEqual(entity.keys(), ['foo'])
 
     def test_save_no_key(self):
         from gcloud.datastore.entity import NoKey
@@ -248,6 +251,7 @@ class _Key(object):
     _partial = False
     _path = None
     _id = None
+    _stored = None
 
     def to_protobuf(self):
         return self._key
@@ -259,6 +263,9 @@ class _Key(object):
     @property
     def path(self):
         return self._path
+
+    def get(self):
+        return self._stored
 
 
 class _Dataset(dict):
@@ -279,9 +286,6 @@ class _Dataset(dict):
 
     def connection(self):
         return self._connection
-
-    def get_entity(self, key):
-        return self.get(key)
 
     def get_entities(self, keys):
         return [self.get(key) for key in keys]

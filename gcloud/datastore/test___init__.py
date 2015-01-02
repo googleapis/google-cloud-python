@@ -166,20 +166,6 @@ class Test_implicit_behavior(unittest2.TestCase):
         finally:
             _implicit_environ.DATASET = original_dataset
 
-    def test_get_entity(self):
-        import gcloud.datastore
-        from gcloud.datastore import _implicit_environ
-        from gcloud.datastore.test_entity import _Dataset
-        from gcloud._testing import _Monkey
-
-        CUSTOM_DATASET = _Dataset()
-        DUMMY_KEY = object()
-        DUMMY_VAL = object()
-        CUSTOM_DATASET[DUMMY_KEY] = DUMMY_VAL
-        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET):
-            result = gcloud.datastore.get_entity(DUMMY_KEY)
-        self.assertTrue(result is DUMMY_VAL)
-
     def test_get_entities(self):
         import gcloud.datastore
         from gcloud.datastore import _implicit_environ

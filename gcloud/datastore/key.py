@@ -227,6 +227,33 @@ class Key(object):
 
         return key
 
+    def get(self, connection=None):
+        """Retrieve entity corresponding to the curretn key.
+
+        :type connection: :class:`gcloud.datastore.connection.Connection`
+        :param connection: Optional connection used to connection to datastore.
+
+        :rtype: :class:`gcloud.datastore.entity.Entity` or `NoneType`
+        :returns: The requested entity, or ``None`` if there was no
+                  match found.
+        :raises: `ValueError` if the current key is partial.
+        """
+        # Temporary import hack until Dataset is removed in #477.
+        from gcloud.datastore.dataset import Dataset
+
+        if self.is_partial:
+            raise ValueError('Can only retrieve complete keys.')
+
+        connection = connection or _implicit_environ.CONNECTION
+        dataset = Dataset(self.dataset_id, connection=connection)
+        entities = dataset.get_entities([self])
+
+        if entities:
+            result = entities[0]
+            # We assume that the backend has not changed the key.
+            result.key(self)
+            return result
+
     @property
     def is_partial(self):
         """Boolean indicating if the key has an ID (or name).

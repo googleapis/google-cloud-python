@@ -213,8 +213,7 @@ class Entity(dict):
           exist only locally.
         """
         key = self._must_key
-        dataset = self._must_dataset
-        entity = dataset.get_entity(key.to_protobuf())
+        entity = key.get()
 
         if entity:
             self.update(entity)

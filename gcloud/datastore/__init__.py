@@ -146,18 +146,6 @@ def _require_dataset():
     return _implicit_environ.DATASET
 
 
-def get_entity(key):
-    """Retrieves entity from implicit dataset, along with its attributes.
-
-    :type key: :class:`gcloud.datastore.key.Key`
-    :param key: The name of the item to retrieve.
-
-    :rtype: :class:`gcloud.datastore.entity.Entity` or ``None``
-    :returns: The requested entity, or ``None`` if there was no match found.
-    """
-    return _require_dataset().get_entity(key)
-
-
 def get_entities(keys):
     """Retrieves entities from implied dataset, along with their attributes.
 
