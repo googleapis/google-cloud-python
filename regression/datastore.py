@@ -18,6 +18,10 @@ import pytz
 import unittest2
 
 from gcloud import datastore
+from gcloud.datastore.entity import Entity
+from gcloud.datastore.key import Key
+from gcloud.datastore.query import Query
+from gcloud.datastore.transaction import Transaction
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import populate_datastore
@@ -33,7 +37,7 @@ class TestDatastore(unittest2.TestCase):
         self.case_entities_to_delete = []
 
     def tearDown(self):
-        with datastore.transaction.Transaction():
+        with Transaction():
             for entity in self.case_entities_to_delete:
                 entity.delete()
 
@@ -41,7 +45,7 @@ class TestDatastore(unittest2.TestCase):
 class TestDatastoreAllocateIDs(TestDatastore):
 
     def test_allocate_ids(self):
-        incomplete_key = datastore.key.Key('Kind')
+        incomplete_key = Key('Kind')
         num_ids = 10
         allocated_keys = datastore.allocate_ids(incomplete_key, num_ids)
         self.assertEqual(len(allocated_keys), num_ids)
@@ -68,7 +72,7 @@ class TestDatastoreSave(TestDatastore):
             'rating': 5.0,
         }
         # Create an entity with the given content.
-        entity = datastore.entity.Entity(kind='Post')
+        entity = Entity(kind='Post')
         entity.update(post_content)
 
         # Update the entity key.
@@ -114,7 +118,7 @@ class TestDatastoreSave(TestDatastore):
         self._generic_test_post()
 
     def test_save_multiple(self):
-        with datastore.transaction.Transaction():
+        with Transaction():
             entity1 = self._get_post()
             entity1.save()
             # Register entity to be deleted.
@@ -139,25 +143,26 @@ class TestDatastoreSave(TestDatastore):
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
-        posts = datastore.query.Query(kind='Post').limit(2).fetch()
+        query = Query(kind='Post')
+        posts = list(query.fetch(limit=2))
         self.assertEqual(posts, [])
 
 
 class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
-        key = datastore.key.Key('Person', 'name')
-        entity = datastore.entity.Entity(kind=None).key(key)
+        key = Key('Person', 'name')
+        entity = Entity(kind=None).key(key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
         entity.save()
         self.case_entities_to_delete.append(entity)
 
-        query = datastore.query.Query(kind='Person').filter(
-            'linkedTo', '=', key).limit(2)
+        query = Query(kind='Person')
+        query.add_filter('linkedTo', '=', key)
 
-        stored_persons = query.fetch()
+        stored_persons = list(query.fetch(limit=2))
         self.assertEqual(len(stored_persons), 1)
 
         stored_person = stored_persons[0]
@@ -172,42 +177,43 @@ class TestDatastoreQuery(TestDatastore):
     def setUpClass(cls):
         super(TestDatastoreQuery, cls).setUpClass()
         cls.CHARACTERS = populate_datastore.CHARACTERS
-        cls.ANCESTOR_KEY = datastore.key.Key(*populate_datastore.ANCESTOR)
+        cls.ANCESTOR_KEY = Key(*populate_datastore.ANCESTOR)
 
     def _base_query(self):
-        return datastore.query.Query(kind='Character').ancestor(
-            self.ANCESTOR_KEY)
+        return Query(kind='Character', ancestor=self.ANCESTOR_KEY)
 
     def test_limit_queries(self):
         limit = 5
-        query = self._base_query().limit(limit)
+        query = self._base_query()
 
         # Fetch characters.
-        character_entities, cursor, _ = query.fetch_page()
+        iterator = query.fetch(limit=limit)
+        character_entities, _, cursor = iterator.next_page()
         self.assertEqual(len(character_entities), limit)
 
         # Check cursor after fetch.
         self.assertTrue(cursor is not None)
 
-        # Fetch next batch of characters.
-        new_query = self._base_query().with_cursor(cursor)
-        new_character_entities = new_query.fetch()
+        # Fetch remaining of characters.
+        new_character_entities = list(iterator)
         characters_remaining = len(self.CHARACTERS) - limit
         self.assertEqual(len(new_character_entities), characters_remaining)
 
     def test_query_simple_filter(self):
-        query = self._base_query().filter('appearances', '>=', 20)
+        query = self._base_query()
+        query.add_filter('appearances', '>=', 20)
         expected_matches = 6
         # We expect 6, but allow the query to get 1 extra.
-        entities = query.fetch(limit=expected_matches + 1)
+        entities = list(query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
     def test_query_multiple_filters(self):
-        query = self._base_query().filter(
-            'appearances', '>=', 26).filter('family', '=', 'Stark')
+        query = self._base_query()
+        query.add_filter('appearances', '>=', 26)
+        query.add_filter('family', '=', 'Stark')
         expected_matches = 4
         # We expect 4, but allow the query to get 1 extra.
-        entities = query.fetch(limit=expected_matches + 1)
+        entities = list(query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
     def test_ancestor_query(self):
@@ -215,23 +221,25 @@ class TestDatastoreQuery(TestDatastore):
 
         expected_matches = 8
         # We expect 8, but allow the query to get 1 extra.
-        entities = filtered_query.fetch(limit=expected_matches + 1)
+        entities = list(filtered_query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
     def test_query___key___filter(self):
-        rickard_key = datastore.key.Key(*populate_datastore.RICKARD)
+        rickard_key = Key(*populate_datastore.RICKARD)
 
-        query = self._base_query().filter('__key__', '=', rickard_key)
+        query = self._base_query()
+        query.add_filter('__key__', '=', rickard_key)
         expected_matches = 1
         # We expect 1, but allow the query to get 1 extra.
-        entities = query.fetch(limit=expected_matches + 1)
+        entities = list(query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
     def test_ordered_query(self):
-        query = self._base_query().order('appearances')
+        query = self._base_query()
+        query.order = 'appearances'
         expected_matches = 8
         # We expect 8, but allow the query to get 1 extra.
-        entities = query.fetch(limit=expected_matches + 1)
+        entities = list(query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
         # Actually check the ordered data returned.
@@ -239,14 +247,15 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(entities[7]['name'], self.CHARACTERS[3]['name'])
 
     def test_projection_query(self):
-        filtered_query = self._base_query().projection(['name', 'family'])
+        filtered_query = self._base_query()
+        filtered_query.projection = ['name', 'family']
 
         # NOTE: There are 9 responses because of Catelyn. She has both
         #       Stark and Tully as her families, hence occurs twice in
         #       the results.
         expected_matches = 9
         # We expect 9, but allow the query to get 1 extra.
-        entities = filtered_query.fetch(limit=expected_matches + 1)
+        entities = list(filtered_query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
         arya_entity = entities[0]
@@ -278,54 +287,57 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(sansa_dict, {'name': 'Sansa', 'family': 'Stark'})
 
     def test_query_paginate_with_offset(self):
-        query = self._base_query()
+        page_query = self._base_query()
+        page_query.order = 'appearances'
         offset = 2
         limit = 3
-        page_query = query.offset(offset).limit(limit).order('appearances')
+        iterator = page_query.fetch(limit=limit, offset=offset)
 
         # Fetch characters.
-        entities, cursor, _ = page_query.fetch_page()
+        entities, _, cursor = iterator.next_page()
         self.assertEqual(len(entities), limit)
         self.assertEqual(entities[0]['name'], 'Robb')
         self.assertEqual(entities[1]['name'], 'Bran')
         self.assertEqual(entities[2]['name'], 'Catelyn')
 
-        # Use cursor to begin next query.
-        next_query = page_query.with_cursor(cursor).offset(0)
-        self.assertEqual(next_query.limit(), limit)
         # Fetch next set of characters.
-        entities = next_query.fetch()
+        new_iterator = page_query.fetch(limit=limit, offset=0,
+                                        start_cursor=cursor)
+        entities = list(new_iterator)
         self.assertEqual(len(entities), limit)
         self.assertEqual(entities[0]['name'], 'Sansa')
         self.assertEqual(entities[1]['name'], 'Jon Snow')
         self.assertEqual(entities[2]['name'], 'Arya')
 
     def test_query_paginate_with_start_cursor(self):
-        query = self._base_query()
+        page_query = self._base_query()
+        page_query.order = 'appearances'
+        limit = 3
         offset = 2
-        limit = 2
-        page_query = query.offset(offset).limit(limit).order('appearances')
+        iterator = page_query.fetch(limit=limit, offset=offset)
 
         # Fetch characters.
-        entities, cursor, _ = page_query.fetch_page()
+        entities, _, cursor = iterator.next_page()
         self.assertEqual(len(entities), limit)
 
         # Use cursor to create a fresh query.
         fresh_query = self._base_query()
-        fresh_query = fresh_query.order('appearances').with_cursor(cursor)
+        fresh_query.order = 'appearances'
 
-        new_entities = fresh_query.fetch()
+        new_entities = list(fresh_query.fetch(start_cursor=cursor,
+                                              limit=limit))
         characters_remaining = len(self.CHARACTERS) - limit - offset
         self.assertEqual(len(new_entities), characters_remaining)
-        self.assertEqual(new_entities[0]['name'], 'Catelyn')
-        self.assertEqual(new_entities[3]['name'], 'Arya')
+        self.assertEqual(new_entities[0]['name'], 'Sansa')
+        self.assertEqual(new_entities[2]['name'], 'Arya')
 
     def test_query_group_by(self):
-        query = self._base_query().group_by(['alive'])
+        query = self._base_query()
+        query.group_by = ['alive']
 
         expected_matches = 2
         # We expect 2, but allow the query to get 1 extra.
-        entities = query.fetch(limit=expected_matches + 1)
+        entities = list(query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
         self.assertEqual(entities[0]['name'], 'Catelyn')
@@ -335,11 +347,11 @@ class TestDatastoreQuery(TestDatastore):
 class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
-        key = datastore.key.Key('Company', 'Google')
-        entity = datastore.entity.Entity(kind=None).key(key)
+        key = Key('Company', 'Google')
+        entity = Entity(kind=None).key(key)
         entity['url'] = u'www.google.com'
 
-        with datastore.transaction.Transaction():
+        with Transaction():
             retrieved_entity = datastore.get_entity(key)
             if retrieved_entity is None:
                 entity.save()
