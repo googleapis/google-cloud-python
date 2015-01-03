@@ -16,7 +16,6 @@
 
 from gcloud.datastore import helpers
 from gcloud.datastore.entity import Entity
-from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
 
 
@@ -74,19 +73,6 @@ class Dataset(object):
         """
 
         return self._id
-
-    def query(self, *args, **kwargs):
-        """Create a query bound to this dataset.
-
-        :param args: positional arguments, passed through to the Query
-
-        :param kw: keyword arguments, passed through to the Query
-
-        :rtype: :class:`gcloud.datastore.query.Query`
-        :returns: a new Query instance, bound to this dataset.
-        """
-        kwargs['dataset'] = self
-        return Query(*args, **kwargs)
 
     def entity(self, kind, exclude_from_indexes=()):
         """Create an entity bound to this dataset.
