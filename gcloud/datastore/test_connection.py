@@ -29,6 +29,12 @@ class TestConnection(unittest2.TestCase):
             path_args += (id,)
         return Key(*path_args, dataset_id=dataset_id).to_protobuf()
 
+    def _make_query_pb(self, kind):
+        from gcloud.datastore.connection import datastore_pb
+        pb = datastore_pb.Query()
+        pb.kind.add().name = kind
+        return pb
+
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
@@ -511,12 +517,11 @@ class TestConnection(unittest2.TestCase):
 
     def test_run_query_w_eventual_no_transaction(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.query import Query
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
-        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
         no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
@@ -551,13 +556,12 @@ class TestConnection(unittest2.TestCase):
 
     def test_run_query_wo_eventual_w_transaction(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.query import Query
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
         TRANSACTION = 'TRANSACTION'
-        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
         no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
@@ -592,13 +596,12 @@ class TestConnection(unittest2.TestCase):
 
     def test_run_query_w_eventual_and_transaction(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.query import Query
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
         TRANSACTION = 'TRANSACTION'
-        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
         no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
@@ -611,12 +614,11 @@ class TestConnection(unittest2.TestCase):
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.query import Query
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
-        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
         no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
@@ -647,12 +649,11 @@ class TestConnection(unittest2.TestCase):
 
     def test_run_query_w_namespace_nonempty_result(self):
         from gcloud.datastore.connection import datastore_pb
-        from gcloud.datastore.query import Query
 
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
         entity = datastore_pb.Entity()
-        q_pb = Query(KIND, DATASET_ID).to_protobuf()
+        q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.entity_result.add(entity=entity)
         rsp_pb.batch.entity_result_type = 1  # FULL
