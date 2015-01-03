@@ -30,255 +30,151 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore.query import Query
         return Query
 
-    def _makeOne(self, kind=None, dataset=None, namespace=None):
-        return self._getTargetClass()(kind, dataset, namespace)
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
 
     def test_ctor_defaults(self):
         query = self._getTargetClass()()
-        self.assertEqual(query.dataset(), None)
-        self.assertEqual(query.kind(), None)
-        self.assertEqual(query.limit(), 0)
-        self.assertEqual(query.namespace(), None)
+        self.assertEqual(query.dataset, None)
+        self.assertEqual(query.kind, None)
+        self.assertEqual(query.namespace, None)
+        self.assertEqual(query.ancestor, None)
+        self.assertEqual(query.filters, [])
+        self.assertEqual(query.projection, [])
+        self.assertEqual(query.order, [])
+        self.assertEqual(query.group_by, [])
 
     def test_ctor_explicit(self):
         from gcloud.datastore.dataset import Dataset
-
+        from gcloud.datastore.key import Key
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset, _NAMESPACE)
-        self.assertTrue(query.dataset() is dataset)
-        self.assertEqual(query.kind(), _KIND)
-        self.assertEqual(query.namespace(), _NAMESPACE)
+        ancestor = Key('ANCESTOR', 123, dataset_id=_DATASET)
+        FILTERS = [('foo', '=', 'Qux'), ('bar', '<', 17)]
+        PROJECTION = ['foo', 'bar', 'baz']
+        ORDER = ['foo', 'bar']
+        GROUP_BY = ['foo']
+        query = self._makeOne(
+            kind=_KIND,
+            dataset=dataset,
+            namespace=_NAMESPACE,
+            ancestor=ancestor,
+            filters=FILTERS,
+            projection=PROJECTION,
+            order=ORDER,
+            group_by=GROUP_BY,
+            )
+        self.assertTrue(query.dataset is dataset)
+        self.assertEqual(query.kind, _KIND)
+        self.assertEqual(query.namespace, _NAMESPACE)
+        self.assertEqual(query.ancestor.path, ancestor.path)
+        self.assertEqual(query.filters, FILTERS)
+        self.assertEqual(query.projection, PROJECTION)
+        self.assertEqual(query.order, ORDER)
+        self.assertEqual(query.group_by, GROUP_BY)
 
-    def test__clone(self):
+    def test_clone_wo_kw(self):
         from gcloud.datastore.dataset import Dataset
-
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _NAMESPACE = 'NAMESPACE'
         dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND, dataset, _NAMESPACE)
-        clone = query._clone()
+        clone = query.clone()
         self.assertFalse(clone is query)
         self.assertTrue(isinstance(clone, self._getTargetClass()))
-        self.assertTrue(clone.dataset() is dataset)
-        self.assertEqual(clone.namespace(), _NAMESPACE)
-        self.assertEqual(clone.kind(), _KIND)
+        self.assertTrue(clone.dataset is dataset)
+        self.assertEqual(clone.namespace, _NAMESPACE)
+        self.assertEqual(clone.kind, _KIND)
 
-    def test_to_protobuf_empty(self):
-        query = self._makeOne()
-        q_pb = query.to_protobuf()
-        self.assertEqual(list(q_pb.kind), [])
-        self.assertEqual(list(q_pb.filter.composite_filter.filter), [])
-
-    def test_to_protobuf_w_kind(self):
+    def test_clone_w_unknown_kw(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
         _KIND = 'KIND'
+        _NAMESPACE = 'NAMESPACE'
+        dataset = Dataset(_DATASET)
+        query = self._makeOne(_KIND, dataset, _NAMESPACE)
+        self.assertRaises(TypeError, query.clone, nonesuch='Foo')
+
+    def test_clone_w_kw(self):
+        from gcloud.datastore.dataset import Dataset
+        from gcloud.datastore.key import Key
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _NAMESPACE = 'NAMESPACE'
+        dataset = Dataset(_DATASET)
+        ancestor = Key('ANCESTOR', 123, dataset_id=_DATASET)
+        FILTERS = [('foo', '=', 'Qux'), ('bar', '<', 17)]
+        PROJECTION = ['foo', 'bar', 'baz']
+        ORDER = ['foo', 'bar']
+        GROUP_BY = ['foo']
+        query = self._makeOne(_KIND, dataset, _NAMESPACE)
+        clone = query.clone(
+            kind=_KIND,
+            dataset=dataset,
+            namespace=_NAMESPACE,
+            ancestor=ancestor,
+            filters=FILTERS,
+            projection=PROJECTION,
+            order=ORDER,
+            group_by=GROUP_BY,
+        )
+        self.assertFalse(clone is query)
+        self.assertTrue(isinstance(clone, self._getTargetClass()))
+        self.assertTrue(clone.dataset is dataset)
+        self.assertEqual(clone.namespace, _NAMESPACE)
+        self.assertEqual(clone.kind, _KIND)
+        self.assertEqual(clone.ancestor.path, ancestor.path)
+        self.assertEqual(clone.filters, FILTERS)
+        self.assertEqual(clone.projection, PROJECTION)
+        self.assertEqual(clone.order, ORDER)
+        self.assertEqual(clone.group_by, GROUP_BY)
+
+    def test_dataset_setter_w_non_dataset(self):
+        query = self._makeOne()
+
+        def _assign(val):
+            query.dataset = val
+
+        self.assertRaises(ValueError, _assign, object())
+
+    def test_dataset_setter(self):
+        from gcloud.datastore.dataset import Dataset
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND)
-        q_pb = query.to_protobuf()
-        kq_pb, = list(q_pb.kind)
-        self.assertEqual(kq_pb.name, _KIND)
+        query.dataset = dataset
+        self.assertTrue(query.dataset is dataset)
+        self.assertEqual(query.kind, _KIND)
 
-    def test_filter_w_unknown_operator(self):
+    def test_namespace_setter_w_non_string(self):
         query = self._makeOne()
-        self.assertRaises(ValueError, query.filter, 'firstname', '~~', 'John')
 
-    def test_filter_w_known_operator(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        def _assign(val):
+            query.namespace = val
 
-        query = self._makeOne()
-        after = query.filter('firstname', '=', u'John')
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.filter.composite_filter.operator,
-                         datastore_pb.CompositeFilter.AND)
-        f_pb, = list(q_pb.filter.composite_filter.filter)
-        p_pb = f_pb.property_filter
-        self.assertEqual(p_pb.property.name, 'firstname')
-        self.assertEqual(p_pb.value.string_value, u'John')
-        self.assertEqual(p_pb.operator, datastore_pb.PropertyFilter.EQUAL)
+        self.assertRaises(ValueError, _assign, object())
 
-    def test_filter_w_all_operators(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        query = self._makeOne()
-        query = query.filter('leq_prop', '<=', u'val1')
-        query = query.filter('geq_prop', '>=', u'val2')
-        query = query.filter('lt_prop', '<', u'val3')
-        query = query.filter('gt_prop', '>', u'val4')
-        query = query.filter('eq_prop', '=', u'val5')
-
-        query_pb = query.to_protobuf()
-        pb_values = [
-            ('leq_prop', 'val1',
-             datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL),
-            ('geq_prop', 'val2',
-             datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL),
-            ('lt_prop', 'val3', datastore_pb.PropertyFilter.LESS_THAN),
-            ('gt_prop', 'val4', datastore_pb.PropertyFilter.GREATER_THAN),
-            ('eq_prop', 'val5', datastore_pb.PropertyFilter.EQUAL),
-        ]
-        query_filter = query_pb.filter.composite_filter.filter
-        for filter_pb, pb_value in zip(query_filter, pb_values):
-            name, val, filter_enum = pb_value
-            prop_filter = filter_pb.property_filter
-            self.assertEqual(prop_filter.property.name, name)
-            self.assertEqual(prop_filter.value.string_value, val)
-            self.assertEqual(prop_filter.operator, filter_enum)
-
-    def test_filter_w_known_operator_and_entity(self):
-        import operator
-        from gcloud.datastore.entity import Entity
-        query = self._makeOne()
-        other = Entity()
-        other['firstname'] = u'John'
-        other['lastname'] = u'Smith'
-        after = query.filter('other', '=', other)
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.filter.composite_filter.operator, 1)  # AND
-        f_pb, = list(q_pb.filter.composite_filter.filter)
-        p_pb = f_pb.property_filter
-        self.assertEqual(p_pb.property.name, 'other')
-        other_pb = p_pb.value.entity_value
-        props = sorted(other_pb.property, key=operator.attrgetter('name'))
-        self.assertEqual(len(props), 2)
-        self.assertEqual(props[0].name, 'firstname')
-        self.assertEqual(props[0].value.string_value, u'John')
-        self.assertEqual(props[1].name, 'lastname')
-        self.assertEqual(props[1].value.string_value, u'Smith')
-
-    def test_filter_w_whitespace_property_name(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        query = self._makeOne()
-        PROPERTY_NAME = '  property with lots of space '
-        after = query.filter(PROPERTY_NAME, '=', u'John')
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.filter.composite_filter.operator,
-                         datastore_pb.CompositeFilter.AND)
-        f_pb, = list(q_pb.filter.composite_filter.filter)
-        p_pb = f_pb.property_filter
-        self.assertEqual(p_pb.property.name, PROPERTY_NAME)
-        self.assertEqual(p_pb.value.string_value, u'John')
-        self.assertEqual(p_pb.operator, datastore_pb.PropertyFilter.EQUAL)
-
-    def test_filter___key__valid_key(self):
-        from gcloud.datastore.key import Key
-        from gcloud.datastore import test_connection
-
-        query = self._makeOne()
-        key = Key('Foo', dataset_id='DATASET')
-        new_query = query.filter('__key__', '=', key)
-
-        query_pb = new_query._pb
-        all_filters = query_pb.filter.composite_filter.filter
-        self.assertEqual(len(all_filters), 1)
-
-        prop_filter = all_filters[0].property_filter
-        value_fields = prop_filter.value._fields
-        self.assertEqual(len(value_fields), 1)
-        field_name, field_value = value_fields.popitem()
-        self.assertEqual(field_name.name, 'key_value')
-
-        test_connection._compare_key_pb_after_request(
-            self, key.to_protobuf(), field_value)
-
-    def test_filter___key__invalid_value(self):
-        query = self._makeOne()
-        self.assertRaises(TypeError, query.filter, '__key__', '=', None)
-
-    def test_ancestor_w_non_key(self):
-        query = self._makeOne()
-        self.assertRaises(TypeError, query.ancestor, object())
-        self.assertRaises(TypeError, query.ancestor, ['KIND', 'NAME'])
-
-    def test_ancestor_wo_existing_ancestor_query_w_key_and_propfilter(self):
-        from gcloud.datastore.key import Key
-        from gcloud.datastore import test_connection
-
-        _NAME = u'NAME'
-        key = Key('KIND', 123, dataset_id='DATASET')
-        query = self._makeOne().filter('name', '=', _NAME)
-        after = query.ancestor(key)
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.filter.composite_filter.operator, 1)  # AND
-        n_pb, f_pb, = list(q_pb.filter.composite_filter.filter)
-        p_pb = n_pb.property_filter
-        self.assertEqual(p_pb.property.name, 'name')
-        self.assertEqual(p_pb.value.string_value, _NAME)
-        p_pb = f_pb.property_filter
-        self.assertEqual(p_pb.property.name, '__key__')
-        test_connection._compare_key_pb_after_request(
-            self, key.to_protobuf(), p_pb.value.key_value)
-
-    def test_ancestor_wo_existing_ancestor_query_w_key(self):
-        from gcloud.datastore.key import Key
-        from gcloud.datastore import test_connection
-
-        key = Key('KIND', 123, dataset_id='DATASET')
-        query = self._makeOne()
-        after = query.ancestor(key)
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.filter.composite_filter.operator, 1)  # AND
-        f_pb, = list(q_pb.filter.composite_filter.filter)
-        p_pb = f_pb.property_filter
-        self.assertEqual(p_pb.property.name, '__key__')
-        test_connection._compare_key_pb_after_request(
-            self, key.to_protobuf(), p_pb.value.key_value)
-
-    def test_ancestor_clears_existing_ancestor_query_w_only(self):
-        from gcloud.datastore import _implicit_environ
+    def test_namespace_setter(self):
         from gcloud.datastore.dataset import Dataset
-        from gcloud.datastore.key import Key
+        _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
+        dataset = Dataset(_DATASET)
+        query = self._makeOne(dataset=dataset)
+        query.namespace = _NAMESPACE
+        self.assertTrue(query.dataset is dataset)
+        self.assertEqual(query.namespace, _NAMESPACE)
 
-        _KIND = 'KIND'
-        _ID = 123
+    def test_kind_setter_w_non_string(self):
         query = self._makeOne()
 
-        # All keys will have dataset attached.
-        _implicit_environ.DATASET = Dataset('DATASET')
+        def _assign(val):
+            query.kind = val
 
-        key = Key(_KIND, _ID)
-        between = query.ancestor(key)
-        after = between.ancestor(None)
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        q_pb = after.to_protobuf()
-        self.assertEqual(list(q_pb.filter.composite_filter.filter), [])
-
-    def test_ancestor_clears_existing_ancestor_query_w_others(self):
-        from gcloud.datastore import _implicit_environ
-        from gcloud.datastore.dataset import Dataset
-        from gcloud.datastore.key import Key
-
-        _KIND = 'KIND'
-        _ID = 123
-        _NAME = u'NAME'
-        query = self._makeOne().filter('name', '=', _NAME)
-
-        # All keys will have dataset attached.
-        _implicit_environ.DATASET = Dataset('DATASET')
-
-        key = Key(_KIND, _ID)
-        between = query.ancestor(key)
-        after = between.ancestor(None)
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        q_pb = after.to_protobuf()
-        n_pb, = list(q_pb.filter.composite_filter.filter)
-        p_pb = n_pb.property_filter
-        self.assertEqual(p_pb.property.name, 'name')
-        self.assertEqual(p_pb.value.string_value, _NAME)
+        self.assertRaises(TypeError, _assign, object())
 
     def test_kind_setter_wo_existing(self):
         from gcloud.datastore.dataset import Dataset
@@ -286,11 +182,9 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         dataset = Dataset(_DATASET)
         query = self._makeOne(dataset=dataset)
-        after = query.kind(_KIND)
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        self.assertTrue(after.dataset() is dataset)
-        self.assertEqual(after.kind(), _KIND)
+        query.kind = _KIND
+        self.assertTrue(query.dataset is dataset)
+        self.assertEqual(query.kind, _KIND)
 
     def test_kind_setter_w_existing(self):
         from gcloud.datastore.dataset import Dataset
@@ -299,306 +193,477 @@ class TestQuery(unittest2.TestCase):
         _KIND_AFTER = 'KIND_AFTER'
         dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND_BEFORE, dataset)
-        self.assertEqual(query.kind(), _KIND_BEFORE)
-        after = query.kind(_KIND_AFTER)
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        self.assertTrue(after.dataset() is dataset)
-        self.assertEqual(after.kind(), _KIND_AFTER)
+        self.assertEqual(query.kind, _KIND_BEFORE)
+        query.kind = _KIND_AFTER
+        self.assertTrue(query.dataset is dataset)
+        self.assertEqual(query.kind, _KIND_AFTER)
 
-    def test_kind_getter_unset(self):
+    def test_ancestor_setter_w_non_key(self):
         query = self._makeOne()
-        self.assertEqual(query.kind(), None)
 
-    def test_kind_getter_bad_pb(self):
+        def _assign(val):
+            query.ancestor = val
+
+        self.assertRaises(TypeError, _assign, object())
+        self.assertRaises(TypeError, _assign, ['KIND', 'NAME'])
+
+    def test_ancestor_setter_w_key(self):
+        from gcloud.datastore.key import Key
+        _NAME = u'NAME'
+        key = Key('KIND', 123, dataset_id='DATASET')
         query = self._makeOne()
-        query._pb.kind.add().name = 'foo'
-        query._pb.kind.add().name = 'bar'
-        self.assertRaises(ValueError, query.kind)
+        query.add_filter('name', '=', _NAME)
+        query.ancestor = key
+        self.assertEqual(query.ancestor.path, key.path)
 
-    def test_limit_setter_wo_existing(self):
-        from gcloud.datastore.dataset import Dataset
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        _LIMIT = 42
-        dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset)
-        after = query.limit(_LIMIT)
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        self.assertTrue(after.dataset() is dataset)
-        self.assertEqual(after.limit(), _LIMIT)
-        self.assertEqual(after.kind(), _KIND)
+    def test_ancestor_deleter_w_key(self):
+        from gcloud.datastore.key import Key
+        key = Key('KIND', 123, dataset_id='DATASET')
+        query = self._makeOne(ancestor=key)
+        del query.ancestor
+        self.assertTrue(query.ancestor is None)
 
-    def test_dataset_setter(self):
-        from gcloud.datastore.dataset import Dataset
-        _DATASET = 'DATASET'
+    def test_add_filter_setter_w_unknown_operator(self):
+        query = self._makeOne()
+        self.assertRaises(ValueError, query.add_filter,
+                          'firstname', '~~', 'John')
+
+    def test_add_filter_w_known_operator(self):
+        query = self._makeOne()
+        query.add_filter('firstname', '=', u'John')
+        self.assertEqual(query.filters, [('firstname', '=', u'John')])
+
+    def test_add_filter_w_all_operators(self):
+        query = self._makeOne()
+        query.add_filter('leq_prop', '<=', u'val1')
+        query.add_filter('geq_prop', '>=', u'val2')
+        query.add_filter('lt_prop', '<', u'val3')
+        query.add_filter('gt_prop', '>', u'val4')
+        query.add_filter('eq_prop', '=', u'val5')
+        self.assertEqual(len(query.filters), 5)
+        self.assertEqual(query.filters[0], ('leq_prop', '<=', u'val1'))
+        self.assertEqual(query.filters[1], ('geq_prop', '>=', u'val2'))
+        self.assertEqual(query.filters[2], ('lt_prop', '<', u'val3'))
+        self.assertEqual(query.filters[3], ('gt_prop', '>', u'val4'))
+        self.assertEqual(query.filters[4], ('eq_prop', '=', u'val5'))
+
+    def test_add_filter_w_known_operator_and_entity(self):
+        from gcloud.datastore.entity import Entity
+        query = self._makeOne()
+        other = Entity()
+        other['firstname'] = u'John'
+        other['lastname'] = u'Smith'
+        query.add_filter('other', '=', other)
+        self.assertEqual(query.filters, [('other', '=', other)])
+
+    def test_add_filter_w_whitespace_property_name(self):
+        query = self._makeOne()
+        PROPERTY_NAME = '  property with lots of space '
+        query.add_filter(PROPERTY_NAME, '=', u'John')
+        self.assertEqual(query.filters, [(PROPERTY_NAME, '=', u'John')])
+
+    def test_add_filter___key__valid_key(self):
+        from gcloud.datastore.key import Key
+        query = self._makeOne()
+        key = Key('Foo', dataset_id='DATASET')
+        query.add_filter('__key__', '=', key)
+        self.assertEqual(query.filters, [('__key__', '=', key)])
+
+    def test_filter___key__invalid_operator(self):
+        from gcloud.datastore.key import Key
+        key = Key('Foo', dataset_id='DATASET')
+        query = self._makeOne()
+        self.assertRaises(ValueError, query.add_filter, '__key__', '<', key)
+
+    def test_filter___key__invalid_value(self):
+        query = self._makeOne()
+        self.assertRaises(ValueError, query.add_filter, '__key__', '=', None)
+
+    def test_projection_setter_empty(self):
         _KIND = 'KIND'
-        dataset = Dataset(_DATASET)
         query = self._makeOne(_KIND)
-        after = query.dataset(dataset)
-        self.assertFalse(after is query)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        self.assertTrue(after.dataset() is dataset)
-        self.assertEqual(query.kind(), _KIND)
+        query.projection = []
+        self.assertEqual(query.projection, [])
 
-    def _fetch_page_helper(self, cursor=b'\x00', limit=None,
-                           more_results=False, _more_pb=None,
-                           use_fetch=False):
-        import base64
-        from gcloud.datastore.datastore_v1_pb2 import Entity
-        _CURSOR_FOR_USER = (None if cursor is None
-                            else base64.b64encode(cursor))
-        _MORE_RESULTS = more_results
-        _DATASET = 'DATASET'
+    def test_projection_setter_string(self):
         _KIND = 'KIND'
-        _ID = 123
-        _NAMESPACE = 'NAMESPACE'
-        entity_pb = Entity()
-        entity_pb.key.partition_id.dataset_id = _DATASET
-        path_element = entity_pb.key.path_element.add()
-        path_element.kind = _KIND
-        path_element.id = _ID
-        prop = entity_pb.property.add()
-        prop.name = 'foo'
-        prop.value.string_value = u'Foo'
-        if _more_pb is None:
-            connection = _Connection(entity_pb)
-        else:
-            connection = _Connection(entity_pb, _more=_more_pb)
-        connection._cursor = cursor
-        dataset = _Dataset(_DATASET, connection)
+        query = self._makeOne(_KIND)
+        query.projection = 'field1'
+        self.assertEqual(query.projection, ['field1'])
 
-        query = self._makeOne(_KIND, dataset, _NAMESPACE)
-        if use_fetch:
-            entities = query.fetch(limit)
-        else:
-            entities, cursor, more_results = query.fetch_page(limit)
-            self.assertEqual(cursor, _CURSOR_FOR_USER)
-            self.assertEqual(more_results, _MORE_RESULTS)
-
-        self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key().path,
-                         [{'kind': _KIND, 'id': _ID}])
-        limited_query = query
-        if limit is not None:
-            limited_query = query.limit(limit)
-        expected_called_with = {
-            'dataset_id': _DATASET,
-            'query_pb': limited_query.to_protobuf(),
-            'namespace': _NAMESPACE,
-        }
-        self.assertEqual(connection._called_with, expected_called_with)
-
-    def test_fetch_page_default_limit(self):
-        self._fetch_page_helper()
-
-    def test_fetch_defaults(self):
-        self._fetch_page_helper(use_fetch=True)
-
-    def test_fetch_page_explicit_limit(self):
-        self._fetch_page_helper(cursor='CURSOR', limit=13)
-
-    def test_fetch_page_no_more_results(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
-        self._fetch_page_helper(cursor='CURSOR', limit=13, _more_pb=no_more)
-
-    def test_fetch_page_not_finished(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-        not_finished = datastore_pb.QueryResultBatch.NOT_FINISHED
-        self._fetch_page_helper(_more_pb=not_finished, more_results=True)
-
-    def test_fetch_page_more_results_invalid(self):
-        self.assertRaises(ValueError, self._fetch_page_helper,
-                          _more_pb=object())
-
-    def test_with_cursor_neither(self):
-        _DATASET = 'DATASET'
+    def test_projection_setter_non_empty(self):
         _KIND = 'KIND'
-        connection = _Connection()
-        dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
-        self.assertTrue(query.with_cursor(None) is query)
+        query = self._makeOne(_KIND)
+        query.projection = ['field1', 'field2']
+        self.assertEqual(query.projection, ['field1', 'field2'])
 
-    def test_with_cursor_w_start(self):
-        import base64
-        _CURSOR = 'CURSOR'
-        _CURSOR_B64 = base64.b64encode(_CURSOR)
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        connection = _Connection()
-        dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
-        after = query.with_cursor(_CURSOR_B64)
-        self.assertFalse(after is query)
-        q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.start_cursor, _CURSOR)
-        self.assertEqual(after.start_cursor, _CURSOR_B64)
-        self.assertEqual(q_pb.end_cursor, '')
-        self.assertEqual(after.end_cursor, None)
-
-    def test_with_cursor_w_end(self):
-        import base64
-        _CURSOR = 'CURSOR'
-        _CURSOR_B64 = base64.b64encode(_CURSOR)
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        connection = _Connection()
-        dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
-        after = query.with_cursor(None, _CURSOR_B64)
-        self.assertFalse(after is query)
-        q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.start_cursor, '')
-        self.assertEqual(after.start_cursor, None)
-        self.assertEqual(q_pb.end_cursor, _CURSOR)
-        self.assertEqual(after.end_cursor, _CURSOR_B64)
-
-    def test_with_cursor_w_both(self):
-        import base64
-        _START = 'START'
-        _START_B64 = base64.b64encode(_START)
-        _END = 'CURSOR'
-        _END_B64 = base64.b64encode(_END)
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        connection = _Connection()
-        dataset = _Dataset(_DATASET, connection)
-        query = self._makeOne(_KIND, dataset)
-        after = query.with_cursor(_START_B64, _END_B64)
-        self.assertFalse(after is query)
-        q_pb = after.to_protobuf()
-        self.assertEqual(q_pb.start_cursor, _START)
-        self.assertEqual(after.start_cursor, _START_B64)
-        self.assertEqual(q_pb.end_cursor, _END)
-        self.assertEqual(after.end_cursor, _END_B64)
-
-    def test_order_empty(self):
-        _KIND = 'KIND'
-        before = self._makeOne(_KIND)
-        after = before.order()
-        self.assertFalse(after is before)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        self.assertEqual(before.to_protobuf(), after.to_protobuf())
-
-    def test_order_single_asc(self):
-        _KIND = 'KIND'
-        before = self._makeOne(_KIND)
-        after = before.order('field')
-        after_pb = after.to_protobuf()
-        order_pb = list(after_pb.order)
-        self.assertEqual(len(order_pb), 1)
-        prop_pb = order_pb[0]
-        self.assertEqual(prop_pb.property.name, 'field')
-        self.assertEqual(prop_pb.direction, prop_pb.ASCENDING)
-
-    def test_order_single_desc(self):
-        _KIND = 'KIND'
-        before = self._makeOne(_KIND)
-        after = before.order('-field')
-        after_pb = after.to_protobuf()
-        order_pb = list(after_pb.order)
-        self.assertEqual(len(order_pb), 1)
-        prop_pb = order_pb[0]
-        self.assertEqual(prop_pb.property.name, 'field')
-        self.assertEqual(prop_pb.direction, prop_pb.DESCENDING)
-
-    def test_order_multiple(self):
-        _KIND = 'KIND'
-        before = self._makeOne(_KIND)
-        after = before.order('foo', '-bar')
-        after_pb = after.to_protobuf()
-        order_pb = list(after_pb.order)
-        self.assertEqual(len(order_pb), 2)
-        prop_pb = order_pb[0]
-        self.assertEqual(prop_pb.property.name, 'foo')
-        self.assertEqual(prop_pb.direction, prop_pb.ASCENDING)
-        prop_pb = order_pb[1]
-        self.assertEqual(prop_pb.property.name, 'bar')
-        self.assertEqual(prop_pb.direction, prop_pb.DESCENDING)
-
-    def test_projection_empty(self):
-        _KIND = 'KIND'
-        before = self._makeOne(_KIND)
-        after = before.projection([])
-        self.assertFalse(after is before)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        self.assertEqual(before.to_protobuf(), after.to_protobuf())
-
-    def test_projection_non_empty(self):
-        _KIND = 'KIND'
-        before = self._makeOne(_KIND)
-        after = before.projection(['field1', 'field2'])
-        projection_pb = list(after.to_protobuf().projection)
-        self.assertEqual(len(projection_pb), 2)
-        prop_pb1 = projection_pb[0]
-        self.assertEqual(prop_pb1.property.name, 'field1')
-        prop_pb2 = projection_pb[1]
-        self.assertEqual(prop_pb2.property.name, 'field2')
-
-    def test_get_projection_non_empty(self):
-        _KIND = 'KIND'
-        _PROJECTION = ['field1', 'field2']
-        after = self._makeOne(_KIND).projection(_PROJECTION)
-        self.assertEqual(after.projection(), _PROJECTION)
-
-    def test_projection_multiple_calls(self):
+    def test_projection_setter_multiple_calls(self):
         _KIND = 'KIND'
         _PROJECTION1 = ['field1', 'field2']
         _PROJECTION2 = ['field3']
-        before = self._makeOne(_KIND).projection(_PROJECTION1)
-        self.assertEqual(before.projection(), _PROJECTION1)
-        after = before.projection(_PROJECTION2)
-        self.assertEqual(after.projection(), _PROJECTION2)
+        query = self._makeOne(_KIND)
+        query.projection = _PROJECTION1
+        self.assertEqual(query.projection, _PROJECTION1)
+        query.projection = _PROJECTION2
+        self.assertEqual(query.projection, _PROJECTION2)
 
-    def test_set_offset(self):
+    def test_order_setter_empty(self):
         _KIND = 'KIND'
-        _OFFSET = 42
-        before = self._makeOne(_KIND)
-        after = before.offset(_OFFSET)
-        offset_pb = after.to_protobuf().offset
-        self.assertEqual(offset_pb, _OFFSET)
+        query = self._makeOne(_KIND, order=['foo', '-bar'])
+        query.order = []
+        self.assertEqual(query.order, [])
 
-    def test_get_offset(self):
+    def test_order_setter_string(self):
         _KIND = 'KIND'
-        _OFFSET = 10
-        after = self._makeOne(_KIND).offset(_OFFSET)
-        self.assertEqual(after.offset(), _OFFSET)
+        query = self._makeOne(_KIND)
+        query.order = 'field'
+        self.assertEqual(query.order, ['field'])
 
-    def test_group_by_empty(self):
+    def test_order_setter_single_item_list_desc(self):
         _KIND = 'KIND'
-        before = self._makeOne(_KIND)
-        after = before.group_by([])
-        self.assertFalse(after is before)
-        self.assertTrue(isinstance(after, self._getTargetClass()))
-        self.assertEqual(before.to_protobuf(), after.to_protobuf())
+        query = self._makeOne(_KIND)
+        query.order = ['-field']
+        self.assertEqual(query.order, ['-field'])
 
-    def test_group_by_non_empty(self):
+    def test_order_setter_multiple(self):
         _KIND = 'KIND'
-        before = self._makeOne(_KIND)
-        after = before.group_by(['field1', 'field2'])
-        group_by_pb = list(after.to_protobuf().group_by)
-        self.assertEqual(len(group_by_pb), 2)
-        prop_pb1 = group_by_pb[0]
-        self.assertEqual(prop_pb1.name, 'field1')
-        prop_pb2 = group_by_pb[1]
-        self.assertEqual(prop_pb2.name, 'field2')
+        query = self._makeOne(_KIND)
+        query.order = ['foo', '-bar']
+        self.assertEqual(query.order, ['foo', '-bar'])
 
-    def test_get_group_by_non_empty(self):
+    def test_group_by_setter_empty(self):
         _KIND = 'KIND'
-        _GROUP_BY = ['field1', 'field2']
-        after = self._makeOne(_KIND).group_by(_GROUP_BY)
-        self.assertEqual(after.group_by(), _GROUP_BY)
+        query = self._makeOne(_KIND, group_by=['foo', 'bar'])
+        query.group_by = []
+        self.assertEqual(query.group_by, [])
+
+    def test_group_by_setter_string(self):
+        _KIND = 'KIND'
+        query = self._makeOne(_KIND)
+        query.group_by = 'field1'
+        self.assertEqual(query.group_by, ['field1'])
+
+    def test_group_by_setter_non_empty(self):
+        _KIND = 'KIND'
+        query = self._makeOne(_KIND)
+        query.group_by = ['field1', 'field2']
+        self.assertEqual(query.group_by, ['field1', 'field2'])
 
     def test_group_by_multiple_calls(self):
         _KIND = 'KIND'
         _GROUP_BY1 = ['field1', 'field2']
         _GROUP_BY2 = ['field3']
-        before = self._makeOne(_KIND).group_by(_GROUP_BY1)
-        self.assertEqual(before.group_by(), _GROUP_BY1)
-        after = before.group_by(_GROUP_BY2)
-        self.assertEqual(after.group_by(), _GROUP_BY2)
+        query = self._makeOne(_KIND)
+        query.group_by = _GROUP_BY1
+        self.assertEqual(query.group_by, _GROUP_BY1)
+        query.group_by = _GROUP_BY2
+        self.assertEqual(query.group_by, _GROUP_BY2)
+
+    def test_fetch_defaults(self):
+        _KIND = 'KIND'
+        query = self._makeOne(_KIND)
+        iterator = query.fetch()
+        self.assertTrue(iterator._query is query)
+        self.assertEqual(iterator._limit, 0)
+        self.assertEqual(iterator._offset, 0)
+
+    def test_fetch_explicit(self):
+        _KIND = 'KIND'
+        query = self._makeOne(_KIND)
+        iterator = query.fetch(limit=7, offset=8)
+        self.assertTrue(iterator._query is query)
+        self.assertEqual(iterator._limit, 7)
+        self.assertEqual(iterator._offset, 8)
+
+
+class Test__pb_from_query(unittest2.TestCase):
+
+    def _callFUT(self, query):
+        from gcloud.datastore.query import _pb_from_query
+        return _pb_from_query(query)
+
+    def test_empty(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        pb = self._callFUT(_Query())
+        self.assertEqual(list(pb.projection), [])
+        self.assertEqual(list(pb.kind), [])
+        self.assertEqual(list(pb.order), [])
+        self.assertEqual(list(pb.group_by), [])
+        self.assertEqual(pb.filter.property_filter.property.name, '')
+        cfilter = pb.filter.composite_filter
+        self.assertEqual(cfilter.operator, datastore_pb.CompositeFilter.AND)
+        self.assertEqual(list(cfilter.filter), [])
+        self.assertEqual(pb.start_cursor, b'')
+        self.assertEqual(pb.end_cursor, b'')
+        self.assertEqual(pb.limit, 0)
+        self.assertEqual(pb.offset, 0)
+
+    def test_projection(self):
+        pb = self._callFUT(_Query(projection=['a', 'b', 'c']))
+        self.assertEqual([item.property.name for item in pb.projection],
+                         ['a', 'b', 'c'])
+
+    def test_kind(self):
+        pb = self._callFUT(_Query(kind='KIND'))
+        self.assertEqual([item.name for item in pb.kind], ['KIND'])
+
+    def test_ancestor(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.helpers import _prepare_key_for_request
+        ancestor = Key('Ancestor', 123, dataset_id='DATASET')
+        pb = self._callFUT(_Query(ancestor=ancestor))
+        cfilter = pb.filter.composite_filter
+        self.assertEqual(cfilter.operator, datastore_pb.CompositeFilter.AND)
+        self.assertEqual(len(cfilter.filter), 1)
+        pfilter = cfilter.filter[0].property_filter
+        self.assertEqual(pfilter.property.name, '__key__')
+        ancestor_pb = _prepare_key_for_request(ancestor.to_protobuf())
+        self.assertEqual(pfilter.value.key_value, ancestor_pb)
+
+    def test_filter(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        query = _Query(filters=[('name', '=', u'John')])
+        query.OPERATORS = {
+            '=': datastore_pb.PropertyFilter.EQUAL,
+        }
+        pb = self._callFUT(query)
+        cfilter = pb.filter.composite_filter
+        self.assertEqual(cfilter.operator, datastore_pb.CompositeFilter.AND)
+        self.assertEqual(len(cfilter.filter), 1)
+        pfilter = cfilter.filter[0].property_filter
+        self.assertEqual(pfilter.property.name, 'name')
+        self.assertEqual(pfilter.value.string_value, u'John')
+
+    def test_filter_key(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.helpers import _prepare_key_for_request
+        key = Key('Kind', 123, dataset_id='DATASET')
+        query = _Query(filters=[('__key__', '=', key)])
+        query.OPERATORS = {
+            '=': datastore_pb.PropertyFilter.EQUAL,
+        }
+        pb = self._callFUT(query)
+        cfilter = pb.filter.composite_filter
+        self.assertEqual(cfilter.operator, datastore_pb.CompositeFilter.AND)
+        self.assertEqual(len(cfilter.filter), 1)
+        pfilter = cfilter.filter[0].property_filter
+        self.assertEqual(pfilter.property.name, '__key__')
+        key_pb = _prepare_key_for_request(key.to_protobuf())
+        self.assertEqual(pfilter.value.key_value, key_pb)
+
+    def test_order(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        pb = self._callFUT(_Query(order=['a', '-b', 'c']))
+        self.assertEqual([item.property.name for item in pb.order],
+                         ['a', 'b', 'c'])
+        self.assertEqual([item.direction for item in pb.order],
+                         [datastore_pb.PropertyOrder.ASCENDING,
+                          datastore_pb.PropertyOrder.DESCENDING,
+                          datastore_pb.PropertyOrder.ASCENDING])
+
+    def test_group_by(self):
+        pb = self._callFUT(_Query(group_by=['a', 'b', 'c']))
+        self.assertEqual([item.name for item in pb.group_by],
+                         ['a', 'b', 'c'])
+
+
+class Test_Iterator(unittest2.TestCase):
+    _DATASET = 'DATASET'
+    _NAMESPACE = 'NAMESPACE'
+    _KIND = 'KIND'
+    _ID = 123
+    _START = b'\x00'
+    _END = b'\xFF'
+
+    def setUp(self):
+        from gcloud.datastore import _implicit_environ
+        self._replaced_dataset = _implicit_environ.DATASET
+        _implicit_environ.DATASET = None
+
+    def tearDown(self):
+        from gcloud.datastore import _implicit_environ
+        _implicit_environ.DATASET = self._replaced_dataset
+
+    def _getTargetClass(self):
+        from gcloud.datastore.query import _Iterator
+        return _Iterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def _makeDataset(self):
+        connection = _Connection()
+        dataset = _Dataset(self._DATASET, connection)
+        return dataset, connection
+
+    def _addQueryResults(self, dataset, cursor=_END, more=False):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        MORE = datastore_pb.QueryResultBatch.NOT_FINISHED
+        NO_MORE = datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
+        _ID = 123
+        entity_pb = datastore_pb.Entity()
+        entity_pb.key.partition_id.dataset_id = dataset.id()
+        path_element = entity_pb.key.path_element.add()
+        path_element.kind = self._KIND
+        path_element.id = _ID
+        prop = entity_pb.property.add()
+        prop.name = 'foo'
+        prop.value.string_value = u'Foo'
+        dataset.connection()._results.append(
+            ([entity_pb], cursor, MORE if more else NO_MORE))
+
+    def test_ctor_defaults(self):
+        query = object()
+        iterator = self._makeOne(query)
+        self.assertTrue(iterator._query is query)
+        self.assertEqual(iterator._limit, 0)
+        self.assertEqual(iterator._offset, 0)
+
+    def test_ctor_explicit(self):
+        query = object()
+        iterator = self._makeOne(query, 13, 29)
+        self.assertTrue(iterator._query is query)
+        self.assertEqual(iterator._limit, 13)
+        self.assertEqual(iterator._offset, 29)
+
+    def test_next_page_no_cursors_no_more(self):
+        from base64 import b64encode
+        from gcloud.datastore.query import _pb_from_query
+        self._KIND = 'KIND'
+        dataset, connection = self._makeDataset()
+        query = _Query(self._KIND, dataset, self._NAMESPACE)
+        self._addQueryResults(dataset)
+        iterator = self._makeOne(query)
+        entities, more_results, cursor = iterator.next_page()
+
+        self.assertEqual(cursor, b64encode(self._END))
+        self.assertFalse(more_results)
+        self.assertFalse(iterator._more_results)
+        self.assertEqual(len(entities), 1)
+        self.assertEqual(entities[0].key().path,
+                         [{'kind': self._KIND, 'id': self._ID}])
+        self.assertEqual(entities[0]['foo'], u'Foo')
+        qpb = _pb_from_query(query)
+        qpb.limit = qpb.offset = 0
+        EXPECTED = {
+            'dataset_id': self._DATASET,
+            'query_pb': qpb,
+            'namespace': self._NAMESPACE,
+        }
+        self.assertEqual(connection._called_with, [EXPECTED])
+
+    def test_next_page_w_cursors_w_more(self):
+        from base64 import b64decode
+        from base64 import b64encode
+        from gcloud.datastore.query import _pb_from_query
+        dataset, connection = self._makeDataset()
+        query = _Query(self._KIND, dataset, self._NAMESPACE)
+        self._addQueryResults(dataset, cursor=self._END, more=True)
+        iterator = self._makeOne(query)
+        iterator._start_cursor = self._START
+        iterator._end_cursor = self._END
+        entities, more_results, cursor = iterator.next_page()
+
+        self.assertEqual(cursor, b64encode(self._END))
+        self.assertTrue(more_results)
+        self.assertTrue(iterator._more_results)
+        self.assertEqual(iterator._end_cursor, None)
+        self.assertEqual(b64decode(iterator._start_cursor), self._END)
+        self.assertEqual(len(entities), 1)
+        self.assertEqual(entities[0].key().path,
+                         [{'kind': self._KIND, 'id': self._ID}])
+        self.assertEqual(entities[0]['foo'], u'Foo')
+        qpb = _pb_from_query(query)
+        qpb.limit = qpb.offset = 0
+        qpb.start_cursor = b64decode(self._START)
+        qpb.end_cursor = b64decode(self._END)
+        EXPECTED = {
+            'dataset_id': self._DATASET,
+            'query_pb': qpb,
+            'namespace': self._NAMESPACE,
+        }
+        self.assertEqual(connection._called_with, [EXPECTED])
+
+    def test___iter___no_more(self):
+        from gcloud.datastore.query import _pb_from_query
+        self._KIND = 'KIND'
+        dataset, connection = self._makeDataset()
+        query = _Query(self._KIND, dataset, self._NAMESPACE)
+        self._addQueryResults(dataset)
+        iterator = self._makeOne(query)
+        entities = list(iterator)
+
+        self.assertFalse(iterator._more_results)
+        self.assertEqual(len(entities), 1)
+        self.assertEqual(entities[0].key().path,
+                         [{'kind': self._KIND, 'id': self._ID}])
+        self.assertEqual(entities[0]['foo'], u'Foo')
+        qpb = _pb_from_query(query)
+        qpb.limit = qpb.offset = 0
+        EXPECTED = {
+            'dataset_id': self._DATASET,
+            'query_pb': qpb,
+            'namespace': self._NAMESPACE,
+        }
+        self.assertEqual(connection._called_with, [EXPECTED])
+
+    def test___iter___w_more(self):
+        from gcloud.datastore.query import _pb_from_query
+        dataset, connection = self._makeDataset()
+        query = _Query(self._KIND, dataset, self._NAMESPACE)
+        self._addQueryResults(dataset, cursor=self._END, more=True)
+        self._addQueryResults(dataset)
+        iterator = self._makeOne(query)
+        entities = list(iterator)
+
+        self.assertFalse(iterator._more_results)
+        self.assertEqual(len(entities), 2)
+        for entity in entities:
+            self.assertEqual(
+                entity.key().path,
+                [{'kind': self._KIND, 'id': self._ID}])
+            self.assertEqual(entities[1]['foo'], u'Foo')
+        qpb1 = _pb_from_query(query)
+        qpb1.limit = qpb1.offset = 0
+        qpb2 = _pb_from_query(query)
+        qpb2.limit = qpb2.offset = 0
+        qpb2.start_cursor = self._END
+        EXPECTED1 = {
+            'dataset_id': self._DATASET,
+            'query_pb': qpb1,
+            'namespace': self._NAMESPACE,
+        }
+        EXPECTED2 = {
+            'dataset_id': self._DATASET,
+            'query_pb': qpb2,
+            'namespace': self._NAMESPACE,
+        }
+        self.assertEqual(len(connection._called_with), 2)
+        self.assertEqual(connection._called_with[0], EXPECTED1)
+        self.assertEqual(connection._called_with[1], EXPECTED2)
+
+
+class _Query(object):
+
+    def __init__(self,
+                 kind=None,
+                 dataset=None,
+                 namespace=None,
+                 ancestor=None,
+                 filters=(),
+                 projection=(),
+                 order=(),
+                 group_by=()):
+        self.kind = kind
+        self.dataset = dataset
+        self.namespace = namespace
+        self.ancestor = ancestor
+        self.filters = filters
+        self.projection = projection
+        self.order = order
+        self.group_by = group_by
 
 
 class _Dataset(object):
@@ -620,13 +685,11 @@ class _Connection(object):
     _cursor = b'\x00'
     _skipped = 0
 
-    def __init__(self, *result, **kwargs):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        self._result = list(result)
-        more_default = datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
-        self._more = kwargs.get('_more', more_default)
+    def __init__(self):
+        self._results = []
+        self._called_with = []
 
     def run_query(self, **kw):
-        self._called_with = kw
-        return self._result, self._cursor, self._more, self._skipped
+        self._called_with.append(kw)
+        result, self._results = self._results[0], self._results[1:]
+        return result
