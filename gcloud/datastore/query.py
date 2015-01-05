@@ -19,6 +19,7 @@ import base64
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
+from gcloud.datastore.dataset import Dataset
 from gcloud.datastore.key import Key
 
 
@@ -132,7 +133,6 @@ class Query(_implicit_environ._DatastoreBase):
         :type value: class:`gcloud.datastore.dataset.Dataset`
         :param value: the new dataset
         """
-        from gcloud.datastore.dataset import Dataset
         if not isinstance(value, Dataset):
             raise ValueError("Dataset must be a Dataset")
         self._dataset = value
