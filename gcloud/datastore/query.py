@@ -172,6 +172,14 @@ class Query(_implicit_environ._DatastoreBase):
 
         :type value: string
         :param value: updated kind for the query.
+
+        .. note::
+
+           The protobuf specification allows for ``kind`` to be repeated,
+           but the current implementation returns an error if more than
+           one value is passed.  If the back-end changes in the future to
+           allow multiple values, this method will be updated to allow passing
+           either a string or a sequence of strings.
         """
         if not isinstance(value, str):
             raise TypeError("Kind must be a string")
