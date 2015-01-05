@@ -363,6 +363,92 @@ class Query(_implicit_environ._DatastoreBase):
         return _Iterator(self, limit, offset, start_cursor, end_cursor)
 
 
+class _Iterator(object):
+    """Represent the state of a given execution of a Query.
+    """
+    _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
+
+    _FINISHED = (
+        datastore_pb.QueryResultBatch.NO_MORE_RESULTS,
+        datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
+    )
+
+    def __init__(self, query, limit=0, offset=0,
+                 start_cursor=None, end_cursor=None):
+        self._query = query
+        self._limit = limit
+        self._offset = offset
+        self._start_cursor = start_cursor
+        self._end_cursor = end_cursor
+        self._page = self._more_results = None
+
+    def next_page(self):
+        """Fetch a single "page" of query results.
+
+        Low-level API for fine control:  the more convenient API is
+        to iterate on us.
+
+        :rtype: tuple, (entities, more_results, cursor)
+        """
+        pb = _pb_from_query(self._query)
+
+        start_cursor = self._start_cursor
+        if start_cursor is not None:
+            pb.start_cursor = base64.b64decode(start_cursor)
+
+        end_cursor = self._end_cursor
+        if end_cursor is not None:
+            pb.end_cursor = base64.b64decode(end_cursor)
+
+        pb.limit = self._limit
+        pb.offset = self._offset
+
+        query_results = self._query.dataset.connection().run_query(
+            query_pb=pb,
+            dataset_id=self._query.dataset.id(),
+            namespace=self._query.namespace,
+            )
+        # NOTE: `query_results` contains an extra value that we don't use,
+        #       namely `skipped_results`.
+        #
+        # NOTE: The value of `more_results` is not currently useful because
+        #       the back-end always returns an enum
+        #       value of MORE_RESULTS_AFTER_LIMIT even if there are no more
+        #       results. See
+        #       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280
+        #       for discussion.
+        entity_pbs, cursor_as_bytes, more_results_enum = query_results[:3]
+
+        self._start_cursor = base64.b64encode(cursor_as_bytes)
+        self._end_cursor = None
+
+        if more_results_enum == self._NOT_FINISHED:
+            self._more_results = True
+        elif more_results_enum in self._FINISHED:
+            self._more_results = False
+        else:   # pragma: NO COVER
+            raise ValueError('Unexpected value returned for `more_results`.')
+
+        dataset = self._query.dataset
+        self._page = [
+            helpers.entity_from_protobuf(entity, dataset=dataset)
+            for entity in entity_pbs]
+        return self._page, self._more_results, self._start_cursor
+
+    def __iter__(self):
+        """Generator yielding all results matching our query.
+
+        :rtype: sequence of :class:`gcloud.datastore.entity.Entity`
+        """
+        self.next_page()
+        while True:
+            for entity in self._page:
+                yield entity
+            if not self._more_results:
+                break
+            self.next_page()
+
+
 def _pb_from_query(query):
     """Convert a Query instance to the corresponding protobuf.
 
@@ -428,89 +514,3 @@ def _pb_from_query(query):
         pb.group_by.add().name = group_by_name
 
     return pb
-
-
-class _Iterator(object):
-    """Represent the state of a given execution of a Query.
-    """
-    _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
-
-    _FINISHED = (
-        datastore_pb.QueryResultBatch.NO_MORE_RESULTS,
-        datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
-    )
-
-    def __init__(self, query, limit=0, offset=0,
-                 start_cursor=None, end_cursor=None):
-        self._query = query
-        self._limit = limit
-        self._offset = offset
-        self._start_cursor = start_cursor
-        self._end_cursor = end_cursor
-        self._page = self._more_results = None
-
-    def next_page(self):
-        """Fetch a single "page" of query results.
-
-        Low-level API for fine control:  the more convenient API is
-        to iterate on us.
-
-        :rtyoe: tuple, (entities, more_results, cursor)
-        """
-        pb = _pb_from_query(self._query)
-
-        start_cursor = self._start_cursor
-        if start_cursor is not None:
-            pb.start_cursor = base64.b64decode(start_cursor)
-
-        end_cursor = self._end_cursor
-        if end_cursor is not None:
-            pb.end_cursor = base64.b64decode(end_cursor)
-
-        pb.limit = self._limit
-        pb.offset = self._offset
-
-        query_results = self._query.dataset.connection().run_query(
-            query_pb=pb,
-            dataset_id=self._query.dataset.id(),
-            namespace=self._query.namespace,
-            )
-        # NOTE: `query_results` contains an extra value that we don't use,
-        #       namely `skipped_results`.
-        #
-        # NOTE: The value of `more_results` is not currently useful because
-        #       the back-end always returns an enum
-        #       value of MORE_RESULTS_AFTER_LIMIT even if there are no more
-        #       results. See
-        #       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280
-        #       for discussion.
-        entity_pbs, cursor_as_bytes, more_results_enum = query_results[:3]
-
-        self._start_cursor = base64.b64encode(cursor_as_bytes)
-        self._end_cursor = None
-
-        if more_results_enum == self._NOT_FINISHED:
-            self._more_results = True
-        elif more_results_enum in self._FINISHED:
-            self._more_results = False
-        else:   # pragma: NO COVER
-            raise ValueError('Unexpected value returned for `more_results`.')
-
-        dataset = self._query.dataset
-        self._page = [
-            helpers.entity_from_protobuf(entity, dataset=dataset)
-            for entity in entity_pbs]
-        return self._page, self._more_results, self._start_cursor
-
-    def __iter__(self):
-        """Generator yielding all results matching our query.
-
-        :rtype: sequence of :class:`gcloud.datastore.entity.Entity`
-        """
-        self.next_page()
-        while True:
-            for entity in self._page:
-                yield entity
-            if not self._more_results:
-                break
-            self.next_page()
