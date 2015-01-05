@@ -426,7 +426,7 @@ class _Iterator(object):
             self._more_results = True
         elif more_results_enum in self._FINISHED:
             self._more_results = False
-        else:   # pragma: NO COVER
+        else:
             raise ValueError('Unexpected value returned for `more_results`.')
 
         dataset = self._query.dataset

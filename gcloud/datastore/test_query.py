@@ -586,6 +586,16 @@ class Test_Iterator(unittest2.TestCase):
         }
         self.assertEqual(connection._called_with, [EXPECTED])
 
+    def test_next_page_w_cursors_w_bogus_more(self):
+        dataset, connection = self._makeDataset()
+        query = _Query(self._KIND, dataset, self._NAMESPACE)
+        self._addQueryResults(dataset, cursor=self._END, more=True)
+        conn = dataset.connection()
+        epb, cursor, _  = conn._results.pop()
+        conn._results.append((epb, cursor, 4))  # invalid enum
+        iterator = self._makeOne(query)
+        self.assertRaises(ValueError, iterator.next_page)
+
     def test___iter___no_more(self):
         from gcloud.datastore.query import _pb_from_query
         self._KIND = 'KIND'
