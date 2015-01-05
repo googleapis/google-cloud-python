@@ -187,7 +187,7 @@ class Query(_implicit_environ._DatastoreBase):
 
     @property
     def ancestor(self):
-        """The ancestory key for the query.
+        """The ancestor key for the query.
 
         :rtype: Key or None
         """
