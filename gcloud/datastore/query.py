@@ -83,38 +83,6 @@ class Query(_implicit_environ._DatastoreBase):
         self._order = list(order)
         self._group_by = list(group_by)
 
-    def clone(self, **kw):
-        """Create a new Query, copying self,
-
-        :type kw: dict, name->value.
-        :param kw: Replace properties in the copied query with those specified
-                   in ``kw``.
-
-        :rtype: :class:`gcloud.datastore.query.Query`
-        """
-        kind = kw.pop('kind', self._kind)
-        dataset = kw.pop('dataset', self._dataset)
-        namespace = kw.pop('namespace', self._namespace)
-        ancestor = kw.pop('ancestor', self._ancestor)
-        filters = kw.pop('filters', self._filters)
-        projection = kw.pop('projection', self._projection)
-        order = kw.pop('order', self._order)
-        group_by = kw.pop('group_by', self._group_by)
-
-        if kw:
-            raise TypeError("Unknown properties: %s" % ','.join(kw))
-
-        return self.__class__(
-            kind=kind,
-            dataset=dataset,
-            namespace=namespace,
-            ancestor=ancestor,
-            filters=filters,
-            projection=projection,
-            order=order,
-            group_by=group_by,
-            )
-
     @property
     def dataset(self):
         """Get the dataset for this Query.
@@ -161,8 +129,6 @@ class Query(_implicit_environ._DatastoreBase):
         """Get the Kind of the Query.
 
         :rtype: string or :class:`Query`
-        :returns: If `kind` is None, returns the kind. If a kind is provided,
-                  returns a clone of the :class:`Query` with that kind set.
         """
         return self._kind
 
@@ -221,26 +187,17 @@ class Query(_implicit_environ._DatastoreBase):
     def add_filter(self, property_name, operator, value):
         """Filter the query based on a property name, operator and a value.
 
-        This will return a clone of the current :class:`Query`
-        filtered by the expression and value provided.
-
         Expressions take the form of::
 
-          .filter('<property>', '<operator>', <value>)
+          .add_filter('<property>', '<operator>', <value>)
 
         where property is a property stored on the entity in the datastore
         and operator is one of ``OPERATORS``
         (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``)::
 
           >>> query = Query('Person')
-          >>> filtered_query = query.filter('name', '=', 'James')
-          >>> filtered_query = query.filter('age', '>', 50)
-
-        Because each call to ``.filter()`` returns a cloned ``Query`` object
-        we are able to string these together::
-
-          >>> query = Query('Person').filter(
-          ...     'name', '=', 'James').filter('age', '>', 50)
+          >>> query.add_filter('name', '=', 'James')
+          >>> query.add_filter('age', '>', 50)
 
         :type property_name: string
         :param property_name: A property name.

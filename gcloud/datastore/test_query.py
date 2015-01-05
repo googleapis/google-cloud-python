@@ -75,63 +75,6 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(query.order, ORDER)
         self.assertEqual(query.group_by, GROUP_BY)
 
-    def test_clone_wo_kw(self):
-        from gcloud.datastore.dataset import Dataset
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        _NAMESPACE = 'NAMESPACE'
-        dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset, _NAMESPACE)
-        clone = query.clone()
-        self.assertFalse(clone is query)
-        self.assertTrue(isinstance(clone, self._getTargetClass()))
-        self.assertTrue(clone.dataset is dataset)
-        self.assertEqual(clone.namespace, _NAMESPACE)
-        self.assertEqual(clone.kind, _KIND)
-
-    def test_clone_w_unknown_kw(self):
-        from gcloud.datastore.dataset import Dataset
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        _NAMESPACE = 'NAMESPACE'
-        dataset = Dataset(_DATASET)
-        query = self._makeOne(_KIND, dataset, _NAMESPACE)
-        self.assertRaises(TypeError, query.clone, nonesuch='Foo')
-
-    def test_clone_w_kw(self):
-        from gcloud.datastore.dataset import Dataset
-        from gcloud.datastore.key import Key
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        _NAMESPACE = 'NAMESPACE'
-        dataset = Dataset(_DATASET)
-        ancestor = Key('ANCESTOR', 123, dataset_id=_DATASET)
-        FILTERS = [('foo', '=', 'Qux'), ('bar', '<', 17)]
-        PROJECTION = ['foo', 'bar', 'baz']
-        ORDER = ['foo', 'bar']
-        GROUP_BY = ['foo']
-        query = self._makeOne(_KIND, dataset, _NAMESPACE)
-        clone = query.clone(
-            kind=_KIND,
-            dataset=dataset,
-            namespace=_NAMESPACE,
-            ancestor=ancestor,
-            filters=FILTERS,
-            projection=PROJECTION,
-            order=ORDER,
-            group_by=GROUP_BY,
-        )
-        self.assertFalse(clone is query)
-        self.assertTrue(isinstance(clone, self._getTargetClass()))
-        self.assertTrue(clone.dataset is dataset)
-        self.assertEqual(clone.namespace, _NAMESPACE)
-        self.assertEqual(clone.kind, _KIND)
-        self.assertEqual(clone.ancestor.path, ancestor.path)
-        self.assertEqual(clone.filters, FILTERS)
-        self.assertEqual(clone.projection, PROJECTION)
-        self.assertEqual(clone.order, ORDER)
-        self.assertEqual(clone.group_by, GROUP_BY)
-
     def test_dataset_setter_w_non_dataset(self):
         query = self._makeOne()
 
