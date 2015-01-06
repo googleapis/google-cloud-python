@@ -152,32 +152,6 @@ new <a class="reference internal" href="#gcloud.datastore.dataset.Dataset" title
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.entity">
-<tt class="descname">entity</tt><big>(</big><em>kind</em>, <em>exclude_from_indexes=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.entity" title="Permalink to this definition">#</a></dt>
-<dd><p>Create an entity bound to this dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>kind</strong> (<em>string</em>) &#8211; the &#8220;kind&#8221; of the new entity (see
-<a class="reference external" href="https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers">https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers</a>)</li>
-<li><strong>exclude_from_indexes</strong> &#8211; names of fields whose values are not to
-be indexed.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new Entity instance, bound to this dataset.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.datastore.dataset.Dataset.get_entities">
 <tt class="descname">get_entities</tt><big>(</big><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_entities" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves entities from the dataset, along with their attributes.</p>
@@ -241,30 +215,6 @@ match found.</td>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current dataset ID.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Create a transaction bound to this dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> &#8211; positional arguments, passed through to the Transaction</li>
-<li><strong>kw</strong> &#8211; keyword arguments, passed through to the Transaction</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></tt></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new Transaction instance, bound to this dataset.</p>
-</td>
 </tr>
 </tbody>
 </table>
