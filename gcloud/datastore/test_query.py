@@ -491,7 +491,7 @@ class TestIterator(unittest2.TestCase):
         self.assertFalse(more_results)
         self.assertFalse(iterator._more_results)
         self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key().path,
+        self.assertEqual(entities[0].key.path,
                          [{'kind': self._KIND, 'id': self._ID}])
         self.assertEqual(entities[0]['foo'], u'Foo')
         qpb = _pb_from_query(query)
@@ -521,7 +521,7 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(iterator._end_cursor, None)
         self.assertEqual(b64decode(iterator._start_cursor), self._END)
         self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key().path,
+        self.assertEqual(entities[0].key.path,
                          [{'kind': self._KIND, 'id': self._ID}])
         self.assertEqual(entities[0]['foo'], u'Foo')
         qpb = _pb_from_query(query)
@@ -555,7 +555,7 @@ class TestIterator(unittest2.TestCase):
 
         self.assertFalse(iterator._more_results)
         self.assertEqual(len(entities), 1)
-        self.assertEqual(entities[0].key().path,
+        self.assertEqual(entities[0].key.path,
                          [{'kind': self._KIND, 'id': self._ID}])
         self.assertEqual(entities[0]['foo'], u'Foo')
         qpb = _pb_from_query(query)
@@ -580,7 +580,7 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(len(entities), 2)
         for entity in entities:
             self.assertEqual(
-                entity.key().path,
+                entity.key.path,
                 [{'kind': self._KIND, 'id': self._ID}])
             self.assertEqual(entities[1]['foo'], u'Foo')
         qpb1 = _pb_from_query(query)

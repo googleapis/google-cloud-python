@@ -241,7 +241,7 @@ class TestKey(unittest2.TestCase):
         key = self._makeOne(KIND, ID)
         entity = key.get(connection=cnxn)
         self.assertEqual(entity.items(), [('foo', 'Foo')])
-        self.assertTrue(entity.key() is key)
+        self.assertTrue(entity.key is key)
 
     def test_get_no_connection(self):
         from gcloud.datastore import _implicit_environ

@@ -17,7 +17,6 @@
 from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
-from gcloud.datastore.dataset import Dataset
 
 
 class Connection(connection.Connection):
@@ -153,19 +152,6 @@ class Connection(connection.Connection):
             return self.transaction().mutation()
         else:
             return datastore_pb.Mutation()
-
-    def dataset(self, *args, **kwargs):
-        """Factory method for Dataset objects.
-
-        :param args: All args and kwargs will be passed along to the
-                     :class:`gcloud.datastore.dataset.Dataset` initializer.
-
-        :rtype: :class:`gcloud.datastore.dataset.Dataset`
-        :returns: A dataset object that will use this connection as
-                  its transport.
-        """
-        kwargs['connection'] = self
-        return Dataset(*args, **kwargs)
 
     def lookup(self, dataset_id, key_pbs,
                missing=None, deferred=None, eventual=False):
