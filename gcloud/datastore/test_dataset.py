@@ -108,31 +108,6 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
-    def test_allocate_ids(self):
-        from gcloud.datastore.key import Key
-
-        DATASET_ID = 'DATASET'
-        INCOMPLETE_KEY = Key('KIND', dataset_id=DATASET_ID)
-        CONNECTION = _Connection()
-        NUM_IDS = 2
-        DATASET = self._makeOne(DATASET_ID, connection=CONNECTION)
-        result = DATASET.allocate_ids(INCOMPLETE_KEY, NUM_IDS)
-
-        # Check the IDs returned match.
-        self.assertEqual([key.id for key in result], range(NUM_IDS))
-
-        # Check connection is called correctly.
-        self.assertEqual(CONNECTION._called_dataset_id, DATASET_ID)
-        self.assertEqual(len(CONNECTION._called_key_pbs), NUM_IDS)
-
-    def test_allocate_ids_with_complete(self):
-        from gcloud.datastore.test_entity import _Key
-
-        COMPLETE_KEY = _Key()
-        DATASET = self._makeOne(None)
-        self.assertRaises(ValueError, DATASET.allocate_ids,
-                          COMPLETE_KEY, 2)
-
 
 class _Connection(object):
     _called_with = None

@@ -112,29 +112,3 @@ class Dataset(object):
             entities.append(helpers.entity_from_protobuf(
                 entity_pb, dataset=self))
         return entities
-
-    def allocate_ids(self, incomplete_key, num_ids):
-        """Allocates a list of IDs from a partial key.
-
-        :type incomplete_key: A :class:`gcloud.datastore.key.Key`
-        :param incomplete_key: Partial key to use as base for allocated IDs.
-
-        :type num_ids: A :class:`int`.
-        :param num_ids: The number of IDs to allocate.
-
-        :rtype: list of :class:`gcloud.datastore.key.Key`
-        :returns: The (complete) keys allocated with `incomplete_key` as root.
-        :raises: `ValueError` if `incomplete_key` is not a partial key.
-        """
-        if not incomplete_key.is_partial:
-            raise ValueError(('Key is not partial.', incomplete_key))
-
-        incomplete_key_pb = incomplete_key.to_protobuf()
-        incomplete_key_pbs = [incomplete_key_pb] * num_ids
-
-        allocated_key_pbs = self.connection().allocate_ids(
-            self.id(), incomplete_key_pbs)
-        allocated_ids = [allocated_key_pb.path_element[-1].id
-                         for allocated_key_pb in allocated_key_pbs]
-        return [incomplete_key.completed_key(allocated_id)
-                for allocated_id in allocated_ids]

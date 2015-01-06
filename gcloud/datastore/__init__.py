@@ -146,6 +146,18 @@ def _require_dataset():
     return _implicit_environ.DATASET
 
 
+def _require_connection():
+    """Convenience method to ensure CONNECTION is set.
+
+    :rtype: :class:`gcloud.datastore.connection.Connection`
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if CONNECTION is not set.
+    """
+    if _implicit_environ.CONNECTION is None:
+        raise EnvironmentError('Connection could not be inferred.')
+    return _implicit_environ.CONNECTION
+
+
 def get_entities(keys):
     """Retrieves entities from implied dataset, along with their attributes.
 
@@ -158,16 +170,36 @@ def get_entities(keys):
     return _require_dataset().get_entities(keys)
 
 
-def allocate_ids(incomplete_key, num_ids):
+def allocate_ids(incomplete_key, num_ids, connection=None, dataset_id=None):
     """Allocates a list of IDs from a partial key.
 
     :type incomplete_key: A :class:`gcloud.datastore.key.Key`
-    :param incomplete_key: The partial key to use as base for allocated IDs.
+    :param incomplete_key: Partial key to use as base for allocated IDs.
 
     :type num_ids: A :class:`int`.
     :param num_ids: The number of IDs to allocate.
 
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional. The connection used to allocate IDs.
+
+    :type dataset_id: :class:`str`.
+    :param dataset_id: Optional. The ID of the dataset used to allocate.
+
     :rtype: list of :class:`gcloud.datastore.key.Key`
     :returns: The (complete) keys allocated with `incomplete_key` as root.
+    :raises: `ValueError` if `incomplete_key` is not a partial key.
     """
-    return _require_dataset().allocate_ids(incomplete_key, num_ids)
+    connection = connection or _require_connection()
+    dataset_id = dataset_id or _require_dataset().id()
+
+    if not incomplete_key.is_partial:
+        raise ValueError(('Key is not partial.', incomplete_key))
+
+    incomplete_key_pb = incomplete_key.to_protobuf()
+    incomplete_key_pbs = [incomplete_key_pb] * num_ids
+
+    allocated_key_pbs = connection.allocate_ids(dataset_id, incomplete_key_pbs)
+    allocated_ids = [allocated_key_pb.path_element[-1].id
+                     for allocated_key_pb in allocated_key_pbs]
+    return [incomplete_key.completed_key(allocated_id)
+            for allocated_id in allocated_ids]
