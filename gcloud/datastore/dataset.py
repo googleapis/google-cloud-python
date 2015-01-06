@@ -72,21 +72,6 @@ class Dataset(object):
 
         return self._id
 
-    def get_entity(self, key):
-        """Retrieves entity from the dataset, along with its attributes.
-
-        :type key: :class:`gcloud.datastore.key.Key`
-        :param key: The key of the entity to be retrieved.
-
-        :rtype: :class:`gcloud.datastore.entity.Entity` or `NoneType`
-        :returns: The requested entity, or ``None`` if there was no
-                  match found.
-        """
-        entities = self.get_entities([key])
-
-        if entities:
-            return entities[0]
-
     def get_entities(self, keys, missing=None, deferred=None):
         """Retrieves entities from the dataset, along with their attributes.
 

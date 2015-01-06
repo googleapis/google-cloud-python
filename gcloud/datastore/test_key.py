@@ -195,6 +195,63 @@ class TestKey(unittest2.TestCase):
         pb = key.to_protobuf()
         self.assertFalse(pb.path_element[0].HasField('kind'))
 
+    def test_get_explicit_connection_miss(self):
+        from gcloud.datastore.test_dataset import _Connection
+
+        cnxn_lookup_result = []
+        cnxn = _Connection(*cnxn_lookup_result)
+        key = self._makeOne('KIND', 1234)
+        entity = key.get(connection=cnxn)
+        self.assertEqual(entity, None)
+
+    def test_get_implicit_connection_miss(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.test_dataset import _Connection
+
+        cnxn_lookup_result = []
+        cnxn = _Connection(*cnxn_lookup_result)
+        key = self._makeOne('KIND', 1234)
+        with _Monkey(_implicit_environ, CONNECTION=cnxn):
+            entity = key.get()
+        self.assertEqual(entity, None)
+
+    def test_get_explicit_connection_hit(self):
+        from gcloud.datastore import datastore_v1_pb2
+        from gcloud.datastore.test_dataset import _Connection
+
+        KIND = 'KIND'
+        ID = 1234
+
+        # Make a bogus entity PB to be returned from fake Connection.
+        entity_pb = datastore_v1_pb2.Entity()
+        entity_pb.key.partition_id.dataset_id = self._DEFAULT_DATASET
+        path_element = entity_pb.key.path_element.add()
+        path_element.kind = KIND
+        path_element.id = ID
+        prop = entity_pb.property.add()
+        prop.name = 'foo'
+        prop.value.string_value = 'Foo'
+
+        # Make fake connection.
+        cnxn_lookup_result = [entity_pb]
+        cnxn = _Connection(*cnxn_lookup_result)
+
+        # Create key and look-up.
+        key = self._makeOne(KIND, ID)
+        entity = key.get(connection=cnxn)
+        self.assertEqual(entity.items(), [('foo', 'Foo')])
+        self.assertTrue(entity.key() is key)
+
+    def test_get_explicit_connection_partial_key(self):
+        from gcloud.datastore.test_dataset import _Connection
+
+        cnxn_lookup_result = []
+        cnxn = _Connection(*cnxn_lookup_result)
+        key = self._makeOne('KIND')
+        with self.assertRaises(ValueError):
+            key.get(connection=cnxn)
+
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne('KIND')
         self.assertTrue(key.is_partial)
