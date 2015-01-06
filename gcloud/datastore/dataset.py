@@ -15,8 +15,6 @@
 """Create / interact with gcloud datastore datasets."""
 
 from gcloud.datastore import helpers
-from gcloud.datastore.entity import Entity
-from gcloud.datastore.transaction import Transaction
 
 
 class Dataset(object):
@@ -73,35 +71,6 @@ class Dataset(object):
         """
 
         return self._id
-
-    def entity(self, kind, exclude_from_indexes=()):
-        """Create an entity bound to this dataset.
-
-        :type kind: string
-        :param kind: the "kind" of the new entity (see
-                 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers)
-
-        :param exclude_from_indexes: names of fields whose values are not to
-                                     be indexed.
-
-        :rtype: :class:`gcloud.datastore.entity.Entity`
-        :returns: a new Entity instance, bound to this dataset.
-        """
-        return Entity(dataset=self, kind=kind,
-                      exclude_from_indexes=exclude_from_indexes)
-
-    def transaction(self, *args, **kwargs):
-        """Create a transaction bound to this dataset.
-
-        :param args: positional arguments, passed through to the Transaction
-
-        :param kw: keyword arguments, passed through to the Transaction
-
-        :rtype: :class:`gcloud.datastore.transaction.Transaction`
-        :returns: a new Transaction instance, bound to this dataset.
-        """
-        kwargs['dataset'] = self
-        return Transaction(*args, **kwargs)
 
     def get_entity(self, key):
         """Retrieves entity from the dataset, along with its attributes.

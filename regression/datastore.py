@@ -152,7 +152,7 @@ class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
         key = Key('Person', 'name')
-        entity = Entity(kind=None).key(key)
+        entity = Entity.from_key(key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
@@ -348,7 +348,7 @@ class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
         key = Key('Company', 'Google')
-        entity = Entity(kind=None).key(key)
+        entity = Entity.from_key(key)
         entity['url'] = u'www.google.com'
 
         with Transaction():
