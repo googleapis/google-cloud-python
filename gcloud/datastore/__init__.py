@@ -59,12 +59,10 @@ _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 
 
 def set_default_dataset(dataset_id=None):
-    """Determines auth settings from local enviroment.
+    """Set default dataset ID either explicitly or implicitly as fall-back.
 
-    Sets a default dataset either explicitly or via the local
-    enviroment. Currently only supports enviroment variable but will
-    implicitly support App Engine, Compute Engine and other environments
-    in the future.
+    In implicit case, currently only supports enviroment variable but will
+    support App Engine, Compute Engine and other environments in the future.
 
     Local environment variable used is:
     - GCLOUD_DATASET_ID
@@ -78,6 +76,16 @@ def set_default_dataset(dataset_id=None):
 
     if dataset_id is not None:
         _implicit_environ.DATASET = get_dataset(dataset_id)
+
+
+def set_default_connection(connection=None):
+    """Set default connection either explicitly or implicitly as fall-back.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: A connection provided to be the default.
+    """
+    connection = connection or get_connection()
+    _implicit_environ.CONNECTION = connection
 
 
 def get_connection():
