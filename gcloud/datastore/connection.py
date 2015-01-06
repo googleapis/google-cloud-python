@@ -358,7 +358,7 @@ class Connection(connection.Connection):
 
         if self.transaction():
             request.mode = datastore_pb.CommitRequest.TRANSACTIONAL
-            request.transaction = self.transaction().id()
+            request.transaction = self.transaction().id
         else:
             request.mode = datastore_pb.CommitRequest.NON_TRANSACTIONAL
 
@@ -378,11 +378,11 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The dataset to which the transaction belongs.
         """
-        if not self.transaction() or not self.transaction().id():
+        if not self.transaction() or not self.transaction().id:
             raise ValueError('No transaction to rollback.')
 
         request = datastore_pb.RollbackRequest()
-        request.transaction = self.transaction().id()
+        request.transaction = self.transaction().id
         # Nothing to do with this response, so just execute the method.
         self._rpc(dataset_id, 'rollback', request,
                   datastore_pb.RollbackResponse)
@@ -549,7 +549,7 @@ class Connection(connection.Connection):
         if eventual:
             opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
         elif transaction:
-            opts.transaction = transaction.id()
+            opts.transaction = transaction.id
 
 
 def _copy_deferred_keys(lookup_request, lookup_response):

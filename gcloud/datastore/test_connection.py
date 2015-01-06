@@ -765,8 +765,8 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
         class Xact(object):
-            def id(self):
-                return 'xact'
+            id = 'xact'
+
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb.CommitResponse()
@@ -808,9 +808,8 @@ class TestConnection(unittest2.TestCase):
     def test_rollback_w_existing_transaction_no_id(self):
 
         class Xact(object):
+            id = None
 
-            def id(self):
-                return None
         DATASET_ID = 'DATASET'
         conn = self._makeOne()
         conn.transaction(Xact())
@@ -823,9 +822,8 @@ class TestConnection(unittest2.TestCase):
         TRANSACTION = 'xact'
 
         class Xact(object):
+            id = TRANSACTION
 
-            def id(self):
-                return TRANSACTION
         rsp_pb = datastore_pb.RollbackResponse()
         conn = self._makeOne()
         conn.transaction(Xact())
@@ -1162,6 +1160,7 @@ class Transaction(object):
     def __init__(self, id):
         self._id = id
 
+    @property
     def id(self):
         return self._id
 

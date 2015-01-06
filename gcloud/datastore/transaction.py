@@ -18,7 +18,7 @@ from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
 
-class Transaction(_implicit_environ._DatastoreBase):
+class Transaction(object):
     """An abstraction representing datastore Transactions.
 
     Transactions can be used to build up a bulk mutuation as well as
@@ -126,39 +126,32 @@ class Transaction(_implicit_environ._DatastoreBase):
     """
 
     def __init__(self, dataset=None):
-        super(Transaction, self).__init__(dataset=dataset)
-        # If self._dataset is None, using this transaction will fail.
+        dataset = dataset or _implicit_environ.DATASET
+        self._connection = dataset.connection()
+        self._dataset_id = dataset.id()
         self._id = None
         self._mutation = datastore_pb.Mutation()
         self._auto_id_entities = []
 
+    @property
     def connection(self):
         """Getter for current connection over which the transaction will run.
 
         :rtype: :class:`gcloud.datastore.connection.Connection`
         :returns: The connection over which the transaction will run.
         """
+        return self._connection
 
-        return self.dataset().connection()
-
-    def dataset(self):
-        """Getter for the current dataset.
-
-        :rtype: :class:`gcloud.datastore.dataset.Dataset`
-        :returns: The dataset to which the transaction belongs.
-        """
-
-        return self._dataset
-
+    @property
     def id(self):
         """Getter for the transaction ID.
 
         :rtype: string
         :returns: The ID of the current transaction.
         """
-
         return self._id
 
+    @property
     def mutation(self):
         """Getter for the current mutation.
 
@@ -196,8 +189,8 @@ class Transaction(_implicit_environ._DatastoreBase):
         statement, however it can be called explicitly if you don't want
         to use a context manager.
         """
-        self._id = self.connection().begin_transaction(self.dataset().id())
-        self.connection().transaction(self)
+        self._id = self.connection.begin_transaction(self._dataset_id)
+        self.connection.transaction(self)
 
     def rollback(self):
         """Rolls back the current transaction.
@@ -207,8 +200,8 @@ class Transaction(_implicit_environ._DatastoreBase):
         - Sets the current connection's transaction reference to None.
         - Sets the current transaction's ID to None.
         """
-        self.connection().rollback(self.dataset().id())
-        self.connection().transaction(None)
+        self.connection.rollback(self._dataset_id)
+        self.connection.transaction(None)
         self._id = None
 
     def commit(self):
@@ -226,9 +219,9 @@ class Transaction(_implicit_environ._DatastoreBase):
         """
         # It's possible that they called commit() already, in which case
         # we shouldn't do any committing of our own.
-        if self.connection().transaction():
-            result = self.connection().commit(self.dataset().id(),
-                                              self.mutation())
+        if self.connection.transaction():
+            result = self.connection.commit(self._dataset_id,
+                                            self.mutation)
 
             # For any of the auto-id entities, make sure we update their keys.
             for i, entity in enumerate(self._auto_id_entities):
@@ -237,7 +230,7 @@ class Transaction(_implicit_environ._DatastoreBase):
                 entity.key(entity.key().completed_key(new_id))
 
         # Tell the connection that the transaction is over.
-        self.connection().transaction(None)
+        self.connection.transaction(None)
 
         # Clear our own ID in case this gets accidentally reused.
         self._id = None
