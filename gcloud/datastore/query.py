@@ -334,7 +334,7 @@ class Iterator(object):
         datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
     )
 
-    def __init__(self, query, limit=0, offset=0,
+    def __init__(self, query, limit=None, offset=0,
                  start_cursor=None, end_cursor=None):
         self._query = query
         self._limit = limit
@@ -361,7 +361,9 @@ class Iterator(object):
         if end_cursor is not None:
             pb.end_cursor = base64.b64decode(end_cursor)
 
-        pb.limit = self._limit
+        if self._limit is not None:
+            pb.limit = self._limit
+
         pb.offset = self._offset
 
         query_results = self._query.dataset.connection().run_query(
