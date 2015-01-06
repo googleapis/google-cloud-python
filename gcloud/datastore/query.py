@@ -246,6 +246,10 @@ class Query(_implicit_environ._DatastoreBase):
             projection = [projection]
         self._projection[:] = projection
 
+    def keys_only(self):
+        """Set the projection to include only keys."""
+        self._projection[:] = ['__key__']
+
     @property
     def order(self):
         """Names of fields used to sort query results.
