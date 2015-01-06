@@ -1139,38 +1139,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(mutation.delete), 1)
 
 
-class Test_allocate_ids_function(unittest2.TestCase):
-
-    def _callFUT(self, incomplete_key, num_ids, connection, dataset_id):
-        from gcloud.datastore.connection import allocate_ids
-        return allocate_ids(incomplete_key, num_ids, connection, dataset_id)
-
-    def test_allocate_ids(self):
-        from gcloud.datastore.key import Key
-        from gcloud.datastore.test_dataset import _Connection
-
-        DATASET_ID = 'DATASET'
-        INCOMPLETE_KEY = Key('KIND', dataset_id=DATASET_ID)
-        CONNECTION = _Connection()
-        NUM_IDS = 2
-        result = self._callFUT(INCOMPLETE_KEY, NUM_IDS,
-                               CONNECTION, DATASET_ID)
-
-        # Check the IDs returned match.
-        self.assertEqual([key.id for key in result], range(NUM_IDS))
-
-        # Check connection is called correctly.
-        self.assertEqual(CONNECTION._called_dataset_id, DATASET_ID)
-        self.assertEqual(len(CONNECTION._called_key_pbs), NUM_IDS)
-
-    def test_allocate_ids_with_complete(self):
-        from gcloud.datastore.test_entity import _Key
-
-        COMPLETE_KEY = _Key()
-        self.assertRaises(ValueError, self._callFUT,
-                          COMPLETE_KEY, 2, None, None)
-
-
 class Http(object):
 
     _called_with = None
