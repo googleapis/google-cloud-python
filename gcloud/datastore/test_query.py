@@ -250,6 +250,12 @@ class TestQuery(unittest2.TestCase):
         query.projection = _PROJECTION2
         self.assertEqual(query.projection, _PROJECTION2)
 
+    def test_keys_only(self):
+        _KIND = 'KIND'
+        query = self._makeOne(_KIND)
+        query.keys_only()
+        self.assertEqual(query.projection, ['__key__'])
+
     def test_order_setter_empty(self):
         _KIND = 'KIND'
         query = self._makeOne(_KIND, order=['foo', '-bar'])
