@@ -49,6 +49,8 @@ import os
 from gcloud import credentials
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore.connection import Connection
+from gcloud.datastore.dataset import Dataset
+from gcloud.datastore import helpers
 
 
 SCOPE = ('https://www.googleapis.com/auth/datastore ',
@@ -158,16 +160,57 @@ def _require_connection():
     return _implicit_environ.CONNECTION
 
 
-def get_entities(keys):
+def get_entities(keys, missing=None, deferred=None,
+                 connection=None, dataset_id=None):
     """Retrieves entities from implied dataset, along with their attributes.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
     :param keys: The name of the item to retrieve.
 
+    :type missing: an empty list or None.
+    :param missing: If a list is passed, the key-only entities returned
+                    by the backend as "missing" will be copied into it.
+                    Use only as a keyword param.
+
+    :type deferred: an empty list or None.
+    :param deferred: If a list is passed, the keys returned
+                     by the backend as "deferred" will be copied into it.
+                     Use only as a keyword param.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional. The connection used to connect to datastore.
+
+    :type dataset_id: :class:`str`.
+    :param dataset_id: Optional. The ID of the dataset.
+
     :rtype: list of :class:`gcloud.datastore.entity.Entity`
     :returns: The requested entities.
     """
-    return _require_dataset().get_entities(keys)
+    connection = connection or _require_connection()
+    dataset_id = dataset_id or _require_dataset().id()
+
+    entity_pbs = connection.lookup(
+        dataset_id=dataset_id,
+        key_pbs=[k.to_protobuf() for k in keys],
+        missing=missing, deferred=deferred,
+    )
+
+    new_dataset = Dataset(dataset_id, connection=connection)
+    if missing is not None:
+        missing[:] = [
+            helpers.entity_from_protobuf(missed_pb, dataset=new_dataset)
+            for missed_pb in missing]
+
+    if deferred is not None:
+        deferred[:] = [
+            helpers.key_from_protobuf(deferred_pb)
+            for deferred_pb in deferred]
+
+    entities = []
+    for entity_pb in entity_pbs:
+        entities.append(helpers.entity_from_protobuf(
+            entity_pb, dataset=new_dataset))
+    return entities
 
 
 def allocate_ids(incomplete_key, num_ids, connection=None, dataset_id=None):
@@ -180,10 +223,10 @@ def allocate_ids(incomplete_key, num_ids, connection=None, dataset_id=None):
     :param num_ids: The number of IDs to allocate.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: Optional. The connection used to allocate IDs.
+    :param connection: Optional. The connection used to connect to datastore.
 
     :type dataset_id: :class:`str`.
-    :param dataset_id: Optional. The ID of the dataset used to allocate.
+    :param dataset_id: Optional. The ID of the dataset.
 
     :rtype: list of :class:`gcloud.datastore.key.Key`
     :returns: The (complete) keys allocated with `incomplete_key` as root.
