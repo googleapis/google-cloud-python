@@ -196,7 +196,7 @@ class TestKey(unittest2.TestCase):
         self.assertFalse(pb.path_element[0].HasField('kind'))
 
     def test_get_explicit_connection_miss(self):
-        from gcloud.datastore.test_dataset import _Connection
+        from gcloud.datastore.test_connection import _Connection
 
         cnxn_lookup_result = []
         cnxn = _Connection(*cnxn_lookup_result)
@@ -207,7 +207,7 @@ class TestKey(unittest2.TestCase):
     def test_get_implicit_connection_miss(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
-        from gcloud.datastore.test_dataset import _Connection
+        from gcloud.datastore.test_connection import _Connection
 
         cnxn_lookup_result = []
         cnxn = _Connection(*cnxn_lookup_result)
@@ -218,7 +218,7 @@ class TestKey(unittest2.TestCase):
 
     def test_get_explicit_connection_hit(self):
         from gcloud.datastore import datastore_v1_pb2
-        from gcloud.datastore.test_dataset import _Connection
+        from gcloud.datastore.test_connection import _Connection
 
         KIND = 'KIND'
         ID = 1234
@@ -248,11 +248,11 @@ class TestKey(unittest2.TestCase):
 
         self.assertEqual(_implicit_environ.CONNECTION, None)
         key = self._makeOne('KIND', 1234)
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(EnvironmentError):
             key.get()
 
     def test_delete_explicit_connection(self):
-        from gcloud.datastore.test_dataset import _Connection
+        from gcloud.datastore.test_connection import _Connection
 
         cnxn = _Connection()
         key = self._makeOne('KIND', 1234)
@@ -264,7 +264,7 @@ class TestKey(unittest2.TestCase):
     def test_delete_implicit_connection(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
-        from gcloud.datastore.test_dataset import _Connection
+        from gcloud.datastore.test_connection import _Connection
 
         cnxn = _Connection()
         key = self._makeOne('KIND', 1234)

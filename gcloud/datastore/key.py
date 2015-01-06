@@ -238,12 +238,12 @@ class Key(object):
                   match found.
         """
         # Temporary import hack until Dataset is removed in #477.
-        from gcloud.datastore.dataset import Dataset
+        from gcloud import datastore
 
         # We allow partial keys to attempt a get, the backend will fail.
         connection = connection or _implicit_environ.CONNECTION
-        dataset = Dataset(self.dataset_id, connection=connection)
-        entities = dataset.get_entities([self])
+        entities = datastore.get_entities(
+            [self], connection=connection, dataset_id=self.dataset_id)
 
         if entities:
             result = entities[0]

@@ -189,21 +189,152 @@ class Test_implicit_behavior(unittest2.TestCase):
             stored_connection = gcloud.datastore._require_connection()
         self.assertTrue(stored_connection is FAKE_CONNECTION)
 
-    def test_get_entities(self):
-        import gcloud.datastore
+
+class Test_get_entities_function(unittest2.TestCase):
+
+    def _callFUT(self, keys, missing=None, deferred=None,
+                 connection=None, dataset_id=None):
+        from gcloud.datastore import get_entities
+        return get_entities(keys, missing=missing, deferred=deferred,
+                            connection=connection, dataset_id=dataset_id)
+
+    def test_get_entities_miss(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        connection = _Connection()
+        key = Key('Kind', 1234, dataset_id=DATASET_ID)
+        results = self._callFUT([key], connection=connection,
+                                dataset_id=DATASET_ID)
+        self.assertEqual(results, [])
+
+    def test_get_entities_miss_w_missing(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+
+        # Make a missing entity pb to be returned from mock backend.
+        missed = datastore_pb.Entity()
+        missed.key.partition_id.dataset_id = DATASET_ID
+        path_element = missed.key.path_element.add()
+        path_element.kind = KIND
+        path_element.id = ID
+
+        # Set missing entity on mock connection.
+        connection = _Connection()
+        connection._missing = [missed]
+
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
+        missing = []
+        entities = self._callFUT([key], connection=connection,
+                                 dataset_id=DATASET_ID, missing=missing)
+        self.assertEqual(entities, [])
+        self.assertEqual([missed.key().to_protobuf() for missed in missing],
+                         [key.to_protobuf()])
+
+    def test_get_entities_miss_w_deferred(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        key = Key('Kind', 1234, dataset_id=DATASET_ID)
+
+        # Set deferred entity on mock connection.
+        connection = _Connection()
+        connection._deferred = [key.to_protobuf()]
+
+        deferred = []
+        entities = self._callFUT([key], connection=connection,
+                                 dataset_id=DATASET_ID, deferred=deferred)
+        self.assertEqual(entities, [])
+        self.assertEqual([def_key.to_protobuf() for def_key in deferred],
+                         [key.to_protobuf()])
+
+    def _make_entity_pb(self, dataset_id, kind, integer_id, name, str_val):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+
+        entity_pb = datastore_pb.Entity()
+        entity_pb.key.partition_id.dataset_id = dataset_id
+        path_element = entity_pb.key.path_element.add()
+        path_element.kind = kind
+        path_element.id = integer_id
+        prop = entity_pb.property.add()
+        prop.name = name
+        prop.value.string_value = str_val
+
+        return entity_pb
+
+    def test_get_entities_hit(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+
+        # Make a found entity pb to be returned from mock backend.
+        entity_pb = self._make_entity_pb(DATASET_ID, KIND, ID,
+                                         'foo', 'Foo')
+
+        # Make a connection to return the entity pb.
+        connection = _Connection(entity_pb)
+
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
+        result, = self._callFUT([key], connection=connection,
+                                dataset_id=DATASET_ID)
+        new_key = result.key()
+
+        # Check the returned value is as expected.
+        self.assertFalse(new_key is key)
+        self.assertEqual(new_key.dataset_id, DATASET_ID)
+        self.assertEqual(new_key.path, PATH)
+        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result['foo'], 'Foo')
+
+    def test_get_entities_implicit(self):
         from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
         from gcloud.datastore.test_entity import _Dataset
         from gcloud._testing import _Monkey
 
-        CUSTOM_DATASET = _Dataset()
-        DUMMY_KEYS = [object(), object()]
-        DUMMY_VALS = [object(), object()]
-        for key, val in zip(DUMMY_KEYS, DUMMY_VALS):
-            CUSTOM_DATASET[key] = val
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
 
-        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET):
-            result = gcloud.datastore.get_entities(DUMMY_KEYS)
-        self.assertTrue(result == DUMMY_VALS)
+        # Make a found entity pb to be returned from mock backend.
+        entity_pb = self._make_entity_pb(DATASET_ID, KIND, ID,
+                                         'foo', 'Foo')
+
+        # Make a connection to return the entity pb.
+        CUSTOM_CONNECTION = _Connection(entity_pb)
+        CUSTOM_DATASET = _Dataset()
+
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
+        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET,
+                     CONNECTION=CUSTOM_CONNECTION):
+            result, = self._callFUT([key])
+
+        expected_called_with = {
+            'dataset_id': DATASET_ID,
+            'key_pbs': [key.to_protobuf()],
+        }
+        self.assertEqual(CUSTOM_CONNECTION._called_with, expected_called_with)
+
+        new_key = result.key()
+        # Check the returned value is as expected.
+        self.assertFalse(new_key is key)
+        self.assertEqual(new_key.dataset_id, DATASET_ID)
+        self.assertEqual(new_key.path, PATH)
+        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result['foo'], 'Foo')
 
 
 class Test_allocate_ids_function(unittest2.TestCase):
@@ -216,7 +347,7 @@ class Test_allocate_ids_function(unittest2.TestCase):
 
     def test_allocate_ids(self):
         from gcloud.datastore.key import Key
-        from gcloud.datastore.test_dataset import _Connection
+        from gcloud.datastore.test_connection import _Connection
 
         DATASET_ID = 'DATASET'
         INCOMPLETE_KEY = Key('KIND', dataset_id=DATASET_ID)
@@ -235,7 +366,7 @@ class Test_allocate_ids_function(unittest2.TestCase):
     def test_allocate_ids_implicit(self):
         from gcloud.datastore import _implicit_environ
         from gcloud.datastore.key import Key
-        from gcloud.datastore.test_dataset import _Connection
+        from gcloud.datastore.test_connection import _Connection
         from gcloud.datastore.test_entity import _Dataset
         from gcloud._testing import _Monkey
 
@@ -253,7 +384,7 @@ class Test_allocate_ids_function(unittest2.TestCase):
     def test_allocate_ids_with_complete(self):
         from gcloud.datastore import _implicit_environ
         from gcloud.datastore.key import Key
-        from gcloud.datastore.test_dataset import _Connection
+        from gcloud.datastore.test_connection import _Connection
         from gcloud.datastore.test_entity import _Dataset
         from gcloud._testing import _Monkey
 

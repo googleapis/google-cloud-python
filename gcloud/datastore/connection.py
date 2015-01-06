@@ -14,13 +14,13 @@
 
 """Connections to gcloud datastore API servers."""
 
-from gcloud import connection as base_connection
+from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.dataset import Dataset
 
 
-class Connection(base_connection.Connection):
+class Connection(connection.Connection):
     """A connection to the Google Cloud Datastore via the Protobuf API.
 
     This class should understand only the basic types (and protobufs)
@@ -125,7 +125,7 @@ class Connection(base_connection.Connection):
             api_version=(api_version or cls.API_VERSION),
             dataset_id=dataset_id, method=method)
 
-    def transaction(self, transaction=base_connection.Connection._EMPTY):
+    def transaction(self, transaction=connection.Connection._EMPTY):
         """Getter/setter for the connection's transaction object.
 
         :type transaction: :class:`gcloud.datastore.transaction.Transaction`,

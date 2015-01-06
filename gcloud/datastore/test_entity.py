@@ -271,9 +271,6 @@ class _Dataset(dict):
     def connection(self):
         return self._connection
 
-    def get_entities(self, keys):
-        return [self.get(key) for key in keys]
-
 
 class _Connection(object):
     _transaction = _saved = _deleted = None
