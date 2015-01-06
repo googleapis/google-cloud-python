@@ -76,39 +76,50 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span id="queries"></span><h1>Queries<a class="headerlink" href="#module-gcloud.datastore.query" title="Permalink to this headline">#</a></h1>
 <p>Create / interact with gcloud datastore queries.</p>
 <dl class="class">
+<dt id="gcloud.datastore.query.Iterator">
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.query.</tt><tt class="descname">Iterator</tt><big>(</big><em>query</em>, <em>limit=0</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Iterator" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represent the state of a given execution of a Query.</p>
+<dl class="method">
+<dt id="gcloud.datastore.query.Iterator.next_page">
+<tt class="descname">next_page</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Iterator.next_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Iterator.next_page" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch a single &#8220;page&#8221; of query results.</p>
+<p>Low-level API for fine control:  the more convenient API is
+to iterate on us.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple, (entities, more_results, cursor)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="gcloud.datastore.query.Query">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.query.</tt><tt class="descname">Query</tt><big>(</big><em>kind=None</em>, <em>dataset=None</em>, <em>namespace=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.query.</tt><tt class="descname">Query</tt><big>(</big><em>kind=None</em>, <em>dataset=None</em>, <em>namespace=None</em>, <em>ancestor=None</em>, <em>filters=()</em>, <em>projection=()</em>, <em>order=()</em>, <em>group_by=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._implicit_environ._DatastoreBase</span></tt></p>
 <p>A Query against the Cloud Datastore.</p>
 <p>This class serves as an abstraction for creating a query over data
 stored in the Cloud Datastore.</p>
-<p>Each <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> object is immutable, and a clone is returned
-whenever any part of the query is modified:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">limited_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">limit</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">limited_query</span><span class="o">.</span><span class="n">limit</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p>You typically won&#8217;t construct a <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> by initializing it
-like <tt class="docutils literal"><span class="pre">Query('MyKind',</span> <span class="pre">dataset=...)</span></tt> but instead use the helper
-<a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset.query" title="gcloud.datastore.dataset.Dataset.query"><tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset.query()</span></tt></a> method which
-generates a query that can be executed without any additional work:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>kind</strong> (<em>string</em>) &#8211; The kind to query.</li>
-<li><strong>dataset</strong> (<a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>) &#8211; The dataset to query.</li>
-<li><strong>dataset</strong> &#8211; The namespace to which to restrict results.</li>
+<li><strong>kind</strong> (<em>string.</em>) &#8211; The kind to query.</li>
+<li><strong>dataset</strong> (<a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>.) &#8211; The dataset to query.</li>
+<li><strong>namespace</strong> (<em>string or None.</em>) &#8211; The namespace to which to restrict results.</li>
+<li><strong>ancestor</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> or None.) &#8211; key of the ancestor to which this query&#8217;s results are
+restricted.</li>
+<li><strong>filters</strong> (<em>sequence of (property_name, operator, value) tuples.</em>) &#8211; property filters applied by this query.</li>
+<li><strong>projection</strong> (<em>sequence of string.</em>) &#8211; fields returned as part of query results.</li>
+<li><strong>order</strong> (<em>sequence of string.</em>) &#8211; field names used to order query results. Prepend &#8216;-&#8216;
+to a field name to sort it in descending order.</li>
+<li><strong>group_by</strong> (<em>sequence_of_string.</em>) &#8211; field names used to group query results.</li>
 </ul>
 </td>
 </tr>
@@ -116,172 +127,24 @@ generates a query that can be executed without any additional work:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;': 3, '=': 5, '&lt;': 1, '&gt;=': 4, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;': 3, '&lt;': 1, '=': 5, '&gt;=': 4, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.query.Query.ancestor">
-<tt class="descname">ancestor</tt><big>(</big><em>ancestor</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.ancestor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.ancestor" title="Permalink to this definition">#</a></dt>
-<dd><p>Filter the query based on an ancestor.</p>
-<p>This will return a clone of the current <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> filtered
-by the ancestor provided.  For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">parent_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">ancestor</span><span class="p">(</span><span class="n">parent_key</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Each call to <tt class="docutils literal"><span class="pre">.ancestor()</span></tt> returns a cloned <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>,
-however a query may only have one ancestor at a time.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ancestor</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; A Key to an entity</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A Query filtered by the ancestor provided.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.dataset">
-<tt class="descname">dataset</tt><big>(</big><em>dataset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.dataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Get or set the <a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">datastore.dataset.Dataset</span></tt></a> for this Query.</p>
-<p>This is the dataset against which the Query will be run.</p>
-<p>This is a hybrid getter / setter, used as:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">my_dataset</span><span class="p">)</span>  <span class="c"># Set the dataset.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span>  <span class="c"># Get the current dataset.</span>
-<span class="go">&lt;Dataset object&gt;</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>, None,
-or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current dataset.
-If a dataset is provided, returns a clone of the
-<a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that dataset set.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.datastore.query.Query.end_cursor">
-<tt class="descname">end_cursor</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.end_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.end_cursor" title="Permalink to this definition">#</a></dt>
-<dd><p>Property to encode end cursor bytes as base64.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.fetch">
-<tt class="descname">fetch</tt><big>(</big><em>limit=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch" title="Permalink to this definition">#</a></dt>
-<dd><p>Executes the Query and returns matching entities</p>
-<p>This calls <cite>fetch_page()</cite> but does not use the paging information.</p>
-<p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Sally&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
-<span class="go">[&lt;Entity object&gt;, &lt;Entity object&gt;, ...]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">[&lt;Entity object&gt;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">limit</span><span class="p">()</span>
-<span class="go">None</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<em>integer</em>) &#8211; An optional limit to apply temporarily to this query.
-That is, the Query itself won&#8217;t be altered,
-but the limit will be applied to the query
-before it is executed.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>&#8216;s</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of entities matching this query&#8217;s criteria.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.fetch_page">
-<tt class="descname">fetch_page</tt><big>(</big><em>limit=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch_page" title="Permalink to this definition">#</a></dt>
-<dd><p>Executes the Query and returns matching entities, and paging info.</p>
-<p>In addition to the fetched entities, it also returns a cursor to allow
-paging through a results set and a boolean <cite>more_results</cite> indicating
-if there are any more.</p>
-<p>This makes an API call to the Cloud Datastore, sends the Query
-as a protobuf, parses the responses to Entity protobufs, and
-then converts them to <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>
-objects.</p>
-<p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Sally&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch_page</span><span class="p">()</span>
-<span class="go">[&lt;Entity object&gt;, &lt;Entity object&gt;, ...], &#39;cursorbase64&#39;, True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">fetch_page</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="go">[&lt;Entity object&gt;], &#39;cursorbase64&#39;, True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">limit</span><span class="p">()</span>
-<span class="go">None</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limit</strong> (<em>integer</em>) &#8211; An optional limit to apply temporarily to this query.
-That is, the Query itself won&#8217;t be altered,
-but the limit will be applied to the query
-before it is executed.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple of mixed types</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The first entry is a <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>
-list matching this query&#8217;s criteria. The second is a base64
-encoded cursor for paging and the third is a boolean
-indicating if there are more results.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><cite>ValueError</cite> if more_results is not one of the enums
-NOT_FINISHED, MORE_RESULTS_AFTER_LIMIT, NO_MORE_RESULTS.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.filter">
-<tt class="descname">filter</tt><big>(</big><em>property_name</em>, <em>operator</em>, <em>value</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.filter" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.query.Query.add_filter">
+<tt class="descname">add_filter</tt><big>(</big><em>property_name</em>, <em>operator</em>, <em>value</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.add_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.add_filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Filter the query based on a property name, operator and a value.</p>
-<p>This will return a clone of the current <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
-filtered by the expression and value provided.</p>
 <p>Expressions take the form of:</p>
-<div class="highlight-python"><div class="highlight"><pre>.filter(&#39;&lt;property&gt;&#39;, &#39;&lt;operator&gt;&#39;, &lt;value&gt;)
+<div class="highlight-python"><div class="highlight"><pre>.add_filter(&#39;&lt;property&gt;&#39;, &#39;&lt;operator&gt;&#39;, &lt;value&gt;)
 </pre></div>
 </div>
 <p>where property is a property stored on the entity in the datastore
 and operator is one of <tt class="docutils literal"><span class="pre">OPERATORS</span></tt>
 (ie, <tt class="docutils literal"><span class="pre">=</span></tt>, <tt class="docutils literal"><span class="pre">&lt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;=</span></tt>, <tt class="docutils literal"><span class="pre">&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&gt;=</span></tt>):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filtered_query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Because each call to <tt class="docutils literal"><span class="pre">.filter()</span></tt> returns a cloned <tt class="docutils literal"><span class="pre">Query</span></tt> object
-we are able to string these together:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -295,102 +158,124 @@ we are able to string these together:</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A Query filtered by the expression and value provided.</p>
-</td>
-</tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><cite>ValueError</cite> if <cite>operation</cite> is not one of the specified
-values.</p>
+values, or if a filter names &#8216;__key__&#8217; but passes invalid
+operator (<tt class="docutils literal"><span class="pre">==</span></tt> is required) or value (a key is required).</p>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="gcloud.datastore.query.Query.ancestor">
+<tt class="descname">ancestor</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.ancestor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.ancestor" title="Permalink to this definition">#</a></dt>
+<dd><p>The ancestor key for the query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Key or None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.datastore.query.Query.dataset">
+<tt class="descname">dataset</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the dataset for this Query.</p>
+<p>The dataset against which the Query will be run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a> or None,</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the current dataset.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
+<dt id="gcloud.datastore.query.Query.fetch">
+<tt class="descname">fetch</tt><big>(</big><em>limit=0</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch" title="Permalink to this definition">#</a></dt>
+<dd><p>Execute the Query; return an iterator for the matching entities.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Sally&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">())</span>
+<span class="go">[&lt;Entity object&gt;, &lt;Entity object&gt;, ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">[&lt;Entity object&gt;]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>limit</strong> (<em>offset</em>) &#8211; An optional limit passed through to the iterator.</li>
+<li><strong>limit</strong> &#8211; An optional offset passed through to the iterator.</li>
+<li><strong>start_cursor</strong> (<em>offset</em>) &#8211; An optional cursor passed through to the iterator.</li>
+<li><strong>end_cursor</strong> (<em>offset</em>) &#8211; An optional cursor passed through to the iterator.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.datastore.query.Iterator" title="gcloud.datastore.query.Iterator"><tt class="xref py py-class docutils literal"><span class="pre">Iterator</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.datastore.query.Query.filters">
+<tt class="descname">filters</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.filters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.filters" title="Permalink to this definition">#</a></dt>
+<dd><p>Filters set on the query.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sequence of (property_name, operator, value) tuples.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="gcloud.datastore.query.Query.group_by">
-<tt class="descname">group_by</tt><big>(</big><em>group_by=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.group_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.group_by" title="Permalink to this definition">#</a></dt>
-<dd><p>Adds a group_by to the query.</p>
-<p>This is a hybrid getter / setter, used as:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">group_by</span><span class="p">()</span>  <span class="c"># Get the group_by for this query.</span>
-<span class="go">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">group_by</span><span class="p">([</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">group_by</span><span class="p">()</span>  <span class="c"># Get the group_by for this query.</span>
-<span class="go">[&#39;name&#39;]</span>
-</pre></div>
-</div>
+<tt class="descname">group_by</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.group_by"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.group_by" title="Permalink to this definition">#</a></dt>
+<dd><p>Names of fields used to group query results.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_by</strong> (<em>sequence of strings</em>) &#8211; Each value is a string giving the name of a
-property to use to group results together.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> or <cite>list</cite> of strings.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current group_by.
-If a list of group by properties is provided, returns a clone
-of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that list of values set.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sequence of string</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.query.Query.kind">
-<tt class="descname">kind</tt><big>(</big><em>kind=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.kind" title="Permalink to this definition">#</a></dt>
-<dd><p>Get or set the Kind of the Query.</p>
+<tt class="descname">kind</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.kind" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the Kind of the Query.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>kind</strong> (<em>string</em>) &#8211; Optional. The entity kinds for which to query.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If <cite>kind</cite> is None, returns the kind. If a kind is provided,
-returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that kind set.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><cite>ValueError</cite> from the getter if multiple kinds are set on
-the query.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.limit">
-<tt class="descname">limit</tt><big>(</big><em>limit=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.limit" title="Permalink to this definition">#</a></dt>
-<dd><p>Get or set the limit of the Query.</p>
-<p>This is the maximum number of rows (Entities) to return for this
-Query.</p>
-<p>This is a hybrid getter / setter, used as:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>  <span class="c"># Set the limit to 100 rows.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">limit</span><span class="p">()</span>  <span class="c"># Get the limit for this query.</span>
-<span class="go">100</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, None, or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current limit.
-If a limit is provided, returns a clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>
-with that limit set.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.query.Query.namespace">
-<tt class="descname">namespace</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.namespace" title="Permalink to this definition">#</a></dt>
+<tt class="descname">namespace</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.namespace" title="Permalink to this definition">#</a></dt>
 <dd><p>This query&#8217;s namespace</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -404,133 +289,31 @@ with that limit set.</td>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.offset">
-<tt class="descname">offset</tt><big>(</big><em>offset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.offset" title="Permalink to this definition">#</a></dt>
-<dd><p>Adds offset to the query to allow pagination.</p>
-<p>NOTE: Paging with cursors should be preferred to using an offset.</p>
-<p>This is a hybrid getter / setter, used as:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">offset</span><span class="p">()</span>  <span class="c"># Get the offset for this query.</span>
-<span class="go">0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">offset</span><span class="p">()</span>  <span class="c"># Get the offset for this query.</span>
-<span class="go">10</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>offset</strong> (<em>non-negative integer.</em>) &#8211; Value representing where to start a query for
-a given kind.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> or <cite>int</cite>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current offset.
-If an offset is provided, returns a clone of the
-<a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that offset set.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.query.Query.order">
-<tt class="descname">order</tt><big>(</big><em>*properties</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.order" title="Permalink to this definition">#</a></dt>
-<dd><p>Adds a sort order to the query.</p>
-<p>Sort fields will be applied in the order specified.</p>
+<tt class="descname">order</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.order" title="Permalink to this definition">#</a></dt>
+<dd><p>Names of fields used to sort query results.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>properties</strong> (<em>sequence of strings</em>) &#8211; Each value is a string giving the name of the
-property on which to sort, optionally preceded by a
-hyphen (-) to specify descending order.
-Omitting the hyphen implies ascending order.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new Query instance, ordered as specified.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.projection">
-<tt class="descname">projection</tt><big>(</big><em>projection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.projection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.projection" title="Permalink to this definition">#</a></dt>
-<dd><p>Adds a projection to the query.</p>
-<p>This is a hybrid getter / setter, used as:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">projection</span><span class="p">()</span>  <span class="c"># Get the projection for this query.</span>
-<span class="go">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">projection</span><span class="p">([</span><span class="s">&#39;name&#39;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">projection</span><span class="p">()</span>  <span class="c"># Get the projection for this query.</span>
-<span class="go">[&#39;name&#39;]</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>projection</strong> (<em>sequence of strings</em>) &#8211; Each value is a string giving the name of a
-property to be included in the projection query.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> or <cite>list</cite> of strings.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If no arguments, returns the current projection.
-If a projection is provided, returns a clone of the
-<a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> with that projection set.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sequence of string</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="gcloud.datastore.query.Query.start_cursor">
-<tt class="descname">start_cursor</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.start_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.start_cursor" title="Permalink to this definition">#</a></dt>
-<dd><p>Property to encode start cursor bytes as base64.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.to_protobuf">
-<tt class="descname">to_protobuf</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.to_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.to_protobuf" title="Permalink to this definition">#</a></dt>
-<dd><p>Convert <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a> instance to <tt class="xref py py-class docutils literal"><span class="pre">datastore_v1_pb2.Query</span></tt>.</p>
+<dt id="gcloud.datastore.query.Query.projection">
+<tt class="descname">projection</tt><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.projection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.projection" title="Permalink to this definition">#</a></dt>
+<dd><p>Fields names returned by the query.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Query</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sequence of string</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A Query protobuf that can be sent to the protobuf API.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.query.Query.with_cursor">
-<tt class="descname">with_cursor</tt><big>(</big><em>start_cursor</em>, <em>end_cursor=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.with_cursor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.with_cursor" title="Permalink to this definition">#</a></dt>
-<dd><p>Specifies the starting / ending positions in a query&#8217;s result set.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; Base64-encoded cursor string specifying where to
-start reading query results.</li>
-<li><strong>end_cursor</strong> (<em>bytes</em>) &#8211; Base64-encoded cursor string specifying where to
-stop reading query results.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">If neither cursor is passed, returns self;  else, returns a
-clone of the <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a>, with cursors updated.</p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">names of fields in query results.</td>
 </tr>
 </tbody>
 </table>

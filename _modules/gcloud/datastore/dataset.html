@@ -90,7 +90,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
 
 
@@ -148,19 +147,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
-</div>
-<div class="viewcode-block" id="Dataset.query"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a query bound to this dataset.</span>
-
-<span class="sd">        :param args: positional arguments, passed through to the Query</span>
-
-<span class="sd">        :param kw: keyword arguments, passed through to the Query</span>
-
-<span class="sd">        :rtype: :class:`gcloud.datastore.query.Query`</span>
-<span class="sd">        :returns: a new Query instance, bound to this dataset.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="n">Query</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Dataset.entity"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.entity">[docs]</a>    <span class="k">def</span> <span class="nf">entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kind</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;Create an entity bound to this dataset.</span>

@@ -97,7 +97,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
- | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="_">_</h2>
@@ -136,6 +135,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   </dt>
 
       
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.add_filter">add_filter() (gcloud.datastore.query.Query method)</a>
+  </dt>
+
+      
   <dt><a href="storage-acl.html#gcloud.storage.acl.ACL.all">all() (gcloud.storage.acl.ACL method)</a>
   </dt>
 
@@ -160,7 +163,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
       </dl></dd>
       
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.ancestor">ancestor() (gcloud.datastore.query.Query method)</a>
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.ancestor">ancestor (gcloud.datastore.query.Query attribute)</a>
   </dt>
 
       
@@ -442,16 +445,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   </dt>
 
       
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.dataset">dataset (gcloud.datastore.query.Query attribute)</a>
+  </dt>
+
+      
   <dt><a href="datastore-api.html#gcloud.datastore.connection.Connection.dataset">dataset() (gcloud.datastore.connection.Connection method)</a>
   </dt>
 
       <dd><dl>
         
   <dt><a href="datastore-entities.html#gcloud.datastore.entity.Entity.dataset">(gcloud.datastore.entity.Entity method)</a>
-  </dt>
-
-        
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.dataset">(gcloud.datastore.query.Query method)</a>
   </dt>
 
         
@@ -542,10 +545,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   </dt>
 
       
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.end_cursor">end_cursor (gcloud.datastore.query.Query attribute)</a>
-  </dt>
-
-      
   <dt><a href="datastore-entities.html#gcloud.datastore.entity.Entity">Entity (class in gcloud.datastore.entity)</a>
   </dt>
 
@@ -602,11 +601,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   </dt>
 
       
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.fetch_page">fetch_page() (gcloud.datastore.query.Query method)</a>
-  </dt>
-
-      
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.filter">filter() (gcloud.datastore.query.Query method)</a>
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.filters">filters (gcloud.datastore.query.Query attribute)</a>
   </dt>
 
       
@@ -824,7 +819,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   </dt>
 
       
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.group_by">group_by() (gcloud.datastore.query.Query method)</a>
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.group_by">group_by (gcloud.datastore.query.Query attribute)</a>
   </dt>
 
   </dl></td>
@@ -888,9 +883,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   </dt>
 
       
-  <dt><a href="storage-api.html#gcloud.storage.iterator.Iterator">Iterator (class in gcloud.storage.iterator)</a>
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Iterator">Iterator (class in gcloud.datastore.query)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="storage-api.html#gcloud.storage.iterator.Iterator">(class in gcloud.storage.iterator)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="storage-buckets.html#gcloud.storage.bucket.Bucket.iterator">iterator() (gcloud.storage.bucket.Bucket method)</a>
   </dt>
@@ -925,16 +926,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   <dt><a href="datastore-keys.html#gcloud.datastore.key.Key.kind">kind (gcloud.datastore.key.Key attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.kind">(gcloud.datastore.query.Query attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="datastore-entities.html#gcloud.datastore.entity.Entity.kind">kind() (gcloud.datastore.entity.Entity method)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.kind">(gcloud.datastore.query.Query method)</a>
-  </dt>
-
-      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -943,10 +944,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="storage-api.html#gcloud.storage.exceptions.LengthRequired">LengthRequired</a>
-  </dt>
-
-      
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.limit">limit() (gcloud.datastore.query.Query method)</a>
   </dt>
 
       
@@ -1049,16 +1046,22 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   <dt><a href="datastore-keys.html#gcloud.datastore.key.Key.namespace">namespace (gcloud.datastore.key.Key attribute)</a>
   </dt>
 
-      
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.namespace">namespace() (gcloud.datastore.query.Query method)</a>
+      <dd><dl>
+        
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.namespace">(gcloud.datastore.query.Query attribute)</a>
   </dt>
 
+      </dl></dd>
       
   <dt><a href="storage-api.html#gcloud.storage.connection.Connection.new_bucket">new_bucket() (gcloud.storage.connection.Connection method)</a>
   </dt>
 
       
   <dt><a href="storage-buckets.html#gcloud.storage.bucket.Bucket.new_key">new_key() (gcloud.storage.bucket.Bucket method)</a>
+  </dt>
+
+      
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Iterator.next_page">next_page() (gcloud.datastore.query.Iterator method)</a>
   </dt>
 
   </dl></td>
@@ -1094,17 +1097,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   </dt>
 
       
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.offset">offset() (gcloud.datastore.query.Query method)</a>
-  </dt>
-
-      
   <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.OPERATORS">OPERATORS (gcloud.datastore.query.Query attribute)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.order">order() (gcloud.datastore.query.Query method)</a>
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.order">order (gcloud.datastore.query.Query attribute)</a>
   </dt>
 
       
@@ -1156,7 +1155,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   </dt>
 
       
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.projection">projection() (gcloud.datastore.query.Query method)</a>
+  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.projection">projection (gcloud.datastore.query.Query attribute)</a>
   </dt>
 
       
@@ -1171,12 +1170,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="datastore-queries.html#gcloud.datastore.query.Query">Query (class in gcloud.datastore.query)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="datastore-dataset.html#gcloud.datastore.dataset.Dataset.query">query() (gcloud.datastore.dataset.Dataset method)</a>
   </dt>
 
   </dl></td>
@@ -1322,10 +1315,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   </dt>
 
       
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.start_cursor">start_cursor (gcloud.datastore.query.Query attribute)</a>
-  </dt>
-
-      
   <dt><a href="storage-buckets.html#gcloud.storage.bucket.Bucket.storage_class">storage_class (gcloud.storage.bucket.Bucket attribute)</a>
   </dt>
 
@@ -1361,12 +1350,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   <dt><a href="datastore-keys.html#gcloud.datastore.key.Key.to_protobuf">to_protobuf() (gcloud.datastore.key.Key method)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.to_protobuf">(gcloud.datastore.query.Query method)</a>
-  </dt>
-
-      </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
@@ -1443,16 +1426,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="storage-buckets.html#gcloud.storage.bucket.Bucket.versioning_enabled">versioning_enabled (gcloud.storage.bucket.Bucket attribute)</a>
-  </dt>
-
-  </dl></td>
-</tr></table>
-
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="datastore-queries.html#gcloud.datastore.query.Query.with_cursor">with_cursor() (gcloud.datastore.query.Query method)</a>
   </dt>
 
   </dl></td>
