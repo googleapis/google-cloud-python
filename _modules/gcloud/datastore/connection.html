@@ -91,7 +91,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
@@ -227,19 +226,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Mutation</span><span class="p">()</span>
-</div>
-<div class="viewcode-block" id="Connection.dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory method for Dataset objects.</span>
-
-<span class="sd">        :param args: All args and kwargs will be passed along to the</span>
-<span class="sd">                     :class:`gcloud.datastore.dataset.Dataset` initializer.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">        :returns: A dataset object that will use this connection as</span>
-<span class="sd">                  its transport.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;connection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span>
                <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">eventual</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>

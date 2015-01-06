@@ -77,7 +77,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>Class for representing a single entity in the Cloud Datastore.</p>
 <dl class="class">
 <dt id="gcloud.datastore.entity.Entity">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">Entity</tt><big>(</big><em>dataset=None</em>, <em>kind=None</em>, <em>exclude_from_indexes=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">Entity</tt><big>(</big><em>key=None</em>, <em>exclude_from_indexes=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></p>
 <p>Entities are akin to rows in a relational database</p>
 <p>An entity storing the actual instance of data.</p>
@@ -127,46 +127,18 @@ any decoding / encoding step.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset</strong> (<a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>, or None) &#8211; The dataset in which this entity belongs.</li>
-<li><strong>kind</strong> (<em>str</em>) &#8211; The kind of entity this is, akin to a table name in a
-relational database.</li>
-<li><strong>dataset</strong> &#8211; the Dataset instance associated with this entity.</li>
-<li><strong>kind</strong> &#8211; the &#8220;kind&#8221; of the entity (see
-<a class="reference external" href="https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers">https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers</a>)</li>
-<li><strong>exclude_from_indexes</strong> &#8211; names of fields whose values are not to be
+<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; Optional key to be set on entity. Required for save() or
+reload().</li>
+<li><strong>exclude_from_indexes</strong> (<cite>tuple</cite> of <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; names of fields whose values are not to be
 indexed for this entity.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="gcloud.datastore.entity.Entity.dataset">
-<tt class="descname">dataset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.dataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Get the <a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">dataset.Dataset</span></tt></a> in which this entity belongs.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This is based on the <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> set on the
-entity. That means that if you have no key set, the dataset might
-be <cite>None</cite>. It also means that if you change the key on the entity,
-this will refer to that key&#8217;s dataset.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The Dataset containing the entity if there is a key,
-else None.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.entity.Entity.exclude_from_indexes">
-<tt class="descname">exclude_from_indexes</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.exclude_from_indexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.exclude_from_indexes" title="Permalink to this definition">#</a></dt>
+<tt class="descname">exclude_from_indexes</tt><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.exclude_from_indexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.exclude_from_indexes" title="Permalink to this definition">#</a></dt>
 <dd><p>Names of fields which are <em>not</em> to be indexed for this entity.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -178,55 +150,9 @@ else None.</td>
 </table>
 </dd></dl>
 
-<dl class="classmethod">
-<dt id="gcloud.datastore.entity.Entity.from_key">
-<em class="property">classmethod </em><tt class="descname">from_key</tt><big>(</big><em>key</em>, <em>dataset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.from_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.from_key" title="Permalink to this definition">#</a></dt>
-<dd><p>Create entity based on <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">datastore.key.Key</span></tt></a>.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This is a factory method.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; The key for the entity.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a> derived from the
-<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.entity.Entity.key">
-<tt class="descname">key</tt><big>(</big><em>key=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.key" title="Permalink to this definition">#</a></dt>
-<dd><p>Get or set the <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">datastore.key.Key</span></tt></a> on the current entity.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<tt class="xref py py-class docutils literal"><span class="pre">glcouddatastore.key.Key</span></tt>) &#8211; The key you want to set on the entity.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> or <a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">Entity</span></tt></a>.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Either the current key (on get) or the current
-object (on set).</td>
-</tr>
-</tbody>
-</table>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">my_other_key</span><span class="p">)</span>  <span class="c"># This returns the original entity.</span>
-<span class="go">&lt;Entity[{&#39;kind&#39;: &#39;OtherKeyKind&#39;, &#39;id&#39;: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="p">()</span>  <span class="c"># This returns the key.</span>
-<span class="go">&lt;Key[{&#39;kind&#39;: &#39;OtherKeyKind&#39;, &#39;id&#39;: 1234}]&gt;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.entity.Entity.kind">
-<tt class="descname">kind</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.kind" title="Permalink to this definition">#</a></dt>
+<tt class="descname">kind</tt><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.kind" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the kind of the current entity.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -239,7 +165,7 @@ Key which knows its Kind.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.reload">
-<tt class="descname">reload</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.reload" title="Permalink to this definition">#</a></dt>
+<tt class="descname">reload</tt><big>(</big><em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>Reloads the contents of this entity from the datastore.</p>
 <p>This method takes the <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>, loads all
 properties from the Cloud Datastore, and sets the updated properties on
@@ -250,11 +176,19 @@ the current object.</p>
 exists remotely, however it will <em>not</em> override any properties that
 exist only locally.</p>
 </div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="gcloud.datastore.entity.Entity.save">
-<tt class="descname">save</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.save" title="Permalink to this definition">#</a></dt>
+<tt class="descname">save</tt><big>(</big><em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.save" title="Permalink to this definition">#</a></dt>
 <dd><p>Save the entity in the Cloud Datastore.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -273,21 +207,12 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The entity with a possibly updated Key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="exception">
-<dt id="gcloud.datastore.entity.NoDataset">
-<em class="property">exception </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">NoDataset</tt><a class="reference internal" href="_modules/gcloud/datastore/entity.html#NoDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.NoDataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></tt></p>
-<p>Exception raised by Entity methods which require a dataset.</p>
 </dd></dl>
 
 <dl class="exception">

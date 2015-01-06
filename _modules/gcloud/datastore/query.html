@@ -464,9 +464,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Unexpected value returned for `more_results`.&#39;</span><span class="p">)</span>
 
-        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="o">.</span><span class="n">dataset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_page</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_page</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_more_results</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cursor</span>
 </div>

@@ -207,7 +207,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :returns: A dataset with a connection using the provided credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">connection</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 
 </div>
 <span class="k">def</span> <span class="nf">_require_dataset</span><span class="p">():</span>
@@ -269,10 +269,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="n">deferred</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="n">new_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">missing</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">missed_pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">new_dataset</span><span class="p">)</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">missed_pb</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">missed_pb</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
@@ -282,8 +281,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
     <span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">entity_pb</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">:</span>
-        <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span>
-            <span class="n">entity_pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">new_dataset</span><span class="p">))</span>
+        <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">))</span>
+
     <span class="k">return</span> <span class="n">entities</span>
 
 </div>

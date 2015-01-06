@@ -457,26 +457,6 @@ You shouldn&#8217;t have to provide this.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.connection.Connection.dataset">
-<tt class="descname">dataset</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.dataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for Dataset objects.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> &#8211; All args and kwargs will be passed along to the
-<a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a> initializer.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dataset object that will use this connection as
-its transport.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.datastore.connection.Connection.delete_entities">
 <tt class="descname">delete_entities</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.delete_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.delete_entities" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete keys from a dataset in the Cloud Datastore.</p>
@@ -694,7 +674,7 @@ either <cite>None</cite> or an integer that has been assigned.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f4d252fec00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fd7fd12dbf0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -721,7 +701,7 @@ or <a class="reference internal" href="#gcloud.datastore.connection.Connection" 
 <p>The non-private functions are part of the API.</p>
 <dl class="function">
 <dt id="gcloud.datastore.helpers.entity_from_protobuf">
-<tt class="descclassname">gcloud.datastore.helpers.</tt><tt class="descname">entity_from_protobuf</tt><big>(</big><em>pb</em>, <em>dataset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/helpers.html#entity_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.helpers.entity_from_protobuf" title="Permalink to this definition">#</a></dt>
+<tt class="descclassname">gcloud.datastore.helpers.</tt><tt class="descname">entity_from_protobuf</tt><big>(</big><em>pb</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/helpers.html#entity_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.helpers.entity_from_protobuf" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method for creating an entity based on a protobuf.</p>
 <p>The protobuf should be one returned from the Cloud Datastore
 Protobuf API.</p>

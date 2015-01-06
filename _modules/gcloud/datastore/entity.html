@@ -89,15 +89,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">&quot;&quot;&quot;Class for representing a single entity in the Cloud Datastore.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 
 
 <div class="viewcode-block" id="NoKey"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.NoKey">[docs]</a><span class="k">class</span> <span class="nc">NoKey</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception raised by Entity methods which require a key.&quot;&quot;&quot;</span>
-
-</div>
-<div class="viewcode-block" id="NoDataset"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.NoDataset">[docs]</a><span class="k">class</span> <span class="nc">NoDataset</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception raised by Entity methods which require a dataset.&quot;&quot;&quot;</span>
 
 </div>
 <div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -149,72 +144,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">       Python3), will be saved using the &#39;blob_value&#39; field, without</span>
 <span class="sd">       any decoding / encoding step.</span>
 
-<span class="sd">    :type dataset: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">    :param dataset: The dataset in which this entity belongs.</span>
+<span class="sd">    :type key: :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param key: Optional key to be set on entity. Required for save() or</span>
+<span class="sd">                reload().</span>
 
-<span class="sd">    :type kind: string</span>
-<span class="sd">    :param kind: The kind of entity this is, akin to a table name in a</span>
-<span class="sd">                 relational database.</span>
-
-<span class="sd">    :type dataset: :class:`gcloud.datastore.dataset.Dataset`, or None</span>
-<span class="sd">    :param dataset: the Dataset instance associated with this entity.</span>
-
-<span class="sd">    :type kind: str</span>
-<span class="sd">    :param kind: the &quot;kind&quot; of the entity (see</span>
-<span class="sd">                 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers)</span>
-
+<span class="sd">    :type exclude_from_indexes: `tuple` of :class:`str`</span>
 <span class="sd">    :param exclude_from_indexes: names of fields whose values are not to be</span>
 <span class="sd">                                 indexed for this entity.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">()):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">()):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-        <span class="c"># Does not inherit directly from object, so we don&#39;t use</span>
-        <span class="c"># _implicit_environ._DatastoreBase to avoid split MRO.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span>
-        <span class="k">if</span> <span class="n">kind</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">())</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude_from_indexes</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Entity.dataset"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the :class:`.dataset.Dataset` in which this entity belongs.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">          This is based on the :class:`gcloud.datastore.key.Key` set on the</span>
-<span class="sd">          entity. That means that if you have no key set, the dataset might</span>
-<span class="sd">          be `None`. It also means that if you change the key on the entity,</span>
-<span class="sd">          this will refer to that key&#39;s dataset.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">        :returns: The Dataset containing the entity if there is a key,</span>
-<span class="sd">                  else None.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>
-</div>
-<div class="viewcode-block" id="Entity.key"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get or set the :class:`.datastore.key.Key` on the current entity.</span>
-
-<span class="sd">        :type key: :class:`glcouddatastore.key.Key`</span>
-<span class="sd">        :param key: The key you want to set on the entity.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.datastore.key.Key` or :class:`Entity`.</span>
-<span class="sd">        :returns: Either the current key (on get) or the current</span>
-<span class="sd">                  object (on set).</span>
-
-<span class="sd">        &gt;&gt;&gt; entity.key(my_other_key)  # This returns the original entity.</span>
-<span class="sd">        &lt;Entity[{&#39;kind&#39;: &#39;OtherKeyKind&#39;, &#39;id&#39;: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
-<span class="sd">        &gt;&gt;&gt; entity.key()  # This returns the key.</span>
-<span class="sd">        &lt;Key[{&#39;kind&#39;: &#39;OtherKeyKind&#39;, &#39;id&#39;: 1234}]&gt;</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="o">=</span> <span class="n">key</span>
-            <span class="k">return</span> <span class="bp">self</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
-</div>
+    <span class="nd">@property</span>
 <div class="viewcode-block" id="Entity.kind"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.kind">[docs]</a>    <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the kind of the current entity.</span>
 
@@ -224,31 +168,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          of the entity at all, just the properties and a pointer to a</span>
 <span class="sd">          Key which knows its Kind.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="o">.</span><span class="n">kind</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">kind</span>
 </div>
+    <span class="nd">@property</span>
 <div class="viewcode-block" id="Entity.exclude_from_indexes"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.exclude_from_indexes">[docs]</a>    <span class="k">def</span> <span class="nf">exclude_from_indexes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Names of fields which are *not* to be indexed for this entity.</span>
 
 <span class="sd">        :rtype: sequence of field names</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span><span class="p">)</span>
-</div>
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Entity.from_key"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.from_key">[docs]</a>    <span class="k">def</span> <span class="nf">from_key</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create entity based on :class:`.datastore.key.Key`.</span>
-
-<span class="sd">        .. note:: This is a factory method.</span>
-
-<span class="sd">        :type key: :class:`gcloud.datastore.key.Key`</span>
-<span class="sd">        :param key: The key for the entity.</span>
-
-<span class="sd">        :returns: The :class:`Entity` derived from the</span>
-<span class="sd">                  :class:`gcloud.datastore.key.Key`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_must_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -258,23 +187,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: our key</span>
 <span class="sd">        :raises: NoKey if key is None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NoKey</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_must_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return our dataset, or raise NoDataset if not set.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.datastore.key.Key`.</span>
-<span class="sd">        :returns: our key</span>
-<span class="sd">        :raises: NoDataset if key is None</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NoDataset</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span>
-
-<div class="viewcode-block" id="Entity.reload"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.reload"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reloads the contents of this entity from the datastore.</span>
 
 <span class="sd">        This method takes the :class:`gcloud.datastore.key.Key`, loads all</span>
@@ -285,16 +202,19 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          This will override any existing properties if a different value</span>
 <span class="sd">          exists remotely, however it will *not* override any properties that</span>
 <span class="sd">          exist only locally.</span>
+
+<span class="sd">        :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">        :param connection: Optional connection used to connect to datastore.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
+
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_key</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_dataset</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span>
         <span class="n">entity</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">entity</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
 </div>
-<div class="viewcode-block" id="Entity.save"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Entity.save"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the entity in the Cloud Datastore.</span>
 
 <span class="sd">        .. note::</span>
@@ -308,17 +228,17 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">           Python3) map to &#39;string_value&#39; in the datastore;  values which are</span>
 <span class="sd">           &quot;bytes&quot; (&#39;str&#39; in Python2, &#39;bytes&#39; in Python3) map to &#39;blob_value&#39;.</span>
 
-<span class="sd">        :rtype: :class:`gcloud.datastore.entity.Entity`</span>
-<span class="sd">        :returns: The entity with a possibly updated Key.</span>
+<span class="sd">        :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">        :param connection: Optional connection used to connect to datastore.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
+
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_key</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_dataset</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span>
         <span class="n">assigned</span><span class="p">,</span> <span class="n">new_id</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">save_entity</span><span class="p">(</span>
-            <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
             <span class="n">key_pb</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">(),</span>
             <span class="n">properties</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
-            <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span><span class="p">())</span>
+            <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span><span class="p">)</span>
 
         <span class="c"># If we are in a transaction and the current entity needs an</span>
         <span class="c"># automatically assigned ID, tell the transaction where to put that.</span>
@@ -328,13 +248,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">if</span> <span class="n">assigned</span><span class="p">:</span>
             <span class="c"># Update the key (which may have been altered).</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">()</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">new_id</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="bp">self</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">new_id</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;&lt;Entity</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;&lt;Entity</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
                                       <span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__repr__</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="s">&#39;&lt;Entity </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Entity</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__repr__</span><span class="p">())</span></div>
