@@ -467,7 +467,7 @@ class TestIterator(unittest2.TestCase):
         query = object()
         iterator = self._makeOne(query)
         self.assertTrue(iterator._query is query)
-        self.assertEqual(iterator._limit, 0)
+        self.assertEqual(iterator._limit, None)
         self.assertEqual(iterator._offset, 0)
 
     def test_ctor_explicit(self):
@@ -495,7 +495,34 @@ class TestIterator(unittest2.TestCase):
                          [{'kind': self._KIND, 'id': self._ID}])
         self.assertEqual(entities[0]['foo'], u'Foo')
         qpb = _pb_from_query(query)
-        qpb.limit = qpb.offset = 0
+        qpb.offset = 0
+        EXPECTED = {
+            'dataset_id': self._DATASET,
+            'query_pb': qpb,
+            'namespace': self._NAMESPACE,
+        }
+        self.assertEqual(connection._called_with, [EXPECTED])
+
+    def test_next_page_no_cursors_no_more_w_offset_and_limit(self):
+        from base64 import b64encode
+        from gcloud.datastore.query import _pb_from_query
+        self._KIND = 'KIND'
+        dataset, connection = self._makeDataset()
+        query = _Query(self._KIND, dataset, self._NAMESPACE)
+        self._addQueryResults(dataset)
+        iterator = self._makeOne(query, 13, 29)
+        entities, more_results, cursor = iterator.next_page()
+
+        self.assertEqual(cursor, b64encode(self._END))
+        self.assertFalse(more_results)
+        self.assertFalse(iterator._more_results)
+        self.assertEqual(len(entities), 1)
+        self.assertEqual(entities[0].key.path,
+                         [{'kind': self._KIND, 'id': self._ID}])
+        self.assertEqual(entities[0]['foo'], u'Foo')
+        qpb = _pb_from_query(query)
+        qpb.limit = 13
+        qpb.offset = 29
         EXPECTED = {
             'dataset_id': self._DATASET,
             'query_pb': qpb,
@@ -525,7 +552,7 @@ class TestIterator(unittest2.TestCase):
                          [{'kind': self._KIND, 'id': self._ID}])
         self.assertEqual(entities[0]['foo'], u'Foo')
         qpb = _pb_from_query(query)
-        qpb.limit = qpb.offset = 0
+        qpb.offset = 0
         qpb.start_cursor = b64decode(self._START)
         qpb.end_cursor = b64decode(self._END)
         EXPECTED = {
@@ -559,7 +586,7 @@ class TestIterator(unittest2.TestCase):
                          [{'kind': self._KIND, 'id': self._ID}])
         self.assertEqual(entities[0]['foo'], u'Foo')
         qpb = _pb_from_query(query)
-        qpb.limit = qpb.offset = 0
+        qpb.offset = 0
         EXPECTED = {
             'dataset_id': self._DATASET,
             'query_pb': qpb,
@@ -584,9 +611,9 @@ class TestIterator(unittest2.TestCase):
                 [{'kind': self._KIND, 'id': self._ID}])
             self.assertEqual(entities[1]['foo'], u'Foo')
         qpb1 = _pb_from_query(query)
-        qpb1.limit = qpb1.offset = 0
+        qpb1.offset = 0
         qpb2 = _pb_from_query(query)
-        qpb2.limit = qpb2.offset = 0
+        qpb2.offset = 0
         qpb2.start_cursor = self._END
         EXPECTED1 = {
             'dataset_id': self._DATASET,
