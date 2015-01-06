@@ -509,9 +509,8 @@ class Connection(connection.Connection):
         :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
         :param key_pbs: The keys to delete from the datastore.
 
-        :rtype: boolean (if in a transaction) or else
-                :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
-        :returns: True
+        :rtype: boolean
+        :returns: `True`
         """
         mutation = self.mutation()
         helpers._add_keys_to_request(mutation.delete, key_pbs)

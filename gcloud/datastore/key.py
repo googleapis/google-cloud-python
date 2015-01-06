@@ -231,19 +231,16 @@ class Key(object):
         """Retrieve entity corresponding to the curretn key.
 
         :type connection: :class:`gcloud.datastore.connection.Connection`
-        :param connection: Optional connection used to connection to datastore.
+        :param connection: Optional connection used to connect to datastore.
 
         :rtype: :class:`gcloud.datastore.entity.Entity` or `NoneType`
         :returns: The requested entity, or ``None`` if there was no
                   match found.
-        :raises: `ValueError` if the current key is partial.
         """
         # Temporary import hack until Dataset is removed in #477.
         from gcloud.datastore.dataset import Dataset
 
-        if self.is_partial:
-            raise ValueError('Can only retrieve complete keys.')
-
+        # We allow partial keys to attempt a get, the backend will fail.
         connection = connection or _implicit_environ.CONNECTION
         dataset = Dataset(self.dataset_id, connection=connection)
         entities = dataset.get_entities([self])
@@ -253,6 +250,19 @@ class Key(object):
             # We assume that the backend has not changed the key.
             result.key(self)
             return result
+
+    def delete(self, connection=None):
+        """Delete the key in the Cloud Datastore.
+
+        :type connection: :class:`gcloud.datastore.connection.Connection`
+        :param connection: Optional connection used to connect to datastore.
+        """
+        # We allow partial keys to attempt a delete, the backend will fail.
+        connection = connection or _implicit_environ.CONNECTION
+        connection.delete_entities(
+            dataset_id=self.dataset_id,
+            key_pbs=[self.to_protobuf()],
+        )
 
     @property
     def is_partial(self):

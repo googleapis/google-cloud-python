@@ -258,21 +258,6 @@ class Entity(dict):
 
         return self
 
-    def delete(self):
-        """Delete the entity in the Cloud Datastore.
-
-        .. note::
-          This is based entirely off of the :class:`gcloud.datastore.key.Key`
-          set on the entity. Whatever is stored remotely using the key on the
-          entity will be deleted.
-        """
-        key = self._must_key
-        dataset = self._must_dataset
-        dataset.connection().delete_entities(
-            dataset_id=dataset.id(),
-            key_pbs=[key.to_protobuf()],
-            )
-
     def __repr__(self):
         if self._key:
             return '<Entity%s %s>' % (self._key.path,
