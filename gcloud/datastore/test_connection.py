@@ -210,13 +210,6 @@ class TestConnection(unittest2.TestCase):
         found = conn.mutation()
         self.assertTrue(isinstance(found, Mutation))
 
-    def test_dataset(self):
-        DATASET_ID = 'DATASET'
-        conn = self._makeOne()
-        dataset = conn.dataset(DATASET_ID)
-        self.assertTrue(dataset.connection() is conn)
-        self.assertEqual(dataset.id(), DATASET_ID)
-
     def test_lookup_single_key_empty_response(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 

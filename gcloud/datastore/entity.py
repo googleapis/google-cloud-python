@@ -15,15 +15,10 @@
 """Class for representing a single entity in the Cloud Datastore."""
 
 from gcloud.datastore import _implicit_environ
-from gcloud.datastore.key import Key
 
 
 class NoKey(RuntimeError):
     """Exception raised by Entity methods which require a key."""
-
-
-class NoDataset(RuntimeError):
-    """Exception raised by Entity methods which require a dataset."""
 
 
 class Entity(dict):
@@ -75,72 +70,21 @@ class Entity(dict):
        Python3), will be saved using the 'blob_value' field, without
        any decoding / encoding step.
 
-    :type dataset: :class:`gcloud.datastore.dataset.Dataset`
-    :param dataset: The dataset in which this entity belongs.
+    :type key: :class:`gcloud.datastore.key.Key`
+    :param key: Optional key to be set on entity. Required for save() or
+                reload().
 
-    :type kind: string
-    :param kind: The kind of entity this is, akin to a table name in a
-                 relational database.
-
-    :type dataset: :class:`gcloud.datastore.dataset.Dataset`, or None
-    :param dataset: the Dataset instance associated with this entity.
-
-    :type kind: str
-    :param kind: the "kind" of the entity (see
-                 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Kinds_and_identifiers)
-
+    :type exclude_from_indexes: `tuple` of :class:`str`
     :param exclude_from_indexes: names of fields whose values are not to be
                                  indexed for this entity.
     """
 
-    def __init__(self, dataset=None, kind=None, exclude_from_indexes=()):
+    def __init__(self, key=None, exclude_from_indexes=()):
         super(Entity, self).__init__()
-        # Does not inherit directly from object, so we don't use
-        # _implicit_environ._DatastoreBase to avoid split MRO.
-        self._dataset = dataset or _implicit_environ.DATASET
-        if kind:
-            self._key = Key(kind, dataset_id=self.dataset().id())
-        else:
-            self._key = None
+        self.key = key
         self._exclude_from_indexes = set(exclude_from_indexes)
 
-    def dataset(self):
-        """Get the :class:`.dataset.Dataset` in which this entity belongs.
-
-        .. note::
-          This is based on the :class:`gcloud.datastore.key.Key` set on the
-          entity. That means that if you have no key set, the dataset might
-          be `None`. It also means that if you change the key on the entity,
-          this will refer to that key's dataset.
-
-        :rtype: :class:`gcloud.datastore.dataset.Dataset`
-        :returns: The Dataset containing the entity if there is a key,
-                  else None.
-        """
-        return self._dataset
-
-    def key(self, key=None):
-        """Get or set the :class:`.datastore.key.Key` on the current entity.
-
-        :type key: :class:`glcouddatastore.key.Key`
-        :param key: The key you want to set on the entity.
-
-        :rtype: :class:`gcloud.datastore.key.Key` or :class:`Entity`.
-        :returns: Either the current key (on get) or the current
-                  object (on set).
-
-        >>> entity.key(my_other_key)  # This returns the original entity.
-        <Entity[{'kind': 'OtherKeyKind', 'id': 1234}] {'property': 'value'}>
-        >>> entity.key()  # This returns the key.
-        <Key[{'kind': 'OtherKeyKind', 'id': 1234}]>
-        """
-
-        if key is not None:
-            self._key = key
-            return self
-        else:
-            return self._key
-
+    @property
     def kind(self):
         """Get the kind of the current entity.
 
@@ -150,31 +94,16 @@ class Entity(dict):
           of the entity at all, just the properties and a pointer to a
           Key which knows its Kind.
         """
+        if self.key:
+            return self.key.kind
 
-        if self._key:
-            return self._key.kind
-
+    @property
     def exclude_from_indexes(self):
         """Names of fields which are *not* to be indexed for this entity.
 
         :rtype: sequence of field names
         """
         return frozenset(self._exclude_from_indexes)
-
-    @classmethod
-    def from_key(cls, key, dataset=None):
-        """Create entity based on :class:`.datastore.key.Key`.
-
-        .. note:: This is a factory method.
-
-        :type key: :class:`gcloud.datastore.key.Key`
-        :param key: The key for the entity.
-
-        :returns: The :class:`Entity` derived from the
-                  :class:`gcloud.datastore.key.Key`.
-        """
-
-        return cls(dataset).key(key)
 
     @property
     def _must_key(self):
@@ -184,23 +113,11 @@ class Entity(dict):
         :returns: our key
         :raises: NoKey if key is None
         """
-        if self._key is None:
+        if self.key is None:
             raise NoKey()
-        return self._key
+        return self.key
 
-    @property
-    def _must_dataset(self):
-        """Return our dataset, or raise NoDataset if not set.
-
-        :rtype: :class:`gcloud.datastore.key.Key`.
-        :returns: our key
-        :raises: NoDataset if key is None
-        """
-        if self._dataset is None:
-            raise NoDataset()
-        return self._dataset
-
-    def reload(self):
+    def reload(self, connection=None):
         """Reloads the contents of this entity from the datastore.
 
         This method takes the :class:`gcloud.datastore.key.Key`, loads all
@@ -211,16 +128,19 @@ class Entity(dict):
           This will override any existing properties if a different value
           exists remotely, however it will *not* override any properties that
           exist only locally.
+
+        :type connection: :class:`gcloud.datastore.connection.Connection`
+        :param connection: Optional connection used to connect to datastore.
         """
+        connection = connection or _implicit_environ.CONNECTION
+
         key = self._must_key
-        connection = self._must_dataset.connection()
         entity = key.get(connection=connection)
 
         if entity:
             self.update(entity)
-        return self
 
-    def save(self):
+    def save(self, connection=None):
         """Save the entity in the Cloud Datastore.
 
         .. note::
@@ -234,17 +154,17 @@ class Entity(dict):
            Python3) map to 'string_value' in the datastore;  values which are
            "bytes" ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
 
-        :rtype: :class:`gcloud.datastore.entity.Entity`
-        :returns: The entity with a possibly updated Key.
+        :type connection: :class:`gcloud.datastore.connection.Connection`
+        :param connection: Optional connection used to connect to datastore.
         """
+        connection = connection or _implicit_environ.CONNECTION
+
         key = self._must_key
-        dataset = self._must_dataset
-        connection = dataset.connection()
         assigned, new_id = connection.save_entity(
-            dataset_id=dataset.id(),
+            dataset_id=key.dataset_id,
             key_pb=key.to_protobuf(),
             properties=dict(self),
-            exclude_from_indexes=self.exclude_from_indexes())
+            exclude_from_indexes=self.exclude_from_indexes)
 
         # If we are in a transaction and the current entity needs an
         # automatically assigned ID, tell the transaction where to put that.
@@ -254,13 +174,11 @@ class Entity(dict):
 
         if assigned:
             # Update the key (which may have been altered).
-            self.key(self.key().completed_key(new_id))
-
-        return self
+            self.key = self.key.completed_key(new_id)
 
     def __repr__(self):
-        if self._key:
-            return '<Entity%s %s>' % (self._key.path,
+        if self.key:
+            return '<Entity%s %s>' % (self.key.path,
                                       super(Entity, self).__repr__())
         else:
             return '<Entity %s>' % (super(Entity, self).__repr__())

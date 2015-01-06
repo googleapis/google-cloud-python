@@ -390,9 +390,8 @@ class Iterator(object):
         else:
             raise ValueError('Unexpected value returned for `more_results`.')
 
-        dataset = self._query.dataset
         self._page = [
-            helpers.entity_from_protobuf(entity, dataset=dataset)
+            helpers.entity_from_protobuf(entity)
             for entity in entity_pbs]
         return self._page, self._more_results, self._start_cursor
 

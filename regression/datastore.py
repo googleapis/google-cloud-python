@@ -40,15 +40,14 @@ class TestDatastore(unittest2.TestCase):
     def tearDown(self):
         with Transaction():
             for entity in self.case_entities_to_delete:
-                entity.key().delete()
+                entity.key.delete()
 
 
 class TestDatastoreAllocateIDs(TestDatastore):
 
     def test_allocate_ids(self):
-        incomplete_key = Key('Kind')
         num_ids = 10
-        allocated_keys = datastore.allocate_ids(incomplete_key, num_ids)
+        allocated_keys = datastore.allocate_ids(Key('Kind'), num_ids)
         self.assertEqual(len(allocated_keys), num_ids)
 
         unique_ids = set()
@@ -62,7 +61,7 @@ class TestDatastoreAllocateIDs(TestDatastore):
 
 class TestDatastoreSave(TestDatastore):
 
-    def _get_post(self, name=None, key_id=None, post_content=None):
+    def _get_post(self, id_or_name=None, post_content=None):
         post_content = post_content or {
             'title': u'How to make the perfect pizza in your grill',
             'tags': [u'pizza', u'grill'],
@@ -73,34 +72,29 @@ class TestDatastoreSave(TestDatastore):
             'rating': 5.0,
         }
         # Create an entity with the given content.
-        entity = Entity(kind='Post')
+        entity = Entity(key=Key('Post'))
         entity.update(post_content)
 
         # Update the entity key.
-        key = None
-        if name is not None:
-            key = entity.key().completed_key(name)
-        if key_id is not None:
-            key = entity.key().completed_key(key_id)
-        if key is not None:
-            entity.key(key)
+        if id_or_name is not None:
+            entity.key = entity.key.completed_key(id_or_name)
 
         return entity
 
     def _generic_test_post(self, name=None, key_id=None):
-        entity = self._get_post(name=name, key_id=key_id)
+        entity = self._get_post(id_or_name=(name or key_id))
         entity.save()
 
         # Register entity to be deleted.
         self.case_entities_to_delete.append(entity)
 
         if name is not None:
-            self.assertEqual(entity.key().name, name)
+            self.assertEqual(entity.key.name, name)
         if key_id is not None:
-            self.assertEqual(entity.key().id, key_id)
-        retrieved_entity = entity.key().get()
+            self.assertEqual(entity.key.id, key_id)
+        retrieved_entity = entity.key.get()
         # Check the keys are the same.
-        self.assertTrue(retrieved_entity.key() is entity.key())
+        self.assertTrue(retrieved_entity.key is entity.key)
 
         # Check the data is the same.
         retrieved_dict = dict(retrieved_entity.items())
@@ -137,7 +131,7 @@ class TestDatastoreSave(TestDatastore):
             # Register entity to be deleted.
             self.case_entities_to_delete.append(entity2)
 
-        keys = [entity1.key(), entity2.key()]
+        keys = [entity1.key, entity2.key]
         matches = datastore.get_entities(keys)
         self.assertEqual(len(matches), 2)
 
@@ -151,7 +145,7 @@ class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
         key = Key('Person', 'name')
-        entity = Entity.from_key(key)
+        entity = Entity(key=key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
@@ -166,8 +160,8 @@ class TestDatastoreSaveKeys(TestDatastore):
 
         stored_person = stored_persons[0]
         self.assertEqual(stored_person['fullName'], entity['fullName'])
-        self.assertEqual(stored_person.key().path, key.path)
-        self.assertEqual(stored_person.key().namespace, key.namespace)
+        self.assertEqual(stored_person.key.path, key.path)
+        self.assertEqual(stored_person.key.namespace, key.namespace)
 
 
 class TestDatastoreQuery(TestDatastore):
@@ -272,8 +266,8 @@ class TestDatastoreQuery(TestDatastore):
                          {'name': 'Catelyn', 'family': 'Tully'})
 
         # Check both Catelyn keys are the same.
-        catelyn_stark_key = catelyn_stark_entity.key()
-        catelyn_tully_key = catelyn_tully_entity.key()
+        catelyn_stark_key = catelyn_stark_entity.key
+        catelyn_tully_key = catelyn_tully_entity.key
         self.assertEqual(catelyn_stark_key.path, catelyn_tully_key.path)
         self.assertEqual(catelyn_stark_key.namespace,
                          catelyn_tully_key.namespace)
@@ -346,18 +340,17 @@ class TestDatastoreQuery(TestDatastore):
 class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
-        key = Key('Company', 'Google')
-        entity = Entity.from_key(key)
+        entity = Entity(key=Key('Company', 'Google'))
         entity['url'] = u'www.google.com'
 
         with Transaction():
-            retrieved_entity = key.get()
+            retrieved_entity = entity.key.get()
             if retrieved_entity is None:
                 entity.save()
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.
-        retrieved_entity = key.get()
+        retrieved_entity = entity.key.get()
         self.case_entities_to_delete.append(retrieved_entity)
         retrieved_dict = dict(retrieved_entity.items())
         entity_dict = dict(entity.items())

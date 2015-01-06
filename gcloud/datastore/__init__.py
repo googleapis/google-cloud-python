@@ -133,7 +133,7 @@ def get_dataset(dataset_id):
     :returns: A dataset with a connection using the provided credentials.
     """
     connection = get_connection()
-    return connection.dataset(dataset_id)
+    return Dataset(dataset_id, connection=connection)
 
 
 def _require_dataset():
@@ -195,10 +195,9 @@ def get_entities(keys, missing=None, deferred=None,
         missing=missing, deferred=deferred,
     )
 
-    new_dataset = Dataset(dataset_id, connection=connection)
     if missing is not None:
         missing[:] = [
-            helpers.entity_from_protobuf(missed_pb, dataset=new_dataset)
+            helpers.entity_from_protobuf(missed_pb)
             for missed_pb in missing]
 
     if deferred is not None:
@@ -208,8 +207,8 @@ def get_entities(keys, missing=None, deferred=None,
 
     entities = []
     for entity_pb in entity_pbs:
-        entities.append(helpers.entity_from_protobuf(
-            entity_pb, dataset=new_dataset))
+        entities.append(helpers.entity_from_protobuf(entity_pb))
+
     return entities
 
 

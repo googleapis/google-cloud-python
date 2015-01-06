@@ -32,7 +32,7 @@ from gcloud.datastore.key import Key
 INT_VALUE_CHECKER = Int64ValueChecker()
 
 
-def entity_from_protobuf(pb, dataset=None):
+def entity_from_protobuf(pb):
     """Factory method for creating an entity based on a protobuf.
 
     The protobuf should be one returned from the Cloud Datastore
@@ -45,7 +45,7 @@ def entity_from_protobuf(pb, dataset=None):
     :returns: The entity derived from the protobuf.
     """
     key = key_from_protobuf(pb.key)
-    entity = Entity.from_key(key, dataset)
+    entity = Entity(key=key)
 
     for property_pb in pb.property:
         value = _get_value_from_property_pb(property_pb)
@@ -246,7 +246,7 @@ def _set_protobuf_value(value_pb, val):
     elif attr == 'entity_value':
         e_pb = value_pb.entity_value
         e_pb.Clear()
-        key = val.key()
+        key = val.key
         if key is not None:
             e_pb.key.CopyFrom(key.to_protobuf())
         for item_key, value in val.items():

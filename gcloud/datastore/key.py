@@ -248,7 +248,7 @@ class Key(object):
         if entities:
             result = entities[0]
             # We assume that the backend has not changed the key.
-            result.key(self)
+            result.key = self
             return result
 
     def delete(self, connection=None):

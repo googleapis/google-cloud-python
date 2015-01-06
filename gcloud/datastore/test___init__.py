@@ -234,7 +234,7 @@ class Test_get_entities_function(unittest2.TestCase):
         entities = self._callFUT([key], connection=connection,
                                  dataset_id=DATASET_ID, missing=missing)
         self.assertEqual(entities, [])
-        self.assertEqual([missed.key().to_protobuf() for missed in missing],
+        self.assertEqual([missed.key.to_protobuf() for missed in missing],
                          [key.to_protobuf()])
 
     def test_get_entities_miss_w_deferred(self):
@@ -288,7 +288,7 @@ class Test_get_entities_function(unittest2.TestCase):
         key = Key(KIND, ID, dataset_id=DATASET_ID)
         result, = self._callFUT([key], connection=connection,
                                 dataset_id=DATASET_ID)
-        new_key = result.key()
+        new_key = result.key
 
         # Check the returned value is as expected.
         self.assertFalse(new_key is key)
@@ -328,7 +328,7 @@ class Test_get_entities_function(unittest2.TestCase):
         }
         self.assertEqual(CUSTOM_CONNECTION._called_with, expected_called_with)
 
-        new_key = result.key()
+        new_key = result.key
         # Check the returned value is as expected.
         self.assertFalse(new_key is key)
         self.assertEqual(new_key.dataset_id, DATASET_ID)

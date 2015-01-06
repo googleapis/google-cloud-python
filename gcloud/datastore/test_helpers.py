@@ -17,8 +17,6 @@ import unittest2
 
 class Test_entity_from_protobuf(unittest2.TestCase):
 
-    _MARKER = object()
-
     def setUp(self):
         from gcloud.datastore import _implicit_environ
         self._replaced_dataset = _implicit_environ.DATASET
@@ -28,13 +26,9 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
         _implicit_environ.DATASET = self._replaced_dataset
 
-    def _callFUT(self, val, dataset=_MARKER):
+    def _callFUT(self, val):
         from gcloud.datastore.helpers import entity_from_protobuf
-
-        if dataset is self._MARKER:
-            return entity_from_protobuf(val)
-
-        return entity_from_protobuf(val, dataset)
+        return entity_from_protobuf(val)
 
     def test_wo_dataset(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -49,10 +43,9 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
         entity = self._callFUT(entity_pb)
-        self.assertTrue(entity.dataset() is None)
-        self.assertEqual(entity.kind(), _KIND)
+        self.assertEqual(entity.kind, _KIND)
         self.assertEqual(entity['foo'], 'Foo')
-        key = entity.key()
+        key = entity.key
         self.assertEqual(key.dataset_id, _DATASET_ID)
         self.assertEqual(key.namespace, None)
         self.assertEqual(key.kind, _KIND)
@@ -60,7 +53,6 @@ class Test_entity_from_protobuf(unittest2.TestCase):
 
     def test_w_dataset(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-        from gcloud.datastore.dataset import Dataset
 
         _DATASET_ID = 'DATASET'
         _KIND = 'KIND'
@@ -71,12 +63,10 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         prop_pb = entity_pb.property.add()
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
-        dataset = Dataset(_DATASET_ID)
-        entity = self._callFUT(entity_pb, dataset)
-        self.assertTrue(entity.dataset() is dataset)
-        self.assertEqual(entity.kind(), _KIND)
+        entity = self._callFUT(entity_pb)
+        self.assertEqual(entity.kind, _KIND)
         self.assertEqual(entity['foo'], 'Foo')
-        key = entity.key()
+        key = entity.key
         self.assertEqual(key.dataset_id, _DATASET_ID)
         self.assertEqual(key.namespace, None)
         self.assertEqual(key.kind, _KIND)
@@ -451,7 +441,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
 
         pb = self._makePB()
         key = Key('KIND', 123, dataset_id='DATASET')
-        entity = Entity().key(key)
+        entity = Entity(key=key)
         entity['foo'] = u'Foo'
         self._callFUT(pb, entity)
         value = pb.entity_value
