@@ -583,9 +583,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
 <span class="sd">        :param key_pbs: The keys to delete from the datastore.</span>
 
-<span class="sd">        :rtype: boolean (if in a transaction) or else</span>
-<span class="sd">                :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.</span>
-<span class="sd">        :returns: True</span>
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        :returns: `True`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
         <span class="n">helpers</span><span class="o">.</span><span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">mutation</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>

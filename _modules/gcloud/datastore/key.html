@@ -305,19 +305,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Retrieve entity corresponding to the curretn key.</span>
 
 <span class="sd">        :type connection: :class:`gcloud.datastore.connection.Connection`</span>
-<span class="sd">        :param connection: Optional connection used to connection to datastore.</span>
+<span class="sd">        :param connection: Optional connection used to connect to datastore.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.entity.Entity` or `NoneType`</span>
 <span class="sd">        :returns: The requested entity, or ``None`` if there was no</span>
 <span class="sd">                  match found.</span>
-<span class="sd">        :raises: `ValueError` if the current key is partial.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c"># Temporary import hack until Dataset is removed in #477.</span>
         <span class="kn">from</span> <span class="nn">gcloud.datastore.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Can only retrieve complete keys.&#39;</span><span class="p">)</span>
-
+        <span class="c"># We allow partial keys to attempt a get, the backend will fail.</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
         <span class="n">entities</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">get_entities</span><span class="p">([</span><span class="bp">self</span><span class="p">])</span>
@@ -327,6 +324,19 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="c"># We assume that the backend has not changed the key.</span>
             <span class="n">result</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">result</span>
+</div>
+<div class="viewcode-block" id="Key.delete"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete the key in the Cloud Datastore.</span>
+
+<span class="sd">        :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">        :param connection: Optional connection used to connect to datastore.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># We allow partial keys to attempt a delete, the backend will fail.</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">delete_entities</span><span class="p">(</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+            <span class="n">key_pbs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()],</span>
+        <span class="p">)</span>
 </div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Key.is_partial"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.is_partial">[docs]</a>    <span class="k">def</span> <span class="nf">is_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
