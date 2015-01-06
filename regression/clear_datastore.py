@@ -17,6 +17,7 @@
 
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
+from gcloud.datastore.query import Query
 from regression import regression_utils
 from six.moves import input
 
@@ -34,12 +35,11 @@ TRANSACTION_MAX_GROUPS = 5
 
 def fetch_keys(dataset, kind, fetch_max=FETCH_MAX, query=None, cursor=None):
     if query is None:
-        query = dataset.query(kind=kind).limit(
-            fetch_max).projection(['__key__'])
-    # Make new query with start cursor. Will be ignored if None.
-    query = query.with_cursor(cursor)
+        query = Query(kind=kind, dataset=dataset, projection=['__key__'])
 
-    entities, cursor, _ = query.fetch_page()
+    iterator = query.fetch(limit=fetch_max, start_cursor=cursor)
+
+    entities, _, cursor = iterator.next_page()
     return query, entities, cursor
 
 

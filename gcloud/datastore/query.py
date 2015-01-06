@@ -19,6 +19,7 @@ import base64
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
+from gcloud.datastore.dataset import Dataset
 from gcloud.datastore.key import Key
 
 
@@ -28,40 +29,33 @@ class Query(_implicit_environ._DatastoreBase):
     This class serves as an abstraction for creating a query over data
     stored in the Cloud Datastore.
 
-    Each :class:`Query` object is immutable, and a clone is returned
-    whenever any part of the query is modified::
-
-      >>> query = Query('MyKind')
-      >>> limited_query = query.limit(10)
-      >>> query.limit() == 10
-      False
-      >>> limited_query.limit() == 10
-      True
-
-    You typically won't construct a :class:`Query` by initializing it
-    like ``Query('MyKind', dataset=...)`` but instead use the helper
-    :func:`gcloud.datastore.dataset.Dataset.query` method which
-    generates a query that can be executed without any additional work::
-
-      >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id')
-      >>> query = dataset.query('MyKind')
-
-    :type kind: string
+    :type kind: string.
     :param kind: The kind to query.
 
-    :type dataset: :class:`gcloud.datastore.dataset.Dataset`
+    :type dataset: :class:`gcloud.datastore.dataset.Dataset`.
     :param dataset: The dataset to query.
 
-    :type namespace: string or None
-    :param dataset: The namespace to which to restrict results.
+    :type namespace: string or None.
+    :param namespace: The namespace to which to restrict results.
+
+    :type ancestor: :class:`gcloud.datastore.key.Key` or None.
+    :param ancestor: key of the ancestor to which this query's results are
+                     restricted.
+
+    :type filters: sequence of (property_name, operator, value) tuples.
+    :param filters: property filters applied by this query.
+
+    :type projection: sequence of string.
+    :param projection:  fields returned as part of query results.
+
+    :type order: sequence of string.
+    :param order:  field names used to order query results. Prepend '-'
+                   to a field name to sort it in descending order.
+
+    :type group_by: sequence_of_string.
+    :param group_by: field names used to group query results.
     """
 
-    _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
-    _FINISHED = (
-        datastore_pb.QueryResultBatch.NO_MORE_RESULTS,
-        datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
-    )
     OPERATORS = {
         '<=': datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL,
         '>=': datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL,
@@ -71,26 +65,47 @@ class Query(_implicit_environ._DatastoreBase):
     }
     """Mapping of operator strings and their protobuf equivalents."""
 
-    def __init__(self, kind=None, dataset=None, namespace=None):
+    def __init__(self,
+                 kind=None,
+                 dataset=None,
+                 namespace=None,
+                 ancestor=None,
+                 filters=(),
+                 projection=(),
+                 order=(),
+                 group_by=()):
         super(Query, self).__init__(dataset=dataset)
+        self._kind = kind
         self._namespace = namespace
-        self._pb = datastore_pb.Query()
-        self._offset = 0
+        self._ancestor = ancestor
+        self._filters = list(filters)
+        self._projection = list(projection)
+        self._order = list(order)
+        self._group_by = list(group_by)
 
-        if kind:
-            self._pb.kind.add().name = kind
+    @property
+    def dataset(self):
+        """Get the dataset for this Query.
 
-    def _clone(self):
-        """Create a new Query, copying self.
+        The dataset against which the Query will be run.
 
-        :rtype: :class:`gcloud.datastore.query.Query`
-        :returns: a copy of 'self'.
+        :rtype: :class:`gcloud.datastore.dataset.Dataset` or None,
+        :returns: the current dataset.
         """
-        clone = self.__class__(dataset=self._dataset,
-                               namespace=self._namespace)
-        clone._pb.CopyFrom(self._pb)
-        return clone
+        return self._dataset
 
+    @dataset.setter
+    def dataset(self, value):
+        """Set the dataset for the query
+
+        :type value: class:`gcloud.datastore.dataset.Dataset`
+        :param value: the new dataset
+        """
+        if not isinstance(value, Dataset):
+            raise ValueError("Dataset must be a Dataset")
+        self._dataset = value
+
+    @property
     def namespace(self):
         """This query's namespace
 
@@ -99,37 +114,90 @@ class Query(_implicit_environ._DatastoreBase):
         """
         return self._namespace
 
-    def to_protobuf(self):
-        """Convert :class:`Query` instance to :class:`.datastore_v1_pb2.Query`.
+    @namespace.setter
+    def namespace(self, value):
+        """Update the query's namespace.
 
-        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Query`
-        :returns: A Query protobuf that can be sent to the protobuf API.
+        :type value: string
         """
-        return self._pb
+        if not isinstance(value, str):
+            raise ValueError("Namespace must be a string")
+        self._namespace = value
 
-    def filter(self, property_name, operator, value):
+    @property
+    def kind(self):
+        """Get the Kind of the Query.
+
+        :rtype: string or :class:`Query`
+        """
+        return self._kind
+
+    @kind.setter
+    def kind(self, value):
+        """Update the Kind of the Query.
+
+        :type value: string
+        :param value: updated kind for the query.
+
+        .. note::
+
+           The protobuf specification allows for ``kind`` to be repeated,
+           but the current implementation returns an error if more than
+           one value is passed.  If the back-end changes in the future to
+           allow multiple values, this method will be updated to allow passing
+           either a string or a sequence of strings.
+        """
+        if not isinstance(value, str):
+            raise TypeError("Kind must be a string")
+        self._kind = value
+
+    @property
+    def ancestor(self):
+        """The ancestor key for the query.
+
+        :rtype: Key or None
+        """
+        return self._ancestor
+
+    @ancestor.setter
+    def ancestor(self, value):
+        """Set the ancestor for the query
+
+        :type value: Key
+        :param value: the new ancestor key
+        """
+        if not isinstance(value, Key):
+            raise TypeError("Ancestor must be a Key")
+        self._ancestor = value
+
+    @ancestor.deleter
+    def ancestor(self):
+        """Remove the ancestor for the query.
+        """
+        self._ancestor = None
+
+    @property
+    def filters(self):
+        """Filters set on the query.
+
+        :rtype: sequence of (property_name, operator, value) tuples.
+        """
+        return self._filters[:]
+
+    def add_filter(self, property_name, operator, value):
         """Filter the query based on a property name, operator and a value.
-
-        This will return a clone of the current :class:`Query`
-        filtered by the expression and value provided.
 
         Expressions take the form of::
 
-          .filter('<property>', '<operator>', <value>)
+          .add_filter('<property>', '<operator>', <value>)
 
         where property is a property stored on the entity in the datastore
         and operator is one of ``OPERATORS``
         (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``)::
 
           >>> query = Query('Person')
-          >>> filtered_query = query.filter('name', '=', 'James')
-          >>> filtered_query = query.filter('age', '>', 50)
-
-        Because each call to ``.filter()`` returns a cloned ``Query`` object
-        we are able to string these together::
-
-          >>> query = Query('Person').filter(
-          ...     'name', '=', 'James').filter('age', '>', 50)
+          >>> query.add_filter('name', '=', 'James')
+          >>> query.add_filter('age', '>', 50)
 
         :type property_name: string
         :param property_name: A property name.
@@ -140,219 +208,162 @@ class Query(_implicit_environ._DatastoreBase):
         :type value: integer, string, boolean, float, None, datetime
         :param value: The value to filter on.
 
-        :rtype: :class:`Query`
-        :returns: A Query filtered by the expression and value provided.
         :raises: `ValueError` if `operation` is not one of the specified
-                 values.
+                 values, or if a filter names '__key__' but passes invalid
+                 operator (``==`` is required) or value (a key is required).
         """
-        clone = self._clone()
-
-        pb_op_enum = self.OPERATORS.get(operator)
-        if pb_op_enum is None:
+        if self.OPERATORS.get(operator) is None:
             error_message = 'Invalid expression: "%s"' % (operator,)
             choices_message = 'Please use one of: =, <, <=, >, >=.'
             raise ValueError(error_message, choices_message)
 
-        # Build a composite filter AND'd together.
-        composite_filter = clone._pb.filter.composite_filter
-        composite_filter.operator = datastore_pb.CompositeFilter.AND
-
-        # Add the specific filter
-        property_filter = composite_filter.filter.add().property_filter
-        property_filter.property.name = property_name
-        property_filter.operator = pb_op_enum
-
-        # Set the value to filter on based on the type.
         if property_name == '__key__':
             if not isinstance(value, Key):
-                raise TypeError('__key__ query requires a Key instance.')
-            key_pb = value.to_protobuf()
-            property_filter.value.key_value.CopyFrom(
-                helpers._prepare_key_for_request(key_pb))
-        else:
-            helpers._set_protobuf_value(property_filter.value, value)
-        return clone
+                raise ValueError('Invalid key: "%s"' % value)
+            if operator != '=':
+                raise ValueError('Invalid operator for key: "%s"' % operator)
 
-    def ancestor(self, ancestor):
-        """Filter the query based on an ancestor.
+        self._filters.append((property_name, operator, value))
 
-        This will return a clone of the current :class:`Query` filtered
-        by the ancestor provided.  For example::
+    @property
+    def projection(self):
+        """Fields names returned by the query.
 
-          >>> parent_key = Key('Person', '1')
-          >>> query = dataset.query('Person')
-          >>> filtered_query = query.ancestor(parent_key)
-
-        Each call to ``.ancestor()`` returns a cloned :class:`Query`,
-        however a query may only have one ancestor at a time.
-
-        :type ancestor: :class:`gcloud.datastore.key.Key`
-        :param ancestor: A Key to an entity
-
-        :rtype: :class:`Query`
-        :returns: A Query filtered by the ancestor provided.
+        :rtype: sequence of string
+        :returns:  names of fields in query results.
         """
+        return self._projection[:]
 
-        clone = self._clone()
+    @projection.setter
+    def projection(self, projection):
+        """Set the fields returned the query.
 
-        # If an ancestor filter already exists, remove it.
-        for i, filter in enumerate(clone._pb.filter.composite_filter.filter):
-            property_filter = filter.property_filter
-            if (property_filter.operator ==
-                    datastore_pb.PropertyFilter.HAS_ANCESTOR):
-                del clone._pb.filter.composite_filter.filter[i]
-
-                # If we just deleted the last item, make sure to clear out the
-                # filter property all together.
-                if not clone._pb.filter.composite_filter.filter:
-                    clone._pb.ClearField('filter')
-
-        # If the ancestor is None, just return (we already removed the filter).
-        if not ancestor:
-            return clone
-
-        # If we don't have a Key value by now, something is wrong.
-        if not isinstance(ancestor, Key):
-            raise TypeError('Expected Key, got %s.' % type(ancestor))
-
-        # Get the composite filter and add a new property filter.
-        composite_filter = clone._pb.filter.composite_filter
-        composite_filter.operator = datastore_pb.CompositeFilter.AND
-
-        # Filter on __key__ HAS_ANCESTOR == ancestor.
-        ancestor_filter = composite_filter.filter.add().property_filter
-        ancestor_filter.property.name = '__key__'
-        ancestor_filter.operator = datastore_pb.PropertyFilter.HAS_ANCESTOR
-        ancestor_pb = helpers._prepare_key_for_request(ancestor.to_protobuf())
-        ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
-
-        return clone
-
-    def kind(self, kind=None):
-        """Get or set the Kind of the Query.
-
-        :type kind: string
-        :param kind: Optional. The entity kinds for which to query.
-
-        :rtype: string or :class:`Query`
-        :returns: If `kind` is None, returns the kind. If a kind is provided,
-                  returns a clone of the :class:`Query` with that kind set.
-        :raises: `ValueError` from the getter if multiple kinds are set on
-                 the query.
+        :type projection: string or sequence of strings
+        :param projection: Each value is a string giving the name of a
+                           property to be included in the projection query.
         """
-        if kind is not None:
-            kinds = [kind]
-            clone = self._clone()
-            clone._pb.ClearField('kind')
-            for new_kind in kinds:
-                clone._pb.kind.add().name = new_kind
-            return clone
-        else:
-            # In the proto definition for Query, `kind` is repeated.
-            kind_names = [kind_expr.name for kind_expr in self._pb.kind]
-            num_kinds = len(kind_names)
-            if num_kinds == 1:
-                return kind_names[0]
-            elif num_kinds > 1:
-                raise ValueError('Only a single kind can be set.')
+        if isinstance(projection, str):
+            projection = [projection]
+        self._projection[:] = projection
 
-    def limit(self, limit=None):
-        """Get or set the limit of the Query.
+    @property
+    def order(self):
+        """Names of fields used to sort query results.
 
-        This is the maximum number of rows (Entities) to return for this
-        Query.
-
-        This is a hybrid getter / setter, used as::
-
-          >>> query = Query('Person')
-          >>> query = query.limit(100)  # Set the limit to 100 rows.
-          >>> query.limit()  # Get the limit for this query.
-          100
-
-        :rtype: integer, None, or :class:`Query`
-        :returns: If no arguments, returns the current limit.
-                  If a limit is provided, returns a clone of the :class:`Query`
-                  with that limit set.
+        :rtype: sequence of string
         """
-        if limit:
-            clone = self._clone()
-            clone._pb.limit = limit
-            return clone
-        else:
-            return self._pb.limit
+        return self._order[:]
 
-    def dataset(self, dataset=None):
-        """Get or set the :class:`.datastore.dataset.Dataset` for this Query.
+    @order.setter
+    def order(self, value):
+        """Set the fields used to sort query results.
 
-        This is the dataset against which the Query will be run.
+        Sort fields will be applied in the order specified.
 
-        This is a hybrid getter / setter, used as::
-
-          >>> query = Query('Person')
-          >>> query = query.dataset(my_dataset)  # Set the dataset.
-          >>> query.dataset()  # Get the current dataset.
-          <Dataset object>
-
-        :rtype: :class:`gcloud.datastore.dataset.Dataset`, None,
-                or :class:`Query`
-        :returns: If no arguments, returns the current dataset.
-                  If a dataset is provided, returns a clone of the
-                  :class:`Query` with that dataset set.
+        :type value: string or sequence of strings
+        :param value: Each value is a string giving the name of the
+                      property on which to sort, optionally preceded by a
+                      hyphen (-) to specify descending order.
+                      Omitting the hyphen implies ascending order.
         """
-        if dataset:
-            clone = self._clone()
-            clone._dataset = dataset
-            return clone
-        else:
-            return self._dataset
+        if isinstance(value, str):
+            value = [value]
+        self._order[:] = value
 
-    def fetch_page(self, limit=None):
-        """Executes the Query and returns matching entities, and paging info.
+    @property
+    def group_by(self):
+        """Names of fields used to group query results.
 
-        In addition to the fetched entities, it also returns a cursor to allow
-        paging through a results set and a boolean `more_results` indicating
-        if there are any more.
+        :rtype: sequence of string
+        """
+        return self._group_by[:]
 
-        This makes an API call to the Cloud Datastore, sends the Query
-        as a protobuf, parses the responses to Entity protobufs, and
-        then converts them to :class:`gcloud.datastore.entity.Entity`
-        objects.
+    @group_by.setter
+    def group_by(self, value):
+        """Set fields used to group query results.
+
+        :type value: string or sequence of strings
+        :param value: Each value is a string giving the name of a
+                         property to use to group results together.
+        """
+        if isinstance(value, str):
+            value = [value]
+        self._group_by[:] = value
+
+    def fetch(self, limit=0, offset=0, start_cursor=None, end_cursor=None):
+        """Execute the Query; return an iterator for the matching entities.
 
         For example::
 
           >>> from gcloud import datastore
           >>> dataset = datastore.get_dataset('dataset-id')
           >>> query = dataset.query('Person').filter('name', '=', 'Sally')
-          >>> query.fetch_page()
-          [<Entity object>, <Entity object>, ...], 'cursorbase64', True
-          >>> query.fetch_page(1)
-          [<Entity object>], 'cursorbase64', True
-          >>> query.limit()
-          None
+          >>> list(query.fetch())
+          [<Entity object>, <Entity object>, ...]
+          >>> list(query.fetch(1))
+          [<Entity object>]
 
         :type limit: integer
-        :param limit: An optional limit to apply temporarily to this query.
-                      That is, the Query itself won't be altered,
-                      but the limit will be applied to the query
-                      before it is executed.
+        :param limit: An optional limit passed through to the iterator.
 
-        :rtype: tuple of mixed types
-        :returns: The first entry is a :class:`gcloud.datastore.entity.Entity`
-                  list matching this query's criteria. The second is a base64
-                  encoded cursor for paging and the third is a boolean
-                  indicating if there are more results.
-        :raises: `ValueError` if more_results is not one of the enums
-                 NOT_FINISHED, MORE_RESULTS_AFTER_LIMIT, NO_MORE_RESULTS.
+        :type limit: offset
+        :param limit: An optional offset passed through to the iterator.
+
+        :type start_cursor: offset
+        :param start_cursor: An optional cursor passed through to the iterator.
+
+        :type end_cursor: offset
+        :param end_cursor: An optional cursor passed through to the iterator.
+
+        :rtype: :class:`Iterator`
         """
-        clone = self
+        return Iterator(self, limit, offset, start_cursor, end_cursor)
 
-        if limit:
-            clone = self.limit(limit)
 
-        query_results = self.dataset().connection().run_query(
-            query_pb=clone.to_protobuf(),
-            dataset_id=self.dataset().id(),
-            namespace=self._namespace,
+class Iterator(object):
+    """Represent the state of a given execution of a Query.
+    """
+    _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
+
+    _FINISHED = (
+        datastore_pb.QueryResultBatch.NO_MORE_RESULTS,
+        datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
+    )
+
+    def __init__(self, query, limit=0, offset=0,
+                 start_cursor=None, end_cursor=None):
+        self._query = query
+        self._limit = limit
+        self._offset = offset
+        self._start_cursor = start_cursor
+        self._end_cursor = end_cursor
+        self._page = self._more_results = None
+
+    def next_page(self):
+        """Fetch a single "page" of query results.
+
+        Low-level API for fine control:  the more convenient API is
+        to iterate on us.
+
+        :rtype: tuple, (entities, more_results, cursor)
+        """
+        pb = _pb_from_query(self._query)
+
+        start_cursor = self._start_cursor
+        if start_cursor is not None:
+            pb.start_cursor = base64.b64decode(start_cursor)
+
+        end_cursor = self._end_cursor
+        if end_cursor is not None:
+            pb.end_cursor = base64.b64decode(end_cursor)
+
+        pb.limit = self._limit
+        pb.offset = self._offset
+
+        query_results = self._query.dataset.connection().run_query(
+            query_pb=pb,
+            dataset_id=self._query.dataset.id(),
+            namespace=self._query.namespace,
             )
         # NOTE: `query_results` contains an extra value that we don't use,
         #       namely `skipped_results`.
@@ -365,216 +376,98 @@ class Query(_implicit_environ._DatastoreBase):
         #       for discussion.
         entity_pbs, cursor_as_bytes, more_results_enum = query_results[:3]
 
-        entities = [helpers.entity_from_protobuf(entity,
-                                                 dataset=self.dataset())
-                    for entity in entity_pbs]
-
-        cursor = base64.b64encode(cursor_as_bytes)
+        self._start_cursor = base64.b64encode(cursor_as_bytes)
+        self._end_cursor = None
 
         if more_results_enum == self._NOT_FINISHED:
-            more_results = True
+            self._more_results = True
         elif more_results_enum in self._FINISHED:
-            more_results = False
+            self._more_results = False
         else:
             raise ValueError('Unexpected value returned for `more_results`.')
 
-        return entities, cursor, more_results
+        dataset = self._query.dataset
+        self._page = [
+            helpers.entity_from_protobuf(entity, dataset=dataset)
+            for entity in entity_pbs]
+        return self._page, self._more_results, self._start_cursor
 
-    def fetch(self, limit=None):
-        """Executes the Query and returns matching entities
+    def __iter__(self):
+        """Generator yielding all results matching our query.
 
-        This calls `fetch_page()` but does not use the paging information.
-
-        For example::
-
-          >>> from gcloud import datastore
-          >>> dataset = datastore.get_dataset('dataset-id')
-          >>> query = dataset.query('Person').filter('name', '=', 'Sally')
-          >>> query.fetch()
-          [<Entity object>, <Entity object>, ...]
-          >>> query.fetch(1)
-          [<Entity object>]
-          >>> query.limit()
-          None
-
-        :type limit: integer
-        :param limit: An optional limit to apply temporarily to this query.
-                      That is, the Query itself won't be altered,
-                      but the limit will be applied to the query
-                      before it is executed.
-
-        :rtype: list of :class:`gcloud.datastore.entity.Entity`'s
-        :returns: The list of entities matching this query's criteria.
+        :rtype: sequence of :class:`gcloud.datastore.entity.Entity`
         """
-        entities, _, _ = self.fetch_page(limit=limit)
-        return entities
+        self.next_page()
+        while True:
+            for entity in self._page:
+                yield entity
+            if not self._more_results:
+                break
+            self.next_page()
 
-    @property
-    def start_cursor(self):
-        """Property to encode start cursor bytes as base64."""
-        if not self._pb.HasField('start_cursor'):
-            return None
 
-        start_as_bytes = self._pb.start_cursor
-        return base64.b64encode(start_as_bytes)
+def _pb_from_query(query):
+    """Convert a Query instance to the corresponding protobuf.
 
-    @property
-    def end_cursor(self):
-        """Property to encode end cursor bytes as base64."""
-        if not self._pb.HasField('end_cursor'):
-            return None
+    :type query: :class:`Query`
+    :param query:  the source query
 
-        end_as_bytes = self._pb.end_cursor
-        return base64.b64encode(end_as_bytes)
+    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Query`
+    :returns: a protobuf that can be sent to the protobuf API.  N.b. that
+              it does not contain "in-flight" fields for ongoing query
+              executions (cursors, offset, limit).
+    """
+    pb = datastore_pb.Query()
 
-    def with_cursor(self, start_cursor, end_cursor=None):
-        """Specifies the starting / ending positions in a query's result set.
+    for projection_name in query.projection:
+        pb.projection.add().property.name = projection_name
 
-        :type start_cursor: bytes
-        :param start_cursor: Base64-encoded cursor string specifying where to
-                             start reading query results.
+    if query.kind:
+        pb.kind.add().name = query.kind
 
-        :type end_cursor: bytes
-        :param end_cursor: Base64-encoded cursor string specifying where to
-                           stop reading query results.
+    composite_filter = pb.filter.composite_filter
+    composite_filter.operator = datastore_pb.CompositeFilter.AND
 
-        :rtype: :class:`Query`
-        :returns: If neither cursor is passed, returns self;  else, returns a
-                  clone of the :class:`Query`, with cursors updated.
-        """
-        clone = self
-        if start_cursor or end_cursor:
-            clone = self._clone()
-        if start_cursor:
-            clone._pb.start_cursor = base64.b64decode(start_cursor)
-        if end_cursor:
-            clone._pb.end_cursor = base64.b64decode(end_cursor)
-        return clone
+    if query.ancestor:
+        ancestor_pb = helpers._prepare_key_for_request(
+            query.ancestor.to_protobuf())
 
-    def order(self, *properties):
-        """Adds a sort order to the query.
+        # Filter on __key__ HAS_ANCESTOR == ancestor.
+        ancestor_filter = composite_filter.filter.add().property_filter
+        ancestor_filter.property.name = '__key__'
+        ancestor_filter.operator = datastore_pb.PropertyFilter.HAS_ANCESTOR
+        ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
 
-        Sort fields will be applied in the order specified.
+    for property_name, operator, value in query.filters:
+        pb_op_enum = query.OPERATORS.get(operator)
 
-        :type properties: sequence of strings
-        :param properties: Each value is a string giving the name of the
-                           property on which to sort, optionally preceded by a
-                           hyphen (-) to specify descending order.
-                           Omitting the hyphen implies ascending order.
+        # Add the specific filter
+        property_filter = composite_filter.filter.add().property_filter
+        property_filter.property.name = property_name
+        property_filter.operator = pb_op_enum
 
-        :rtype: :class:`Query`
-        :returns: A new Query instance, ordered as specified.
-        """
-        clone = self._clone()
+        # Set the value to filter on based on the type.
+        if property_name == '__key__':
+            key_pb = value.to_protobuf()
+            property_filter.value.key_value.CopyFrom(
+                helpers._prepare_key_for_request(key_pb))
+        else:
+            helpers._set_protobuf_value(property_filter.value, value)
 
-        for prop in properties:
-            property_order = clone._pb.order.add()
+    if not composite_filter.filter:
+        pb.ClearField('filter')
 
-            if prop.startswith('-'):
-                property_order.property.name = prop[1:]
-                property_order.direction = property_order.DESCENDING
-            else:
-                property_order.property.name = prop
-                property_order.direction = property_order.ASCENDING
+    for prop in query.order:
+        property_order = pb.order.add()
 
-        return clone
+        if prop.startswith('-'):
+            property_order.property.name = prop[1:]
+            property_order.direction = property_order.DESCENDING
+        else:
+            property_order.property.name = prop
+            property_order.direction = property_order.ASCENDING
 
-    def projection(self, projection=None):
-        """Adds a projection to the query.
+    for group_by_name in query.group_by:
+        pb.group_by.add().name = group_by_name
 
-        This is a hybrid getter / setter, used as::
-
-          >>> query = Query('Person')
-          >>> query.projection()  # Get the projection for this query.
-          []
-          >>> query = query.projection(['name'])
-          >>> query.projection()  # Get the projection for this query.
-          ['name']
-
-        :type projection: sequence of strings
-        :param projection: Each value is a string giving the name of a
-                           property to be included in the projection query.
-
-        :rtype: :class:`Query` or `list` of strings.
-        :returns: If no arguments, returns the current projection.
-                  If a projection is provided, returns a clone of the
-                  :class:`Query` with that projection set.
-        """
-        if projection is None:
-            return [prop_expr.property.name
-                    for prop_expr in self._pb.projection]
-
-        clone = self._clone()
-
-        # Reset projection values to empty.
-        clone._pb.ClearField('projection')
-
-        # Add each name to list of projections.
-        for projection_name in projection:
-            clone._pb.projection.add().property.name = projection_name
-        return clone
-
-    def offset(self, offset=None):
-        """Adds offset to the query to allow pagination.
-
-        NOTE: Paging with cursors should be preferred to using an offset.
-
-        This is a hybrid getter / setter, used as::
-
-          >>> query = Query('Person')
-          >>> query.offset()  # Get the offset for this query.
-          0
-          >>> query = query.offset(10)
-          >>> query.offset()  # Get the offset for this query.
-          10
-
-        :type offset: non-negative integer.
-        :param offset: Value representing where to start a query for
-                       a given kind.
-
-        :rtype: :class:`Query` or `int`.
-        :returns: If no arguments, returns the current offset.
-                  If an offset is provided, returns a clone of the
-                  :class:`Query` with that offset set.
-        """
-        if offset is None:
-            return self._offset
-
-        clone = self._clone()
-        clone._offset = offset
-        clone._pb.offset = offset
-        return clone
-
-    def group_by(self, group_by=None):
-        """Adds a group_by to the query.
-
-        This is a hybrid getter / setter, used as::
-
-          >>> query = Query('Person')
-          >>> query.group_by()  # Get the group_by for this query.
-          []
-          >>> query = query.group_by(['name'])
-          >>> query.group_by()  # Get the group_by for this query.
-          ['name']
-
-        :type group_by: sequence of strings
-        :param group_by: Each value is a string giving the name of a
-                         property to use to group results together.
-
-        :rtype: :class:`Query` or `list` of strings.
-        :returns: If no arguments, returns the current group_by.
-                  If a list of group by properties is provided, returns a clone
-                  of the :class:`Query` with that list of values set.
-        """
-        if group_by is None:
-            return [prop_ref.name for prop_ref in self._pb.group_by]
-
-        clone = self._clone()
-
-        # Reset group_by values to empty.
-        clone._pb.ClearField('group_by')
-
-        # Add each name to list of group_bys.
-        for group_by_name in group_by:
-            clone._pb.group_by.add().name = group_by_name
-        return clone
+    return pb
