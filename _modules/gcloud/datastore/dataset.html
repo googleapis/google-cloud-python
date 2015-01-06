@@ -88,8 +88,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud datastore datasets.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
-
 
 <div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A dataset in the Cloud Datastore.</span>
@@ -144,48 +142,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: The current dataset ID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
-</div>
-<div class="viewcode-block" id="Dataset.get_entities"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.get_entities">[docs]</a>    <span class="k">def</span> <span class="nf">get_entities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Retrieves entities from the dataset, along with their attributes.</span>
-
-<span class="sd">        :type keys: list of :class:`gcloud.datastore.key.Key`</span>
-<span class="sd">        :param keys: List of keys to be retrieved.</span>
-
-<span class="sd">        :type missing: an empty list or None.</span>
-<span class="sd">        :param missing: If a list is passed, the key-only entities returned</span>
-<span class="sd">                        by the backend as &quot;missing&quot; will be copied into it.</span>
-<span class="sd">                        Use only as a keyword param.</span>
-
-<span class="sd">        :type deferred: an empty list or None.</span>
-<span class="sd">        :param deferred: If a list is passed, the keys returned</span>
-<span class="sd">                        by the backend as &quot;deferred&quot; will be copied into it.</span>
-<span class="sd">                        Use only as a keyword param.</span>
-
-<span class="sd">        :rtype: list of :class:`gcloud.datastore.entity.Entity`</span>
-<span class="sd">        :returns: The requested entities.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">entity_pbs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span>
-            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(),</span>
-            <span class="n">key_pbs</span><span class="o">=</span><span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">],</span>
-            <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="n">deferred</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">missing</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">missed_pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">missed_pb</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">deferred</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">helpers</span><span class="o">.</span><span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">deferred_pb</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">deferred_pb</span> <span class="ow">in</span> <span class="n">deferred</span><span class="p">]</span>
-
-        <span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">entity_pb</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">:</span>
-            <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span>
-                <span class="n">entity_pb</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">entities</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
