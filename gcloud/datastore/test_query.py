@@ -412,7 +412,7 @@ class Test__pb_from_query(unittest2.TestCase):
                          ['a', 'b', 'c'])
 
 
-class Test_Iterator(unittest2.TestCase):
+class TestIterator(unittest2.TestCase):
     _DATASET = 'DATASET'
     _NAMESPACE = 'NAMESPACE'
     _KIND = 'KIND'
@@ -430,8 +430,8 @@ class Test_Iterator(unittest2.TestCase):
         _implicit_environ.DATASET = self._replaced_dataset
 
     def _getTargetClass(self):
-        from gcloud.datastore.query import _Iterator
-        return _Iterator
+        from gcloud.datastore.query import Iterator
+        return Iterator
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)

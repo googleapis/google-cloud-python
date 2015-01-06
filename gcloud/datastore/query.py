@@ -315,12 +315,12 @@ class Query(_implicit_environ._DatastoreBase):
         :type end_cursor: offset
         :param end_cursor: An optional cursor passed through to the iterator.
 
-        :rtype: :class:`_Iterator`
+        :rtype: :class:`Iterator`
         """
-        return _Iterator(self, limit, offset, start_cursor, end_cursor)
+        return Iterator(self, limit, offset, start_cursor, end_cursor)
 
 
-class _Iterator(object):
+class Iterator(object):
     """Represent the state of a given execution of a Query.
     """
     _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
