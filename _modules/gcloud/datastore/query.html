@@ -320,6 +320,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">projection</span> <span class="o">=</span> <span class="p">[</span><span class="n">projection</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">projection</span>
 </div>
+<div class="viewcode-block" id="Query.keys_only"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.keys_only">[docs]</a>    <span class="k">def</span> <span class="nf">keys_only</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the projection to include only keys.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;__key__&#39;</span><span class="p">]</span>
+</div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Names of fields used to sort query results.</span>
