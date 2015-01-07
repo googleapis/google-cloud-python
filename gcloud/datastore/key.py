@@ -74,7 +74,6 @@ class Key(object):
         # _combine_args() is called.
         self._path = self._combine_args()
 
-
     @staticmethod
     def _parse_path(path_args):
         """Parses positional arguments into key path with kinds and IDs.
