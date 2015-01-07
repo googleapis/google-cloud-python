@@ -149,7 +149,7 @@ class Connection(connection.Connection):
                   (if one exists) or or a new mutation instance.
         """
         if self.transaction():
-            return self.transaction().mutation()
+            return self.transaction().mutation
         else:
             return datastore_pb.Mutation()
 

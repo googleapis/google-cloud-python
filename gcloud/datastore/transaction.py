@@ -121,14 +121,24 @@ class Transaction(object):
       ...   with dataset2.transaction():
       ...     dataset2.entity('Thing').save()
 
-    :type dataset: :class:`gcloud.datastore.dataset.Dataset`
-    :param dataset: The dataset to which this :class:`Transaction` belongs.
+    :type dataset_id: :class:`str`.
+    :param dataset_id: The ID of the dataset.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: The connection used to connect to datastore.
+
+    :raises: :class:`ValueError` if either a connection or dataset ID
+             are not set.
     """
 
-    def __init__(self, dataset=None):
-        dataset = dataset or _implicit_environ.DATASET
-        self._connection = dataset.connection()
-        self._dataset_id = dataset.id()
+    def __init__(self, dataset_id=None, connection=None):
+        self._connection = connection or _implicit_environ.CONNECTION
+        self._dataset_id = dataset_id or _implicit_environ.DATASET_ID
+
+        if self._connection is None or self._dataset_id is None:
+            raise ValueError('A transaction must have a connection and '
+                             'a dataset ID set.')
+
         self._id = None
         self._mutation = datastore_pb.Mutation()
         self._auto_id_entities = []
@@ -227,7 +237,7 @@ class Transaction(object):
             for i, entity in enumerate(self._auto_id_entities):
                 key_pb = result.insert_auto_id_key[i]
                 new_id = key_pb.path_element[-1].id
-                entity.key(entity.key().completed_key(new_id))
+                entity.key = entity.key.completed_key(new_id)
 
         # Tell the connection that the transaction is over.
         self.connection.transaction(None)
