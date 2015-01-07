@@ -15,88 +15,6 @@
 import unittest2
 
 
-class Test_get_connection(unittest2.TestCase):
-
-    def _callFUT(self):
-        from gcloud.datastore import get_connection
-        return get_connection()
-
-    def test_it(self):
-        from gcloud import credentials
-        from gcloud.datastore.connection import Connection
-        from gcloud.test_credentials import _Client
-        from gcloud._testing import _Monkey
-
-        client = _Client()
-        with _Monkey(credentials, client=client):
-            found = self._callFUT()
-        self.assertTrue(isinstance(found, Connection))
-        self.assertTrue(found._credentials is client._signed)
-        self.assertTrue(client._get_app_default_called)
-
-
-class Test_set_default_dataset(unittest2.TestCase):
-
-    def setUp(self):
-        from gcloud.datastore import _implicit_environ
-        self._replaced_dataset = _implicit_environ.DATASET
-        self._replaced_dataset_id = _implicit_environ.DATASET_ID
-        _implicit_environ.DATASET = _implicit_environ.DATASET_ID = None
-
-    def tearDown(self):
-        from gcloud.datastore import _implicit_environ
-        _implicit_environ.DATASET = self._replaced_dataset
-        _implicit_environ.DATASET_ID = self._replaced_dataset_id
-
-    def _callFUT(self, dataset_id=None):
-        from gcloud.datastore import set_default_dataset
-        return set_default_dataset(dataset_id=dataset_id)
-
-    def _test_with_environ(self, environ, expected_result, dataset_id=None):
-        import os
-        from gcloud._testing import _Monkey
-        from gcloud import datastore
-        from gcloud.datastore import _implicit_environ
-
-        # Check the environment is unset.
-        self.assertEqual(_implicit_environ.DATASET, None)
-
-        def custom_getenv(key):
-            return environ.get(key)
-
-        def custom_get_dataset(local_dataset_id):
-            return local_dataset_id
-
-        with _Monkey(os, getenv=custom_getenv):
-            with _Monkey(datastore, get_dataset=custom_get_dataset):
-                self._callFUT(dataset_id=dataset_id)
-
-        self.assertEqual(_implicit_environ.DATASET, expected_result)
-
-    def test_set_from_env_var(self):
-        from gcloud.datastore import _DATASET_ENV_VAR_NAME
-        from gcloud.datastore import _implicit_environ
-
-        # Make a custom getenv function to Monkey.
-        DATASET = 'dataset'
-        VALUES = {
-            _DATASET_ENV_VAR_NAME: DATASET,
-        }
-        self._test_with_environ(VALUES, DATASET)
-        self.assertEqual(_implicit_environ.DATASET_ID, DATASET)
-
-    def test_no_env_var_set(self):
-        from gcloud.datastore import _implicit_environ
-        self._test_with_environ({}, None)
-        self.assertEqual(_implicit_environ.DATASET_ID, None)
-
-    def test_set_explicit(self):
-        from gcloud.datastore import _implicit_environ
-        DATASET_ID = 'DATASET'
-        self._test_with_environ({}, DATASET_ID, dataset_id=DATASET_ID)
-        self.assertEqual(_implicit_environ.DATASET_ID, DATASET_ID)
-
-
 class Test_set_default_dataset_id(unittest2.TestCase):
 
     def setUp(self):
@@ -196,6 +114,26 @@ class Test_set_default_connection(unittest2.TestCase):
             self._callFUT()
 
         self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
+
+
+class Test_get_connection(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud.datastore import get_connection
+        return get_connection()
+
+    def test_it(self):
+        from gcloud import credentials
+        from gcloud.datastore.connection import Connection
+        from gcloud.test_credentials import _Client
+        from gcloud._testing import _Monkey
+
+        client = _Client()
+        with _Monkey(credentials, client=client):
+            found = self._callFUT()
+        self.assertTrue(isinstance(found, Connection))
+        self.assertTrue(found._credentials is client._signed)
+        self.assertTrue(client._get_app_default_called)
 
 
 class Test_get_dataset(unittest2.TestCase):
