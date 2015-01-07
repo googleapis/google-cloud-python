@@ -54,7 +54,6 @@ class TestKey(unittest2.TestCase):
     def test_ctor_w_implicit_dataset_id(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        klass = self._getTargetClass()
         with self._monkeyDatasetID(_DATASET):
             key = self._makeOne(_KIND)
         self.assertEqual(key.dataset_id, _DATASET)
@@ -64,13 +63,10 @@ class TestKey(unittest2.TestCase):
 
     def test_ctor_w_implicit_dataset_id_empty_path(self):
         _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        klass = self._getTargetClass()
         with self._monkeyDatasetID(_DATASET):
             self.assertRaises(ValueError, self._makeOne)
 
     def test_ctor_parent(self):
-        _DATASET = 'DATASET'
         _PARENT_KIND = 'KIND1'
         _PARENT_ID = 1234
         _PARENT_DATASET = 'DATASET-ALT'
@@ -82,8 +78,8 @@ class TestKey(unittest2.TestCase):
             {'kind': _CHILD_KIND, 'id': _CHILD_ID},
         ]
         parent_key = self._makeOne(_PARENT_KIND, _PARENT_ID,
-                                dataset_id=_PARENT_DATASET,
-                                namespace=_PARENT_NAMESPACE)
+                                   dataset_id=_PARENT_DATASET,
+                                   namespace=_PARENT_NAMESPACE)
         with self._monkeyDatasetID():
             key = self._makeOne(_CHILD_KIND, _CHILD_ID, parent=parent_key)
         self.assertEqual(key.dataset_id, parent_key.dataset_id)
@@ -107,7 +103,8 @@ class TestKey(unittest2.TestCase):
         with self._monkeyDatasetID():
             parent_key = self._makeOne('KIND', 1234, namespace='FOO')
             with self.assertRaises(ValueError):
-                self._makeOne('KIND2', 1234, namespace='BAR', parent=parent_key)
+                self._makeOne(
+                    'KIND2', 1234, namespace='BAR', parent=parent_key)
 
     def test_ctor_parent_bad_dataset_id(self):
         parent_key = self._makeOne('KIND', 1234, dataset_id='FOO')
@@ -178,7 +175,7 @@ class TestKey(unittest2.TestCase):
         self.assertRaises(ValueError, key.completed_key, object())
 
     def test_completed_key_on_complete(self):
-        with self._monkeyDatasetID() as monkey:
+        with self._monkeyDatasetID():
             key = self._makeOne('KIND', 1234)
         self.assertRaises(ValueError, key.completed_key, 5678)
 

@@ -315,7 +315,7 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.
 
         :type dataset_id: string
-        :param dataset_id: The ID dataset over which to execute the transaction.
+        :param dataset_id: The ID dataset to which the transaction applies.
         """
 
         if self.transaction():
@@ -342,7 +342,7 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.Commit`` protobuf RPC.
 
         :type dataset_id: string
-        :param dataset_id: The id of the dataset in which to perform the changes.
+        :param dataset_id: The ID dataset to which the transaction applies.
 
         :type mutation_pb: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.
         :param mutation_pb: The protobuf for the mutations being saved.

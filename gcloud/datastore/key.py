@@ -370,6 +370,7 @@ class Key(object):
     def __repr__(self):
         return '<Key%s, dataset=%s>' % (self.path, self.dataset_id)
 
+
 def _validate_dataset_id(dataset_id, parent):
     """Ensure the dataset ID is set appropriately.
 

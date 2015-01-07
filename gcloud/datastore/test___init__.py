@@ -126,32 +126,26 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         self.assertEqual(_implicit_environ.DATASET_ID, None)
 
     def test_set_from_env_var(self):
-        from gcloud.datastore import _DATASET_ENV_VAR_NAME
         from gcloud.datastore import _implicit_environ
-
-        # Make a custom getenv function to Monkey.
-        DATASET = 'dataset'
-        VALUES = {
-            _DATASET_ENV_VAR_NAME: DATASET,
-        }
-        with self._monkey(DATASET):
+        IMPLICIT_DATASET_ID = 'IMPLICIT'
+        with self._monkey(IMPLICIT_DATASET_ID):
             self._callFUT()
-        self.assertEqual(_implicit_environ.DATASET_ID, DATASET)
+        self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
 
     def test_set_explicit_w_env_var_set(self):
         from gcloud.datastore import _implicit_environ
-        DATASET_ID = 'DATASET'
+        EXPLICIT_DATASET_ID = 'EXPLICIT'
         with self._monkey(None):
-            self._callFUT(DATASET_ID)
-        self.assertEqual(_implicit_environ.DATASET_ID, DATASET_ID)
+            self._callFUT(EXPLICIT_DATASET_ID)
+        self.assertEqual(_implicit_environ.DATASET_ID, EXPLICIT_DATASET_ID)
 
     def test_set_explicit_no_env_var_set(self):
         from gcloud.datastore import _implicit_environ
         IMPLICIT_DATASET_ID = 'IMPLICIT'
-        DATASET_ID = 'DATASET'
+        EXPLICIT_DATASET_ID = 'EXPLICIT'
         with self._monkey(IMPLICIT_DATASET_ID):
-            self._callFUT(DATASET_ID)
-        self.assertEqual(_implicit_environ.DATASET_ID, DATASET_ID)
+            self._callFUT(EXPLICIT_DATASET_ID)
+        self.assertEqual(_implicit_environ.DATASET_ID, EXPLICIT_DATASET_ID)
 
     def test_set_explicit_None_wo_env_var_set(self):
         from gcloud.datastore import _implicit_environ
