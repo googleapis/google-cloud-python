@@ -73,6 +73,7 @@ class Test_set_default_dataset(unittest2.TestCase):
 
     def test_set_from_env_var(self):
         from gcloud.datastore import _DATASET_ENV_VAR_NAME
+        from gcloud.datastore import _implicit_environ
 
         # Make a custom getenv function to Monkey.
         DATASET = 'dataset'
@@ -80,13 +81,18 @@ class Test_set_default_dataset(unittest2.TestCase):
             _DATASET_ENV_VAR_NAME: DATASET,
         }
         self._test_with_environ(VALUES, DATASET)
+        self.assertEqual(_implicit_environ.DATASET_ID, DATASET)
 
     def test_no_env_var_set(self):
+        from gcloud.datastore import _implicit_environ
         self._test_with_environ({}, None)
+        self.assertEqual(_implicit_environ.DATASET_ID, None)
 
     def test_set_explicit(self):
+        from gcloud.datastore import _implicit_environ
         DATASET_ID = 'DATASET'
         self._test_with_environ({}, DATASET_ID, dataset_id=DATASET_ID)
+        self.assertEqual(_implicit_environ.DATASET_ID, DATASET_ID)
 
 
 class Test_set_default_connection(unittest2.TestCase):

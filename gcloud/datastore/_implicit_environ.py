@@ -8,6 +8,9 @@ which could utilize the implicit enviroment.
 """
 
 
+DATASET_ID = None
+"""Module global to allow persistent implied dataset ID from enviroment."""
+
 DATASET = None
 """Module global to allow persistent implied dataset from enviroment."""
 
