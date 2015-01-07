@@ -193,16 +193,6 @@ class _Key(object):
         return self._stored
 
 
-class _Dataset(dict):
-
-    def __init__(self, connection=None):
-        super(_Dataset, self).__init__()
-        self._connection = connection
-
-    def id(self):
-        return _DATASET_ID
-
-
 class _Connection(object):
     _transaction = _saved = _deleted = None
     _save_result = (False, None)
