@@ -44,8 +44,8 @@ class TestTransaction(unittest2.TestCase):
         _DATASET = 'DATASET'
         connection = _Connection()
         xact = self._makeOne(dataset_id=_DATASET, connection=connection)
-        self.assertEqual(xact._dataset_id, _DATASET)
-        self.assertEqual(xact._connection, connection)
+        self.assertEqual(xact.dataset_id, _DATASET)
+        self.assertEqual(xact.connection, connection)
         self.assertEqual(xact.id, None)
         self.assertTrue(isinstance(xact.mutation, Mutation))
         self.assertEqual(len(xact._auto_id_entities), 0)
@@ -61,8 +61,8 @@ class TestTransaction(unittest2.TestCase):
                      CONNECTION=CONNECTION):
             transaction = self._makeOne()
 
-        self.assertEqual(transaction._dataset_id, DATASET_ID)
-        self.assertEqual(transaction._connection, CONNECTION)
+        self.assertEqual(transaction.dataset_id, DATASET_ID)
+        self.assertEqual(transaction.connection, CONNECTION)
 
     def test_add_auto_id_entity(self):
         entity = _Entity()

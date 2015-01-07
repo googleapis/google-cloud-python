@@ -144,8 +144,17 @@ class Transaction(object):
         self._auto_id_entities = []
 
     @property
+    def dataset_id(self):
+        """Getter for dataset ID in which the transaction will run.
+
+        :rtype: :class:`str`
+        :returns: The dataset ID in which the transaction will run.
+        """
+        return self._dataset_id
+
+    @property
     def connection(self):
-        """Getter for current connection over which the transaction will run.
+        """Getter for connection over which the transaction will run.
 
         :rtype: :class:`gcloud.datastore.connection.Connection`
         :returns: The connection over which the transaction will run.
