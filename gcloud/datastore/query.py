@@ -22,7 +22,7 @@ from gcloud.datastore import helpers
 from gcloud.datastore.key import Key
 
 
-class Query(_implicit_environ._DatastoreBase):
+class Query(object):
     """A Query against the Cloud Datastore.
 
     This class serves as an abstraction for creating a query over data
