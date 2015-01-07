@@ -40,11 +40,13 @@ class Test_set_default_dataset(unittest2.TestCase):
     def setUp(self):
         from gcloud.datastore import _implicit_environ
         self._replaced_dataset = _implicit_environ.DATASET
-        _implicit_environ.DATASET = None
+        self._replaced_dataset_id = _implicit_environ.DATASET_ID
+        _implicit_environ.DATASET = _implicit_environ.DATASET_ID = None
 
     def tearDown(self):
         from gcloud.datastore import _implicit_environ
         _implicit_environ.DATASET = self._replaced_dataset
+        _implicit_environ.DATASET_ID = self._replaced_dataset_id
 
     def _callFUT(self, dataset_id=None):
         from gcloud.datastore import set_default_dataset
