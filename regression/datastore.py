@@ -27,8 +27,7 @@ from gcloud.datastore.transaction import Transaction
 from regression import populate_datastore
 
 
-DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
-datastore.set_default_dataset(dataset_id=DATASET_ID)
+datastore.set_default_dataset_id()
 datastore.set_default_connection()
 
 

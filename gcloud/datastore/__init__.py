@@ -61,7 +61,7 @@ SCOPE = ('https://www.googleapis.com/auth/datastore ',
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 
 
-def set_default_dataset(dataset_id=None):
+def set_default_dataset_id(dataset_id=None):
     """Set default dataset ID either explicitly or implicitly as fall-back.
 
     In implicit case, currently only supports enviroment variable but will
@@ -79,7 +79,6 @@ def set_default_dataset(dataset_id=None):
 
     if dataset_id is not None:
         _implicit_environ.DATASET_ID = dataset_id
-        _implicit_environ.DATASET = get_dataset(dataset_id)
 
 
 def set_default_connection(connection=None):
@@ -138,28 +137,40 @@ def get_dataset(dataset_id):
     return Dataset(dataset_id, connection=connection)
 
 
-def _require_dataset():
-    """Convenience method to ensure DATASET is set.
+def _require_dataset_id(dataset_id=None):
+    """Infer a dataset ID from the environment, if not passed explicitly.
+
+    :type dataset_id: :class:`str`.
+    :param dataset_id: Optional.
 
     :rtype: :class:`gcloud.datastore.dataset.Dataset`
     :returns: A dataset based on the current environment.
-    :raises: :class:`EnvironmentError` if DATASET is not set.
+    :raises: :class:`EnvironmentError` if ``dataset_id`` is None,
+             and cannot be inferred from the environment.
     """
-    if _implicit_environ.DATASET is None:
-        raise EnvironmentError('Dataset could not be inferred.')
-    return _implicit_environ.DATASET
+    if dataset_id is None:
+        if _implicit_environ.DATASET_ID is None:
+            raise EnvironmentError('Dataset ID could not be inferred.')
+        dataset_id = _implicit_environ.DATASET_ID
+    return dataset_id
 
 
-def _require_connection():
-    """Convenience method to ensure CONNECTION is set.
+def _require_connection(connection=None):
+    """Infer a connection from the environment, if not passed explicitly.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional.
 
     :rtype: :class:`gcloud.datastore.connection.Connection`
     :returns: A connection based on the current environment.
-    :raises: :class:`EnvironmentError` if CONNECTION is not set.
+    :raises: :class:`EnvironmentError` if ``connection`` is None, and
+             cannot be inferred from the environment.
     """
-    if _implicit_environ.CONNECTION is None:
-        raise EnvironmentError('Connection could not be inferred.')
-    return _implicit_environ.CONNECTION
+    if connection is None:
+        if _implicit_environ.CONNECTION is None:
+            raise EnvironmentError('Connection could not be inferred.')
+        connection = _implicit_environ.CONNECTION
+    return connection
 
 
 def get_entities(keys, missing=None, deferred=None,
@@ -188,8 +199,8 @@ def get_entities(keys, missing=None, deferred=None,
     :rtype: list of :class:`gcloud.datastore.entity.Entity`
     :returns: The requested entities.
     """
-    connection = connection or _require_connection()
-    dataset_id = dataset_id or _require_dataset().id()
+    connection = _require_connection(connection)
+    dataset_id = _require_dataset_id(dataset_id)
 
     entity_pbs = connection.lookup(
         dataset_id=dataset_id,
@@ -233,8 +244,8 @@ def allocate_ids(incomplete_key, num_ids, connection=None, dataset_id=None):
     :returns: The (complete) keys allocated with `incomplete_key` as root.
     :raises: `ValueError` if `incomplete_key` is not a partial key.
     """
-    connection = connection or _require_connection()
-    dataset_id = dataset_id or _require_dataset().id()
+    connection = _require_connection(connection)
+    dataset_id = _require_dataset_id(dataset_id)
 
     if not incomplete_key.is_partial:
         raise ValueError(('Key is not partial.', incomplete_key))
