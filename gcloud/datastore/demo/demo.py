@@ -11,86 +11,110 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# pragma NO COVER
 # Welcome to the gCloud Datastore Demo! (hit enter)
-
 # We're going to walk through some of the basics...
 # Don't worry though. You don't need to do anything, just keep hitting enter...
 
-# Let's start by importing the demo module and getting a dataset:
+# Let's start by importing the demo module and initializing our connection.
 from gcloud.datastore import demo
-dataset = demo.get_dataset()
+demo.initialize()
 
 # Let's create a new entity of type "Thing" and name it 'Toy':
-toy = dataset.entity('Thing')
+from gcloud.datastore.key import Key
+key = Key('Thing')
+from gcloud.datastore.entity import Entity
+toy = Entity(key)
 toy.update({'name': 'Toy'})
 
 # Now let's save it to our datastore:
 toy.save()
 
 # If we look it up by its key, we should find it...
-print(dataset.get_entities([toy.key()]))
+from gcloud.datastore import get_entities
+print(get_entities([toy.key]))
 
 # And we should be able to delete it...
-toy.delete()
+toy.key.delete()
 
 # Since we deleted it, if we do another lookup it shouldn't be there again:
-print(dataset.get_entities([toy.key()]))
+print(get_entities([toy.key]))
 
 # Now let's try a more advanced query.
+# First, let's create some entities.
+samples = []
+for id, name, age in [ # id, name, age
+    (1234, 'Computer', 10),
+    (2345, 'Computer', 8),
+    (3456, 'Laptop', 10),
+    (4567, 'Printer', 11),
+    (5678, 'Printer', 12),
+    (6789, 'Computer', 13)]:
+    key = Key('Thing', id)
+    samples.append(key)
+    entity = Entity(key)
+    entity['name'] = name
+    entity['age'] = age
+    entity.save()
 # We'll start by look at all Thing entities:
-query = dataset.query().kind('Thing')
+from gcloud.datastore.query import Query
+query = Query(kind='Thing')
 
 # Let's look at the first two.
-print(query.limit(2).fetch())
+print(list(query.fetch(limit=2)))
 
 # Now let's check for Thing entities named 'Computer'
-print(query.filter('name', '=', 'Computer').fetch())
+query.add_filter('name', '=', 'Computer')
+print(list(query.fetch()))
 
 # If you want to filter by multiple attributes,
-# you can string .filter() calls together.
-print(query.filter('name', '=', 'Computer').filter('age', '=', 10).fetch())
+# you can call .add_filter multiple times on the query.
+query.add_filter('age', '=', 10)
+print(list(query.fetch()))
+
+# Now delete them.
+print([key.delete() for key in samples])
 
 # You can also work inside a transaction.
 # (Check the official docs for explanations of what's happening here.)
-with dataset.transaction():
+from gcloud.datastore.transaction import Transaction
+with Transaction():
     print('Creating and savng an entity...')
-    thing = dataset.entity('Thing')
-    thing.key(thing.key().name('foo'))
+    key = Key('Thing', 'foo')
+    thing = Entity(key)
     thing['age'] = 10
     thing.save()
 
     print('Creating and saving another entity...')
-    thing2 = dataset.entity('Thing')
-    thing2.key(thing2.key().name('bar'))
+    key2 = Key('Thing', 'bar')
+    thing2 = Entity(key2)
     thing2['age'] = 15
     thing2.save()
 
     print('Committing the transaction...')
 
 # Now that the transaction is commited, let's delete the entities.
-print(thing.delete(), thing2.delete())
+print(key.delete(), key2.delete())
 
 # To rollback a transaction, just call .rollback()
-with dataset.transaction() as t:
-    thing = dataset.entity('Thing')
-    thing.key(thing.key().name('another'))
+with Transaction() as t:
+    key = Key('Thing', 'another')
+    thing = Entity(key)
     thing.save()
     t.rollback()
 
 # Let's check if the entity was actually created:
-created = dataset.get_entities([thing.key()])
+created = get_entities([key])
 print('yes' if created else 'no')
 
 # Remember, a key won't be complete until the transaction is commited.
-# That is, while inside the transaction block, thing.key() will be incomplete.
-with dataset.transaction():
-    thing = dataset.entity('Thing')
+# That is, while inside the transaction block, thing.key will be incomplete.
+with Transaction():
+    key = Key('Thing')  # partial
+    thing = Entity(key)
     thing.save()
-    print(thing.key())  # This will be partial
+    print(thing.key)  # This will still be partial
 
-print(thing.key())  # This will be complete
+print(thing.key)  # This will be complete
 
 # Now let's delete the entity.
-thing.delete()
+thing.key.delete()
