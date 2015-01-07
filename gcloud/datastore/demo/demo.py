@@ -41,14 +41,15 @@ print(get_entities([toy.key]))
 
 # Now let's try a more advanced query.
 # First, let's create some entities.
-samples = []
-for id, name, age in [ # id, name, age
+SAMPLE_DATA = [
     (1234, 'Computer', 10),
     (2345, 'Computer', 8),
     (3456, 'Laptop', 10),
     (4567, 'Printer', 11),
     (5678, 'Printer', 12),
-    (6789, 'Computer', 13)]:
+    (6789, 'Computer', 13)]
+samples = []
+for id, name, age in SAMPLE_DATA:
     key = Key('Thing', id)
     samples.append(key)
     entity = Entity(key)
