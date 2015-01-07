@@ -76,8 +76,7 @@ class TestKey(unittest2.TestCase):
         ]
         parent_key = self._makeOne(_PARENT_KIND, _PARENT_ID,
                                    dataset_id=_PARENT_DATASET,
-                                   namespace=_PARENT_NAMESPACE,
-                                   )
+                                   namespace=_PARENT_NAMESPACE)
         key = self._makeOne(_CHILD_KIND, _CHILD_ID, parent=parent_key)
         self.assertEqual(key.dataset_id, parent_key.dataset_id)
         self.assertEqual(key.namespace, parent_key.namespace)
@@ -97,7 +96,7 @@ class TestKey(unittest2.TestCase):
 
     def test_ctor_parent_bad_namespace(self):
         parent_key = self._makeOne('KIND', 1234, namespace='FOO',
-                        dataset_id=self._DEFAULT_DATASET)
+                                   dataset_id=self._DEFAULT_DATASET)
         with self.assertRaises(ValueError):
             self._makeOne('KIND2', 1234, namespace='BAR', parent=parent_key,
                           dataset_id=self._DEFAULT_DATASET)
@@ -128,17 +127,16 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(key.path, _PATH)
 
     def test_ctor_bad_kind(self):
-        self.assertRaises(ValueError,
-            self._makeOne, object(), dataset_id=self._DEFAULT_DATASET)
+        self.assertRaises(ValueError, self._makeOne, object(),
+                          dataset_id=self._DEFAULT_DATASET)
 
     def test_ctor_bad_id_or_name(self):
         self.assertRaises(ValueError, self._makeOne, 'KIND', object(),
-                            dataset_id=self._DEFAULT_DATASET)
+                          dataset_id=self._DEFAULT_DATASET)
         self.assertRaises(ValueError, self._makeOne, 'KIND', None,
-                            dataset_id=self._DEFAULT_DATASET)
-        self.assertRaises(ValueError,
-                            self._makeOne, 'KIND', 10, 'KIND2', None,
-                            dataset_id=self._DEFAULT_DATASET)
+                          dataset_id=self._DEFAULT_DATASET)
+        self.assertRaises(ValueError, self._makeOne, 'KIND', 10, 'KIND2', None,
+                          dataset_id=self._DEFAULT_DATASET)
 
     def test__clone(self):
         _DATASET = 'DATASET-ALT'
