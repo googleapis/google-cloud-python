@@ -648,19 +648,6 @@ class _Query(object):
         self.group_by = group_by
 
 
-class _Dataset(object):
-
-    def __init__(self, id, connection):
-        self._id = id
-        self._connection = connection
-
-    def id(self):
-        return self._id
-
-    def connection(self):
-        return self._connection
-
-
 class _Connection(object):
 
     _called_with = None
