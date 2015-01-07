@@ -62,6 +62,13 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(key.kind, _KIND)
         self.assertEqual(key.path, [{'kind': _KIND}])
 
+    def test_ctor_w_implicit_dataset_id_empty_path(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        klass = self._getTargetClass()
+        with self._monkeyDatasetID(_DATASET):
+            self.assertRaises(ValueError, self._makeOne)
+
     def test_ctor_parent(self):
         _DATASET = 'DATASET'
         _PARENT_KIND = 'KIND1'
