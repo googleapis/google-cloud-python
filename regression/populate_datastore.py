@@ -17,9 +17,14 @@
 from six.moves import zip
 
 from gcloud import datastore
-# This assumes the command is being run via tox hence the
-# repository root is the current directory.
-from regression import regression_utils
+from gcloud.datastore.entity import Entity
+from gcloud.datastore.key import Key
+from gcloud.datastore.transaction import Transaction
+
+
+datastore._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+datastore.set_default_dataset_id()
+datastore.set_default_connection()
 
 
 ANCESTOR = ('Book', 'GoT')
@@ -81,14 +86,12 @@ CHARACTERS = [
 
 
 def add_characters():
-    dataset = regression_utils.get_dataset()
-    with dataset.transaction():
+    with Transaction():
         for key_path, character in zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character['name']:
                 raise ValueError(('Character and key don\'t agree',
                                   key_path, character))
-            key = datastore.key.Key(*key_path, dataset_id=dataset.id())
-            entity = datastore.entity.Entity(dataset=dataset).key(key)
+            entity = Entity(key=Key(*key_path))
             entity.update(character)
             entity.save()
             print('Adding Character %s %s' % (character['name'],
