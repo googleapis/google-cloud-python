@@ -77,6 +77,7 @@ def set_default_dataset(dataset_id=None):
         dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
 
     if dataset_id is not None:
+        _implicit_environ.DATASET_ID = dataset_id
         _implicit_environ.DATASET = get_dataset(dataset_id)
 
 
