@@ -40,10 +40,9 @@ class Entity(dict):
     This means you could take an existing entity and change the key
     to duplicate the object.
 
-    Use :func:`gcloud.datastore.dataset.Dataset.get_entity`
-    to retrieve an existing entity.
+    Use :metho:`gcloud.datastore.key.Key.get` to retrieve an existing entity.
 
-      >>> dataset.get_entity(key)
+      >>> key.get()
       <Entity[{'kind': 'EntityKind', id: 1234}] {'property': 'value'}>
 
     You can the set values on the entity just like you would on any

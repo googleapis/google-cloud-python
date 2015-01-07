@@ -15,26 +15,6 @@
 import unittest2
 
 
-class Test_get_connection(unittest2.TestCase):
-
-    def _callFUT(self):
-        from gcloud.datastore import get_connection
-        return get_connection()
-
-    def test_it(self):
-        from gcloud import credentials
-        from gcloud.datastore.connection import Connection
-        from gcloud.test_credentials import _Client
-        from gcloud._testing import _Monkey
-
-        client = _Client()
-        with _Monkey(credentials, client=client):
-            found = self._callFUT()
-        self.assertTrue(isinstance(found, Connection))
-        self.assertTrue(found._credentials is client._signed)
-        self.assertTrue(client._get_app_default_called)
-
-
 class Test_set_default_dataset_id(unittest2.TestCase):
 
     def setUp(self):
@@ -50,44 +30,53 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         from gcloud.datastore import set_default_dataset_id
         return set_default_dataset_id(dataset_id=dataset_id)
 
-    def _test_with_environ(self, environ, expected_result, dataset_id=None):
+    def _monkey(self, implicit_dataset_id):
         import os
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
-
-        # Check the environment is unset.
-        self.assertEqual(_implicit_environ.DATASET_ID, None)
-
-        def custom_getenv(key):
-            return environ.get(key)
-
-        with _Monkey(os, getenv=custom_getenv):
-            self._callFUT(dataset_id=dataset_id)
-
-        self.assertEqual(_implicit_environ.DATASET_ID, expected_result)
-
-    def test_set_from_env_var(self):
         from gcloud.datastore import _DATASET_ENV_VAR_NAME
-        from gcloud.datastore import _implicit_environ
-
-        # Make a custom getenv function to Monkey.
-        DATASET = 'dataset'
-        VALUES = {
-            _DATASET_ENV_VAR_NAME: DATASET,
-        }
-        self._test_with_environ(VALUES, DATASET)
-        self.assertEqual(_implicit_environ.DATASET_ID, DATASET)
+        from gcloud._testing import _Monkey
+        environ = {_DATASET_ENV_VAR_NAME: implicit_dataset_id}
+        return _Monkey(os, getenv=environ.get)
 
     def test_no_env_var_set(self):
         from gcloud.datastore import _implicit_environ
-        self._test_with_environ({}, None)
+        with self._monkey(None):
+            self._callFUT()
         self.assertEqual(_implicit_environ.DATASET_ID, None)
 
-    def test_set_explicit(self):
+    def test_set_from_env_var(self):
         from gcloud.datastore import _implicit_environ
-        DATASET_ID = 'DATASET'
-        self._test_with_environ({}, DATASET_ID, dataset_id=DATASET_ID)
-        self.assertEqual(_implicit_environ.DATASET_ID, DATASET_ID)
+        IMPLICIT_DATASET_ID = 'IMPLICIT'
+        with self._monkey(IMPLICIT_DATASET_ID):
+            self._callFUT()
+        self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
+
+    def test_set_explicit_w_env_var_set(self):
+        from gcloud.datastore import _implicit_environ
+        EXPLICIT_DATASET_ID = 'EXPLICIT'
+        with self._monkey(None):
+            self._callFUT(EXPLICIT_DATASET_ID)
+        self.assertEqual(_implicit_environ.DATASET_ID, EXPLICIT_DATASET_ID)
+
+    def test_set_explicit_no_env_var_set(self):
+        from gcloud.datastore import _implicit_environ
+        IMPLICIT_DATASET_ID = 'IMPLICIT'
+        EXPLICIT_DATASET_ID = 'EXPLICIT'
+        with self._monkey(IMPLICIT_DATASET_ID):
+            self._callFUT(EXPLICIT_DATASET_ID)
+        self.assertEqual(_implicit_environ.DATASET_ID, EXPLICIT_DATASET_ID)
+
+    def test_set_explicit_None_wo_env_var_set(self):
+        from gcloud.datastore import _implicit_environ
+        with self._monkey(None):
+            self._callFUT(None)
+        self.assertEqual(_implicit_environ.DATASET_ID, None)
+
+    def test_set_explicit_None_w_env_var_set(self):
+        from gcloud.datastore import _implicit_environ
+        IMPLICIT_DATASET_ID = 'IMPLICIT'
+        with self._monkey(IMPLICIT_DATASET_ID):
+            self._callFUT(None)
+        self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
 
 
 class Test_set_default_connection(unittest2.TestCase):
@@ -127,45 +116,99 @@ class Test_set_default_connection(unittest2.TestCase):
         self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
 
 
-class Test_implicit_behavior(unittest2.TestCase):
+class Test_get_connection(unittest2.TestCase):
 
-    def test__require_dataset_id_value_unset(self):
-        import gcloud.datastore
-        from gcloud.datastore import _implicit_environ
+    def _callFUT(self):
+        from gcloud.datastore import get_connection
+        return get_connection()
+
+    def test_it(self):
+        from gcloud import credentials
+        from gcloud.datastore.connection import Connection
+        from gcloud.test_credentials import _Client
         from gcloud._testing import _Monkey
 
-        with _Monkey(_implicit_environ, DATASET_ID=None):
+        client = _Client()
+        with _Monkey(credentials, client=client):
+            found = self._callFUT()
+        self.assertTrue(isinstance(found, Connection))
+        self.assertTrue(found._credentials is client._signed)
+        self.assertTrue(client._get_app_default_called)
+
+
+class Test__require_dataset_id(unittest2.TestCase):
+
+    _MARKER = object()
+
+    def _callFUT(self, passed=_MARKER):
+        from gcloud.datastore import _require_dataset_id
+        if passed is self._MARKER:
+            return _require_dataset_id()
+        return _require_dataset_id(passed)
+
+    def _monkey(self, dataset_id):
+        from gcloud.datastore import _implicit_environ
+        from gcloud._testing import _Monkey
+        return _Monkey(_implicit_environ, DATASET_ID=dataset_id)
+
+    def test__require_dataset_implicit_unset(self):
+        with self._monkey(None):
             with self.assertRaises(EnvironmentError):
-                gcloud.datastore._require_dataset_id()
+                self._callFUT()
 
-    def test__require_dataset_id_value_set(self):
-        import gcloud.datastore
+    def test__require_dataset_implicit_unset_passed_explicitly(self):
+        ID = 'DATASET'
+        with self._monkey(None):
+            self.assertEqual(self._callFUT(ID), ID)
+
+    def test__require_dataset_id_implicit_set(self):
+        IMPLICIT_ID = 'IMPLICIT'
+        with self._monkey(IMPLICIT_ID):
+            stored_id = self._callFUT()
+        self.assertTrue(stored_id is IMPLICIT_ID)
+
+    def test__require_dataset_id_implicit_set_passed_explicitly(self):
+        ID = 'DATASET'
+        IMPLICIT_ID = 'IMPLICIT'
+        with self._monkey(IMPLICIT_ID):
+            self.assertEqual(self._callFUT(ID), ID)
+
+
+class Test_require_connection(unittest2.TestCase):
+
+    _MARKER = object()
+
+    def _callFUT(self, passed=_MARKER):
+        from gcloud.datastore import _require_connection
+        if passed is self._MARKER:
+            return _require_connection()
+        return _require_connection(passed)
+
+    def _monkey(self, connection):
         from gcloud.datastore import _implicit_environ
         from gcloud._testing import _Monkey
+        return _Monkey(_implicit_environ, CONNECTION=connection)
 
-        FAKE_DATASET_ID = object()
-        with _Monkey(_implicit_environ, DATASET_ID=FAKE_DATASET_ID):
-            stored_dataset_id = gcloud.datastore._require_dataset_id()
-        self.assertTrue(stored_dataset_id is FAKE_DATASET_ID)
-
-    def test__require_connection_value_unset(self):
-        import gcloud.datastore
-        from gcloud.datastore import _implicit_environ
-        from gcloud._testing import _Monkey
-
-        with _Monkey(_implicit_environ, CONNECTION=None):
+    def test__require_connection_implicit_unset(self):
+        with self._monkey(None):
             with self.assertRaises(EnvironmentError):
-                gcloud.datastore._require_connection()
+                self._callFUT()
 
-    def test__require_connection_value_set(self):
-        import gcloud.datastore
-        from gcloud.datastore import _implicit_environ
-        from gcloud._testing import _Monkey
+    def test__require_connection_implicit_unset_passed_explicitly(self):
+        CONNECTION = object()
+        with self._monkey(None):
+            self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
 
-        FAKE_CONNECTION = object()
-        with _Monkey(_implicit_environ, CONNECTION=FAKE_CONNECTION):
-            stored_connection = gcloud.datastore._require_connection()
-        self.assertTrue(stored_connection is FAKE_CONNECTION)
+    def test__require_connection_implicit_set(self):
+        IMPLICIT_CONNECTION = object()
+        with self._monkey(IMPLICIT_CONNECTION):
+            self.assertTrue(self._callFUT() is IMPLICIT_CONNECTION)
+
+    def test__require_connection_implicit_set_passed_explicitly(self):
+        IMPLICIT_CONNECTION = object()
+        CONNECTION = object()
+        with self._monkey(IMPLICIT_CONNECTION):
+            self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
 
 
 class Test_get_entities_function(unittest2.TestCase):
