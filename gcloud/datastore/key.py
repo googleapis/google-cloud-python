@@ -66,27 +66,14 @@ class Key(object):
                        keyword argument.
         """
         self._flat_path = path_args
-        self._parent = kwargs.get('parent')
+        parent = self._parent = kwargs.get('parent')
         self._namespace = kwargs.get('namespace')
-        self._dataset_id = kwargs.get('dataset_id')
+        dataset_id = kwargs.get('dataset_id')
+        self._dataset_id = _validate_dataset_id(dataset_id, parent)
         # _flat_path, _parent, _namespace and _dataset_id must be set before
         # _combine_args() is called.
         self._path = self._combine_args()
-        self._validate_dataset_id()
 
-    def _validate_dataset_id(self):
-        """Ensures the dataset ID is set.
-
-        If unset, attempts to imply the ID from the environment.
-
-        :raises: `ValueError` if there is no `dataset_id` and none
-                 can be implied.
-        """
-        if self._dataset_id is None:
-            if _implicit_environ.DATASET_ID is not None:
-                self._dataset_id = _implicit_environ.DATASET_ID
-            else:
-                raise ValueError('A Key must have a dataset ID set.')
 
     @staticmethod
     def _parse_path(path_args):
@@ -344,7 +331,7 @@ class Key(object):
         """Dataset ID getter.
 
         :rtype: :class:`str`
-        :returns: The key's dataset.
+        :returns: The key's dataset ID.
         """
         return self._dataset_id
 
@@ -383,3 +370,25 @@ class Key(object):
 
     def __repr__(self):
         return '<Key%s, dataset=%s>' % (self.path, self.dataset_id)
+
+
+def _validate_dataset_id(dataset_id, parent):
+    """Ensure the dataset ID is set appropriately.
+
+    If ``parent`` is passed, skip the test (it will be checked / fixed up
+    later).
+
+    If ``dataset_id`` is unset, attempt to infer the ID from the environment.
+
+    :raises: `ValueError` if ``dataset_id`` is None and none can be inferred.
+    """
+    if parent is None:
+
+        if dataset_id is None:
+
+            if _implicit_environ.DATASET_ID is None:
+                raise ValueError("A Key must have a dataset ID set.")
+
+            dataset_id = _implicit_environ.DATASET_ID
+
+    return dataset_id
