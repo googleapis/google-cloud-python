@@ -35,7 +35,8 @@ TRANSACTION_MAX_GROUPS = 5
 
 def fetch_keys(dataset, kind, fetch_max=FETCH_MAX, query=None, cursor=None):
     if query is None:
-        query = Query(kind=kind, dataset=dataset, projection=['__key__'])
+        query = Query(
+            dataset_id=dataset.id(), kind=kind, projection=['__key__'])
 
     iterator = query.fetch(limit=fetch_max, start_cursor=cursor)
 
