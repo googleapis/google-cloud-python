@@ -35,43 +35,36 @@ class Test_get_connection(unittest2.TestCase):
         self.assertTrue(client._get_app_default_called)
 
 
-class Test_set_default_dataset(unittest2.TestCase):
+class Test_set_default_dataset_id(unittest2.TestCase):
 
     def setUp(self):
         from gcloud.datastore import _implicit_environ
-        self._replaced_dataset = _implicit_environ.DATASET
         self._replaced_dataset_id = _implicit_environ.DATASET_ID
-        _implicit_environ.DATASET = _implicit_environ.DATASET_ID = None
+        _implicit_environ.DATASET_ID = None
 
     def tearDown(self):
         from gcloud.datastore import _implicit_environ
-        _implicit_environ.DATASET = self._replaced_dataset
         _implicit_environ.DATASET_ID = self._replaced_dataset_id
 
     def _callFUT(self, dataset_id=None):
-        from gcloud.datastore import set_default_dataset
-        return set_default_dataset(dataset_id=dataset_id)
+        from gcloud.datastore import set_default_dataset_id
+        return set_default_dataset_id(dataset_id=dataset_id)
 
     def _test_with_environ(self, environ, expected_result, dataset_id=None):
         import os
         from gcloud._testing import _Monkey
-        from gcloud import datastore
         from gcloud.datastore import _implicit_environ
 
         # Check the environment is unset.
-        self.assertEqual(_implicit_environ.DATASET, None)
+        self.assertEqual(_implicit_environ.DATASET_ID, None)
 
         def custom_getenv(key):
             return environ.get(key)
 
-        def custom_get_dataset(local_dataset_id):
-            return local_dataset_id
-
         with _Monkey(os, getenv=custom_getenv):
-            with _Monkey(datastore, get_dataset=custom_get_dataset):
-                self._callFUT(dataset_id=dataset_id)
+            self._callFUT(dataset_id=dataset_id)
 
-        self.assertEqual(_implicit_environ.DATASET, expected_result)
+        self.assertEqual(_implicit_environ.DATASET_ID, expected_result)
 
     def test_set_from_env_var(self):
         from gcloud.datastore import _DATASET_ENV_VAR_NAME
@@ -134,49 +127,26 @@ class Test_set_default_connection(unittest2.TestCase):
         self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
 
 
-class Test_get_dataset(unittest2.TestCase):
-
-    def _callFUT(self, dataset_id):
-        from gcloud.datastore import get_dataset
-        return get_dataset(dataset_id)
-
-    def test_it(self):
-        from gcloud import credentials
-        from gcloud.datastore.connection import Connection
-        from gcloud.datastore.dataset import Dataset
-        from gcloud.test_credentials import _Client
-        from gcloud._testing import _Monkey
-
-        DATASET_ID = 'DATASET'
-        client = _Client()
-        with _Monkey(credentials, client=client):
-            found = self._callFUT(DATASET_ID)
-        self.assertTrue(isinstance(found, Dataset))
-        self.assertTrue(isinstance(found.connection(), Connection))
-        self.assertEqual(found.id(), DATASET_ID)
-        self.assertTrue(client._get_app_default_called)
-
-
 class Test_implicit_behavior(unittest2.TestCase):
 
-    def test__require_dataset_value_unset(self):
+    def test__require_dataset_id_value_unset(self):
         import gcloud.datastore
         from gcloud.datastore import _implicit_environ
         from gcloud._testing import _Monkey
 
-        with _Monkey(_implicit_environ, DATASET=None):
+        with _Monkey(_implicit_environ, DATASET_ID=None):
             with self.assertRaises(EnvironmentError):
-                gcloud.datastore._require_dataset()
+                gcloud.datastore._require_dataset_id()
 
-    def test__require_dataset_value_set(self):
+    def test__require_dataset_id_value_set(self):
         import gcloud.datastore
         from gcloud.datastore import _implicit_environ
         from gcloud._testing import _Monkey
 
-        FAKE_DATASET = object()
-        with _Monkey(_implicit_environ, DATASET=FAKE_DATASET):
-            stored_dataset = gcloud.datastore._require_dataset()
-        self.assertTrue(stored_dataset is FAKE_DATASET)
+        FAKE_DATASET_ID = object()
+        with _Monkey(_implicit_environ, DATASET_ID=FAKE_DATASET_ID):
+            stored_dataset_id = gcloud.datastore._require_dataset_id()
+        self.assertTrue(stored_dataset_id is FAKE_DATASET_ID)
 
     def test__require_connection_value_unset(self):
         import gcloud.datastore
@@ -309,7 +279,6 @@ class Test_get_entities_function(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
-        from gcloud.datastore.test_entity import _Dataset
         from gcloud._testing import _Monkey
 
         DATASET_ID = 'DATASET'
@@ -323,11 +292,10 @@ class Test_get_entities_function(unittest2.TestCase):
 
         # Make a connection to return the entity pb.
         CUSTOM_CONNECTION = _Connection(entity_pb)
-        CUSTOM_DATASET = _Dataset()
 
         key = Key(KIND, ID, dataset_id=DATASET_ID)
-        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET,
-                     CONNECTION=CUSTOM_CONNECTION):
+        with _Monkey(_implicit_environ, CONNECTION=CUSTOM_CONNECTION,
+                     DATASET_ID=DATASET_ID):
             result, = self._callFUT([key])
 
         expected_called_with = {
@@ -375,14 +343,12 @@ class Test_allocate_ids_function(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
-        from gcloud.datastore.test_entity import _Dataset
         from gcloud._testing import _Monkey
 
-        CUSTOM_DATASET = _Dataset()
         CUSTOM_CONNECTION = _Connection()
         NUM_IDS = 2
-        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET,
-                     CONNECTION=CUSTOM_CONNECTION):
+        with _Monkey(_implicit_environ, CONNECTION=CUSTOM_CONNECTION,
+                     DATASET_ID='DATASET'):
             INCOMPLETE_KEY = Key('KIND')
             result = self._callFUT(INCOMPLETE_KEY, NUM_IDS)
 
@@ -393,13 +359,11 @@ class Test_allocate_ids_function(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
-        from gcloud.datastore.test_entity import _Dataset
         from gcloud._testing import _Monkey
 
-        CUSTOM_DATASET = _Dataset()
         CUSTOM_CONNECTION = _Connection()
-        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET,
-                     CONNECTION=CUSTOM_CONNECTION):
+        with _Monkey(_implicit_environ, CONNECTION=CUSTOM_CONNECTION,
+                     DATASET_ID='DATASET'):
             COMPLETE_KEY = Key('KIND', 1234)
             self.assertRaises(ValueError, self._callFUT,
                               COMPLETE_KEY, 2)

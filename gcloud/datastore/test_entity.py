@@ -23,13 +23,11 @@ class TestEntity(unittest2.TestCase):
 
     def setUp(self):
         from gcloud.datastore import _implicit_environ
-        self._replaced_dataset = _implicit_environ.DATASET
         self._replaced_dataset_id = _implicit_environ.DATASET_ID
-        _implicit_environ.DATASET = _implicit_environ.DATASET_ID = None
+        _implicit_environ.DATASET_ID = None
 
     def tearDown(self):
         from gcloud.datastore import _implicit_environ
-        _implicit_environ.DATASET = self._replaced_dataset
         _implicit_environ.DATASET_ID = self._replaced_dataset_id
 
     def _getTargetClass(self):
@@ -191,16 +189,6 @@ class _Key(object):
     def get(self, connection=None):
         self._connection_used = connection
         return self._stored
-
-
-class _Dataset(dict):
-
-    def __init__(self, connection=None):
-        super(_Dataset, self).__init__()
-        self._connection = connection
-
-    def id(self):
-        return _DATASET_ID
 
 
 class _Connection(object):

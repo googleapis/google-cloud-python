@@ -16,7 +16,6 @@ from __future__ import print_function
 import os
 import sys
 
-from gcloud import datastore
 from gcloud import storage
 
 
@@ -47,16 +46,6 @@ def get_environ(require_datastore=False, require_storage=False):
         'project_id': PROJECT_ID,
         'dataset_id': DATASET_ID,
     }
-
-
-def get_dataset():
-    environ = get_environ(require_datastore=True)
-    dataset_id = environ['dataset_id']
-    key = ('get_dataset', dataset_id)
-    if key not in CACHED_RETURN_VALS:
-        # Cache return value for the environment.
-        CACHED_RETURN_VALS[key] = datastore.get_dataset(dataset_id)
-    return CACHED_RETURN_VALS[key]
 
 
 def get_storage_connection():

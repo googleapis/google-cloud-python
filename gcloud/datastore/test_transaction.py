@@ -29,7 +29,7 @@ class TestTransaction(unittest2.TestCase):
     def test_ctor_missing_required(self):
         from gcloud.datastore import _implicit_environ
 
-        self.assertEqual(_implicit_environ.DATASET, None)
+        self.assertEqual(_implicit_environ.DATASET_ID, None)
 
         with self.assertRaises(ValueError):
             self._makeOne()

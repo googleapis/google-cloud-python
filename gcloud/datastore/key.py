@@ -83,9 +83,8 @@ class Key(object):
                  can be implied.
         """
         if self._dataset_id is None:
-            if _implicit_environ.DATASET is not None:
-                # This assumes DATASET.id() is not None.
-                self._dataset_id = _implicit_environ.DATASET.id()
+            if _implicit_environ.DATASET_ID is not None:
+                self._dataset_id = _implicit_environ.DATASET_ID
             else:
                 raise ValueError('A Key must have a dataset ID set.')
 

@@ -21,21 +21,18 @@ class TestKey(unittest2.TestCase):
         self._DEFAULT_DATASET = 'DATASET'
 
         from gcloud.datastore import _implicit_environ
-        self._replaced_dataset = _implicit_environ.DATASET
         self._replaced_dataset_id = _implicit_environ.DATASET_ID
-        _implicit_environ.DATASET = _implicit_environ.DATASET_ID = None
+        _implicit_environ.DATASET_ID = None
 
     def tearDown(self):
         from gcloud.datastore import _implicit_environ
-        _implicit_environ.DATASET = self._replaced_dataset
         _implicit_environ.DATASET_ID = self._replaced_dataset_id
 
     def _getTargetClass(self):
         from gcloud.datastore import _implicit_environ
-        from gcloud.datastore.dataset import Dataset
         from gcloud.datastore.key import Key
 
-        _implicit_environ.DATASET = Dataset(self._DEFAULT_DATASET)
+        _implicit_environ.DATASET_ID = self._DEFAULT_DATASET
         return Key
 
     def _makeOne(self, *args, **kwargs):
@@ -44,11 +41,11 @@ class TestKey(unittest2.TestCase):
     def test_ctor_empty(self):
         self.assertRaises(ValueError, self._makeOne)
 
-    def test_ctor_no_dataset(self):
+    def test_ctor_no_dataset_id(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
         klass = self._getTargetClass()
-        with _Monkey(_implicit_environ, DATASET=None):
+        with _Monkey(_implicit_environ, DATASET_ID=None):
             self.assertRaises(ValueError, klass, 'KIND')
 
     def test_ctor_parent(self):
@@ -171,7 +168,7 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(elem.id, 0)
         self.assertFalse(elem.HasField('id'))
 
-    def test_to_protobuf_w_explicit_dataset(self):
+    def test_to_protobuf_w_explicit_dataset_id(self):
         _DATASET = 'DATASET-ALT'
         key = self._makeOne('KIND', dataset_id=_DATASET)
         pb = key.to_protobuf()
