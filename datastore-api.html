@@ -155,11 +155,12 @@ you can create entities and save them:</p>
 <span id="gcloud-datastore"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gcloud.datastore</span></tt><a class="headerlink" href="#module-gcloud.datastore.__init__" title="Permalink to this headline">#</a></h2>
 <p>Shortcut methods for getting set up with Google Cloud Datastore.</p>
 <p>You&#8217;ll typically use these to get started with the API:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id-here&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Then do other things...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;your-dataset-id&#39;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s">&#39;EntityKind&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The main concepts with this API are:</p>
@@ -674,7 +675,7 @@ either <cite>None</cite> or an integer that has been assigned.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f90a047fbf0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fcf9c5d5c10&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

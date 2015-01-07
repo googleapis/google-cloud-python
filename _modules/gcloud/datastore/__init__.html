@@ -90,11 +90,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">You&#39;ll typically use these to get started with the API:</span>
 
-<span class="sd">&gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">&gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id-here&#39;)</span>
-<span class="sd">&gt;&gt;&gt; # Then do other things...</span>
-<span class="sd">&gt;&gt;&gt; query = dataset.query().kind(&#39;EntityKind&#39;)</span>
-<span class="sd">&gt;&gt;&gt; entity = dataset.entity(&#39;EntityKind&#39;)</span>
+<span class="sd">&gt;&gt;&gt; from gcloud.datastore.entity import Entity</span>
+<span class="sd">&gt;&gt;&gt; from gcloud.datastore.key import Key</span>
+<span class="sd">&gt;&gt;&gt; from gcloud.datastore.query import Query</span>
+<span class="sd">&gt;&gt;&gt; key = Key(&#39;EntityKind&#39;, 1234)</span>
+<span class="sd">&gt;&gt;&gt; entity = Entity(key)</span>
+<span class="sd">&gt;&gt;&gt; query = Query(&#39;your-dataset-id&#39;, kind=&#39;EntityKind&#39;)</span>
 
 <span class="sd">The main concepts with this API are:</span>
 
