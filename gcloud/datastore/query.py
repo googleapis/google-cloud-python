@@ -19,7 +19,6 @@ import base64
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
-from gcloud.datastore.dataset import Dataset
 from gcloud.datastore.key import Key
 
 
@@ -32,8 +31,9 @@ class Query(_implicit_environ._DatastoreBase):
     :type kind: string.
     :param kind: The kind to query.
 
-    :type dataset: :class:`gcloud.datastore.dataset.Dataset`.
-    :param dataset: The dataset to query.
+    :type dataset_id: str
+    :param dataset_id: The ID of the dataset to query.  If not passed,
+                       uses the implicit default.
 
     :type namespace: string or None.
     :param namespace: The namespace to which to restrict results.
@@ -54,6 +54,9 @@ class Query(_implicit_environ._DatastoreBase):
 
     :type group_by: sequence_of_string.
     :param group_by: field names used to group query results.
+
+    :raises: ValueError if ``dataset_id`` is not passed and no implicit
+             default is set.
     """
 
     OPERATORS = {
@@ -66,15 +69,22 @@ class Query(_implicit_environ._DatastoreBase):
     """Mapping of operator strings and their protobuf equivalents."""
 
     def __init__(self,
+                 dataset_id=None,
                  kind=None,
-                 dataset=None,
                  namespace=None,
                  ancestor=None,
                  filters=(),
                  projection=(),
                  order=(),
                  group_by=()):
-        super(Query, self).__init__(dataset=dataset)
+
+        if dataset_id is None:
+            dataset_id = _implicit_environ.DATASET_ID
+
+        if dataset_id is None:
+            raise ValueError("No dataset ID supplied, and no default set.")
+
+        self._dataset_id = dataset_id
         self._kind = kind
         self._namespace = namespace
         self._ancestor = ancestor
@@ -84,26 +94,12 @@ class Query(_implicit_environ._DatastoreBase):
         self._group_by = list(group_by)
 
     @property
-    def dataset(self):
-        """Get the dataset for this Query.
+    def dataset_id(self):
+        """Get the dataset ID for this Query.
 
-        The dataset against which the Query will be run.
-
-        :rtype: :class:`gcloud.datastore.dataset.Dataset` or None,
-        :returns: the current dataset.
+        :rtype: str
         """
-        return self._dataset
-
-    @dataset.setter
-    def dataset(self, value):
-        """Set the dataset for the query
-
-        :type value: class:`gcloud.datastore.dataset.Dataset`
-        :param value: the new dataset
-        """
-        if not isinstance(value, Dataset):
-            raise ValueError("Dataset must be a Dataset")
-        self._dataset = value
+        return self._dataset_id
 
     @property
     def namespace(self):
@@ -294,34 +290,49 @@ class Query(_implicit_environ._DatastoreBase):
             value = [value]
         self._group_by[:] = value
 
-    def fetch(self, limit=0, offset=0, start_cursor=None, end_cursor=None):
+    def fetch(self, limit=None, offset=0, start_cursor=None, end_cursor=None,
+              connection=None):
         """Execute the Query; return an iterator for the matching entities.
 
         For example::
 
-          >>> from gcloud import datastore
-          >>> dataset = datastore.get_dataset('dataset-id')
-          >>> query = dataset.query('Person').filter('name', '=', 'Sally')
+          >>> from gcloud.datastore.query import Query
+          >>> query = Query('dataset-id', 'Person')
+          >>> query.add_filter('name', '=', 'Sally')
           >>> list(query.fetch())
           [<Entity object>, <Entity object>, ...]
           >>> list(query.fetch(1))
           [<Entity object>]
 
-        :type limit: integer
+        :type limit: integer or None
         :param limit: An optional limit passed through to the iterator.
 
-        :type limit: offset
-        :param limit: An optional offset passed through to the iterator.
+        :type offset: integer
+        :param offset: An optional offset passed through to the iterator.
 
-        :type start_cursor: offset
+        :type start_cursor: bytes
         :param start_cursor: An optional cursor passed through to the iterator.
 
-        :type end_cursor: offset
+        :type end_cursor: bytes
         :param end_cursor: An optional cursor passed through to the iterator.
 
+        :type connection: :class:`gcloud.datastore.connection.Connection`
+        :param connection: An optional cursor passed through to the iterator.
+                           If not supplied, uses the implicit default.
+
+
         :rtype: :class:`Iterator`
+        :raises: ValueError if ``connection`` is not passed and no implicit
+                 default has been set.
         """
-        return Iterator(self, limit, offset, start_cursor, end_cursor)
+        if connection is None:
+            connection = _implicit_environ.CONNECTION
+
+        if connection is None:
+            raise ValueError("No connection passed, and no default set")
+
+        return Iterator(
+            self, connection, limit, offset, start_cursor, end_cursor)
 
 
 class Iterator(object):
@@ -334,9 +345,10 @@ class Iterator(object):
         datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
     )
 
-    def __init__(self, query, limit=None, offset=0,
+    def __init__(self, query, connection, limit=None, offset=0,
                  start_cursor=None, end_cursor=None):
         self._query = query
+        self._connection = connection
         self._limit = limit
         self._offset = offset
         self._start_cursor = start_cursor
@@ -366,9 +378,9 @@ class Iterator(object):
 
         pb.offset = self._offset
 
-        query_results = self._query.dataset.connection().run_query(
+        query_results = self._connection.run_query(
             query_pb=pb,
-            dataset_id=self._query.dataset.id(),
+            dataset_id=self._query.dataset_id,
             namespace=self._query.namespace,
             )
         # NOTE: `query_results` contains an extra value that we don't use,
