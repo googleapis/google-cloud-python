@@ -16,11 +16,12 @@
 
 You'll typically use these to get started with the API:
 
->>> from gcloud import datastore
->>> dataset = datastore.get_dataset('dataset-id-here')
->>> # Then do other things...
->>> query = dataset.query().kind('EntityKind')
->>> entity = dataset.entity('EntityKind')
+>>> from gcloud.datastore.entity import Entity
+>>> from gcloud.datastore.key import Key
+>>> from gcloud.datastore.query import Query
+>>> key = Key('EntityKind', 1234)
+>>> entity = Entity(key)
+>>> query = Query('your-dataset-id', kind='EntityKind')
 
 The main concepts with this API are:
 
