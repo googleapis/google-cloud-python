@@ -24,7 +24,7 @@ from six.moves import input
 class DemoRunner(object):
     """An interactive runner of demo scripts."""
 
-    KEYPRESS_DELAY = 0.05
+    KEYPRESS_DELAY = 0.02
     GLOBALS, LOCALS = globals(), locals()
     CODE, COMMENT = 'code', 'comment'
 
