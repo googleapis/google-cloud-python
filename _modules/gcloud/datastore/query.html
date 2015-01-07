@@ -408,7 +408,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">datastore_pb</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">MORE_RESULTS_AFTER_LIMIT</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                  <span class="n">start_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_query</span> <span class="o">=</span> <span class="n">query</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="o">=</span> <span class="n">limit</span>
@@ -435,7 +435,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="n">end_cursor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">pb</span><span class="o">.</span><span class="n">end_cursor</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">end_cursor</span><span class="p">)</span>
 
-        <span class="n">pb</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">pb</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span>
+
         <span class="n">pb</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
 
         <span class="n">query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">connection</span><span class="p">()</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span>
