@@ -77,8 +77,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>Create / interact with gcloud datastore transactions.</p>
 <dl class="class">
 <dt id="gcloud.datastore.transaction.Transaction">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.transaction.</tt><tt class="descname">Transaction</tt><big>(</big><em>dataset=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._implicit_environ._DatastoreBase</span></tt></p>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.transaction.</tt><tt class="descname">Transaction</tt><big>(</big><em>dataset_id=None</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>An abstraction representing datastore Transactions.</p>
 <p>Transactions can be used to build up a bulk mutuation as well as
 provide isolation.</p>
@@ -184,7 +184,15 @@ really need to nest transactions, try:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>) &#8211; The dataset to which this <a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">Transaction</span></tt></a> belongs.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>.) &#8211; The ID of the dataset.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; The connection used to connect to datastore.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if either a connection or dataset ID
+are not set.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -227,10 +235,10 @@ context manager.</p>
 </ul>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.transaction.Transaction.connection">
-<tt class="descname">connection</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.connection" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter for current connection over which the transaction will run.</p>
+<tt class="descname">connection</tt><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Getter for connection over which the transaction will run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -243,25 +251,25 @@ context manager.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.datastore.transaction.Transaction.dataset">
-<tt class="descname">dataset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.dataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter for the current dataset.</p>
+<dl class="attribute">
+<dt id="gcloud.datastore.transaction.Transaction.dataset_id">
+<tt class="descname">dataset_id</tt><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.dataset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Getter for dataset ID in which the transaction will run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The dataset to which the transaction belongs.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The dataset ID in which the transaction will run.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.transaction.Transaction.id">
-<tt class="descname">id</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.id" title="Permalink to this definition">#</a></dt>
+<tt class="descname">id</tt><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.id" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the transaction ID.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -275,9 +283,9 @@ context manager.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="gcloud.datastore.transaction.Transaction.mutation">
-<tt class="descname">mutation</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.mutation" title="Permalink to this definition">#</a></dt>
+<tt class="descname">mutation</tt><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.mutation" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the current mutation.</p>
 <p>Every transaction is committed with a single Mutation
 representing the &#8216;work&#8217; to be done as part of the transaction.

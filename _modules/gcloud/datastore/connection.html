@@ -223,7 +223,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                  (if one exists) or or a new mutation instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">mutation</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Mutation</span><span class="p">()</span>
 </div>
@@ -432,7 +432,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
             <span class="n">request</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">CommitRequest</span><span class="o">.</span><span class="n">TRANSACTIONAL</span>
-            <span class="n">request</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">id</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">request</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">CommitRequest</span><span class="o">.</span><span class="n">NON_TRANSACTIONAL</span>
 
@@ -452,11 +452,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset_id: The dataset to which the transaction belongs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;No transaction to rollback.&#39;</span><span class="p">)</span>
 
         <span class="n">request</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">RollbackRequest</span><span class="p">()</span>
-        <span class="n">request</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">id</span>
         <span class="c"># Nothing to do with this response, so just execute the method.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="s">&#39;rollback&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                   <span class="n">datastore_pb</span><span class="o">.</span><span class="n">RollbackResponse</span><span class="p">)</span>
@@ -623,7 +623,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="n">eventual</span><span class="p">:</span>
             <span class="n">opts</span><span class="o">.</span><span class="n">read_consistency</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">ReadOptions</span><span class="o">.</span><span class="n">EVENTUAL</span>
         <span class="k">elif</span> <span class="n">transaction</span><span class="p">:</span>
-            <span class="n">opts</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+            <span class="n">opts</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="n">id</span>
 
 </div>
 <span class="k">def</span> <span class="nf">_copy_deferred_keys</span><span class="p">(</span><span class="n">lookup_request</span><span class="p">,</span> <span class="n">lookup_response</span><span class="p">):</span>
