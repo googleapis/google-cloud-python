@@ -61,7 +61,7 @@ class TestKey(unittest2.TestCase):
 
     def test_ctor_w_implicit_dataset_id_empty_path(self):
         _DATASET = 'DATASET'
-        self.assertRaises(ValueError, self._makeOne, dataset=_DATASET)
+        self.assertRaises(ValueError, self._makeOne, dataset_id=_DATASET)
 
     def test_ctor_parent(self):
         _PARENT_KIND = 'KIND1'
