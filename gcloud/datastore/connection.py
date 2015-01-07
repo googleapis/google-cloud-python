@@ -372,7 +372,7 @@ class Connection(connection.Connection):
         if the connection isn't currently in a transaction.
 
         :type dataset_id: string
-        :param dataset_id: The id of the dataset to which the transaction
+        :param dataset_id: The ID of the dataset to which the transaction
                            belongs.
         """
         if not self.transaction() or not self.transaction().id:
@@ -390,7 +390,7 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.AllocateIds`` protobuf RPC.
 
         :type dataset_id: string
-        :param dataset_id: The id of the dataset to which the transaction
+        :param dataset_id: The ID of the dataset to which the transaction
                            belongs.
 
         :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
@@ -416,7 +416,7 @@ class Connection(connection.Connection):
            not passed in 'properties' no longer be set for the entity.
 
         :type dataset_id: string
-        :param dataset_id: The id of the dataset in which to save the entity.
+        :param dataset_id: The ID of the dataset in which to save the entity.
 
         :type key_pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
         :param key_pb: The complete or partial key for the entity.

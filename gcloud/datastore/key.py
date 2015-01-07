@@ -80,11 +80,11 @@ class Key(object):
 
         :type path_args: :class:`tuple`
         :param path_args: A tuple from positional arguments. Should be
-                          alternating list of kinds (string) and id/name
+                          alternating list of kinds (string) and ID/name
                           parts (int or string).
 
         :rtype: list of dict
-        :returns: A list of key parts with kind and id or name set.
+        :returns: A list of key parts with kind and ID or name set.
         :raises: `ValueError` if there are no `path_args`, if one of the
                  kinds is not a string or if one of the IDs/names is not
                  a string or an integer.
@@ -126,7 +126,7 @@ class Key(object):
         _namespace and _dataset_id if not already set.
 
         :rtype: list of dict
-        :returns: A list of key parts with kind and id or name set.
+        :returns: A list of key parts with kind and ID or name set.
         :raises: `ValueError` if the parent key is not complete.
         """
         child_path = self._parse_path(self._flat_path)
