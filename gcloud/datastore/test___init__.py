@@ -381,7 +381,9 @@ class Test_allocate_ids_function(unittest2.TestCase):
         CUSTOM_DATASET = _Dataset()
         CUSTOM_CONNECTION = _Connection()
         NUM_IDS = 2
-        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET,
+        with _Monkey(_implicit_environ,
+                     DATASET=CUSTOM_DATASET,
+                     DATASET_ID=CUSTOM_DATASET.id(),
                      CONNECTION=CUSTOM_CONNECTION):
             INCOMPLETE_KEY = Key('KIND')
             result = self._callFUT(INCOMPLETE_KEY, NUM_IDS)
@@ -398,7 +400,9 @@ class Test_allocate_ids_function(unittest2.TestCase):
 
         CUSTOM_DATASET = _Dataset()
         CUSTOM_CONNECTION = _Connection()
-        with _Monkey(_implicit_environ, DATASET=CUSTOM_DATASET,
+        with _Monkey(_implicit_environ,
+                     DATASET=CUSTOM_DATASET,
+                     DATASET_ID=CUSTOM_DATASET.id(),
                      CONNECTION=CUSTOM_CONNECTION):
             COMPLETE_KEY = Key('KIND', 1234)
             self.assertRaises(ValueError, self._callFUT,
