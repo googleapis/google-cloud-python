@@ -163,17 +163,13 @@ class Connection(connection.Connection):
         (:class:`gcloud.datastore.datastore_v1_pb2.Key` and
         :class:`gcloud.datastore.datastore_v1_pb2.Entity`) and is used
         under the hood for methods like
-        :func:`gcloud.datastore.dataset.Dataset.get_entity`:
+        :func:`gcloud.datastore.key.Key.get`:
 
         >>> from gcloud import datastore
         >>> from gcloud.datastore.key import Key
         >>> connection = datastore.get_connection()
-        >>> dataset = connection.dataset('dataset-id')
-        >>> key = Key(dataset=dataset).kind('MyKind').id(1234)
-
-        Using the :class:`gcloud.datastore.dataset.Dataset` helper:
-
-        >>> dataset.get_entity(key)
+        >>> key = Key('MyKind', 1234, dataset_id='dataset-id')
+        >>> key.get()
         <Entity object>
 
         Using the ``connection`` class directly:
@@ -182,7 +178,7 @@ class Connection(connection.Connection):
         <Entity protobuf>
 
         :type dataset_id: string
-        :param dataset_id: The dataset to look up the keys.
+        :param dataset_id: The ID of the dataset to look up the keys.
 
         :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
                        (or a single Key)
@@ -262,12 +258,12 @@ class Connection(connection.Connection):
         uses this method to fetch data:
 
         >>> from gcloud import datastore
+        >>> from gcloud.datastore.query import Query
         >>> connection = datastore.get_connection()
-        >>> dataset = connection.dataset('dataset-id')
-        >>> query = dataset.query().kind('MyKind').filter(
-        ...     'property', '=', 'val')
+        >>> query = Query(dataset_id='dataset-id', 'MyKind')
+        >>> query.add_filter('property', '=', 'val')
 
-        Using the `fetch`` method...
+        Using the query's ``fetch_page`` method...
 
         >>> entities, cursor, more_results = query.fetch_page()
         >>> entities
@@ -319,7 +315,7 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.
 
         :type dataset_id: string
-        :param dataset_id: The dataset over which to execute the transaction.
+        :param dataset_id: The ID dataset over which to execute the transaction.
         """
 
         if self.transaction():
@@ -346,7 +342,7 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.Commit`` protobuf RPC.
 
         :type dataset_id: string
-        :param dataset_id: The dataset in which to perform the changes.
+        :param dataset_id: The id of the dataset in which to perform the changes.
 
         :type mutation_pb: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.
         :param mutation_pb: The protobuf for the mutations being saved.
@@ -376,7 +372,8 @@ class Connection(connection.Connection):
         if the connection isn't currently in a transaction.
 
         :type dataset_id: string
-        :param dataset_id: The dataset to which the transaction belongs.
+        :param dataset_id: The id of the dataset to which the transaction
+                           belongs.
         """
         if not self.transaction() or not self.transaction().id:
             raise ValueError('No transaction to rollback.')
@@ -393,7 +390,8 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.AllocateIds`` protobuf RPC.
 
         :type dataset_id: string
-        :param dataset_id: The dataset to which the transaction belongs.
+        :param dataset_id: The id of the dataset to which the transaction
+                           belongs.
 
         :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
         :param key_pbs: The keys for which the backend should allocate IDs.
@@ -418,7 +416,7 @@ class Connection(connection.Connection):
            not passed in 'properties' no longer be set for the entity.
 
         :type dataset_id: string
-        :param dataset_id: The dataset in which to save the entity.
+        :param dataset_id: The id of the dataset in which to save the entity.
 
         :type key_pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
         :param key_pb: The complete or partial key for the entity.
@@ -490,7 +488,7 @@ class Connection(connection.Connection):
         :func:`gcloud.datastore.entity.Entity.delete` method.
 
         :type dataset_id: string
-        :param dataset_id: The dataset from which to delete the keys.
+        :param dataset_id: The ID of the dataset from which to delete the keys.
 
         :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
         :param key_pbs: The keys to delete from the datastore.
