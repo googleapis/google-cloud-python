@@ -203,8 +203,8 @@ class TestConnection(unittest2.TestCase):
             pass
 
         class Xact(object):
-            def mutation(self):
-                return Mutation()
+            mutation = Mutation()
+
         conn = self._makeOne()
         conn.transaction(Xact())
         found = conn.mutation()
@@ -765,8 +765,8 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
         class Xact(object):
-            def id(self):
-                return 'xact'
+            id = 'xact'
+
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb.CommitResponse()
@@ -808,9 +808,8 @@ class TestConnection(unittest2.TestCase):
     def test_rollback_w_existing_transaction_no_id(self):
 
         class Xact(object):
+            id = None
 
-            def id(self):
-                return None
         DATASET_ID = 'DATASET'
         conn = self._makeOne()
         conn.transaction(Xact())
@@ -823,9 +822,8 @@ class TestConnection(unittest2.TestCase):
         TRANSACTION = 'xact'
 
         class Xact(object):
+            id = TRANSACTION
 
-            def id(self):
-                return TRANSACTION
         rsp_pb = datastore_pb.RollbackResponse()
         conn = self._makeOne()
         conn.transaction(Xact())
@@ -1038,11 +1036,9 @@ class TestConnection(unittest2.TestCase):
     def test_save_entity_w_transaction(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
-        mutation = datastore_pb.Mutation()
-
         class Xact(object):
-            def mutation(self):
-                return mutation
+            mutation = datastore_pb.Mutation()
+
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb.CommitResponse()
@@ -1059,11 +1055,9 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         from gcloud.datastore.entity import Entity
 
-        mutation = datastore_pb.Mutation()
-
         class Xact(object):
-            def mutation(self):
-                return mutation
+            mutation = datastore_pb.Mutation()
+
         DATASET_ID = 'DATASET'
         nested = Entity()
         nested['bar'] = u'Bar'
@@ -1114,11 +1108,9 @@ class TestConnection(unittest2.TestCase):
     def test_delete_entities_w_transaction(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
-        mutation = datastore_pb.Mutation()
-
         class Xact(object):
-            def mutation(self):
-                return mutation
+            mutation = datastore_pb.Mutation()
+
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb.CommitResponse()
@@ -1162,6 +1154,7 @@ class Transaction(object):
     def __init__(self, id):
         self._id = id
 
+    @property
     def id(self):
         return self._id
 

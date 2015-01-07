@@ -20,6 +20,16 @@ class TestKey(unittest2.TestCase):
     def setUp(self):
         self._DEFAULT_DATASET = 'DATASET'
 
+        from gcloud.datastore import _implicit_environ
+        self._replaced_dataset = _implicit_environ.DATASET
+        self._replaced_dataset_id = _implicit_environ.DATASET_ID
+        _implicit_environ.DATASET = _implicit_environ.DATASET_ID = None
+
+    def tearDown(self):
+        from gcloud.datastore import _implicit_environ
+        _implicit_environ.DATASET = self._replaced_dataset
+        _implicit_environ.DATASET_ID = self._replaced_dataset_id
+
     def _getTargetClass(self):
         from gcloud.datastore import _implicit_environ
         from gcloud.datastore.dataset import Dataset
