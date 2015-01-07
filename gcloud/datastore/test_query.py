@@ -25,7 +25,6 @@ class TestQuery(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_defaults_wo_implicit_dataset_id(self):
-        _DATASET = 'DATASET'
         self.assertRaises(ValueError, self._makeOne)
 
     def test_ctor_defaults_w_implicit_dataset_id(self):
