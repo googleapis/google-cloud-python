@@ -82,6 +82,26 @@ def set_default_dataset(dataset_id=None):
         _implicit_environ.DATASET = get_dataset(dataset_id)
 
 
+def set_default_dataset_id(dataset_id=None):
+    """Set default dataset ID either explicitly or implicitly as fall-back.
+
+    In implicit case, currently only supports enviroment variable but will
+    support App Engine, Compute Engine and other environments in the future.
+
+    Local environment variable used is:
+    - GCLOUD_DATASET_ID
+
+    :type dataset_id: :class:`str`.
+    :param dataset_id: Optional. The dataset ID to use for the default
+                       dataset.
+    """
+    if dataset_id is None:
+        dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
+
+    if dataset_id is not None:
+        _implicit_environ.DATASET_ID = dataset_id
+
+
 def set_default_connection(connection=None):
     """Set default connection either explicitly or implicitly as fall-back.
 
