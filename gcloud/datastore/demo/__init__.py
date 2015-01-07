@@ -16,11 +16,12 @@ import os
 from gcloud import datastore
 
 
-__all__ = ['get_dataset', 'DATASET_ID']
+__all__ = ['initialize', 'DATASET_ID']
 
 
 DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
 
 
-def get_dataset():
-    return datastore.get_dataset(DATASET_ID)
+def initialize():
+    datastore.set_default_connection()
+    datastore.set_default_dataset_id(DATASET_ID)
