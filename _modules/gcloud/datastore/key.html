@@ -157,9 +157,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                 can be implied.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="c"># This assumes DATASET.id() is not None.</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;A Key must have a dataset ID set.&#39;</span><span class="p">)</span>
 
@@ -465,7 +464,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <ul><li><a href="../../../index.html">gcloud</a></li></ul>
         <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-dataset.html">Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>

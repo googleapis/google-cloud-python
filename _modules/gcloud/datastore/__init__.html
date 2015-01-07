@@ -103,10 +103,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">  which represents a connection between your machine and the Cloud Datastore</span>
 <span class="sd">  API.</span>
 
-<span class="sd">- :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">  which represents a particular dataset</span>
-<span class="sd">  (akin to a database name in relational database world).</span>
-
 <span class="sd">- :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">  which represents a single entity in the datastore</span>
 <span class="sd">  (akin to a row in relational database world).</span>
@@ -124,7 +120,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 
 
@@ -135,7 +130,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="n">_DATASET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;GCLOUD_DATASET_ID&#39;</span>
 
 
-<div class="viewcode-block" id="set_default_dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.set_default_dataset">[docs]</a><span class="k">def</span> <span class="nf">set_default_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="set_default_dataset_id"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.set_default_dataset_id">[docs]</a><span class="k">def</span> <span class="nf">set_default_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set default dataset ID either explicitly or implicitly as fall-back.</span>
 
 <span class="sd">    In implicit case, currently only supports enviroment variable but will</span>
@@ -145,15 +140,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    - GCLOUD_DATASET_ID</span>
 
 <span class="sd">    :type dataset_id: :class:`str`.</span>
-<span class="sd">    :param dataset_id: Optional. The dataset ID to use for the default</span>
-<span class="sd">                       dataset.</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID to use as default.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_DATASET_ENV_VAR_NAME</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span> <span class="o">=</span> <span class="n">dataset_id</span>
-        <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="set_default_connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.set_default_connection">[docs]</a><span class="k">def</span> <span class="nf">set_default_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -185,43 +178,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="get_dataset"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_dataset">[docs]</a><span class="k">def</span> <span class="nf">get_dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Establish a connection to a particular dataset in the Cloud Datastore.</span>
+<span class="k">def</span> <span class="nf">_require_dataset_id</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Convenience method to ensure DATASET_ID is set.</span>
 
-<span class="sd">    This is a shortcut method for creating a connection and using it</span>
-<span class="sd">    to connect to a dataset.</span>
-
-<span class="sd">    You&#39;ll generally use this as the first call to working with the API:</span>
-
-<span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">    &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; # Now you can do things with the dataset.</span>
-<span class="sd">    &gt;&gt;&gt; dataset.query().kind(&#39;TestKind&#39;).fetch()</span>
-<span class="sd">    [...]</span>
-
-<span class="sd">    :type dataset_id: string</span>
-<span class="sd">    :param dataset_id: The id of the dataset you want to use.</span>
-<span class="sd">                       This is akin to a database name</span>
-<span class="sd">                       and is usually the same as your Cloud Datastore project</span>
-<span class="sd">                       name.</span>
-
-<span class="sd">    :rtype: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">    :returns: A dataset with a connection using the provided credentials.</span>
+<span class="sd">    :rtype: :class:`str`</span>
+<span class="sd">    :returns: A dataset ID based on the current environment.</span>
+<span class="sd">    :raises: :class:`EnvironmentError` if DATASET_ID is not set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
-
-</div>
-<span class="k">def</span> <span class="nf">_require_dataset</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Convenience method to ensure DATASET is set.</span>
-
-<span class="sd">    :rtype: :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">    :returns: A dataset based on the current environment.</span>
-<span class="sd">    :raises: :class:`EnvironmentError` if DATASET is not set.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Dataset could not be inferred.&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET</span>
+    <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Dataset ID could not be inferred.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span>
 
 
 <span class="k">def</span> <span class="nf">_require_connection</span><span class="p">():</span>
@@ -238,7 +204,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <div class="viewcode-block" id="get_entities"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_entities">[docs]</a><span class="k">def</span> <span class="nf">get_entities</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                  <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Retrieves entities from implied dataset, along with their attributes.</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves entities, along with their attributes.</span>
 
 <span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
 <span class="sd">    :param keys: The name of the item to retrieve.</span>
@@ -263,7 +229,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :returns: The requested entities.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_require_connection</span><span class="p">()</span>
-    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span> <span class="ow">or</span> <span class="n">_require_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span> <span class="ow">or</span> <span class="n">_require_dataset_id</span><span class="p">()</span>
 
     <span class="n">entity_pbs</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span>
         <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span>
@@ -308,7 +274,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :raises: `ValueError` if `incomplete_key` is not a partial key.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_require_connection</span><span class="p">()</span>
-    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span> <span class="ow">or</span> <span class="n">_require_dataset</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">()</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span> <span class="ow">or</span> <span class="n">_require_dataset_id</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s">&#39;Key is not partial.&#39;</span><span class="p">,</span> <span class="n">incomplete_key</span><span class="p">))</span>
@@ -328,7 +294,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <ul><li><a href="../../../index.html">gcloud</a></li></ul>
         <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-dataset.html">Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>

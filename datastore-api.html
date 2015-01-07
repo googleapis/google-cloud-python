@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="gcloud 0.3.0 documentation" href="index.html" />
-    <link rel="next" title="Datasets" href="datastore-dataset.html" />
+    <link rel="next" title="Entities" href="datastore-entities.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
   <body>
@@ -168,9 +168,6 @@ you can create entities and save them:</p>
 <li><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>
 which represents a connection between your machine and the Cloud Datastore
 API.</li>
-<li><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a>
-which represents a particular dataset
-(akin to a database name in relational database world).</li>
 <li><a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>
 which represents a single entity in the datastore
 (akin to a row in relational database world).</li>
@@ -240,40 +237,9 @@ with the same set of credentials (unlikely):</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="gcloud.datastore.__init__.get_dataset">
-<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_dataset</tt><big>(</big><em>dataset_id</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_dataset" title="Permalink to this definition">#</a></dt>
-<dd><p>Establish a connection to a particular dataset in the Cloud Datastore.</p>
-<p>This is a shortcut method for creating a connection and using it
-to connect to a dataset.</p>
-<p>You&#8217;ll generally use this as the first call to working with the API:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Now you can do things with the dataset.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">query</span><span class="p">()</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;TestKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">()</span>
-<span class="go">[...]</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_id</strong> (<em>string</em>) &#8211; The id of the dataset you want to use.
-This is akin to a database name
-and is usually the same as your Cloud Datastore project
-name.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dataset with a connection using the provided credentials.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="gcloud.datastore.__init__.get_entities">
 <tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">get_entities</tt><big>(</big><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>connection=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#get_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.get_entities" title="Permalink to this definition">#</a></dt>
-<dd><p>Retrieves entities from implied dataset, along with their attributes.</p>
+<dd><p>Retrieves entities, along with their attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -316,8 +282,8 @@ Use only as a keyword param.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="gcloud.datastore.__init__.set_default_dataset">
-<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">set_default_dataset</tt><big>(</big><em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#set_default_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.set_default_dataset" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.__init__.set_default_dataset_id">
+<tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">set_default_dataset_id</tt><big>(</big><em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#set_default_dataset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.set_default_dataset_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Set default dataset ID either explicitly or implicitly as fall-back.</p>
 <p>In implicit case, currently only supports enviroment variable but will
 support App Engine, Compute Engine and other environments in the future.</p>
@@ -327,8 +293,7 @@ support App Engine, Compute Engine and other environments in the future.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>.) &#8211; Optional. The dataset ID to use for the default
-dataset.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>.) &#8211; Optional. The dataset ID to use as default.</td>
 </tr>
 </tbody>
 </table>
@@ -503,7 +468,7 @@ under the hood for methods like
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span><span class="o">.</span><span class="n">kind</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Using the <a class="reference internal" href="datastore-dataset.html#gcloud.datastore.dataset.Dataset" title="gcloud.datastore.dataset.Dataset"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt></a> helper:</p>
+<p>Using the <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.dataset.Dataset</span></tt> helper:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">&lt;Entity object&gt;</span>
 </pre></div>
@@ -675,7 +640,7 @@ either <cite>None</cite> or an integer that has been assigned.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f7fd5c5cc00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7ff6bda82c00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -749,7 +714,6 @@ Protobuf API.</p>
         <ul><li><a href="index.html">gcloud</a></li></ul>
         <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-dataset.html">Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
