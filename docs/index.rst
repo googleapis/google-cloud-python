@@ -3,7 +3,6 @@
   :hidden:
 
   datastore-api
-  datastore-dataset
   datastore-entities
   datastore-keys
   datastore-transactions

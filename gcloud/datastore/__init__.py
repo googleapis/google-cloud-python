@@ -29,10 +29,6 @@ The main concepts with this API are:
   which represents a connection between your machine and the Cloud Datastore
   API.
 
-- :class:`gcloud.datastore.dataset.Dataset`
-  which represents a particular dataset
-  (akin to a database name in relational database world).
-
 - :class:`gcloud.datastore.entity.Entity`
   which represents a single entity in the datastore
   (akin to a row in relational database world).
@@ -50,7 +46,6 @@ import os
 from gcloud import credentials
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore.connection import Connection
-from gcloud.datastore.dataset import Dataset
 from gcloud.datastore import helpers
 
 
@@ -61,7 +56,7 @@ SCOPE = ('https://www.googleapis.com/auth/datastore ',
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 
 
-def set_default_dataset(dataset_id=None):
+def set_default_dataset_id(dataset_id=None):
     """Set default dataset ID either explicitly or implicitly as fall-back.
 
     In implicit case, currently only supports enviroment variable but will
@@ -71,15 +66,13 @@ def set_default_dataset(dataset_id=None):
     - GCLOUD_DATASET_ID
 
     :type dataset_id: :class:`str`.
-    :param dataset_id: Optional. The dataset ID to use for the default
-                       dataset.
+    :param dataset_id: Optional. The dataset ID to use as default.
     """
     if dataset_id is None:
         dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
 
     if dataset_id is not None:
         _implicit_environ.DATASET_ID = dataset_id
-        _implicit_environ.DATASET = get_dataset(dataset_id)
 
 
 def set_default_connection(connection=None):
@@ -111,43 +104,16 @@ def get_connection():
     return Connection(credentials=scoped_credentials)
 
 
-def get_dataset(dataset_id):
-    """Establish a connection to a particular dataset in the Cloud Datastore.
+def _require_dataset_id():
+    """Convenience method to ensure DATASET_ID is set.
 
-    This is a shortcut method for creating a connection and using it
-    to connect to a dataset.
-
-    You'll generally use this as the first call to working with the API:
-
-    >>> from gcloud import datastore
-    >>> dataset = datastore.get_dataset('dataset-id')
-    >>> # Now you can do things with the dataset.
-    >>> dataset.query().kind('TestKind').fetch()
-    [...]
-
-    :type dataset_id: string
-    :param dataset_id: The id of the dataset you want to use.
-                       This is akin to a database name
-                       and is usually the same as your Cloud Datastore project
-                       name.
-
-    :rtype: :class:`gcloud.datastore.dataset.Dataset`
-    :returns: A dataset with a connection using the provided credentials.
+    :rtype: :class:`str`
+    :returns: A dataset ID based on the current environment.
+    :raises: :class:`EnvironmentError` if DATASET_ID is not set.
     """
-    connection = get_connection()
-    return Dataset(dataset_id, connection=connection)
-
-
-def _require_dataset():
-    """Convenience method to ensure DATASET is set.
-
-    :rtype: :class:`gcloud.datastore.dataset.Dataset`
-    :returns: A dataset based on the current environment.
-    :raises: :class:`EnvironmentError` if DATASET is not set.
-    """
-    if _implicit_environ.DATASET is None:
-        raise EnvironmentError('Dataset could not be inferred.')
-    return _implicit_environ.DATASET
+    if _implicit_environ.DATASET_ID is None:
+        raise EnvironmentError('Dataset ID could not be inferred.')
+    return _implicit_environ.DATASET_ID
 
 
 def _require_connection():
@@ -164,7 +130,7 @@ def _require_connection():
 
 def get_entities(keys, missing=None, deferred=None,
                  connection=None, dataset_id=None):
-    """Retrieves entities from implied dataset, along with their attributes.
+    """Retrieves entities, along with their attributes.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
     :param keys: The name of the item to retrieve.
@@ -189,7 +155,7 @@ def get_entities(keys, missing=None, deferred=None,
     :returns: The requested entities.
     """
     connection = connection or _require_connection()
-    dataset_id = dataset_id or _require_dataset().id()
+    dataset_id = dataset_id or _require_dataset_id()
 
     entity_pbs = connection.lookup(
         dataset_id=dataset_id,
@@ -234,7 +200,7 @@ def allocate_ids(incomplete_key, num_ids, connection=None, dataset_id=None):
     :raises: `ValueError` if `incomplete_key` is not a partial key.
     """
     connection = connection or _require_connection()
-    dataset_id = dataset_id or _require_dataset().id()
+    dataset_id = dataset_id or _require_dataset_id()
 
     if not incomplete_key.is_partial:
         raise ValueError(('Key is not partial.', incomplete_key))

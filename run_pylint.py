@@ -125,12 +125,9 @@ def get_files_for_linting():
     a remote branch to diff against.
     """
     diff_base = None
-    if (os.getenv('TRAVIS_BRANCH') == 'master' and
-            os.getenv('TRAVIS_PULL_REQUEST') != 'false'):
-        # In the case of a pull request into master, we want to
-        # diff against HEAD in master.
-        diff_base = 'origin/master'
-    elif os.getenv('TRAVIS') is None:
+    # Temporary turning Travis diffbase off since pylint will fail on a
+    # deleted file that shows up in a diff.
+    if os.getenv('TRAVIS') is None:
         # Only allow specified remote and branch in local dev.
         remote = os.getenv('GCLOUD_REMOTE_FOR_LINT')
         branch = os.getenv('GCLOUD_BRANCH_FOR_LINT')

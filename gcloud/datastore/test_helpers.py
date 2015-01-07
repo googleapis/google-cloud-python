@@ -19,20 +19,18 @@ class Test_entity_from_protobuf(unittest2.TestCase):
 
     def setUp(self):
         from gcloud.datastore import _implicit_environ
-        self._replaced_dataset = _implicit_environ.DATASET
         self._replaced_dataset_id = _implicit_environ.DATASET_ID
-        _implicit_environ.DATASET = _implicit_environ.DATASET_ID = None
+        _implicit_environ.DATASET_ID = None
 
     def tearDown(self):
         from gcloud.datastore import _implicit_environ
-        _implicit_environ.DATASET = self._replaced_dataset
         _implicit_environ.DATASET_ID = self._replaced_dataset_id
 
     def _callFUT(self, val):
         from gcloud.datastore.helpers import entity_from_protobuf
         return entity_from_protobuf(val)
 
-    def test_wo_dataset(self):
+    def test_wo_dataset_id(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
         _DATASET_ID = 'DATASET'
@@ -53,7 +51,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(key.kind, _KIND)
         self.assertEqual(key.id, _ID)
 
-    def test_w_dataset(self):
+    def test_w_dataset_id(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
         _DATASET_ID = 'DATASET'
@@ -471,7 +469,7 @@ class Test__prepare_key_for_request(unittest2.TestCase):
 
         return _prepare_key_for_request(key_pb)
 
-    def test_prepare_dataset_valid(self):
+    def test_prepare_dataset_id_valid(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         key = datastore_pb.Key()
         key.partition_id.dataset_id = 'foo'
@@ -482,7 +480,7 @@ class Test__prepare_key_for_request(unittest2.TestCase):
         new_key.ClearField('partition_id')
         self.assertEqual(new_key, key_without)
 
-    def test_prepare_dataset_unset(self):
+    def test_prepare_dataset_id_unset(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         key = datastore_pb.Key()
         new_key = self._callFUT(key)
