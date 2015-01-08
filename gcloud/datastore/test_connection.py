@@ -1075,6 +1075,25 @@ class TestConnection(unittest2.TestCase):
         mutation = conn.mutation()
         self.assertEqual(len(mutation.upsert), 1)
 
+    def test_save_entity_w_mutation_passed(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore.entity import Entity
+        DATASET_ID = 'DATASET'
+        nested = Entity()
+        nested['bar'] = u'Bar'
+        key_pb = self._make_key_pb(DATASET_ID)
+        rsp_pb = datastore_pb.CommitResponse()
+        conn = self._makeOne()
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        mutation = datastore_pb.Mutation()
+        result = conn.save_entity(DATASET_ID, key_pb, {'foo': nested},
+                                  mutation=mutation)
+        self.assertEqual(result, (False, None))
+        self.assertEqual(http._called_with, None)
+        conn_mutation = conn.mutation()
+        self.assertEqual(len(mutation.upsert), 1)
+        self.assertEqual(len(conn_mutation.upsert), 0)
+
     def test_delete_entities_wo_transaction(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
@@ -1125,6 +1144,21 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with, None)
         mutation = conn.mutation()
         self.assertEqual(len(mutation.delete), 1)
+
+    def test_delete_entities_w_mutation_passed(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        DATASET_ID = 'DATASET'
+        key_pb = self._make_key_pb(DATASET_ID)
+        rsp_pb = datastore_pb.CommitResponse()
+        conn = self._makeOne()
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        mutation = datastore_pb.Mutation()
+        result = conn.delete_entities(DATASET_ID, [key_pb], mutation=mutation)
+        self.assertEqual(result, True)
+        self.assertEqual(http._called_with, None)
+        conn_mutation = conn.mutation()
+        self.assertEqual(len(mutation.delete), 1)
+        self.assertEqual(len(conn_mutation.delete), 0)
 
 
 class Http(object):

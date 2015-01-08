@@ -5,8 +5,9 @@
   datastore-api
   datastore-entities
   datastore-keys
-  datastore-transactions
   datastore-queries
+  datastore-transactions
+  datastore-batches
   storage-api
   storage-buckets
   storage-keys
