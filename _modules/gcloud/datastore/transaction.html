@@ -259,19 +259,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">transaction</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
 
         <span class="c"># Clear our own ID in case this gets accidentally reused.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span>
-</div>
-    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c"># Don&#39;t call super() -- we have different semantics.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
-        <span class="c"># Don&#39;t call super() -- we have different semantics.</span>
-        <span class="k">if</span> <span class="n">exc_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
