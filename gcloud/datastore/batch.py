@@ -72,6 +72,7 @@ class Batch(object):
                              'a dataset ID set.')
 
         self._mutation = datastore_pb.Mutation()
+        self._auto_id_entities = []
 
     @property
     def dataset_id(self):
@@ -107,6 +108,30 @@ class Batch(object):
         """
         return self._mutation
 
+    def add_auto_id_entity(self, entity):
+        """Adds an entity to the list of entities to update with IDs.
+
+        When an entity has a partial key, calling ``save()`` adds an
+        insert_auto_id entry in the mutation.  In order to make sure we
+        update the Entity once the transaction is committed, we need to
+        keep track of which entities to update (and the order is
+        important).
+
+        When you call ``save()`` on an entity inside a transaction, if
+        the entity has a partial key, it adds itself to the list of
+        entities to be updated once the transaction is committed by
+        calling this method.
+
+        :type entity: :class:`gcloud.datastore.entity.Entity`
+        :param entity: The entity to be updated with a completed key.
+
+        :raises: ValueError if the entity's key is alread completed.
+        """
+        if not entity.key.is_partial:
+            raise ValueError("Entity has a completed key")
+
+        self._auto_id_entities.append(entity)
+
     def put(self, entity):
         """Remember an entity's state to be saved during ``commit``.
 
@@ -137,6 +162,9 @@ class Batch(object):
             self.dataset_id, key_pb, properties,
             exclude_from_indexes=exclude, mutation=self.mutation)
 
+        if entity.key.is_partial:
+            self._auto_id_entities.append(entity)
+
     def delete(self, key):
         """Remember a key to be deleted durring ``commit``.
 
@@ -159,7 +187,15 @@ class Batch(object):
         however it can be called explicitly if you don't want to use a
         context manager.
         """
-        self.connection.commit(self._dataset_id, self.mutation)
+        response = self.connection.commit(self._dataset_id, self.mutation)
+        # If the back-end returns without error, we are guaranteed that
+        # the response's 'insert_auto_id_key' will match (length and order)
+        # the request's 'insert_auto_id` entities, which are derived from
+        # our '_auto_id_entities' (no partial success).
+        for new_key_pb, entity in zip(response.insert_auto_id_key,
+                                      self._auto_id_entities):
+            new_id = new_key_pb.path_element[-1].id
+            entity.key = entity.key.completed_key(new_id)
 
     def __enter__(self):
         return self
