@@ -198,7 +198,7 @@ class Connection(connection.Connection):
                         by the backend as "deferred" will be copied into it.
                         Use only as a keyword param.
 
-        :type eventual: bool
+        :type eventual: boolean
         :param eventual: If False (the default), request ``STRONG`` read
                         consistency.  If True, request ``EVENTUAL`` read
                         consistency.  If the connection has a current
@@ -294,7 +294,7 @@ class Connection(connection.Connection):
         :type namespace: string
         :param namespace: The namespace over which to run the query.
 
-        :type eventual: bool
+        :type eventual: boolean
         :param eventual: If False (the default), request ``STRONG`` read
                          consistency.  If True, request ``EVENTUAL`` read
                          consistency.  If the connection has a current
@@ -324,7 +324,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :type serializable: :class:`bool`
+        :type serializable: boolean
         :param serializable: Boolean indicating if the isolation level of the
                              transaction should be SERIALIZABLE (True) or
                              SNAPSHOT (False).
@@ -438,10 +438,10 @@ class Connection(connection.Connection):
         :type properties: dict
         :param properties: The properties to store on the entity.
 
-        :type exclude_from_indexes: sequence of str
+        :type exclude_from_indexes: sequence of string
         :param exclude_from_indexes: Names of properties *not* to be indexed.
 
-        :rtype: :class:`tuple`
+        :rtype: tuple
         :returns: The pair (``assigned``, ``new_id``) where ``assigned`` is a
                   boolean indicating if a new ID has been assigned and
                   ``new_id`` is either ``None`` or an integer that has been
@@ -508,7 +508,7 @@ class Connection(connection.Connection):
         :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
         :param key_pbs: The keys to delete from the datastore.
 
-        :rtype: :class:`bool`
+        :rtype: boolean
         :returns: ``True``
         """
         mutation = self.mutation()

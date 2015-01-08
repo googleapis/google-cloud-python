@@ -74,7 +74,7 @@ def set_default_dataset_id(dataset_id=None):
     Local environment variable used is:
     - GCLOUD_DATASET_ID
 
-    :type dataset_id: :class:`str`.
+    :type dataset_id: string
     :param dataset_id: Optional. The dataset ID to use as default.
     """
     if dataset_id is None:
@@ -120,10 +120,10 @@ def get_connection():
 def _require_dataset_id(dataset_id=None):
     """Infer a dataset ID from the environment, if not passed explicitly.
 
-    :type dataset_id: :class:`str`.
+    :type dataset_id: string
     :param dataset_id: Optional.
 
-    :rtype: :class:`str`
+    :rtype: string
     :returns: A dataset ID based on the current environment.
     :raises: :class:`EnvironmentError` if ``dataset_id`` is ``None``,
              and cannot be inferred from the environment.
@@ -173,7 +173,7 @@ def get_entities(keys, missing=None, deferred=None,
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: Optional. The connection used to connect to datastore.
 
-    :type dataset_id: :class:`str`.
+    :type dataset_id: string
     :param dataset_id: Optional. The ID of the dataset.
 
     :rtype: list of :class:`gcloud.datastore.entity.Entity`
@@ -211,13 +211,13 @@ def allocate_ids(incomplete_key, num_ids, connection=None, dataset_id=None):
     :type incomplete_key: A :class:`gcloud.datastore.key.Key`
     :param incomplete_key: Partial key to use as base for allocated IDs.
 
-    :type num_ids: :class:`int`.
+    :type num_ids: integer
     :param num_ids: The number of IDs to allocate.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: Optional. The connection used to connect to datastore.
 
-    :type dataset_id: :class:`str`.
+    :type dataset_id: string
     :param dataset_id: Optional. The ID of the dataset.
 
     :rtype: list of :class:`gcloud.datastore.key.Key`

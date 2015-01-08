@@ -50,15 +50,15 @@ class Key(object):
     def __init__(self, *path_args, **kwargs):
         """Constructor / initializer for a key.
 
-        :type path_args: :class:`tuple` of :class:`str` and :class:`int`
+        :type path_args: tuple of string and integer
         :param path_args: May represent a partial (odd length) or full (even
                           length) key path.
 
-        :type namespace: :class:`str`
+        :type namespace: string
         :param namespace: A namespace identifier for the key. Can only be
                           passed as a keyword argument.
 
-        :type dataset_id: :class:`str`
+        :type dataset_id: string
         :param dataset_id: The dataset ID associated with the key. Required,
                            unless the implicit dataset ID has been set. Can
                            only be passed as a keyword argument.
@@ -80,7 +80,7 @@ class Key(object):
     def _parse_path(path_args):
         """Parses positional arguments into key path with kinds and IDs.
 
-        :type path_args: :class:`tuple`
+        :type path_args: tuple
         :param path_args: A tuple from positional arguments. Should be
                           alternating list of kinds (string) and ID/name
                           parts (int or string).
@@ -167,6 +167,9 @@ class Key(object):
 
     def completed_key(self, id_or_name):
         """Creates new key from existing partial key by adding final ID/name.
+
+        :type id_or_name: string or integer
+        :param id_or_name: ID or name to be added to the key.
 
         :rtype: :class:`gcloud.datastore.key.Key`
         :returns: A new ``Key`` instance with the same data as the current one
@@ -255,7 +258,7 @@ class Key(object):
     def is_partial(self):
         """Boolean indicating if the key has an ID (or name).
 
-        :rtype: :class:`bool`
+        :rtype: boolean
         :returns: ``True`` if the last element of the key's path does not have
                   an ``id`` or a ``name``.
         """
@@ -265,7 +268,7 @@ class Key(object):
     def namespace(self):
         """Namespace getter.
 
-        :rtype: :class:`str`
+        :rtype: string
         :returns: The namespace of the current key.
         """
         return self._namespace
@@ -285,7 +288,7 @@ class Key(object):
     def flat_path(self):
         """Getter for the key path as a tuple.
 
-        :rtype: :class:`tuple` of :class:`str` and :class:`int`
+        :rtype: tuple of string and integer
         :returns: The tuple of elements in the path.
         """
         return self._flat_path
@@ -294,7 +297,7 @@ class Key(object):
     def kind(self):
         """Kind getter. Based on the last element of path.
 
-        :rtype: :class:`str`
+        :rtype: string
         :returns: The kind of the current key.
         """
         return self.path[-1]['kind']
@@ -303,7 +306,7 @@ class Key(object):
     def id(self):
         """ID getter. Based on the last element of path.
 
-        :rtype: :class:`int`
+        :rtype: integer
         :returns: The (integer) ID of the key.
         """
         return self.path[-1].get('id')
@@ -312,7 +315,7 @@ class Key(object):
     def name(self):
         """Name getter. Based on the last element of path.
 
-        :rtype: :class:`str`
+        :rtype: string
         :returns: The (string) name of the key.
         """
         return self.path[-1].get('name')
@@ -321,7 +324,7 @@ class Key(object):
     def id_or_name(self):
         """Getter. Based on the last element of path.
 
-        :rtype: :class:`int` (if ``id``) or :class:`str` (if ``name``)
+        :rtype: integer (if ``id``) or string (if ``name``)
         :returns: The last element of the key's path if it is either an ``id``
                   or a ``name``.
         """
@@ -331,7 +334,7 @@ class Key(object):
     def dataset_id(self):
         """Dataset ID getter.
 
-        :rtype: :class:`str`
+        :rtype: string
         :returns: The key's dataset ID.
         """
         return self._dataset_id

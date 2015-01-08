@@ -73,7 +73,7 @@ class Entity(dict):
     :param key: Optional key to be set on entity. Required for :meth:`save()`
                 or :meth:`reload()`.
 
-    :type exclude_from_indexes: :class:`tuple` of :class:`str`
+    :type exclude_from_indexes: tuple of string
     :param exclude_from_indexes: Names of fields whose values are not to be
                                  indexed for this entity.
     """

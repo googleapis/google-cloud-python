@@ -256,7 +256,7 @@ class Bucket(_PropertyMixin):
         parameter set to true.  This will iterate through the bucket's
         keys and delete the related objects, before deleting the bucket.
 
-        :type force: bool
+        :type force: boolean
         :param full: If True, empties the bucket's objects then deletes it.
 
         :raises: :class:`gcloud.storage.exceptions.NotFound` if the
@@ -636,7 +636,7 @@ class Bucket(_PropertyMixin):
         See:  https://cloud.google.com/storage/docs/object-versioning for
         details.
 
-        :type value: convertible to bool
+        :type value: convertible to boolean
         :param value: should versioning be anabled for the bucket?
         """
         self._patch_properties({'versioning': {'enabled': bool(value)}})
@@ -694,11 +694,11 @@ class Bucket(_PropertyMixin):
     def make_public(self, recursive=False, future=False):
         """Make a bucket public.
 
-        :type recursive: bool
+        :type recursive: boolean
         :param recursive: If True, this will make all keys inside the bucket
                           public as well.
 
-        :type future: bool
+        :type future: boolean
         :param future: If True, this will make all objects created in the
                        future public as well.
         """

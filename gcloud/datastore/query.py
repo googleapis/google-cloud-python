@@ -28,31 +28,31 @@ class Query(object):
     This class serves as an abstraction for creating a query over data
     stored in the Cloud Datastore.
 
-    :type kind: string.
+    :type kind: string
     :param kind: The kind to query.
 
-    :type dataset_id: str
+    :type dataset_id: string
     :param dataset_id: The ID of the dataset to query.  If not passed,
                        uses the implicit default.
 
-    :type namespace: string or None.
+    :type namespace: string or None
     :param namespace: The namespace to which to restrict results.
 
-    :type ancestor: :class:`gcloud.datastore.key.Key` or None.
+    :type ancestor: :class:`gcloud.datastore.key.Key` or None
     :param ancestor: key of the ancestor to which this query's results are
                      restricted.
 
-    :type filters: sequence of (property_name, operator, value) tuples.
+    :type filters: sequence of (property_name, operator, value) tuples
     :param filters: property filters applied by this query.
 
-    :type projection: sequence of string.
+    :type projection: sequence of string
     :param projection:  fields returned as part of query results.
 
-    :type order: sequence of string.
+    :type order: sequence of string
     :param order:  field names used to order query results. Prepend '-'
                    to a field name to sort it in descending order.
 
-    :type group_by: sequence_of_string.
+    :type group_by: sequence of string
     :param group_by: field names used to group query results.
 
     :raises: ValueError if ``dataset_id`` is not passed and no implicit

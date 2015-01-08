@@ -112,7 +112,7 @@ class Transaction(object):
     Technically, it looks like the Protobuf API supports this type of
     pattern, however it makes the code particularly messy.
 
-    :type dataset_id: :class:`str`.
+    :type dataset_id: string
     :param dataset_id: The ID of the dataset.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
@@ -138,7 +138,7 @@ class Transaction(object):
     def dataset_id(self):
         """Getter for dataset ID in which the transaction will run.
 
-        :rtype: :class:`str`
+        :rtype: string
         :returns: The dataset ID in which the transaction will run.
         """
         return self._dataset_id

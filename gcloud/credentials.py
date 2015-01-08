@@ -68,15 +68,15 @@ def get_for_service_account_p12(client_email, private_key_path, scope=None):
       known explicitly and detecting the environment implicitly would be
       superfluous.
 
-    :type client_email: :class:`str`
+    :type client_email: string
     :param client_email: The e-mail attached to the service account.
 
-    :type private_key_path: :class:`str`
+    :type private_key_path: string
     :param private_key_path: The path to a private key file (this file was
                              given to you when you created the service
                              account). This file must be in P12 format.
 
-    :type scope: :class:`str` or :class:`tuple` of :class:`str`
+    :type scope: string or tuple of string
     :param scope: The scope against which to authenticate. (Different services
                   require different scopes, check the documentation for which
                   scope is required for the different levels of access to any

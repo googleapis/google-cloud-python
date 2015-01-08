@@ -230,7 +230,7 @@ def _set_protobuf_value(value_pb, val):
     :type value_pb: :class:`gcloud.datastore.datastore_v1_pb2.Value`
     :param value_pb: The value protobuf to which the value is being assigned.
 
-    :type val: `datetime.datetime`, bool, float, integer, string
+    :type val: `datetime.datetime`, boolean, float, integer, string,
                :class:`gcloud.datastore.key.Key`,
                :class:`gcloud.datastore.entity.Entity`,
     :param val: The value to be assigned.

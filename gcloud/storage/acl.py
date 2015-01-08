@@ -242,7 +242,7 @@ class ACL(object):
         :type entity: :class:`_ACLEntity`
         :param entity: The entity to check for existence in this ACL.
 
-        :rtype: bool
+        :rtype: boolean
         :returns: True of the entity exists in the ACL.
         """
         self._ensure_loaded()
