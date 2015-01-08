@@ -106,7 +106,7 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(
             connection._saved,
-            (_DATASET, key._key, _PROPERTIES, (), batch.mutation))
+            [(_DATASET, key._key, _PROPERTIES, (), batch.mutation)])
         self.assertEqual(batch._auto_id_entities, [entity])
 
     def test_put_entity_w_completed_key(self):
@@ -121,7 +121,7 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(
             connection._saved,
-            (_DATASET, key._key, _PROPERTIES, (), batch.mutation))
+            [(_DATASET, key._key, _PROPERTIES, (), batch.mutation)])
 
     def test_delete_w_partial_key(self):
         _DATASET = 'DATASET'
@@ -142,7 +142,7 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(
             connection._deleted,
-            (_DATASET, [key._key], batch.mutation))
+            [(_DATASET, [key._key], batch.mutation)])
 
     def test_commit(self):
         _DATASET = 'DATASET'
@@ -151,7 +151,7 @@ class TestBatch(unittest2.TestCase):
 
         batch.commit()
 
-        self.assertEqual(connection._committed, (_DATASET, batch.mutation))
+        self.assertEqual(connection._committed, [(_DATASET, batch.mutation)])
 
     def test_commit_w_auto_id_entities(self):
         _DATASET = 'DATASET'
@@ -165,45 +165,91 @@ class TestBatch(unittest2.TestCase):
 
         batch.commit()
 
-        self.assertEqual(connection._committed, (_DATASET, batch.mutation))
+        self.assertEqual(connection._committed, [(_DATASET, batch.mutation)])
         self.assertFalse(key._partial)
         self.assertEqual(key._id, _NEW_ID)
 
     def test_as_context_mgr_wo_error(self):
+        from gcloud.datastore.batch import _BATCHES
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity = _Entity(_PROPERTIES)
         key = entity.key = _Key(_DATASET)
+
+        self.assertEqual(_BATCHES.stack, [])
 
         with self._makeOne(dataset_id=_DATASET,
                            connection=connection) as batch:
+            self.assertEqual(_BATCHES.stack, [batch])
             batch.put(entity)
+
+        self.assertEqual(_BATCHES.stack, [])
 
         self.assertEqual(
             connection._saved,
-            (_DATASET, key._key, _PROPERTIES, (), batch.mutation))
-        self.assertEqual(connection._committed, (_DATASET, batch.mutation))
+            [(_DATASET, key._key, _PROPERTIES, (), batch.mutation)])
+        self.assertEqual(connection._committed, [(_DATASET, batch.mutation)])
+
+    def test_as_context_mgr_nested(self):
+        from gcloud.datastore.batch import _BATCHES
+        _DATASET = 'DATASET'
+        _PROPERTIES = {'foo': 'bar'}
+        connection = _Connection()
+        entity1 = _Entity(_PROPERTIES)
+        key = entity1.key = _Key(_DATASET)
+        entity2 = _Entity(_PROPERTIES)
+        key = entity2.key = _Key(_DATASET)
+
+        self.assertEqual(_BATCHES.stack, [])
+
+        with self._makeOne(dataset_id=_DATASET,
+                           connection=connection) as batch1:
+            self.assertEqual(_BATCHES.stack, [batch1])
+            batch1.put(entity1)
+            with self._makeOne(dataset_id=_DATASET,
+                               connection=connection) as batch2:
+                self.assertEqual(_BATCHES.stack, [batch1, batch2])
+                batch2.put(entity2)
+
+            self.assertEqual(_BATCHES.stack, [batch1])
+
+        self.assertEqual(_BATCHES.stack, [])
+
+        self.assertEqual(
+            connection._saved,
+            [(_DATASET, key._key, _PROPERTIES, (), batch1.mutation),
+             (_DATASET, key._key, _PROPERTIES, (), batch2.mutation)]
+        )
+        self.assertEqual(connection._committed,
+                         [(_DATASET, batch2.mutation),
+                          (_DATASET, batch1.mutation)])
 
     def test_as_context_mgr_w_error(self):
+        from gcloud.datastore.batch import _BATCHES
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity = _Entity(_PROPERTIES)
         key = entity.key = _Key(_DATASET)
+
+        self.assertEqual(_BATCHES.stack, [])
 
         try:
             with self._makeOne(dataset_id=_DATASET,
                                connection=connection) as batch:
+                self.assertEqual(_BATCHES.stack, [batch])
                 batch.put(entity)
                 raise ValueError("testing")
         except ValueError:
             pass
 
+        self.assertEqual(_BATCHES.stack, [])
+
         self.assertEqual(
             connection._saved,
-            (_DATASET, key._key, _PROPERTIES, (), batch.mutation))
-        self.assertEqual(connection._committed, None)
+            [(_DATASET, key._key, _PROPERTIES, (), batch.mutation)])
+        self.assertEqual(connection._committed, [])
 
 
 class _CommitResult(object):
@@ -226,23 +272,25 @@ class _KeyPB(object):
 
 class _Connection(object):
     _marker = object()
-    _committed = _saved = _deleted = None
     _save_result = (False, None)
 
     def __init__(self, *new_keys):
         self._commit_result = _CommitResult(*new_keys)
+        self._committed = []
+        self._saved = []
+        self._deleted = []
 
     def save_entity(self, dataset_id, key_pb, properties,
                     exclude_from_indexes=(), mutation=None):
-        self._saved = (dataset_id, key_pb, properties,
-                       tuple(exclude_from_indexes), mutation)
+        self._saved.append((dataset_id, key_pb, properties,
+                            tuple(exclude_from_indexes), mutation))
         return self._save_result
 
     def delete_entities(self, dataset_id, key_pbs, mutation=None):
-        self._deleted = (dataset_id, key_pbs, mutation)
+        self._deleted.append((dataset_id, key_pbs, mutation))
 
     def commit(self, dataset_id, mutation):
-        self._committed = (dataset_id, mutation)
+        self._committed.append((dataset_id, mutation))
         return self._commit_result
 
 

@@ -186,15 +186,3 @@ class Transaction(Batch):
 
         # Clear our own ID in case this gets accidentally reused.
         self._id = None
-
-    def __enter__(self):
-        # Don't call super() -- we have different semantics.
-        self.begin()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        # Don't call super() -- we have different semantics.
-        if exc_type is None:
-            self.commit()
-        else:
-            self.rollback()
