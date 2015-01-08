@@ -82,7 +82,7 @@ class TestBatch(unittest2.TestCase):
         connection = _Connection()
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         entity = _Entity()
-        key = entity.key = _Key(_Entity)
+        entity.key = _Key(_Entity)
 
         self.assertRaises(ValueError, batch.add_auto_id_entity, entity)
 
