@@ -65,10 +65,14 @@ with the Cloud Datastore using this Client Library.
 .. code:: python
 
     from gcloud import datastore
-    dataset = datastore.get_dataset('dataset-id-here')
+    datastore.set_default_connection()
+    datastore.set_default_dataset_id()
     # Then do other things...
-    query = dataset.query().kind('EntityKind')
-    entity = dataset.entity('EntityKind')
+    from gcloud.datastore.entity import Entity
+    from gcloud.datastore.key import Key
+    from gcloud.datastore.query import Query
+    query = Query(kind='EntityKind')
+    entity = Entity(key=Key('EntityKind'))
 
 Google Cloud Storage
 --------------------

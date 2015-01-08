@@ -36,8 +36,10 @@ class Key(object):
 
       >>> Key('Parent', 'foo', 'Child', 1234)
       <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child', 'id': 1234}]>
+      >>> Key('Child', 1234, parent=parent_key)
+      <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child', 'id': 1234}]>
 
-    To create a paritial key:
+    To create a partial key:
 
       >>> Key('Parent', 'foo', 'Child')
       <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child'}]>
@@ -48,7 +50,7 @@ class Key(object):
     def __init__(self, *path_args, **kwargs):
         """Constructor / initializer for a key.
 
-        :type path_args: tuple of strings and ints
+        :type path_args: :class:`tuple` of :class:`str` and :class:`int`
         :param path_args: May represent a partial (odd length) or full (even
                           length) key path.
 
@@ -56,7 +58,7 @@ class Key(object):
         :param namespace: A namespace identifier for the key. Can only be
                           passed as a keyword argument.
 
-        :type dataset_id: string
+        :type dataset_id: :class:`str`
         :param dataset_id: The dataset ID associated with the key. Required,
                            unless the implicit dataset ID has been set. Can
                            only be passed as a keyword argument.
@@ -83,10 +85,10 @@ class Key(object):
                           alternating list of kinds (string) and ID/name
                           parts (int or string).
 
-        :rtype: list of dict
+        :rtype: :class:`list` of :class:`dict`
         :returns: A list of key parts with kind and ID or name set.
-        :raises: `ValueError` if there are no `path_args`, if one of the
-                 kinds is not a string or if one of the IDs/names is not
+        :raises: :class:`ValueError` if there are no ``path_args``, if one of
+                 the kinds is not a string or if one of the IDs/names is not
                  a string or an integer.
         """
         if len(path_args) == 0:
@@ -122,12 +124,12 @@ class Key(object):
     def _combine_args(self):
         """Sets protected data by combining raw data set from the constructor.
 
-        If a _parent is set, updates the _flat_path and sets the
-        _namespace and _dataset_id if not already set.
+        If a ``_parent`` is set, updates the ``_flat_path`` and sets the
+        ``_namespace`` and ``_dataset_id`` if not already set.
 
-        :rtype: list of dict
+        :rtype: :class:`list` of :class:`dict`
         :returns: A list of key parts with kind and ID or name set.
-        :raises: `ValueError` if the parent key is not complete.
+        :raises: :class:`ValueError` if the parent key is not complete.
         """
         child_path = self._parse_path(self._flat_path)
 
@@ -153,11 +155,11 @@ class Key(object):
         """Duplicates the Key.
 
         Most attributes are simple types, so don't require copying. Other
-        attributes like `parent` are long-lived and so we re-use them rather
+        attributes like ``parent`` are long-lived and so we re-use them rather
         than creating copies.
 
         :rtype: :class:`gcloud.datastore.key.Key`
-        :returns: A new `Key` instance with the same data as the current one.
+        :returns: A new ``Key`` instance with the same data as the current one.
         """
         return self.__class__(*self.flat_path, parent=self.parent,
                               dataset_id=self.dataset_id,
@@ -167,10 +169,10 @@ class Key(object):
         """Creates new key from existing partial key by adding final ID/name.
 
         :rtype: :class:`gcloud.datastore.key.Key`
-        :returns: A new `Key` instance with the same data as the current one
+        :returns: A new ``Key`` instance with the same data as the current one
                   and an extra ID or name added.
-        :raises: `ValueError` if the current key is not partial or if
-                 `id_or_name` is not a string or integer.
+        :raises: :class:`ValueError` if the current key is not partial or if
+                 ``id_or_name`` is not a string or integer.
         """
         if not self.is_partial:
             raise ValueError('Only a partial key can be completed.')
@@ -193,7 +195,7 @@ class Key(object):
         """Return a protobuf corresponding to the key.
 
         :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Key`
-        :returns: The Protobuf representing the key.
+        :returns: The protobuf representing the key.
         """
         key = datastore_pb.Key()
         key.partition_id.dataset_id = self.dataset_id
@@ -213,12 +215,12 @@ class Key(object):
         return key
 
     def get(self, connection=None):
-        """Retrieve entity corresponding to the curretn key.
+        """Retrieve entity corresponding to the current key.
 
         :type connection: :class:`gcloud.datastore.connection.Connection`
         :param connection: Optional connection used to connect to datastore.
 
-        :rtype: :class:`gcloud.datastore.entity.Entity` or `NoneType`
+        :rtype: :class:`gcloud.datastore.entity.Entity` or :class:`NoneType`
         :returns: The requested entity, or ``None`` if there was no
                   match found.
         """
@@ -254,8 +256,8 @@ class Key(object):
         """Boolean indicating if the key has an ID (or name).
 
         :rtype: :class:`bool`
-        :returns: True if the last element of the key's path does not have
-                  an 'id' or a 'name'.
+        :returns: ``True`` if the last element of the key's path does not have
+                  an ``id`` or a ``name``.
         """
         return self.id_or_name is None
 
@@ -274,7 +276,7 @@ class Key(object):
 
         Returns a copy so that the key remains immutable.
 
-        :rtype: :class:`str`
+        :rtype: :class:`list` of :class:`dict`
         :returns: The (key) path of the current key.
         """
         return copy.deepcopy(self._path)
@@ -283,7 +285,7 @@ class Key(object):
     def flat_path(self):
         """Getter for the key path as a tuple.
 
-        :rtype: :class:`tuple` of string and int
+        :rtype: :class:`tuple` of :class:`str` and :class:`int`
         :returns: The tuple of elements in the path.
         """
         return self._flat_path
@@ -319,9 +321,9 @@ class Key(object):
     def id_or_name(self):
         """Getter. Based on the last element of path.
 
-        :rtype: :class:`int` (if 'id') or :class:`str` (if 'name')
-        :returns: The last element of the key's path if it is either an 'id'
-                  or a 'name'.
+        :rtype: :class:`int` (if ``id``) or :class:`str` (if ``name``)
+        :returns: The last element of the key's path if it is either an ``id``
+                  or a ``name``.
         """
         return self.id or self.name
 
@@ -340,10 +342,10 @@ class Key(object):
         Extracts all but the last element in the key path and creates a new
         key, while still matching the namespace and the dataset ID.
 
-        :rtype: :class:`gcloud.datastore.key.Key` or `NoneType`
-        :returns: a new `Key` instance, whose path consists of all but the last
-                  element of self's path. If self has only one path element,
-                  returns None.
+        :rtype: :class:`gcloud.datastore.key.Key` or :class:`NoneType`
+        :returns: A new ``Key`` instance, whose path consists of all but the
+                  last element of current path. If the current key has only
+                  one path element, returns ``None``.
         """
         if self.is_partial:
             parent_args = self.flat_path[:-1]
@@ -357,10 +359,10 @@ class Key(object):
     def parent(self):
         """The parent of the current key.
 
-        :rtype: :class:`gcloud.datastore.key.Key` or `NoneType`
-        :returns: a new `Key` instance, whose path consists of all but the last
-                  element of self's path.  If self has only one path element,
-                  returns None.
+        :rtype: :class:`gcloud.datastore.key.Key` or :class:`NoneType`
+        :returns: A new ``Key`` instance, whose path consists of all but the
+                  last element of current path. If the current key has only
+                  one path element, returns ``None``.
         """
         if self._parent is None:
             self._parent = self._make_parent()
@@ -379,7 +381,8 @@ def _validate_dataset_id(dataset_id, parent):
 
     If ``dataset_id`` is unset, attempt to infer the ID from the environment.
 
-    :raises: `ValueError` if ``dataset_id`` is None and none can be inferred.
+    :raises: :class:`ValueError` if ``dataset_id`` is ``None`` and no dataset
+             can be inferred.
     """
     if parent is None:
 

@@ -46,28 +46,22 @@ You can interact with a demo dataset
 in a Python interactive shell.
 
 Start by importing the demo module
-and instantiating the demo dataset::
+and initializing the demo settings::
 
   >>> from gcloud.datastore import demo
-  >>> dataset = demo.get_dataset()
+  >>> demo.initialize()
 
-Once you have the dataset,
+Once you have initialized,
 you can create entities and save them::
 
-  >>> dataset.query('MyExampleKind').fetch()
-  [<Entity{...}, ]
-  >>> entity = dataset.entity('Person')
+  >>> from gcloud.datastore.entity import Entity
+  >>> from gcloud.datastore.key import Key
+  >>> entity = Entity(key=Key('Person'))
   >>> entity['name'] = 'Your name'
   >>> entity['age'] = 25
   >>> entity.save()
-  >>> dataset.query('Person').fetch()
+  >>> from gcloud.datastore.query import Query
+  >>> list(Query(kind='Person').fetch())
   [<Entity{...} {'name': 'Your name', 'age': 25}>]
-
-.. note::
-  The ``get_dataset`` method is just a shortcut for::
-
-  >>> from gcloud import datastore
-  >>> from gcloud.datastore import demo
-  >>> dataset = datastore.get_dataset(demo.DATASET_ID)
 
 ----

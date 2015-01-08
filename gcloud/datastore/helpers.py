@@ -166,7 +166,6 @@ def _get_value_from_value_pb(value_pb):
 
     :returns: The value provided by the Protobuf.
     """
-
     result = None
     if value_pb.HasField('timestamp_microseconds_value'):
         microseconds = value_pb.timestamp_microseconds_value

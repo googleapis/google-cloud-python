@@ -22,32 +22,32 @@ def get_credentials():
 
     .. note::
       You should not need to use this function directly. Instead, use the
-      helper methods provided in
-      :func:`gcloud.datastore.__init__.get_connection` and
-      :func:`gcloud.datastore.__init__.get_dataset` which use this method
-      under the hood.
+      helper method :func:`gcloud.datastore.__init__.get_connection`
+      which uses this method under the hood.
 
     Checks environment in order of precedence:
     - Google App Engine (production and testing)
     - Environment variable GOOGLE_APPLICATION_CREDENTIALS pointing to
       a file with stored credentials information.
-    - Stored "well known" file associated with `gcloud` command line tool.
+    - Stored "well known" file associated with ``gcloud`` command line tool.
     - Google Compute Engine production environment.
 
     The file referred to in GOOGLE_APPLICATION_CREDENTIALS is expected to
     contain information about credentials that are ready to use. This means
     either service account information or user account information with
-    a ready-to-use refresh token:
-        {                                       {
-            'type': 'authorized_user',              'type': 'service_account',
-            'client_id': '...',                     'client_id': '...',
-            'client_secret': '...',       OR        'client_email': '...',
-            'refresh_token': '...,                  'private_key_id': '...',
-        }                                           'private_key': '...',
-                                                }
+    a ready-to-use refresh token::
+
+      {                                       {
+          'type': 'authorized_user',              'type': 'service_account',
+          'client_id': '...',                     'client_id': '...',
+          'client_secret': '...',       OR        'client_email': '...',
+          'refresh_token': '...,                  'private_key_id': '...',
+      }                                           'private_key': '...',
+                                              }
+
     The second of these is simply a JSON key downloaded from the Google APIs
     console. The first is a close cousin of the "client secrets" JSON file
-    used by `oauth2client.clientsecrets` but differs in formatting.
+    used by ``oauth2client.clientsecrets`` but differs in formatting.
 
     :rtype: :class:`oauth2client.client.GoogleCredentials`,
             :class:`oauth2client.appengine.AppAssertionCredentials`,
@@ -68,22 +68,22 @@ def get_for_service_account_p12(client_email, private_key_path, scope=None):
       known explicitly and detecting the environment implicitly would be
       superfluous.
 
-    :type client_email: string
+    :type client_email: :class:`str`
     :param client_email: The e-mail attached to the service account.
 
-    :type private_key_path: string
+    :type private_key_path: :class:`str`
     :param private_key_path: The path to a private key file (this file was
                              given to you when you created the service
                              account). This file must be in P12 format.
 
-    :type scope: string or tuple of strings
+    :type scope: :class:`str` or :class:`tuple` of :class:`str`
     :param scope: The scope against which to authenticate. (Different services
                   require different scopes, check the documentation for which
                   scope is required for the different levels of access to any
                   particular API.)
 
     :rtype: :class:`oauth2client.client.SignedJwtAssertionCredentials`
-    :returns: A new SignedJwtAssertionCredentials instance with the
+    :returns: A new ``SignedJwtAssertionCredentials`` instance with the
               needed service account settings.
     """
     return client.SignedJwtAssertionCredentials(

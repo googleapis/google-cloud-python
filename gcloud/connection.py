@@ -22,11 +22,8 @@ import httplib2
 class Connection(object):
     """A generic connection to Google Cloud Platform.
 
-    Subclasses should understand
-    only the basic types
-    in method arguments,
-    however they should be capable
-    of returning advanced types.
+    Subclasses should understand only the basic types in method arguments,
+    however they should be capable of returning advanced types.
     """
 
     API_BASE_URL = 'https://www.googleapis.com'
@@ -39,8 +36,10 @@ class Connection(object):
     """The user agent for gcloud-python requests."""
 
     def __init__(self, credentials=None):
-        """
-        :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+        """Constructor for Connection.
+
+        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+                           :class:`NoneType`
         :param credentials: The OAuth2 Credentials to use for this connection.
         """
         self._http = None
@@ -48,8 +47,10 @@ class Connection(object):
 
     @property
     def credentials(self):
-        """
-        :rtype: :class:`oauth2client.client.OAuth2Credentials`, or None
+        """Getter for current credentials.
+
+        :rtype: :class:`oauth2client.client.OAuth2Credentials` or
+                :class:`NoneType`
         :returns: The credentials object associated with this connection.
         """
         return self._credentials

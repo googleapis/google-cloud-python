@@ -16,12 +16,17 @@
 
 You'll typically use these to get started with the API:
 
+>>> from gcloud import datastore
 >>> from gcloud.datastore.entity import Entity
 >>> from gcloud.datastore.key import Key
 >>> from gcloud.datastore.query import Query
+>>>
+>>> datastore.set_default_connection()
+>>> datastore.set_default_dataset_id()
+>>>
 >>> key = Key('EntityKind', 1234)
 >>> entity = Entity(key)
->>> query = Query('your-dataset-id', kind='EntityKind')
+>>> query = Query(kind='EntityKind')
 
 The main concepts with this API are:
 
@@ -39,6 +44,10 @@ The main concepts with this API are:
 
 - :class:`gcloud.datastore.query.Query`
   which represents a lookup or search over the rows in the datastore.
+
+- :class:`gcloud.datastore.transaction.Transaction`
+  which represents an all-or-none transaction and enables consistency
+  when race conditions may occur.
 """
 
 import os
@@ -49,9 +58,9 @@ from gcloud.datastore.connection import Connection
 from gcloud.datastore import helpers
 
 
-SCOPE = ('https://www.googleapis.com/auth/datastore ',
+SCOPE = ('https://www.googleapis.com/auth/datastore',
          'https://www.googleapis.com/auth/userinfo.email')
-"""The scope required for authenticating as a Cloud Datastore consumer."""
+"""The scopes required for authenticating as a Cloud Datastore consumer."""
 
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 
@@ -92,9 +101,13 @@ def get_connection():
     with the same set of credentials (unlikely):
 
     >>> from gcloud import datastore
+    >>> from gcloud.datastore import Key
+    >>>
     >>> connection = datastore.get_connection()
-    >>> dataset1 = connection.dataset('dataset1')
-    >>> dataset2 = connection.dataset('dataset2')
+    >>> key1 = Key('Kind', 1234, dataset_id='dataset1')
+    >>> key2 = Key('Kind', 1234, dataset_id='dataset2')
+    >>> entity1 = key1.get(connection=connection)
+    >>> entity2 = key2.get(connection=connection)
 
     :rtype: :class:`gcloud.datastore.connection.Connection`
     :returns: A connection defined with the proper credentials.
@@ -110,9 +123,9 @@ def _require_dataset_id(dataset_id=None):
     :type dataset_id: :class:`str`.
     :param dataset_id: Optional.
 
-    :rtype: :class:`gcloud.datastore.dataset.Dataset`
-    :returns: A dataset based on the current environment.
-    :raises: :class:`EnvironmentError` if ``dataset_id`` is None,
+    :rtype: :class:`str`
+    :returns: A dataset ID based on the current environment.
+    :raises: :class:`EnvironmentError` if ``dataset_id`` is ``None``,
              and cannot be inferred from the environment.
     """
     if dataset_id is None:
@@ -130,7 +143,7 @@ def _require_connection(connection=None):
 
     :rtype: :class:`gcloud.datastore.connection.Connection`
     :returns: A connection based on the current environment.
-    :raises: :class:`EnvironmentError` if ``connection`` is None, and
+    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
              cannot be inferred from the environment.
     """
     if connection is None:
@@ -198,7 +211,7 @@ def allocate_ids(incomplete_key, num_ids, connection=None, dataset_id=None):
     :type incomplete_key: A :class:`gcloud.datastore.key.Key`
     :param incomplete_key: Partial key to use as base for allocated IDs.
 
-    :type num_ids: A :class:`int`.
+    :type num_ids: :class:`int`.
     :param num_ids: The number of IDs to allocate.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
@@ -208,8 +221,8 @@ def allocate_ids(incomplete_key, num_ids, connection=None, dataset_id=None):
     :param dataset_id: Optional. The ID of the dataset.
 
     :rtype: list of :class:`gcloud.datastore.key.Key`
-    :returns: The (complete) keys allocated with `incomplete_key` as root.
-    :raises: `ValueError` if `incomplete_key` is not a partial key.
+    :returns: The (complete) keys allocated with ``incomplete_key`` as root.
+    :raises: :class:`ValueError` if ``incomplete_key`` is not a partial key.
     """
     connection = _require_connection(connection)
     dataset_id = _require_dataset_id(dataset_id)
