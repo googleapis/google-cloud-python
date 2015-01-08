@@ -198,8 +198,8 @@ with the same set of credentials (unlikely):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key1</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="s">&#39;Kind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset1&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key2</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="s">&#39;Kind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset2&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entity1</span> <span class="o">=</span> <span class="n">key1</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entity2</span> <span class="o">=</span> <span class="n">key2</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity1</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key1</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity2</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -421,13 +421,12 @@ of calling <tt class="docutils literal"><span class="pre">self.mutation()</span>
 <p>This method deals only with protobufs
 (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt> and
 <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>) and is used
-under the hood for methods like
-<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key.get" title="gcloud.datastore.key.Key.get"><tt class="xref py py-meth docutils literal"><span class="pre">gcloud.datastore.key.Key.get()</span></tt></a>:</p>
+under the hood in <tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.get()</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">set_default_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">&lt;Entity object&gt;</span>
 </pre></div>
 </div>
@@ -610,7 +609,7 @@ assigned.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fbabfce7bf0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7f6c04137c00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

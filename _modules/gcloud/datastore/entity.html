@@ -114,9 +114,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    This means you could take an existing entity and change the key</span>
 <span class="sd">    to duplicate the object.</span>
 
-<span class="sd">    Use :meth:`gcloud.datastore.key.Key.get` to retrieve an existing entity.</span>
+<span class="sd">    Use :func:`gcloud.datastore.get` to retrieve an existing entity.</span>
 
-<span class="sd">      &gt;&gt;&gt; key.get()</span>
+<span class="sd">      &gt;&gt;&gt; datastore.get(key)</span>
 <span class="sd">      &lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
 
 <span class="sd">    You can the set values on the entity just like you would on any</span>
@@ -190,29 +190,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="k">raise</span> <span class="n">NoKey</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span>
 
-<div class="viewcode-block" id="Entity.reload"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reloads the contents of this entity from the datastore.</span>
-
-<span class="sd">        This method takes the :class:`gcloud.datastore.key.Key`, loads all</span>
-<span class="sd">        properties from the Cloud Datastore, and sets the updated properties on</span>
-<span class="sd">        the current object.</span>
-
-<span class="sd">        .. warning::</span>
-<span class="sd">          This will override any existing properties if a different value</span>
-<span class="sd">          exists remotely, however it will *not* override any properties that</span>
-<span class="sd">          exist only locally.</span>
-
-<span class="sd">        :type connection: :class:`gcloud.datastore.connection.Connection`</span>
-<span class="sd">        :param connection: Optional connection used to connect to datastore.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
-
-        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_key</span>
-        <span class="n">entity</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">entity</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-</div>
 <div class="viewcode-block" id="Entity.save"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the entity in the Cloud Datastore.</span>
 

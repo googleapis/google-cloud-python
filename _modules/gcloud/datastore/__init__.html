@@ -181,8 +181,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    &gt;&gt;&gt; connection = datastore.get_connection()</span>
 <span class="sd">    &gt;&gt;&gt; key1 = Key(&#39;Kind&#39;, 1234, dataset_id=&#39;dataset1&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; key2 = Key(&#39;Kind&#39;, 1234, dataset_id=&#39;dataset2&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; entity1 = key1.get(connection=connection)</span>
-<span class="sd">    &gt;&gt;&gt; entity2 = key2.get(connection=connection)</span>
+<span class="sd">    &gt;&gt;&gt; entity1 = datastore.get(key1, connection=connection)</span>
+<span class="sd">    &gt;&gt;&gt; entity2 = datastore.get(key2, connection=connection)</span>
 
 <span class="sd">    :rtype: :class:`gcloud.datastore.connection.Connection`</span>
 <span class="sd">    :returns: A connection defined with the proper credentials.</span>

@@ -92,8 +92,8 @@ allow you to delete or persist the data stored on the entity.</p>
 <p>Entities are mutable and act like a subclass of a dictionary.
 This means you could take an existing entity and change the key
 to duplicate the object.</p>
-<p>Use <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key.get" title="gcloud.datastore.key.Key.get"><tt class="xref py py-meth docutils literal"><span class="pre">gcloud.datastore.key.Key.get()</span></tt></a> to retrieve an existing entity.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<p>Use <tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.get()</span></tt> to retrieve an existing entity.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">&lt;Entity[{&#39;kind&#39;: &#39;EntityKind&#39;, id: 1234}] {&#39;property&#39;: &#39;value&#39;}&gt;</span>
 </pre></div>
 </div>
@@ -127,7 +127,7 @@ any decoding / encoding step.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; Optional key to be set on entity. Required for <a class="reference internal" href="#gcloud.datastore.entity.Entity.save" title="gcloud.datastore.entity.Entity.save"><tt class="xref py py-meth docutils literal"><span class="pre">save()</span></tt></a>
-or <a class="reference internal" href="#gcloud.datastore.entity.Entity.reload" title="gcloud.datastore.entity.Entity.reload"><tt class="xref py py-meth docutils literal"><span class="pre">reload()</span></tt></a>.</li>
+or <tt class="xref py py-meth docutils literal"><span class="pre">reload()</span></tt>.</li>
 <li><strong>exclude_from_indexes</strong> (<em>tuple of string</em>) &#8211; Names of fields whose values are not to be
 indexed for this entity.</li>
 </ul>
@@ -160,29 +160,6 @@ set on the entity.  That means that we&#8217;re not storing the kind
 of the entity at all, just the properties and a pointer to a
 Key which knows its Kind.</p>
 </div>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.entity.Entity.reload">
-<tt class="descname">reload</tt><big>(</big><em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.reload" title="Permalink to this definition">#</a></dt>
-<dd><p>Reloads the contents of this entity from the datastore.</p>
-<p>This method takes the <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>, loads all
-properties from the Cloud Datastore, and sets the updated properties on
-the current object.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This will override any existing properties if a different value
-exists remotely, however it will <em>not</em> override any properties that
-exist only locally.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
