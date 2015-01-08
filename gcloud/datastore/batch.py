@@ -72,6 +72,7 @@ class Batch(object):
                              'a dataset ID set.')
 
         self._mutation = datastore_pb.Mutation()
+        self._auto_id_entities = []
 
     @property
     def dataset_id(self):
@@ -137,6 +138,9 @@ class Batch(object):
             self.dataset_id, key_pb, properties,
             exclude_from_indexes=exclude, mutation=self.mutation)
 
+        if entity.key.is_partial:
+            self._auto_id_entities.append(entity)
+
     def delete(self, key):
         """Remember a key to be deleted durring ``commit``.
 
@@ -159,7 +163,11 @@ class Batch(object):
         however it can be called explicitly if you don't want to use a
         context manager.
         """
-        self.connection.commit(self._dataset_id, self.mutation)
+        response = self.connection.commit(self._dataset_id, self.mutation)
+        for new_key_pb, entity in zip(response.insert_auto_id_key,
+                                      self._auto_id_entities):
+            new_id = new_key_pb.path_element[-1].id
+            entity.key = entity.key.completed_key(new_id)
 
     def __enter__(self):
         return self

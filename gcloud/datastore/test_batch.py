@@ -46,6 +46,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch.dataset_id, _DATASET)
         self.assertEqual(batch.connection, connection)
         self.assertTrue(isinstance(batch.mutation, Mutation))
+        self.assertEqual(batch._auto_id_entities, [])
 
     def test_ctor_implicit(self):
         from gcloud._testing import _Monkey
@@ -62,6 +63,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch.dataset_id, DATASET_ID)
         self.assertEqual(batch.connection, CONNECTION)
         self.assertTrue(isinstance(batch.mutation, Mutation))
+        self.assertEqual(batch._auto_id_entities, [])
 
     def test_put_entity_wo_key(self):
         _DATASET = 'DATASET'
@@ -70,7 +72,23 @@ class TestBatch(unittest2.TestCase):
 
         self.assertRaises(ValueError, batch.put, _Entity())
 
-    def test_put_entity_w_key(self):
+    def test_put_entity_w_partial_key(self):
+        _DATASET = 'DATASET'
+        _PROPERTIES = {'foo': 'bar'}
+        connection = _Connection()
+        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        entity = _Entity(_PROPERTIES)
+        key = entity.key = _Key(_DATASET)
+        key._partial = True
+
+        batch.put(entity)
+
+        self.assertEqual(
+            connection._saved,
+            (_DATASET, key._key, _PROPERTIES, (), batch.mutation))
+        self.assertEqual(batch._auto_id_entities, [entity])
+
+    def test_put_entity_w_completed_key(self):
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
@@ -114,6 +132,22 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(connection._committed, (_DATASET, batch.mutation))
 
+    def test_commit_w_auto_id_entities(self):
+        _DATASET = 'DATASET'
+        _NEW_ID = 1234
+        connection = _Connection(_NEW_ID)
+        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        entity = _Entity({})
+        key = entity.key = _Key(_DATASET)
+        key._partial = True
+        batch._auto_id_entities.append(entity)
+
+        batch.commit()
+
+        self.assertEqual(connection._committed, (_DATASET, batch.mutation))
+        self.assertFalse(key._partial)
+        self.assertEqual(key._id, _NEW_ID)
+
     def test_as_context_mgr_wo_error(self):
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
@@ -154,7 +188,19 @@ class TestBatch(unittest2.TestCase):
 class _CommitResult(object):
 
     def __init__(self, *new_keys):
-        self.insert_auto_id_key = new_keys
+        self.insert_auto_id_key = [_KeyPB(key) for key in new_keys]
+
+
+class _PathElementPB(object):
+
+    def __init__(self, id):
+        self.id = id
+
+
+class _KeyPB(object):
+
+    def __init__(self, id):
+        self.path_element = [_PathElementPB(id)]
 
 
 class _Connection(object):
@@ -162,8 +208,8 @@ class _Connection(object):
     _committed = _saved = _deleted = None
     _save_result = (False, None)
 
-    def __init__(self):
-        self._commit_result = _CommitResult()
+    def __init__(self, *new_keys):
+        self._commit_result = _CommitResult(*new_keys)
 
     def save_entity(self, dataset_id, key_pb, properties,
                     exclude_from_indexes=(), mutation=None):
@@ -201,3 +247,8 @@ class _Key(object):
 
     def to_protobuf(self):
         return self._key
+
+    def completed_key(self, new_id):
+        assert self._partial
+        self._id = new_id
+        self._partial = False
