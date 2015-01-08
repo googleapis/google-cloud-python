@@ -58,7 +58,7 @@ def _require_connection(connection=None):
     return connection
 
 
-def get_entities(keys, missing=None, deferred=None, connection=None):
+def get(keys, missing=None, deferred=None, connection=None):
     """Retrieves entities, along with their attributes.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
@@ -92,8 +92,7 @@ def get_entities(keys, missing=None, deferred=None, connection=None):
     # or if we made sure that a prefix s~ or e~ was on each key.
     for key in keys[1:]:
         if key.dataset_id != dataset_id:
-            raise ValueError('All keys in get_entities must be from the '
-                             'same dataset.')
+            raise ValueError('All keys in get must be from the same dataset.')
 
     entity_pbs = connection.lookup(
         dataset_id=dataset_id,

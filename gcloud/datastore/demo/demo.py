@@ -30,14 +30,14 @@ toy.update({'name': 'Toy'})
 toy.save()
 
 # If we look it up by its key, we should find it...
-from gcloud.datastore import get_entities
-print(get_entities([toy.key]))
+from gcloud.datastore import get
+print(get([toy.key]))
 
 # And we should be able to delete it...
 toy.key.delete()
 
 # Since we deleted it, if we do another lookup it shouldn't be there again:
-print(get_entities([toy.key]))
+print(get([toy.key]))
 
 # Now let's try a more advanced query.
 # First, let's create some entities.
@@ -104,7 +104,7 @@ with Transaction() as t:
     t.rollback()
 
 # Let's check if the entity was actually created:
-created = get_entities([key])
+created = get([key])
 print('yes' if created else 'no')
 
 # Remember, a key won't be complete until the transaction is commited.

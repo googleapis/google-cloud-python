@@ -90,18 +90,18 @@ class Test_require_connection(unittest2.TestCase):
             self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
 
 
-class Test_get_entities_function(unittest2.TestCase):
+class Test_get_function(unittest2.TestCase):
 
     def _callFUT(self, keys, missing=None, deferred=None, connection=None):
-        from gcloud.datastore import get_entities
-        return get_entities(keys, missing=missing, deferred=deferred,
-                            connection=connection)
+        from gcloud.datastore.api import get
+        return get(keys, missing=missing, deferred=deferred,
+                   connection=connection)
 
-    def test_get_entities_no_keys(self):
+    def test_get_no_keys(self):
         results = self._callFUT([])
         self.assertEqual(results, [])
 
-    def test_get_entities_miss(self):
+    def test_get_miss(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
 
@@ -111,7 +111,7 @@ class Test_get_entities_function(unittest2.TestCase):
         results = self._callFUT([key], connection=connection)
         self.assertEqual(results, [])
 
-    def test_get_entities_miss_w_missing(self):
+    def test_get_miss_w_missing(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
@@ -138,7 +138,7 @@ class Test_get_entities_function(unittest2.TestCase):
         self.assertEqual([missed.key.to_protobuf() for missed in missing],
                          [key.to_protobuf()])
 
-    def test_get_entities_miss_w_deferred(self):
+    def test_get_miss_w_deferred(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
 
@@ -172,7 +172,7 @@ class Test_get_entities_function(unittest2.TestCase):
 
         return entity_pb
 
-    def test_get_entities_hit(self):
+    def test_get_hit(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
 
@@ -199,7 +199,7 @@ class Test_get_entities_function(unittest2.TestCase):
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
-    def test_get_entities_hit_multiple_keys_same_dataset(self):
+    def test_get_hit_multiple_keys_same_dataset(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
 
@@ -226,7 +226,7 @@ class Test_get_entities_function(unittest2.TestCase):
         self.assertEqual(retrieved2.key.path, key2.path)
         self.assertEqual(dict(retrieved2), {})
 
-    def test_get_entities_hit_multiple_keys_different_dataset(self):
+    def test_get_hit_multiple_keys_different_dataset(self):
         from gcloud.datastore.key import Key
 
         DATASET_ID1 = 'DATASET'
@@ -240,7 +240,7 @@ class Test_get_entities_function(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._callFUT([key1, key2], connection=object())
 
-    def test_get_entities_implicit(self):
+    def test_get_implicit(self):
         from gcloud.datastore import _implicit_environ
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
@@ -281,7 +281,7 @@ class Test_get_entities_function(unittest2.TestCase):
 class Test_allocate_ids_function(unittest2.TestCase):
 
     def _callFUT(self, incomplete_key, num_ids, connection=None):
-        from gcloud.datastore import allocate_ids
+        from gcloud.datastore.api import allocate_ids
         return allocate_ids(incomplete_key, num_ids, connection=connection)
 
     def test_allocate_ids(self):
