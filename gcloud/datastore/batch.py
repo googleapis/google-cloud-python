@@ -188,6 +188,10 @@ class Batch(object):
         context manager.
         """
         response = self.connection.commit(self._dataset_id, self.mutation)
+        # If the back-end returns without error, we are guaranteed that
+        # the response's 'insert_auto_id_key' will match (length and order)
+        # the request's 'insert_auto_id` entities, which are derived from
+        # our '_auto_id_entities' (no partial success).
         for new_key_pb, entity in zip(response.insert_auto_id_key,
                                       self._auto_id_entities):
             new_id = new_key_pb.path_element[-1].id
