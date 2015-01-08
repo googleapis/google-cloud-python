@@ -121,6 +121,11 @@ class Batch(object):
         the entity has a partial key, it adds itself to the list of
         entities to be updated once the transaction is committed by
         calling this method.
+
+        :type entity: :class:`gcloud.datastore.entity.Entity`
+        :param entity: The entity to be updated with a completed key.
+
+        :raises: ValueError if the entity's key is alread completed.
         """
         if not entity.key.is_partial:
             raise ValueError("Entity has a completed key")
