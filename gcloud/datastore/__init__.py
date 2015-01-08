@@ -107,8 +107,8 @@ def get_connection():
     >>> connection = datastore.get_connection()
     >>> key1 = Key('Kind', 1234, dataset_id='dataset1')
     >>> key2 = Key('Kind', 1234, dataset_id='dataset2')
-    >>> entity1 = key1.get(connection=connection)
-    >>> entity2 = key2.get(connection=connection)
+    >>> entity1 = datastore.get(key1, connection=connection)
+    >>> entity2 = datastore.get(key2, connection=connection)
 
     :rtype: :class:`gcloud.datastore.connection.Connection`
     :returns: A connection defined with the proper credentials.

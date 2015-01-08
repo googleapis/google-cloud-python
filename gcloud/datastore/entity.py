@@ -40,9 +40,9 @@ class Entity(dict):
     This means you could take an existing entity and change the key
     to duplicate the object.
 
-    Use :meth:`gcloud.datastore.key.Key.get` to retrieve an existing entity.
+    Use :func:`gcloud.datastore.get` to retrieve an existing entity.
 
-      >>> key.get()
+      >>> datastore.get(key)
       <Entity[{'kind': 'EntityKind', id: 1234}] {'property': 'value'}>
 
     You can the set values on the entity just like you would on any
@@ -115,29 +115,6 @@ class Entity(dict):
         if self.key is None:
             raise NoKey()
         return self.key
-
-    def reload(self, connection=None):
-        """Reloads the contents of this entity from the datastore.
-
-        This method takes the :class:`gcloud.datastore.key.Key`, loads all
-        properties from the Cloud Datastore, and sets the updated properties on
-        the current object.
-
-        .. warning::
-          This will override any existing properties if a different value
-          exists remotely, however it will *not* override any properties that
-          exist only locally.
-
-        :type connection: :class:`gcloud.datastore.connection.Connection`
-        :param connection: Optional connection used to connect to datastore.
-        """
-        connection = connection or _implicit_environ.CONNECTION
-
-        key = self._must_key
-        entity = key.get(connection=connection)
-
-        if entity:
-            self.update(entity)
 
     def save(self, connection=None):
         """Save the entity in the Cloud Datastore.

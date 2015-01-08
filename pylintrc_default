@@ -73,8 +73,6 @@ ignore =
 #                  identical implementation but different docstrings.
 # - star-args:  standard Python idioms for varargs:
 #                  ancestor = Query().filter(*order_props)
-# - cyclic-import:  temporary workaround to support Key.get until Dataset
-#                   is removed in #477.
 disable =
     maybe-no-member,
     no-member,
@@ -82,7 +80,6 @@ disable =
     redefined-builtin,
     similarities,
     star-args,
-    cyclic-import,
 
 
 [REPORTS]

@@ -217,29 +217,6 @@ class Key(object):
 
         return key
 
-    def get(self, connection=None):
-        """Retrieve entity corresponding to the current key.
-
-        :type connection: :class:`gcloud.datastore.connection.Connection`
-        :param connection: Optional connection used to connect to datastore.
-
-        :rtype: :class:`gcloud.datastore.entity.Entity` or :class:`NoneType`
-        :returns: The requested entity, or ``None`` if there was no
-                  match found.
-        """
-        # Temporary cylic import, needs to be removed.
-        from gcloud.datastore import api
-
-        # We allow partial keys to attempt a get, the backend will fail.
-        connection = connection or _implicit_environ.CONNECTION
-        entities = api.get([self], connection=connection)
-
-        if entities:
-            result = entities[0]
-            # We assume that the backend has not changed the key.
-            result.key = self
-            return result
-
     def delete(self, connection=None):
         """Delete the key in the Cloud Datastore.
 
