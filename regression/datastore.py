@@ -131,7 +131,7 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity2)
 
         keys = [entity1.key, entity2.key]
-        matches = datastore.get_entities(keys)
+        matches = datastore.get(keys)
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):

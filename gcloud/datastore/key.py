@@ -232,7 +232,7 @@ class Key(object):
 
         # We allow partial keys to attempt a get, the backend will fail.
         connection = connection or _implicit_environ.CONNECTION
-        entities = api.get_entities([self], connection=connection)
+        entities = api.get([self], connection=connection)
 
         if entities:
             result = entities[0]
