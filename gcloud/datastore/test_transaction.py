@@ -59,18 +59,11 @@ class TestTransaction(unittest2.TestCase):
 
         with _Monkey(_implicit_environ, DATASET_ID=DATASET_ID,
                      CONNECTION=CONNECTION):
-            transaction = self._makeOne()
+            xact = self._makeOne()
 
-        self.assertEqual(transaction.dataset_id, DATASET_ID)
-        self.assertEqual(transaction.connection, CONNECTION)
-
-    def test_add_auto_id_entity(self):
-        entity = _Entity()
-        _DATASET = 'DATASET'
-        connection = _Connection()
-        xact = self._makeOne(dataset_id=_DATASET, connection=connection)
-        xact.add_auto_id_entity(entity)
-        self.assertEqual(xact._auto_id_entities, [entity])
+        self.assertEqual(xact.id, None)
+        self.assertEqual(xact.dataset_id, DATASET_ID)
+        self.assertEqual(xact.connection, CONNECTION)
 
     def test_begin(self):
         _DATASET = 'DATASET'
