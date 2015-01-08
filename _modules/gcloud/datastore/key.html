@@ -306,7 +306,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="c"># We allow partial keys to attempt a get, the backend will fail.</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
-        <span class="n">entities</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_entities</span><span class="p">([</span><span class="bp">self</span><span class="p">],</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+        <span class="n">entities</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="bp">self</span><span class="p">],</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">entities</span><span class="p">:</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
