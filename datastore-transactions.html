@@ -78,7 +78,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <dl class="class">
 <dt id="gcloud.datastore.transaction.Transaction">
 <em class="property">class </em><tt class="descclassname">gcloud.datastore.transaction.</tt><tt class="descname">Transaction</tt><big>(</big><em>dataset_id=None</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="datastore-batches.html#gcloud.datastore.batch.Batch" title="gcloud.datastore.batch.Batch"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.batch.Batch</span></tt></a></p>
 <p>An abstraction representing datastore Transactions.</p>
 <p>Transactions can be used to build up a bulk mutuation as well as
 provide isolation.</p>
@@ -94,6 +94,13 @@ mutation, and execute those within a transaction:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">entity1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="n">entity2</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Because it derives from <tt class="xref py py-class docutils literal"><span class="pre">Batch</span></tt>, :class`Transaction` also provides
+<tt class="xref py py-meth docutils literal"><span class="pre">put()</span></tt> and <tt class="xref py py-meth docutils literal"><span class="pre">delete()</span></tt> methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">transaction</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">transaction</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">entity2</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default, the transaction is rolled back if the transaction block
@@ -187,21 +194,6 @@ are not set.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="gcloud.datastore.transaction.Transaction.add_auto_id_entity">
-<tt class="descname">add_auto_id_entity</tt><big>(</big><em>entity</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.add_auto_id_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.add_auto_id_entity" title="Permalink to this definition">#</a></dt>
-<dd><p>Adds an entity to the list of entities to update with IDs.</p>
-<p>When an entity has a partial key, calling <tt class="docutils literal"><span class="pre">save()</span></tt> adds an
-insert_auto_id entry in the mutation.  In order to make sure we
-update the Entity once the transaction is committed, we need to
-keep track of which entities to update (and the order is
-important).</p>
-<p>When you call <tt class="docutils literal"><span class="pre">save()</span></tt> on an entity inside a transaction, if
-the entity has a partial key, it adds itself to the list of
-entities to be updated once the transaction is committed by
-calling this method.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.begin">
 <tt class="descname">begin</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.begin" title="Permalink to this definition">#</a></dt>
 <dd><p>Begins a transaction.</p>
@@ -226,38 +218,6 @@ context manager.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="gcloud.datastore.transaction.Transaction.connection">
-<tt class="descname">connection</tt><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.connection" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter for connection over which the transaction will run.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The connection over which the transaction will run.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.datastore.transaction.Transaction.dataset_id">
-<tt class="descname">dataset_id</tt><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.dataset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.dataset_id" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter for dataset ID in which the transaction will run.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The dataset ID in which the transaction will run.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="gcloud.datastore.transaction.Transaction.id">
 <tt class="descname">id</tt><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.id" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the transaction ID.</p>
@@ -268,27 +228,6 @@ context manager.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The ID of the current transaction.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.datastore.transaction.Transaction.mutation">
-<tt class="descname">mutation</tt><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.mutation" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter for the current mutation.</p>
-<p>Every transaction is committed with a single Mutation
-representing the &#8216;work&#8217; to be done as part of the transaction.
-Inside a transaction, calling <tt class="docutils literal"><span class="pre">save()</span></tt> on an entity builds up
-the mutation.  This getter returns the Mutation protobuf that
-has been built-up so far.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The Mutation protobuf to be sent in the commit request.</td>
 </tr>
 </tbody>
 </table>
