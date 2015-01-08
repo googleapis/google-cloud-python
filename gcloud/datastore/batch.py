@@ -108,6 +108,25 @@ class Batch(object):
         """
         return self._mutation
 
+    def add_auto_id_entity(self, entity):
+        """Adds an entity to the list of entities to update with IDs.
+
+        When an entity has a partial key, calling ``save()`` adds an
+        insert_auto_id entry in the mutation.  In order to make sure we
+        update the Entity once the transaction is committed, we need to
+        keep track of which entities to update (and the order is
+        important).
+
+        When you call ``save()`` on an entity inside a transaction, if
+        the entity has a partial key, it adds itself to the list of
+        entities to be updated once the transaction is committed by
+        calling this method.
+        """
+        if not entity.key.is_partial:
+            raise ValueError("Entity has a completed key")
+
+        self._auto_id_entities.append(entity)
+
     def put(self, entity):
         """Remember an entity's state to be saved during ``commit``.
 

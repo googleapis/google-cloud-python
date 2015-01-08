@@ -65,6 +65,27 @@ class TestBatch(unittest2.TestCase):
         self.assertTrue(isinstance(batch.mutation, Mutation))
         self.assertEqual(batch._auto_id_entities, [])
 
+    def test_add_auto_id_entity_w_partial_key(self):
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        entity = _Entity()
+        key = entity.key = _Key(_Entity)
+        key._partial = True
+
+        batch.add_auto_id_entity(entity)
+
+        self.assertEqual(batch._auto_id_entities, [entity])
+
+    def test_add_auto_id_entity_w_completed_key(self):
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        entity = _Entity()
+        key = entity.key = _Key(_Entity)
+
+        self.assertRaises(ValueError, batch.add_auto_id_entity, entity)
+
     def test_put_entity_wo_key(self):
         _DATASET = 'DATASET'
         connection = _Connection()
