@@ -358,11 +358,9 @@ class Test_get_entities_function(unittest2.TestCase):
 
 class Test_allocate_ids_function(unittest2.TestCase):
 
-    def _callFUT(self, incomplete_key, num_ids,
-                 connection=None, dataset_id=None):
+    def _callFUT(self, incomplete_key, num_ids, connection=None):
         from gcloud.datastore import allocate_ids
-        return allocate_ids(incomplete_key, num_ids, connection=connection,
-                            dataset_id=dataset_id)
+        return allocate_ids(incomplete_key, num_ids, connection=connection)
 
     def test_allocate_ids(self):
         from gcloud.datastore.key import Key
@@ -372,8 +370,7 @@ class Test_allocate_ids_function(unittest2.TestCase):
         INCOMPLETE_KEY = Key('KIND', dataset_id=DATASET_ID)
         CONNECTION = _Connection()
         NUM_IDS = 2
-        result = self._callFUT(INCOMPLETE_KEY, NUM_IDS,
-                               connection=CONNECTION, dataset_id=DATASET_ID)
+        result = self._callFUT(INCOMPLETE_KEY, NUM_IDS, connection=CONNECTION)
 
         # Check the IDs returned match.
         self.assertEqual([key.id for key in result], range(NUM_IDS))
