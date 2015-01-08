@@ -153,8 +153,7 @@ def _require_connection(connection=None):
     return connection
 
 
-def get_entities(keys, missing=None, deferred=None,
-                 connection=None, dataset_id=None):
+def get_entities(keys, missing=None, deferred=None, connection=None):
     """Retrieves entities, along with their attributes.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
@@ -173,14 +172,23 @@ def get_entities(keys, missing=None, deferred=None,
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: Optional. The connection used to connect to datastore.
 
-    :type dataset_id: string
-    :param dataset_id: Optional. The ID of the dataset.
-
     :rtype: list of :class:`gcloud.datastore.entity.Entity`
     :returns: The requested entities.
+    :raises: :class:`ValueError` if the key dataset IDs don't agree.
     """
+    if not keys:
+        return []
+
     connection = _require_connection(connection)
-    dataset_id = _require_dataset_id(dataset_id)
+    dataset_id = keys[0].dataset_id
+    # Rather than creating a list or set of all dataset IDs, we iterate
+    # and check. We could allow the backend to check this for us if IDs
+    # with no prefix worked (GoogleCloudPlatform/google-cloud-datastore#59)
+    # or if we made sure that a prefix s~ or e~ was on each key.
+    for key in keys[1:]:
+        if key.dataset_id != dataset_id:
+            raise ValueError('All keys in get_entities must be from the '
+                             'same dataset.')
 
     entity_pbs = connection.lookup(
         dataset_id=dataset_id,

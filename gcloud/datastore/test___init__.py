@@ -213,11 +213,14 @@ class Test_require_connection(unittest2.TestCase):
 
 class Test_get_entities_function(unittest2.TestCase):
 
-    def _callFUT(self, keys, missing=None, deferred=None,
-                 connection=None, dataset_id=None):
+    def _callFUT(self, keys, missing=None, deferred=None, connection=None):
         from gcloud.datastore import get_entities
         return get_entities(keys, missing=missing, deferred=deferred,
-                            connection=connection, dataset_id=dataset_id)
+                            connection=connection)
+
+    def test_get_entities_no_keys(self):
+        results = self._callFUT([])
+        self.assertEqual(results, [])
 
     def test_get_entities_miss(self):
         from gcloud.datastore.key import Key
@@ -226,8 +229,7 @@ class Test_get_entities_function(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         connection = _Connection()
         key = Key('Kind', 1234, dataset_id=DATASET_ID)
-        results = self._callFUT([key], connection=connection,
-                                dataset_id=DATASET_ID)
+        results = self._callFUT([key], connection=connection)
         self.assertEqual(results, [])
 
     def test_get_entities_miss_w_missing(self):
@@ -252,8 +254,7 @@ class Test_get_entities_function(unittest2.TestCase):
 
         key = Key(KIND, ID, dataset_id=DATASET_ID)
         missing = []
-        entities = self._callFUT([key], connection=connection,
-                                 dataset_id=DATASET_ID, missing=missing)
+        entities = self._callFUT([key], connection=connection, missing=missing)
         self.assertEqual(entities, [])
         self.assertEqual([missed.key.to_protobuf() for missed in missing],
                          [key.to_protobuf()])
@@ -271,12 +272,13 @@ class Test_get_entities_function(unittest2.TestCase):
 
         deferred = []
         entities = self._callFUT([key], connection=connection,
-                                 dataset_id=DATASET_ID, deferred=deferred)
+                                 deferred=deferred)
         self.assertEqual(entities, [])
         self.assertEqual([def_key.to_protobuf() for def_key in deferred],
                          [key.to_protobuf()])
 
-    def _make_entity_pb(self, dataset_id, kind, integer_id, name, str_val):
+    def _make_entity_pb(self, dataset_id, kind, integer_id,
+                        name=None, str_val=None):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
         entity_pb = datastore_pb.Entity()
@@ -284,9 +286,10 @@ class Test_get_entities_function(unittest2.TestCase):
         path_element = entity_pb.key.path_element.add()
         path_element.kind = kind
         path_element.id = integer_id
-        prop = entity_pb.property.add()
-        prop.name = name
-        prop.value.string_value = str_val
+        if name is not None and str_val is not None:
+            prop = entity_pb.property.add()
+            prop.name = name
+            prop.value.string_value = str_val
 
         return entity_pb
 
@@ -307,8 +310,7 @@ class Test_get_entities_function(unittest2.TestCase):
         connection = _Connection(entity_pb)
 
         key = Key(KIND, ID, dataset_id=DATASET_ID)
-        result, = self._callFUT([key], connection=connection,
-                                dataset_id=DATASET_ID)
+        result, = self._callFUT([key], connection=connection)
         new_key = result.key
 
         # Check the returned value is as expected.
@@ -317,6 +319,47 @@ class Test_get_entities_function(unittest2.TestCase):
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
+
+    def test_get_entities_hit_multiple_keys_same_dataset(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID1 = 1234
+        ID2 = 2345
+
+        # Make a found entity pb to be returned from mock backend.
+        entity_pb1 = self._make_entity_pb(DATASET_ID, KIND, ID1)
+        entity_pb2 = self._make_entity_pb(DATASET_ID, KIND, ID2)
+
+        # Make a connection to return the entity pbs.
+        connection = _Connection(entity_pb1, entity_pb2)
+
+        key1 = Key(KIND, ID1, dataset_id=DATASET_ID)
+        key2 = Key(KIND, ID2, dataset_id=DATASET_ID)
+        retrieved1, retrieved2 = self._callFUT(
+            [key1, key2], connection=connection)
+
+        # Check values match.
+        self.assertEqual(retrieved1.key.path, key1.path)
+        self.assertEqual(dict(retrieved1), {})
+        self.assertEqual(retrieved2.key.path, key2.path)
+        self.assertEqual(dict(retrieved2), {})
+
+    def test_get_entities_hit_multiple_keys_different_dataset(self):
+        from gcloud.datastore.key import Key
+
+        DATASET_ID1 = 'DATASET'
+        DATASET_ID2 = 'DATASET-ALT'
+
+        # Make sure our IDs are actually different.
+        self.assertNotEqual(DATASET_ID1, DATASET_ID2)
+
+        key1 = Key('KIND', 1234, dataset_id=DATASET_ID1)
+        key2 = Key('KIND', 1234, dataset_id=DATASET_ID2)
+        with self.assertRaises(ValueError):
+            self._callFUT([key1, key2], connection=object())
 
     def test_get_entities_implicit(self):
         from gcloud.datastore import _implicit_environ
