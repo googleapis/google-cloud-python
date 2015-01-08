@@ -32,13 +32,13 @@ class _Batches(Local):
         super(_Batches, self).__init__()
         self._stack = []
 
-    @property
-    def stack(self):
-        """Return a copy of our stack."""
-        return self._stack[:]
+    def __iter__(self):
+        """Iterate the stack in LIFO order.
+        """
+        return iter(reversed(self._stack))
 
-    def _push_batch(self, batch):
-        """Push a batch onto our stack.
+    def push(self, batch):
+        """Push a batch / transaction onto our stack.
 
         Intended for use only in :meth:`gcloud.datastore.batch.Batch.__enter__`
 
@@ -47,8 +47,8 @@ class _Batches(Local):
         """
         self._stack.append(batch)
 
-    def _pop_batch(self):
-        """Pop a batch onto our stack.
+    def pop(self):
+        """Pop a batch / transaction from our stack.
 
         Intended for use only in :meth:`gcloud.datastore.batch.Batch.__enter__`
 
@@ -57,6 +57,17 @@ class _Batches(Local):
         :raises: IndexError if the stack is empty.
         """
         return self._stack.pop()
+
+    @property
+    def top(self):
+        """Get the top-most batch / transaction
+
+        :rtype: :class:`gcloud.datastore.batch.Batch` or
+                :class:`gcloud.datastore.transaction.Transaction` or None
+        :returns: the top-most item, or None if the stack is empty.
+        """
+        if len(self._stack) > 0:
+            return self._stack[-1]
 
 
 _BATCHES = _Batches()
@@ -256,7 +267,7 @@ class Batch(object):
         pass
 
     def __enter__(self):
-        _BATCHES._push_batch(self)
+        _BATCHES.push(self)
         self.begin()
         return self
 
@@ -267,4 +278,4 @@ class Batch(object):
             else:
                 self.rollback()
         finally:
-            _BATCHES._pop_batch()
+            _BATCHES.pop()
