@@ -71,7 +71,6 @@ class Batch(object):
             raise ValueError('A batch must have a connection and '
                              'a dataset ID set.')
 
-        self._id = None
         self._mutation = datastore_pb.Mutation()
 
     @property
