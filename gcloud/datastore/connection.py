@@ -421,7 +421,7 @@ class Connection(connection.Connection):
         return list(response.key)
 
     def save_entity(self, dataset_id, key_pb, properties,
-                    exclude_from_indexes=()):
+                    exclude_from_indexes=(), mutation=None):
         """Save an entity to the Cloud Datastore with the provided properties.
 
         .. note::
@@ -441,13 +441,24 @@ class Connection(connection.Connection):
         :type exclude_from_indexes: sequence of string
         :param exclude_from_indexes: Names of properties *not* to be indexed.
 
+        :type mutation: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`
+                        or None.
+        :param mutation: If passed, the mutation protobuf into which the
+                         entity will be saved.  If None, use th result
+                         of calling ``self.mutation()``
+
         :rtype: tuple
         :returns: The pair (``assigned``, ``new_id``) where ``assigned`` is a
                   boolean indicating if a new ID has been assigned and
                   ``new_id`` is either ``None`` or an integer that has been
                   assigned.
         """
-        mutation = self.mutation()
+        if mutation is not None:
+            in_batch = True
+        else:
+            in_batch = False
+            mutation = self.mutation()
+
         key_pb = helpers._prepare_key_for_request(key_pb)
 
         # If the Key is complete, we should upsert
@@ -479,7 +490,7 @@ class Connection(connection.Connection):
 
         # If this is in a transaction, we should just return True. The
         # transaction will handle assigning any keys as necessary.
-        if self.transaction():
+        if in_batch or self.transaction():
             return False, None
 
         result = self.commit(dataset_id, mutation)
@@ -493,7 +504,7 @@ class Connection(connection.Connection):
 
         return False, None
 
-    def delete_entities(self, dataset_id, key_pbs):
+    def delete_entities(self, dataset_id, key_pbs, mutation=None):
         """Delete keys from a dataset in the Cloud Datastore.
 
         This method deals only with
@@ -508,13 +519,24 @@ class Connection(connection.Connection):
         :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
         :param key_pbs: The keys to delete from the datastore.
 
+        :type mutation: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`
+                        or None.
+        :param mutation: If passed, the mutation protobuf into which the
+                         deletion will be saved.  If None, use th result
+                         of calling ``self.mutation()``
+
         :rtype: boolean
         :returns: ``True``
         """
-        mutation = self.mutation()
+        if mutation is not None:
+            in_batch = True
+        else:
+            in_batch = False
+            mutation = self.mutation()
+
         helpers._add_keys_to_request(mutation.delete, key_pbs)
 
-        if not self.transaction():
+        if not in_batch and not self.transaction():
             self.commit(dataset_id, mutation)
 
         return True
