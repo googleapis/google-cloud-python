@@ -30,10 +30,10 @@ class Transaction(object):
 
       >>> from gcloud import datastore
       >>> from gcloud.datastore.transaction import Transaction
-      >>>
+
       >>> datastore.set_default_connection()
       >>> datastore.set_default_dataset_id()
-      >>>
+
       >>> with Transaction()
       ...     entity1.save()
       ...     entity2.save()

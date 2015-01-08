@@ -20,10 +20,10 @@ You'll typically use these to get started with the API:
 >>> from gcloud.datastore.entity import Entity
 >>> from gcloud.datastore.key import Key
 >>> from gcloud.datastore.query import Query
->>>
+
 >>> datastore.set_default_connection()
 >>> datastore.set_default_dataset_id()
->>>
+
 >>> key = Key('EntityKind', 1234)
 >>> entity = Entity(key)
 >>> query = Query(kind='EntityKind')
@@ -102,7 +102,7 @@ def get_connection():
 
     >>> from gcloud import datastore
     >>> from gcloud.datastore import Key
-    >>>
+
     >>> connection = datastore.get_connection()
     >>> key1 = Key('Kind', 1234, dataset_id='dataset1')
     >>> key2 = Key('Kind', 1234, dataset_id='dataset2')

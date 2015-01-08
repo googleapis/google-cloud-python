@@ -263,10 +263,10 @@ class Connection(connection.Connection):
 
         >>> from gcloud import datastore
         >>> from gcloud.datastore.query import Query
-        >>>
+
         >>> datastore.set_default_connection()
         >>> datastore.set_default_dataset_id()
-        >>>
+
         >>> query = Query(kind='MyKind')
         >>> query.add_filter('property', '=', 'val')
 
