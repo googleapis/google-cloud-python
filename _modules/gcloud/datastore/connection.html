@@ -495,7 +495,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Connection.save_entity"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.save_entity">[docs]</a>    <span class="k">def</span> <span class="nf">save_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pb</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span>
-                    <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">()):</span>
+                    <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="p">(),</span> <span class="n">mutation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save an entity to the Cloud Datastore with the provided properties.</span>
 
 <span class="sd">        .. note::</span>
@@ -515,13 +515,24 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type exclude_from_indexes: sequence of string</span>
 <span class="sd">        :param exclude_from_indexes: Names of properties *not* to be indexed.</span>
 
+<span class="sd">        :type mutation: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`</span>
+<span class="sd">                        or None.</span>
+<span class="sd">        :param mutation: If passed, the mutation protobuf into which the</span>
+<span class="sd">                         entity will be saved.  If None, use th result</span>
+<span class="sd">                         of calling ``self.mutation()``</span>
+
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        :returns: The pair (``assigned``, ``new_id``) where ``assigned`` is a</span>
 <span class="sd">                  boolean indicating if a new ID has been assigned and</span>
 <span class="sd">                  ``new_id`` is either ``None`` or an integer that has been</span>
 <span class="sd">                  assigned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mutation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">in_batch</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">in_batch</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
+
         <span class="n">key_pb</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 
         <span class="c"># If the Key is complete, we should upsert</span>
@@ -553,7 +564,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="c"># If this is in a transaction, we should just return True. The</span>
         <span class="c"># transaction will handle assigning any keys as necessary.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">in_batch</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">None</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">mutation</span><span class="p">)</span>
@@ -567,7 +578,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">return</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">None</span>
 </div>
-<div class="viewcode-block" id="Connection.delete_entities"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.delete_entities">[docs]</a>    <span class="k">def</span> <span class="nf">delete_entities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.delete_entities"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.delete_entities">[docs]</a>    <span class="k">def</span> <span class="nf">delete_entities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span> <span class="n">mutation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete keys from a dataset in the Cloud Datastore.</span>
 
 <span class="sd">        This method deals only with</span>
@@ -582,13 +593,24 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
 <span class="sd">        :param key_pbs: The keys to delete from the datastore.</span>
 
+<span class="sd">        :type mutation: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`</span>
+<span class="sd">                        or None.</span>
+<span class="sd">        :param mutation: If passed, the mutation protobuf into which the</span>
+<span class="sd">                         deletion will be saved.  If None, use th result</span>
+<span class="sd">                         of calling ``self.mutation()``</span>
+
 <span class="sd">        :rtype: boolean</span>
 <span class="sd">        :returns: ``True``</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mutation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">in_batch</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">in_batch</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
+
         <span class="n">helpers</span><span class="o">.</span><span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">mutation</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">mutation</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">True</span>
@@ -657,8 +679,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-batches.html">Batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-buckets.html">Buckets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-keys.html">Keys</a></li>

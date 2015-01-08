@@ -442,7 +442,7 @@ You shouldn&#8217;t have to provide this.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.delete_entities">
-<tt class="descname">delete_entities</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.delete_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.delete_entities" title="Permalink to this definition">#</a></dt>
+<tt class="descname">delete_entities</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em>, <em>mutation=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.delete_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.delete_entities" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete keys from a dataset in the Cloud Datastore.</p>
 <p>This method deals only with
 <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt> protobufs and not
@@ -456,6 +456,10 @@ under the hood in the
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset from which to delete the keys.</li>
 <li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The keys to delete from the datastore.</li>
+<li><strong>mutation</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt>
+or None.) &#8211; If passed, the mutation protobuf into which the
+deletion will be saved.  If None, use th result
+of calling <tt class="docutils literal"><span class="pre">self.mutation()</span></tt></li>
 </ul>
 </td>
 </tr>
@@ -627,7 +631,7 @@ transaction, this value <em>must</em> be false.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.save_entity">
-<tt class="descname">save_entity</tt><big>(</big><em>dataset_id</em>, <em>key_pb</em>, <em>properties</em>, <em>exclude_from_indexes=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.save_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.save_entity" title="Permalink to this definition">#</a></dt>
+<tt class="descname">save_entity</tt><big>(</big><em>dataset_id</em>, <em>key_pb</em>, <em>properties</em>, <em>exclude_from_indexes=()</em>, <em>mutation=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.save_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.save_entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Save an entity to the Cloud Datastore with the provided properties.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -644,6 +648,10 @@ not passed in <tt class="docutils literal"><span class="pre">properties</span></
 <li><strong>key_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The complete or partial key for the entity.</li>
 <li><strong>properties</strong> (<em>dict</em>) &#8211; The properties to store on the entity.</li>
 <li><strong>exclude_from_indexes</strong> (<em>sequence of string</em>) &#8211; Names of properties <em>not</em> to be indexed.</li>
+<li><strong>mutation</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt>
+or None.) &#8211; If passed, the mutation protobuf into which the
+entity will be saved.  If None, use th result
+of calling <tt class="docutils literal"><span class="pre">self.mutation()</span></tt></li>
 </ul>
 </td>
 </tr>
@@ -662,7 +670,7 @@ assigned.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fabda082c00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
+<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fb389331bf0&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -738,8 +746,9 @@ Protobuf API.</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-keys.html">Keys</a></li>
