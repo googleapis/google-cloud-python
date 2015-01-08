@@ -59,32 +59,6 @@ class TestEntity(unittest2.TestCase):
         entity = self._makeOne()
         self.assertRaises(NoKey, getattr, entity, '_must_key')
 
-    def test_reload_no_key(self):
-        from gcloud.datastore.entity import NoKey
-
-        entity = self._makeOne()
-        entity['foo'] = 'Foo'
-        self.assertRaises(NoKey, entity.reload)
-
-    def test_reload_miss(self):
-        key = _Key()
-        key._stored = None  # Explicit miss.
-        entity = self._makeOne(key=key)
-        entity['foo'] = 'Foo'
-        # Does not raise, does not update on miss.
-        entity.reload()
-        self.assertEqual(entity['foo'], 'Foo')
-
-    def test_reload_hit(self):
-        key = _Key()
-        NEW_VAL = 'Baz'
-        key._stored = {'foo': NEW_VAL}
-        entity = self._makeOne(key=key)
-        entity['foo'] = 'Foo'
-        entity.reload()
-        self.assertEqual(entity['foo'], NEW_VAL)
-        self.assertEqual(entity.keys(), ['foo'])
-
     def test_save_no_key(self):
         from gcloud.datastore.entity import NoKey
 
@@ -185,10 +159,6 @@ class _Key(object):
     @property
     def path(self):
         return self._path
-
-    def get(self, connection=None):
-        self._connection_used = connection
-        return self._stored
 
 
 class _Connection(object):

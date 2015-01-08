@@ -91,9 +91,12 @@ class TestDatastoreSave(TestDatastore):
             self.assertEqual(entity.key.name, name)
         if key_id is not None:
             self.assertEqual(entity.key.id, key_id)
-        retrieved_entity = entity.key.get()
+        retrieved_entity = datastore.get(entity.key)
         # Check the keys are the same.
-        self.assertTrue(retrieved_entity.key is entity.key)
+        self.assertEqual(retrieved_entity.key.path, entity.key.path)
+        self.assertEqual(retrieved_entity.key.namespace, entity.key.namespace)
+        self.assertTrue(_compare_dataset_ids(
+            retrieved_entity.key.dataset_id, entity.key.dataset_id))
 
         # Check the data is the same.
         retrieved_dict = dict(retrieved_entity.items())
@@ -343,14 +346,30 @@ class TestDatastoreTransaction(TestDatastore):
         entity['url'] = u'www.google.com'
 
         with Transaction():
-            retrieved_entity = entity.key.get()
+            retrieved_entity = datastore.get(entity.key)
             if retrieved_entity is None:
                 entity.save()
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.
-        retrieved_entity = entity.key.get()
+        retrieved_entity = datastore.get(entity.key)
         self.case_entities_to_delete.append(retrieved_entity)
         retrieved_dict = dict(retrieved_entity.items())
         entity_dict = dict(entity.items())
         self.assertEqual(retrieved_dict, entity_dict)
+
+
+def _compare_dataset_ids(dataset_id1, dataset_id2):
+    if dataset_id1 == dataset_id2:
+        return True
+
+    if dataset_id1.startswith('s~') or dataset_id1.startswith('e~'):
+        # If `dataset_id1` is prefixed and not matching, then the only way
+        # they can match is if `dataset_id2` is unprefixed.
+        return dataset_id1[2:] == dataset_id2
+    elif dataset_id2.startswith('s~') or dataset_id2.startswith('e~'):
+        # Here we know `dataset_id1` is unprefixed and `dataset_id2`
+        # is prefixed.
+        return dataset_id1 == dataset_id2[2:]
+
+    return False

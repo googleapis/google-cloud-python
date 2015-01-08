@@ -166,14 +166,13 @@ class Connection(connection.Connection):
         This method deals only with protobufs
         (:class:`gcloud.datastore.datastore_v1_pb2.Key` and
         :class:`gcloud.datastore.datastore_v1_pb2.Entity`) and is used
-        under the hood for methods like
-        :meth:`gcloud.datastore.key.Key.get`:
+        under the hood in :func:`gcloud.datastore.get`:
 
         >>> from gcloud import datastore
         >>> from gcloud.datastore.key import Key
         >>> datastore.set_default_connection()
         >>> key = Key('MyKind', 1234, dataset_id='dataset-id')
-        >>> key.get()
+        >>> datastore.get(key)
         <Entity object>
 
         Using the ``connection`` class directly:
