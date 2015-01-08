@@ -232,8 +232,7 @@ class Key(object):
 
         # We allow partial keys to attempt a get, the backend will fail.
         connection = connection or _implicit_environ.CONNECTION
-        entities = datastore.get_entities(
-            [self], connection=connection, dataset_id=self.dataset_id)
+        entities = datastore.get_entities([self], connection=connection)
 
         if entities:
             result = entities[0]
