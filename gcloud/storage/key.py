@@ -17,6 +17,8 @@
 import copy
 import mimetypes
 import os
+import time
+import datetime
 from StringIO import StringIO
 import urllib
 
@@ -253,6 +255,13 @@ class Key(_PropertyMixin):
         """
         with open(filename, 'wb') as file_obj:
             self.download_to_file(file_obj)
+
+        mtime = time.mktime(
+            datetime.datetime.strptime(
+                self.properties['updated'],
+                '%Y-%m-%dT%H:%M:%S.%fz').timetuple()
+        )
+        os.utime(file_obj.name, (mtime, mtime))
 
     # NOTE: Alias for boto-like API.
     get_contents_to_filename = download_to_filename
