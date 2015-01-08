@@ -227,8 +227,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">return</span> <span class="n">connection</span>
 
 
-<div class="viewcode-block" id="get_entities"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_entities">[docs]</a><span class="k">def</span> <span class="nf">get_entities</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get_entities"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.get_entities">[docs]</a><span class="k">def</span> <span class="nf">get_entities</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Retrieves entities, along with their attributes.</span>
 
 <span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
@@ -247,14 +246,23 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
 <span class="sd">    :param connection: Optional. The connection used to connect to datastore.</span>
 
-<span class="sd">    :type dataset_id: string</span>
-<span class="sd">    :param dataset_id: Optional. The ID of the dataset.</span>
-
 <span class="sd">    :rtype: list of :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">    :returns: The requested entities.</span>
+<span class="sd">    :raises: :class:`ValueError` if the key dataset IDs don&#39;t agree.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
     <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
-    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dataset_id</span>
+    <span class="c"># Rather than creating a list or set of all dataset IDs, we iterate</span>
+    <span class="c"># and check. We could allow the backend to check this for us if IDs</span>
+    <span class="c"># with no prefix worked (GoogleCloudPlatform/google-cloud-datastore#59)</span>
+    <span class="c"># or if we made sure that a prefix s~ or e~ was on each key.</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">!=</span> <span class="n">dataset_id</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;All keys in get_entities must be from the &#39;</span>
+                             <span class="s">&#39;same dataset.&#39;</span><span class="p">)</span>
 
     <span class="n">entity_pbs</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span>
         <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span>
@@ -279,7 +287,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">return</span> <span class="n">entities</span>
 
 </div>
-<div class="viewcode-block" id="allocate_ids"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.allocate_ids">[docs]</a><span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="p">,</span> <span class="n">num_ids</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="allocate_ids"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.allocate_ids">[docs]</a><span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="p">,</span> <span class="n">num_ids</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Allocates a list of IDs from a partial key.</span>
 
 <span class="sd">    :type incomplete_key: A :class:`gcloud.datastore.key.Key`</span>
@@ -291,15 +299,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
 <span class="sd">    :param connection: Optional. The connection used to connect to datastore.</span>
 
-<span class="sd">    :type dataset_id: string</span>
-<span class="sd">    :param dataset_id: Optional. The ID of the dataset.</span>
-
 <span class="sd">    :rtype: list of :class:`gcloud.datastore.key.Key`</span>
 <span class="sd">    :returns: The (complete) keys allocated with ``incomplete_key`` as root.</span>
 <span class="sd">    :raises: :class:`ValueError` if ``incomplete_key`` is not a partial key.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
-    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s">&#39;Key is not partial.&#39;</span><span class="p">,</span> <span class="n">incomplete_key</span><span class="p">))</span>
@@ -307,7 +311,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="n">incomplete_key_pb</span> <span class="o">=</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
     <span class="n">incomplete_key_pbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">incomplete_key_pb</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_ids</span>
 
-    <span class="n">allocated_key_pbs</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">allocate_ids</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">incomplete_key_pbs</span><span class="p">)</span>
+    <span class="n">allocated_key_pbs</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+                                                <span class="n">incomplete_key_pbs</span><span class="p">)</span>
     <span class="n">allocated_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">allocated_key_pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
                      <span class="k">for</span> <span class="n">allocated_key_pb</span> <span class="ow">in</span> <span class="n">allocated_key_pbs</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">allocated_id</span><span class="p">)</span>
