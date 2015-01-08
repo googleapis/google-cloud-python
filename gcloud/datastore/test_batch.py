@@ -99,7 +99,7 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         entity = _Entity()
         key = entity.key = _Key(_Entity)
-        key._partial = True
+        key._id = None
 
         batch.add_auto_id_entity(entity)
 
@@ -128,35 +128,54 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         entity = _Entity(_PROPERTIES)
         key = entity.key = _Key(_DATASET)
-        key._partial = True
+        key._id = None
 
         batch.put(entity)
 
-        self.assertEqual(
-            connection._saved,
-            [(_DATASET, key._key, _PROPERTIES, (), batch.mutation)])
+        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        self.assertEqual(len(insert_auto_ids), 1)
+        self.assertEqual(insert_auto_ids[0].key, key._key)
+        upserts = list(batch.mutation.upsert)
+        self.assertEqual(len(upserts), 0)
+        deletes = list(batch.mutation.delete)
+        self.assertEqual(len(deletes), 0)
         self.assertEqual(batch._auto_id_entities, [entity])
 
     def test_put_entity_w_completed_key(self):
         _DATASET = 'DATASET'
-        _PROPERTIES = {'foo': 'bar'}
+        _PROPERTIES = {'foo': 'bar', 'baz': 'qux', 'spam': [1, 2, 3]}
         connection = _Connection()
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         entity = _Entity(_PROPERTIES)
+        entity.exclude_from_indexes = ('baz', 'spam')
         key = entity.key = _Key(_DATASET)
 
         batch.put(entity)
 
-        self.assertEqual(
-            connection._saved,
-            [(_DATASET, key._key, _PROPERTIES, (), batch.mutation)])
+        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        self.assertEqual(len(insert_auto_ids), 0)
+        upserts = list(batch.mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+
+        upsert = upserts[0]
+        self.assertEqual(upsert.key, key._key)
+        props = dict([(prop.name, prop.value) for prop in upsert.property])
+        self.assertTrue(props['foo'].indexed)
+        self.assertFalse(props['baz'].indexed)
+        self.assertTrue(props['spam'].indexed)
+        self.assertFalse(props['spam'].list_value[0].indexed)
+        self.assertFalse(props['spam'].list_value[1].indexed)
+        self.assertFalse(props['spam'].list_value[2].indexed)
+
+        deletes = list(batch.mutation.delete)
+        self.assertEqual(len(deletes), 0)
 
     def test_delete_w_partial_key(self):
         _DATASET = 'DATASET'
         connection = _Connection()
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         key = _Key(_DATASET)
-        key._partial = True
+        key._id = None
 
         self.assertRaises(ValueError, batch.delete, key)
 
@@ -168,9 +187,13 @@ class TestBatch(unittest2.TestCase):
 
         batch.delete(key)
 
-        self.assertEqual(
-            connection._deleted,
-            [(_DATASET, [key._key], batch.mutation)])
+        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        self.assertEqual(len(insert_auto_ids), 0)
+        upserts = list(batch.mutation.upsert)
+        self.assertEqual(len(upserts), 0)
+        deletes = list(batch.mutation.delete)
+        self.assertEqual(len(deletes), 1)
+        self.assertEqual(deletes[0], key._key)
 
     def test_commit(self):
         _DATASET = 'DATASET'
@@ -188,13 +211,13 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         entity = _Entity({})
         key = entity.key = _Key(_DATASET)
-        key._partial = True
+        key._id = None
         batch._auto_id_entities.append(entity)
 
         batch.commit()
 
         self.assertEqual(connection._committed, [(_DATASET, batch.mutation)])
-        self.assertFalse(key._partial)
+        self.assertFalse(key.is_partial)
         self.assertEqual(key._id, _NEW_ID)
 
     def test_as_context_mgr_wo_error(self):
@@ -214,9 +237,13 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(_BATCHES), [])
 
-        self.assertEqual(
-            connection._saved,
-            [(_DATASET, key._key, _PROPERTIES, (), batch.mutation)])
+        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        self.assertEqual(len(insert_auto_ids), 0)
+        upserts = list(batch.mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        self.assertEqual(upserts[0].key, key._key)
+        deletes = list(batch.mutation.delete)
+        self.assertEqual(len(deletes), 0)
         self.assertEqual(connection._committed, [(_DATASET, batch.mutation)])
 
     def test_as_context_mgr_nested(self):
@@ -225,9 +252,9 @@ class TestBatch(unittest2.TestCase):
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity1 = _Entity(_PROPERTIES)
-        key = entity1.key = _Key(_DATASET)
+        key1 = entity1.key = _Key(_DATASET)
         entity2 = _Entity(_PROPERTIES)
-        key = entity2.key = _Key(_DATASET)
+        key2 = entity2.key = _Key(_DATASET)
 
         self.assertEqual(list(_BATCHES), [])
 
@@ -244,11 +271,22 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(_BATCHES), [])
 
-        self.assertEqual(
-            connection._saved,
-            [(_DATASET, key._key, _PROPERTIES, (), batch1.mutation),
-             (_DATASET, key._key, _PROPERTIES, (), batch2.mutation)]
-        )
+        insert_auto_ids = list(batch1.mutation.insert_auto_id)
+        self.assertEqual(len(insert_auto_ids), 0)
+        upserts = list(batch1.mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        self.assertEqual(upserts[0].key, key1._key)
+        deletes = list(batch1.mutation.delete)
+        self.assertEqual(len(deletes), 0)
+
+        insert_auto_ids = list(batch2.mutation.insert_auto_id)
+        self.assertEqual(len(insert_auto_ids), 0)
+        upserts = list(batch2.mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        self.assertEqual(upserts[0].key, key2._key)
+        deletes = list(batch2.mutation.delete)
+        self.assertEqual(len(deletes), 0)
+
         self.assertEqual(connection._committed,
                          [(_DATASET, batch2.mutation),
                           (_DATASET, batch1.mutation)])
@@ -274,9 +312,13 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(_BATCHES), [])
 
-        self.assertEqual(
-            connection._saved,
-            [(_DATASET, key._key, _PROPERTIES, (), batch.mutation)])
+        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        self.assertEqual(len(insert_auto_ids), 0)
+        upserts = list(batch.mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        self.assertEqual(upserts[0].key, key._key)
+        deletes = list(batch.mutation.delete)
+        self.assertEqual(len(deletes), 0)
         self.assertEqual(connection._committed, [])
 
 
@@ -305,17 +347,6 @@ class _Connection(object):
     def __init__(self, *new_keys):
         self._commit_result = _CommitResult(*new_keys)
         self._committed = []
-        self._saved = []
-        self._deleted = []
-
-    def save_entity(self, dataset_id, key_pb, properties,
-                    exclude_from_indexes=(), mutation=None):
-        self._saved.append((dataset_id, key_pb, properties,
-                            tuple(exclude_from_indexes), mutation))
-        return self._save_result
-
-    def delete_entities(self, dataset_id, key_pbs, mutation=None):
-        self._deleted.append((dataset_id, key_pbs, mutation))
 
     def commit(self, dataset_id, mutation):
         self._committed.append((dataset_id, mutation))
@@ -329,10 +360,10 @@ class _Entity(dict):
 
 class _Key(object):
     _MARKER = object()
+    _kind = 'KIND'
     _key = 'KEY'
-    _partial = False
     _path = None
-    _id = None
+    _id = 1234
     _stored = None
 
     def __init__(self, dataset_id):
@@ -340,12 +371,21 @@ class _Key(object):
 
     @property
     def is_partial(self):
-        return self._partial
+        return self._id is None
 
     def to_protobuf(self):
-        return self._key
+        from gcloud.datastore import datastore_v1_pb2
+        key = self._key = datastore_v1_pb2.Key()
+        # Don't assign it, because it will just get ripped out
+        # key.partition_id.dataset_id = self.dataset_id
+
+        element = key.path_element.add()
+        element.kind = self._kind
+        if self._id is not None:
+            element.id = self._id
+
+        return key
 
     def completed_key(self, new_id):
-        assert self._partial
+        assert self.is_partial
         self._id = new_id
-        self._partial = False
