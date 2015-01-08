@@ -13,9 +13,64 @@
 # limitations under the License.
 
 """Create / interact with a batch of updates / deletes."""
+try:
+    from threading import local as Local
+except ImportError:     # pragma: NO COVER (who doesn't have it?)
+    class Local(object):
+        """Placeholder for non-threaded applications."""
 
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+
+
+class _Batches(Local):
+    """Manage a thread-local LIFO stack of active batches / transactions.
+
+    Intended for use only in :class:`gcloud.datastore.batch.Batch.__enter__`
+    """
+    def __init__(self):
+        super(_Batches, self).__init__()
+        self._stack = []
+
+    def __iter__(self):
+        """Iterate the stack in LIFO order.
+        """
+        return iter(reversed(self._stack))
+
+    def push(self, batch):
+        """Push a batch / transaction onto our stack.
+
+        Intended for use only in :meth:`gcloud.datastore.batch.Batch.__enter__`
+
+        :type batch: :class:`gcloud.datastore.batch.Batch` or
+                    :class:`gcloud.datastore.transaction.Transaction`
+        """
+        self._stack.append(batch)
+
+    def pop(self):
+        """Pop a batch / transaction from our stack.
+
+        Intended for use only in :meth:`gcloud.datastore.batch.Batch.__enter__`
+
+        :rtype: :class:`gcloud.datastore.batch.Batch` or
+                :class:`gcloud.datastore.transaction.Transaction`
+        :raises: IndexError if the stack is empty.
+        """
+        return self._stack.pop()
+
+    @property
+    def top(self):
+        """Get the top-most batch / transaction
+
+        :rtype: :class:`gcloud.datastore.batch.Batch` or
+                :class:`gcloud.datastore.transaction.Transaction` or None
+        :returns: the top-most item, or None if the stack is empty.
+        """
+        if len(self._stack) > 0:
+            return self._stack[-1]
+
+
+_BATCHES = _Batches()
 
 
 class Batch(object):
@@ -180,6 +235,13 @@ class Batch(object):
         self.connection.delete_entities(
             self.dataset_id, [key_pb], mutation=self.mutation)
 
+    def begin(self):
+        """No-op
+
+        Overridden by :class:`gcloud.datastore.transaction.Transaction`.
+        """
+        pass
+
     def commit(self):
         """Commits the batch.
 
@@ -197,9 +259,23 @@ class Batch(object):
             new_id = new_key_pb.path_element[-1].id
             entity.key = entity.key.completed_key(new_id)
 
+    def rollback(self):
+        """No-op
+
+        Overridden by :class:`gcloud.datastore.transaction.Transaction`.
+        """
+        pass
+
     def __enter__(self):
+        _BATCHES.push(self)
+        self.begin()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if exc_type is None:
-            self.commit()
+        try:
+            if exc_type is None:
+                self.commit()
+            else:
+                self.rollback()
+        finally:
+            _BATCHES.pop()
