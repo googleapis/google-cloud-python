@@ -29,19 +29,21 @@ class Transaction(object):
     mutation, and execute those within a transaction::
 
       >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id')
-      >>> with dataset.transaction()
-      ...   entity1.save()
-      ...   entity2.save()
+      >>> from gcloud.datastore.transaction import Transaction
+
+      >>> datastore.set_default_connection()
+      >>> datastore.set_default_dataset_id()
+
+      >>> with Transaction()
+      ...     entity1.save()
+      ...     entity2.save()
 
     By default, the transaction is rolled back if the transaction block
     exits with an error::
 
-      >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id')
-      >>> with dataset.transaction() as t:
-      ...   do_some_work()
-      ...   raise Exception() # rolls back
+      >>> with Transaction() as txn:
+      ...     do_some_work()
+      ...     raise SomeException()  # rolls back
 
     If the transaction block exists without an exception, it will commit
     by default.
@@ -50,8 +52,9 @@ class Transaction(object):
        entities will not be available at save time!  That means, if you
        try::
 
-         >>> with dataset.transaction():
-         ...   entity = dataset.entity('Thing').save()
+         >>> with Transaction():
+         ...     entity = Entity(key=Key('Thing'))
+         ...     entity.save()
 
        ``entity`` won't have a complete Key until the transaction is
        committed.
@@ -59,16 +62,16 @@ class Transaction(object):
        Once you exit the transaction (or call ``commit()``), the
        automatically generated ID will be assigned to the entity::
 
-         >>> with dataset.transaction():
-         ...   entity = dataset.entity('Thing')
-         ...   entity.save()
-         ...   assert entity.key().is_partial  # There is no ID on this key.
-         >>> assert not entity.key().is_partial  # There *is* an ID.
+         >>> with Transaction():
+         ...     entity = Entity(key=Key('Thing'))
+         ...     entity.save()
+         ...     assert entity.key.is_partial  # There is no ID on this key.
+         >>> assert not entity.key.is_partial  # There *is* an ID.
 
     .. warning:: If you're using the automatically generated ID
        functionality, it's important that you only use
-       :func:`gcloud.datastore.entity.Entity.save` rather than using
-       :func:`gcloud.datastore.connection.Connection.save_entity`
+       :meth:`gcloud.datastore.entity.Entity.save` rather than using
+       :meth:`gcloud.datastore.connection.Connection.save_entity`
        directly.
 
        If you mix the two, the results will have extra IDs generated and
@@ -77,16 +80,16 @@ class Transaction(object):
     If you don't want to use the context manager you can initialize a
     transaction manually::
 
-      >>> transaction = dataset.transaction()
+      >>> transaction = Transaction()
       >>> transaction.begin()
 
-      >>> entity = dataset.entity('Thing')
+      >>> entity = Entity(key=Key('Thing'))
       >>> entity.save()
 
       >>> if error:
-      ...   transaction.rollback()
+      ...     transaction.rollback()
       ... else:
-      ...   transaction.commit()
+      ...     transaction.commit()
 
     For now, this library will enforce a rule of one transaction per
     connection.  That is, If you want to work with two transactions at
@@ -95,33 +98,21 @@ class Transaction(object):
 
     For example, this is perfectly valid::
 
-      >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id')
-      >>> with dataset.transaction():
-      ...   dataset.entity('Thing').save()
+      >>> with Transaction():
+      ...     entity = Entity(key=Key('Thing'))
+      ...     entity.save()
 
     However, this **wouldn't** be acceptable::
 
-      >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id')
-      >>> with dataset.transaction():
-      ...   dataset.entity('Thing').save()
-      ...   with dataset.transaction():
-      ...     dataset.entity('Thing').save()
+      >>> with Transaction():
+      ...     Entity(key=Key('Thing')).save()
+      ...     with Transaction():
+      ...         Entity(key=Key('Thing')).save()
 
     Technically, it looks like the Protobuf API supports this type of
-    pattern, however it makes the code particularly messy.  If you
-    really need to nest transactions, try::
+    pattern, however it makes the code particularly messy.
 
-      >>> from gcloud import datastore
-      >>> dataset1 = datastore.get_dataset('dataset-id1')
-      >>> dataset2 = datastore.get_dataset('dataset-id2')
-      >>> with dataset1.transaction():
-      ...   dataset1.entity('Thing').save()
-      ...   with dataset2.transaction():
-      ...     dataset2.entity('Thing').save()
-
-    :type dataset_id: :class:`str`.
+    :type dataset_id: string
     :param dataset_id: The ID of the dataset.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
@@ -147,7 +138,7 @@ class Transaction(object):
     def dataset_id(self):
         """Getter for dataset ID in which the transaction will run.
 
-        :rtype: :class:`str`
+        :rtype: string
         :returns: The dataset ID in which the transaction will run.
         """
         return self._dataset_id

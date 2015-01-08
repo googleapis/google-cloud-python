@@ -302,7 +302,7 @@ class Connection(_Base):
                             latest API version supported by
                             gcloud-python.
 
-        :type expect_json: bool
+        :type expect_json: boolean
         :param expect_json: If True, this method will try to parse the
                             response as JSON and raise an exception if
                             that cannot be done.  Default is True.
@@ -464,10 +464,10 @@ class Connection(_Base):
         :type bucket: string or :class:`gcloud.storage.bucket.Bucket`
         :param bucket: The bucket name (or bucket object) to create.
 
-        :type force: bool
+        :type force: boolean
         :param full: If True, empties the bucket's objects then deletes it.
 
-        :rtype: bool
+        :rtype: boolean
         :returns: True if the bucket was deleted.
         :raises: :class:`gcloud.storage.exceptions.NotFound` if the
                  bucket doesn't exist, or

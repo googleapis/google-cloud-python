@@ -78,7 +78,7 @@ class Iterator(object):
     def has_next_page(self):
         """Determines whether or not this iterator has more pages.
 
-        :rtype: bool
+        :rtype: boolean
         :returns: Whether the iterator has more pages or not.
         """
         if self.page_number == 0:

@@ -14,6 +14,8 @@
 
 """Connections to gcloud datastore API servers."""
 
+import six
+
 from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
@@ -56,8 +58,8 @@ class Connection(connection.Connection):
 
         :rtype: string
         :returns: The string response content from the API call.
-
-        :raises: Exception if the response code is not 200 OK.
+        :raises: :class:`six.moves.http_client.HTTPException` if the response
+                 code is not 200 OK.
         """
         headers = {
             'Content-Type': 'application/x-protobuf',
@@ -68,13 +70,16 @@ class Connection(connection.Connection):
             uri=self.build_api_url(dataset_id=dataset_id, method=method),
             method='POST', headers=headers, body=data)
 
-        if headers['status'] != '200':
-            raise Exception('Request failed. Error was: %s' % content)
+        status = headers['status']
+        if status != '200':
+            message = ('Request failed with status code %s. '
+                       'Error was: %s' % (status, content))
+            raise six.moves.http_client.HTTPException(message)
 
         return content
 
     def _rpc(self, dataset_id, method, request_pb, response_pb_cls):
-        """ Make a protobuf RPC request.
+        """Make a protobuf RPC request.
 
         :type dataset_id: string
         :param dataset_id: The ID of the dataset to connect to. This is
@@ -84,11 +89,12 @@ class Connection(connection.Connection):
         :param method: The name of the method to invoke.
 
         :type request_pb: :class:`google.protobuf.message.Message` instance
-        :param method: the protobuf instance representing the request.
+        :param request_pb: the protobuf instance representing the request.
 
-        :type response_pb_cls: a :class:`google.protobuf.message.Message'
+        :type response_pb_cls: A :class:`google.protobuf.message.Message'
                                subclass.
-        :param method: The class used to unmarshall the response protobuf.
+        :param response_pb_cls: The class used to unmarshall the response
+                                protobuf.
         """
         response = self._request(dataset_id=dataset_id, method=method,
                                  data=request_pb.SerializeToString())
@@ -99,10 +105,8 @@ class Connection(connection.Connection):
                       api_version=None):
         """Construct the URL for a particular API call.
 
-        This method is used internally
-        to come up with the URL
-        to use when making RPCs
-        to the Cloud Datastore API.
+        This method is used internally to come up with the URL to use when
+        making RPCs to the Cloud Datastore API.
 
         :type dataset_id: string
         :param dataset_id: The ID of the dataset to connect to. This is
@@ -133,7 +137,7 @@ class Connection(connection.Connection):
 
         :rtype: :class:`gcloud.datastore.transaction.Transaction`, (getting)
                 or :class:`gcloud.datastore.connection.Connection` (setting)
-        :returns: the current transaction (getting) or self (setting).
+        :returns: The current transaction (getting) or self (setting).
         """
         if transaction is self._EMPTY:
             return self._current_transaction
@@ -145,7 +149,7 @@ class Connection(connection.Connection):
         """Getter for mutation usable with current connection.
 
         :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.
-        :returns: the mutation instance associated with the current transaction
+        :returns: The mutation instance associated with the current transaction
                   (if one exists) or or a new mutation instance.
         """
         if self.transaction():
@@ -163,11 +167,11 @@ class Connection(connection.Connection):
         (:class:`gcloud.datastore.datastore_v1_pb2.Key` and
         :class:`gcloud.datastore.datastore_v1_pb2.Entity`) and is used
         under the hood for methods like
-        :func:`gcloud.datastore.key.Key.get`:
+        :meth:`gcloud.datastore.key.Key.get`:
 
         >>> from gcloud import datastore
         >>> from gcloud.datastore.key import Key
-        >>> connection = datastore.get_connection()
+        >>> datastore.set_default_connection()
         >>> key = Key('MyKind', 1234, dataset_id='dataset-id')
         >>> key.get()
         <Entity object>
@@ -194,7 +198,7 @@ class Connection(connection.Connection):
                         by the backend as "deferred" will be copied into it.
                         Use only as a keyword param.
 
-        :type eventual: bool
+        :type eventual: boolean
         :param eventual: If False (the default), request ``STRONG`` read
                         consistency.  If True, request ``EVENTUAL`` read
                         consistency.  If the connection has a current
@@ -252,15 +256,18 @@ class Connection(connection.Connection):
         matching the query.
 
         You typically wouldn't use this method directly, in favor of the
-        :func:`gcloud.datastore.query.Query.fetch` method.
+        :meth:`gcloud.datastore.query.Query.fetch` method.
 
         Under the hood, the :class:`gcloud.datastore.query.Query` class
         uses this method to fetch data:
 
         >>> from gcloud import datastore
         >>> from gcloud.datastore.query import Query
-        >>> connection = datastore.get_connection()
-        >>> query = Query(dataset_id='dataset-id', 'MyKind')
+
+        >>> datastore.set_default_connection()
+        >>> datastore.set_default_dataset_id()
+
+        >>> query = Query(kind='MyKind')
         >>> query.add_filter('property', '=', 'val')
 
         Using the query's ``fetch_page`` method...
@@ -287,11 +294,11 @@ class Connection(connection.Connection):
         :type namespace: string
         :param namespace: The namespace over which to run the query.
 
-        :type eventual: bool
+        :type eventual: boolean
         :param eventual: If False (the default), request ``STRONG`` read
-                        consistency.  If True, request ``EVENTUAL`` read
-                        consistency.  If the connection has a current
-                        transaction, this value *must* be false.
+                         consistency.  If True, request ``EVENTUAL`` read
+                         consistency.  If the connection has a current
+                         transaction, this value *must* be false.
         """
         request = datastore_pb.RunQueryRequest()
         self._set_read_options(request, eventual)
@@ -316,8 +323,15 @@ class Connection(connection.Connection):
 
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
-        """
 
+        :type serializable: boolean
+        :param serializable: Boolean indicating if the isolation level of the
+                             transaction should be SERIALIZABLE (True) or
+                             SNAPSHOT (False).
+
+        :rtype: :class:`.datastore_v1_pb2.BeginTransactionResponse`
+        :returns': the result protobuf for the begin transaction request.
+        """
         if self.transaction():
             raise ValueError('Cannot start a transaction with another already '
                              'in progress.')
@@ -368,12 +382,12 @@ class Connection(connection.Connection):
 
         Maps the ``DatastoreService.Rollback`` protobuf RPC.
 
-        Raises a ``ValueError``
-        if the connection isn't currently in a transaction.
-
         :type dataset_id: string
         :param dataset_id: The ID of the dataset to which the transaction
                            belongs.
+
+        :raises: :class:`ValueError` if the connection isn't currently in a
+                 transaction.
         """
         if not self.transaction() or not self.transaction().id:
             raise ValueError('No transaction to rollback.')
@@ -411,9 +425,9 @@ class Connection(connection.Connection):
         """Save an entity to the Cloud Datastore with the provided properties.
 
         .. note::
-           Any existing properties for the entity identified by 'key_pb'
-           will be replaced by those passed in 'properties';  properties
-           not passed in 'properties' no longer be set for the entity.
+           Any existing properties for the entity identified by ``key_pb``
+           will be replaced by those passed in ``properties``;  properties
+           not passed in ``properties`` no longer be set for the entity.
 
         :type dataset_id: string
         :param dataset_id: The ID of the dataset in which to save the entity.
@@ -424,13 +438,14 @@ class Connection(connection.Connection):
         :type properties: dict
         :param properties: The properties to store on the entity.
 
-        :type exclude_from_indexes: sequence of str
+        :type exclude_from_indexes: sequence of string
         :param exclude_from_indexes: Names of properties *not* to be indexed.
 
-        :rtype: :class:`tuple`
-        :returns: The pair (`assigned`, `new_id`) where `assigned` is a boolean
-                  indicating if a new ID has been assigned and `new_id` is
-                  either `None` or an integer that has been assigned.
+        :rtype: tuple
+        :returns: The pair (``assigned``, ``new_id``) where ``assigned`` is a
+                  boolean indicating if a new ID has been assigned and
+                  ``new_id`` is either ``None`` or an integer that has been
+                  assigned.
         """
         mutation = self.mutation()
         key_pb = helpers._prepare_key_for_request(key_pb)
@@ -485,7 +500,7 @@ class Connection(connection.Connection):
         :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs and not
         with any of the other abstractions.  For example, it's used
         under the hood in the
-        :func:`gcloud.datastore.entity.Entity.delete` method.
+        :meth:`gcloud.datastore.entity.Entity.delete` method.
 
         :type dataset_id: string
         :param dataset_id: The ID of the dataset from which to delete the keys.
@@ -494,7 +509,7 @@ class Connection(connection.Connection):
         :param key_pbs: The keys to delete from the datastore.
 
         :rtype: boolean
-        :returns: `True`
+        :returns: ``True``
         """
         mutation = self.mutation()
         helpers._add_keys_to_request(mutation.delete, key_pbs)
@@ -553,7 +568,7 @@ class Connection(connection.Connection):
 def _copy_deferred_keys(lookup_request, lookup_response):
     """Clear requested keys and copy deferred keys back in.
 
-    Helper ``Connection.lookup()``.
+    Helper for ``Connection.lookup()``.
     """
     for old_key in list(lookup_request.key):
         lookup_request.key.remove(old_key)

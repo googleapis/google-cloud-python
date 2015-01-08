@@ -28,31 +28,31 @@ class Query(object):
     This class serves as an abstraction for creating a query over data
     stored in the Cloud Datastore.
 
-    :type kind: string.
+    :type kind: string
     :param kind: The kind to query.
 
-    :type dataset_id: str
+    :type dataset_id: string
     :param dataset_id: The ID of the dataset to query.  If not passed,
                        uses the implicit default.
 
-    :type namespace: string or None.
+    :type namespace: string or None
     :param namespace: The namespace to which to restrict results.
 
-    :type ancestor: :class:`gcloud.datastore.key.Key` or None.
+    :type ancestor: :class:`gcloud.datastore.key.Key` or None
     :param ancestor: key of the ancestor to which this query's results are
                      restricted.
 
-    :type filters: sequence of (property_name, operator, value) tuples.
+    :type filters: sequence of (property_name, operator, value) tuples
     :param filters: property filters applied by this query.
 
-    :type projection: sequence of string.
+    :type projection: sequence of string
     :param projection:  fields returned as part of query results.
 
-    :type order: sequence of string.
+    :type order: sequence of string
     :param order:  field names used to order query results. Prepend '-'
                    to a field name to sort it in descending order.
 
-    :type group_by: sequence_of_string.
+    :type group_by: sequence of string
     :param group_by: field names used to group query results.
 
     :raises: ValueError if ``dataset_id`` is not passed and no implicit
@@ -124,7 +124,7 @@ class Query(object):
     def kind(self):
         """Get the Kind of the Query.
 
-        :rtype: string or :class:`Query`
+        :rtype: string
         """
         return self._kind
 
@@ -168,8 +168,7 @@ class Query(object):
 
     @ancestor.deleter
     def ancestor(self):
-        """Remove the ancestor for the query.
-        """
+        """Remove the ancestor for the query."""
         self._ancestor = None
 
     @property
@@ -204,9 +203,10 @@ class Query(object):
         :type value: integer, string, boolean, float, None, datetime
         :param value: The value to filter on.
 
-        :raises: `ValueError` if `operation` is not one of the specified
-                 values, or if a filter names '__key__' but passes invalid
-                 operator (``==`` is required) or value (a key is required).
+        :raises: :class:`ValueError` if ``operation`` is not one of the
+                 specified values, or if a filter names ``'__key__'`` but
+                 passes invalid operator (``==`` is required) or value (a key
+                 is required).
         """
         if self.OPERATORS.get(operator) is None:
             error_message = 'Invalid expression: "%s"' % (operator,)
@@ -226,7 +226,7 @@ class Query(object):
         """Fields names returned by the query.
 
         :rtype: sequence of string
-        :returns:  names of fields in query results.
+        :returns: Names of fields in query results.
         """
         return self._projection[:]
 
@@ -284,7 +284,7 @@ class Query(object):
 
         :type value: string or sequence of strings
         :param value: Each value is a string giving the name of a
-                         property to use to group results together.
+                      property to use to group results together.
         """
         if isinstance(value, str):
             value = [value]
@@ -320,7 +320,6 @@ class Query(object):
         :param connection: An optional cursor passed through to the iterator.
                            If not supplied, uses the implicit default.
 
-
         :rtype: :class:`Iterator`
         :raises: ValueError if ``connection`` is not passed and no implicit
                  default has been set.
@@ -336,8 +335,8 @@ class Query(object):
 
 
 class Iterator(object):
-    """Represent the state of a given execution of a Query.
-    """
+    """Represent the state of a given execution of a Query."""
+
     _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
 
     _FINISHED = (
@@ -359,7 +358,7 @@ class Iterator(object):
         """Fetch a single "page" of query results.
 
         Low-level API for fine control:  the more convenient API is
-        to iterate on us.
+        to iterate on the current Iterator.
 
         :rtype: tuple, (entities, more_results, cursor)
         """
@@ -427,10 +426,10 @@ def _pb_from_query(query):
     """Convert a Query instance to the corresponding protobuf.
 
     :type query: :class:`Query`
-    :param query:  the source query
+    :param query: The source query.
 
     :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Query`
-    :returns: a protobuf that can be sent to the protobuf API.  N.b. that
+    :returns: A protobuf that can be sent to the protobuf API.  N.b. that
               it does not contain "in-flight" fields for ongoing query
               executions (cursors, offset, limit).
     """

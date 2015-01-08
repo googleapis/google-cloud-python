@@ -100,7 +100,7 @@ def valid_filename(filename):
 def is_production_filename(filename):
     """Checks if the file contains production code.
 
-    :rtype: `bool`
+    :rtype: boolean
     :returns: Boolean indicating production status.
     """
     return not ('demo' in filename or 'test' in filename

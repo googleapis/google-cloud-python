@@ -40,7 +40,7 @@ class Entity(dict):
     This means you could take an existing entity and change the key
     to duplicate the object.
 
-    Use :method:`gcloud.datastore.key.Key.get` to retrieve an existing entity.
+    Use :meth:`gcloud.datastore.key.Key.get` to retrieve an existing entity.
 
       >>> key.get()
       <Entity[{'kind': 'EntityKind', id: 1234}] {'property': 'value'}>
@@ -54,7 +54,7 @@ class Entity(dict):
     <Entity[{'kind': 'EntityKind', id: 1234}] {'age': 20, 'name': 'JJ'}>
 
     And you can convert an entity to a regular Python dictionary with the
-    `dict` builtin:
+    ``dict`` builtin:
 
     >>> dict(entity)
     {'age': 20, 'name': 'JJ'}
@@ -62,19 +62,19 @@ class Entity(dict):
     .. note::
 
        When saving an entity to the backend, values which are "text"
-       ('unicode' in Python2, 'str' in Python3) will be saved using
+       (``unicode`` in Python2, ``str`` in Python3) will be saved using
        the 'text_value' field, after being encoded to UTF-8.  When
        retrieved from the back-end, such values will be decoded to "text"
-       again.  Values which are "bytes" ('str' in Python2, 'bytes' in
+       again.  Values which are "bytes" (``str`` in Python2, ``bytes`` in
        Python3), will be saved using the 'blob_value' field, without
        any decoding / encoding step.
 
     :type key: :class:`gcloud.datastore.key.Key`
-    :param key: Optional key to be set on entity. Required for save() or
-                reload().
+    :param key: Optional key to be set on entity. Required for :meth:`save()`
+                or :meth:`reload()`.
 
-    :type exclude_from_indexes: `tuple` of :class:`str`
-    :param exclude_from_indexes: names of fields whose values are not to be
+    :type exclude_from_indexes: tuple of string
+    :param exclude_from_indexes: Names of fields whose values are not to be
                                  indexed for this entity.
     """
 
@@ -109,8 +109,8 @@ class Entity(dict):
         """Return our key, or raise NoKey if not set.
 
         :rtype: :class:`gcloud.datastore.key.Key`.
-        :returns: our key
-        :raises: NoKey if key is None
+        :returns: The entity's key.
+        :raises: :class:`NoKey` if no key is set.
         """
         if self.key is None:
             raise NoKey()
@@ -149,9 +149,10 @@ class Entity(dict):
            the datastore.
 
         .. note::
-           Property values which are "text" ('unicode' in Python2, 'str' in
+           Property values which are "text" (``unicode`` in Python2, ``str`` in
            Python3) map to 'string_value' in the datastore;  values which are
-           "bytes" ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
+           "bytes" (``str`` in Python2, ``bytes`` in Python3) map to
+           'blob_value'.
 
         :type connection: :class:`gcloud.datastore.connection.Connection`
         :param connection: Optional connection used to connect to datastore.

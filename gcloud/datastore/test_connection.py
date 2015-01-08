@@ -100,15 +100,18 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], DATA)
 
     def test__request_not_200(self):
+        import six
+
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
         DATA = 'DATA'
         conn = self._makeOne()
         conn._http = Http({'status': '400'}, 'Bad Request')
-        with self.assertRaises(Exception) as e:
+        with self.assertRaises(six.moves.http_client.HTTPException) as e:
             conn._request(DATASET_ID, METHOD, DATA)
-        self.assertEqual(str(e.exception),
-                         'Request failed. Error was: Bad Request')
+        expected_message = ('Request failed with status code 400. '
+                            'Error was: Bad Request')
+        self.assertEqual(str(e.exception), expected_message)
 
     def test__rpc(self):
 

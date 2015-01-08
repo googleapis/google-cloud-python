@@ -178,7 +178,7 @@ class Key(_PropertyMixin):
     def exists(self):
         """Determines whether or not this key exists.
 
-        :rtype: bool
+        :rtype: boolean
         :returns: True if the key exists in Cloud Storage.
         """
         return self.bucket.get_key(self.name) is not None
@@ -289,7 +289,7 @@ class Key(_PropertyMixin):
         :type file_obj: file
         :param file_obj: A file handle open for reading.
 
-        :type rewind: bool
+        :type rewind: boolean
         :param rewind: If True, seek to the beginning of the file handle before
                        writing the file to Cloud Storage.
 
