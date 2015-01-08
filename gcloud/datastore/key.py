@@ -227,12 +227,12 @@ class Key(object):
         :returns: The requested entity, or ``None`` if there was no
                   match found.
         """
-        # Temporary import hack until Dataset is removed in #477.
-        from gcloud import datastore
+        # Temporary cylic import, needs to be removed.
+        from gcloud.datastore import api
 
         # We allow partial keys to attempt a get, the backend will fail.
         connection = connection or _implicit_environ.CONNECTION
-        entities = datastore.get_entities([self], connection=connection)
+        entities = api.get_entities([self], connection=connection)
 
         if entities:
             result = entities[0]
