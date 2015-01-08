@@ -18,6 +18,8 @@ Allows interacting with the datastore via user-friendly Key, Entity and
 Query objects rather than via protobufs.
 """
 
+import collections
+
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import helpers
 
@@ -58,11 +60,12 @@ def _require_connection(connection=None):
     return connection
 
 
-def get(keys, missing=None, deferred=None, connection=None):
+def get(key_or_keys, missing=None, deferred=None, connection=None):
     """Retrieves entities, along with their attributes.
 
-    :type keys: list of :class:`gcloud.datastore.key.Key`
-    :param keys: The name of the item to retrieve.
+    :type key_or_keys: list of :class:`gcloud.datastore.key.Key` or single
+                       :class:`gcloud.datastore.key.Key`
+    :param key_or_keys: The key or keys to be retrieved from the datastore.
 
     :type missing: an empty list or None.
     :param missing: If a list is passed, the key-only entities returned
@@ -77,10 +80,15 @@ def get(keys, missing=None, deferred=None, connection=None):
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: Optional. The connection used to connect to datastore.
 
-    :rtype: list of :class:`gcloud.datastore.entity.Entity`
-    :returns: The requested entities.
-    :raises: :class:`ValueError` if the key dataset IDs don't agree.
+    :rtype: list of :class:`gcloud.datastore.entity.Entity`, single
+            :class:`gcloud.datastore.entity.Entity`, or ``NoneType``
+    :returns: The requested entities, or single entity.
     """
+    if isinstance(key_or_keys, collections.Iterable):
+        keys = key_or_keys
+    else:
+        keys = [key_or_keys]
+
     if not keys:
         return []
 
@@ -114,7 +122,11 @@ def get(keys, missing=None, deferred=None, connection=None):
     for entity_pb in entity_pbs:
         entities.append(helpers.entity_from_protobuf(entity_pb))
 
-    return entities
+    if keys is key_or_keys:
+        return entities
+    else:
+        if entities:
+            return entities[0]
 
 
 def allocate_ids(incomplete_key, num_ids, connection=None):

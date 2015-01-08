@@ -101,15 +101,23 @@ class Test_get_function(unittest2.TestCase):
         results = self._callFUT([])
         self.assertEqual(results, [])
 
-    def test_get_miss(self):
+    def _miss_helper(self, expected_results, use_list=True):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
 
         DATASET_ID = 'DATASET'
         connection = _Connection()
         key = Key('Kind', 1234, dataset_id=DATASET_ID)
-        results = self._callFUT([key], connection=connection)
-        self.assertEqual(results, [])
+        if use_list:
+            key = [key]
+        results = self._callFUT(key, connection=connection)
+        self.assertEqual(results, expected_results)
+
+    def test_get_miss(self):
+        self._miss_helper([], use_list=True)
+
+    def test_get_miss_single_key(self):
+        self._miss_helper(None, use_list=False)
 
     def test_get_miss_w_missing(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -239,6 +247,33 @@ class Test_get_function(unittest2.TestCase):
         key2 = Key('KIND', 1234, dataset_id=DATASET_ID2)
         with self.assertRaises(ValueError):
             self._callFUT([key1, key2], connection=object())
+
+    def test_get_hit_single_key(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+
+        # Make a found entity pb to be returned from mock backend.
+        entity_pb = self._make_entity_pb(DATASET_ID, KIND, ID,
+                                         'foo', 'Foo')
+
+        # Make a connection to return the entity pb.
+        connection = _Connection(entity_pb)
+
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
+        result = self._callFUT(key, connection=connection)
+        new_key = result.key
+
+        # Check the returned value is as expected.
+        self.assertFalse(new_key is key)
+        self.assertEqual(new_key.dataset_id, DATASET_ID)
+        self.assertEqual(new_key.path, PATH)
+        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result['foo'], 'Foo')
 
     def test_get_implicit(self):
         from gcloud.datastore import _implicit_environ
