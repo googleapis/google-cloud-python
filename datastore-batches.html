@@ -127,6 +127,31 @@ are not set.</p>
 </tbody>
 </table>
 <dl class="method">
+<dt id="gcloud.datastore.batch.Batch.add_auto_id_entity">
+<tt class="descname">add_auto_id_entity</tt><big>(</big><em>entity</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.add_auto_id_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.add_auto_id_entity" title="Permalink to this definition">#</a></dt>
+<dd><p>Adds an entity to the list of entities to update with IDs.</p>
+<p>When an entity has a partial key, calling <tt class="docutils literal"><span class="pre">save()</span></tt> adds an
+insert_auto_id entry in the mutation.  In order to make sure we
+update the Entity once the transaction is committed, we need to
+keep track of which entities to update (and the order is
+important).</p>
+<p>When you call <tt class="docutils literal"><span class="pre">save()</span></tt> on an entity inside a transaction, if
+the entity has a partial key, it adds itself to the list of
+entities to be updated once the transaction is committed by
+calling this method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>) &#8211; The entity to be updated with a completed key.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if the entity&#8217;s key is alread completed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="gcloud.datastore.batch.Batch.commit">
 <tt class="descname">commit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commits the batch.</p>

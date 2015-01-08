@@ -146,6 +146,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                              <span class="s">&#39;a dataset ID set.&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Mutation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_id_entities</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Batch.dataset_id"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.dataset_id">[docs]</a>    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -181,6 +182,30 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span>
 </div>
+<div class="viewcode-block" id="Batch.add_auto_id_entity"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.add_auto_id_entity">[docs]</a>    <span class="k">def</span> <span class="nf">add_auto_id_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adds an entity to the list of entities to update with IDs.</span>
+
+<span class="sd">        When an entity has a partial key, calling ``save()`` adds an</span>
+<span class="sd">        insert_auto_id entry in the mutation.  In order to make sure we</span>
+<span class="sd">        update the Entity once the transaction is committed, we need to</span>
+<span class="sd">        keep track of which entities to update (and the order is</span>
+<span class="sd">        important).</span>
+
+<span class="sd">        When you call ``save()`` on an entity inside a transaction, if</span>
+<span class="sd">        the entity has a partial key, it adds itself to the list of</span>
+<span class="sd">        entities to be updated once the transaction is committed by</span>
+<span class="sd">        calling this method.</span>
+
+<span class="sd">        :type entity: :class:`gcloud.datastore.entity.Entity`</span>
+<span class="sd">        :param entity: The entity to be updated with a completed key.</span>
+
+<span class="sd">        :raises: ValueError if the entity&#39;s key is alread completed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Entity has a completed key&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_auto_id_entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+</div>
 <div class="viewcode-block" id="Batch.put"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remember an entity&#39;s state to be saved during ``commit``.</span>
 
@@ -210,6 +235,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">save_entity</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pb</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span>
             <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span> <span class="n">mutation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_auto_id_entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Batch.delete"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remember a key to be deleted durring ``commit``.</span>
@@ -233,7 +261,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        however it can be called explicitly if you don&#39;t want to use a</span>
 <span class="sd">        context manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">)</span>
+        <span class="c"># If the back-end returns without error, we are guaranteed that</span>
+        <span class="c"># the response&#39;s &#39;insert_auto_id_key&#39; will match (length and order)</span>
+        <span class="c"># the request&#39;s &#39;insert_auto_id` entities, which are derived from</span>
+        <span class="c"># our &#39;_auto_id_entities&#39; (no partial success).</span>
+        <span class="k">for</span> <span class="n">new_key_pb</span><span class="p">,</span> <span class="n">entity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">insert_auto_id_key</span><span class="p">,</span>
+                                      <span class="bp">self</span><span class="o">.</span><span class="n">_auto_id_entities</span><span class="p">):</span>
+            <span class="n">new_id</span> <span class="o">=</span> <span class="n">new_key_pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">entity</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">new_id</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
