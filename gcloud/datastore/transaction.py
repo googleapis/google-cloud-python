@@ -14,11 +14,10 @@
 
 """Create / interact with gcloud datastore transactions."""
 
-from gcloud.datastore import _implicit_environ
-from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+from gcloud.datastore.batch import Batch
 
 
-class Transaction(object):
+class Transaction(Batch):
     """An abstraction representing datastore Transactions.
 
     Transactions can be used to build up a bulk mutuation as well as
@@ -37,6 +36,13 @@ class Transaction(object):
       >>> with Transaction()
       ...     entity1.save()
       ...     entity2.save()
+
+    Because it derives from :class:`Batch`, :class`Transaction` also provides
+    :meth:`put` and :meth:`delete` methods::
+
+      >>> with Transaction()
+      ...     transaction.put(entity1)
+      ...     transaction.delete(entity2.key)
 
     By default, the transaction is rolled back if the transaction block
     exits with an error::
@@ -123,34 +129,8 @@ class Transaction(object):
     """
 
     def __init__(self, dataset_id=None, connection=None):
-        self._connection = connection or _implicit_environ.CONNECTION
-        self._dataset_id = dataset_id or _implicit_environ.DATASET_ID
-
-        if self._connection is None or self._dataset_id is None:
-            raise ValueError('A transaction must have a connection and '
-                             'a dataset ID set.')
-
+        super(Transaction, self).__init__(dataset_id, connection)
         self._id = None
-        self._mutation = datastore_pb.Mutation()
-        self._auto_id_entities = []
-
-    @property
-    def dataset_id(self):
-        """Getter for dataset ID in which the transaction will run.
-
-        :rtype: string
-        :returns: The dataset ID in which the transaction will run.
-        """
-        return self._dataset_id
-
-    @property
-    def connection(self):
-        """Getter for connection over which the transaction will run.
-
-        :rtype: :class:`gcloud.datastore.connection.Connection`
-        :returns: The connection over which the transaction will run.
-        """
-        return self._connection
 
     @property
     def id(self):
@@ -160,37 +140,6 @@ class Transaction(object):
         :returns: The ID of the current transaction.
         """
         return self._id
-
-    @property
-    def mutation(self):
-        """Getter for the current mutation.
-
-        Every transaction is committed with a single Mutation
-        representing the 'work' to be done as part of the transaction.
-        Inside a transaction, calling ``save()`` on an entity builds up
-        the mutation.  This getter returns the Mutation protobuf that
-        has been built-up so far.
-
-        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`
-        :returns: The Mutation protobuf to be sent in the commit request.
-        """
-        return self._mutation
-
-    def add_auto_id_entity(self, entity):
-        """Adds an entity to the list of entities to update with IDs.
-
-        When an entity has a partial key, calling ``save()`` adds an
-        insert_auto_id entry in the mutation.  In order to make sure we
-        update the Entity once the transaction is committed, we need to
-        keep track of which entities to update (and the order is
-        important).
-
-        When you call ``save()`` on an entity inside a transaction, if
-        the entity has a partial key, it adds itself to the list of
-        entities to be updated once the transaction is committed by
-        calling this method.
-        """
-        self._auto_id_entities.append(entity)
 
     def begin(self):
         """Begins a transaction.
@@ -230,14 +179,7 @@ class Transaction(object):
         # It's possible that they called commit() already, in which case
         # we shouldn't do any committing of our own.
         if self.connection.transaction():
-            result = self.connection.commit(self._dataset_id,
-                                            self.mutation)
-
-            # For any of the auto-id entities, make sure we update their keys.
-            for i, entity in enumerate(self._auto_id_entities):
-                key_pb = result.insert_auto_id_key[i]
-                new_id = key_pb.path_element[-1].id
-                entity.key = entity.key.completed_key(new_id)
+            super(Transaction, self).commit()
 
         # Tell the connection that the transaction is over.
         self.connection.transaction(None)
@@ -246,10 +188,12 @@ class Transaction(object):
         self._id = None
 
     def __enter__(self):
+        # Don't call super() -- we have different semantics.
         self.begin()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        # Don't call super() -- we have different semantics.
         if exc_type is None:
             self.commit()
         else:
