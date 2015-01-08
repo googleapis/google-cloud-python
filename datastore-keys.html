@@ -90,9 +90,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>To create a key with a parent:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Parent&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;, &#39;id&#39;: 1234}]&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent_key</span><span class="p">)</span>
+<span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;, &#39;id&#39;: 1234}]&gt;</span>
 </pre></div>
 </div>
-<p>To create a paritial key:</p>
+<p>To create a partial key:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Parent&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;Child&#39;</span><span class="p">)</span>
 <span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;}]&gt;</span>
 </pre></div>
@@ -106,9 +108,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path_args</strong> (<em>tuple of strings and ints</em>) &#8211; May represent a partial (odd length) or full (even
+<li><strong>path_args</strong> (<em>tuple of string and integer</em>) &#8211; May represent a partial (odd length) or full (even
 length) key path.</li>
-<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key. Can only be
+<li><strong>namespace</strong> (<em>string</em>) &#8211; A namespace identifier for the key. Can only be
 passed as a keyword argument.</li>
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset ID associated with the key. Required,
 unless the implicit dataset ID has been set. Can
@@ -128,9 +130,9 @@ keyword argument.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path_args</strong> (<em>tuple of strings and ints</em>) &#8211; May represent a partial (odd length) or full (even
+<li><strong>path_args</strong> (<em>tuple of string and integer</em>) &#8211; May represent a partial (odd length) or full (even
 length) key path.</li>
-<li><strong>namespace</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>) &#8211; A namespace identifier for the key. Can only be
+<li><strong>namespace</strong> (<em>string</em>) &#8211; A namespace identifier for the key. Can only be
 passed as a keyword argument.</li>
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset ID associated with the key. Required,
 unless the implicit dataset ID has been set. Can
@@ -150,13 +152,15 @@ keyword argument.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_or_name</strong> (<em>string or integer</em>) &#8211; ID or name to be added to the key.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new <cite>Key</cite> instance with the same data as the current one
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <tt class="docutils literal"><span class="pre">Key</span></tt> instance with the same data as the current one
 and an extra ID or name added.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><cite>ValueError</cite> if the current key is not partial or if
-<cite>id_or_name</cite> is not a string or integer.</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if the current key is not partial or if
+<tt class="docutils literal"><span class="pre">id_or_name</span></tt> is not a string or integer.</td>
 </tr>
 </tbody>
 </table>
@@ -170,9 +174,9 @@ and an extra ID or name added.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key&#8217;s dataset.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The key&#8217;s dataset ID.</td>
 </tr>
 </tbody>
 </table>
@@ -200,7 +204,7 @@ and an extra ID or name added.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt> of string and int</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple of string and integer</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The tuple of elements in the path.</td>
 </tr>
@@ -211,14 +215,14 @@ and an extra ID or name added.</td>
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.get">
 <tt class="descname">get</tt><big>(</big><em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.get" title="Permalink to this definition">#</a></dt>
-<dd><p>Retrieve entity corresponding to the curretn key.</p>
+<dd><p>Retrieve entity corresponding to the current key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a> or <cite>NoneType</cite></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a> or <tt class="xref py py-class docutils literal"><span class="pre">NoneType</span></tt></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The requested entity, or <tt class="docutils literal"><span class="pre">None</span></tt> if there was no
 match found.</td>
@@ -235,7 +239,7 @@ match found.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">int</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (integer) ID of the key.</td>
 </tr>
@@ -251,10 +255,10 @@ match found.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">int</span></tt> (if &#8216;id&#8217;) or <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt> (if &#8216;name&#8217;)</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer (if <tt class="docutils literal"><span class="pre">id</span></tt>) or string (if <tt class="docutils literal"><span class="pre">name</span></tt>)</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The last element of the key&#8217;s path if it is either an &#8216;id&#8217;
-or a &#8216;name&#8217;.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The last element of the key&#8217;s path if it is either an <tt class="docutils literal"><span class="pre">id</span></tt>
+or a <tt class="docutils literal"><span class="pre">name</span></tt>.</td>
 </tr>
 </tbody>
 </table>
@@ -268,10 +272,10 @@ or a &#8216;name&#8217;.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">bool</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the last element of the key&#8217;s path does not have
-an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal"><span class="pre">True</span></tt> if the last element of the key&#8217;s path does not have
+an <tt class="docutils literal"><span class="pre">id</span></tt> or a <tt class="docutils literal"><span class="pre">name</span></tt>.</td>
 </tr>
 </tbody>
 </table>
@@ -285,7 +289,7 @@ an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The kind of the current key.</td>
 </tr>
@@ -301,7 +305,7 @@ an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (string) name of the key.</td>
 </tr>
@@ -317,7 +321,7 @@ an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The namespace of the current key.</td>
 </tr>
@@ -333,11 +337,11 @@ an &#8216;id&#8217; or a &#8216;name&#8217;.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> or <cite>NoneType</cite></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> or <tt class="xref py py-class docutils literal"><span class="pre">NoneType</span></tt></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a new <cite>Key</cite> instance, whose path consists of all but the last
-element of self&#8217;s path.  If self has only one path element,
-returns None.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new <tt class="docutils literal"><span class="pre">Key</span></tt> instance, whose path consists of all but the
+last element of current path. If the current key has only
+one path element, returns <tt class="docutils literal"><span class="pre">None</span></tt>.</td>
 </tr>
 </tbody>
 </table>
@@ -352,7 +356,7 @@ returns None.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">list</span></tt> of <tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The (key) path of the current key.</td>
 </tr>
@@ -370,7 +374,7 @@ returns None.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The Protobuf representing the key.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The protobuf representing the key.</td>
 </tr>
 </tbody>
 </table>

@@ -94,7 +94,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'defaultObjectAcl': 'get_default_object_acl()', 'metageneration': 'metageneration', 'id': 'id', 'selfLink': 'self_link', 'lifecycle': 'get_lifecycle()', 'logging': 'get_logging()', 'etag': 'etag', 'projectNumber': 'project_number', 'acl': 'acl', 'storageClass': 'storage_class', 'timeCreated': 'time_created', 'owner': 'owner', 'location': 'location', 'name': 'name', 'versioning': 'versioning_enabled', 'cors': 'get_cors()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'versioning': 'versioning_enabled', 'cors': 'get_cors()', 'name': 'name', 'lifecycle': 'get_lifecycle()', 'timeCreated': 'time_created', 'acl': 'acl', 'defaultObjectAcl': 'get_default_object_acl()', 'location': 'location', 'owner': 'owner', 'storageClass': 'storage_class', 'id': 'id', 'etag': 'etag', 'metageneration': 'metageneration', 'logging': 'get_logging()', 'selfLink': 'self_link', 'projectNumber': 'project_number'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -551,9 +551,9 @@ separate keys.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>recursive</strong> (<em>bool</em>) &#8211; If True, this will make all keys inside the bucket
+<li><strong>recursive</strong> (<em>boolean</em>) &#8211; If True, this will make all keys inside the bucket
 public as well.</li>
-<li><strong>future</strong> (<em>bool</em>) &#8211; If True, this will make all objects created in the
+<li><strong>future</strong> (<em>boolean</em>) &#8211; If True, this will make all objects created in the
 future public as well.</li>
 </ul>
 </td>

@@ -103,19 +103,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    mutation, and execute those within a transaction::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; with dataset.transaction()</span>
-<span class="sd">      ...   entity1.save()</span>
-<span class="sd">      ...   entity2.save()</span>
+<span class="sd">      &gt;&gt;&gt; from gcloud.datastore.transaction import Transaction</span>
+
+<span class="sd">      &gt;&gt;&gt; datastore.set_default_connection()</span>
+<span class="sd">      &gt;&gt;&gt; datastore.set_default_dataset_id()</span>
+
+<span class="sd">      &gt;&gt;&gt; with Transaction()</span>
+<span class="sd">      ...     entity1.save()</span>
+<span class="sd">      ...     entity2.save()</span>
 
 <span class="sd">    By default, the transaction is rolled back if the transaction block</span>
 <span class="sd">    exits with an error::</span>
 
-<span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; with dataset.transaction() as t:</span>
-<span class="sd">      ...   do_some_work()</span>
-<span class="sd">      ...   raise Exception() # rolls back</span>
+<span class="sd">      &gt;&gt;&gt; with Transaction() as txn:</span>
+<span class="sd">      ...     do_some_work()</span>
+<span class="sd">      ...     raise SomeException()  # rolls back</span>
 
 <span class="sd">    If the transaction block exists without an exception, it will commit</span>
 <span class="sd">    by default.</span>
@@ -124,8 +126,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">       entities will not be available at save time!  That means, if you</span>
 <span class="sd">       try::</span>
 
-<span class="sd">         &gt;&gt;&gt; with dataset.transaction():</span>
-<span class="sd">         ...   entity = dataset.entity(&#39;Thing&#39;).save()</span>
+<span class="sd">         &gt;&gt;&gt; with Transaction():</span>
+<span class="sd">         ...     entity = Entity(key=Key(&#39;Thing&#39;))</span>
+<span class="sd">         ...     entity.save()</span>
 
 <span class="sd">       ``entity`` won&#39;t have a complete Key until the transaction is</span>
 <span class="sd">       committed.</span>
@@ -133,16 +136,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">       Once you exit the transaction (or call ``commit()``), the</span>
 <span class="sd">       automatically generated ID will be assigned to the entity::</span>
 
-<span class="sd">         &gt;&gt;&gt; with dataset.transaction():</span>
-<span class="sd">         ...   entity = dataset.entity(&#39;Thing&#39;)</span>
-<span class="sd">         ...   entity.save()</span>
-<span class="sd">         ...   assert entity.key().is_partial  # There is no ID on this key.</span>
-<span class="sd">         &gt;&gt;&gt; assert not entity.key().is_partial  # There *is* an ID.</span>
+<span class="sd">         &gt;&gt;&gt; with Transaction():</span>
+<span class="sd">         ...     entity = Entity(key=Key(&#39;Thing&#39;))</span>
+<span class="sd">         ...     entity.save()</span>
+<span class="sd">         ...     assert entity.key.is_partial  # There is no ID on this key.</span>
+<span class="sd">         &gt;&gt;&gt; assert not entity.key.is_partial  # There *is* an ID.</span>
 
 <span class="sd">    .. warning:: If you&#39;re using the automatically generated ID</span>
 <span class="sd">       functionality, it&#39;s important that you only use</span>
-<span class="sd">       :func:`gcloud.datastore.entity.Entity.save` rather than using</span>
-<span class="sd">       :func:`gcloud.datastore.connection.Connection.save_entity`</span>
+<span class="sd">       :meth:`gcloud.datastore.entity.Entity.save` rather than using</span>
+<span class="sd">       :meth:`gcloud.datastore.connection.Connection.save_entity`</span>
 <span class="sd">       directly.</span>
 
 <span class="sd">       If you mix the two, the results will have extra IDs generated and</span>
@@ -151,16 +154,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    If you don&#39;t want to use the context manager you can initialize a</span>
 <span class="sd">    transaction manually::</span>
 
-<span class="sd">      &gt;&gt;&gt; transaction = dataset.transaction()</span>
+<span class="sd">      &gt;&gt;&gt; transaction = Transaction()</span>
 <span class="sd">      &gt;&gt;&gt; transaction.begin()</span>
 
-<span class="sd">      &gt;&gt;&gt; entity = dataset.entity(&#39;Thing&#39;)</span>
+<span class="sd">      &gt;&gt;&gt; entity = Entity(key=Key(&#39;Thing&#39;))</span>
 <span class="sd">      &gt;&gt;&gt; entity.save()</span>
 
 <span class="sd">      &gt;&gt;&gt; if error:</span>
-<span class="sd">      ...   transaction.rollback()</span>
+<span class="sd">      ...     transaction.rollback()</span>
 <span class="sd">      ... else:</span>
-<span class="sd">      ...   transaction.commit()</span>
+<span class="sd">      ...     transaction.commit()</span>
 
 <span class="sd">    For now, this library will enforce a rule of one transaction per</span>
 <span class="sd">    connection.  That is, If you want to work with two transactions at</span>
@@ -169,33 +172,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    For example, this is perfectly valid::</span>
 
-<span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; with dataset.transaction():</span>
-<span class="sd">      ...   dataset.entity(&#39;Thing&#39;).save()</span>
+<span class="sd">      &gt;&gt;&gt; with Transaction():</span>
+<span class="sd">      ...     entity = Entity(key=Key(&#39;Thing&#39;))</span>
+<span class="sd">      ...     entity.save()</span>
 
 <span class="sd">    However, this **wouldn&#39;t** be acceptable::</span>
 
-<span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; with dataset.transaction():</span>
-<span class="sd">      ...   dataset.entity(&#39;Thing&#39;).save()</span>
-<span class="sd">      ...   with dataset.transaction():</span>
-<span class="sd">      ...     dataset.entity(&#39;Thing&#39;).save()</span>
+<span class="sd">      &gt;&gt;&gt; with Transaction():</span>
+<span class="sd">      ...     Entity(key=Key(&#39;Thing&#39;)).save()</span>
+<span class="sd">      ...     with Transaction():</span>
+<span class="sd">      ...         Entity(key=Key(&#39;Thing&#39;)).save()</span>
 
 <span class="sd">    Technically, it looks like the Protobuf API supports this type of</span>
-<span class="sd">    pattern, however it makes the code particularly messy.  If you</span>
-<span class="sd">    really need to nest transactions, try::</span>
+<span class="sd">    pattern, however it makes the code particularly messy.</span>
 
-<span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; dataset1 = datastore.get_dataset(&#39;dataset-id1&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; dataset2 = datastore.get_dataset(&#39;dataset-id2&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; with dataset1.transaction():</span>
-<span class="sd">      ...   dataset1.entity(&#39;Thing&#39;).save()</span>
-<span class="sd">      ...   with dataset2.transaction():</span>
-<span class="sd">      ...     dataset2.entity(&#39;Thing&#39;).save()</span>
-
-<span class="sd">    :type dataset_id: :class:`str`.</span>
+<span class="sd">    :type dataset_id: string</span>
 <span class="sd">    :param dataset_id: The ID of the dataset.</span>
 
 <span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
@@ -221,7 +212,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Transaction.dataset_id"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction.dataset_id">[docs]</a>    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter for dataset ID in which the transaction will run.</span>
 
-<span class="sd">        :rtype: :class:`str`</span>
+<span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The dataset ID in which the transaction will run.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>

@@ -85,7 +85,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <tt class="descname">next_page</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/query.html#Iterator.next_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Iterator.next_page" title="Permalink to this definition">#</a></dt>
 <dd><p>Fetch a single &#8220;page&#8221; of query results.</p>
 <p>Low-level API for fine control:  the more convenient API is
-to iterate on us.</p>
+to iterate on the current Iterator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -110,17 +110,17 @@ stored in the Cloud Datastore.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>kind</strong> (<em>string.</em>) &#8211; The kind to query.</li>
-<li><strong>dataset_id</strong> (<em>str</em>) &#8211; The ID of the dataset to query.  If not passed,
+<li><strong>kind</strong> (<em>string</em>) &#8211; The kind to query.</li>
+<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset to query.  If not passed,
 uses the implicit default.</li>
-<li><strong>namespace</strong> (<em>string or None.</em>) &#8211; The namespace to which to restrict results.</li>
-<li><strong>ancestor</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> or None.) &#8211; key of the ancestor to which this query&#8217;s results are
+<li><strong>namespace</strong> (<em>string or None</em>) &#8211; The namespace to which to restrict results.</li>
+<li><strong>ancestor</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a> or None) &#8211; key of the ancestor to which this query&#8217;s results are
 restricted.</li>
-<li><strong>filters</strong> (<em>sequence of (property_name, operator, value) tuples.</em>) &#8211; property filters applied by this query.</li>
-<li><strong>projection</strong> (<em>sequence of string.</em>) &#8211; fields returned as part of query results.</li>
-<li><strong>order</strong> (<em>sequence of string.</em>) &#8211; field names used to order query results. Prepend &#8216;-&#8216;
+<li><strong>filters</strong> (<em>sequence of (property_name, operator, value) tuples</em>) &#8211; property filters applied by this query.</li>
+<li><strong>projection</strong> (<em>sequence of string</em>) &#8211; fields returned as part of query results.</li>
+<li><strong>order</strong> (<em>sequence of string</em>) &#8211; field names used to order query results. Prepend &#8216;-&#8216;
 to a field name to sort it in descending order.</li>
-<li><strong>group_by</strong> (<em>sequence_of_string.</em>) &#8211; field names used to group query results.</li>
+<li><strong>group_by</strong> (<em>sequence of string</em>) &#8211; field names used to group query results.</li>
 </ul>
 </td>
 </tr>
@@ -132,7 +132,7 @@ default is set.</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;=': 4, '&gt;': 3, '=': 5, '&lt;': 1, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">OPERATORS</tt><em class="property"> = {'&gt;=': 4, '&lt;=': 2, '&gt;': 3, '=': 5, '&lt;': 1}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -163,9 +163,10 @@ and operator is one of <tt class="docutils literal"><span class="pre">OPERATORS<
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><cite>ValueError</cite> if <cite>operation</cite> is not one of the specified
-values, or if a filter names &#8216;__key__&#8217; but passes invalid
-operator (<tt class="docutils literal"><span class="pre">==</span></tt> is required) or value (a key is required).</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if <tt class="docutils literal"><span class="pre">operation</span></tt> is not one of the
+specified values, or if a filter names <tt class="docutils literal"><span class="pre">'__key__'</span></tt> but
+passes invalid operator (<tt class="docutils literal"><span class="pre">==</span></tt> is required) or value (a key
+is required).</p>
 </td>
 </tr>
 </tbody>
@@ -281,7 +282,7 @@ default has been set.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or <a class="reference internal" href="#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">Query</span></tt></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 </tbody>
 </table>
@@ -327,7 +328,7 @@ default has been set.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">sequence of string</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">names of fields in query results.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Names of fields in query results.</td>
 </tr>
 </tbody>
 </table>

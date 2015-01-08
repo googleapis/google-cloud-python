@@ -252,7 +252,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Key.exists"><a class="viewcode-back" href="../../../storage-keys.html#gcloud.storage.key.Key.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this key exists.</span>
 
-<span class="sd">        :rtype: bool</span>
+<span class="sd">        :rtype: boolean</span>
 <span class="sd">        :returns: True if the key exists in Cloud Storage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
@@ -363,7 +363,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle open for reading.</span>
 
-<span class="sd">        :type rewind: bool</span>
+<span class="sd">        :type rewind: boolean</span>
 <span class="sd">        :param rewind: If True, seek to the beginning of the file handle before</span>
 <span class="sd">                       writing the file to Cloud Storage.</span>
 

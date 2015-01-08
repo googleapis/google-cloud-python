@@ -102,31 +102,31 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    This class serves as an abstraction for creating a query over data</span>
 <span class="sd">    stored in the Cloud Datastore.</span>
 
-<span class="sd">    :type kind: string.</span>
+<span class="sd">    :type kind: string</span>
 <span class="sd">    :param kind: The kind to query.</span>
 
-<span class="sd">    :type dataset_id: str</span>
+<span class="sd">    :type dataset_id: string</span>
 <span class="sd">    :param dataset_id: The ID of the dataset to query.  If not passed,</span>
 <span class="sd">                       uses the implicit default.</span>
 
-<span class="sd">    :type namespace: string or None.</span>
+<span class="sd">    :type namespace: string or None</span>
 <span class="sd">    :param namespace: The namespace to which to restrict results.</span>
 
-<span class="sd">    :type ancestor: :class:`gcloud.datastore.key.Key` or None.</span>
+<span class="sd">    :type ancestor: :class:`gcloud.datastore.key.Key` or None</span>
 <span class="sd">    :param ancestor: key of the ancestor to which this query&#39;s results are</span>
 <span class="sd">                     restricted.</span>
 
-<span class="sd">    :type filters: sequence of (property_name, operator, value) tuples.</span>
+<span class="sd">    :type filters: sequence of (property_name, operator, value) tuples</span>
 <span class="sd">    :param filters: property filters applied by this query.</span>
 
-<span class="sd">    :type projection: sequence of string.</span>
+<span class="sd">    :type projection: sequence of string</span>
 <span class="sd">    :param projection:  fields returned as part of query results.</span>
 
-<span class="sd">    :type order: sequence of string.</span>
+<span class="sd">    :type order: sequence of string</span>
 <span class="sd">    :param order:  field names used to order query results. Prepend &#39;-&#39;</span>
 <span class="sd">                   to a field name to sort it in descending order.</span>
 
-<span class="sd">    :type group_by: sequence_of_string.</span>
+<span class="sd">    :type group_by: sequence of string</span>
 <span class="sd">    :param group_by: field names used to group query results.</span>
 
 <span class="sd">    :raises: ValueError if ``dataset_id`` is not passed and no implicit</span>
@@ -198,7 +198,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the Kind of the Query.</span>
 
-<span class="sd">        :rtype: string or :class:`Query`</span>
+<span class="sd">        :rtype: string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span>
 
@@ -242,8 +242,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
     <span class="nd">@ancestor.deleter</span>
 <div class="viewcode-block" id="Query.ancestor"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.ancestor">[docs]</a>    <span class="k">def</span> <span class="nf">ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remove the ancestor for the query.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Remove the ancestor for the query.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ancestor</span> <span class="o">=</span> <span class="bp">None</span>
 </div>
     <span class="nd">@property</span>
@@ -278,9 +277,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type value: integer, string, boolean, float, None, datetime</span>
 <span class="sd">        :param value: The value to filter on.</span>
 
-<span class="sd">        :raises: `ValueError` if `operation` is not one of the specified</span>
-<span class="sd">                 values, or if a filter names &#39;__key__&#39; but passes invalid</span>
-<span class="sd">                 operator (``==`` is required) or value (a key is required).</span>
+<span class="sd">        :raises: :class:`ValueError` if ``operation`` is not one of the</span>
+<span class="sd">                 specified values, or if a filter names ``&#39;__key__&#39;`` but</span>
+<span class="sd">                 passes invalid operator (``==`` is required) or value (a key</span>
+<span class="sd">                 is required).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPERATORS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">error_message</span> <span class="o">=</span> <span class="s">&#39;Invalid expression: &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">operator</span><span class="p">,)</span>
@@ -300,7 +300,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Fields names returned by the query.</span>
 
 <span class="sd">        :rtype: sequence of string</span>
-<span class="sd">        :returns:  names of fields in query results.</span>
+<span class="sd">        :returns: Names of fields in query results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">[:]</span>
 
@@ -358,7 +358,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :type value: string or sequence of strings</span>
 <span class="sd">        :param value: Each value is a string giving the name of a</span>
-<span class="sd">                         property to use to group results together.</span>
+<span class="sd">                      property to use to group results together.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
@@ -394,7 +394,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :param connection: An optional cursor passed through to the iterator.</span>
 <span class="sd">                           If not supplied, uses the implicit default.</span>
 
-
 <span class="sd">        :rtype: :class:`Iterator`</span>
 <span class="sd">        :raises: ValueError if ``connection`` is not passed and no implicit</span>
 <span class="sd">                 default has been set.</span>
@@ -410,8 +409,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 </div></div>
 <div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represent the state of a given execution of a Query.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Represent the state of a given execution of a Query.&quot;&quot;&quot;</span>
+
     <span class="n">_NOT_FINISHED</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NOT_FINISHED</span>
 
     <span class="n">_FINISHED</span> <span class="o">=</span> <span class="p">(</span>
@@ -433,7 +432,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Fetch a single &quot;page&quot; of query results.</span>
 
 <span class="sd">        Low-level API for fine control:  the more convenient API is</span>
-<span class="sd">        to iterate on us.</span>
+<span class="sd">        to iterate on the current Iterator.</span>
 
 <span class="sd">        :rtype: tuple, (entities, more_results, cursor)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -501,10 +500,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="sd">&quot;&quot;&quot;Convert a Query instance to the corresponding protobuf.</span>
 
 <span class="sd">    :type query: :class:`Query`</span>
-<span class="sd">    :param query:  the source query</span>
+<span class="sd">    :param query: The source query.</span>
 
 <span class="sd">    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Query`</span>
-<span class="sd">    :returns: a protobuf that can be sent to the protobuf API.  N.b. that</span>
+<span class="sd">    :returns: A protobuf that can be sent to the protobuf API.  N.b. that</span>
 <span class="sd">              it does not contain &quot;in-flight&quot; fields for ongoing query</span>
 <span class="sd">              executions (cursors, offset, limit).</span>
 <span class="sd">    &quot;&quot;&quot;</span>

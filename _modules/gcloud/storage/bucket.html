@@ -330,7 +330,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        parameter set to true.  This will iterate through the bucket&#39;s</span>
 <span class="sd">        keys and delete the related objects, before deleting the bucket.</span>
 
-<span class="sd">        :type force: bool</span>
+<span class="sd">        :type force: boolean</span>
 <span class="sd">        :param full: If True, empties the bucket&#39;s objects then deletes it.</span>
 
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound` if the</span>
@@ -710,7 +710,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        See:  https://cloud.google.com/storage/docs/object-versioning for</span>
 <span class="sd">        details.</span>
 
-<span class="sd">        :type value: convertible to bool</span>
+<span class="sd">        :type value: convertible to boolean</span>
 <span class="sd">        :param value: should versioning be anabled for the bucket?</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;versioning&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;enabled&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)}})</span>
@@ -768,11 +768,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Bucket.make_public"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a bucket public.</span>
 
-<span class="sd">        :type recursive: bool</span>
+<span class="sd">        :type recursive: boolean</span>
 <span class="sd">        :param recursive: If True, this will make all keys inside the bucket</span>
 <span class="sd">                          public as well.</span>
 
-<span class="sd">        :type future: bool</span>
+<span class="sd">        :type future: boolean</span>
 <span class="sd">        :param future: If True, this will make all objects created in the</span>
 <span class="sd">                       future public as well.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

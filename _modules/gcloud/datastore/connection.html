@@ -88,6 +88,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">&quot;&quot;&quot;Connections to gcloud datastore API servers.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">six</span>
+
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
@@ -130,8 +132,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The string response content from the API call.</span>
-
-<span class="sd">        :raises: Exception if the response code is not 200 OK.</span>
+<span class="sd">        :raises: :class:`six.moves.http_client.HTTPException` if the response</span>
+<span class="sd">                 code is not 200 OK.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s">&#39;application/x-protobuf&#39;</span><span class="p">,</span>
@@ -142,13 +144,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">uri</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">),</span>
             <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">headers</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#39;200&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Request failed. Error was: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">content</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">headers</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="s">&#39;200&#39;</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Request failed with status code </span><span class="si">%s</span><span class="s">. &#39;</span>
+                       <span class="s">&#39;Error was: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">content</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">http_client</span><span class="o">.</span><span class="n">HTTPException</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">content</span>
 
     <span class="k">def</span> <span class="nf">_rpc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">request_pb</span><span class="p">,</span> <span class="n">response_pb_cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Make a protobuf RPC request.</span>
+        <span class="sd">&quot;&quot;&quot;Make a protobuf RPC request.</span>
 
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset_id: The ID of the dataset to connect to. This is</span>
@@ -158,11 +163,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :param method: The name of the method to invoke.</span>
 
 <span class="sd">        :type request_pb: :class:`google.protobuf.message.Message` instance</span>
-<span class="sd">        :param method: the protobuf instance representing the request.</span>
+<span class="sd">        :param request_pb: the protobuf instance representing the request.</span>
 
-<span class="sd">        :type response_pb_cls: a :class:`google.protobuf.message.Message&#39;</span>
+<span class="sd">        :type response_pb_cls: A :class:`google.protobuf.message.Message&#39;</span>
 <span class="sd">                               subclass.</span>
-<span class="sd">        :param method: The class used to unmarshall the response protobuf.</span>
+<span class="sd">        :param response_pb_cls: The class used to unmarshall the response</span>
+<span class="sd">                                protobuf.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
                                  <span class="n">data</span><span class="o">=</span><span class="n">request_pb</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
@@ -173,10 +179,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                       <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct the URL for a particular API call.</span>
 
-<span class="sd">        This method is used internally</span>
-<span class="sd">        to come up with the URL</span>
-<span class="sd">        to use when making RPCs</span>
-<span class="sd">        to the Cloud Datastore API.</span>
+<span class="sd">        This method is used internally to come up with the URL to use when</span>
+<span class="sd">        making RPCs to the Cloud Datastore API.</span>
 
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset_id: The ID of the dataset to connect to. This is</span>
@@ -207,7 +211,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.transaction.Transaction`, (getting)</span>
 <span class="sd">                or :class:`gcloud.datastore.connection.Connection` (setting)</span>
-<span class="sd">        :returns: the current transaction (getting) or self (setting).</span>
+<span class="sd">        :returns: The current transaction (getting) or self (setting).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">transaction</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">_EMPTY</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_transaction</span>
@@ -219,7 +223,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Getter for mutation usable with current connection.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.</span>
-<span class="sd">        :returns: the mutation instance associated with the current transaction</span>
+<span class="sd">        :returns: The mutation instance associated with the current transaction</span>
 <span class="sd">                  (if one exists) or or a new mutation instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
@@ -237,17 +241,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        (:class:`gcloud.datastore.datastore_v1_pb2.Key` and</span>
 <span class="sd">        :class:`gcloud.datastore.datastore_v1_pb2.Entity`) and is used</span>
 <span class="sd">        under the hood for methods like</span>
-<span class="sd">        :func:`gcloud.datastore.dataset.Dataset.get_entity`:</span>
+<span class="sd">        :meth:`gcloud.datastore.key.Key.get`:</span>
 
 <span class="sd">        &gt;&gt;&gt; from gcloud import datastore</span>
 <span class="sd">        &gt;&gt;&gt; from gcloud.datastore.key import Key</span>
-<span class="sd">        &gt;&gt;&gt; connection = datastore.get_connection()</span>
-<span class="sd">        &gt;&gt;&gt; dataset = connection.dataset(&#39;dataset-id&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; key = Key(dataset=dataset).kind(&#39;MyKind&#39;).id(1234)</span>
-
-<span class="sd">        Using the :class:`gcloud.datastore.dataset.Dataset` helper:</span>
-
-<span class="sd">        &gt;&gt;&gt; dataset.get_entity(key)</span>
+<span class="sd">        &gt;&gt;&gt; datastore.set_default_connection()</span>
+<span class="sd">        &gt;&gt;&gt; key = Key(&#39;MyKind&#39;, 1234, dataset_id=&#39;dataset-id&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; key.get()</span>
 <span class="sd">        &lt;Entity object&gt;</span>
 
 <span class="sd">        Using the ``connection`` class directly:</span>
@@ -256,7 +256,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &lt;Entity protobuf&gt;</span>
 
 <span class="sd">        :type dataset_id: string</span>
-<span class="sd">        :param dataset_id: The dataset to look up the keys.</span>
+<span class="sd">        :param dataset_id: The ID of the dataset to look up the keys.</span>
 
 <span class="sd">        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
 <span class="sd">                       (or a single Key)</span>
@@ -272,7 +272,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                        by the backend as &quot;deferred&quot; will be copied into it.</span>
 <span class="sd">                        Use only as a keyword param.</span>
 
-<span class="sd">        :type eventual: bool</span>
+<span class="sd">        :type eventual: boolean</span>
 <span class="sd">        :param eventual: If False (the default), request ``STRONG`` read</span>
 <span class="sd">                        consistency.  If True, request ``EVENTUAL`` read</span>
 <span class="sd">                        consistency.  If the connection has a current</span>
@@ -330,18 +330,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        matching the query.</span>
 
 <span class="sd">        You typically wouldn&#39;t use this method directly, in favor of the</span>
-<span class="sd">        :func:`gcloud.datastore.query.Query.fetch` method.</span>
+<span class="sd">        :meth:`gcloud.datastore.query.Query.fetch` method.</span>
 
 <span class="sd">        Under the hood, the :class:`gcloud.datastore.query.Query` class</span>
 <span class="sd">        uses this method to fetch data:</span>
 
 <span class="sd">        &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">        &gt;&gt;&gt; connection = datastore.get_connection()</span>
-<span class="sd">        &gt;&gt;&gt; dataset = connection.dataset(&#39;dataset-id&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; query = dataset.query().kind(&#39;MyKind&#39;).filter(</span>
-<span class="sd">        ...     &#39;property&#39;, &#39;=&#39;, &#39;val&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; from gcloud.datastore.query import Query</span>
 
-<span class="sd">        Using the `fetch`` method...</span>
+<span class="sd">        &gt;&gt;&gt; datastore.set_default_connection()</span>
+<span class="sd">        &gt;&gt;&gt; datastore.set_default_dataset_id()</span>
+
+<span class="sd">        &gt;&gt;&gt; query = Query(kind=&#39;MyKind&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; query.add_filter(&#39;property&#39;, &#39;=&#39;, &#39;val&#39;)</span>
+
+<span class="sd">        Using the query&#39;s ``fetch_page`` method...</span>
 
 <span class="sd">        &gt;&gt;&gt; entities, cursor, more_results = query.fetch_page()</span>
 <span class="sd">        &gt;&gt;&gt; entities</span>
@@ -365,11 +368,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type namespace: string</span>
 <span class="sd">        :param namespace: The namespace over which to run the query.</span>
 
-<span class="sd">        :type eventual: bool</span>
+<span class="sd">        :type eventual: boolean</span>
 <span class="sd">        :param eventual: If False (the default), request ``STRONG`` read</span>
-<span class="sd">                        consistency.  If True, request ``EVENTUAL`` read</span>
-<span class="sd">                        consistency.  If the connection has a current</span>
-<span class="sd">                        transaction, this value *must* be false.</span>
+<span class="sd">                         consistency.  If True, request ``EVENTUAL`` read</span>
+<span class="sd">                         consistency.  If the connection has a current</span>
+<span class="sd">                         transaction, this value *must* be false.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">RunQueryRequest</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_read_options</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">eventual</span><span class="p">)</span>
@@ -393,9 +396,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.</span>
 
 <span class="sd">        :type dataset_id: string</span>
-<span class="sd">        :param dataset_id: The dataset over which to execute the transaction.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        :param dataset_id: The ID dataset to which the transaction applies.</span>
 
+<span class="sd">        :type serializable: boolean</span>
+<span class="sd">        :param serializable: Boolean indicating if the isolation level of the</span>
+<span class="sd">                             transaction should be SERIALIZABLE (True) or</span>
+<span class="sd">                             SNAPSHOT (False).</span>
+
+<span class="sd">        :rtype: :class:`.datastore_v1_pb2.BeginTransactionResponse`</span>
+<span class="sd">        :returns&#39;: the result protobuf for the begin transaction request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot start a transaction with another already &#39;</span>
                              <span class="s">&#39;in progress.&#39;</span><span class="p">)</span>
@@ -420,7 +430,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        Maps the ``DatastoreService.Commit`` protobuf RPC.</span>
 
 <span class="sd">        :type dataset_id: string</span>
-<span class="sd">        :param dataset_id: The dataset in which to perform the changes.</span>
+<span class="sd">        :param dataset_id: The ID dataset to which the transaction applies.</span>
 
 <span class="sd">        :type mutation_pb: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.</span>
 <span class="sd">        :param mutation_pb: The protobuf for the mutations being saved.</span>
@@ -446,11 +456,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        Maps the ``DatastoreService.Rollback`` protobuf RPC.</span>
 
-<span class="sd">        Raises a ``ValueError``</span>
-<span class="sd">        if the connection isn&#39;t currently in a transaction.</span>
-
 <span class="sd">        :type dataset_id: string</span>
-<span class="sd">        :param dataset_id: The dataset to which the transaction belongs.</span>
+<span class="sd">        :param dataset_id: The ID of the dataset to which the transaction</span>
+<span class="sd">                           belongs.</span>
+
+<span class="sd">        :raises: :class:`ValueError` if the connection isn&#39;t currently in a</span>
+<span class="sd">                 transaction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;No transaction to rollback.&#39;</span><span class="p">)</span>
@@ -467,7 +478,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        Maps the ``DatastoreService.AllocateIds`` protobuf RPC.</span>
 
 <span class="sd">        :type dataset_id: string</span>
-<span class="sd">        :param dataset_id: The dataset to which the transaction belongs.</span>
+<span class="sd">        :param dataset_id: The ID of the dataset to which the transaction</span>
+<span class="sd">                           belongs.</span>
 
 <span class="sd">        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
 <span class="sd">        :param key_pbs: The keys for which the backend should allocate IDs.</span>
@@ -487,12 +499,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Save an entity to the Cloud Datastore with the provided properties.</span>
 
 <span class="sd">        .. note::</span>
-<span class="sd">           Any existing properties for the entity identified by &#39;key_pb&#39;</span>
-<span class="sd">           will be replaced by those passed in &#39;properties&#39;;  properties</span>
-<span class="sd">           not passed in &#39;properties&#39; no longer be set for the entity.</span>
+<span class="sd">           Any existing properties for the entity identified by ``key_pb``</span>
+<span class="sd">           will be replaced by those passed in ``properties``;  properties</span>
+<span class="sd">           not passed in ``properties`` no longer be set for the entity.</span>
 
 <span class="sd">        :type dataset_id: string</span>
-<span class="sd">        :param dataset_id: The dataset in which to save the entity.</span>
+<span class="sd">        :param dataset_id: The ID of the dataset in which to save the entity.</span>
 
 <span class="sd">        :type key_pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
 <span class="sd">        :param key_pb: The complete or partial key for the entity.</span>
@@ -500,13 +512,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type properties: dict</span>
 <span class="sd">        :param properties: The properties to store on the entity.</span>
 
-<span class="sd">        :type exclude_from_indexes: sequence of str</span>
+<span class="sd">        :type exclude_from_indexes: sequence of string</span>
 <span class="sd">        :param exclude_from_indexes: Names of properties *not* to be indexed.</span>
 
-<span class="sd">        :rtype: :class:`tuple`</span>
-<span class="sd">        :returns: The pair (`assigned`, `new_id`) where `assigned` is a boolean</span>
-<span class="sd">                  indicating if a new ID has been assigned and `new_id` is</span>
-<span class="sd">                  either `None` or an integer that has been assigned.</span>
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        :returns: The pair (``assigned``, ``new_id``) where ``assigned`` is a</span>
+<span class="sd">                  boolean indicating if a new ID has been assigned and</span>
+<span class="sd">                  ``new_id`` is either ``None`` or an integer that has been</span>
+<span class="sd">                  assigned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
         <span class="n">key_pb</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
@@ -561,16 +574,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs and not</span>
 <span class="sd">        with any of the other abstractions.  For example, it&#39;s used</span>
 <span class="sd">        under the hood in the</span>
-<span class="sd">        :func:`gcloud.datastore.entity.Entity.delete` method.</span>
+<span class="sd">        :meth:`gcloud.datastore.entity.Entity.delete` method.</span>
 
 <span class="sd">        :type dataset_id: string</span>
-<span class="sd">        :param dataset_id: The dataset from which to delete the keys.</span>
+<span class="sd">        :param dataset_id: The ID of the dataset from which to delete the keys.</span>
 
 <span class="sd">        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
 <span class="sd">        :param key_pbs: The keys to delete from the datastore.</span>
 
 <span class="sd">        :rtype: boolean</span>
-<span class="sd">        :returns: `True`</span>
+<span class="sd">        :returns: ``True``</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">()</span>
         <span class="n">helpers</span><span class="o">.</span><span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">mutation</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>
@@ -629,7 +642,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="k">def</span> <span class="nf">_copy_deferred_keys</span><span class="p">(</span><span class="n">lookup_request</span><span class="p">,</span> <span class="n">lookup_response</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Clear requested keys and copy deferred keys back in.</span>
 
-<span class="sd">    Helper ``Connection.lookup()``.</span>
+<span class="sd">    Helper for ``Connection.lookup()``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">old_key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">lookup_request</span><span class="o">.</span><span class="n">key</span><span class="p">):</span>
         <span class="n">lookup_request</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old_key</span><span class="p">)</span>

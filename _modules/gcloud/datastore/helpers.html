@@ -240,7 +240,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    :returns: The value provided by the Protobuf.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="k">if</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;timestamp_microseconds_value&#39;</span><span class="p">):</span>
         <span class="n">microseconds</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">timestamp_microseconds_value</span>
@@ -305,7 +304,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type value_pb: :class:`gcloud.datastore.datastore_v1_pb2.Value`</span>
 <span class="sd">    :param value_pb: The value protobuf to which the value is being assigned.</span>
 
-<span class="sd">    :type val: `datetime.datetime`, bool, float, integer, string</span>
+<span class="sd">    :type val: `datetime.datetime`, boolean, float, integer, string,</span>
 <span class="sd">               :class:`gcloud.datastore.key.Key`,</span>
 <span class="sd">               :class:`gcloud.datastore.entity.Entity`,</span>
 <span class="sd">    :param val: The value to be assigned.</span>

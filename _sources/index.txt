@@ -28,8 +28,12 @@ Cloud Datastore
 .. code-block:: python
 
   from gcloud import datastore
-  dataset = datastore.get_dataset('<dataset-id>')
-  entity = dataset.entity('Person')
+  datastore.set_default_connection()
+  datastore.set_default_dataset_id('<dataset-id>')
+
+  from gcloud.datastore.entity import Entity
+  from gcloud.datastore.key import Key
+  entity = Entity(key=Key('Person'))
   entity['name'] = 'Your name'
   entity['age'] = 25
   entity.save()
