@@ -67,11 +67,8 @@ with the Cloud Datastore using this Client Library.
     from gcloud import datastore
     datastore.set_defaults()
     # Then do other things...
-    from gcloud.datastore.entity import Entity
-    from gcloud.datastore.key import Key
-    from gcloud.datastore.query import Query
-    query = Query(kind='EntityKind')
-    entity = Entity(key=Key('EntityKind'))
+    query = datastore.Query(kind='EntityKind')
+    entity = datastore.Entity(key=datastore.Key('EntityKind'))
 
 Google Cloud Storage
 --------------------

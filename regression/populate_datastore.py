@@ -17,9 +17,6 @@
 from six.moves import zip
 
 from gcloud import datastore
-from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import Key
-from gcloud.datastore.transaction import Transaction
 
 
 datastore._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
@@ -85,12 +82,12 @@ CHARACTERS = [
 
 
 def add_characters():
-    with Transaction():
+    with datastore.Transaction():
         for key_path, character in zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character['name']:
                 raise ValueError(('Character and key don\'t agree',
                                   key_path, character))
-            entity = Entity(key=Key(*key_path))
+            entity = datastore.Entity(key=datastore.Key(*key_path))
             entity.update(character)
             entity.save()
             print('Adding Character %s %s' % (character['name'],

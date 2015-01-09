@@ -17,15 +17,12 @@
 You'll typically use these to get started with the API:
 
 >>> from gcloud import datastore
->>> from gcloud.datastore.entity import Entity
->>> from gcloud.datastore.key import Key
->>> from gcloud.datastore.query import Query
 
 >>> datastore.set_defaults()
 
->>> key = Key('EntityKind', 1234)
->>> entity = Entity(key)
->>> query = Query(kind='EntityKind')
+>>> key = datastore.Key('EntityKind', 1234)
+>>> entity = datastore.Entity(key)
+>>> query = datastore.Query(kind='EntityKind')
 
 The main concepts with this API are:
 
@@ -55,7 +52,12 @@ from gcloud import credentials
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore.api import allocate_ids
 from gcloud.datastore.api import get
+from gcloud.datastore.batch import Batch
 from gcloud.datastore.connection import Connection
+from gcloud.datastore.entity import Entity
+from gcloud.datastore.key import Key
+from gcloud.datastore.query import Query
+from gcloud.datastore.transaction import Transaction
 
 
 SCOPE = ('https://www.googleapis.com/auth/datastore',
@@ -121,11 +123,10 @@ def get_connection():
     with the same set of credentials (unlikely):
 
     >>> from gcloud import datastore
-    >>> from gcloud.datastore import Key
 
     >>> connection = datastore.get_connection()
-    >>> key1 = Key('Kind', 1234, dataset_id='dataset1')
-    >>> key2 = Key('Kind', 1234, dataset_id='dataset2')
+    >>> key1 = datastore.Key('Kind', 1234, dataset_id='dataset1')
+    >>> key2 = datastore.Key('Kind', 1234, dataset_id='dataset2')
     >>> entity1 = datastore.get(key1, connection=connection)
     >>> entity2 = datastore.get(key2, connection=connection)
 

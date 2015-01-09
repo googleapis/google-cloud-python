@@ -169,9 +169,8 @@ class Connection(connection.Connection):
         under the hood in :func:`gcloud.datastore.get`:
 
         >>> from gcloud import datastore
-        >>> from gcloud.datastore.key import Key
         >>> datastore.set_defaults()
-        >>> key = Key('MyKind', 1234, dataset_id='dataset-id')
+        >>> key = datastore.Key('MyKind', 1234, dataset_id='dataset-id')
         >>> datastore.get(key)
         <Entity object>
 
@@ -261,11 +260,10 @@ class Connection(connection.Connection):
         uses this method to fetch data:
 
         >>> from gcloud import datastore
-        >>> from gcloud.datastore.query import Query
 
         >>> datastore.set_defaults()
 
-        >>> query = Query(kind='MyKind')
+        >>> query = datastore.Query(kind='MyKind')
         >>> query.add_filter('property', '=', 'val')
 
         Using the query's ``fetch_page`` method...

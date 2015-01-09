@@ -14,12 +14,9 @@
 
 """Script to populate datastore with regression test data."""
 
+from six.moves import input
 
 from gcloud import datastore
-from gcloud.datastore import _implicit_environ
-from gcloud.datastore.query import Query
-from gcloud.datastore.transaction import Transaction
-from six.moves import input
 
 
 datastore._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
@@ -39,7 +36,7 @@ TRANSACTION_MAX_GROUPS = 5
 
 def fetch_keys(kind, fetch_max=FETCH_MAX, query=None, cursor=None):
     if query is None:
-        query = Query(kind=kind, projection=['__key__'])
+        query = datastore.Query(kind=kind, projection=['__key__'])
 
     iterator = query.fetch(limit=fetch_max, start_cursor=cursor)
 
@@ -64,7 +61,7 @@ def delete_entities(entities):
 
     dataset_id = dataset_ids.pop()
     key_pbs = [entity.key.to_protobuf() for entity in entities]
-    _implicit_environ.CONNECTION.delete_entities(dataset_id, key_pbs)
+    datastore.get_connection().delete_entities(dataset_id, key_pbs)
 
 
 def remove_kind(kind):
@@ -81,7 +78,7 @@ def remove_kind(kind):
         return
 
     delete_outside_transaction = False
-    with Transaction():
+    with datastore.Transaction():
         # Now that we have all results, we seek to delete.
         print('Deleting keys:')
         print(results)

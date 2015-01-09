@@ -17,10 +17,6 @@ import pytz
 import unittest2
 
 from gcloud import datastore
-from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import Key
-from gcloud.datastore.query import Query
-from gcloud.datastore.transaction import Transaction
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import populate_datastore
@@ -36,7 +32,7 @@ class TestDatastore(unittest2.TestCase):
         self.case_entities_to_delete = []
 
     def tearDown(self):
-        with Transaction():
+        with datastore.Transaction():
             for entity in self.case_entities_to_delete:
                 entity.key.delete()
 
@@ -45,7 +41,7 @@ class TestDatastoreAllocateIDs(TestDatastore):
 
     def test_allocate_ids(self):
         num_ids = 10
-        allocated_keys = datastore.allocate_ids(Key('Kind'), num_ids)
+        allocated_keys = datastore.allocate_ids(datastore.Key('Kind'), num_ids)
         self.assertEqual(len(allocated_keys), num_ids)
 
         unique_ids = set()
@@ -70,7 +66,7 @@ class TestDatastoreSave(TestDatastore):
             'rating': 5.0,
         }
         # Create an entity with the given content.
-        entity = Entity(key=Key('Post'))
+        entity = datastore.Entity(key=datastore.Key('Post'))
         entity.update(post_content)
 
         # Update the entity key.
@@ -112,7 +108,7 @@ class TestDatastoreSave(TestDatastore):
         self._generic_test_post()
 
     def test_save_multiple(self):
-        with Transaction():
+        with datastore.Transaction():
             entity1 = self._get_post()
             entity1.save()
             # Register entity to be deleted.
@@ -137,7 +133,7 @@ class TestDatastoreSave(TestDatastore):
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
-        query = Query(kind='Post')
+        query = datastore.Query(kind='Post')
         posts = list(query.fetch(limit=2))
         self.assertEqual(posts, [])
 
@@ -145,15 +141,15 @@ class TestDatastoreSave(TestDatastore):
 class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
-        key = Key('Person', 'name')
-        entity = Entity(key=key)
+        key = datastore.Key('Person', 'name')
+        entity = datastore.Entity(key=key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
         entity.save()
         self.case_entities_to_delete.append(entity)
 
-        query = Query(kind='Person')
+        query = datastore.Query(kind='Person')
         query.add_filter('linkedTo', '=', key)
 
         stored_persons = list(query.fetch(limit=2))
@@ -171,10 +167,10 @@ class TestDatastoreQuery(TestDatastore):
     def setUpClass(cls):
         super(TestDatastoreQuery, cls).setUpClass()
         cls.CHARACTERS = populate_datastore.CHARACTERS
-        cls.ANCESTOR_KEY = Key(*populate_datastore.ANCESTOR)
+        cls.ANCESTOR_KEY = datastore.Key(*populate_datastore.ANCESTOR)
 
     def _base_query(self):
-        return Query(kind='Character', ancestor=self.ANCESTOR_KEY)
+        return datastore.Query(kind='Character', ancestor=self.ANCESTOR_KEY)
 
     def test_limit_queries(self):
         limit = 5
@@ -219,7 +215,7 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
     def test_query___key___filter(self):
-        rickard_key = Key(*populate_datastore.RICKARD)
+        rickard_key = datastore.Key(*populate_datastore.RICKARD)
 
         query = self._base_query()
         query.add_filter('__key__', '=', rickard_key)
@@ -341,10 +337,10 @@ class TestDatastoreQuery(TestDatastore):
 class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
-        entity = Entity(key=Key('Company', 'Google'))
+        entity = datastore.Entity(key=datastore.Key('Company', 'Google'))
         entity['url'] = u'www.google.com'
 
-        with Transaction():
+        with datastore.Transaction():
             retrieved_entity = datastore.get(entity.key)
             if retrieved_entity is None:
                 entity.save()

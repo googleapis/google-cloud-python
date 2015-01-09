@@ -19,25 +19,25 @@
 from gcloud.datastore import demo
 demo.initialize()
 
+# Let's import the package containing our helper classes:
+from gcloud import datastore
+
 # Let's create a new entity of type "Thing" and name it 'Toy':
-from gcloud.datastore.key import Key
-key = Key('Thing')
-from gcloud.datastore.entity import Entity
-toy = Entity(key)
+key = datastore.Key('Thing')
+toy = datastore.Entity(key)
 toy.update({'name': 'Toy'})
 
 # Now let's save it to our datastore:
 toy.save()
 
 # If we look it up by its key, we should find it...
-from gcloud.datastore import get
-print(get([toy.key]))
+print(datastore.get([toy.key]))
 
 # And we should be able to delete it...
 toy.key.delete()
 
 # Since we deleted it, if we do another lookup it shouldn't be there again:
-print(get([toy.key]))
+print(datastore.get([toy.key]))
 
 # Now let's try a more advanced query.
 # First, let's create some entities.
@@ -50,15 +50,14 @@ SAMPLE_DATA = [
     (6789, 'Computer', 13)]
 samples = []
 for id, name, age in SAMPLE_DATA:
-    key = Key('Thing', id)
+    key = datastore.Key('Thing', id)
     samples.append(key)
-    entity = Entity(key)
+    entity = datastore.Entity(key)
     entity['name'] = name
     entity['age'] = age
     entity.save()
 # We'll start by look at all Thing entities:
-from gcloud.datastore.query import Query
-query = Query(kind='Thing')
+query = datastore.Query(kind='Thing')
 
 # Let's look at the first two.
 print(list(query.fetch(limit=2)))
@@ -77,17 +76,16 @@ print([key.delete() for key in samples])
 
 # You can also work inside a transaction.
 # (Check the official docs for explanations of what's happening here.)
-from gcloud.datastore.transaction import Transaction
-with Transaction():
-    print('Creating and savng an entity...')
-    key = Key('Thing', 'foo')
-    thing = Entity(key)
+with datastore.Transaction():
+    print('Creating and saving an entity...')
+    key = datastore.Key('Thing', 'foo')
+    thing = datastore.Entity(key)
     thing['age'] = 10
     thing.save()
 
     print('Creating and saving another entity...')
-    key2 = Key('Thing', 'bar')
-    thing2 = Entity(key2)
+    key2 = datastore.Key('Thing', 'bar')
+    thing2 = datastore.Entity(key2)
     thing2['age'] = 15
     thing2.save()
 
@@ -97,21 +95,21 @@ with Transaction():
 print(key.delete(), key2.delete())
 
 # To rollback a transaction, just call .rollback()
-with Transaction() as t:
-    key = Key('Thing', 'another')
-    thing = Entity(key)
+with datastore.Transaction() as t:
+    key = datastore.Key('Thing', 'another')
+    thing = datastore.Entity(key)
     thing.save()
     t.rollback()
 
 # Let's check if the entity was actually created:
-created = get([key])
+created = datastore.get([key])
 print('yes' if created else 'no')
 
 # Remember, a key won't be complete until the transaction is commited.
 # That is, while inside the transaction block, thing.key will be incomplete.
-with Transaction():
-    key = Key('Thing')  # partial
-    thing = Entity(key)
+with datastore.Transaction():
+    key = datastore.Key('Thing')  # partial
+    thing = datastore.Entity(key)
     thing.save()
     print(thing.key)  # This will still be partial
 
