@@ -27,8 +27,7 @@ from regression import populate_datastore
 
 
 datastore._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
-datastore.set_default_dataset_id()
-datastore.set_default_connection()
+datastore.set_defaults()
 
 
 class TestDatastore(unittest2.TestCase):
