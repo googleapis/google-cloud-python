@@ -38,8 +38,7 @@ Add some data to your dataset
 Open a Python console and...
 
   >>> from gcloud import datastore
-  >>> datastore.set_default_connection()
-  >>> datastore.set_default_dataset_id('<your-dataset-id>')
+  >>> datastore.set_defaults()
   >>> from gcloud.datastore.query import Query
   >>> list(Query(kind='Person').fetch())
   []

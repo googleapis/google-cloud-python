@@ -116,6 +116,37 @@ class Test_set_default_connection(unittest2.TestCase):
         self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
 
 
+class Test_set_defaults(unittest2.TestCase):
+
+    def _callFUT(self, dataset_id=None, connection=None):
+        from gcloud.datastore import set_defaults
+        return set_defaults(dataset_id=dataset_id, connection=connection)
+
+    def test_it(self):
+        from gcloud._testing import _Monkey
+        from gcloud import datastore
+
+        DATASET_ID = object()
+        CONNECTION = object()
+
+        SET_DATASET_CALLED = []
+
+        def call_set_dataset(dataset_id=None):
+            SET_DATASET_CALLED.append(dataset_id)
+
+        SET_CONNECTION_CALLED = []
+
+        def call_set_connection(connection=None):
+            SET_CONNECTION_CALLED.append(connection)
+
+        with _Monkey(datastore, set_default_dataset_id=call_set_dataset,
+                     set_default_connection=call_set_connection):
+            self._callFUT(dataset_id=DATASET_ID, connection=CONNECTION)
+
+        self.assertEqual(SET_DATASET_CALLED, [DATASET_ID])
+        self.assertEqual(SET_CONNECTION_CALLED, [CONNECTION])
+
+
 class Test_get_connection(unittest2.TestCase):
 
     def _callFUT(self):

@@ -65,8 +65,7 @@ with the Cloud Datastore using this Client Library.
 .. code:: python
 
     from gcloud import datastore
-    datastore.set_default_connection()
-    datastore.set_default_dataset_id()
+    datastore.set_defaults()
     # Then do other things...
     from gcloud.datastore.entity import Entity
     from gcloud.datastore.key import Key
