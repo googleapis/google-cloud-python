@@ -291,19 +291,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">return</span> <span class="n">key</span>
 </div>
-<div class="viewcode-block" id="Key.delete"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Delete the key in the Cloud Datastore.</span>
-
-<span class="sd">        :type connection: :class:`gcloud.datastore.connection.Connection`</span>
-<span class="sd">        :param connection: Optional connection used to connect to datastore.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># We allow partial keys to attempt a delete, the backend will fail.</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">delete_entities</span><span class="p">(</span>
-            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
-            <span class="n">key_pbs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()],</span>
-        <span class="p">)</span>
-</div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Key.is_partial"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.is_partial">[docs]</a>    <span class="k">def</span> <span class="nf">is_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Boolean indicating if the key has an ID (or name).</span>

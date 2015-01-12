@@ -157,7 +157,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    operations and the delete operatiuon into the same mutation, and send</span>
 <span class="sd">    them to the server in a single API request::</span>
 
-<span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
+<span class="sd">      &gt;&gt;&gt; from gcloud.datastore.batch import Batch</span>
 <span class="sd">      &gt;&gt;&gt; batch = Batch()</span>
 <span class="sd">      &gt;&gt;&gt; batch.put(entity1)</span>
 <span class="sd">      &gt;&gt;&gt; batch.put(entity2)</span>
@@ -177,7 +177,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
 <span class="sd">      &gt;&gt;&gt; dataset = datastore.get_dataset(&#39;dataset-id&#39;)</span>
-<span class="sd">      &gt;&gt;&gt; with Batch as batch:</span>
+<span class="sd">      &gt;&gt;&gt; with Batch() as batch:</span>
 <span class="sd">      ...   do_some_work(batch)</span>
 <span class="sd">      ...   raise Exception() # rolls back</span>
 <span class="sd">    &quot;&quot;&quot;</span>

@@ -84,7 +84,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>For example, the following snippet of code will put the two <tt class="docutils literal"><span class="pre">save</span></tt>
 operations and the delete operatiuon into the same mutation, and send
 them to the server in a single API request:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">batch</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">batch</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity2</span><span class="p">)</span>
@@ -104,7 +104,7 @@ raising an exception:</p>
 <p>By default, no updates will be sent if the block exits with an error:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Batch</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="n">do_some_work</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 <span class="gp">... </span>  <span class="k">raise</span> <span class="ne">Exception</span><span class="p">()</span> <span class="c"># rolls back</span>
 </pre></div>
