@@ -101,23 +101,15 @@ class Test_get_function(unittest2.TestCase):
         results = self._callFUT([])
         self.assertEqual(results, [])
 
-    def _miss_helper(self, expected_results, use_list=True):
+    def test_get_miss(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
 
         DATASET_ID = 'DATASET'
         connection = _Connection()
         key = Key('Kind', 1234, dataset_id=DATASET_ID)
-        if use_list:
-            key = [key]
-        results = self._callFUT(key, connection=connection)
-        self.assertEqual(results, expected_results)
-
-    def test_get_miss(self):
-        self._miss_helper([], use_list=True)
-
-    def test_get_miss_single_key(self):
-        self._miss_helper(None, use_list=False)
+        results = self._callFUT([key], connection=connection)
+        self.assertEqual(results, [])
 
     def test_get_miss_w_missing(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -248,33 +240,6 @@ class Test_get_function(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._callFUT([key1, key2], connection=object())
 
-    def test_get_hit_single_key(self):
-        from gcloud.datastore.key import Key
-        from gcloud.datastore.test_connection import _Connection
-
-        DATASET_ID = 'DATASET'
-        KIND = 'Kind'
-        ID = 1234
-        PATH = [{'kind': KIND, 'id': ID}]
-
-        # Make a found entity pb to be returned from mock backend.
-        entity_pb = self._make_entity_pb(DATASET_ID, KIND, ID,
-                                         'foo', 'Foo')
-
-        # Make a connection to return the entity pb.
-        connection = _Connection(entity_pb)
-
-        key = Key(KIND, ID, dataset_id=DATASET_ID)
-        result = self._callFUT(key, connection=connection)
-        new_key = result.key
-
-        # Check the returned value is as expected.
-        self.assertFalse(new_key is key)
-        self.assertEqual(new_key.dataset_id, DATASET_ID)
-        self.assertEqual(new_key.path, PATH)
-        self.assertEqual(list(result), ['foo'])
-        self.assertEqual(result['foo'], 'Foo')
-
     def test_get_implicit(self):
         from gcloud.datastore import _implicit_environ
         from gcloud.datastore.key import Key
@@ -311,6 +276,102 @@ class Test_get_function(unittest2.TestCase):
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
+
+
+class Test_delete_function(unittest2.TestCase):
+
+    def _callFUT(self, keys, connection=None):
+        from gcloud.datastore.api import delete
+        return delete(keys, connection=connection)
+
+    def test_delete_no_batch(self):
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        key = _Key(_DATASET)
+
+        result = self._callFUT([key], connection=connection)
+        self.assertEqual(result, None)
+
+    def test_delete_existing_batch(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import api
+        from gcloud.datastore.batch import _Batches
+        from gcloud.datastore.batch import Batch
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        key = _Key(_DATASET)
+
+        # Set up mock Batch on stack so we can check it is used.
+        _BATCHES = _Batches()
+        CURR_BATCH = Batch(dataset_id=_DATASET, connection=connection)
+        _BATCHES.push(CURR_BATCH)
+
+        with _Monkey(api, _BATCHES=_BATCHES):
+            result = self._callFUT([key], connection=connection)
+
+        self.assertEqual(result, None)
+        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
+        self.assertEqual(len(CURR_BATCH.mutation.upsert), 0)
+        deletes = list(CURR_BATCH.mutation.delete)
+        self.assertEqual(len(deletes), 1)
+        self.assertEqual(deletes[0], key._key)
+
+    def test_delete_implicit_connection(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore import api
+        from gcloud.datastore.batch import _Batches
+        from gcloud.datastore.batch import Batch
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        key = _Key(_DATASET)
+
+        # Set up mock Batch on stack so we can check it is used.
+        _BATCHES = _Batches()
+
+        with _Monkey(_implicit_environ, CONNECTION=connection):
+            CURR_BATCH = Batch(dataset_id=_DATASET)
+            _BATCHES.push(CURR_BATCH)
+            with _Monkey(api, _BATCHES=_BATCHES):
+                result = self._callFUT([key])
+
+        self.assertEqual(result, None)
+        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
+        self.assertEqual(len(CURR_BATCH.mutation.upsert), 0)
+        deletes = list(CURR_BATCH.mutation.delete)
+        self.assertEqual(len(deletes), 1)
+        self.assertEqual(deletes[0], key._key)
+
+    def test_delete_no_keys(self):
+        from gcloud.datastore import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+        result = self._callFUT([])
+        self.assertEqual(result, None)
+
+    def test_delete_no_connection(self):
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        key = _Key(_DATASET)
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+        with self.assertRaises(ValueError):
+            self._callFUT([key])
 
 
 class Test_allocate_ids_function(unittest2.TestCase):

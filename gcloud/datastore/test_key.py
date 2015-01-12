@@ -232,38 +232,6 @@ class TestKey(unittest2.TestCase):
         pb = key.to_protobuf()
         self.assertFalse(pb.path_element[0].HasField('kind'))
 
-    def test_delete_explicit_connection(self):
-        from gcloud.datastore.test_connection import _Connection
-
-        cnxn = _Connection()
-        key = self._makeOne('KIND', 1234, dataset_id=self._DEFAULT_DATASET)
-        result = key.delete(connection=cnxn)
-        self.assertEqual(result, None)
-        self.assertEqual(cnxn._called_dataset_id, self._DEFAULT_DATASET)
-        self.assertEqual(cnxn._called_key_pbs, [key.to_protobuf()])
-
-    def test_delete_implicit_connection(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
-        from gcloud.datastore.test_connection import _Connection
-
-        cnxn = _Connection()
-        key = self._makeOne('KIND', 1234, dataset_id=self._DEFAULT_DATASET)
-        with _Monkey(_implicit_environ, CONNECTION=cnxn):
-            result = key.delete()
-
-        self.assertEqual(result, None)
-        self.assertEqual(cnxn._called_dataset_id, self._DEFAULT_DATASET)
-        self.assertEqual(cnxn._called_key_pbs, [key.to_protobuf()])
-
-    def test_delete_no_connection(self):
-        from gcloud.datastore import _implicit_environ
-
-        self.assertEqual(_implicit_environ.CONNECTION, None)
-        key = self._makeOne('KIND', 1234, dataset_id=self._DEFAULT_DATASET)
-        with self.assertRaises(AttributeError):
-            key.delete()
-
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
         self.assertTrue(key.is_partial)

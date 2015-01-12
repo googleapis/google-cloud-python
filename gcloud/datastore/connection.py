@@ -506,8 +506,7 @@ class Connection(connection.Connection):
         This method deals only with
         :class:`gcloud.datastore.datastore_v1_pb2.Key` protobufs and not
         with any of the other abstractions.  For example, it's used
-        under the hood in the
-        :meth:`gcloud.datastore.entity.Entity.delete` method.
+        under the hood in :func:`gcloud.datastore.api.delete`.
 
         :type dataset_id: string
         :param dataset_id: The ID of the dataset from which to delete the keys.

@@ -83,7 +83,7 @@ class Batch(object):
     operations and the delete operatiuon into the same mutation, and send
     them to the server in a single API request::
 
-      >>> from gcloud import datastore
+      >>> from gcloud.datastore.batch import Batch
       >>> batch = Batch()
       >>> batch.put(entity1)
       >>> batch.put(entity2)
@@ -103,7 +103,7 @@ class Batch(object):
 
       >>> from gcloud import datastore
       >>> dataset = datastore.get_dataset('dataset-id')
-      >>> with Batch as batch:
+      >>> with Batch() as batch:
       ...   do_some_work(batch)
       ...   raise Exception() # rolls back
     """
