@@ -906,6 +906,45 @@ class TestConnection(unittest2.TestCase):
         for key_before, key_after in zip(before_key_pbs, request.key):
             _compare_key_pb_after_request(self, key_before, key_after)
 
+    def test_save_entity_w_empty_list_value(self):
+        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+
+        DATASET_ID = 'DATASET'
+        key_pb = self._make_key_pb(DATASET_ID)
+        rsp_pb = datastore_pb.CommitResponse()
+        conn = self._makeOne()
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'commit',
+        ])
+        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
+        result = conn.save_entity(DATASET_ID, key_pb,
+                                  {'foo': u'Foo', 'bar': []})
+        self.assertEqual(result, (False, None))
+        cw = http._called_with
+        self._verifyProtobufCall(cw, URI, conn)
+        rq_class = datastore_pb.CommitRequest
+        request = rq_class()
+        request.ParseFromString(cw['body'])
+        self.assertEqual(request.transaction, '')
+        mutation = request.mutation
+        self.assertEqual(len(mutation.insert_auto_id), 0)
+        upserts = list(mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        upsert = upserts[0]
+        _compare_key_pb_after_request(self, key_pb, upsert.key)
+        props = list(upsert.property)
+        self.assertEqual(len(props), 1)
+        self.assertEqual(props[0].name, 'foo')
+        self.assertEqual(props[0].value.string_value, u'Foo')
+        self.assertEqual(props[0].value.indexed, True)
+        self.assertEqual(len(mutation.delete), 0)
+        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
+
     def test_save_entity_wo_transaction_w_upsert(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
