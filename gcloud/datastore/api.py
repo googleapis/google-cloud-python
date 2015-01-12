@@ -18,9 +18,9 @@ Allows interacting with the datastore via user-friendly Key, Entity and
 Query objects rather than via protobufs.
 """
 
-import collections
-
 from gcloud.datastore import _implicit_environ
+from gcloud.datastore.batch import _BATCHES
+from gcloud.datastore.batch import Batch
 from gcloud.datastore import helpers
 
 
@@ -60,12 +60,33 @@ def _require_connection(connection=None):
     return connection
 
 
-def get(key_or_keys, missing=None, deferred=None, connection=None):
+def _get_dataset_id_from_keys(keys):
+    """Determines dataset ID from a list of keys.
+
+    :type keys: list of :class:`gcloud.datastore.key.Key`
+    :param keys: The keys from the same dataset.
+
+    :rtype: string
+    :returns: The dataset ID of the keys.
+    :raises: :class:`ValueError` if the key dataset IDs don't agree.
+    """
+    dataset_id = keys[0].dataset_id
+    # Rather than creating a list or set of all dataset IDs, we iterate
+    # and check. We could allow the backend to check this for us if IDs
+    # with no prefix worked (GoogleCloudPlatform/google-cloud-datastore#59)
+    # or if we made sure that a prefix s~ or e~ was on each key.
+    for key in keys[1:]:
+        if key.dataset_id != dataset_id:
+            raise ValueError('All keys in get must be from the same dataset.')
+
+    return dataset_id
+
+
+def get(keys, missing=None, deferred=None, connection=None):
     """Retrieves entities, along with their attributes.
 
-    :type key_or_keys: list of :class:`gcloud.datastore.key.Key` or single
-                       :class:`gcloud.datastore.key.Key`
-    :param key_or_keys: The key or keys to be retrieved from the datastore.
+    :type keys: list of :class:`gcloud.datastore.key.Key`
+    :param keys: The keys to be retrieved from the datastore.
 
     :type missing: an empty list or None.
     :param missing: If a list is passed, the key-only entities returned
@@ -80,27 +101,14 @@ def get(key_or_keys, missing=None, deferred=None, connection=None):
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: Optional. The connection used to connect to datastore.
 
-    :rtype: list of :class:`gcloud.datastore.entity.Entity`, single
-            :class:`gcloud.datastore.entity.Entity`, or ``NoneType``
-    :returns: The requested entities, or single entity.
+    :rtype: list of :class:`gcloud.datastore.entity.Entity`
+    :returns: The requested entities.
     """
-    if isinstance(key_or_keys, collections.Iterable):
-        keys = key_or_keys
-    else:
-        keys = [key_or_keys]
-
     if not keys:
         return []
 
     connection = _require_connection(connection)
-    dataset_id = keys[0].dataset_id
-    # Rather than creating a list or set of all dataset IDs, we iterate
-    # and check. We could allow the backend to check this for us if IDs
-    # with no prefix worked (GoogleCloudPlatform/google-cloud-datastore#59)
-    # or if we made sure that a prefix s~ or e~ was on each key.
-    for key in keys[1:]:
-        if key.dataset_id != dataset_id:
-            raise ValueError('All keys in get must be from the same dataset.')
+    dataset_id = _get_dataset_id_from_keys(keys)
 
     entity_pbs = connection.lookup(
         dataset_id=dataset_id,
@@ -122,11 +130,33 @@ def get(key_or_keys, missing=None, deferred=None, connection=None):
     for entity_pb in entity_pbs:
         entities.append(helpers.entity_from_protobuf(entity_pb))
 
-    if keys is key_or_keys:
-        return entities
-    else:
-        if entities:
-            return entities[0]
+    return entities
+
+
+def delete(keys, connection=None):
+    """Delete the keys in the Cloud Datastore.
+
+    :type keys: list of :class:`gcloud.datastore.key.Key`
+    :param keys: The keys to be deleted from the datastore.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional connection used to connect to datastore.
+    """
+    if not keys:
+        return
+
+    connection = connection or _implicit_environ.CONNECTION
+
+    # We allow partial keys to attempt a delete, the backend will fail.
+    current = _BATCHES.top
+    in_batch = current is not None
+    if not in_batch:
+        dataset_id = _get_dataset_id_from_keys(keys)
+        current = Batch(dataset_id=dataset_id, connection=connection)
+    for key in keys:
+        current.delete(key)
+    if not in_batch:
+        current.commit()
 
 
 def allocate_ids(incomplete_key, num_ids, connection=None):

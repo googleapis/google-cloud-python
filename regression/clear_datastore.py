@@ -51,19 +51,6 @@ def get_ancestors(entities):
     return list(set(key_roots))
 
 
-def delete_entities(entities):
-    if not entities:
-        return
-
-    dataset_ids = set(entity.key.dataset_id for entity in entities)
-    if len(dataset_ids) != 1:
-        raise ValueError('Expected a unique dataset ID.')
-
-    dataset_id = dataset_ids.pop()
-    key_pbs = [entity.key.to_protobuf() for entity in entities]
-    datastore.get_connection().delete_entities(dataset_id, key_pbs)
-
-
 def remove_kind(kind):
     results = []
 
@@ -87,10 +74,10 @@ def remove_kind(kind):
         if len(ancestors) > TRANSACTION_MAX_GROUPS:
             delete_outside_transaction = True
         else:
-            delete_entities(results)
+            datastore.delete([result.key for result in results])
 
     if delete_outside_transaction:
-        delete_entities(results)
+        datastore.delete([result.key for result in results])
 
 
 def remove_all_entities():

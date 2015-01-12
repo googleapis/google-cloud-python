@@ -33,8 +33,8 @@ class TestDatastore(unittest2.TestCase):
 
     def tearDown(self):
         with datastore.Transaction():
-            for entity in self.case_entities_to_delete:
-                entity.key.delete()
+            keys = [entity.key for entity in self.case_entities_to_delete]
+            datastore.delete(keys)
 
 
 class TestDatastoreAllocateIDs(TestDatastore):
@@ -86,7 +86,7 @@ class TestDatastoreSave(TestDatastore):
             self.assertEqual(entity.key.name, name)
         if key_id is not None:
             self.assertEqual(entity.key.id, key_id)
-        retrieved_entity = datastore.get(entity.key)
+        retrieved_entity, = datastore.get([entity.key])
         # Check the keys are the same.
         self.assertEqual(retrieved_entity.key.path, entity.key.path)
         self.assertEqual(retrieved_entity.key.namespace, entity.key.namespace)
@@ -341,13 +341,13 @@ class TestDatastoreTransaction(TestDatastore):
         entity['url'] = u'www.google.com'
 
         with datastore.Transaction():
-            retrieved_entity = datastore.get(entity.key)
-            if retrieved_entity is None:
+            results = datastore.get([entity.key])
+            if len(results) == 0:
                 entity.save()
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.
-        retrieved_entity = datastore.get(entity.key)
+        retrieved_entity, = datastore.get([entity.key])
         self.case_entities_to_delete.append(retrieved_entity)
         retrieved_dict = dict(retrieved_entity.items())
         entity_dict = dict(entity.items())

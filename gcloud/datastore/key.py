@@ -217,19 +217,6 @@ class Key(object):
 
         return key
 
-    def delete(self, connection=None):
-        """Delete the key in the Cloud Datastore.
-
-        :type connection: :class:`gcloud.datastore.connection.Connection`
-        :param connection: Optional connection used to connect to datastore.
-        """
-        # We allow partial keys to attempt a delete, the backend will fail.
-        connection = connection or _implicit_environ.CONNECTION
-        connection.delete_entities(
-            dataset_id=self.dataset_id,
-            key_pbs=[self.to_protobuf()],
-        )
-
     @property
     def is_partial(self):
         """Boolean indicating if the key has an ID (or name).

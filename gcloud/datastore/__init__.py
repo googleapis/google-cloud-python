@@ -51,6 +51,7 @@ import os
 from gcloud import credentials
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore.api import allocate_ids
+from gcloud.datastore.api import delete
 from gcloud.datastore.api import get
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.connection import Connection

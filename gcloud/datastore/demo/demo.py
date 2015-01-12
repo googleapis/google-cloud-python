@@ -34,7 +34,7 @@ toy.save()
 print(datastore.get([toy.key]))
 
 # And we should be able to delete it...
-toy.key.delete()
+datastore.delete([toy.key])
 
 # Since we deleted it, if we do another lookup it shouldn't be there again:
 print(datastore.get([toy.key]))
@@ -48,10 +48,10 @@ SAMPLE_DATA = [
     (4567, 'Printer', 11),
     (5678, 'Printer', 12),
     (6789, 'Computer', 13)]
-samples = []
+sample_keys = []
 for id, name, age in SAMPLE_DATA:
     key = datastore.Key('Thing', id)
-    samples.append(key)
+    sample_keys.append(key)
     entity = datastore.Entity(key)
     entity['name'] = name
     entity['age'] = age
@@ -72,7 +72,7 @@ query.add_filter('age', '=', 10)
 print(list(query.fetch()))
 
 # Now delete them.
-print([key.delete() for key in samples])
+datastore.delete(sample_keys)
 
 # You can also work inside a transaction.
 # (Check the official docs for explanations of what's happening here.)
@@ -92,7 +92,7 @@ with datastore.Transaction():
     print('Committing the transaction...')
 
 # Now that the transaction is commited, let's delete the entities.
-print(key.delete(), key2.delete())
+datastore.delete([key, key2])
 
 # To rollback a transaction, just call .rollback()
 with datastore.Transaction() as t:
@@ -116,4 +116,4 @@ with datastore.Transaction():
 print(thing.key)  # This will be complete
 
 # Now let's delete the entity.
-thing.key.delete()
+datastore.delete([thing.key])
