@@ -29,8 +29,7 @@ Cloud Datastore
 .. code-block:: python
 
   from gcloud import datastore
-  datastore.set_default_connection()
-  datastore.set_default_dataset_id('<dataset-id>')
+  datastore.set_defaults()
 
   from gcloud.datastore.entity import Entity
   from gcloud.datastore.key import Key
