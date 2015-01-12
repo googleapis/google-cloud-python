@@ -91,15 +91,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">You&#39;ll typically use these to get started with the API:</span>
 
 <span class="sd">&gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">&gt;&gt;&gt; from gcloud.datastore.entity import Entity</span>
-<span class="sd">&gt;&gt;&gt; from gcloud.datastore.key import Key</span>
-<span class="sd">&gt;&gt;&gt; from gcloud.datastore.query import Query</span>
 
 <span class="sd">&gt;&gt;&gt; datastore.set_defaults()</span>
 
-<span class="sd">&gt;&gt;&gt; key = Key(&#39;EntityKind&#39;, 1234)</span>
-<span class="sd">&gt;&gt;&gt; entity = Entity(key)</span>
-<span class="sd">&gt;&gt;&gt; query = Query(kind=&#39;EntityKind&#39;)</span>
+<span class="sd">&gt;&gt;&gt; key = datastore.Key(&#39;EntityKind&#39;, 1234)</span>
+<span class="sd">&gt;&gt;&gt; entity = datastore.Entity(key)</span>
+<span class="sd">&gt;&gt;&gt; query = datastore.Query(kind=&#39;EntityKind&#39;)</span>
 
 <span class="sd">The main concepts with this API are:</span>
 
@@ -129,7 +126,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">allocate_ids</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">get</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
 
 
 <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/datastore&#39;</span><span class="p">,</span>
@@ -195,11 +197,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    with the same set of credentials (unlikely):</span>
 
 <span class="sd">    &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">    &gt;&gt;&gt; from gcloud.datastore import Key</span>
 
 <span class="sd">    &gt;&gt;&gt; connection = datastore.get_connection()</span>
-<span class="sd">    &gt;&gt;&gt; key1 = Key(&#39;Kind&#39;, 1234, dataset_id=&#39;dataset1&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; key2 = Key(&#39;Kind&#39;, 1234, dataset_id=&#39;dataset2&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; key1 = datastore.Key(&#39;Kind&#39;, 1234, dataset_id=&#39;dataset1&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; key2 = datastore.Key(&#39;Kind&#39;, 1234, dataset_id=&#39;dataset2&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; entity1 = datastore.get(key1, connection=connection)</span>
 <span class="sd">    &gt;&gt;&gt; entity2 = datastore.get(key2, connection=connection)</span>
 
