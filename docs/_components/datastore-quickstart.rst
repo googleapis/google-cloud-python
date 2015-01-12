@@ -54,14 +54,12 @@ and initializing the demo settings::
 Once you have initialized,
 you can create entities and save them::
 
-  >>> from gcloud.datastore.entity import Entity
-  >>> from gcloud.datastore.key import Key
-  >>> entity = Entity(key=Key('Person'))
+  >>> from gcloud import datastore
+  >>> entity = datastore.Entity(key=datastore.Key('Person'))
   >>> entity['name'] = 'Your name'
   >>> entity['age'] = 25
   >>> entity.save()
-  >>> from gcloud.datastore.query import Query
-  >>> list(Query(kind='Person').fetch())
+  >>> list(datastore.Query(kind='Person').fetch())
   [<Entity{...} {'name': 'Your name', 'age': 25}>]
 
 ----

@@ -31,9 +31,7 @@ Cloud Datastore
   from gcloud import datastore
   datastore.set_defaults()
 
-  from gcloud.datastore.entity import Entity
-  from gcloud.datastore.key import Key
-  entity = Entity(key=Key('Person'))
+  entity = datastore.Entity(key=datastore.Key('Person'))
   entity['name'] = 'Your name'
   entity['age'] = 25
   entity.save()
