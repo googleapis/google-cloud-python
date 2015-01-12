@@ -20,6 +20,7 @@ except ImportError:     # pragma: NO COVER (who doesn't have it?)
         """Placeholder for non-threaded applications."""
 
 from gcloud.datastore import _implicit_environ
+from gcloud.datastore import helpers
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
 
@@ -209,16 +210,8 @@ class Batch(object):
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        key_pb = entity.key.to_protobuf()
-        properties = dict(entity)
-        exclude = tuple(entity.exclude_from_indexes)
-
-        self.connection.save_entity(
-            self.dataset_id, key_pb, properties,
-            exclude_from_indexes=exclude, mutation=self.mutation)
-
-        if entity.key.is_partial:
-            self._auto_id_entities.append(entity)
+        _assign_entity_to_mutation(
+            self.mutation, entity, self._auto_id_entities)
 
     def delete(self, key):
         """Remember a key to be deleted durring ``commit``.
@@ -232,8 +225,7 @@ class Batch(object):
             raise ValueError("Key must be complete")
 
         key_pb = key.to_protobuf()
-        self.connection.delete_entities(
-            self.dataset_id, [key_pb], mutation=self.mutation)
+        helpers._add_keys_to_request(self.mutation.delete, [key_pb])
 
     def begin(self):
         """No-op
@@ -279,3 +271,53 @@ class Batch(object):
                 self.rollback()
         finally:
             _BATCHES.pop()
+
+
+def _assign_entity_to_mutation(mutation_pb, entity, auto_id_entities):
+    """Copy ``entity`` into appropriate slot of ``mutation_pb``.
+
+    If ``entity.key`` is incomplete, append ``entity`` to ``auto_id_entities``
+    for later fixup during ``commit``.
+
+    Helper method for ``Batch.put``.
+
+    :type mutation_pb: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`
+    :param mutation_pb; the Mutation protobuf for the batch / transaction.
+
+    :type entity: :class:`gcloud.datastore.entity.Entity`
+    :param entity; the entity being updated within the batch / transaction.
+
+    :type auto_id_entities: list of :class:`gcloud.datastore.entity.Entity`
+    :param auto_id_entities: entiites with partial keys, to be fixed up
+                              during commit.
+    """
+    auto_id = entity.key.is_partial
+
+    key_pb = entity.key.to_protobuf()
+    key_pb = helpers._prepare_key_for_request(key_pb)
+
+    if auto_id:
+        insert = mutation_pb.insert_auto_id.add()
+        auto_id_entities.append(entity)
+    else:
+        # We use ``upsert`` for entities with completed keys, rather than
+        # ``insert`` or ``update``, in order not to create race conditions
+        # based on prior existence / removal of the entity.
+        insert = mutation_pb.upsert.add()
+
+    insert.key.CopyFrom(key_pb)
+
+    for name, value in entity.items():
+        prop = insert.property.add()
+        # Set the name of the property.
+        prop.name = name
+
+        # Set the appropriate value.
+        helpers._set_protobuf_value(prop.value, value)
+
+        if name in entity.exclude_from_indexes:
+            if not isinstance(value, list):
+                prop.value.indexed = False
+
+            for sub_value in prop.value.list_value:
+                sub_value.indexed = False
