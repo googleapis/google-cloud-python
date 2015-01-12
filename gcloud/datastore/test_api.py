@@ -318,9 +318,11 @@ class Test_delete_function(unittest2.TestCase):
             result = self._callFUT([key], connection=connection)
 
         self.assertEqual(result, None)
-        self.assertEqual(
-            connection._deleted,
-            [(_DATASET, [key._key], CURR_BATCH.mutation)])
+        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
+        self.assertEqual(len(CURR_BATCH.mutation.upsert), 0)
+        deletes = list(CURR_BATCH.mutation.delete)
+        self.assertEqual(len(deletes), 1)
+        self.assertEqual(deletes[0], key._key)
 
     def test_delete_implicit_connection(self):
         from gcloud._testing import _Monkey
@@ -346,9 +348,11 @@ class Test_delete_function(unittest2.TestCase):
                 result = self._callFUT([key])
 
         self.assertEqual(result, None)
-        self.assertEqual(
-            connection._deleted,
-            [(_DATASET, [key._key], CURR_BATCH.mutation)])
+        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
+        self.assertEqual(len(CURR_BATCH.mutation.upsert), 0)
+        deletes = list(CURR_BATCH.mutation.delete)
+        self.assertEqual(len(deletes), 1)
+        self.assertEqual(deletes[0], key._key)
 
     def test_delete_no_keys(self):
         from gcloud.datastore import _implicit_environ
