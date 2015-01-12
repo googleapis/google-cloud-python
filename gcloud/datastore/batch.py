@@ -300,6 +300,9 @@ def _assign_entity_to_mutation(mutation_pb, entity, auto_id_entities):
         insert = mutation_pb.insert_auto_id.add()
         auto_id_entities.append(entity)
     else:
+        # We use ``upsert`` for entities with completed keys, rather than
+        # ``insert`` or ``update``, in order not to create race conditions
+        # based on prior existence / removal of the entity.
         insert = mutation_pb.upsert.add()
 
     insert.key.CopyFrom(key_pb)
