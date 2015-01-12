@@ -47,6 +47,8 @@ def tearDownModule():
 
 class TestStorage(unittest2.TestCase):
 
+    __metaclass__ = regression_utils.RetryTestsMetaclass
+
     @classmethod
     def setUpClass(cls):
         cls.connection = regression_utils.get_storage_connection()

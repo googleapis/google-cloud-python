@@ -15,6 +15,7 @@
 from __future__ import print_function
 import os
 import sys
+import types
 
 from gcloud import storage
 
@@ -29,6 +30,38 @@ ENVIRON_ERROR_MSG = """\
 To run the regression tests, you need to set some environment variables.
 Please check the Contributing guide for instructions.
 """
+
+
+class RetryTestsMetaclass(type):
+
+    NUM_RETRIES = 2
+    FLAKY_ERROR_CLASSES = (AssertionError,)
+
+    @staticmethod
+    def _wrap_class_attr(class_attr):
+        if not (isinstance(class_attr, types.FunctionType) and
+                class_attr.__name__.startswith('test_')):
+            return class_attr
+
+        def retry_function(self):
+            num_attempts = 0
+            while num_attempts < RetryTestsMetaclass.NUM_RETRIES:
+                try:
+                    return class_attr(self)
+                except RetryTestsMetaclass.FLAKY_ERROR_CLASSES:
+                    num_attempts += 1
+                    if num_attempts == RetryTestsMetaclass.NUM_RETRIES:
+                        raise
+
+        return retry_function
+
+    def __new__(mcs, name, bases, attrs):
+        new_attrs = {}
+        for attr_name, value in attrs.items():
+            new_attrs[attr_name] = mcs._wrap_class_attr(value)
+
+        return super(RetryTestsMetaclass, mcs).__new__(
+            mcs, name, bases, new_attrs)
 
 
 def get_environ(require_datastore=False, require_storage=False):
