@@ -14,7 +14,16 @@
 
 """A simple wrapper around the OAuth2 credentials library."""
 
+import argparse
+import json
+import os
+import sys
+import tempfile
+import six
+
 from oauth2client import client
+from oauth2client import file
+from oauth2client import tools
 
 
 def get_credentials():
@@ -57,6 +66,108 @@ def get_credentials():
               environment.
     """
     return client.GoogleCredentials.get_application_default()
+
+
+def _store_user_credential(credential):
+    """Stores a user credential as a well-known file.
+
+    Prompts user first if they want to store the minted token and
+    then prompts the user for a filename to store the token
+    information in the format needed for get_credentials().
+
+    :type credential: :class:`oauth2client.client.OAuth2Credentials`
+    :param credential: A user credential to be stored.
+    """
+    ans = six.moves.input('Would you like to store your tokens '
+                          'for future use? [y/n] ')
+    if ans.strip().lower() != 'y':
+        return
+
+    filename = six.moves.input('Please name the file where you wish '
+                               'to store them: ').strip()
+
+    payload = {
+        'client_id': credential.client_id,
+        'client_secret': credential.client_secret,
+        'refresh_token': credential.refresh_token,
+        'type': 'authorized_user',
+    }
+    with open(filename, 'w') as file_obj:
+        json.dump(payload, file_obj, indent=2, sort_keys=True,
+                  separators=(',', ': '))
+        file_obj.write('\n')
+
+    print 'Saved %s' % (filename,)
+    print 'If you would like to use these credentials in the future'
+    print 'without having to initiate the authentication flow in your'
+    print 'browser, please set the GOOGLE_APPLICATION_CREDENTIALS'
+    print 'environment variable:'
+    print '    export GOOGLE_APPLICATION_CREDENTIALS=%r' % (filename,)
+    print 'Once you\'ve done this, you can use the get_credentials()'
+    print 'function, which relies on that environment variable.'
+    print ''
+    print 'Keep in mind, the refresh token can only be used with the'
+    print 'scopes you granted in the original authorization.'
+
+
+def get_credentials_from_user_flow(scope, client_secrets_file=None):
+    """Gets credentials by taking user through 3-legged auth flow.
+
+    The necessary information to perform the flow will be stored in a client
+    secrets file. This can be downloaded from the Google Cloud Console. First,
+    visit "APIs & auth > Credentials", and creating a new client ID for an
+    "Installed application" (or use an existing "Client ID for native
+    application"). Then click "Download JSON" on your chosen "Client ID for
+    native application" and save the client secrets file.
+
+    You can either pass this filename in directly via 'client_secrets_file'
+    or set the environment variable GCLOUD_CLIENT_SECRETS.
+
+    For more information, see:
+      developers.google.com/api-client-library/python/guide/aaa_client_secrets
+
+    :type scope: string or tuple of string
+    :param scope: The scope against which to authenticate. (Different services
+                  require different scopes, check the documentation for which
+                  scope is required for the different levels of access to any
+                  particular API.)
+
+    :type client_secrets_file: string
+    :param client_secrets_file: Optional. File containing client secrets JSON.
+
+    :rtype: :class:`oauth2client.client.OAuth2Credentials`
+    :returns: A new credentials instance.
+    :raises: ``EnvironmentError`` if stdout is not a TTY or
+             ``ValueError`` if the client secrets file is not for an installed
+             application
+    """
+    if not sys.stdout.isatty():
+        raise EnvironmentError('Cannot initiate user flow unless user can '
+                               'interact with standard out.')
+
+    if client_secrets_file is None:
+        client_secrets_file = os.getenv('GCLOUD_CLIENT_SECRETS')
+
+    client_type, client_info = client.clientsecrets.loadfile(
+        client_secrets_file)
+    if client_type != client.clientsecrets.TYPE_INSTALLED:
+        raise ValueError('Client secrets file must be for '
+                         'installed application.')
+
+    redirect_uri = client_info['redirect_uris'][0]
+    flow = client.flow_from_clientsecrets(client_secrets_file, scope,
+                                          redirect_uri=redirect_uri)
+
+    parser = argparse.ArgumentParser(parents=[tools.argparser])
+    flags = parser.parse_args()
+    storage = file.Storage(tempfile.mktemp())
+    credential = tools.run_flow(flow, storage, flags)
+    # Remove the tempfile as a store for the credentials to prevent
+    # future writes to a non-existent file.
+    credential.store = None
+    # Determine if the user would like to store these credentials.
+    _store_user_credential(credential)
+    return credential
 
 
 def get_for_service_account_p12(client_email, private_key_path, scope=None):

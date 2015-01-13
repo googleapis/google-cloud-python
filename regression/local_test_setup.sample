@@ -1,3 +1,6 @@
+# NOTE: At most one of "GOOGLE_APPLICATION_CREDENTIALS" and
+#       "GCLOUD_CLIENT_SECRETS" need be set.
 export GOOGLE_APPLICATION_CREDENTIALS="app_credentials.json.sample"
+export GCLOUD_CLIENT_SECRETS="client_secrets.json.sample"
 export GCLOUD_TESTS_PROJECT_ID="my-project"
 export GCLOUD_TESTS_DATASET_ID=${GCLOUD_TESTS_PROJECT_ID}
