@@ -137,9 +137,11 @@ def get_credentials_from_user_flow(scope, client_secrets_file=None):
 
     :rtype: :class:`oauth2client.client.OAuth2Credentials`
     :returns: A new credentials instance.
-    :raises: ``EnvironmentError`` if stdout is not a TTY or
+    :raises: ``EnvironmentError`` if stdout is not a TTY,
+             ``ValueError`` if ``client_secrets_file`` is not passed in as an
+             argument or set as an environment variable, or
              ``ValueError`` if the client secrets file is not for an installed
-             application
+             application.
     """
     if not sys.stdout.isatty():
         raise EnvironmentError('Cannot initiate user flow unless user can '
@@ -147,6 +149,9 @@ def get_credentials_from_user_flow(scope, client_secrets_file=None):
 
     if client_secrets_file is None:
         client_secrets_file = os.getenv('GCLOUD_CLIENT_SECRETS')
+
+    if client_secrets_file is None:
+        raise ValueError('Client secrets file not specified.')
 
     client_type, client_info = client.clientsecrets.loadfile(
         client_secrets_file)

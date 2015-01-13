@@ -147,6 +147,29 @@ class Test_get_credentials_from_user_flow(unittest2.TestCase):
             with self.assertRaises(EnvironmentError):
                 self._callFUT(None)
 
+    def test_no_filename(self):
+        import os
+        import sys
+
+        from gcloud._testing import _Monkey
+
+        STDOUT = _MockStdout(isatty=True)
+        FAKE_ENVIRON = {}
+        GCLOUD_KEY = 'GCLOUD_CLIENT_SECRETS'
+
+        _called_keys = []
+
+        def fake_getenv(key):
+            _called_keys.append(key)
+            return FAKE_ENVIRON.get(key)
+
+        with _Monkey(sys, stdout=STDOUT):
+            with _Monkey(os, getenv=fake_getenv):
+                with self.assertRaises(ValueError):
+                    self._callFUT(None)
+
+        self.assertEqual(_called_keys, [GCLOUD_KEY])
+
     def test_filename_from_environ(self):
         import os
         import sys
