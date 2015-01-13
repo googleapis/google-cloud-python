@@ -499,6 +499,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">           will be replaced by those passed in ``properties``;  properties</span>
 <span class="sd">           not passed in ``properties`` no longer be set for the entity.</span>
 
+<span class="sd">        .. note::</span>
+<span class="sd">           When saving an entity to the backend, a property value set as</span>
+<span class="sd">           an empty list cannot be saved and will be ignored.</span>
+
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset_id: The ID of the dataset in which to save the entity.</span>
 
@@ -544,19 +548,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">insert</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">prop</span> <span class="o">=</span> <span class="n">insert</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
-            <span class="c"># Set the name of the property.</span>
-            <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-
-            <span class="c"># Set the appropriate value.</span>
-            <span class="n">helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">exclude_from_indexes</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                    <span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">indexed</span> <span class="o">=</span> <span class="bp">False</span>
-
-                <span class="k">for</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">list_value</span><span class="p">:</span>
-                    <span class="n">sub_value</span><span class="o">.</span><span class="n">indexed</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">_set_protobuf_property</span><span class="p">(</span><span class="n">insert</span><span class="o">.</span><span class="n">property</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
+                                           <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_from_indexes</span><span class="p">)</span>
 
         <span class="c"># If this is in a transaction, we should just return True. The</span>
         <span class="c"># transaction will handle assigning any keys as necessary.</span>

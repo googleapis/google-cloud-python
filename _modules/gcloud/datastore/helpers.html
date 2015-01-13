@@ -292,6 +292,44 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">return</span> <span class="n">_get_value_from_value_pb</span><span class="p">(</span><span class="n">property_pb</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">_set_protobuf_property</span><span class="p">(</span><span class="n">property_pb</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">indexed</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Assign &#39;name&#39;, &#39;value&#39;, &#39;indexed&#39; to the correct &#39;property_pb&#39;.</span>
+
+<span class="sd">    Some value (empty list) cannot be directly assigned; this function handles</span>
+<span class="sd">    them correctly.</span>
+
+<span class="sd">    :type property_pb: :class:`gcloud.datastore.datastore_v1_pb2.Property`</span>
+<span class="sd">    :param property_pb: The value protobuf to which the value is being</span>
+<span class="sd">                        assigned.</span>
+
+<span class="sd">    :type name: string</span>
+<span class="sd">    :param name: The name to be assigned.</span>
+
+<span class="sd">    :type value: `datetime.datetime`, boolean, float, integer, string,</span>
+<span class="sd">                 :class:`gcloud.datastore.key.Key`,</span>
+<span class="sd">                 :class:`gcloud.datastore.entity.Entity`,</span>
+<span class="sd">    :param value: The value to be assigned.</span>
+
+<span class="sd">    :type indexed: boolean</span>
+<span class="sd">    :param indexed: The flag indicates the property should to be indexed or</span>
+<span class="sd">                    not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">prop</span> <span class="o">=</span> <span class="n">property_pb</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">indexed</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">indexed</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">for</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">list_value</span><span class="p">:</span>
+            <span class="n">sub_value</span><span class="o">.</span><span class="n">indexed</span> <span class="o">=</span> <span class="bp">False</span>
+
+
 <span class="k">def</span> <span class="nf">_set_protobuf_value</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Assign &#39;val&#39; to the correct subfield of &#39;value_pb&#39;.</span>
 
