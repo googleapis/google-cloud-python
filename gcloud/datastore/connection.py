@@ -425,6 +425,10 @@ class Connection(connection.Connection):
            will be replaced by those passed in ``properties``;  properties
            not passed in ``properties`` no longer be set for the entity.
 
+        .. note::
+           When saving an entity to the backend, a property value set as
+           an empty list cannot be saved and will be ignored.
+
         :type dataset_id: string
         :param dataset_id: The ID of the dataset in which to save the entity.
 
@@ -470,19 +474,8 @@ class Connection(connection.Connection):
         insert.key.CopyFrom(key_pb)
 
         for name, value in properties.items():
-            prop = insert.property.add()
-            # Set the name of the property.
-            prop.name = name
-
-            # Set the appropriate value.
-            helpers._set_protobuf_value(prop.value, value)
-
-            if name in exclude_from_indexes:
-                if not isinstance(value, list):
-                    prop.value.indexed = False
-
-                for sub_value in prop.value.list_value:
-                    sub_value.indexed = False
+            helpers._set_protobuf_property(insert.property, name, value,
+                                           name not in exclude_from_indexes)
 
         # If this is in a transaction, we should just return True. The
         # transaction will handle assigning any keys as necessary.
