@@ -377,7 +377,6 @@ class Test_put_function(unittest2.TestCase):
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(_DATASET)
 
-
         with _Monkey(_implicit_environ, CONNECTION=connection):
             # Set up Batch on stack so we can check it is used.
             with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:

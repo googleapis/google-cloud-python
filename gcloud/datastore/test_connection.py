@@ -179,16 +179,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(klass.build_api_url(DATASET_ID, METHOD, BASE, VER),
                          URI)
 
-    def test_transaction_getter_unset(self):
-        conn = self._makeOne()
-        self.assertTrue(conn.transaction() is None)
-
-    def test_transaction_setter(self):
-        xact = object()
-        conn = self._makeOne()
-        self.assertTrue(conn.transaction(xact) is conn)
-        self.assertTrue(conn.transaction() is xact)
-
     def test_lookup_single_key_empty_response(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 

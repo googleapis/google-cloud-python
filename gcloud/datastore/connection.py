@@ -126,23 +126,6 @@ class Connection(connection.Connection):
             api_version=(api_version or cls.API_VERSION),
             dataset_id=dataset_id, method=method)
 
-    def transaction(self, transaction=connection.Connection._EMPTY):
-        """Getter/setter for the connection's transaction object.
-
-        :type transaction: :class:`gcloud.datastore.transaction.Transaction`,
-                           (setting), or omitted (getting).
-        :param transaction: The new transaction (if passed).
-
-        :rtype: :class:`gcloud.datastore.transaction.Transaction`, (getting)
-                or :class:`gcloud.datastore.connection.Connection` (setting)
-        :returns: The current transaction (getting) or self (setting).
-        """
-        if transaction is self._EMPTY:
-            return self._current_transaction
-        else:
-            self._current_transaction = transaction
-            return self
-
     def lookup(self, dataset_id, key_pbs,
                missing=None, deferred=None, eventual=False):
         """Lookup keys from a dataset in the Cloud Datastore.
