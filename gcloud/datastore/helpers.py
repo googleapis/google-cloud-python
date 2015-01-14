@@ -25,7 +25,7 @@ from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
 import six
 
-from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
@@ -38,7 +38,7 @@ def entity_from_protobuf(pb):
     The protobuf should be one returned from the Cloud Datastore
     Protobuf API.
 
-    :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Entity`
+    :type pb: :class:`gcloud.datastore._datastore_v1_pb2.Entity`
     :param pb: The Protobuf representing the entity.
 
     :rtype: :class:`gcloud.datastore.entity.Entity`
@@ -60,7 +60,7 @@ def key_from_protobuf(pb):
     The protobuf should be one returned from the Cloud Datastore
     Protobuf API.
 
-    :type pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+    :type pb: :class:`gcloud.datastore._datastore_v1_pb2.Key`
     :param pb: The Protobuf representing the key.
 
     :rtype: :class:`gcloud.datastore.key.Key`
@@ -161,7 +161,7 @@ def _get_value_from_value_pb(value_pb):
     Some work is done to coerce the return value into a more useful type
     (particularly in the case of a timestamp value, or a key value).
 
-    :type value_pb: :class:`gcloud.datastore.datastore_v1_pb2.Value`
+    :type value_pb: :class:`gcloud.datastore._datastore_v1_pb2.Value`
     :param value_pb: The Value Protobuf.
 
     :returns: The value provided by the Protobuf.
@@ -210,7 +210,7 @@ def _get_value_from_property_pb(property_pb):
     Some work is done to coerce the return value into a more useful type
     (particularly in the case of a timestamp value, or a key value).
 
-    :type property_pb: :class:`gcloud.datastore.datastore_v1_pb2.Property`
+    :type property_pb: :class:`gcloud.datastore._datastore_v1_pb2.Property`
     :param property_pb: The Property Protobuf.
 
     :returns: The value provided by the Protobuf.
@@ -227,7 +227,7 @@ def _set_protobuf_value(value_pb, val):
     Some value types (entities, keys, lists) cannot be directly
     assigned; this function handles them correctly.
 
-    :type value_pb: :class:`gcloud.datastore.datastore_v1_pb2.Value`
+    :type value_pb: :class:`gcloud.datastore._datastore_v1_pb2.Value`
     :param value_pb: The value protobuf to which the value is being assigned.
 
     :type val: `datetime.datetime`, boolean, float, integer, string,
@@ -264,10 +264,10 @@ def _set_protobuf_value(value_pb, val):
 def _prepare_key_for_request(key_pb):
     """Add protobuf keys to a request object.
 
-    :type key_pb: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+    :type key_pb: :class:`gcloud.datastore._datastore_v1_pb2.Key`
     :param key_pb: A key to be added to a request.
 
-    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+    :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Key`
     :returns: A key which will be added to a request. It will be the
               original if nothing needs to be changed.
     """
@@ -294,7 +294,7 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     :type request_field_pb: `RepeatedCompositeFieldContainer`
     :param request_field_pb: A repeated proto field that contains keys.
 
-    :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
+    :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
     :param key_pbs: The keys to add to a request.
     """
     for key_pb in key_pbs:

@@ -17,7 +17,7 @@
 import base64
 
 from gcloud.datastore import _implicit_environ
-from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.key import Key
 from gcloud.datastore.transaction import Transaction
@@ -432,7 +432,7 @@ def _pb_from_query(query):
     :type query: :class:`Query`
     :param query: The source query.
 
-    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Query`
+    :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Query`
     :returns: A protobuf that can be sent to the protobuf API.  N.b. that
               it does not contain "in-flight" fields for ongoing query
               executions (cursors, offset, limit).

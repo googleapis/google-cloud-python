@@ -32,7 +32,7 @@ IGNORED_DIRECTORIES = [
     '_gcloud_vendor/',
 ]
 IGNORED_FILES = [
-    'gcloud/datastore/datastore_v1_pb2.py',
+    'gcloud/datastore/_datastore_v1_pb2.py',
     'docs/conf.py',
     'setup.py',
 ]
@@ -125,12 +125,8 @@ def get_files_for_linting():
     a remote branch to diff against.
     """
     diff_base = None
-    if (os.getenv('TRAVIS_BRANCH') == 'master' and
-            os.getenv('TRAVIS_PULL_REQUEST') != 'false'):
-        # In the case of a pull request into master, we want to
-        # diff against HEAD in master.
-        diff_base = 'origin/master'
-    elif os.getenv('TRAVIS') is None:
+    # Temporarily turning off origin/master check since file removed.
+    if os.getenv('TRAVIS') is None:
         # Only allow specified remote and branch in local dev.
         remote = os.getenv('GCLOUD_REMOTE_FOR_LINT')
         branch = os.getenv('GCLOUD_BRANCH_FOR_LINT')

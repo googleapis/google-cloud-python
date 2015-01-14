@@ -143,7 +143,7 @@ class Test_get_function(unittest2.TestCase):
         self.assertEqual(results, [])
 
     def test_miss_w_missing(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
 
@@ -189,7 +189,7 @@ class Test_get_function(unittest2.TestCase):
 
     def _make_entity_pb(self, dataset_id, kind, integer_id,
                         name=None, str_val=None):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         entity_pb = datastore_pb.Entity()
         entity_pb.key.partition_id.dataset_id = dataset_id

@@ -66,7 +66,7 @@ class TestBatch(unittest2.TestCase):
             self.assertRaises(ValueError, self._makeOne, connection=object())
 
     def test_ctor_explicit(self):
-        from gcloud.datastore.datastore_v1_pb2 import Mutation
+        from gcloud.datastore._datastore_v1_pb2 import Mutation
         _DATASET = 'DATASET'
         connection = _Connection()
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
@@ -79,7 +79,7 @@ class TestBatch(unittest2.TestCase):
     def test_ctor_implicit(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
-        from gcloud.datastore.datastore_v1_pb2 import Mutation
+        from gcloud.datastore._datastore_v1_pb2 import Mutation
         DATASET_ID = 'DATASET'
         CONNECTION = _Connection()
 
@@ -398,8 +398,8 @@ class _Key(object):
         return self._id is None
 
     def to_protobuf(self):
-        from gcloud.datastore import datastore_v1_pb2
-        key = self._key = datastore_v1_pb2.Key()
+        from gcloud.datastore import _datastore_v1_pb2
+        key = self._key = _datastore_v1_pb2.Key()
         # Don't assign it, because it will just get ripped out
         # key.partition_id.dataset_id = self.dataset_id
 

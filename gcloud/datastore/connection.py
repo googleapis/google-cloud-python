@@ -17,7 +17,7 @@
 import six
 
 from gcloud import connection
-from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 
 
@@ -132,8 +132,8 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
 
         This method deals only with protobufs
-        (:class:`gcloud.datastore.datastore_v1_pb2.Key` and
-        :class:`gcloud.datastore.datastore_v1_pb2.Entity`) and is used
+        (:class:`gcloud.datastore._datastore_v1_pb2.Key` and
+        :class:`gcloud.datastore._datastore_v1_pb2.Entity`) and is used
         under the hood in :func:`gcloud.datastore.get`:
 
         >>> from gcloud import datastore
@@ -150,7 +150,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID of the dataset to look up the keys.
 
-        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
                        (or a single Key)
         :param key_pbs: The key (or keys) to retrieve from the datastore.
 
@@ -174,7 +174,7 @@ class Connection(connection.Connection):
                                the given transaction.  Incompatible with
                                ``eventual==True``.
 
-        :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Entity`
+        :rtype: list of :class:`gcloud.datastore._datastore_v1_pb2.Entity`
                 (or a single Entity)
         :returns: The entities corresponding to the keys provided.
                   If a single key was provided and no results matched,
@@ -257,7 +257,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID of the dataset over which to run the query.
 
-        :type query_pb: :class:`gcloud.datastore.datastore_v1_pb2.Query`
+        :type query_pb: :class:`gcloud.datastore._datastore_v1_pb2.Query`
         :param query_pb: The Protobuf representing the query to run.
 
         :type namespace: string
@@ -302,7 +302,7 @@ class Connection(connection.Connection):
                              transaction should be SERIALIZABLE (True) or
                              SNAPSHOT (False).
 
-        :rtype: :class:`.datastore_v1_pb2.BeginTransactionResponse`
+        :rtype: :class:`._datastore_v1_pb2.BeginTransactionResponse`
         :returns': the result protobuf for the begin transaction request.
         """
         request = datastore_pb.BeginTransactionRequest()
@@ -327,7 +327,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :type mutation_pb: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.
+        :type mutation_pb: :class:`datastore_pb.Mutation`.
         :param mutation_pb: The protobuf for the mutations being saved.
 
         :type transaction_id: string
@@ -335,7 +335,7 @@ class Connection(connection.Connection):
                                :meth:`begin_transaction`.  If not passed, the
                                commit will be non-transactional.
 
-        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
+        :rtype: :class:`gcloud.datastore._datastore_v1_pb2.MutationResult`.
         :returns': the result protobuf for the mutation.
         """
         request = datastore_pb.CommitRequest()
@@ -379,10 +379,10 @@ class Connection(connection.Connection):
         :param dataset_id: The ID of the dataset to which the transaction
                            belongs.
 
-        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
         :param key_pbs: The keys for which the backend should allocate IDs.
 
-        :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :rtype: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
         request = datastore_pb.AllocateIdsRequest()

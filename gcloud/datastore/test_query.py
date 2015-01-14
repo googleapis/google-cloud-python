@@ -352,7 +352,7 @@ class TestIterator(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def _addQueryResults(self, connection, cursor=_END, more=False):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         MORE = datastore_pb.QueryResultBatch.NOT_FINISHED
         NO_MORE = datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
         _ID = 123
@@ -546,7 +546,7 @@ class Test__pb_from_query(unittest2.TestCase):
         return _pb_from_query(query)
 
     def test_empty(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         pb = self._callFUT(_Query())
         self.assertEqual(list(pb.projection), [])
         self.assertEqual(list(pb.kind), [])
@@ -571,7 +571,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual([item.name for item in pb.kind], ['KIND'])
 
     def test_ancestor(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         from gcloud.datastore.key import Key
         from gcloud.datastore.helpers import _prepare_key_for_request
         ancestor = Key('Ancestor', 123, dataset_id='DATASET')
@@ -585,7 +585,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(pfilter.value.key_value, ancestor_pb)
 
     def test_filter(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         query = _Query(filters=[('name', '=', u'John')])
         query.OPERATORS = {
             '=': datastore_pb.PropertyFilter.EQUAL,
@@ -599,7 +599,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(pfilter.value.string_value, u'John')
 
     def test_filter_key(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         from gcloud.datastore.key import Key
         from gcloud.datastore.helpers import _prepare_key_for_request
         key = Key('Kind', 123, dataset_id='DATASET')
@@ -617,7 +617,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(pfilter.value.key_value, key_pb)
 
     def test_order(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         pb = self._callFUT(_Query(order=['a', '-b', 'c']))
         self.assertEqual([item.property.name for item in pb.order],
                          ['a', 'b', 'c'])
