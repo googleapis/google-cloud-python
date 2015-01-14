@@ -14,12 +14,6 @@
 
 """Class for representing a single entity in the Cloud Datastore."""
 
-from gcloud.datastore import _implicit_environ
-
-
-class NoKey(RuntimeError):
-    """Exception raised by Entity methods which require a key."""
-
 
 class Entity(dict):
     """Entities are akin to rows in a relational database
@@ -70,8 +64,8 @@ class Entity(dict):
        any decoding / encoding step.
 
     :type key: :class:`gcloud.datastore.key.Key`
-    :param key: Optional key to be set on entity. Required for :meth:`save()`
-                or :meth:`reload()`.
+    :param key: Optional key to be set on entity. Required for
+                :func:`gcloud.datastore.put()`
 
     :type exclude_from_indexes: tuple of string
     :param exclude_from_indexes: Names of fields whose values are not to be
@@ -103,55 +97,6 @@ class Entity(dict):
         :rtype: sequence of field names
         """
         return frozenset(self._exclude_from_indexes)
-
-    @property
-    def _must_key(self):
-        """Return our key, or raise NoKey if not set.
-
-        :rtype: :class:`gcloud.datastore.key.Key`.
-        :returns: The entity's key.
-        :raises: :class:`NoKey` if no key is set.
-        """
-        if self.key is None:
-            raise NoKey()
-        return self.key
-
-    def save(self, connection=None):
-        """Save the entity in the Cloud Datastore.
-
-        .. note::
-           Any existing properties for the entity will be replaced by those
-           currently set on this instance.  Already-stored properties which do
-           not correspond to keys set on this instance will be removed from
-           the datastore.
-
-        .. note::
-           Property values which are "text" (``unicode`` in Python2, ``str`` in
-           Python3) map to 'string_value' in the datastore;  values which are
-           "bytes" (``str`` in Python2, ``bytes`` in Python3) map to
-           'blob_value'.
-
-        :type connection: :class:`gcloud.datastore.connection.Connection`
-        :param connection: Optional connection used to connect to datastore.
-        """
-        connection = connection or _implicit_environ.CONNECTION
-
-        key = self._must_key
-        assigned, new_id = connection.save_entity(
-            dataset_id=key.dataset_id,
-            key_pb=key.to_protobuf(),
-            properties=dict(self),
-            exclude_from_indexes=self.exclude_from_indexes)
-
-        # If we are in a transaction and the current entity needs an
-        # automatically assigned ID, tell the transaction where to put that.
-        transaction = connection.transaction()
-        if transaction and key.is_partial:
-            transaction.add_auto_id_entity(self)
-
-        if assigned:
-            # Update the key (which may have been altered).
-            self.key = self.key.completed_key(new_id)
 
     def __repr__(self):
         if self.key:

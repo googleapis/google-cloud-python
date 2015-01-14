@@ -82,14 +82,14 @@ CHARACTERS = [
 
 
 def add_characters():
-    with datastore.Transaction():
+    with datastore.Transaction() as xact:
         for key_path, character in zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character['name']:
                 raise ValueError(('Character and key don\'t agree',
                                   key_path, character))
             entity = datastore.Entity(key=datastore.Key(*key_path))
             entity.update(character)
-            entity.save()
+            xact.put(entity)
             print('Adding Character %s %s' % (character['name'],
                                               character['family']))
 
