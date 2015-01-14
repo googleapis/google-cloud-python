@@ -278,6 +278,127 @@ class Test_get_function(unittest2.TestCase):
         self.assertEqual(result['foo'], 'Foo')
 
 
+class Test_put_function(unittest2.TestCase):
+
+    def _callFUT(self, entities, connection=None):
+        from gcloud.datastore.api import put
+        return put(entities, connection=connection)
+
+    def test_no_batch_w_partial_key(self):
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Entity
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        entity = _Entity(foo=u'bar')
+        key = entity.key = _Key(_DATASET)
+        key._id = None
+
+        result = self._callFUT([entity], connection=connection)
+        self.assertEqual(result, None)
+        self.assertEqual(len(connection._committed), 1)
+        dataset_id, mutation = connection._committed[0]
+        self.assertEqual(dataset_id, _DATASET)
+        inserts = list(mutation.insert_auto_id)
+        self.assertEqual(len(inserts), 1)
+        self.assertEqual(inserts[0].key, key.to_protobuf())
+        properties = list(inserts[0].property)
+        self.assertEqual(properties[0].name, 'foo')
+        self.assertEqual(properties[0].value.string_value, u'bar')
+
+    def test_existing_batch_w_completed_key(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import api
+        from gcloud.datastore.batch import _Batches
+        from gcloud.datastore.batch import Batch
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Entity
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        entity = _Entity(foo=u'bar')
+        key = entity.key = _Key(_DATASET)
+
+        # Set up mock Batch on stack so we can check it is used.
+        _BATCHES = _Batches()
+        CURR_BATCH = Batch(dataset_id=_DATASET, connection=connection)
+        _BATCHES.push(CURR_BATCH)
+
+        with _Monkey(api, _BATCHES=_BATCHES):
+            result = self._callFUT([entity], connection=connection)
+
+        self.assertEqual(result, None)
+        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
+        upserts = list(CURR_BATCH.mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        self.assertEqual(upserts[0].key, key.to_protobuf())
+        properties = list(upserts[0].property)
+        self.assertEqual(properties[0].name, 'foo')
+        self.assertEqual(properties[0].value.string_value, u'bar')
+        self.assertEqual(len(CURR_BATCH.mutation.delete), 0)
+
+    def test_implicit_connection(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore import api
+        from gcloud.datastore.batch import _Batches
+        from gcloud.datastore.batch import Batch
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Entity
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        entity = _Entity(foo=u'bar')
+        key = entity.key = _Key(_DATASET)
+
+        # Set up mock Batch on stack so we can check it is used.
+        _BATCHES = _Batches()
+
+        with _Monkey(_implicit_environ, CONNECTION=connection):
+            CURR_BATCH = Batch(dataset_id=_DATASET)
+            _BATCHES.push(CURR_BATCH)
+            with _Monkey(api, _BATCHES=_BATCHES):
+                result = self._callFUT([entity])
+
+        self.assertEqual(result, None)
+        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
+        self.assertEqual(len(CURR_BATCH.mutation.upsert), 1)
+        upserts = list(CURR_BATCH.mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        self.assertEqual(upserts[0].key, key.to_protobuf())
+        properties = list(upserts[0].property)
+        self.assertEqual(properties[0].name, 'foo')
+        self.assertEqual(properties[0].value.string_value, u'bar')
+        self.assertEqual(len(CURR_BATCH.mutation.delete), 0)
+
+    def test_no_entities(self):
+        from gcloud.datastore import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+        result = self._callFUT([])
+        self.assertEqual(result, None)
+
+    def test_no_connection(self):
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.test_batch import _Entity
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        entity = _Entity(foo=u'bar')
+        entity.key = _Key(_DATASET)
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+        with self.assertRaises(ValueError):
+            self._callFUT([entity])
+
+
 class Test_delete_function(unittest2.TestCase):
 
     def _callFUT(self, keys, connection=None):

@@ -133,6 +133,32 @@ def get(keys, missing=None, deferred=None, connection=None):
     return entities
 
 
+def put(entities, connection=None):
+    """Save the entities in the Cloud Datastore.
+
+    :type entities: list of :class:`gcloud.datastore.entity.Entity`
+    :param entities: The entities to be saved to the datastore.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional connection used to connect to datastore.
+    """
+    if not entities:
+        return
+
+    connection = connection or _implicit_environ.CONNECTION
+
+    current = _BATCHES.top
+    in_batch = current is not None
+    if not in_batch:
+        keys = [entity.key for entity in entities]
+        dataset_id = _get_dataset_id_from_keys(keys)
+        current = Batch(dataset_id=dataset_id, connection=connection)
+    for entity in entities:
+        current.put(entity)
+    if not in_batch:
+        current.commit()
+
+
 def delete(keys, connection=None):
     """Delete the keys in the Cloud Datastore.
 
