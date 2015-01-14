@@ -15,10 +15,6 @@
 """Class for representing a single entity in the Cloud Datastore."""
 
 
-class NoKey(RuntimeError):
-    """Exception raised by Entity methods which require a key."""
-
-
 class Entity(dict):
     """Entities are akin to rows in a relational database
 
