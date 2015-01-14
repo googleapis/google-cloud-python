@@ -96,6 +96,14 @@ class Test__get_dataset_id_from_keys(unittest2.TestCase):
         from gcloud.datastore.api import _get_dataset_id_from_keys
         return _get_dataset_id_from_keys(keys)
 
+    def _make_key(self, dataset_id):
+
+        class _Key(object):
+            def __init__(self, dataset_id):
+                self.dataset_id = dataset_id
+
+        return _Key(dataset_id)
+
     def test_empty(self):
         self.assertRaises(IndexError, self._callFUT, [])
 
@@ -103,14 +111,14 @@ class Test__get_dataset_id_from_keys(unittest2.TestCase):
         self.assertRaises(ValueError, self._callFUT, [None])
 
     def test_w_mismatch(self):
-        foo = _Key('foo')
-        bar = _Key('bar')
-        self.assertRaises(ValueError, self._callFUT, [foo, bar])
+        key1 = self._make_key('foo')
+        key2 = self._make_key('bar')
+        self.assertRaises(ValueError, self._callFUT, [key1, key2])
 
     def test_w_match(self):
-        foo1 = _Key('foo')
-        foo2 = _Key('foo')
-        self.assertEqual(self._callFUT([foo1, foo2]), 'foo')
+        key1 = self._make_key('foo')
+        key2 = self._make_key('foo')
+        self.assertEqual(self._callFUT([key1, key2]), 'foo')
 
 
 class Test_get_function(unittest2.TestCase):
@@ -575,8 +583,3 @@ class Test_allocate_ids_function(unittest2.TestCase):
             COMPLETE_KEY = Key('KIND', 1234)
             self.assertRaises(ValueError, self._callFUT,
                               COMPLETE_KEY, 2)
-
-
-class _Key(object):
-    def __init__(self, dataset_id):
-        self.dataset_id = dataset_id
