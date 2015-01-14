@@ -218,44 +218,6 @@ def _get_value_from_property_pb(property_pb):
     return _get_value_from_value_pb(property_pb.value)
 
 
-def _set_protobuf_property(property_pb, name, value, indexed):
-    """Assign 'name', 'value', 'indexed' to the correct 'property_pb'.
-
-    Some value (empty list) cannot be directly assigned; this function handles
-    them correctly.
-
-    :type property_pb: :class:`gcloud.datastore.datastore_v1_pb2.Property`
-    :param property_pb: The value protobuf to which the value is being
-                        assigned.
-
-    :type name: string
-    :param name: The name to be assigned.
-
-    :type value: `datetime.datetime`, boolean, float, integer, string,
-                 :class:`gcloud.datastore.key.Key`,
-                 :class:`gcloud.datastore.entity.Entity`,
-    :param value: The value to be assigned.
-
-    :type indexed: boolean
-    :param indexed: The flag indicates the property should to be indexed or
-                    not.
-    """
-    if isinstance(value, list) and len(value) == 0:
-        return
-
-    prop = property_pb.add()
-    prop.name = name
-
-    _set_protobuf_value(prop.value, value)
-
-    if not indexed:
-        if not isinstance(value, list):
-            prop.value.indexed = False
-
-        for sub_value in prop.value.list_value:
-            sub_value.indexed = False
-
-
 def _set_protobuf_value(value_pb, val):
     """Assign 'val' to the correct subfield of 'value_pb'.
 

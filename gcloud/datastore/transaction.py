@@ -73,15 +73,6 @@ class Transaction(Batch):
          ...     assert entity.key.is_partial  # There is no ID on this key.
          >>> assert not entity.key.is_partial  # There *is* an ID.
 
-    .. warning:: If you're using the automatically generated ID
-       functionality, it's important that you only use
-       :meth:`gcloud.datastore.entity.Entity.save` rather than using
-       :meth:`gcloud.datastore.connection.Connection.save_entity`
-       directly.
-
-       If you mix the two, the results will have extra IDs generated and
-       it could jumble things up.
-
     If you don't want to use the context manager you can initialize a
     transaction manually::
 
