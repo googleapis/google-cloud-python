@@ -189,30 +189,6 @@ class TestConnection(unittest2.TestCase):
         self.assertTrue(conn.transaction(xact) is conn)
         self.assertTrue(conn.transaction() is xact)
 
-    def test_mutation_wo_transaction(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        class Mutation(object):
-            pass
-        conn = self._makeOne()
-        with _Monkey(datastore_pb, Mutation=Mutation):
-            found = conn.mutation()
-        self.assertTrue(isinstance(found, Mutation))
-
-    def test_mutation_w_transaction(self):
-
-        class Mutation(object):
-            pass
-
-        class Xact(object):
-            mutation = Mutation()
-
-        conn = self._makeOne()
-        conn.transaction(Xact())
-        found = conn.mutation()
-        self.assertTrue(isinstance(found, Mutation))
-
     def test_lookup_single_key_empty_response(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 

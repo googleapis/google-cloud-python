@@ -143,18 +143,6 @@ class Connection(connection.Connection):
             self._current_transaction = transaction
             return self
 
-    def mutation(self):
-        """Getter for mutation usable with current connection.
-
-        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.
-        :returns: The mutation instance associated with the current transaction
-                  (if one exists) or or a new mutation instance.
-        """
-        if self.transaction():
-            return self.transaction().mutation
-        else:
-            return datastore_pb.Mutation()
-
     def lookup(self, dataset_id, key_pbs,
                missing=None, deferred=None, eventual=False):
         """Lookup keys from a dataset in the Cloud Datastore.
