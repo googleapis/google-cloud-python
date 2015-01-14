@@ -70,6 +70,9 @@ def _get_dataset_id_from_keys(keys):
     :returns: The dataset ID of the keys.
     :raises: :class:`ValueError` if the key dataset IDs don't agree.
     """
+    if any(key is None for key in keys):
+        raise ValueError('None not allowed')
+
     dataset_id = keys[0].dataset_id
     # Rather than creating a list or set of all dataset IDs, we iterate
     # and check. We could allow the backend to check this for us if IDs
