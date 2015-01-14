@@ -130,6 +130,11 @@ class Batch(object):
         self._mutation = datastore_pb.Mutation()
         self._auto_id_entities = []
 
+    @staticmethod
+    def current():
+        """Return the topmost batch / transaction, or None."""
+        return _BATCHES.top
+
     @property
     def dataset_id(self):
         """Getter for dataset ID in which the batch will run.

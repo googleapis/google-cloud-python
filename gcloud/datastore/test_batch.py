@@ -93,6 +93,24 @@ class TestBatch(unittest2.TestCase):
         self.assertTrue(isinstance(batch.mutation, Mutation))
         self.assertEqual(batch._auto_id_entities, [])
 
+    def test_current(self):
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        batch1 = self._makeOne(_DATASET, connection)
+        batch2 = self._makeOne(_DATASET, connection)
+        self.assertTrue(batch1.current() is None)
+        self.assertTrue(batch2.current() is None)
+        with batch1:
+            self.assertTrue(batch1.current() is batch1)
+            self.assertTrue(batch2.current() is batch1)
+            with batch2:
+                self.assertTrue(batch1.current() is batch2)
+                self.assertTrue(batch2.current() is batch2)
+            self.assertTrue(batch1.current() is batch1)
+            self.assertTrue(batch2.current() is batch1)
+        self.assertTrue(batch1.current() is None)
+        self.assertTrue(batch2.current() is None)
+
     def test_add_auto_id_entity_w_partial_key(self):
         _DATASET = 'DATASET'
         connection = _Connection()

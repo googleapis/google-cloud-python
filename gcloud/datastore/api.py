@@ -19,7 +19,6 @@ Query objects rather than via protobufs.
 """
 
 from gcloud.datastore import _implicit_environ
-from gcloud.datastore.batch import _BATCHES
 from gcloud.datastore.batch import Batch
 from gcloud.datastore import helpers
 
@@ -150,7 +149,7 @@ def put(entities, connection=None):
 
     connection = connection or _implicit_environ.CONNECTION
 
-    current = _BATCHES.top
+    current = Batch.current()
     in_batch = current is not None
     if not in_batch:
         keys = [entity.key for entity in entities]
@@ -177,7 +176,7 @@ def delete(keys, connection=None):
     connection = connection or _implicit_environ.CONNECTION
 
     # We allow partial keys to attempt a delete, the backend will fail.
-    current = _BATCHES.top
+    current = Batch.current()
     in_batch = current is not None
     if not in_batch:
         dataset_id = _get_dataset_id_from_keys(keys)

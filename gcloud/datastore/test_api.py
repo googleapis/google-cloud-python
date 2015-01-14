@@ -340,10 +340,6 @@ class Test_put_function(unittest2.TestCase):
         self.assertEqual(properties[0].value.string_value, u'bar')
 
     def test_existing_batch_w_completed_key(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import api
-        from gcloud.datastore.batch import _Batches
-        from gcloud.datastore.batch import Batch
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
@@ -354,12 +350,8 @@ class Test_put_function(unittest2.TestCase):
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(_DATASET)
 
-        # Set up mock Batch on stack so we can check it is used.
-        _BATCHES = _Batches()
-        CURR_BATCH = Batch(dataset_id=_DATASET, connection=connection)
-        _BATCHES.push(CURR_BATCH)
-
-        with _Monkey(api, _BATCHES=_BATCHES):
+        # Set up Batch on stack so we can check it is used.
+        with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
             result = self._callFUT([entity], connection=connection)
 
         self.assertEqual(result, None)
@@ -375,9 +367,6 @@ class Test_put_function(unittest2.TestCase):
     def test_implicit_connection(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
-        from gcloud.datastore import api
-        from gcloud.datastore.batch import _Batches
-        from gcloud.datastore.batch import Batch
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
@@ -388,13 +377,10 @@ class Test_put_function(unittest2.TestCase):
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(_DATASET)
 
-        # Set up mock Batch on stack so we can check it is used.
-        _BATCHES = _Batches()
 
         with _Monkey(_implicit_environ, CONNECTION=connection):
-            CURR_BATCH = Batch(dataset_id=_DATASET)
-            _BATCHES.push(CURR_BATCH)
-            with _Monkey(api, _BATCHES=_BATCHES):
+            # Set up Batch on stack so we can check it is used.
+            with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
                 result = self._callFUT([entity])
 
         self.assertEqual(result, None)
@@ -453,10 +439,6 @@ class Test_delete_function(unittest2.TestCase):
         self.assertEqual(list(mutation.delete), [key.to_protobuf()])
 
     def test_existing_batch(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import api
-        from gcloud.datastore.batch import _Batches
-        from gcloud.datastore.batch import Batch
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
 
@@ -465,12 +447,8 @@ class Test_delete_function(unittest2.TestCase):
         connection = _Connection()
         key = _Key(_DATASET)
 
-        # Set up mock Batch on stack so we can check it is used.
-        _BATCHES = _Batches()
-        CURR_BATCH = Batch(dataset_id=_DATASET, connection=connection)
-        _BATCHES.push(CURR_BATCH)
-
-        with _Monkey(api, _BATCHES=_BATCHES):
+        # Set up Batch on stack so we can check it is used.
+        with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
             result = self._callFUT([key], connection=connection)
 
         self.assertEqual(result, None)
@@ -484,9 +462,6 @@ class Test_delete_function(unittest2.TestCase):
     def test_implicit_connection(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
-        from gcloud.datastore import api
-        from gcloud.datastore.batch import _Batches
-        from gcloud.datastore.batch import Batch
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
 
@@ -495,13 +470,9 @@ class Test_delete_function(unittest2.TestCase):
         connection = _Connection()
         key = _Key(_DATASET)
 
-        # Set up mock Batch on stack so we can check it is used.
-        _BATCHES = _Batches()
-
         with _Monkey(_implicit_environ, CONNECTION=connection):
-            CURR_BATCH = Batch(dataset_id=_DATASET)
-            _BATCHES.push(CURR_BATCH)
-            with _Monkey(api, _BATCHES=_BATCHES):
+            # Set up Batch on stack so we can check it is used.
+            with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
                 result = self._callFUT([key])
 
         self.assertEqual(result, None)
@@ -583,3 +554,19 @@ class Test_allocate_ids_function(unittest2.TestCase):
             COMPLETE_KEY = Key('KIND', 1234)
             self.assertRaises(ValueError, self._callFUT,
                               COMPLETE_KEY, 2)
+
+
+class _NoCommitBatch(object):
+
+    def __init__(self, dataset_id, connection):
+        from gcloud.datastore.batch import Batch
+        self._batch = Batch(dataset_id, connection)
+
+    def __enter__(self):
+        from gcloud.datastore.batch import _BATCHES
+        _BATCHES.push(self._batch)
+        return self._batch
+
+    def __exit__(self, *args):
+        from gcloud.datastore.batch import _BATCHES
+        _BATCHES.pop()

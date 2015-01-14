@@ -19,6 +19,8 @@ import six
 from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
+from gcloud.datastore.batch import Batch
+from gcloud.datastore.transaction import Transaction
 
 
 class Connection(connection.Connection):
@@ -37,10 +39,6 @@ class Connection(connection.Connection):
     API_URL_TEMPLATE = ('{api_base}/datastore/{api_version}'
                         '/datasets/{dataset_id}/{method}')
     """A template for the URL of a particular API call."""
-
-    def __init__(self, credentials=None):
-        super(Connection, self).__init__(credentials=credentials)
-        self._current_transaction = None
 
     def _request(self, dataset_id, method, data):
         """Make a request over the Http transport to the Cloud Datastore API.
@@ -199,8 +197,7 @@ class Connection(connection.Connection):
         :type eventual: boolean
         :param eventual: If False (the default), request ``STRONG`` read
                         consistency.  If True, request ``EVENTUAL`` read
-                        consistency.  If the connection has a current
-                        transaction, this value *must* be false.
+                        consistency.
 
         :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Entity`
                 (or a single Entity)
@@ -218,7 +215,7 @@ class Connection(connection.Connection):
             raise ValueError('deferred must be None or an empty list')
 
         lookup_request = datastore_pb.LookupRequest()
-        self._set_read_options(lookup_request, eventual)
+        _set_read_options(lookup_request, eventual)
 
         single_key = isinstance(key_pbs, datastore_pb.Key)
 
@@ -293,11 +290,10 @@ class Connection(connection.Connection):
         :type eventual: boolean
         :param eventual: If False (the default), request ``STRONG`` read
                          consistency.  If True, request ``EVENTUAL`` read
-                         consistency.  If the connection has a current
-                         transaction, this value *must* be false.
+                         consistency.
         """
         request = datastore_pb.RunQueryRequest()
-        self._set_read_options(request, eventual)
+        _set_read_options(request, eventual)
 
         if namespace:
             request.partition_id.namespace = namespace
@@ -328,10 +324,6 @@ class Connection(connection.Connection):
         :rtype: :class:`.datastore_v1_pb2.BeginTransactionResponse`
         :returns': the result protobuf for the begin transaction request.
         """
-        if self.transaction():
-            raise ValueError('Cannot start a transaction with another already '
-                             'in progress.')
-
         request = datastore_pb.BeginTransactionRequest()
 
         if serializable:
@@ -346,7 +338,7 @@ class Connection(connection.Connection):
 
         return response.transaction
 
-    def commit(self, dataset_id, mutation_pb):
+    def commit(self, dataset_id, mutation_pb, transaction_id=None):
         """Commit dataset mutations in context of current transation (if any).
 
         Maps the ``DatastoreService.Commit`` protobuf RPC.
@@ -357,14 +349,19 @@ class Connection(connection.Connection):
         :type mutation_pb: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.
         :param mutation_pb: The protobuf for the mutations being saved.
 
+        :type transaction_id: string
+        :param transaction_id: The transaction ID returned from
+                               :meth:`begin_transaction`.  If not passed, the
+                               commit will be non-transactional.
+
         :rtype: :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.
         :returns': the result protobuf for the mutation.
         """
         request = datastore_pb.CommitRequest()
 
-        if self.transaction():
+        if transaction_id:
             request.mode = datastore_pb.CommitRequest.TRANSACTIONAL
-            request.transaction = self.transaction().id
+            request.transaction = transaction_id
         else:
             request.mode = datastore_pb.CommitRequest.NON_TRANSACTIONAL
 
@@ -373,7 +370,7 @@ class Connection(connection.Connection):
                              datastore_pb.CommitResponse)
         return response.mutation_result
 
-    def rollback(self, dataset_id):
+    def rollback(self, dataset_id, transaction_id):
         """Rollback the connection's existing transaction.
 
         Maps the ``DatastoreService.Rollback`` protobuf RPC.
@@ -382,14 +379,12 @@ class Connection(connection.Connection):
         :param dataset_id: The ID of the dataset to which the transaction
                            belongs.
 
-        :raises: :class:`ValueError` if the connection isn't currently in a
-                 transaction.
+        :type transaction_id: string
+        :param transaction_id: The transaction ID returned from
+                               :meth:`begin_transaction`.
         """
-        if not self.transaction() or not self.transaction().id:
-            raise ValueError('No transaction to rollback.')
-
         request = datastore_pb.RollbackRequest()
-        request.transaction = self.transaction().id
+        request.transaction = transaction_id
         # Nothing to do with this response, so just execute the method.
         self._rpc(dataset_id, 'rollback', request,
                   datastore_pb.RollbackResponse)
@@ -446,20 +441,22 @@ class Connection(connection.Connection):
             _copy_deferred_keys(lookup_request, lookup_response)
         return results, missing, deferred
 
-    def _set_read_options(self, request, eventual):
-        """Validate rules for read options, and assign to the request.
 
-        Helper method for ``lookup()`` and ``run_query``.
-        """
-        transaction = self.transaction()
-        if eventual and transaction:
-            raise ValueError('eventual must be False when in a transaction')
+def _set_read_options(request, eventual):
+    """Validate rules for read options, and assign to the request.
 
-        opts = request.read_options
-        if eventual:
-            opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
-        elif transaction:
-            opts.transaction = transaction.id
+    Helper method for ``lookup()`` and ``run_query``.
+    """
+    current = Batch.current()
+    transaction = isinstance(current, Transaction) and current or None
+    if eventual and transaction:
+        raise ValueError('eventual must be False when in a transaction')
+
+    opts = request.read_options
+    if eventual:
+        opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
+    elif transaction:
+        opts.transaction = transaction.id
 
 
 def _copy_deferred_keys(lookup_request, lookup_response):
