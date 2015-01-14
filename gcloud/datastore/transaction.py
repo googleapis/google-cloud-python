@@ -89,7 +89,7 @@ class Transaction(Batch):
       >>> transaction.begin()
 
       >>> entity = Entity(key=Key('Thing'))
-      >>> datastore.put([entity])
+      >>> transaction.put([entity])
 
       >>> if error:
       ...     transaction.rollback()
