@@ -77,7 +77,7 @@ class TestDatastoreSave(TestDatastore):
 
     def _generic_test_post(self, name=None, key_id=None):
         entity = self._get_post(id_or_name=(name or key_id))
-        entity.save()
+        datastore.put([entity])
 
         # Register entity to be deleted.
         self.case_entities_to_delete.append(entity)
@@ -108,9 +108,9 @@ class TestDatastoreSave(TestDatastore):
         self._generic_test_post()
 
     def test_save_multiple(self):
-        with datastore.Transaction():
+        with datastore.Transaction() as xact:
             entity1 = self._get_post()
-            entity1.save()
+            xact.put(entity1)
             # Register entity to be deleted.
             self.case_entities_to_delete.append(entity1)
 
@@ -124,7 +124,7 @@ class TestDatastoreSave(TestDatastore):
                 'rating': 4.5,
             }
             entity2 = self._get_post(post_content=second_post_content)
-            entity2.save()
+            xact.put(entity2)
             # Register entity to be deleted.
             self.case_entities_to_delete.append(entity2)
 
@@ -146,7 +146,7 @@ class TestDatastoreSaveKeys(TestDatastore):
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
-        entity.save()
+        datastore.put([entity])
         self.case_entities_to_delete.append(entity)
 
         query = datastore.Query(kind='Person')
@@ -340,10 +340,10 @@ class TestDatastoreTransaction(TestDatastore):
         entity = datastore.Entity(key=datastore.Key('Company', 'Google'))
         entity['url'] = u'www.google.com'
 
-        with datastore.Transaction():
+        with datastore.Transaction() as xact:
             results = datastore.get([entity.key])
             if len(results) == 0:
-                entity.save()
+                xact.put(entity)
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.

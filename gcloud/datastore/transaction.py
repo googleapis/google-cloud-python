@@ -32,16 +32,16 @@ class Transaction(Batch):
 
       >>> datastore.set_defaults()
 
-      >>> with Transaction()
-      ...     entity1.save()
-      ...     entity2.save()
+      >>> with Transaction() as xact:
+      ...     datastore.put(entity1)
+      ...     datastore.put(entity2)
 
     Because it derives from :class:`Batch`, :class`Transaction` also provides
     :meth:`put` and :meth:`delete` methods::
 
-      >>> with Transaction()
-      ...     transaction.put(entity1)
-      ...     transaction.delete(entity2.key)
+      >>> with Transaction() as xact:
+      ...     xact.put(entity1)
+      ...     xact.delete(entity2.key)
 
     By default, the transaction is rolled back if the transaction block
     exits with an error::
@@ -59,7 +59,7 @@ class Transaction(Batch):
 
          >>> with Transaction():
          ...     entity = Entity(key=Key('Thing'))
-         ...     entity.save()
+         ...     datastore.put([entity])
 
        ``entity`` won't have a complete Key until the transaction is
        committed.
@@ -69,7 +69,7 @@ class Transaction(Batch):
 
          >>> with Transaction():
          ...     entity = Entity(key=Key('Thing'))
-         ...     entity.save()
+         ...     datastore.put([entity])
          ...     assert entity.key.is_partial  # There is no ID on this key.
          >>> assert not entity.key.is_partial  # There *is* an ID.
 
@@ -89,33 +89,12 @@ class Transaction(Batch):
       >>> transaction.begin()
 
       >>> entity = Entity(key=Key('Thing'))
-      >>> entity.save()
+      >>> datastore.put([entity])
 
       >>> if error:
       ...     transaction.rollback()
       ... else:
       ...     transaction.commit()
-
-    For now, this library will enforce a rule of one transaction per
-    connection.  That is, If you want to work with two transactions at
-    the same time (for whatever reason), that must happen over two
-    separate :class:`gcloud.datastore.connection.Connection` s.
-
-    For example, this is perfectly valid::
-
-      >>> with Transaction():
-      ...     entity = Entity(key=Key('Thing'))
-      ...     entity.save()
-
-    However, this **wouldn't** be acceptable::
-
-      >>> with Transaction():
-      ...     Entity(key=Key('Thing')).save()
-      ...     with Transaction():
-      ...         Entity(key=Key('Thing')).save()
-
-    Technically, it looks like the Protobuf API supports this type of
-    pattern, however it makes the code particularly messy.
 
     :type dataset_id: string
     :param dataset_id: The ID of the dataset.

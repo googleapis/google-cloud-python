@@ -28,7 +28,7 @@ toy = datastore.Entity(key)
 toy.update({'name': 'Toy'})
 
 # Now let's save it to our datastore:
-toy.save()
+datastore.put([toy])
 
 # If we look it up by its key, we should find it...
 print(datastore.get([toy.key]))
@@ -55,7 +55,7 @@ for id, name, age in SAMPLE_DATA:
     entity = datastore.Entity(key)
     entity['name'] = name
     entity['age'] = age
-    entity.save()
+    datastore.put([entity])
 # We'll start by look at all Thing entities:
 query = datastore.Query(kind='Thing')
 
@@ -76,18 +76,18 @@ datastore.delete(sample_keys)
 
 # You can also work inside a transaction.
 # (Check the official docs for explanations of what's happening here.)
-with datastore.Transaction():
+with datastore.Transaction() as xact:
     print('Creating and saving an entity...')
     key = datastore.Key('Thing', 'foo')
     thing = datastore.Entity(key)
     thing['age'] = 10
-    thing.save()
+    xact.put(thing)
 
     print('Creating and saving another entity...')
     key2 = datastore.Key('Thing', 'bar')
     thing2 = datastore.Entity(key2)
     thing2['age'] = 15
-    thing2.save()
+    xact.put(thing2)
 
     print('Committing the transaction...')
 
@@ -95,11 +95,11 @@ with datastore.Transaction():
 datastore.delete([key, key2])
 
 # To rollback a transaction, just call .rollback()
-with datastore.Transaction() as t:
+with datastore.Transaction() as xact:
     key = datastore.Key('Thing', 'another')
     thing = datastore.Entity(key)
-    thing.save()
-    t.rollback()
+    xact.put(thing)
+    xact.rollback()
 
 # Let's check if the entity was actually created:
 created = datastore.get([key])
@@ -107,10 +107,10 @@ print('yes' if created else 'no')
 
 # Remember, a key won't be complete until the transaction is commited.
 # That is, while inside the transaction block, thing.key will be incomplete.
-with datastore.Transaction():
+with datastore.Transaction() as xact:
     key = datastore.Key('Thing')  # partial
     thing = datastore.Entity(key)
-    thing.save()
+    xact.put(thing)
     print(thing.key)  # This will still be partial
 
 print(thing.key)  # This will be complete
