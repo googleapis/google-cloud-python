@@ -42,9 +42,19 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         prop_pb = entity_pb.property.add()
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
+
+        unindexed_prop_pb = entity_pb.property.add()
+        unindexed_prop_pb.name = 'bar'
+        unindexed_prop_pb.value.integer_value = 10
+        unindexed_prop_pb.value.indexed = False
+
         entity = self._callFUT(entity_pb)
         self.assertEqual(entity.kind, _KIND)
-        self.assertEqual(entity['foo'], 'Foo')
+        self.assertEqual(entity.exclude_from_indexes, frozenset(['bar']))
+        entity_props = dict(entity)
+        self.assertEqual(entity_props, {'foo': 'Foo', 'bar': 10})
+
+        # Also check the key.
         key = entity.key
         self.assertEqual(key.dataset_id, _DATASET_ID)
         self.assertEqual(key.namespace, None)

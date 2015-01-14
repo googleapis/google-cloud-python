@@ -16,6 +16,7 @@
 
 The non-private functions are part of the API.
 """
+
 __all__ = ('entity_from_protobuf', 'key_from_protobuf')
 
 import calendar
@@ -45,12 +46,17 @@ def entity_from_protobuf(pb):
     :returns: The entity derived from the protobuf.
     """
     key = key_from_protobuf(pb.key)
-    entity = Entity(key=key)
+    entity_props = {}
+    exclude_from_indexes = []
 
     for property_pb in pb.property:
         value = _get_value_from_property_pb(property_pb)
-        entity[property_pb.name] = value
+        entity_props[property_pb.name] = value
+        if not property_pb.value.indexed:
+            exclude_from_indexes.append(property_pb.name)
 
+    entity = Entity(key=key, exclude_from_indexes=exclude_from_indexes)
+    entity.update(entity_props)
     return entity
 
 
