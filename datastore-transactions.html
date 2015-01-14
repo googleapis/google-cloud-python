@@ -90,16 +90,16 @@ mutation, and execute those within a transaction:</p>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">()</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">entity1</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">entity2</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Because it derives from <tt class="xref py py-class docutils literal"><span class="pre">Batch</span></tt>, :class`Transaction` also provides
 <tt class="xref py py-meth docutils literal"><span class="pre">put()</span></tt> and <tt class="xref py py-meth docutils literal"><span class="pre">delete()</span></tt> methods:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">transaction</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">transaction</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">entity2</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">xact</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">xact</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">entity2</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default, the transaction is rolled back if the transaction block
@@ -118,7 +118,7 @@ entities will not be available at save time!  That means, if you
 try:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span>
-<span class="gp">... </span>    <span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity</span><span class="p">])</span>
 </pre></div>
 </div>
 <p><tt class="docutils literal"><span class="pre">entity</span></tt> won&#8217;t have a complete Key until the transaction is
@@ -127,7 +127,7 @@ committed.</p>
 automatically generated ID will be assigned to the entity:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span>
-<span class="gp">... </span>    <span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity</span><span class="p">])</span>
 <span class="gp">... </span>    <span class="k">assert</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There is no ID on this key.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There *is* an ID.</span>
 </pre></div>
@@ -137,7 +137,7 @@ automatically generated ID will be assigned to the entity:</p>
 <p class="first admonition-title">Warning</p>
 <p>If you&#8217;re using the automatically generated ID
 functionality, it&#8217;s important that you only use
-<a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity.save" title="gcloud.datastore.entity.Entity.save"><tt class="xref py py-meth docutils literal"><span class="pre">gcloud.datastore.entity.Entity.save()</span></tt></a> rather than using
+<tt class="xref py py-meth docutils literal"><span class="pre">gcloud.datastore.entity.Entity.save()</span></tt> rather than using
 <a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection.save_entity" title="gcloud.datastore.connection.Connection.save_entity"><tt class="xref py py-meth docutils literal"><span class="pre">gcloud.datastore.connection.Connection.save_entity()</span></tt></a>
 directly.</p>
 <p class="last">If you mix the two, the results will have extra IDs generated and
@@ -149,7 +149,7 @@ transaction manually:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity</span><span class="p">])</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">error</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">transaction</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
@@ -157,25 +157,6 @@ transaction manually:</p>
 <span class="gp">... </span>    <span class="n">transaction</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>For now, this library will enforce a rule of one transaction per
-connection.  That is, If you want to work with two transactions at
-the same time (for whatever reason), that must happen over two
-separate <a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a> s.</p>
-<p>For example, this is perfectly valid:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span>
-<span class="gp">... </span>    <span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>However, this <strong>wouldn&#8217;t</strong> be acceptable:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="k">with</span> <span class="n">Transaction</span><span class="p">():</span>
-<span class="gp">... </span>        <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Technically, it looks like the Protobuf API supports this type of
-pattern, however it makes the code particularly messy.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

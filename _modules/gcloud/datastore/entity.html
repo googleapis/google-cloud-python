@@ -88,13 +88,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">&quot;&quot;&quot;Class for representing a single entity in the Cloud Datastore.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 
-
-<div class="viewcode-block" id="NoKey"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.NoKey">[docs]</a><span class="k">class</span> <span class="nc">NoKey</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Exception raised by Entity methods which require a key.&quot;&quot;&quot;</span>
-
-</div>
 <div class="viewcode-block" id="Entity"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity">[docs]</a><span class="k">class</span> <span class="nc">Entity</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Entities are akin to rows in a relational database</span>
 
@@ -144,8 +138,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">       any decoding / encoding step.</span>
 
 <span class="sd">    :type key: :class:`gcloud.datastore.key.Key`</span>
-<span class="sd">    :param key: Optional key to be set on entity. Required for :meth:`save()`</span>
-<span class="sd">                or :meth:`reload()`.</span>
+<span class="sd">    :param key: Optional key to be set on entity. Required for</span>
+<span class="sd">                :func:`gcloud.datastore.put()`</span>
 
 <span class="sd">    :type exclude_from_indexes: tuple of string</span>
 <span class="sd">    :param exclude_from_indexes: Names of fields whose values are not to be</span>
@@ -177,55 +171,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: sequence of field names</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">frozenset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_exclude_from_indexes</span><span class="p">)</span>
-</div>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_must_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return our key, or raise NoKey if not set.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.datastore.key.Key`.</span>
-<span class="sd">        :returns: The entity&#39;s key.</span>
-<span class="sd">        :raises: :class:`NoKey` if no key is set.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">NoKey</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span>
-
-<div class="viewcode-block" id="Entity.save"><a class="viewcode-back" href="../../../datastore-entities.html#gcloud.datastore.entity.Entity.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Save the entity in the Cloud Datastore.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">           Any existing properties for the entity will be replaced by those</span>
-<span class="sd">           currently set on this instance.  Already-stored properties which do</span>
-<span class="sd">           not correspond to keys set on this instance will be removed from</span>
-<span class="sd">           the datastore.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">           Property values which are &quot;text&quot; (``unicode`` in Python2, ``str`` in</span>
-<span class="sd">           Python3) map to &#39;string_value&#39; in the datastore;  values which are</span>
-<span class="sd">           &quot;bytes&quot; (``str`` in Python2, ``bytes`` in Python3) map to</span>
-<span class="sd">           &#39;blob_value&#39;.</span>
-
-<span class="sd">        :type connection: :class:`gcloud.datastore.connection.Connection`</span>
-<span class="sd">        :param connection: Optional connection used to connect to datastore.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
-
-        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_must_key</span>
-        <span class="n">assigned</span><span class="p">,</span> <span class="n">new_id</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">save_entity</span><span class="p">(</span>
-            <span class="n">dataset_id</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
-            <span class="n">key_pb</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">(),</span>
-            <span class="n">properties</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
-            <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span><span class="p">)</span>
-
-        <span class="c"># If we are in a transaction and the current entity needs an</span>
-        <span class="c"># automatically assigned ID, tell the transaction where to put that.</span>
-        <span class="n">transaction</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">transaction</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">transaction</span> <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
-            <span class="n">transaction</span><span class="o">.</span><span class="n">add_auto_id_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">assigned</span><span class="p">:</span>
-            <span class="c"># Update the key (which may have been altered).</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">new_id</span><span class="p">)</span>
 </div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">:</span>

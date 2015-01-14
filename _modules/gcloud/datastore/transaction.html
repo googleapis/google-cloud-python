@@ -106,16 +106,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">      &gt;&gt;&gt; datastore.set_defaults()</span>
 
-<span class="sd">      &gt;&gt;&gt; with Transaction()</span>
-<span class="sd">      ...     entity1.save()</span>
-<span class="sd">      ...     entity2.save()</span>
+<span class="sd">      &gt;&gt;&gt; with Transaction() as xact:</span>
+<span class="sd">      ...     datastore.put(entity1)</span>
+<span class="sd">      ...     datastore.put(entity2)</span>
 
 <span class="sd">    Because it derives from :class:`Batch`, :class`Transaction` also provides</span>
 <span class="sd">    :meth:`put` and :meth:`delete` methods::</span>
 
-<span class="sd">      &gt;&gt;&gt; with Transaction()</span>
-<span class="sd">      ...     transaction.put(entity1)</span>
-<span class="sd">      ...     transaction.delete(entity2.key)</span>
+<span class="sd">      &gt;&gt;&gt; with Transaction() as xact:</span>
+<span class="sd">      ...     xact.put(entity1)</span>
+<span class="sd">      ...     xact.delete(entity2.key)</span>
 
 <span class="sd">    By default, the transaction is rolled back if the transaction block</span>
 <span class="sd">    exits with an error::</span>
@@ -133,7 +133,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">         &gt;&gt;&gt; with Transaction():</span>
 <span class="sd">         ...     entity = Entity(key=Key(&#39;Thing&#39;))</span>
-<span class="sd">         ...     entity.save()</span>
+<span class="sd">         ...     datastore.put([entity])</span>
 
 <span class="sd">       ``entity`` won&#39;t have a complete Key until the transaction is</span>
 <span class="sd">       committed.</span>
@@ -143,7 +143,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">         &gt;&gt;&gt; with Transaction():</span>
 <span class="sd">         ...     entity = Entity(key=Key(&#39;Thing&#39;))</span>
-<span class="sd">         ...     entity.save()</span>
+<span class="sd">         ...     datastore.put([entity])</span>
 <span class="sd">         ...     assert entity.key.is_partial  # There is no ID on this key.</span>
 <span class="sd">         &gt;&gt;&gt; assert not entity.key.is_partial  # There *is* an ID.</span>
 
@@ -163,33 +163,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">      &gt;&gt;&gt; transaction.begin()</span>
 
 <span class="sd">      &gt;&gt;&gt; entity = Entity(key=Key(&#39;Thing&#39;))</span>
-<span class="sd">      &gt;&gt;&gt; entity.save()</span>
+<span class="sd">      &gt;&gt;&gt; transaction.put([entity])</span>
 
 <span class="sd">      &gt;&gt;&gt; if error:</span>
 <span class="sd">      ...     transaction.rollback()</span>
 <span class="sd">      ... else:</span>
 <span class="sd">      ...     transaction.commit()</span>
-
-<span class="sd">    For now, this library will enforce a rule of one transaction per</span>
-<span class="sd">    connection.  That is, If you want to work with two transactions at</span>
-<span class="sd">    the same time (for whatever reason), that must happen over two</span>
-<span class="sd">    separate :class:`gcloud.datastore.connection.Connection` s.</span>
-
-<span class="sd">    For example, this is perfectly valid::</span>
-
-<span class="sd">      &gt;&gt;&gt; with Transaction():</span>
-<span class="sd">      ...     entity = Entity(key=Key(&#39;Thing&#39;))</span>
-<span class="sd">      ...     entity.save()</span>
-
-<span class="sd">    However, this **wouldn&#39;t** be acceptable::</span>
-
-<span class="sd">      &gt;&gt;&gt; with Transaction():</span>
-<span class="sd">      ...     Entity(key=Key(&#39;Thing&#39;)).save()</span>
-<span class="sd">      ...     with Transaction():</span>
-<span class="sd">      ...         Entity(key=Key(&#39;Thing&#39;)).save()</span>
-
-<span class="sd">    Technically, it looks like the Protobuf API supports this type of</span>
-<span class="sd">    pattern, however it makes the code particularly messy.</span>
 
 <span class="sd">    :type dataset_id: string</span>
 <span class="sd">    :param dataset_id: The ID of the dataset.</span>

@@ -108,7 +108,7 @@ you can clone the repository from GitHub:</p>
 <span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">datastore</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">))</span>
 <span class="n">entity</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Your name&#39;</span>
 <span class="n">entity</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">entity</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>

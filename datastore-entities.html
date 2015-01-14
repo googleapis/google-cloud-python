@@ -126,8 +126,8 @@ any decoding / encoding step.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; Optional key to be set on entity. Required for <a class="reference internal" href="#gcloud.datastore.entity.Entity.save" title="gcloud.datastore.entity.Entity.save"><tt class="xref py py-meth docutils literal"><span class="pre">save()</span></tt></a>
-or <tt class="xref py py-meth docutils literal"><span class="pre">reload()</span></tt>.</li>
+<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; Optional key to be set on entity. Required for
+<tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.put()</span></tt></li>
 <li><strong>exclude_from_indexes</strong> (<em>tuple of string</em>) &#8211; Names of fields whose values are not to be
 indexed for this entity.</li>
 </ul>
@@ -162,41 +162,6 @@ Key which knows its Kind.</p>
 </div>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.datastore.entity.Entity.save">
-<tt class="descname">save</tt><big>(</big><em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/entity.html#Entity.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.Entity.save" title="Permalink to this definition">#</a></dt>
-<dd><p>Save the entity in the Cloud Datastore.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Any existing properties for the entity will be replaced by those
-currently set on this instance.  Already-stored properties which do
-not correspond to keys set on this instance will be removed from
-the datastore.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Property values which are &#8220;text&#8221; (<tt class="docutils literal"><span class="pre">unicode</span></tt> in Python2, <tt class="docutils literal"><span class="pre">str</span></tt> in
-Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
-&#8220;bytes&#8221; (<tt class="docutils literal"><span class="pre">str</span></tt> in Python2, <tt class="docutils literal"><span class="pre">bytes</span></tt> in Python3) map to
-&#8216;blob_value&#8217;.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="exception">
-<dt id="gcloud.datastore.entity.NoKey">
-<em class="property">exception </em><tt class="descclassname">gcloud.datastore.entity.</tt><tt class="descname">NoKey</tt><a class="reference internal" href="_modules/gcloud/datastore/entity.html#NoKey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.entity.NoKey" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></tt></p>
-<p>Exception raised by Entity methods which require a key.</p>
 </dd></dl>
 
 </div>

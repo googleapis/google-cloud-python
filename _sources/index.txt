@@ -34,7 +34,7 @@ Cloud Datastore
   entity = datastore.Entity(key=datastore.Key('Person'))
   entity['name'] = 'Your name'
   entity['age'] = 25
-  entity.save()
+  datastore.put([entity])
 
 Cloud Storage
 ~~~~~~~~~~~~~
