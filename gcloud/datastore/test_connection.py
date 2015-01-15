@@ -239,9 +239,8 @@ class TestConnection(unittest2.TestCase):
         TRANSACTION = 'TRANSACTION'
         key_pb = self._make_key_pb(DATASET_ID)
         conn = self._makeOne()
-        self.assertRaises(ValueError,
-            conn.lookup, DATASET_ID, key_pb,
-            eventual=True, transaction_id=TRANSACTION)
+        self.assertRaises(ValueError, conn.lookup, DATASET_ID, key_pb,
+                          eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -570,9 +569,8 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
-        self.assertRaises(ValueError,
-            conn.run_query, DATASET_ID, q_pb,
-            eventual=True, transaction_id=TRANSACTION)
+        self.assertRaises(ValueError, conn.run_query, DATASET_ID, q_pb,
+                          eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
