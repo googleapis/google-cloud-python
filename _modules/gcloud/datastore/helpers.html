@@ -90,6 +90,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">The non-private functions are part of the API.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;entity_from_protobuf&#39;</span><span class="p">,</span> <span class="s">&#39;key_from_protobuf&#39;</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">calendar</span>
@@ -119,12 +120,30 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :returns: The entity derived from the protobuf.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
-    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">entity_props</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">property_pb</span> <span class="ow">in</span> <span class="n">pb</span><span class="o">.</span><span class="n">property</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">_get_value_from_property_pb</span><span class="p">(</span><span class="n">property_pb</span><span class="p">)</span>
-        <span class="n">entity</span><span class="p">[</span><span class="n">property_pb</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">entity_props</span><span class="p">[</span><span class="n">property_pb</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
+        <span class="c"># Check if property_pb.value was indexed. Lists need to be</span>
+        <span class="c"># special-cased and we require all `indexed` values in a list agree.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">indexed_values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">indexed</span>
+                                 <span class="k">for</span> <span class="n">value_pb</span> <span class="ow">in</span> <span class="n">property_pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">list_value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">indexed_values</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;For a list_value, subvalues must either all &#39;</span>
+                                 <span class="s">&#39;be indexed or all excluded from indexes.&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">indexed_values</span><span class="o">.</span><span class="n">pop</span><span class="p">():</span>
+                <span class="n">exclude_from_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">property_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">property_pb</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">indexed</span><span class="p">:</span>
+                <span class="n">exclude_from_indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">property_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="n">exclude_from_indexes</span><span class="p">)</span>
+    <span class="n">entity</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">entity_props</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">entity</span>
 
 </div>
