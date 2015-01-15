@@ -19,8 +19,6 @@ import six
 from gcloud import connection
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
-from gcloud.datastore.batch import Batch
-from gcloud.datastore.transaction import Transaction
 
 
 class Connection(connection.Connection):
@@ -127,7 +125,8 @@ class Connection(connection.Connection):
             dataset_id=dataset_id, method=method)
 
     def lookup(self, dataset_id, key_pbs,
-               missing=None, deferred=None, eventual=False):
+               missing=None, deferred=None,
+               eventual=False, transaction_id=None):
         """Lookup keys from a dataset in the Cloud Datastore.
 
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
@@ -170,6 +169,11 @@ class Connection(connection.Connection):
                         consistency.  If True, request ``EVENTUAL`` read
                         consistency.
 
+        :type transaction_id: string
+        :param transaction_id: If passed, make the request in the scope of
+                               the given transaction.  Incompatible with
+                               ``eventual==True``.
+
         :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Entity`
                 (or a single Entity)
         :returns: The entities corresponding to the keys provided.
@@ -186,7 +190,7 @@ class Connection(connection.Connection):
             raise ValueError('deferred must be None or an empty list')
 
         lookup_request = datastore_pb.LookupRequest()
-        _set_read_options(lookup_request, eventual)
+        _set_read_options(lookup_request, eventual, transaction_id)
 
         single_key = isinstance(key_pbs, datastore_pb.Key)
 
@@ -212,7 +216,8 @@ class Connection(connection.Connection):
 
         return results
 
-    def run_query(self, dataset_id, query_pb, namespace=None, eventual=False):
+    def run_query(self, dataset_id, query_pb, namespace=None,
+                  eventual=False, transaction_id=None):
         """Run a query on the Cloud Datastore.
 
         Maps the ``DatastoreService.RunQuery`` protobuf RPC.
@@ -262,9 +267,14 @@ class Connection(connection.Connection):
         :param eventual: If False (the default), request ``STRONG`` read
                          consistency.  If True, request ``EVENTUAL`` read
                          consistency.
+
+        :type transaction_id: string
+        :param transaction_id: If passed, make the request in the scope of
+                               the given transaction.  Incompatible with
+                               ``eventual==True``.
         """
         request = datastore_pb.RunQueryRequest()
-        _set_read_options(request, eventual)
+        _set_read_options(request, eventual, transaction_id)
 
         if namespace:
             request.partition_id.namespace = namespace
@@ -413,21 +423,19 @@ class Connection(connection.Connection):
         return results, missing, deferred
 
 
-def _set_read_options(request, eventual):
+def _set_read_options(request, eventual, transaction_id):
     """Validate rules for read options, and assign to the request.
 
     Helper method for ``lookup()`` and ``run_query``.
     """
-    current = Batch.current()
-    transaction = isinstance(current, Transaction) and current or None
-    if eventual and transaction:
+    if eventual and (transaction_id is not None):
         raise ValueError('eventual must be False when in a transaction')
 
     opts = request.read_options
     if eventual:
         opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
-    elif transaction:
-        opts.transaction = transaction.id
+    elif transaction_id:
+        opts.transaction = transaction_id
 
 
 def _copy_deferred_keys(lookup_request, lookup_response):

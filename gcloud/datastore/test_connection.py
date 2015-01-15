@@ -239,9 +239,9 @@ class TestConnection(unittest2.TestCase):
         TRANSACTION = 'TRANSACTION'
         key_pb = self._make_key_pb(DATASET_ID)
         conn = self._makeOne()
-        with _NoCommitTransaction(DATASET_ID, conn, TRANSACTION):
-            self.assertRaises(
-                ValueError, conn.lookup, DATASET_ID, key_pb, eventual=True)
+        self.assertRaises(ValueError,
+            conn.lookup, DATASET_ID, key_pb,
+            eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -260,8 +260,7 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        with _NoCommitTransaction(DATASET_ID, conn, TRANSACTION):
-            found = conn.lookup(DATASET_ID, key_pb)
+        found = conn.lookup(DATASET_ID, key_pb, transaction_id=TRANSACTION)
         self.assertEqual(found, None)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
@@ -540,8 +539,8 @@ class TestConnection(unittest2.TestCase):
             'runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        with _NoCommitTransaction(DATASET_ID, conn, TRANSACTION):
-            pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb)
+        pbs, end, more, skipped = conn.run_query(
+            DATASET_ID, q_pb, transaction_id=TRANSACTION)
         self.assertEqual(pbs, [])
         self.assertEqual(end, CURSOR)
         self.assertTrue(more)
@@ -571,9 +570,9 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
-        with _NoCommitTransaction(DATASET_ID, conn, TRANSACTION):
-            self.assertRaises(
-                ValueError, conn.run_query, DATASET_ID, q_pb, eventual=True)
+        self.assertRaises(ValueError,
+            conn.run_query, DATASET_ID, q_pb,
+            eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -912,20 +911,3 @@ class _KeyProto(object):
 
     def __init__(self, id_):
         self.path_element = [_PathElementProto(id_)]
-
-
-class _NoCommitTransaction(object):
-
-    def __init__(self, dataset_id, connection, transaction_id):
-        from gcloud.datastore.transaction import Transaction
-        xact = self._transaction = Transaction(dataset_id, connection)
-        xact._id = transaction_id
-
-    def __enter__(self):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.push(self._transaction)
-        return self._transaction
-
-    def __exit__(self, *args):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.pop()

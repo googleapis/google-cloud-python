@@ -271,7 +271,7 @@ class Test_get_function(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._callFUT([key1, key2], connection=object())
 
-    def test_implicit(self):
+    def test_implicit_wo_transaction(self):
         from gcloud.datastore import _implicit_environ
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
@@ -297,6 +297,43 @@ class Test_get_function(unittest2.TestCase):
         expected_called_with = {
             'dataset_id': DATASET_ID,
             'key_pbs': [key.to_protobuf()],
+            'transaction_id': None,
+        }
+        self.assertEqual(CUSTOM_CONNECTION._called_with, expected_called_with)
+
+        new_key = result.key
+        # Check the returned value is as expected.
+        self.assertFalse(new_key is key)
+        self.assertEqual(new_key.dataset_id, DATASET_ID)
+        self.assertEqual(new_key.path, PATH)
+        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result['foo'], 'Foo')
+
+    def test_w_transaction(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+        TRANSACTION = 'TRANSACTION'
+
+        # Make a found entity pb to be returned from mock backend.
+        entity_pb = self._make_entity_pb(DATASET_ID, KIND, ID,
+                                         'foo', 'Foo')
+
+        # Make a connection to return the entity pb.
+        CUSTOM_CONNECTION = _Connection(entity_pb)
+
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
+        with _NoCommitTransaction(DATASET_ID, CUSTOM_CONNECTION, TRANSACTION):
+            result, = self._callFUT([key], connection=CUSTOM_CONNECTION)
+
+        expected_called_with = {
+            'dataset_id': DATASET_ID,
+            'key_pbs': [key.to_protobuf()],
+            'transaction_id': TRANSACTION,
         }
         self.assertEqual(CUSTOM_CONNECTION._called_with, expected_called_with)
 
@@ -565,6 +602,23 @@ class _NoCommitBatch(object):
         from gcloud.datastore.batch import _BATCHES
         _BATCHES.push(self._batch)
         return self._batch
+
+    def __exit__(self, *args):
+        from gcloud.datastore.batch import _BATCHES
+        _BATCHES.pop()
+
+
+class _NoCommitTransaction(object):
+
+    def __init__(self, dataset_id, connection, transaction_id):
+        from gcloud.datastore.transaction import Transaction
+        xact = self._transaction = Transaction(dataset_id, connection)
+        xact._id = transaction_id
+
+    def __enter__(self):
+        from gcloud.datastore.batch import _BATCHES
+        _BATCHES.push(self._transaction)
+        return self._transaction
 
     def __exit__(self, *args):
         from gcloud.datastore.batch import _BATCHES

@@ -405,6 +405,7 @@ class TestIterator(unittest2.TestCase):
             'dataset_id': self._DATASET,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
+            'transaction_id': None,
         }
         self.assertEqual(connection._called_with, [EXPECTED])
 
@@ -431,6 +432,7 @@ class TestIterator(unittest2.TestCase):
             'dataset_id': self._DATASET,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
+            'transaction_id': None,
         }
         self.assertEqual(connection._called_with, [EXPECTED])
 
@@ -463,6 +465,7 @@ class TestIterator(unittest2.TestCase):
             'dataset_id': self._DATASET,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
+            'transaction_id': None,
         }
         self.assertEqual(connection._called_with, [EXPECTED])
 
@@ -494,6 +497,7 @@ class TestIterator(unittest2.TestCase):
             'dataset_id': self._DATASET,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
+            'transaction_id': None,
         }
         self.assertEqual(connection._called_with, [EXPECTED])
 
@@ -522,11 +526,13 @@ class TestIterator(unittest2.TestCase):
             'dataset_id': self._DATASET,
             'query_pb': qpb1,
             'namespace': self._NAMESPACE,
+            'transaction_id': None,
         }
         EXPECTED2 = {
             'dataset_id': self._DATASET,
             'query_pb': qpb2,
             'namespace': self._NAMESPACE,
+            'transaction_id': None,
         }
         self.assertEqual(len(connection._called_with), 2)
         self.assertEqual(connection._called_with[0], EXPECTED1)
