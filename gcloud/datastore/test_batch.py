@@ -116,7 +116,7 @@ class TestBatch(unittest2.TestCase):
         connection = _Connection()
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         entity = _Entity()
-        key = entity.key = _Key(_Entity)
+        key = entity.key = _Key(_DATASET)
         key._id = None
 
         batch.add_auto_id_entity(entity)
@@ -128,7 +128,7 @@ class TestBatch(unittest2.TestCase):
         connection = _Connection()
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         entity = _Entity()
-        entity.key = _Key(_Entity)
+        entity.key = _Key(_DATASET)
 
         self.assertRaises(ValueError, batch.add_auto_id_entity, entity)
 
@@ -138,6 +138,15 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
 
         self.assertRaises(ValueError, batch.put, _Entity())
+
+    def test_put_entity_w_key_wrong_dataset_id(self):
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        entity = _Entity()
+        entity.key = _Key('OTHER')
+
+        self.assertRaises(ValueError, batch.put, entity)
 
     def test_put_entity_w_partial_key(self):
         _DATASET = 'DATASET'
@@ -200,6 +209,14 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         key = _Key(_DATASET)
         key._id = None
+
+        self.assertRaises(ValueError, batch.delete, key)
+
+    def test_delete_w_key_wrong_dataset_id(self):
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        key = _Key('OTHER')
 
         self.assertRaises(ValueError, batch.delete, key)
 
