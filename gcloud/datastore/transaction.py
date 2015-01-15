@@ -140,7 +140,7 @@ class Transaction(Batch):
         - Sets the current connection's transaction reference to None.
         - Sets the current transaction's ID to None.
         """
-        self.connection.rollback(self._dataset_id)
+        self.connection.rollback(self._dataset_id, self._id)
         self._id = None
 
     def commit(self):

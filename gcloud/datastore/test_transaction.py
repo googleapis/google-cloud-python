@@ -105,7 +105,7 @@ class TestTransaction(unittest2.TestCase):
         xact.begin()
         xact.rollback()
         self.assertEqual(xact.id, None)
-        self.assertEqual(connection._rolled_back, _DATASET)
+        self.assertEqual(connection._rolled_back, (_DATASET, 234))
 
     def test_commit_no_auto_ids(self):
         _DATASET = 'DATASET'
@@ -159,7 +159,7 @@ class TestTransaction(unittest2.TestCase):
                 raise Foo()
         except Foo:
             self.assertEqual(xact.id, None)
-            self.assertEqual(connection._rolled_back, _DATASET)
+            self.assertEqual(connection._rolled_back, (_DATASET, 234))
         self.assertEqual(connection._committed, None)
         self.assertEqual(xact.id, None)
 
@@ -187,8 +187,8 @@ class _Connection(object):
         self._begun = dataset_id
         return self._xact_id
 
-    def rollback(self, dataset_id):
-        self._rolled_back = dataset_id
+    def rollback(self, dataset_id, transaction_id):
+        self._rolled_back = dataset_id, transaction_id
 
     def commit(self, dataset_id, mutation):
         self._committed = (dataset_id, mutation)
