@@ -133,16 +133,6 @@ automatically generated ID will be assigned to the entity:</p>
 </pre></div>
 </div>
 </div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p>If you&#8217;re using the automatically generated ID
-functionality, it&#8217;s important that you only use
-<tt class="xref py py-meth docutils literal"><span class="pre">gcloud.datastore.entity.Entity.save()</span></tt> rather than using
-<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection.save_entity" title="gcloud.datastore.connection.Connection.save_entity"><tt class="xref py py-meth docutils literal"><span class="pre">gcloud.datastore.connection.Connection.save_entity()</span></tt></a>
-directly.</p>
-<p class="last">If you mix the two, the results will have extra IDs generated and
-it could jumble things up.</p>
-</div>
 <p>If you don&#8217;t want to use the context manager you can initialize a
 transaction manually:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">()</span>
@@ -191,10 +181,27 @@ however it can be called explicitly if you don&#8217;t want to use a
 context manager.</p>
 <p>This method has necessary side-effects:</p>
 <ul class="simple">
-<li>Sets the current connection&#8217;s transaction reference to None.</li>
 <li>Sets the current transaction&#8217;s ID to None.</li>
-<li>Updates paths for any keys that needed an automatically generated ID.</li>
 </ul>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="gcloud.datastore.transaction.Transaction.current">
+<em class="property">static </em><tt class="descname">current</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.current" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the topmost transaction.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">if the topmost element on the stack is not a transaction,
+returns None.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></tt></a> or None</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">

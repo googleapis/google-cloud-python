@@ -204,6 +204,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Mutation</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_auto_id_entities</span> <span class="o">=</span> <span class="p">[]</span>
 
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Batch.current"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.current">[docs]</a>    <span class="k">def</span> <span class="nf">current</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Return the topmost batch / transaction, or None.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_BATCHES</span><span class="o">.</span><span class="n">top</span>
+</div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Batch.dataset_id"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.dataset_id">[docs]</a>    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter for dataset ID in which the batch will run.</span>
@@ -382,6 +387,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="n">insert</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="n">value_is_list</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value_is_list</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+
         <span class="n">prop</span> <span class="o">=</span> <span class="n">insert</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
         <span class="c"># Set the name of the property.</span>
         <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -390,7 +400,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">exclude_from_indexes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">value_is_list</span><span class="p">:</span>
                 <span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">indexed</span> <span class="o">=</span> <span class="bp">False</span>
 
             <span class="k">for</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">list_value</span><span class="p">:</span>

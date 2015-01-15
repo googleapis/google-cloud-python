@@ -281,6 +281,16 @@ in method arguments, however should be capable of returning advanced types.</p>
 </tr>
 </tbody>
 </table>
+<p>Constructor for Connection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt> or
+<tt class="xref py py-class docutils literal"><span class="pre">NoneType</span></tt>) &#8211; The OAuth2 Credentials to use for this connection.</td>
+</tr>
+</tbody>
+</table>
 <dl class="attribute">
 <dt id="gcloud.datastore.connection.Connection.API_URL_TEMPLATE">
 <tt class="descname">API_URL_TEMPLATE</tt><em class="property"> = '{api_base}/datastore/{api_version}/datasets/{dataset_id}/{method}'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
@@ -373,7 +383,7 @@ You shouldn&#8217;t have to provide this.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.commit">
-<tt class="descname">commit</tt><big>(</big><em>dataset_id</em>, <em>mutation_pb</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">#</a></dt>
+<tt class="descname">commit</tt><big>(</big><em>dataset_id</em>, <em>mutation_pb</em>, <em>transaction_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commit dataset mutations in context of current transation (if any).</p>
 <p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.Commit</span></tt> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -383,6 +393,9 @@ You shouldn&#8217;t have to provide this.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID dataset to which the transaction applies.</li>
 <li><strong>mutation_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt>.) &#8211; The protobuf for the mutations being saved.</li>
+<li><strong>transaction_id</strong> (<em>string</em>) &#8211; The transaction ID returned from
+<a class="reference internal" href="#gcloud.datastore.connection.Connection.begin_transaction" title="gcloud.datastore.connection.Connection.begin_transaction"><tt class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></tt></a>.  If not passed, the
+commit will be non-transactional.</li>
 </ul>
 </td>
 </tr>
@@ -397,40 +410,8 @@ You shouldn&#8217;t have to provide this.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.connection.Connection.delete_entities">
-<tt class="descname">delete_entities</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em>, <em>mutation=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.delete_entities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.delete_entities" title="Permalink to this definition">#</a></dt>
-<dd><p>Delete keys from a dataset in the Cloud Datastore.</p>
-<p>This method deals only with
-<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt> protobufs and not
-with any of the other abstractions.  For example, it&#8217;s used
-under the hood in <tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.api.delete()</span></tt>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset from which to delete the keys.</li>
-<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The keys to delete from the datastore.</li>
-<li><strong>mutation</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt>
-or None.) &#8211; If passed, the mutation protobuf into which the
-deletion will be saved.  If None, use th result
-of calling <tt class="docutils literal"><span class="pre">self.mutation()</span></tt></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">boolean</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">True</span></tt></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.datastore.connection.Connection.lookup">
-<tt class="descname">lookup</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>eventual=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.lookup" title="Permalink to this definition">#</a></dt>
+<tt class="descname">lookup</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>eventual=False</em>, <em>transaction_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.lookup" title="Permalink to this definition">#</a></dt>
 <dd><p>Lookup keys from a dataset in the Cloud Datastore.</p>
 <p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.Lookup</span></tt> protobuf RPC.</p>
 <p>This method deals only with protobufs
@@ -465,8 +446,10 @@ by the backend as &#8220;deferred&#8221; will be copied into it.
 Use only as a keyword param.</li>
 <li><strong>eventual</strong> (<em>boolean</em>) &#8211; If False (the default), request <tt class="docutils literal"><span class="pre">STRONG</span></tt> read
 consistency.  If True, request <tt class="docutils literal"><span class="pre">EVENTUAL</span></tt> read
-consistency.  If the connection has a current
-transaction, this value <em>must</em> be false.</li>
+consistency.</li>
+<li><strong>transaction_id</strong> (<em>string</em>) &#8211; If passed, make the request in the scope of
+the given transaction.  Incompatible with
+<tt class="docutils literal"><span class="pre">eventual==True</span></tt>.</li>
 </ul>
 </td>
 </tr>
@@ -489,36 +472,21 @@ this will return an empty list.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.connection.Connection.mutation">
-<tt class="descname">mutation</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.mutation" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter for mutation usable with current connection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The mutation instance associated with the current transaction
-(if one exists) or or a new mutation instance.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.datastore.connection.Connection.rollback">
-<tt class="descname">rollback</tt><big>(</big><em>dataset_id</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.rollback" title="Permalink to this definition">#</a></dt>
+<tt class="descname">rollback</tt><big>(</big><em>dataset_id</em>, <em>transaction_id</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.rollback" title="Permalink to this definition">#</a></dt>
 <dd><p>Rollback the connection&#8217;s existing transaction.</p>
 <p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.Rollback</span></tt> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset to which the transaction
-belongs.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if the connection isn&#8217;t currently in a
-transaction.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset to which the transaction
+belongs.</li>
+<li><strong>transaction_id</strong> (<em>string</em>) &#8211; The transaction ID returned from
+<a class="reference internal" href="#gcloud.datastore.connection.Connection.begin_transaction" title="gcloud.datastore.connection.Connection.begin_transaction"><tt class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></tt></a>.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -526,7 +494,7 @@ transaction.</td>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.run_query">
-<tt class="descname">run_query</tt><big>(</big><em>dataset_id</em>, <em>query_pb</em>, <em>namespace=None</em>, <em>eventual=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.run_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.run_query" title="Permalink to this definition">#</a></dt>
+<tt class="descname">run_query</tt><big>(</big><em>dataset_id</em>, <em>query_pb</em>, <em>namespace=None</em>, <em>eventual=False</em>, <em>transaction_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.run_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.run_query" title="Permalink to this definition">#</a></dt>
 <dd><p>Run a query on the Cloud Datastore.</p>
 <p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.RunQuery</span></tt> protobuf RPC.</p>
 <p>Given a Query protobuf, sends a <tt class="docutils literal"><span class="pre">runQuery</span></tt> request to the
@@ -571,74 +539,12 @@ uses this method to fetch data:</p>
 <li><strong>namespace</strong> (<em>string</em>) &#8211; The namespace over which to run the query.</li>
 <li><strong>eventual</strong> (<em>boolean</em>) &#8211; If False (the default), request <tt class="docutils literal"><span class="pre">STRONG</span></tt> read
 consistency.  If True, request <tt class="docutils literal"><span class="pre">EVENTUAL</span></tt> read
-consistency.  If the connection has a current
-transaction, this value <em>must</em> be false.</li>
+consistency.</li>
+<li><strong>transaction_id</strong> (<em>string</em>) &#8211; If passed, make the request in the scope of
+the given transaction.  Incompatible with
+<tt class="docutils literal"><span class="pre">eventual==True</span></tt>.</li>
 </ul>
 </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.connection.Connection.save_entity">
-<tt class="descname">save_entity</tt><big>(</big><em>dataset_id</em>, <em>key_pb</em>, <em>properties</em>, <em>exclude_from_indexes=()</em>, <em>mutation=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.save_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.save_entity" title="Permalink to this definition">#</a></dt>
-<dd><p>Save an entity to the Cloud Datastore with the provided properties.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Any existing properties for the entity identified by <tt class="docutils literal"><span class="pre">key_pb</span></tt>
-will be replaced by those passed in <tt class="docutils literal"><span class="pre">properties</span></tt>;  properties
-not passed in <tt class="docutils literal"><span class="pre">properties</span></tt> no longer be set for the entity.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">When saving an entity to the backend, a property value set as
-an empty list cannot be saved and will be ignored.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset in which to save the entity.</li>
-<li><strong>key_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The complete or partial key for the entity.</li>
-<li><strong>properties</strong> (<em>dict</em>) &#8211; The properties to store on the entity.</li>
-<li><strong>exclude_from_indexes</strong> (<em>sequence of string</em>) &#8211; Names of properties <em>not</em> to be indexed.</li>
-<li><strong>mutation</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt>
-or None.) &#8211; If passed, the mutation protobuf into which the
-entity will be saved.  If None, use th result
-of calling <tt class="docutils literal"><span class="pre">self.mutation()</span></tt></li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The pair (<tt class="docutils literal"><span class="pre">assigned</span></tt>, <tt class="docutils literal"><span class="pre">new_id</span></tt>) where <tt class="docutils literal"><span class="pre">assigned</span></tt> is a
-boolean indicating if a new ID has been assigned and
-<tt class="docutils literal"><span class="pre">new_id</span></tt> is either <tt class="docutils literal"><span class="pre">None</span></tt> or an integer that has been
-assigned.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.datastore.connection.Connection.transaction">
-<tt class="descname">transaction</tt><big>(</big><em>transaction=&lt;object object at 0x7fa1cf218c00&gt;</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.transaction" title="Permalink to this definition">#</a></dt>
-<dd><p>Getter/setter for the connection&#8217;s transaction object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transaction</strong> (<a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></tt></a>,
-(setting), or omitted (getting).) &#8211; The new transaction (if passed).</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></tt></a>, (getting)
-or <a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a> (setting)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current transaction (getting) or self (setting).</td>
 </tr>
 </tbody>
 </table>

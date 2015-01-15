@@ -147,15 +147,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">         ...     assert entity.key.is_partial  # There is no ID on this key.</span>
 <span class="sd">         &gt;&gt;&gt; assert not entity.key.is_partial  # There *is* an ID.</span>
 
-<span class="sd">    .. warning:: If you&#39;re using the automatically generated ID</span>
-<span class="sd">       functionality, it&#39;s important that you only use</span>
-<span class="sd">       :meth:`gcloud.datastore.entity.Entity.save` rather than using</span>
-<span class="sd">       :meth:`gcloud.datastore.connection.Connection.save_entity`</span>
-<span class="sd">       directly.</span>
-
-<span class="sd">       If you mix the two, the results will have extra IDs generated and</span>
-<span class="sd">       it could jumble things up.</span>
-
 <span class="sd">    If you don&#39;t want to use the context manager you can initialize a</span>
 <span class="sd">    transaction manually::</span>
 
@@ -193,6 +184,19 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
 </div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Transaction.current"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction.current">[docs]</a>    <span class="k">def</span> <span class="nf">current</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Return the topmost transaction.</span>
+
+<span class="sd">        .. note:: if the topmost element on the stack is not a transaction,</span>
+<span class="sd">                  returns None.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.datastore.transaction.Transaction` or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Batch</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">Transaction</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">top</span>
+</div>
 <div class="viewcode-block" id="Transaction.begin"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begins a transaction.</span>
 
@@ -201,7 +205,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        to use a context manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">begin_transaction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Transaction.rollback"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rolls back the current transaction.</span>
@@ -212,7 +215,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        - Sets the current transaction&#39;s ID to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">rollback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">transaction</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span>
 </div>
 <div class="viewcode-block" id="Transaction.commit"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -224,17 +226,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        This method has necessary side-effects:</span>
 
-<span class="sd">        - Sets the current connection&#39;s transaction reference to None.</span>
 <span class="sd">        - Sets the current transaction&#39;s ID to None.</span>
-<span class="sd">        - Updates paths for any keys that needed an automatically generated ID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c"># It&#39;s possible that they called commit() already, in which case</span>
-        <span class="c"># we shouldn&#39;t do any committing of our own.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">transaction</span><span class="p">():</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-
-        <span class="c"># Tell the connection that the transaction is over.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">transaction</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
         <span class="c"># Clear our own ID in case this gets accidentally reused.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span></div></div>
