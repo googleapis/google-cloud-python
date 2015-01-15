@@ -18,6 +18,7 @@ import sys
 import types
 
 from gcloud import storage
+from gcloud.storage.exceptions import NotFound
 
 
 # From shell environ. May be None.
@@ -35,7 +36,7 @@ Please check the Contributing guide for instructions.
 class RetryTestsMetaclass(type):
 
     NUM_RETRIES = 2
-    FLAKY_ERROR_CLASSES = (AssertionError,)
+    FLAKY_ERROR_CLASSES = (AssertionError, NotFound)
 
     @staticmethod
     def _wrap_class_attr(class_attr):
