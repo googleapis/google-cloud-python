@@ -39,7 +39,7 @@ class TestTransaction(unittest2.TestCase):
             self._makeOne(connection=object())
 
     def test_ctor(self):
-        from gcloud.datastore.datastore_v1_pb2 import Mutation
+        from gcloud.datastore._datastore_v1_pb2 import Mutation
 
         _DATASET = 'DATASET'
         connection = _Connection()
@@ -165,7 +165,7 @@ class TestTransaction(unittest2.TestCase):
 
 
 def _make_key(kind, id, dataset_id):
-    from gcloud.datastore.datastore_v1_pb2 import Key
+    from gcloud.datastore._datastore_v1_pb2 import Key
 
     key = Key()
     key.partition_id.dataset_id = dataset_id

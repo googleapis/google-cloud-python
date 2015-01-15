@@ -19,7 +19,7 @@ from itertools import izip
 import six
 
 from gcloud.datastore import _implicit_environ
-from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
 
 class Key(object):
@@ -197,7 +197,7 @@ class Key(object):
     def to_protobuf(self):
         """Return a protobuf corresponding to the key.
 
-        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Key`
+        :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Key`
         :returns: The protobuf representing the key.
         """
         key = datastore_pb.Key()

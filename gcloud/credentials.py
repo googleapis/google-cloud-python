@@ -26,11 +26,12 @@ def get_credentials():
       which uses this method under the hood.
 
     Checks environment in order of precedence:
-    - Google App Engine (production and testing)
-    - Environment variable GOOGLE_APPLICATION_CREDENTIALS pointing to
+
+    * Google App Engine (production and testing)
+    * Environment variable GOOGLE_APPLICATION_CREDENTIALS pointing to
       a file with stored credentials information.
-    - Stored "well known" file associated with ``gcloud`` command line tool.
-    - Google Compute Engine production environment.
+    * Stored "well known" file associated with ``gcloud`` command line tool.
+    * Google Compute Engine production environment.
 
     The file referred to in GOOGLE_APPLICATION_CREDENTIALS is expected to
     contain information about credentials that are ready to use. This means

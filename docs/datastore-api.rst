@@ -23,6 +23,14 @@ Connections
   :undoc-members:
   :show-inheritance:
 
+Interacting with the API
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: gcloud.datastore.api
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
 Helper functions
 ~~~~~~~~~~~~~~~~
 

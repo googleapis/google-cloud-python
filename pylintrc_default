@@ -28,9 +28,9 @@
 # NOTE: This path must be relative due to the use of
 #       os.walk in astroid.modutils.get_module_files.
 # RATIONALE:
-#   datastore_v1_pb2.py:   protobuf-generated code.
+#   _datastore_v1_pb2.py:   protobuf-generated code.
 ignore =
-    datastore_v1_pb2.py
+    _datastore_v1_pb2.py
 
 # Pickle collected data for later comparisons.
 # DEFAULT:  persistent=yes

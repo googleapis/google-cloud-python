@@ -21,7 +21,7 @@ except ImportError:     # pragma: NO COVER (who doesn't have it?)
 
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import helpers
-from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
 
 class _Batches(Local):
@@ -164,7 +164,7 @@ class Batch(object):
         This getter returns the Mutation protobuf that
         has been built-up so far.
 
-        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`
+        :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Mutation`
         :returns: The Mutation protobuf to be sent in the commit request.
         """
         return self._mutation
@@ -286,7 +286,7 @@ def _assign_entity_to_mutation(mutation_pb, entity, auto_id_entities):
 
     Helper method for ``Batch.put``.
 
-    :type mutation_pb: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`
+    :type mutation_pb: :class:`gcloud.datastore._datastore_v1_pb2.Mutation`
     :param mutation_pb; the Mutation protobuf for the batch / transaction.
 
     :type entity: :class:`gcloud.datastore.entity.Entity`

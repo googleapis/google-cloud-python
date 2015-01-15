@@ -180,7 +180,7 @@ class TestConnection(unittest2.TestCase):
                          URI)
 
     def test_lookup_single_key_empty_response(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
@@ -206,7 +206,7 @@ class TestConnection(unittest2.TestCase):
         _compare_key_pb_after_request(self, key_pb, keys[0])
 
     def test_lookup_single_key_empty_response_w_eventual(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
@@ -243,7 +243,7 @@ class TestConnection(unittest2.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         TRANSACTION = 'TRANSACTION'
@@ -272,7 +272,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_lookup_single_key_nonempty_response(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
@@ -303,7 +303,7 @@ class TestConnection(unittest2.TestCase):
         _compare_key_pb_after_request(self, key_pb, keys[0])
 
     def test_lookup_multiple_keys_empty_response(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         key_pb1 = self._make_key_pb(DATASET_ID)
@@ -331,7 +331,7 @@ class TestConnection(unittest2.TestCase):
         _compare_key_pb_after_request(self, key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_missing(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         key_pb1 = self._make_key_pb(DATASET_ID)
@@ -377,7 +377,7 @@ class TestConnection(unittest2.TestCase):
             conn.lookup, DATASET_ID, [key_pb1, key_pb2], missing=missing)
 
     def test_lookup_multiple_keys_w_deferred(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         key_pb1 = self._make_key_pb(DATASET_ID)
@@ -425,7 +425,7 @@ class TestConnection(unittest2.TestCase):
             conn.lookup, DATASET_ID, [key_pb1, key_pb2], deferred=deferred)
 
     def test_lookup_multiple_keys_w_deferred_from_backend_but_not_passed(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         key_pb1 = self._make_key_pb(DATASET_ID)
@@ -477,7 +477,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(keys[0], key_pb2)
 
     def test_run_query_w_eventual_no_transaction(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
@@ -516,7 +516,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.read_options.transaction, '')
 
     def test_run_query_wo_eventual_w_transaction(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
@@ -556,7 +556,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_run_query_w_eventual_and_transaction(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
@@ -573,7 +573,7 @@ class TestConnection(unittest2.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
@@ -608,7 +608,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.query, q_pb)
 
     def test_run_query_w_namespace_nonempty_result(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
@@ -639,7 +639,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.query, q_pb)
 
     def test_begin_transaction_default_serialize(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         TRANSACTION = 'TRANSACTION'
@@ -664,7 +664,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.isolation_level, rq_class.SNAPSHOT)
 
     def test_begin_transaction_explicit_serialize(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         TRANSACTION = 'TRANSACTION'
@@ -689,7 +689,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.isolation_level, rq_class.SERIALIZABLE)
 
     def test_commit_wo_transaction(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
@@ -723,7 +723,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_commit_w_transaction(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
@@ -757,7 +757,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
 
     def test_rollback_ok(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         DATASET_ID = 'DATASET'
         TRANSACTION = 'xact'
 
@@ -781,7 +781,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.transaction, TRANSACTION)
 
     def test_allocate_ids_empty(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         rsp_pb = datastore_pb.AllocateIdsResponse()
@@ -804,7 +804,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(list(request.key), [])
 
     def test_allocate_ids_non_empty(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
         before_key_pbs = [
