@@ -180,6 +180,12 @@ def get_python_files():
 
 def lint_fileset(filenames, rcfile, description):
     """Lints a group of files using a given rcfile."""
+    # Only lint filenames that exist. For example, 'git diff --name-only'
+    # could spit out deleted / renamed files. Another alternative could
+    # be to use 'git diff --name-status' and filter out files with a
+    # status of 'D'.
+    filenames = [filename for filename in filenames
+                 if os.path.exists(filename)]
     if filenames:
         rc_flag = '--rcfile=%s' % (rcfile,)
         pylint_shell_command = ['pylint', rc_flag] + filenames
