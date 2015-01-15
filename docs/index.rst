@@ -13,12 +13,6 @@
   storage-keys
   storage-acl
 
-
-Getting started
----------------
-
-.. include:: _components/getting-started.rst
-
 Cloud Datastore
 ~~~~~~~~~~~~~~~
 
