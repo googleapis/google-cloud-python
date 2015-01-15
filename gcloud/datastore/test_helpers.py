@@ -42,14 +42,67 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         prop_pb = entity_pb.property.add()
         prop_pb.name = 'foo'
         prop_pb.value.string_value = 'Foo'
+
+        unindexed_prop_pb = entity_pb.property.add()
+        unindexed_prop_pb.name = 'bar'
+        unindexed_prop_pb.value.integer_value = 10
+        unindexed_prop_pb.value.indexed = False
+
+        list_prop_pb1 = entity_pb.property.add()
+        list_prop_pb1.name = 'baz'
+        list_pb1 = list_prop_pb1.value.list_value
+
+        unindexed_value_pb = list_pb1.add()
+        unindexed_value_pb.integer_value = 11
+        unindexed_value_pb.indexed = False
+
+        list_prop_pb2 = entity_pb.property.add()
+        list_prop_pb2.name = 'qux'
+        list_pb2 = list_prop_pb2.value.list_value
+
+        indexed_value_pb = list_pb2.add()
+        indexed_value_pb.integer_value = 12
+        indexed_value_pb.indexed = True
+
         entity = self._callFUT(entity_pb)
         self.assertEqual(entity.kind, _KIND)
-        self.assertEqual(entity['foo'], 'Foo')
+        self.assertEqual(entity.exclude_from_indexes,
+                         frozenset(['bar', 'baz']))
+        entity_props = dict(entity)
+        self.assertEqual(entity_props,
+                         {'foo': 'Foo', 'bar': 10, 'baz': [11], 'qux': [12]})
+
+        # Also check the key.
         key = entity.key
         self.assertEqual(key.dataset_id, _DATASET_ID)
         self.assertEqual(key.namespace, None)
         self.assertEqual(key.kind, _KIND)
         self.assertEqual(key.id, _ID)
+
+    def test_mismatched_value_indexed(self):
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+
+        _DATASET_ID = 'DATASET'
+        _KIND = 'KIND'
+        _ID = 1234
+        entity_pb = datastore_pb.Entity()
+        entity_pb.key.partition_id.dataset_id = _DATASET_ID
+        entity_pb.key.path_element.add(kind=_KIND, id=_ID)
+
+        list_prop_pb = entity_pb.property.add()
+        list_prop_pb.name = 'baz'
+        list_pb = list_prop_pb.value.list_value
+
+        unindexed_value_pb1 = list_pb.add()
+        unindexed_value_pb1.integer_value = 10
+        unindexed_value_pb1.indexed = False
+
+        unindexed_value_pb2 = list_pb.add()
+        unindexed_value_pb2.integer_value = 11
+        unindexed_value_pb2.indexed = True
+
+        with self.assertRaises(ValueError):
+            self._callFUT(entity_pb)
 
 
 class Test_key_from_protobuf(unittest2.TestCase):
