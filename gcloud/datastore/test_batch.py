@@ -143,7 +143,12 @@ class TestBatch(unittest2.TestCase):
 
     def test_put_entity_w_completed_key(self):
         _DATASET = 'DATASET'
-        _PROPERTIES = {'foo': 'bar', 'baz': 'qux', 'spam': [1, 2, 3]}
+        _PROPERTIES = {
+            'foo': 'bar',
+            'baz': 'qux',
+            'spam': [1, 2, 3],
+            'frotz': [],  # will be ignored
+            }
         connection = _Connection()
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         entity = _Entity(_PROPERTIES)
@@ -166,6 +171,7 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(props['spam'].list_value[0].indexed)
         self.assertFalse(props['spam'].list_value[1].indexed)
         self.assertFalse(props['spam'].list_value[2].indexed)
+        self.assertFalse('frotz' in props)
 
         deletes = list(batch.mutation.delete)
         self.assertEqual(len(deletes), 0)
