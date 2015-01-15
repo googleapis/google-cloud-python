@@ -148,16 +148,6 @@ class Test_get_function(unittest2.TestCase):
         self.assertRaises(EnvironmentError,
                           self._callFUT, [key], dataset_id=DATASET_ID)
 
-    def test_wo_dataset_id(self):
-        from gcloud.datastore.key import Key
-        from gcloud.datastore.test_connection import _Connection
-
-        DATASET_ID = 'DATASET'
-        connection = _Connection()
-        key = Key('Kind', 1234, dataset_id=DATASET_ID)
-        self.assertRaises(EnvironmentError,
-                          self._callFUT, [key], connection=connection)
-
     def test_no_keys(self):
         results = self._callFUT([])
         self.assertEqual(results, [])
@@ -172,6 +162,22 @@ class Test_get_function(unittest2.TestCase):
         results = self._callFUT([key], connection=connection,
                                 dataset_id=DATASET_ID)
         self.assertEqual(results, [])
+
+    def test_miss_wo_dataset_id(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        connection = _Connection()
+        key = Key('Kind', 1234, dataset_id=DATASET_ID)
+        results = self._callFUT([key], connection=connection)
+        self.assertEqual(results, [])
+        expected = {
+            'dataset_id': DATASET_ID,
+            'key_pbs': [key.to_protobuf()],
+            'transaction_id': None,
+        }
+        self.assertEqual(connection._called_with, expected)
 
     def test_miss_w_missing(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
@@ -398,8 +404,18 @@ class Test_put_function(unittest2.TestCase):
         entity.key = _Key(_DATASET)
 
         self.assertEqual(_implicit_environ.CONNECTION, None)
-        with self.assertRaises(EnvironmentError):
-            self._callFUT([entity], connection=connection)
+        result = self._callFUT([entity], connection=connection)
+
+        self.assertEqual(result, None)
+        self.assertEqual(len(connection._committed), 1)
+        dataset_id, mutation = connection._committed[0]
+        self.assertEqual(dataset_id, _DATASET)
+        upserts = list(mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        self.assertEqual(upserts[0].key, entity.key.to_protobuf())
+        properties = list(upserts[0].property)
+        self.assertEqual(properties[0].name, 'foo')
+        self.assertEqual(properties[0].value.string_value, u'bar')
 
     def test_no_entities(self):
         from gcloud.datastore import _implicit_environ
@@ -517,8 +533,14 @@ class Test_delete_function(unittest2.TestCase):
         key = _Key(_DATASET)
 
         self.assertEqual(_implicit_environ.CONNECTION, None)
-        with self.assertRaises(EnvironmentError):
-            self._callFUT([key], connection=connection)
+
+        result = self._callFUT([key], connection=connection)
+
+        self.assertEqual(result, None)
+        self.assertEqual(len(connection._committed), 1)
+        dataset_id, mutation = connection._committed[0]
+        self.assertEqual(dataset_id, _DATASET)
+        self.assertEqual(list(mutation.delete), [key.to_protobuf()])
 
     def test_no_keys(self):
         from gcloud.datastore import _implicit_environ

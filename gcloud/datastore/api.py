@@ -103,7 +103,11 @@ def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
         return []
 
     connection = _require_connection(connection)
-    dataset_id = _require_dataset_id(dataset_id)
+    try:
+        dataset_id = _require_dataset_id(dataset_id)
+    except EnvironmentError:
+        dataset_id = keys[0].dataset_id
+
     if list(set([key.dataset_id for key in keys])) != [dataset_id]:
         raise ValueError('Keys do not match dataset ID')
 
@@ -157,7 +161,10 @@ def put(entities, connection=None, dataset_id=None):
         return
 
     connection = _require_connection(connection)
-    dataset_id = _require_dataset_id(dataset_id)
+    try:
+        dataset_id = _require_dataset_id(dataset_id)
+    except EnvironmentError:
+        dataset_id = entities[0].key.dataset_id
 
     current = Batch.current()
     in_batch = current is not None
@@ -192,7 +199,10 @@ def delete(keys, connection=None, dataset_id=None):
         return
 
     connection = _require_connection(connection)
-    dataset_id = _require_dataset_id(dataset_id)
+    try:
+        dataset_id = _require_dataset_id(dataset_id)
+    except EnvironmentError:
+        dataset_id = keys[0].dataset_id
 
     # We allow partial keys to attempt a delete, the backend will fail.
     current = Batch.current()
