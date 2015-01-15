@@ -35,6 +35,18 @@ class Test__require_dataset_id(unittest2.TestCase):
             with self.assertRaises(EnvironmentError):
                 self._callFUT()
 
+    def test_implicit_unset_w_existing_batch(self):
+        ID = 'DATASET'
+        with self._monkey(None):
+            with _NoCommitBatch(dataset_id=ID, connection=object()):
+                self.assertEqual(self._callFUT(), ID)
+
+    def test_implicit_unset_w_existing_transaction(self):
+        ID = 'DATASET'
+        with self._monkey(None):
+            with _NoCommitTransaction(dataset_id=ID, connection=object()):
+                self.assertEqual(self._callFUT(), ID)
+
     def test_implicit_unset_passed_explicitly(self):
         ID = 'DATASET'
         with self._monkey(None):
@@ -72,6 +84,20 @@ class Test__require_connection(unittest2.TestCase):
         with self._monkey(None):
             with self.assertRaises(EnvironmentError):
                 self._callFUT()
+
+    def test_implicit_unset_w_existing_batch(self):
+        ID = 'DATASET'
+        CONNECTION = object()
+        with self._monkey(None):
+            with _NoCommitBatch(dataset_id=ID, connection=CONNECTION):
+                self.assertEqual(self._callFUT(), CONNECTION)
+
+    def test_implicit_unset_w_existing_transaction(self):
+        ID = 'DATASET'
+        CONNECTION = object()
+        with self._monkey(None):
+            with _NoCommitTransaction(dataset_id=ID, connection=CONNECTION):
+                self.assertEqual(self._callFUT(), CONNECTION)
 
     def test_implicit_unset_passed_explicitly(self):
         CONNECTION = object()
@@ -579,7 +605,7 @@ class _NoCommitBatch(object):
 
 class _NoCommitTransaction(object):
 
-    def __init__(self, dataset_id, connection, transaction_id):
+    def __init__(self, dataset_id, connection, transaction_id='TRANSACTION'):
         from gcloud.datastore.transaction import Transaction
         xact = self._transaction = Transaction(dataset_id, connection)
         xact._id = transaction_id

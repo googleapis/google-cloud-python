@@ -36,9 +36,13 @@ def _require_dataset_id(dataset_id=None):
              and cannot be inferred from the environment.
     """
     if dataset_id is None:
-        if _implicit_environ.DATASET_ID is None:
-            raise EnvironmentError('Dataset ID could not be inferred.')
-        dataset_id = _implicit_environ.DATASET_ID
+        top = Batch.current()
+        if top is not None:
+            dataset_id = top.dataset_id
+        else:
+            if _implicit_environ.DATASET_ID is None:
+                raise EnvironmentError('Dataset ID could not be inferred.')
+            dataset_id = _implicit_environ.DATASET_ID
     return dataset_id
 
 
@@ -54,9 +58,13 @@ def _require_connection(connection=None):
              cannot be inferred from the environment.
     """
     if connection is None:
-        if _implicit_environ.CONNECTION is None:
-            raise EnvironmentError('Connection could not be inferred.')
-        connection = _implicit_environ.CONNECTION
+        top = Batch.current()
+        if top is not None:
+            connection = top.connection
+        else:
+            if _implicit_environ.CONNECTION is None:
+                raise EnvironmentError('Connection could not be inferred.')
+            connection = _implicit_environ.CONNECTION
     return connection
 
 
