@@ -110,6 +110,19 @@ class Transaction(Batch):
         """
         return self._id
 
+    @staticmethod
+    def current():
+        """Return the topmost transaction.
+
+        .. note:: if the topmost element on the stack is not a transaction,
+                  returns None.
+
+        :rtype: :class:`gcloud.datastore.transaction.Transaction` or None
+        """
+        top = Batch.current()
+        if isinstance(top, Transaction):
+            return top
+
     def begin(self):
         """Begins a transaction.
 

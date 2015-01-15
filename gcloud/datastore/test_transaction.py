@@ -65,6 +65,31 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.dataset_id, DATASET_ID)
         self.assertEqual(xact.connection, CONNECTION)
 
+    def test_current(self):
+        from gcloud.datastore.test_api import _NoCommitBatch
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        xact1 = self._makeOne(_DATASET, connection)
+        xact2 = self._makeOne(_DATASET, connection)
+        self.assertTrue(xact1.current() is None)
+        self.assertTrue(xact2.current() is None)
+        with xact1:
+            self.assertTrue(xact1.current() is xact1)
+            self.assertTrue(xact2.current() is xact1)
+            with _NoCommitBatch(_DATASET, _Connection):
+                self.assertTrue(xact1.current() is None)
+                self.assertTrue(xact2.current() is None)
+            with xact2:
+                self.assertTrue(xact1.current() is xact2)
+                self.assertTrue(xact2.current() is xact2)
+                with _NoCommitBatch(_DATASET, _Connection):
+                    self.assertTrue(xact1.current() is None)
+                    self.assertTrue(xact2.current() is None)
+            self.assertTrue(xact1.current() is xact1)
+            self.assertTrue(xact2.current() is xact1)
+        self.assertTrue(xact1.current() is None)
+        self.assertTrue(xact2.current() is None)
+
     def test_begin(self):
         _DATASET = 'DATASET'
         connection = _Connection(234)
