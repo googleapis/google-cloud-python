@@ -52,8 +52,21 @@ def entity_from_protobuf(pb):
     for property_pb in pb.property:
         value = _get_value_from_property_pb(property_pb)
         entity_props[property_pb.name] = value
-        if not property_pb.value.indexed:
-            exclude_from_indexes.append(property_pb.name)
+
+        # Check if property_pb.value was indexed. Lists need to be
+        # special-cased and we require all `indexed` values in a list agree.
+        if isinstance(value, list):
+            indexed_values = set(value_pb.indexed
+                                 for value_pb in property_pb.value.list_value)
+            if len(indexed_values) != 1:
+                raise ValueError('For a list_value, subvalues must either all '
+                                 'be indexed or all excluded from indexes.')
+
+            if not indexed_values.pop():
+                exclude_from_indexes.append(property_pb.name)
+        else:
+            if not property_pb.value.indexed:
+                exclude_from_indexes.append(property_pb.name)
 
     entity = Entity(key=key, exclude_from_indexes=exclude_from_indexes)
     entity.update(entity_props)
