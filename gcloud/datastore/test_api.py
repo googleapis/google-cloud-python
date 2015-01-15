@@ -90,37 +90,6 @@ class Test__require_connection(unittest2.TestCase):
             self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
 
 
-class Test__get_dataset_id_from_keys(unittest2.TestCase):
-
-    def _callFUT(self, keys):
-        from gcloud.datastore.api import _get_dataset_id_from_keys
-        return _get_dataset_id_from_keys(keys)
-
-    def _make_key(self, dataset_id):
-
-        class _Key(object):
-            def __init__(self, dataset_id):
-                self.dataset_id = dataset_id
-
-        return _Key(dataset_id)
-
-    def test_empty(self):
-        self.assertRaises(IndexError, self._callFUT, [])
-
-    def test_w_None(self):
-        self.assertRaises(ValueError, self._callFUT, [None])
-
-    def test_w_mismatch(self):
-        key1 = self._make_key('foo')
-        key2 = self._make_key('bar')
-        self.assertRaises(ValueError, self._callFUT, [key1, key2])
-
-    def test_w_match(self):
-        key1 = self._make_key('foo')
-        key2 = self._make_key('foo')
-        self.assertEqual(self._callFUT([key1, key2]), 'foo')
-
-
 class Test_get_function(unittest2.TestCase):
 
     def _callFUT(self, keys, missing=None, deferred=None, connection=None):
