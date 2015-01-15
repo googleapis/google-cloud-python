@@ -2,6 +2,7 @@
   :maxdepth: 0
   :hidden:
 
+  gcloud-api
   datastore-api
   datastore-entities
   datastore-keys

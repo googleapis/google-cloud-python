@@ -91,7 +91,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">base64</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
@@ -506,7 +506,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type query: :class:`Query`</span>
 <span class="sd">    :param query: The source query.</span>
 
-<span class="sd">    :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Query`</span>
+<span class="sd">    :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Query`</span>
 <span class="sd">    :returns: A protobuf that can be sent to the protobuf API.  N.b. that</span>
 <span class="sd">              it does not contain &quot;in-flight&quot; fields for ongoing query</span>
 <span class="sd">              executions (cursors, offset, limit).</span>
@@ -571,6 +571,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
       <nav class="side-nav">
         <ul><li><a href="../../../index.html">gcloud</a></li></ul>
         <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">GCloud Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>

@@ -93,7 +93,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 
 
 <div class="viewcode-block" id="Key"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key">[docs]</a><span class="k">class</span> <span class="nc">Key</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -271,7 +271,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Key.to_protobuf"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.to_protobuf">[docs]</a>    <span class="k">def</span> <span class="nf">to_protobuf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a protobuf corresponding to the key.</span>
 
-<span class="sd">        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
+<span class="sd">        :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Key`</span>
 <span class="sd">        :returns: The protobuf representing the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">Key</span><span class="p">()</span>
@@ -440,6 +440,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
       <nav class="side-nav">
         <ul><li><a href="../../../index.html">gcloud</a></li></ul>
         <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">GCloud Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>

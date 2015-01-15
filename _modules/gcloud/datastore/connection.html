@@ -91,7 +91,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 
 
@@ -206,8 +206,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        Maps the ``DatastoreService.Lookup`` protobuf RPC.</span>
 
 <span class="sd">        This method deals only with protobufs</span>
-<span class="sd">        (:class:`gcloud.datastore.datastore_v1_pb2.Key` and</span>
-<span class="sd">        :class:`gcloud.datastore.datastore_v1_pb2.Entity`) and is used</span>
+<span class="sd">        (:class:`gcloud.datastore._datastore_v1_pb2.Key` and</span>
+<span class="sd">        :class:`gcloud.datastore._datastore_v1_pb2.Entity`) and is used</span>
 <span class="sd">        under the hood in :func:`gcloud.datastore.get`:</span>
 
 <span class="sd">        &gt;&gt;&gt; from gcloud import datastore</span>
@@ -224,7 +224,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset_id: The ID of the dataset to look up the keys.</span>
 
-<span class="sd">        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
+<span class="sd">        :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`</span>
 <span class="sd">                       (or a single Key)</span>
 <span class="sd">        :param key_pbs: The key (or keys) to retrieve from the datastore.</span>
 
@@ -248,7 +248,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                               the given transaction.  Incompatible with</span>
 <span class="sd">                               ``eventual==True``.</span>
 
-<span class="sd">        :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Entity`</span>
+<span class="sd">        :rtype: list of :class:`gcloud.datastore._datastore_v1_pb2.Entity`</span>
 <span class="sd">                (or a single Entity)</span>
 <span class="sd">        :returns: The entities corresponding to the keys provided.</span>
 <span class="sd">                  If a single key was provided and no results matched,</span>
@@ -331,7 +331,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset_id: The ID of the dataset over which to run the query.</span>
 
-<span class="sd">        :type query_pb: :class:`gcloud.datastore.datastore_v1_pb2.Query`</span>
+<span class="sd">        :type query_pb: :class:`gcloud.datastore._datastore_v1_pb2.Query`</span>
 <span class="sd">        :param query_pb: The Protobuf representing the query to run.</span>
 
 <span class="sd">        :type namespace: string</span>
@@ -376,7 +376,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                             transaction should be SERIALIZABLE (True) or</span>
 <span class="sd">                             SNAPSHOT (False).</span>
 
-<span class="sd">        :rtype: :class:`.datastore_v1_pb2.BeginTransactionResponse`</span>
+<span class="sd">        :rtype: :class:`._datastore_v1_pb2.BeginTransactionResponse`</span>
 <span class="sd">        :returns&#39;: the result protobuf for the begin transaction request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">BeginTransactionRequest</span><span class="p">()</span>
@@ -401,7 +401,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type dataset_id: string</span>
 <span class="sd">        :param dataset_id: The ID dataset to which the transaction applies.</span>
 
-<span class="sd">        :type mutation_pb: :class:`gcloud.datastore.datastore_v1_pb2.Mutation`.</span>
+<span class="sd">        :type mutation_pb: :class:`datastore_pb.Mutation`.</span>
 <span class="sd">        :param mutation_pb: The protobuf for the mutations being saved.</span>
 
 <span class="sd">        :type transaction_id: string</span>
@@ -409,7 +409,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                               :meth:`begin_transaction`.  If not passed, the</span>
 <span class="sd">                               commit will be non-transactional.</span>
 
-<span class="sd">        :rtype: :class:`gcloud.datastore.datastore_v1_pb2.MutationResult`.</span>
+<span class="sd">        :rtype: :class:`gcloud.datastore._datastore_v1_pb2.MutationResult`.</span>
 <span class="sd">        :returns&#39;: the result protobuf for the mutation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">CommitRequest</span><span class="p">()</span>
@@ -453,10 +453,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :param dataset_id: The ID of the dataset to which the transaction</span>
 <span class="sd">                           belongs.</span>
 
-<span class="sd">        :type key_pbs: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
+<span class="sd">        :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`</span>
 <span class="sd">        :param key_pbs: The keys for which the backend should allocate IDs.</span>
 
-<span class="sd">        :rtype: list of :class:`gcloud.datastore.datastore_v1_pb2.Key`</span>
+<span class="sd">        :rtype: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`</span>
 <span class="sd">        :returns: An equal number of keys,  with IDs filled in by the backend.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">AllocateIdsRequest</span><span class="p">()</span>
@@ -527,6 +527,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
       <nav class="side-nav">
         <ul><li><a href="../../../index.html">gcloud</a></li></ul>
         <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">GCloud Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>

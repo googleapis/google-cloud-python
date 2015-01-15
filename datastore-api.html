@@ -25,7 +25,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="gcloud 0.3.0 documentation" href="index.html" />
     <link rel="next" title="Entities" href="datastore-entities.html" />
-    <link rel="prev" title="Getting started" href="index.html" /> 
+    <link rel="prev" title="GCloud Package" href="gcloud-api.html" /> 
   </head>
   <body>
     <header class="page-header fixed" role="banner">
@@ -269,7 +269,7 @@ support App Engine, Compute Engine and other environments in the future.</p>
 <dl class="class">
 <dt id="gcloud.datastore.connection.Connection">
 <em class="property">class </em><tt class="descclassname">gcloud.datastore.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></a></p>
 <p>A connection to the Google Cloud Datastore via the Protobuf API.</p>
 <p>This class should understand only the basic types (and protobufs)
 in method arguments, however should be capable of returning advanced types.</p>
@@ -315,11 +315,11 @@ in method arguments, however should be capable of returning advanced types.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset to which the transaction
 belongs.</li>
-<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The keys for which the backend should allocate IDs.</li>
+<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></tt>) &#8211; The keys for which the backend should allocate IDs.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></tt></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An equal number of keys,  with IDs filled in by the backend.</p>
@@ -346,7 +346,7 @@ SNAPSHOT (False).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">datastore_v1_pb2.BeginTransactionResponse</span></tt></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">_datastore_v1_pb2.BeginTransactionResponse</span></tt></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns&#8217;:</th><td class="field-body"><p class="first last">the result protobuf for the begin transaction request.</p>
@@ -392,14 +392,14 @@ You shouldn&#8217;t have to provide this.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID dataset to which the transaction applies.</li>
-<li><strong>mutation_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Mutation</span></tt>.) &#8211; The protobuf for the mutations being saved.</li>
+<li><strong>mutation_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">datastore_pb.Mutation</span></tt>.) &#8211; The protobuf for the mutations being saved.</li>
 <li><strong>transaction_id</strong> (<em>string</em>) &#8211; The transaction ID returned from
 <a class="reference internal" href="#gcloud.datastore.connection.Connection.begin_transaction" title="gcloud.datastore.connection.Connection.begin_transaction"><tt class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></tt></a>.  If not passed, the
 commit will be non-transactional.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.MutationResult</span></tt>.</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.MutationResult</span></tt>.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns&#8217;:</th><td class="field-body"><p class="first last">the result protobuf for the mutation.</p>
@@ -415,8 +415,8 @@ commit will be non-transactional.</li>
 <dd><p>Lookup keys from a dataset in the Cloud Datastore.</p>
 <p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.Lookup</span></tt> protobuf RPC.</p>
 <p>This method deals only with protobufs
-(<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt> and
-<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>) and is used
+(<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></tt> and
+<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Entity</span></tt>) and is used
 under the hood in <tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.get()</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">()</span>
@@ -436,7 +436,7 @@ under the hood in <tt class="xref py py-func docutils literal"><span class="pre"
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset to look up the keys.</li>
-<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>
+<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></tt>
 (or a single Key)) &#8211; The key (or keys) to retrieve from the datastore.</li>
 <li><strong>missing</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the key-only entity protobufs
 returned by the backend as &#8220;missing&#8221; will be copied
@@ -453,7 +453,7 @@ the given transaction.  Incompatible with
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Entity</span></tt>
 (or a single Entity)</p>
 </td>
 </tr>
@@ -535,7 +535,7 @@ uses this method to fetch data:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset over which to run the query.</li>
-<li><strong>query_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Query</span></tt>) &#8211; The Protobuf representing the query to run.</li>
+<li><strong>query_pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Query</span></tt>) &#8211; The Protobuf representing the query to run.</li>
 <li><strong>namespace</strong> (<em>string</em>) &#8211; The namespace over which to run the query.</li>
 <li><strong>eventual</strong> (<em>boolean</em>) &#8211; If False (the default), request <tt class="docutils literal"><span class="pre">STRONG</span></tt> read
 consistency.  If True, request <tt class="docutils literal"><span class="pre">EVENTUAL</span></tt> read
@@ -553,6 +553,106 @@ the given transaction.  Incompatible with
 </dd></dl>
 
 </div>
+<div class="section" id="module-gcloud.datastore.api">
+<span id="interacting-with-the-api"></span><h2>Interacting with the API<a class="headerlink" href="#module-gcloud.datastore.api" title="Permalink to this headline">#</a></h2>
+<p>Methods for interacting with Google Cloud Datastore.</p>
+<p>Allows interacting with the datastore via user-friendly Key, Entity and
+Query objects rather than via protobufs.</p>
+<dl class="function">
+<dt id="gcloud.datastore.api.allocate_ids">
+<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">allocate_ids</tt><big>(</big><em>incomplete_key</em>, <em>num_ids</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#allocate_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.allocate_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>Allocates a list of IDs from a partial key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>incomplete_key</strong> (A <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; Partial key to use as base for allocated IDs.</li>
+<li><strong>num_ids</strong> (<em>integer</em>) &#8211; The number of IDs to allocate.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional. The connection used to connect to datastore.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The (complete) keys allocated with <tt class="docutils literal"><span class="pre">incomplete_key</span></tt> as root.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if <tt class="docutils literal"><span class="pre">incomplete_key</span></tt> is not a partial key.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.datastore.api.delete">
+<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">delete</tt><big>(</big><em>keys</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete the keys in the Cloud Datastore.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>keys</strong> (list of <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; The keys to be deleted from the datastore.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.datastore.api.get">
+<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">get</tt><big>(</big><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieves entities, along with their attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>keys</strong> (list of <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; The keys to be retrieved from the datastore.</li>
+<li><strong>missing</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the key-only entities returned
+by the backend as &#8220;missing&#8221; will be copied into it.
+Use only as a keyword param.</li>
+<li><strong>deferred</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the keys returned
+by the backend as &#8220;deferred&#8221; will be copied into it.
+Use only as a keyword param.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional. The connection used to connect to datastore.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested entities.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.datastore.api.put">
+<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">put</tt><big>(</big><em>entities</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.put" title="Permalink to this definition">#</a></dt>
+<dd><p>Save the entities in the Cloud Datastore.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>entities</strong> (list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>) &#8211; The entities to be saved to the datastore.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-gcloud.datastore.helpers">
 <span id="helper-functions"></span><h2>Helper functions<a class="headerlink" href="#module-gcloud.datastore.helpers" title="Permalink to this headline">#</a></h2>
 <p>Helper functions for dealing with Cloud Datastore&#8217;s Protobuf API.</p>
@@ -567,7 +667,7 @@ Protobuf API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Entity</span></tt>) &#8211; The Protobuf representing the entity.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Entity</span></tt>) &#8211; The Protobuf representing the entity.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></td>
 </tr>
@@ -587,7 +687,7 @@ Protobuf API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.datastore_v1_pb2.Key</span></tt>) &#8211; The Protobuf representing the key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></tt>) &#8211; The Protobuf representing the key.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a></td>
 </tr>
@@ -605,6 +705,7 @@ Protobuf API.</p>
       <nav class="side-nav">
         <ul><li><a href="index.html">gcloud</a></li></ul>
         <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">GCloud Package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
