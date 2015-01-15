@@ -65,6 +65,31 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.dataset_id, DATASET_ID)
         self.assertEqual(xact.connection, CONNECTION)
 
+    def test_current(self):
+        from gcloud.datastore.test_api import _NoCommitBatch
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        xact1 = self._makeOne(_DATASET, connection)
+        xact2 = self._makeOne(_DATASET, connection)
+        self.assertTrue(xact1.current() is None)
+        self.assertTrue(xact2.current() is None)
+        with xact1:
+            self.assertTrue(xact1.current() is xact1)
+            self.assertTrue(xact2.current() is xact1)
+            with _NoCommitBatch(_DATASET, _Connection):
+                self.assertTrue(xact1.current() is None)
+                self.assertTrue(xact2.current() is None)
+            with xact2:
+                self.assertTrue(xact1.current() is xact2)
+                self.assertTrue(xact2.current() is xact2)
+                with _NoCommitBatch(_DATASET, _Connection):
+                    self.assertTrue(xact1.current() is None)
+                    self.assertTrue(xact2.current() is None)
+            self.assertTrue(xact1.current() is xact1)
+            self.assertTrue(xact2.current() is xact1)
+        self.assertTrue(xact1.current() is None)
+        self.assertTrue(xact2.current() is None)
+
     def test_begin(self):
         _DATASET = 'DATASET'
         connection = _Connection(234)
@@ -72,7 +97,6 @@ class TestTransaction(unittest2.TestCase):
         xact.begin()
         self.assertEqual(xact.id, 234)
         self.assertEqual(connection._begun, _DATASET)
-        self.assertTrue(connection._xact is xact)
 
     def test_rollback(self):
         _DATASET = 'DATASET'
@@ -82,7 +106,6 @@ class TestTransaction(unittest2.TestCase):
         xact.rollback()
         self.assertEqual(xact.id, None)
         self.assertEqual(connection._rolled_back, _DATASET)
-        self.assertEqual(connection._xact, None)
 
     def test_commit_no_auto_ids(self):
         _DATASET = 'DATASET'
@@ -92,7 +115,6 @@ class TestTransaction(unittest2.TestCase):
         xact.begin()
         xact.commit()
         self.assertEqual(connection._committed, (_DATASET, mutation))
-        self.assertTrue(connection._xact is None)
         self.assertEqual(xact.id, None)
 
     def test_commit_w_auto_ids(self):
@@ -109,21 +131,8 @@ class TestTransaction(unittest2.TestCase):
         xact.begin()
         xact.commit()
         self.assertEqual(connection._committed, (_DATASET, mutation))
-        self.assertTrue(connection._xact is None)
         self.assertEqual(xact.id, None)
         self.assertEqual(entity.key.path, [{'kind': _KIND, 'id': _ID}])
-
-    def test_commit_w_already(self):
-        _DATASET = 'DATASET'
-        connection = _Connection(234)
-        xact = self._makeOne(dataset_id=_DATASET, connection=connection)
-        xact._mutation = object()
-        xact.begin()
-        connection.transaction(())  # Simulate previous commit via false-ish.
-        xact.commit()
-        self.assertEqual(connection._committed, None)
-        self.assertTrue(connection._xact is None)
-        self.assertEqual(xact.id, None)
 
     def test_context_manager_no_raise(self):
         _DATASET = 'DATASET'
@@ -133,9 +142,7 @@ class TestTransaction(unittest2.TestCase):
         with xact:
             self.assertEqual(xact.id, 234)
             self.assertEqual(connection._begun, _DATASET)
-            self.assertTrue(connection._xact is xact)
         self.assertEqual(connection._committed, (_DATASET, mutation))
-        self.assertTrue(connection._xact is None)
         self.assertEqual(xact.id, None)
 
     def test_context_manager_w_raise(self):
@@ -149,14 +156,11 @@ class TestTransaction(unittest2.TestCase):
             with xact:
                 self.assertEqual(xact.id, 234)
                 self.assertEqual(connection._begun, _DATASET)
-                self.assertTrue(connection._xact is xact)
                 raise Foo()
         except Foo:
             self.assertEqual(xact.id, None)
             self.assertEqual(connection._rolled_back, _DATASET)
-            self.assertEqual(connection._xact, None)
         self.assertEqual(connection._committed, None)
-        self.assertTrue(connection._xact is None)
         self.assertEqual(xact.id, None)
 
 
@@ -173,16 +177,11 @@ def _make_key(kind, id, dataset_id):
 
 class _Connection(object):
     _marker = object()
-    _begun = _rolled_back = _committed = _xact = None
+    _begun = _rolled_back = _committed = None
 
     def __init__(self, xact_id=123):
         self._xact_id = xact_id
         self._commit_result = _CommitResult()
-
-    def transaction(self, xact=_marker):
-        if xact is self._marker:
-            return self._xact
-        self._xact = xact
 
     def begin_transaction(self, dataset_id):
         self._begun = dataset_id

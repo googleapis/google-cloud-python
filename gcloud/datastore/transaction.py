@@ -73,15 +73,6 @@ class Transaction(Batch):
          ...     assert entity.key.is_partial  # There is no ID on this key.
          >>> assert not entity.key.is_partial  # There *is* an ID.
 
-    .. warning:: If you're using the automatically generated ID
-       functionality, it's important that you only use
-       :meth:`gcloud.datastore.entity.Entity.save` rather than using
-       :meth:`gcloud.datastore.connection.Connection.save_entity`
-       directly.
-
-       If you mix the two, the results will have extra IDs generated and
-       it could jumble things up.
-
     If you don't want to use the context manager you can initialize a
     transaction manually::
 
@@ -119,6 +110,19 @@ class Transaction(Batch):
         """
         return self._id
 
+    @staticmethod
+    def current():
+        """Return the topmost transaction.
+
+        .. note:: if the topmost element on the stack is not a transaction,
+                  returns None.
+
+        :rtype: :class:`gcloud.datastore.transaction.Transaction` or None
+        """
+        top = Batch.current()
+        if isinstance(top, Transaction):
+            return top
+
     def begin(self):
         """Begins a transaction.
 
@@ -127,7 +131,6 @@ class Transaction(Batch):
         to use a context manager.
         """
         self._id = self.connection.begin_transaction(self._dataset_id)
-        self.connection.transaction(self)
 
     def rollback(self):
         """Rolls back the current transaction.
@@ -138,7 +141,6 @@ class Transaction(Batch):
         - Sets the current transaction's ID to None.
         """
         self.connection.rollback(self._dataset_id)
-        self.connection.transaction(None)
         self._id = None
 
     def commit(self):
@@ -150,17 +152,9 @@ class Transaction(Batch):
 
         This method has necessary side-effects:
 
-        - Sets the current connection's transaction reference to None.
         - Sets the current transaction's ID to None.
-        - Updates paths for any keys that needed an automatically generated ID.
         """
-        # It's possible that they called commit() already, in which case
-        # we shouldn't do any committing of our own.
-        if self.connection.transaction():
-            super(Transaction, self).commit()
-
-        # Tell the connection that the transaction is over.
-        self.connection.transaction(None)
+        super(Transaction, self).commit()
 
         # Clear our own ID in case this gets accidentally reused.
         self._id = None

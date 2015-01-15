@@ -20,6 +20,7 @@ from gcloud.datastore import _implicit_environ
 from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.key import Key
+from gcloud.datastore.transaction import Transaction
 
 
 class Query(object):
@@ -377,10 +378,13 @@ class Iterator(object):
 
         pb.offset = self._offset
 
+        transaction = Transaction.current()
+
         query_results = self._connection.run_query(
             query_pb=pb,
             dataset_id=self._query.dataset_id,
             namespace=self._query.namespace,
+            transaction_id=transaction and transaction.id,
             )
         # NOTE: `query_results` contains an extra value that we don't use,
         #       namely `skipped_results`.

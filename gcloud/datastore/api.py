@@ -19,8 +19,8 @@ Query objects rather than via protobufs.
 """
 
 from gcloud.datastore import _implicit_environ
-from gcloud.datastore.batch import _BATCHES
 from gcloud.datastore.batch import Batch
+from gcloud.datastore.transaction import Transaction
 from gcloud.datastore import helpers
 
 
@@ -113,10 +113,13 @@ def get(keys, missing=None, deferred=None, connection=None):
     connection = _require_connection(connection)
     dataset_id = _get_dataset_id_from_keys(keys)
 
+    transaction = Transaction.current()
+
     entity_pbs = connection.lookup(
         dataset_id=dataset_id,
         key_pbs=[k.to_protobuf() for k in keys],
         missing=missing, deferred=deferred,
+        transaction_id=transaction and transaction.id,
     )
 
     if missing is not None:
@@ -150,7 +153,7 @@ def put(entities, connection=None):
 
     connection = connection or _implicit_environ.CONNECTION
 
-    current = _BATCHES.top
+    current = Batch.current()
     in_batch = current is not None
     if not in_batch:
         keys = [entity.key for entity in entities]
@@ -177,7 +180,7 @@ def delete(keys, connection=None):
     connection = connection or _implicit_environ.CONNECTION
 
     # We allow partial keys to attempt a delete, the backend will fail.
-    current = _BATCHES.top
+    current = Batch.current()
     in_batch = current is not None
     if not in_batch:
         dataset_id = _get_dataset_id_from_keys(keys)

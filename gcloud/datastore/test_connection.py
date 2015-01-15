@@ -179,40 +179,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(klass.build_api_url(DATASET_ID, METHOD, BASE, VER),
                          URI)
 
-    def test_transaction_getter_unset(self):
-        conn = self._makeOne()
-        self.assertTrue(conn.transaction() is None)
-
-    def test_transaction_setter(self):
-        xact = object()
-        conn = self._makeOne()
-        self.assertTrue(conn.transaction(xact) is conn)
-        self.assertTrue(conn.transaction() is xact)
-
-    def test_mutation_wo_transaction(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        class Mutation(object):
-            pass
-        conn = self._makeOne()
-        with _Monkey(datastore_pb, Mutation=Mutation):
-            found = conn.mutation()
-        self.assertTrue(isinstance(found, Mutation))
-
-    def test_mutation_w_transaction(self):
-
-        class Mutation(object):
-            pass
-
-        class Xact(object):
-            mutation = Mutation()
-
-        conn = self._makeOne()
-        conn.transaction(Xact())
-        found = conn.mutation()
-        self.assertTrue(isinstance(found, Mutation))
-
     def test_lookup_single_key_empty_response(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
@@ -273,9 +239,8 @@ class TestConnection(unittest2.TestCase):
         TRANSACTION = 'TRANSACTION'
         key_pb = self._make_key_pb(DATASET_ID)
         conn = self._makeOne()
-        conn.transaction(Transaction(TRANSACTION))
-        self.assertRaises(
-            ValueError, conn.lookup, DATASET_ID, key_pb, eventual=True)
+        self.assertRaises(ValueError, conn.lookup, DATASET_ID, key_pb,
+                          eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -285,7 +250,6 @@ class TestConnection(unittest2.TestCase):
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
-        conn.transaction(Transaction(TRANSACTION))
         URI = '/'.join([
             conn.API_BASE_URL,
             'datastore',
@@ -295,7 +259,8 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.lookup(DATASET_ID, key_pb), None)
+        found = conn.lookup(DATASET_ID, key_pb, transaction_id=TRANSACTION)
+        self.assertEqual(found, None)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
@@ -564,7 +529,6 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
-        conn.transaction(Transaction(TRANSACTION))
         URI = '/'.join([
             conn.API_BASE_URL,
             'datastore',
@@ -574,7 +538,8 @@ class TestConnection(unittest2.TestCase):
             'runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb)
+        pbs, end, more, skipped = conn.run_query(
+            DATASET_ID, q_pb, transaction_id=TRANSACTION)
         self.assertEqual(pbs, [])
         self.assertEqual(end, CURSOR)
         self.assertTrue(more)
@@ -604,9 +569,8 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
-        conn.transaction(Transaction(TRANSACTION))
-        self.assertRaises(
-            ValueError, conn.run_query, DATASET_ID, q_pb, eventual=True)
+        self.assertRaises(ValueError, conn.run_query, DATASET_ID, q_pb,
+                          eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -673,12 +637,6 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace, 'NS')
         self.assertEqual(request.query, q_pb)
-
-    def test_begin_transaction_w_existing_transaction(self):
-        DATASET_ID = 'DATASET'
-        conn = self._makeOne()
-        conn.transaction(object())
-        self.assertRaises(ValueError, conn.begin_transaction, DATASET_ID)
 
     def test_begin_transaction_default_serialize(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
@@ -767,9 +725,6 @@ class TestConnection(unittest2.TestCase):
     def test_commit_w_transaction(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
 
-        class Xact(object):
-            id = 'xact'
-
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb.CommitResponse()
@@ -780,7 +735,6 @@ class TestConnection(unittest2.TestCase):
         prop.name = 'foo'
         prop.value.string_value = u'Foo'
         conn = self._makeOne()
-        conn.transaction(Xact())
         URI = '/'.join([
             conn.API_BASE_URL,
             'datastore',
@@ -790,7 +744,7 @@ class TestConnection(unittest2.TestCase):
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.commit(DATASET_ID, mutation)
+        result = conn.commit(DATASET_ID, mutation, 'xact')
         self.assertEqual(result.index_updates, 0)
         self.assertEqual(list(result.insert_auto_id_key), [])
         cw = http._called_with
@@ -802,34 +756,13 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.mutation, mutation)
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
 
-    def test_rollback_wo_existing_transaction(self):
-        DATASET_ID = 'DATASET'
-        conn = self._makeOne()
-        self.assertRaises(ValueError,
-                          conn.rollback, DATASET_ID)
-
-    def test_rollback_w_existing_transaction_no_id(self):
-
-        class Xact(object):
-            id = None
-
-        DATASET_ID = 'DATASET'
-        conn = self._makeOne()
-        conn.transaction(Xact())
-        self.assertRaises(ValueError,
-                          conn.rollback, DATASET_ID)
-
     def test_rollback_ok(self):
         from gcloud.datastore import datastore_v1_pb2 as datastore_pb
         DATASET_ID = 'DATASET'
         TRANSACTION = 'xact'
 
-        class Xact(object):
-            id = TRANSACTION
-
         rsp_pb = datastore_pb.RollbackResponse()
         conn = self._makeOne()
-        conn.transaction(Xact())
         URI = '/'.join([
             conn.API_BASE_URL,
             'datastore',
@@ -839,7 +772,7 @@ class TestConnection(unittest2.TestCase):
             'rollback',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.rollback(DATASET_ID), None)
+        self.assertEqual(conn.rollback(DATASET_ID, TRANSACTION), None)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.RollbackRequest
@@ -906,299 +839,6 @@ class TestConnection(unittest2.TestCase):
         for key_before, key_after in zip(before_key_pbs, request.key):
             _compare_key_pb_after_request(self, key_before, key_after)
 
-    def test_save_entity_w_empty_list_value(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'datastore',
-            conn.API_VERSION,
-            'datasets',
-            DATASET_ID,
-            'commit',
-        ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb,
-                                  {'foo': u'Foo', 'bar': []})
-        self.assertEqual(result, (False, None))
-        cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.CommitRequest
-        request = rq_class()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, '')
-        mutation = request.mutation
-        self.assertEqual(len(mutation.insert_auto_id), 0)
-        upserts = list(mutation.upsert)
-        self.assertEqual(len(upserts), 1)
-        upsert = upserts[0]
-        _compare_key_pb_after_request(self, key_pb, upsert.key)
-        props = list(upsert.property)
-        self.assertEqual(len(props), 1)
-        self.assertEqual(props[0].name, 'foo')
-        self.assertEqual(props[0].value.string_value, u'Foo')
-        self.assertEqual(props[0].value.indexed, True)
-        self.assertEqual(len(mutation.delete), 0)
-        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
-
-    def test_save_entity_wo_transaction_w_upsert(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'datastore',
-            conn.API_VERSION,
-            'datasets',
-            DATASET_ID,
-            'commit',
-        ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
-        self.assertEqual(result, (False, None))
-        cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.CommitRequest
-        request = rq_class()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, '')
-        mutation = request.mutation
-        self.assertEqual(len(mutation.insert_auto_id), 0)
-        upserts = list(mutation.upsert)
-        self.assertEqual(len(upserts), 1)
-        upsert = upserts[0]
-        _compare_key_pb_after_request(self, key_pb, upsert.key)
-        props = list(upsert.property)
-        self.assertEqual(len(props), 1)
-        self.assertEqual(props[0].name, 'foo')
-        self.assertEqual(props[0].value.string_value, u'Foo')
-        self.assertEqual(props[0].value.indexed, True)
-        self.assertEqual(len(mutation.delete), 0)
-        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
-
-    def test_save_entity_w_exclude_from_indexes(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-        import operator
-
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'datastore',
-            conn.API_VERSION,
-            'datasets',
-            DATASET_ID,
-            'commit',
-        ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb,
-                                  {'foo': u'Foo', 'bar': [u'bar1', u'bar2']},
-                                  exclude_from_indexes=['foo', 'bar'])
-        self.assertEqual(result, (False, None))
-        cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.CommitRequest
-        request = rq_class()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, '')
-        mutation = request.mutation
-        self.assertEqual(len(mutation.insert_auto_id), 0)
-        upserts = list(mutation.upsert)
-        self.assertEqual(len(upserts), 1)
-        upsert = upserts[0]
-        _compare_key_pb_after_request(self, key_pb, upsert.key)
-        props = sorted(upsert.property,
-                       key=operator.attrgetter('name'),
-                       reverse=True)
-        self.assertEqual(len(props), 2)
-        self.assertEqual(props[0].name, 'foo')
-        self.assertEqual(props[0].value.string_value, u'Foo')
-        self.assertEqual(props[0].value.indexed, False)
-        self.assertEqual(props[1].name, 'bar')
-        self.assertEqual(props[1].value.list_value[0].string_value, 'bar1')
-        self.assertEqual(props[1].value.list_value[1].string_value, 'bar2')
-        self.assertEqual(props[1].value.HasField('indexed'), False)
-        self.assertEqual(props[1].value.list_value[0].indexed, False)
-        self.assertEqual(props[1].value.list_value[1].indexed, False)
-        self.assertEqual(len(mutation.delete), 0)
-        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
-
-    def test_save_entity_wo_transaction_w_auto_id(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID, id=None)
-        updated_key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        mr_pb = rsp_pb.mutation_result
-        mr_pb.index_updates = 0
-        iaik_pb = mr_pb.insert_auto_id_key.add()
-        iaik_pb.CopyFrom(updated_key_pb)
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'datastore',
-            conn.API_VERSION,
-            'datasets',
-            DATASET_ID,
-            'commit',
-        ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
-        self.assertEqual(result, (True, 1234))
-        cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.CommitRequest
-        request = rq_class()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, '')
-        mutation = request.mutation
-        inserts = list(mutation.insert_auto_id)
-        insert = inserts[0]
-        _compare_key_pb_after_request(self, key_pb, insert.key)
-        props = list(insert.property)
-        self.assertEqual(len(props), 1)
-        self.assertEqual(props[0].name, 'foo')
-        self.assertEqual(props[0].value.string_value, u'Foo')
-        self.assertEqual(len(inserts), 1)
-        upserts = list(mutation.upsert)
-        self.assertEqual(len(upserts), 0)
-        self.assertEqual(len(mutation.delete), 0)
-        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
-
-    def test_save_entity_w_transaction(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        class Xact(object):
-            mutation = datastore_pb.Mutation()
-
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        conn.transaction(Xact())
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': u'Foo'})
-        self.assertEqual(result, (False, None))
-        self.assertEqual(http._called_with, None)
-        mutation = conn.mutation()
-        self.assertEqual(len(mutation.upsert), 1)
-
-    def test_save_entity_w_transaction_nested_entity(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-        from gcloud.datastore.entity import Entity
-
-        class Xact(object):
-            mutation = datastore_pb.Mutation()
-
-        DATASET_ID = 'DATASET'
-        nested = Entity()
-        nested['bar'] = u'Bar'
-        key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        conn.transaction(Xact())
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': nested})
-        self.assertEqual(result, (False, None))
-        self.assertEqual(http._called_with, None)
-        mutation = conn.mutation()
-        self.assertEqual(len(mutation.upsert), 1)
-
-    def test_save_entity_w_mutation_passed(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-        from gcloud.datastore.entity import Entity
-        DATASET_ID = 'DATASET'
-        nested = Entity()
-        nested['bar'] = u'Bar'
-        key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        mutation = datastore_pb.Mutation()
-        result = conn.save_entity(DATASET_ID, key_pb, {'foo': nested},
-                                  mutation=mutation)
-        self.assertEqual(result, (False, None))
-        self.assertEqual(http._called_with, None)
-        conn_mutation = conn.mutation()
-        self.assertEqual(len(mutation.upsert), 1)
-        self.assertEqual(len(conn_mutation.upsert), 0)
-
-    def test_delete_entities_wo_transaction(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'datastore',
-            conn.API_VERSION,
-            'datasets',
-            DATASET_ID,
-            'commit',
-        ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.delete_entities(DATASET_ID, [key_pb])
-        self.assertEqual(result, True)
-        cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.CommitRequest
-        request = rq_class()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, '')
-        mutation = request.mutation
-        self.assertEqual(len(mutation.insert_auto_id), 0)
-        self.assertEqual(len(mutation.upsert), 0)
-        deletes = list(mutation.delete)
-        self.assertEqual(len(deletes), 1)
-        delete = deletes[0]
-        _compare_key_pb_after_request(self, key_pb, delete)
-        self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
-
-    def test_delete_entities_w_transaction(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-
-        class Xact(object):
-            mutation = datastore_pb.Mutation()
-
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        conn.transaction(Xact())
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.delete_entities(DATASET_ID, [key_pb])
-        self.assertEqual(result, True)
-        self.assertEqual(http._called_with, None)
-        mutation = conn.mutation()
-        self.assertEqual(len(mutation.delete), 1)
-
-    def test_delete_entities_w_mutation_passed(self):
-        from gcloud.datastore import datastore_v1_pb2 as datastore_pb
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        conn = self._makeOne()
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        mutation = datastore_pb.Mutation()
-        result = conn.delete_entities(DATASET_ID, [key_pb], mutation=mutation)
-        self.assertEqual(result, True)
-        self.assertEqual(http._called_with, None)
-        conn_mutation = conn.mutation()
-        self.assertEqual(len(mutation.delete), 1)
-        self.assertEqual(len(conn_mutation.delete), 0)
-
 
 class Http(object):
 
@@ -1223,16 +863,6 @@ class HttpMultiple(object):
         self._called_with.append(kw)
         result, self._responses = self._responses[0], self._responses[1:]
         return result
-
-
-class Transaction(object):
-
-    def __init__(self, id):
-        self._id = id
-
-    @property
-    def id(self):
-        return self._id
 
 
 def _compare_key_pb_after_request(test, key_before, key_after):

@@ -130,6 +130,11 @@ class Batch(object):
         self._mutation = datastore_pb.Mutation()
         self._auto_id_entities = []
 
+    @staticmethod
+    def current():
+        """Return the topmost batch / transaction, or None."""
+        return _BATCHES.top
+
     @property
     def dataset_id(self):
         """Getter for dataset ID in which the batch will run.
@@ -308,6 +313,11 @@ def _assign_entity_to_mutation(mutation_pb, entity, auto_id_entities):
     insert.key.CopyFrom(key_pb)
 
     for name, value in entity.items():
+
+        value_is_list = isinstance(value, list)
+        if value_is_list and len(value) == 0:
+            continue
+
         prop = insert.property.add()
         # Set the name of the property.
         prop.name = name
@@ -316,7 +326,7 @@ def _assign_entity_to_mutation(mutation_pb, entity, auto_id_entities):
         helpers._set_protobuf_value(prop.value, value)
 
         if name in entity.exclude_from_indexes:
-            if not isinstance(value, list):
+            if not value_is_list:
                 prop.value.indexed = False
 
             for sub_value in prop.value.list_value:
