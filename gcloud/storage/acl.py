@@ -108,11 +108,11 @@ class _ACLEntity(object):
         if not self.identifier:
             return str(self.type)
         else:
-            return '{self.type}-{self.identifier}'.format(self=self)
+            return '{acl.type}-{acl.identifier}'.format(acl=self)
 
     def __repr__(self):
-        return '<ACL Entity: {self} ({roles})>'.format(
-            self=self, roles=', '.join(self.roles))
+        return '<ACL Entity: {acl} ({roles})>'.format(
+            acl=self, roles=', '.join(self.roles))
 
     def get_roles(self):
         """Get the list of roles permitted by this entity.

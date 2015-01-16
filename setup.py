@@ -13,10 +13,9 @@ with open(os.path.join(here, 'README.rst')) as f:
 
 REQUIREMENTS = [
     'httplib2',
-    'oauth2client',
+    'oauth2client >= 1.4.6',
     'protobuf >= 2.5.0',
     'pycrypto',
-    'pyopenssl',
     'pytz',
     'six',
 ]

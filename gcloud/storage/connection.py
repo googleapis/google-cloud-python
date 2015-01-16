@@ -23,8 +23,8 @@ import urllib
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
-from OpenSSL import crypto
 from oauth2client import client
+from oauth2client import crypt
 from oauth2client import service_account
 import pytz
 
@@ -57,11 +57,8 @@ def _get_pem_key(credentials):
     """
     if isinstance(credentials, client.SignedJwtAssertionCredentials):
         # Take our PKCS12 (.p12) key and make it into a RSA key we can use.
-        pkcs12 = crypto.load_pkcs12(
-            base64.b64decode(credentials.private_key),
-            'notasecret')
-        pem_text = crypto.dump_privatekey(
-            crypto.FILETYPE_PEM, pkcs12.get_privatekey())
+        pem_text = crypt.pkcs12_key_as_pem(credentials.private_key,
+                                           credentials.private_key_password)
     elif isinstance(credentials, service_account._ServiceAccountCredentials):
         pem_text = credentials._private_key_pkcs8_text
     else:
