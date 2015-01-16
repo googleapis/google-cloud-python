@@ -767,17 +767,23 @@ class Test__get_pem_key(unittest2.TestCase):
         self.assertRaises(TypeError, self._callFUT, None)
 
     def test_signed_jwt_for_p12(self):
+        import base64
         from oauth2client import client
         from gcloud._testing import _Monkey
         from gcloud.storage import connection as MUT
 
         scopes = []
+        PRIVATE_KEY = 'dummy_private_key_text'
         credentials = client.SignedJwtAssertionCredentials(
-            'dummy_service_account_name', 'dummy_private_key_text', scopes)
-        crypto = _Crypto()
+            'dummy_service_account_name', PRIVATE_KEY, scopes)
+        crypt = _Crypt()
         rsa = _RSA()
-        with _Monkey(MUT, crypto=crypto, RSA=rsa):
+        with _Monkey(MUT, crypt=crypt, RSA=rsa):
             result = self._callFUT(credentials)
+
+        self.assertEqual(crypt._private_key_text,
+                         base64.b64encode(PRIVATE_KEY))
+        self.assertEqual(crypt._private_key_password, 'notasecret')
         self.assertEqual(result, 'imported:__PEM__')
 
     def test_service_account_via_json_key(self):
@@ -816,7 +822,6 @@ class Test__get_signed_query_params(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.storage import connection as MUT
 
-        crypto = _Crypto()
         pkcs_v1_5 = _PKCS1_v1_5()
         rsa = _RSA()
         sha256 = _SHA256()
@@ -827,7 +832,7 @@ class Test__get_signed_query_params(unittest2.TestCase):
         BAD_CREDENTIALS = None
         EXPIRATION = '100'
         SIGNATURE_STRING = 'dummy_signature'
-        with _Monkey(MUT, crypto=crypto, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
+        with _Monkey(MUT, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
                      SHA256=sha256, _get_pem_key=_get_pem_key):
             self.assertRaises(NameError, self._callFUT,
                               BAD_CREDENTIALS, EXPIRATION, SIGNATURE_STRING)
@@ -837,17 +842,21 @@ class Test__get_signed_query_params(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.storage import connection as MUT
 
-        crypto = _Crypto()
+        crypt = _Crypt()
         pkcs_v1_5 = _PKCS1_v1_5()
         rsa = _RSA()
         sha256 = _SHA256()
 
         EXPIRATION = '100'
         SIGNATURE_STRING = 'dummy_signature'
-        with _Monkey(MUT, crypto=crypto, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
+        with _Monkey(MUT, crypt=crypt, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
                      SHA256=sha256):
             result = self._callFUT(credentials, EXPIRATION, SIGNATURE_STRING)
 
+        if crypt._pkcs12_key_as_pem_called:
+            self.assertEqual(crypt._private_key_text,
+                             base64.b64encode('dummy_private_key_text'))
+            self.assertEqual(crypt._private_key_password, 'notasecret')
         self.assertEqual(sha256._signature_string, SIGNATURE_STRING)
         SIGNED = base64.b64encode('DEADBEEF')
         expected_query = {
@@ -900,20 +909,14 @@ class Http(object):
         return self._response, self._content
 
 
-class _Crypto(object):
+class _Crypt(object):
 
-    FILETYPE_PEM = 'pem'
-    _loaded = _dumped = None
+    _pkcs12_key_as_pem_called = False
 
-    def load_pkcs12(self, buffer, passphrase):
-        self._loaded = (buffer, passphrase)
-        return self
-
-    def get_privatekey(self):
-        return '__PKCS12__'
-
-    def dump_privatekey(self, type, pkey, cipher=None, passphrase=None):
-        self._dumped = (type, pkey, cipher, passphrase)
+    def pkcs12_key_as_pem(self, private_key_text, private_key_password):
+        self._pkcs12_key_as_pem_called = True
+        self._private_key_text = private_key_text
+        self._private_key_password = private_key_password
         return '__PEM__'
 
 
