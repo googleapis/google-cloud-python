@@ -97,8 +97,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">Crypto.Hash</span> <span class="kn">import</span> <span class="n">SHA256</span>
 <span class="kn">from</span> <span class="nn">Crypto.PublicKey</span> <span class="kn">import</span> <span class="n">RSA</span>
 <span class="kn">from</span> <span class="nn">Crypto.Signature</span> <span class="kn">import</span> <span class="n">PKCS1_v1_5</span>
-<span class="kn">from</span> <span class="nn">OpenSSL</span> <span class="kn">import</span> <span class="n">crypto</span>
 <span class="kn">from</span> <span class="nn">oauth2client</span> <span class="kn">import</span> <span class="n">client</span>
+<span class="kn">from</span> <span class="nn">oauth2client</span> <span class="kn">import</span> <span class="n">crypt</span>
 <span class="kn">from</span> <span class="nn">oauth2client</span> <span class="kn">import</span> <span class="n">service_account</span>
 <span class="kn">import</span> <span class="nn">pytz</span>
 
@@ -131,11 +131,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">SignedJwtAssertionCredentials</span><span class="p">):</span>
         <span class="c"># Take our PKCS12 (.p12) key and make it into a RSA key we can use.</span>
-        <span class="n">pkcs12</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">load_pkcs12</span><span class="p">(</span>
-            <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">private_key</span><span class="p">),</span>
-            <span class="s">&#39;notasecret&#39;</span><span class="p">)</span>
-        <span class="n">pem_text</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">dump_privatekey</span><span class="p">(</span>
-            <span class="n">crypto</span><span class="o">.</span><span class="n">FILETYPE_PEM</span><span class="p">,</span> <span class="n">pkcs12</span><span class="o">.</span><span class="n">get_privatekey</span><span class="p">())</span>
+        <span class="n">pem_text</span> <span class="o">=</span> <span class="n">crypt</span><span class="o">.</span><span class="n">pkcs12_key_as_pem</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">private_key</span><span class="p">,</span>
+                                           <span class="n">credentials</span><span class="o">.</span><span class="n">private_key_password</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">service_account</span><span class="o">.</span><span class="n">_ServiceAccountCredentials</span><span class="p">):</span>
         <span class="n">pem_text</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">_private_key_pkcs8_text</span>
     <span class="k">else</span><span class="p">:</span>
