@@ -36,7 +36,7 @@ Please check the Contributing guide for instructions.
 class RetryTestsMetaclass(type):
 
     NUM_RETRIES = 2
-    FLAKY_ERROR_CLASSES = (AssertionError, NotFound)
+    FLAKY_ERROR_CLASSES = (NotFound,)
 
     @staticmethod
     def _wrap_class_attr(class_attr):
