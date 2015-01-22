@@ -55,6 +55,8 @@ class TestDatastoreAllocateIDs(TestDatastore):
 
 class TestDatastoreSave(TestDatastore):
 
+    PARENT = datastore.Key('Blog', 'PizzaMan')
+
     def _get_post(self, id_or_name=None, post_content=None):
         post_content = post_content or {
             'title': u'How to make the perfect pizza in your grill',
@@ -66,7 +68,10 @@ class TestDatastoreSave(TestDatastore):
             'rating': 5.0,
         }
         # Create an entity with the given content.
-        entity = datastore.Entity(key=datastore.Key('Post'))
+        # NOTE: Using a parent to ensure consistency for query
+        #       in `test_empty_kind`.
+        key = datastore.Key('Post', parent=self.PARENT)
+        entity = datastore.Entity(key=key)
         entity.update(post_content)
 
         # Update the entity key.
@@ -77,8 +82,7 @@ class TestDatastoreSave(TestDatastore):
 
     def _generic_test_post(self, name=None, key_id=None):
         entity = self._get_post(id_or_name=(name or key_id))
-        with datastore.Transaction():
-            datastore.put([entity])
+        datastore.put([entity])
 
         # Register entity to be deleted.
         self.case_entities_to_delete.append(entity)
@@ -135,6 +139,7 @@ class TestDatastoreSave(TestDatastore):
 
     def test_empty_kind(self):
         query = datastore.Query(kind='Post')
+        query.ancestor = self.PARENT
         posts = list(query.fetch(limit=2))
         self.assertEqual(posts, [])
 
@@ -142,16 +147,18 @@ class TestDatastoreSave(TestDatastore):
 class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
-        key = datastore.Key('Person', 'name')
+        parent_key = datastore.Key('Residence', 'NewYork')
+        key = datastore.Key('Person', 'name', parent=parent_key)
         entity = datastore.Entity(key=key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
-        with datastore.Transaction():
-            datastore.put([entity])
+        datastore.put([entity])
         self.case_entities_to_delete.append(entity)
 
         query = datastore.Query(kind='Person')
+        # Adding ancestor to ensure consistency.
+        query.ancestor = parent_key
         query.add_filter('linkedTo', '=', key)
 
         stored_persons = list(query.fetch(limit=2))

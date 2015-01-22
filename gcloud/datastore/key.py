@@ -155,15 +155,18 @@ class Key(object):
         """Duplicates the Key.
 
         Most attributes are simple types, so don't require copying. Other
-        attributes like ``parent`` are long-lived and so we re-use them rather
-        than creating copies.
+        attributes like ``parent`` are long-lived and so we re-use them.
 
         :rtype: :class:`gcloud.datastore.key.Key`
         :returns: A new ``Key`` instance with the same data as the current one.
         """
-        return self.__class__(*self.flat_path, parent=self.parent,
-                              dataset_id=self.dataset_id,
-                              namespace=self.namespace)
+        cloned_self = self.__class__(*self.flat_path,
+                                     dataset_id=self.dataset_id,
+                                     namespace=self.namespace)
+        # If the current parent has already been set, we re-use
+        # the same instance
+        cloned_self._parent = self._parent
+        return cloned_self
 
     def completed_key(self, id_or_name):
         """Creates new key from existing partial key by adding final ID/name.
