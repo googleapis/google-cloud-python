@@ -20,6 +20,7 @@ from gcloud import datastore
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import populate_datastore
+from regression.regression_utils import RetryTestsMetaclass
 
 
 datastore._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
@@ -27,6 +28,8 @@ datastore.set_defaults()
 
 
 class TestDatastore(unittest2.TestCase):
+
+    __metaclass__ = RetryTestsMetaclass
 
     def setUp(self):
         self.case_entities_to_delete = []
