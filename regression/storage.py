@@ -39,10 +39,20 @@ def setUpModule():
         SHARED_BUCKETS['test_bucket'] = connection.create_bucket(bucket_name)
 
 
+def safe_delete(bucket):
+    for key in bucket:
+        try:
+            key.delete()
+        except storage.exceptions.NotFound:
+            print('Delete failed with 404: %r' % (key,))
+
+    # Passing force=False does not try to delete the contained files.
+    bucket.delete(force=False)
+
+
 def tearDownModule():
     for bucket in SHARED_BUCKETS.values():
-        # Passing force=True also deletes all files.
-        bucket.delete(force=True)
+        safe_delete(bucket)
 
 
 class TestStorage(unittest2.TestCase):
