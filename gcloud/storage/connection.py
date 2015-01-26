@@ -380,7 +380,7 @@ class Connection(_Base):
         """
         bucket = self.new_bucket(bucket_name)
         response = self.api_request(method='GET', path=bucket.path)
-        return Bucket.from_dict(response, connection=self)
+        return Bucket(properties=response, connection=self)
 
     def lookup(self, bucket_name):
         """Get a bucket by name, returning None if not found.
@@ -430,7 +430,7 @@ class Connection(_Base):
         bucket = self.new_bucket(bucket)
         response = self.api_request(method='POST', path='/b',
                                     data={'name': bucket.name})
-        return Bucket.from_dict(response, connection=self)
+        return Bucket(properties=response, connection=self)
 
     def delete_bucket(self, bucket, force=False):
         """Delete a bucket.
@@ -575,7 +575,7 @@ class _BucketIterator(Iterator):
         :param response: The JSON API response for a page of buckets.
         """
         for item in response.get('items', []):
-            yield Bucket.from_dict(item, connection=self.connection)
+            yield Bucket(properties=item, connection=self.connection)
 
 
 def _get_expiration_seconds(expiration):

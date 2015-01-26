@@ -77,6 +77,8 @@ class Blob(_PropertyMixin):
         :type properties: dict
         :param properties: All the other data provided by Cloud Storage.
         """
+        if name is None and properties is not None:
+            name = properties.get('name')
         super(Blob, self).__init__(name=name, properties=properties)
         self.bucket = bucket
 
@@ -86,24 +88,6 @@ class Blob(_PropertyMixin):
         if self._acl is None:
             self._acl = ObjectACL(self)
         return self._acl
-
-    @classmethod
-    def from_dict(cls, blob_dict, bucket=None):
-        """Instantiate a :class:`Blob` from data returned by the JSON API.
-
-        :type blob_dict: dict
-        :param blob_dict: A dictionary of data returned from getting an
-                          Cloud Storage object.
-
-        :type bucket: :class:`gcloud.storage.bucket.Bucket`
-        :param bucket: The bucket to which this blob belongs (and by
-                       proxy, which connection to use).
-
-        :rtype: :class:`Blob`
-        :returns: A blob based on the data provided.
-        """
-
-        return cls(bucket=bucket, name=blob_dict['name'], properties=blob_dict)
 
     def __repr__(self):
         if self.bucket:

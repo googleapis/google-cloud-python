@@ -17,12 +17,9 @@ import unittest2
 
 class Test_Blob(unittest2.TestCase):
 
-    def _getTargetClass(self):
-        from gcloud.storage.blob import Blob
-        return Blob
-
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        from gcloud.storage.blob import Blob
+        return Blob(*args, **kw)
 
     def test_ctor_defaults(self):
         blob = self._makeOne()
@@ -44,24 +41,22 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(blob.properties, properties)
         self.assertTrue(blob._acl is None)
 
-    def test_from_dict_defaults(self):
+    def test_ctor_no_name_defaults(self):
         BLOB_NAME = 'blob-name'
         properties = {'key': 'value', 'name': BLOB_NAME}
-        klass = self._getTargetClass()
-        blob = klass.from_dict(properties)
+        blob = self._makeOne(properties=properties)
         self.assertEqual(blob.bucket, None)
         self.assertEqual(blob.connection, None)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob.properties, properties)
         self.assertTrue(blob._acl is None)
 
-    def test_from_dict_explicit(self):
+    def test_ctor_no_name_explicit(self):
         BLOB_NAME = 'blob-name'
         connection = _Connection()
         bucket = _Bucket(connection)
         properties = {'key': 'value', 'name': BLOB_NAME}
-        klass = self._getTargetClass()
-        blob = klass.from_dict(properties, bucket)
+        blob = self._makeOne(properties=properties, bucket=bucket)
         self.assertTrue(blob.bucket is bucket)
         self.assertTrue(blob.connection is connection)
         self.assertEqual(blob.name, BLOB_NAME)
@@ -878,7 +873,8 @@ class _Bucket(object):
 
     def copy_blob(self, blob, destination_bucket, new_name):
         destination_bucket._blobs[new_name] = self._blobs[blob.name]
-        return blob.from_dict({'name': new_name}, bucket=destination_bucket)
+        return blob.__class__(properties={'name': new_name},
+                              bucket=destination_bucket)
 
     def delete_blob(self, blob):
         del self._blobs[blob.name]

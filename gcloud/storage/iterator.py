@@ -25,7 +25,7 @@ those results into an iterable of the actual objects you want::
     def get_items_from_response(self, response):
       items = response.get('items', [])
       for item in items:
-        yield MyItemClass.from_dict(item, other_arg=True)
+        yield MyItemClass(properties=item, other_arg=True)
 
 You then can use this to get **all** the results from a resource::
 

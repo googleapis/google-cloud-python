@@ -15,6 +15,7 @@
 """Create / interact with gcloud storage buckets."""
 
 import os
+import six
 
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
@@ -23,7 +24,6 @@ from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
 from gcloud.storage.blob import Blob
-import six
 
 
 class _BlobIterator(Iterator):
@@ -50,7 +50,7 @@ class _BlobIterator(Iterator):
         """
         self.prefixes = tuple(response.get('prefixes', ()))
         for item in response.get('items', []):
-            yield Blob.from_dict(item, bucket=self.bucket)
+            yield Blob(properties=item, bucket=self.bucket)
 
 
 class Bucket(_PropertyMixin):
@@ -88,21 +88,10 @@ class Bucket(_PropertyMixin):
     _acl = _default_object_acl = None
 
     def __init__(self, connection=None, name=None, properties=None):
+        if name is None and properties is not None:
+            name = properties.get('name')
         super(Bucket, self).__init__(name=name, properties=properties)
         self._connection = connection
-
-    @classmethod
-    def from_dict(cls, bucket_dict, connection=None):
-        """Construct a new bucket from a dictionary of data from Cloud Storage.
-
-        :type bucket_dict: dict
-        :param bucket_dict: The dictionary of data to construct a bucket from.
-
-        :rtype: :class:`Bucket`
-        :returns: A bucket constructed from the data provided.
-        """
-        return cls(connection=connection, name=bucket_dict['name'],
-                   properties=bucket_dict)
 
     def __repr__(self):
         return '<Bucket: %s>' % self.name
@@ -169,7 +158,7 @@ class Bucket(_PropertyMixin):
         try:
             response = self.connection.api_request(method='GET',
                                                    path=blob.path)
-            return Blob.from_dict(response, bucket=self)
+            return Blob(properties=response, bucket=self)
         except exceptions.NotFound:
             return None
 
