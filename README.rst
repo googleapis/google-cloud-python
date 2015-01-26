@@ -95,9 +95,9 @@ to Cloud Storage using this Client Library.
     import gcloud.storage
     bucket = gcloud.storage.get_bucket('bucket-id-here', 'project-id')
     # Then do other things...
-    key = bucket.get_key('/remote/path/to/file.txt')
-    print key.get_contents_as_string()
-    key.set_contents_from_string('New contents!')
+    blob = bucket.get_blob('/remote/path/to/file.txt')
+    print blob.get_contents_as_string()
+    blob.set_contents_from_string('New contents!')
     bucket.upload_file('/remote/path/storage.txt', '/local/path.txt')
 
 Contributing

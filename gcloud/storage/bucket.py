@@ -22,35 +22,35 @@ from gcloud.storage import exceptions
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
-from gcloud.storage.key import Key
+from gcloud.storage.blob import Blob
 import six
 
 
-class _KeyIterator(Iterator):
-    """An iterator listing keys in a bucket
+class _BlobIterator(Iterator):
+    """An iterator listing blobs in a bucket
 
     You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`gcloud.storage.key.Bucket` objects.
+    helper methods on :class:`gcloud.storage.blob.Bucket` objects.
 
     :type bucket: :class:`gcloud.storage.bucket.Bucket`
-    :param bucket: The bucket from which to list keys.
+    :param bucket: The bucket from which to list blobs.
     """
     def __init__(self, bucket, extra_params=None):
         self.bucket = bucket
         self.prefixes = ()
-        super(_KeyIterator, self).__init__(
+        super(_BlobIterator, self).__init__(
             connection=bucket.connection, path=bucket.path + '/o',
             extra_params=extra_params)
 
     def get_items_from_response(self, response):
-        """Yield :class:`.storage.key.Key` items from response.
+        """Yield :class:`.storage.blob.Blob` items from response.
 
         :type response: dict
-        :param response: The JSON API response for a page of keys.
+        :param response: The JSON API response for a page of blobs.
         """
         self.prefixes = tuple(response.get('prefixes', ()))
         for item in response.get('items', []):
-            yield Key.from_dict(item, bucket=self.bucket)
+            yield Blob.from_dict(item, bucket=self.bucket)
 
 
 class Bucket(_PropertyMixin):
@@ -62,7 +62,7 @@ class Bucket(_PropertyMixin):
     :type name: string
     :param name: The name of the bucket.
     """
-    _iterator_class = _KeyIterator
+    _iterator_class = _BlobIterator
 
     CUSTOM_PROPERTY_ACCESSORS = {
         'acl': 'acl',
@@ -110,8 +110,8 @@ class Bucket(_PropertyMixin):
     def __iter__(self):
         return iter(self._iterator_class(bucket=self))
 
-    def __contains__(self, key):
-        return self.get_key(key) is not None
+    def __contains__(self, blob):
+        return self.get_blob(blob) is not None
 
     @property
     def acl(self):
@@ -144,68 +144,69 @@ class Bucket(_PropertyMixin):
 
         return '/b/' + self.name
 
-    def get_key(self, key):
-        """Get a key object by name.
+    def get_blob(self, blob):
+        """Get a blob object by name.
 
-        This will return None if the key doesn't exist::
+        This will return None if the blob doesn't exist::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
-          >>> print bucket.get_key('/path/to/key.txt')
-          <Key: my-bucket, /path/to/key.txt>
-          >>> print bucket.get_key('/does-not-exist.txt')
+          >>> print bucket.get_blob('/path/to/blob.txt')
+          <Blob: my-bucket, /path/to/blob.txt>
+          >>> print bucket.get_blob('/does-not-exist.txt')
           None
 
-        :type key: string or :class:`gcloud.storage.key.Key`
-        :param key: The name of the key to retrieve.
+        :type blob: string or :class:`gcloud.storage.blob.Blob`
+        :param blob: The name of the blob to retrieve.
 
-        :rtype: :class:`gcloud.storage.key.Key` or None
-        :returns: The key object if it exists, otherwise None.
+        :rtype: :class:`gcloud.storage.blob.Blob` or None
+        :returns: The blob object if it exists, otherwise None.
         """
-        # Coerce this to a key object (either from a Key or a string).
-        key = self.new_key(key)
+        # Coerce this -- either from a Blob or a string.
+        blob = self.new_blob(blob)
 
         try:
-            response = self.connection.api_request(method='GET', path=key.path)
-            return Key.from_dict(response, bucket=self)
+            response = self.connection.api_request(method='GET',
+                                                   path=blob.path)
+            return Blob.from_dict(response, bucket=self)
         except exceptions.NotFound:
             return None
 
-    def get_all_keys(self):
-        """List all the keys in this bucket.
+    def get_all_blobs(self):
+        """List all the blobs in this bucket.
 
-        This will **not** retrieve all the data for all the keys, it
-        will only retrieve the keys.
+        This will **not** retrieve all the data for all the blobs, it
+        will only retrieve the blob paths.
 
         This is equivalent to::
 
-          keys = [key for key in bucket]
+          blobs = [blob for blob in bucket]
 
-        :rtype: list of :class:`gcloud.storage.key.Key`
-        :returns: A list of all the Key objects in this bucket.
+        :rtype: list of :class:`gcloud.storage.blob.Blob`
+        :returns: A list of all the Blob objects in this bucket.
         """
         return list(self)
 
     def iterator(self, prefix=None, delimiter=None, max_results=None,
                  versions=None):
-        """Return an iterator used to find keys in the bucket.
+        """Return an iterator used to find blobs in the bucket.
 
         :type prefix: string or None
-        :param prefix: optional prefix used to filter keys.
+        :param prefix: optional prefix used to filter blobs.
 
         :type delimiter: string or None
         :param delimiter: optional delimter, used with ``prefix`` to
                           emulate hierarchy.
 
         :type max_results: integer or None
-        :param max_results: maximum number of keys to return.
+        :param max_results: maximum number of blobs to return.
 
         :type versions: boolean or None
         :param versions: whether object versions should be returned as
-                         separate keys.
+                         separate blobs.
 
-        :rtype: :class:`_KeyIterator`
+        :rtype: :class:`_BlobIterator`
         """
         extra_params = {}
 
@@ -223,26 +224,26 @@ class Bucket(_PropertyMixin):
 
         return self._iterator_class(self, extra_params=extra_params)
 
-    def new_key(self, key):
-        """Given path name (or Key), return a :class:`.storage.key.Key` object.
+    def new_blob(self, blob):
+        """Given path name (or Blob), return a :class:`Blob` object.
 
-        This is really useful when you're not sure if you have a Key
-        object or a string path name.  Given either of those types, this
-        returns the corresponding Key object.
+        This is really useful when you're not sure if you have a ``Blob``
+        instance or a string path name.  Given either of those types, this
+        returns the corresponding ``Blob``.
 
-        :type key: string or :class:`gcloud.storage.key.Key`
-        :param key: A path name or actual key object.
+        :type blob: string or :class:`gcloud.storage.blob.Blob`
+        :param blob: A path name or actual blob object.
 
-        :rtype: :class:`gcloud.storage.key.Key`
-        :returns: A Key object with the path provided.
+        :rtype: :class:`gcloud.storage.blob.Blob`
+        :returns: A Blob object with the path provided.
         """
-        if isinstance(key, Key):
-            return key
+        if isinstance(blob, Blob):
+            return blob
 
-        if isinstance(key, six.string_types):
-            return Key(bucket=self, name=key)
+        if isinstance(blob, six.string_types):
+            return Blob(bucket=self, name=blob)
 
-        raise TypeError('Invalid key: %s' % key)
+        raise TypeError('Invalid blob: %s' % blob)
 
     def delete(self, force=False):
         """Delete this bucket.
@@ -253,23 +254,23 @@ class Bucket(_PropertyMixin):
         not empty, this will raise an Exception.
 
         If you want to delete a non-empty bucket you can pass in a force
-        parameter set to true.  This will iterate through the bucket's
-        keys and delete the related objects, before deleting the bucket.
+        parameter set to ``True``.  This will iterate through and delete the
+        bucket's objects, before deleting the bucket.
 
         :type force: boolean
-        :param full: If True, empties the bucket's objects then deletes it.
+        :param force: If True, empties the bucket's objects then deletes it.
 
         :raises: :class:`gcloud.storage.exceptions.NotFound` if the
                  bucket does not exist, or
                  :class:`gcloud.storage.exceptions.Conflict` if the
-                 bucket has keys and `force` is not passed.
+                 bucket has blobs and `force` is not passed.
         """
         return self.connection.delete_bucket(self.name, force=force)
 
-    def delete_key(self, key):
-        """Deletes a key from the current bucket.
+    def delete_blob(self, blob):
+        """Deletes a blob from the current bucket.
 
-        If the key isn't found, raise a
+        If the blob isn't found, raise a
         :class:`gcloud.storage.exceptions.NotFound`.
 
         For example::
@@ -278,79 +279,79 @@ class Bucket(_PropertyMixin):
           >>> from gcloud.storage import exceptions
           >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
-          >>> print bucket.get_all_keys()
-          [<Key: my-bucket, my-file.txt>]
-          >>> bucket.delete_key('my-file.txt')
+          >>> print bucket.get_all_blobs()
+          [<Blob: my-bucket, my-file.txt>]
+          >>> bucket.delete_blob('my-file.txt')
           >>> try:
-          ...   bucket.delete_key('doesnt-exist')
+          ...   bucket.delete_blob('doesnt-exist')
           ... except exceptions.NotFound:
           ...   pass
 
 
-        :type key: string or :class:`gcloud.storage.key.Key`
-        :param key: A key name or Key object to delete.
+        :type blob: string or :class:`gcloud.storage.blob.Blob`
+        :param blob: A blob name or Blob object to delete.
 
-        :rtype: :class:`gcloud.storage.key.Key`
-        :returns: The key that was just deleted.
+        :rtype: :class:`gcloud.storage.blob.Blob`
+        :returns: The blob that was just deleted.
         :raises: :class:`gcloud.storage.exceptions.NotFound` (to suppress
-                 the exception, call ``delete_keys``, passing a no-op
+                 the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.::
 
-                 >>> bucket.delete_keys([key], on_error=lambda key: pass)
+                 >>> bucket.delete_blobs([blob], on_error=lambda blob: pass)
         """
-        key = self.new_key(key)
-        self.connection.api_request(method='DELETE', path=key.path)
-        return key
+        blob = self.new_blob(blob)
+        self.connection.api_request(method='DELETE', path=blob.path)
+        return blob
 
-    def delete_keys(self, keys, on_error=None):
-        """Deletes a list of keys from the current bucket.
+    def delete_blobs(self, blobs, on_error=None):
+        """Deletes a list of blobs from the current bucket.
 
-        Uses :func:`Bucket.delete_key` to delete each individual key.
+        Uses :func:`Bucket.delete_blob` to delete each individual blob.
 
-        :type keys: list of string or :class:`gcloud.storage.key.Key`
-        :param keys: A list of key names or Key objects to delete.
+        :type blobs: list of string or :class:`gcloud.storage.blob.Blob`
+        :param blobs: A list of blob names or Blob objects to delete.
 
-        :type on_error: a callable taking (key)
-        :param on_error: If not ``None``, called once for each key raising
+        :type on_error: a callable taking (blob)
+        :param on_error: If not ``None``, called once for each blob raising
                          :class:`gcloud.storage.exceptions.NotFound`;
                          otherwise, the exception is propagated.
 
         :raises: :class:`gcloud.storage.exceptions.NotFound` (if
                  `on_error` is not passed).
         """
-        for key in keys:
+        for blob in blobs:
             try:
-                self.delete_key(key)
+                self.delete_blob(blob)
             except exceptions.NotFound:
                 if on_error is not None:
-                    on_error(key)
+                    on_error(blob)
                 else:
                     raise
 
-    def copy_key(self, key, destination_bucket, new_name=None):
-        """Copy the given key to the given bucket, optionally with a new name.
+    def copy_blob(self, blob, destination_bucket, new_name=None):
+        """Copy the given blob to the given bucket, optionally with a new name.
 
-        :type key: string or :class:`gcloud.storage.key.Key`
-        :param key: The key to be copied.
+        :type blob: string or :class:`gcloud.storage.blob.Blob`
+        :param blob: The blob to be copied.
 
         :type destination_bucket: :class:`gcloud.storage.bucket.Bucket`
-        :param destination_bucket: The bucket into which the key should be
+        :param destination_bucket: The bucket into which the blob should be
                                    copied.
 
         :type new_name: string
         :param new_name: (optional) the new name for the copied file.
 
-        :rtype: :class:`gcloud.storage.key.Key`
-        :returns: The new Key.
+        :rtype: :class:`gcloud.storage.blob.Blob`
+        :returns: The new Blob.
         """
         if new_name is None:
-            new_name = key.name
-        new_key = destination_bucket.new_key(new_name)
-        api_path = key.path + '/copyTo' + new_key.path
+            new_name = blob.name
+        new_blob = destination_bucket.new_blob(new_name)
+        api_path = blob.path + '/copyTo' + new_blob.path
         self.connection.api_request(method='POST', path=api_path)
-        return new_key
+        return new_blob
 
-    def upload_file(self, filename, key=None):
+    def upload_file(self, filename, blob=None):
         """Shortcut method to upload a file into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -361,36 +362,36 @@ class Bucket(_PropertyMixin):
           >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> bucket.upload_file('~/my-file.txt', 'remote-text-file.txt')
-          >>> print bucket.get_all_keys()
-          [<Key: my-bucket, remote-text-file.txt>]
+          >>> print bucket.get_all_blobs()
+          [<Blob: my-bucket, remote-text-file.txt>]
 
-        If you don't provide a key value, we will try to upload the file
-        using the local filename as the key (**not** the complete
+        If you don't provide a blob value, we will try to upload the file
+        using the local filename as the blob (**not** the complete
         path)::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> bucket.upload_file('~/my-file.txt')
-          >>> print bucket.get_all_keys()
-          [<Key: my-bucket, my-file.txt>]
+          >>> print bucket.get_all_blobs()
+          [<Blob: my-bucket, my-file.txt>]
 
         :type filename: string
         :param filename: Local path to the file you want to upload.
 
-        :type key: string or :class:`gcloud.storage.key.Key`
-        :param key: The key (either an object or a remote path) of where
-                    to put the file.  If this is blank, we will try to
-                    upload the file to the root of the bucket with the
-                    same name as on your local file system.
+        :type blob: string or :class:`gcloud.storage.blob.Blob`
+        :param blob: The blob (either an object or a remote path) of where
+                     to put the file.  If this is blank, we will try to
+                     upload the file to the root of the bucket with the
+                     same name as on your local file system.
         """
-        if key is None:
-            key = os.path.basename(filename)
-        key = self.new_key(key)
-        key.upload_from_filename(filename)
-        return key
+        if blob is None:
+            blob = os.path.basename(filename)
+        blob = self.new_blob(blob)
+        blob.upload_from_filename(filename)
+        return blob
 
-    def upload_file_object(self, file_obj, key=None):
+    def upload_file_object(self, file_obj, blob=None):
         """Shortcut method to upload a file object into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -401,34 +402,34 @@ class Bucket(_PropertyMixin):
           >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> bucket.upload_file(open('~/my-file.txt'), 'remote-text-file.txt')
-          >>> print bucket.get_all_keys()
-          [<Key: my-bucket, remote-text-file.txt>]
+          >>> print bucket.get_all_blobs()
+          [<Blob: my-bucket, remote-text-file.txt>]
 
-        If you don't provide a key value, we will try to upload the file
-        using the local filename as the key (**not** the complete
+        If you don't provide a blob value, we will try to upload the file
+        using the local filename as the blob (**not** the complete
         path)::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> bucket.upload_file(open('~/my-file.txt'))
-          >>> print bucket.get_all_keys()
-          [<Key: my-bucket, my-file.txt>]
+          >>> print bucket.get_all_blobs()
+          [<Blob: my-bucket, my-file.txt>]
 
         :type file_obj: file
         :param file_obj: A file handle open for reading.
 
-        :type key: string or :class:`gcloud.storage.key.Key`
-        :param key: The key (either an object or a remote path) of where
-                    to put the file.  If this is blank, we will try to
-                    upload the file to the root of the bucket with the
-                    same name as on your local file system.
+        :type blob: string or :class:`gcloud.storage.blob.Blob`
+        :param blob: The blob (either an object or a remote path) of where
+                     to put the file.  If this is blank, we will try to
+                     upload the file to the root of the bucket with the
+                     same name as on your local file system.
         """
-        if key:
-            key = self.new_key(key)
+        if blob:
+            blob = self.new_blob(blob)
         else:
-            key = self.new_key(os.path.basename(file_obj.name))
-        return key.upload_from_file(file_obj)
+            blob = self.new_blob(os.path.basename(file_obj.name))
+        return blob.upload_from_file(file_obj)
 
     def get_cors(self):
         """Retrieve CORS policies configured for this bucket.
@@ -652,7 +653,7 @@ class Bucket(_PropertyMixin):
           (and to do that, you need to get approved somehow...).
 
         If you want this bucket to host a website, just provide the name
-        of an index page and a page to use when a key isn't found::
+        of an index page and a page to use when a blob isn't found::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
@@ -695,7 +696,7 @@ class Bucket(_PropertyMixin):
         """Make a bucket public.
 
         :type recursive: boolean
-        :param recursive: If True, this will make all keys inside the bucket
+        :param recursive: If True, this will make all blobs inside the bucket
                           public as well.
 
         :type future: boolean
@@ -711,6 +712,6 @@ class Bucket(_PropertyMixin):
             doa.save()
 
         if recursive:
-            for key in self:
-                key.acl.all().grant_read()
-                key.save_acl()
+            for blob in self:
+                blob.acl.all().grant_read()
+                blob.save_acl()

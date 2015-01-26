@@ -35,17 +35,17 @@ print(bucket)
 # Let's look at all of the buckets again...
 print(connection.get_all_buckets())
 
-# How about we create a new key inside this bucket.
-key = bucket.new_key("my-new-file.txt")
+# How about we create a new blob inside this bucket.
+blob = bucket.new_blob("my-new-file.txt")
 
 # Now let's put some data in there.
-key.set_contents_from_string("this is some data!")
+blob.set_contents_from_string("this is some data!")
 
 # ... and we can read that data back again.
-print(key.get_contents_as_string())
+print(blob.get_contents_as_string())
 
-# Now let's delete that key.
-print(key.delete())
+# Now let's delete that blob.
+print(blob.delete())
 
 # And now that we're done, let's delete that bucket...
 print(bucket.delete())

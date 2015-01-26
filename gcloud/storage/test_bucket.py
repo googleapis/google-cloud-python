@@ -17,11 +17,11 @@ import io
 import unittest2
 
 
-class Test__KeyIterator(unittest2.TestCase):
+class Test__BlobIterator(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.bucket import _KeyIterator
-        return _KeyIterator
+        from gcloud.storage.bucket import _BlobIterator
+        return _BlobIterator
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -45,18 +45,18 @@ class Test__KeyIterator(unittest2.TestCase):
         self.assertEqual(iterator.prefixes, ())
 
     def test_get_items_from_response_non_empty(self):
-        from gcloud.storage.key import Key
-        KEY = 'key'
-        response = {'items': [{'name': KEY}], 'prefixes': ['foo']}
+        from gcloud.storage.blob import Blob
+        BLOB_NAME = 'blob-name'
+        response = {'items': [{'name': BLOB_NAME}], 'prefixes': ['foo']}
         connection = _Connection()
         bucket = _Bucket(connection)
         iterator = self._makeOne(bucket)
-        keys = list(iterator.get_items_from_response(response))
-        self.assertEqual(len(keys), 1)
-        key = keys[0]
-        self.assertTrue(isinstance(key, Key))
-        self.assertTrue(key.connection is connection)
-        self.assertEqual(key.name, KEY)
+        blobs = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(blobs), 1)
+        blob = blobs[0]
+        self.assertTrue(isinstance(blob, Blob))
+        self.assertTrue(blob.connection is connection)
+        self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(iterator.prefixes, ('foo',))
 
 
@@ -115,8 +115,8 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         connection = _Connection({'items': []})
         bucket = self._makeOne(connection, NAME)
-        keys = list(bucket)
-        self.assertEqual(keys, [])
+        blobs = list(bucket)
+        self.assertEqual(blobs, [])
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
@@ -124,13 +124,13 @@ class Test_Bucket(unittest2.TestCase):
 
     def test___iter___non_empty(self):
         NAME = 'name'
-        KEY = 'key'
-        connection = _Connection({'items': [{'name': KEY}]})
+        BLOB_NAME = 'blob-name'
+        connection = _Connection({'items': [{'name': BLOB_NAME}]})
         bucket = self._makeOne(connection, NAME)
-        keys = list(bucket)
-        key, = keys
-        self.assertTrue(key.bucket is bucket)
-        self.assertEqual(key.name, KEY)
+        blobs = list(bucket)
+        blob, = blobs
+        self.assertTrue(blob.bucket is bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
@@ -148,13 +148,13 @@ class Test_Bucket(unittest2.TestCase):
 
     def test___contains___hit(self):
         NAME = 'name'
-        KEY = 'key'
-        connection = _Connection({'name': KEY})
+        BLOB_NAME = 'blob-name'
+        connection = _Connection({'name': BLOB_NAME})
         bucket = self._makeOne(connection, NAME)
-        self.assertTrue(KEY in bucket)
+        self.assertTrue(BLOB_NAME in bucket)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, KEY))
+        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
     def test_acl_property(self):
         from gcloud.storage.acl import BucketACL
@@ -180,48 +180,48 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(connection, NAME)
         self.assertEqual(bucket.path, '/b/%s' % NAME)
 
-    def test_get_key_miss(self):
+    def test_get_blob_miss(self):
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
-        self.assertTrue(bucket.get_key(NONESUCH) is None)
+        self.assertTrue(bucket.get_blob(NONESUCH) is None)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
-    def test_get_key_hit(self):
+    def test_get_blob_hit(self):
         NAME = 'name'
-        KEY = 'key'
-        connection = _Connection({'name': KEY})
+        BLOB_NAME = 'blob-name'
+        connection = _Connection({'name': BLOB_NAME})
         bucket = self._makeOne(connection, NAME)
-        key = bucket.get_key(KEY)
-        self.assertTrue(key.bucket is bucket)
-        self.assertEqual(key.name, KEY)
+        blob = bucket.get_blob(BLOB_NAME)
+        self.assertTrue(blob.bucket is bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, KEY))
+        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
-    def test_get_all_keys_empty(self):
+    def test_get_all_blobs_empty(self):
         NAME = 'name'
         connection = _Connection({'items': []})
         bucket = self._makeOne(connection, NAME)
-        keys = bucket.get_all_keys()
-        self.assertEqual(keys, [])
+        blobs = bucket.get_all_blobs()
+        self.assertEqual(blobs, [])
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], {})
 
-    def test_get_all_keys_non_empty(self):
+    def test_get_all_blobs_non_empty(self):
         NAME = 'name'
-        KEY = 'key'
-        connection = _Connection({'items': [{'name': KEY}]})
+        BLOB_NAME = 'blob-name'
+        connection = _Connection({'items': [{'name': BLOB_NAME}]})
         bucket = self._makeOne(connection, NAME)
-        keys = bucket.get_all_keys()
-        key, = keys
-        self.assertTrue(key.bucket is bucket)
-        self.assertEqual(key.name, KEY)
+        blobs = bucket.get_all_blobs()
+        blob, = blobs
+        self.assertTrue(blob.bucket is bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
@@ -232,8 +232,8 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection({'items': []})
         bucket = self._makeOne(connection, NAME)
         iterator = bucket.iterator()
-        keys = list(iterator)
-        self.assertEqual(keys, [])
+        blobs = list(iterator)
+        self.assertEqual(blobs, [])
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
@@ -255,31 +255,31 @@ class Test_Bucket(unittest2.TestCase):
             max_results=10,
             versions=True,
         )
-        keys = list(iterator)
-        self.assertEqual(keys, [])
+        blobs = list(iterator)
+        self.assertEqual(blobs, [])
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], EXPECTED)
 
-    def test_new_key_existing(self):
-        from gcloud.storage.key import Key
-        existing = Key()
+    def test_new_blob_existing(self):
+        from gcloud.storage.blob import Blob
+        existing = Blob()
         bucket = self._makeOne()
-        self.assertTrue(bucket.new_key(existing) is existing)
+        self.assertTrue(bucket.new_blob(existing) is existing)
 
-    def test_new_key_str(self):
-        from gcloud.storage.key import Key
-        KEY = 'key'
+    def test_new_blob_str(self):
+        from gcloud.storage.blob import Blob
+        BLOB_NAME = 'blob-name'
         bucket = self._makeOne()
-        key = bucket.new_key(KEY)
-        self.assertTrue(isinstance(key, Key))
-        self.assertTrue(key.bucket is bucket)
-        self.assertEqual(key.name, KEY)
+        blob = bucket.new_blob(BLOB_NAME)
+        self.assertTrue(isinstance(blob, Blob))
+        self.assertTrue(blob.bucket is bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
 
-    def test_new_key_invalid(self):
+    def test_new_blob_invalid(self):
         bucket = self._makeOne()
-        self.assertRaises(TypeError, bucket.new_key, object())
+        self.assertRaises(TypeError, bucket.new_blob, object())
 
     def test_delete_default_miss(self):
         from gcloud.storage.exceptions import NotFound
@@ -297,130 +297,131 @@ class Test_Bucket(unittest2.TestCase):
         self.assertTrue(bucket.delete(True))
         self.assertEqual(connection._deleted, [(NAME, True)])
 
-    def test_delete_key_miss(self):
+    def test_delete_blob_miss(self):
         from gcloud.storage.exceptions import NotFound
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
-        self.assertRaises(NotFound, bucket.delete_key, NONESUCH)
+        self.assertRaises(NotFound, bucket.delete_blob, NONESUCH)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
-    def test_delete_key_hit(self):
+    def test_delete_blob_hit(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        key = bucket.delete_key(KEY)
-        self.assertTrue(key.bucket is bucket)
-        self.assertEqual(key.name, KEY)
+        blob = bucket.delete_blob(BLOB_NAME)
+        self.assertTrue(blob.bucket is bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
-        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, KEY))
+        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
-    def test_delete_keys_empty(self):
+    def test_delete_blobs_empty(self):
         NAME = 'name'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
-        bucket.delete_keys([])
+        bucket.delete_blobs([])
         self.assertEqual(connection._requested, [])
 
-    def test_delete_keys_hit(self):
+    def test_delete_blobs_hit(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        bucket.delete_keys([KEY])
+        bucket.delete_blobs([BLOB_NAME])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'DELETE')
-        self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, KEY))
+        self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
-    def test_delete_keys_miss_no_on_error(self):
+    def test_delete_blobs_miss_no_on_error(self):
         from gcloud.storage.exceptions import NotFound
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         NONESUCH = 'nonesuch'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
-        self.assertRaises(NotFound, bucket.delete_keys, [KEY, NONESUCH])
+        self.assertRaises(NotFound, bucket.delete_blobs, [BLOB_NAME, NONESUCH])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'DELETE')
-        self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, KEY))
+        self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
         self.assertEqual(kw[1]['method'], 'DELETE')
         self.assertEqual(kw[1]['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
-    def test_delete_keys_miss_w_on_error(self):
+    def test_delete_blobs_miss_w_on_error(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         NONESUCH = 'nonesuch'
         connection = _Connection({})
         bucket = self._makeOne(connection, NAME)
         errors = []
-        bucket.delete_keys([KEY, NONESUCH], errors.append)
+        bucket.delete_blobs([BLOB_NAME, NONESUCH], errors.append)
         self.assertEqual(errors, [NONESUCH])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'DELETE')
-        self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, KEY))
+        self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
         self.assertEqual(kw[1]['method'], 'DELETE')
         self.assertEqual(kw[1]['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
-    def test_copy_keys_wo_name(self):
+    def test_copy_blobs_wo_name(self):
         SOURCE = 'source'
         DEST = 'dest'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
 
-        class _Key(object):
-            name = KEY
-            path = '/b/%s/o/%s' % (SOURCE, KEY)
+        class _Blob(object):
+            name = BLOB_NAME
+            path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
 
         connection = _Connection({})
         source = self._makeOne(connection, SOURCE)
         dest = self._makeOne(connection, DEST)
-        key = _Key()
-        new_key = source.copy_key(key, dest)
-        self.assertTrue(new_key.bucket is dest)
-        self.assertEqual(new_key.name, KEY)
+        blob = _Blob()
+        new_blob = source.copy_blob(blob, dest)
+        self.assertTrue(new_blob.bucket is dest)
+        self.assertEqual(new_blob.name, BLOB_NAME)
         kw, = connection._requested
-        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, KEY, DEST, KEY)
+        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
+                                                     DEST, BLOB_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
 
-    def test_copy_keys_w_name(self):
+    def test_copy_blobs_w_name(self):
         SOURCE = 'source'
         DEST = 'dest'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         NEW_NAME = 'new_name'
 
-        class _Key(object):
-            name = KEY
-            path = '/b/%s/o/%s' % (SOURCE, KEY)
+        class _Blob(object):
+            name = BLOB_NAME
+            path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
 
         connection = _Connection({})
         source = self._makeOne(connection, SOURCE)
         dest = self._makeOne(connection, DEST)
-        key = _Key()
-        new_key = source.copy_key(key, dest, NEW_NAME)
-        self.assertTrue(new_key.bucket is dest)
-        self.assertEqual(new_key.name, NEW_NAME)
+        blob = _Blob()
+        new_blob = source.copy_blob(blob, dest, NEW_NAME)
+        self.assertTrue(new_blob.bucket is dest)
+        self.assertEqual(new_blob.name, NEW_NAME)
         kw, = connection._requested
-        COPY_PATH = (
-            '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, KEY, DEST, NEW_NAME))
+        COPY_PATH = '/b/%s/o/%s/copyTo/b/%s/o/%s' % (SOURCE, BLOB_NAME,
+                                                     DEST, NEW_NAME)
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
 
-    def test_upload_file_default_key(self):
+    def test_upload_file_default_blob(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         BASENAME = 'file.ext'
         FILENAME = '/path/to/%s' % BASENAME
         _uploaded = []
 
-        class _Key(object):
+        class _Blob(object):
 
             def __init__(self, bucket, name):
                 self._bucket = bucket
@@ -430,18 +431,18 @@ class Test_Bucket(unittest2.TestCase):
                 _uploaded.append((self._bucket, self._name, filename))
 
         bucket = self._makeOne()
-        with _Monkey(MUT, Key=_Key):
+        with _Monkey(MUT, Blob=_Blob):
             bucket.upload_file(FILENAME)
         self.assertEqual(_uploaded, [(bucket, BASENAME, FILENAME)])
 
-    def test_upload_file_explicit_key(self):
+    def test_upload_file_explicit_blob(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         FILENAME = '/path/to/file'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         _uploaded = []
 
-        class _Key(object):
+        class _Blob(object):
 
             def __init__(self, bucket, name):
                 self._bucket = bucket
@@ -451,18 +452,18 @@ class Test_Bucket(unittest2.TestCase):
                 _uploaded.append((self._bucket, self._name, filename))
 
         bucket = self._makeOne()
-        with _Monkey(MUT, Key=_Key):
-            bucket.upload_file(FILENAME, KEY)
-        self.assertEqual(_uploaded, [(bucket, KEY, FILENAME)])
+        with _Monkey(MUT, Blob=_Blob):
+            bucket.upload_file(FILENAME, BLOB_NAME)
+        self.assertEqual(_uploaded, [(bucket, BLOB_NAME, FILENAME)])
 
-    def test_upload_file_object_no_key(self):
+    def test_upload_file_object_no_blob(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         FILENAME = 'file.txt'
         FILEOBJECT = MockFile(FILENAME)
         _uploaded = []
 
-        class _Key(object):
+        class _Blob(object):
 
             def __init__(self, bucket, name):
                 self._bucket = bucket
@@ -472,19 +473,19 @@ class Test_Bucket(unittest2.TestCase):
                 _uploaded.append((self._bucket, self._name, fh))
 
         bucket = self._makeOne()
-        with _Monkey(MUT, Key=_Key):
+        with _Monkey(MUT, Blob=_Blob):
             bucket.upload_file_object(FILEOBJECT)
         self.assertEqual(_uploaded, [(bucket, FILENAME, FILEOBJECT)])
 
-    def test_upload_file_object_explicit_key(self):
+    def test_upload_file_object_explicit_blob(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         FILENAME = 'file.txt'
         FILEOBJECT = MockFile(FILENAME)
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         _uploaded = []
 
-        class _Key(object):
+        class _Blob(object):
 
             def __init__(self, bucket, name):
                 self._bucket = bucket
@@ -494,9 +495,9 @@ class Test_Bucket(unittest2.TestCase):
                 _uploaded.append((self._bucket, self._name, fh))
 
         bucket = self._makeOne()
-        with _Monkey(MUT, Key=_Key):
-            bucket.upload_file_object(FILEOBJECT, KEY)
-        self.assertEqual(_uploaded, [(bucket, KEY, FILEOBJECT)])
+        with _Monkey(MUT, Blob=_Blob):
+            bucket.upload_file_object(FILEOBJECT, BLOB_NAME)
+        self.assertEqual(_uploaded, [(bucket, BLOB_NAME, FILEOBJECT)])
 
     def test_get_cors_eager(self):
         NAME = 'name'
@@ -925,10 +926,10 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_make_public_recursive(self):
         from gcloud.storage.acl import _ACLEntity
-        from gcloud.storage.bucket import _KeyIterator
+        from gcloud.storage.bucket import _BlobIterator
         _saved = []
 
-        class _Key(object):
+        class _Blob(object):
             _granted = False
 
             def __init__(self, bucket, name):
@@ -948,16 +949,16 @@ class Test_Bucket(unittest2.TestCase):
             def save_acl(self):
                 _saved.append((self._bucket, self._name, self._granted))
 
-        class _Iterator(_KeyIterator):
+        class _Iterator(_BlobIterator):
             def get_items_from_response(self, response):
                 for item in response.get('items', []):
-                    yield _Key(self.bucket, item['name'])
+                    yield _Blob(self.bucket, item['name'])
 
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
-        connection = _Connection(after, {'items': [{'name': KEY}]})
+        connection = _Connection(after, {'items': [{'name': BLOB_NAME}]})
         bucket = self._makeOne(connection, NAME)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
@@ -965,7 +966,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket.make_public(recursive=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, KEY, True)])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, True)])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'PATCH')

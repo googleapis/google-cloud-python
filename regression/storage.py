@@ -40,11 +40,11 @@ def setUpModule():
 
 
 def safe_delete(bucket):
-    for key in bucket:
+    for blob in bucket:
         try:
-            key.delete()
+            blob.delete()
         except storage.exceptions.NotFound:
-            print('Delete failed with 404: %r' % (key,))
+            print('Delete failed with 404: %r' % (blob,))
 
     # Passing force=False does not try to delete the contained files.
     bucket.delete(force=False)
@@ -126,58 +126,58 @@ class TestStorageFiles(TestStorage):
         cls.bucket = SHARED_BUCKETS['test_bucket']
 
     def setUp(self):
-        self.case_keys_to_delete = []
+        self.case_blobs_to_delete = []
 
     def tearDown(self):
-        for key in self.case_keys_to_delete:
-            key.delete()
+        for blob in self.case_blobs_to_delete:
+            blob.delete()
 
 
 class TestStorageWriteFiles(TestStorageFiles):
 
     def test_large_file_write_from_stream(self):
-        key = self.bucket.new_key('LargeFile')
-        self.assertEqual(key._properties, {})
+        blob = self.bucket.new_blob('LargeFile')
+        self.assertEqual(blob._properties, {})
 
         file_data = self.FILES['big']
         with open(file_data['path'], 'rb') as file_obj:
-            self.bucket.upload_file_object(file_obj, key=key)
-            self.case_keys_to_delete.append(key)
+            self.bucket.upload_file_object(file_obj, blob=blob)
+            self.case_blobs_to_delete.append(blob)
 
-        key._properties.clear()  # force a reload
-        self.assertEqual(key.md5_hash, file_data['hash'])
+        blob._properties.clear()  # force a reload
+        self.assertEqual(blob.md5_hash, file_data['hash'])
 
     def test_small_file_write_from_filename(self):
-        key = self.bucket.new_key('LargeFile')
-        self.assertEqual(key._properties, {})
+        blob = self.bucket.new_blob('LargeFile')
+        self.assertEqual(blob._properties, {})
 
         file_data = self.FILES['simple']
-        key.upload_from_filename(file_data['path'])
-        self.case_keys_to_delete.append(key)
+        blob.upload_from_filename(file_data['path'])
+        self.case_blobs_to_delete.append(blob)
 
-        key._properties.clear()  # force a reload
-        self.assertEqual(key.md5_hash, file_data['hash'])
+        blob._properties.clear()  # force a reload
+        self.assertEqual(blob.md5_hash, file_data['hash'])
 
     def test_write_metadata(self):
-        key = self.bucket.upload_file(self.FILES['logo']['path'])
-        self.case_keys_to_delete.append(key)
+        blob = self.bucket.upload_file(self.FILES['logo']['path'])
+        self.case_blobs_to_delete.append(blob)
 
         # NOTE: This should not be necessary. We should be able to pass
         #       it in to upload_file and also to upload_from_string.
-        key.content_type = 'image/png'
-        key._properties.clear()  # force a reload
-        self.assertEqual(key.content_type, 'image/png')
+        blob.content_type = 'image/png'
+        blob._properties.clear()  # force a reload
+        self.assertEqual(blob.content_type, 'image/png')
 
     def test_direct_write_and_read_into_file(self):
-        key = self.bucket.new_key('MyBuffer')
+        blob = self.bucket.new_blob('MyBuffer')
         file_contents = 'Hello World'
-        key.upload_from_string(file_contents)
-        self.case_keys_to_delete.append(key)
+        blob.upload_from_string(file_contents)
+        self.case_blobs_to_delete.append(blob)
 
-        same_key = self.bucket.new_key('MyBuffer')
+        same_blob = self.bucket.new_blob('MyBuffer')
         temp_filename = tempfile.mktemp()
         with open(temp_filename, 'w') as file_obj:
-            same_key.get_contents_to_file(file_obj)
+            same_blob.get_contents_to_file(file_obj)
 
         with open(temp_filename, 'rb') as file_obj:
             stored_contents = file_obj.read()
@@ -185,15 +185,15 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.assertEqual(file_contents, stored_contents)
 
     def test_copy_existing_file(self):
-        key = self.bucket.upload_file(self.FILES['logo']['path'],
-                                      key='CloudLogo')
-        self.case_keys_to_delete.append(key)
+        blob = self.bucket.upload_file(self.FILES['logo']['path'],
+                                       blob='CloudLogo')
+        self.case_blobs_to_delete.append(blob)
 
-        new_key = self.bucket.copy_key(key, self.bucket, 'CloudLogoCopy')
-        self.case_keys_to_delete.append(new_key)
+        new_blob = self.bucket.copy_blob(blob, self.bucket, 'CloudLogoCopy')
+        self.case_blobs_to_delete.append(new_blob)
 
-        base_contents = key.get_contents_as_string()
-        copied_contents = new_key.get_contents_as_string()
+        base_contents = blob.get_contents_as_string()
+        copied_contents = new_blob.get_contents_as_string()
         self.assertEqual(base_contents, copied_contents)
 
 
@@ -205,40 +205,40 @@ class TestStorageListFiles(TestStorageFiles):
     def setUpClass(cls):
         super(TestStorageListFiles, cls).setUpClass()
         # Make sure bucket empty before beginning.
-        for key in cls.bucket:
-            key.delete()
+        for blob in cls.bucket:
+            blob.delete()
 
         logo_path = cls.FILES['logo']['path']
-        key = cls.bucket.upload_file(logo_path, key=cls.FILENAMES[0])
-        cls.suite_keys_to_delete = [key]
+        blob = cls.bucket.upload_file(logo_path, blob=cls.FILENAMES[0])
+        cls.suite_blobs_to_delete = [blob]
 
-        # Copy main key onto remaining in FILENAMES.
+        # Copy main blob onto remaining in FILENAMES.
         for filename in cls.FILENAMES[1:]:
-            new_key = cls.bucket.copy_key(key, cls.bucket, filename)
-            cls.suite_keys_to_delete.append(new_key)
+            new_blob = cls.bucket.copy_blob(blob, cls.bucket, filename)
+            cls.suite_blobs_to_delete.append(new_blob)
 
     @classmethod
     def tearDownClass(cls):
-        for key in cls.suite_keys_to_delete:
-            key.delete()
+        for blob in cls.suite_blobs_to_delete:
+            blob.delete()
 
     def test_list_files(self):
-        all_keys = self.bucket.get_all_keys()
-        self.assertEqual(len(all_keys), len(self.FILENAMES))
+        all_blobs = self.bucket.get_all_blobs()
+        self.assertEqual(len(all_blobs), len(self.FILENAMES))
 
     def test_paginate_files(self):
         truncation_size = 1
         count = len(self.FILENAMES) - truncation_size
         iterator = self.bucket.iterator(max_results=count)
         response = iterator.get_next_page_response()
-        keys = list(iterator.get_items_from_response(response))
-        self.assertEqual(len(keys), count)
+        blobs = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(blobs), count)
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is not None)
 
         response = iterator.get_next_page_response()
-        last_keys = list(iterator.get_items_from_response(response))
-        self.assertEqual(len(last_keys), truncation_size)
+        last_blobs = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(last_blobs), truncation_size)
 
 
 class TestStoragePseudoHierarchy(TestStorageFiles):
@@ -256,26 +256,26 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     def setUpClass(cls):
         super(TestStoragePseudoHierarchy, cls).setUpClass()
         # Make sure bucket empty before beginning.
-        for key in cls.bucket:
-            key.delete()
+        for blob in cls.bucket:
+            blob.delete()
 
         simple_path = cls.FILES['simple']['path']
-        key = cls.bucket.upload_file(simple_path, key=cls.FILENAMES[0])
-        cls.suite_keys_to_delete = [key]
+        blob = cls.bucket.upload_file(simple_path, blob=cls.FILENAMES[0])
+        cls.suite_blobs_to_delete = [blob]
         for filename in cls.FILENAMES[1:]:
-            new_key = cls.bucket.copy_key(key, cls.bucket, filename)
-            cls.suite_keys_to_delete.append(new_key)
+            new_blob = cls.bucket.copy_blob(blob, cls.bucket, filename)
+            cls.suite_blobs_to_delete.append(new_blob)
 
     @classmethod
     def tearDownClass(cls):
-        for key in cls.suite_keys_to_delete:
-            key.delete()
+        for blob in cls.suite_blobs_to_delete:
+            blob.delete()
 
     def test_root_level_w_delimiter(self):
         iterator = self.bucket.iterator(delimiter='/')
         response = iterator.get_next_page_response()
-        keys = list(iterator.get_items_from_response(response))
-        self.assertEqual([key.name for key in keys], ['file01.txt'])
+        blobs = list(iterator.get_items_from_response(response))
+        self.assertEqual([blob.name for blob in blobs], ['file01.txt'])
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is None)
         self.assertEqual(iterator.prefixes, ('parent/',))
@@ -283,8 +283,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     def test_first_level(self):
         iterator = self.bucket.iterator(delimiter='/', prefix='parent/')
         response = iterator.get_next_page_response()
-        keys = list(iterator.get_items_from_response(response))
-        self.assertEqual([key.name for key in keys], ['parent/file11.txt'])
+        blobs = list(iterator.get_items_from_response(response))
+        self.assertEqual([blob.name for blob in blobs], ['parent/file11.txt'])
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is None)
         self.assertEqual(iterator.prefixes, ('parent/child/',))
@@ -292,8 +292,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     def test_second_level(self):
         iterator = self.bucket.iterator(delimiter='/', prefix='parent/child/')
         response = iterator.get_next_page_response()
-        keys = list(iterator.get_items_from_response(response))
-        self.assertEqual([key.name for key in keys],
+        blobs = list(iterator.get_items_from_response(response))
+        self.assertEqual([blob.name for blob in blobs],
                          ['parent/child/file21.txt',
                           'parent/child/file22.txt'])
         self.assertEqual(iterator.page_number, 1)
@@ -309,8 +309,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         iterator = self.bucket.iterator(delimiter='/',
                                         prefix='parent/child/grand/')
         response = iterator.get_next_page_response()
-        keys = list(iterator.get_items_from_response(response))
-        self.assertEqual([key.name for key in keys],
+        blobs = list(iterator.get_items_from_response(response))
+        self.assertEqual([blob.name for blob in blobs],
                          ['parent/child/grand/file31.txt'])
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is None)
@@ -326,33 +326,33 @@ class TestStorageSignURLs(TestStorageFiles):
         with open(logo_path, 'r') as file_obj:
             self.LOCAL_FILE = file_obj.read()
 
-        key = self.bucket.new_key('LogoToSign.jpg')
-        key.upload_from_string(self.LOCAL_FILE)
-        self.case_keys_to_delete.append(key)
+        blob = self.bucket.new_blob('LogoToSign.jpg')
+        blob.upload_from_string(self.LOCAL_FILE)
+        self.case_blobs_to_delete.append(blob)
 
     def tearDown(self):
-        for key in self.case_keys_to_delete:
-            if key.exists():
-                key.delete()
+        for blob in self.case_blobs_to_delete:
+            if blob.exists():
+                blob.delete()
 
     def test_create_signed_read_url(self):
-        key = self.bucket.new_key('LogoToSign.jpg')
+        blob = self.bucket.new_blob('LogoToSign.jpg')
         expiration = int(time.time() + 5)
-        signed_url = key.generate_signed_url(expiration, method='GET')
+        signed_url = blob.generate_signed_url(expiration, method='GET')
 
         response, content = HTTP.request(signed_url, method='GET')
         self.assertEqual(response.status, 200)
         self.assertEqual(content, self.LOCAL_FILE)
 
     def test_create_signed_delete_url(self):
-        key = self.bucket.new_key('LogoToSign.jpg')
+        blob = self.bucket.new_blob('LogoToSign.jpg')
         expiration = int(time.time() + 283473274)
-        signed_delete_url = key.generate_signed_url(expiration,
-                                                    method='DELETE')
+        signed_delete_url = blob.generate_signed_url(expiration,
+                                                     method='DELETE')
 
         response, content = HTTP.request(signed_delete_url, method='DELETE')
         self.assertEqual(response.status, 204)
         self.assertEqual(content, '')
 
-        # Check that the key has actually been deleted.
-        self.assertFalse(key in self.bucket)
+        # Check that the blob has actually been deleted.
+        self.assertFalse(blob in self.bucket)
