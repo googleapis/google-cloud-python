@@ -177,7 +177,7 @@ class TestStorageWriteFiles(TestStorageFiles):
         same_blob = self.bucket.new_blob('MyBuffer')
         temp_filename = tempfile.mktemp()
         with open(temp_filename, 'w') as file_obj:
-            same_blob.get_contents_to_file(file_obj)
+            same_blob.download_to_file(file_obj)
 
         with open(temp_filename, 'rb') as file_obj:
             stored_contents = file_obj.read()
@@ -192,8 +192,8 @@ class TestStorageWriteFiles(TestStorageFiles):
         new_blob = self.bucket.copy_blob(blob, self.bucket, 'CloudLogoCopy')
         self.case_blobs_to_delete.append(new_blob)
 
-        base_contents = blob.get_contents_as_string()
-        copied_contents = new_blob.get_contents_as_string()
+        base_contents = blob.download_as_string()
+        copied_contents = new_blob.download_as_string()
         self.assertEqual(base_contents, copied_contents)
 
 

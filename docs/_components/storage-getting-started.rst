@@ -122,23 +122,23 @@ you just create a ``Blob`` inside your bucket
 and store your data inside the blob::
 
   >>> blob = bucket.new_blob('greeting.txt')
-  >>> blob.set_contents_from_string('Hello world!')
+  >>> blob.upload_from_string('Hello world!')
 
 :func:`new_blob <gcloud.storage.bucket.Bucket.new_blob>`
 creates a :class:`Blob <gcloud.storage.blob.Blob>` object locally
 and
-:func:`set_contents_from_string <gcloud.storage.blob.Blob.set_contents_from_string>`
+:func:`upload_from_string <gcloud.storage.blob.Blob.upload_from_string>`
 allows you to put a string into the blob.
 
 Now we can test if it worked::
 
   >>> blob = bucket.get_blob('greeting.txt')
-  >>> print blob.get_contents_as_string()
+  >>> print blob.download_as_string()
   Hello world!
 
 What if you want to save the contents to a file?
 
-  >>> blob.get_contents_to_filename('greetings.txt')
+  >>> blob.download_to_file('greetings.txt')
 
 Then you can look at the file in a terminal::
 
@@ -149,12 +149,12 @@ And what about when you're not dealing with text?
 That's pretty simple too::
 
   >>> blob = bucket.new_blob('kitten.jpg')
-  >>> blob.set_contents_from_filename('kitten.jpg')
+  >>> blob.upload_from_filename('kitten.jpg')
 
 And to test whether it worked?
 
   >>> blob = bucket.get_blob('kitten.jpg')
-  >>> blob.get_contents_to_filename('kitten2.jpg')
+  >>> blob.download_to_file('kitten2.jpg')
 
 and check if they are the same in a terminal::
 
