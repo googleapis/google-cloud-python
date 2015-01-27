@@ -24,22 +24,22 @@ from gcloud.datastore.transaction import Transaction
 from gcloud.datastore import helpers
 
 
-def _require_dataset_id(dataset_id=None, keys=()):
+def _require_dataset_id(dataset_id=None, first_key=None):
     """Infer a dataset ID from the environment, if not passed explicitly.
 
     Order of precedence:
 
     - Passed `dataset_id` (if not None).
     - `dataset_id` of current batch / transaction (if current exists).
-    - `dataset_id` of first key in `keys`
+    - `dataset_id` of first key
     - `dataset_id` inferred from the environment (if `set_default_dataset_id`
       has been called).
 
     :type dataset_id: string
     :param dataset_id: Optional.
 
-    :type keys: list of :class:`gcloud.datastore.key.Key`
-    :param keys: Optional.
+    :type first_key: :class:`gcloud.datastore.key.Key` or None
+    :param first_key: Optional: first key being manipulated.
 
     :rtype: string
     :returns: A dataset ID based on the current environment.
@@ -51,8 +51,8 @@ def _require_dataset_id(dataset_id=None, keys=()):
     top = Batch.current()
     if top is not None:
         return top.dataset_id
-    if len(keys) > 0:
-        return keys[0].dataset_id
+    if first_key is not None:
+        return first_key.dataset_id
     if _implicit_environ.DATASET_ID is None:
         raise EnvironmentError('Dataset ID could not be inferred.')
     return _implicit_environ.DATASET_ID
@@ -115,7 +115,7 @@ def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
         return []
 
     connection = _require_connection(connection)
-    dataset_id = _require_dataset_id(dataset_id, keys)
+    dataset_id = _require_dataset_id(dataset_id, keys[0])
 
     if list(set([key.dataset_id for key in keys])) != [dataset_id]:
         raise ValueError('Keys do not match dataset ID')
@@ -170,8 +170,7 @@ def put(entities, connection=None, dataset_id=None):
         return
 
     connection = _require_connection(connection)
-    keys = [entity.key for entity in entities]
-    dataset_id = _require_dataset_id(dataset_id, keys)
+    dataset_id = _require_dataset_id(dataset_id, entities[0].key)
 
     current = Batch.current()
     in_batch = current is not None
@@ -206,7 +205,7 @@ def delete(keys, connection=None, dataset_id=None):
         return
 
     connection = _require_connection(connection)
-    dataset_id = _require_dataset_id(dataset_id, keys)
+    dataset_id = _require_dataset_id(dataset_id, keys[0])
 
     # We allow partial keys to attempt a delete, the backend will fail.
     current = Batch.current()

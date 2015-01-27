@@ -19,11 +19,11 @@ class Test__require_dataset_id(unittest2.TestCase):
 
     _MARKER = object()
 
-    def _callFUT(self, passed=_MARKER, keys=()):
+    def _callFUT(self, passed=_MARKER, first_key=None):
         from gcloud.datastore.api import _require_dataset_id
         if passed is self._MARKER:
-            return _require_dataset_id(keys=keys)
-        return _require_dataset_id(dataset_id=passed, keys=keys)
+            return _require_dataset_id(first_key=first_key)
+        return _require_dataset_id(dataset_id=passed, first_key=first_key)
 
     def _monkey(self, dataset_id):
         from gcloud.datastore import _implicit_environ
@@ -39,7 +39,7 @@ class Test__require_dataset_id(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Key
         ID = 'DATASET'
         with self._monkey(None):
-            self.assertEqual(self._callFUT(keys=[_Key(ID)]), ID)
+            self.assertEqual(self._callFUT(first_key=_Key(ID)), ID)
 
     def test_implicit_unset_w_existing_batch_wo_keys(self):
         ID = 'DATASET'
@@ -53,7 +53,7 @@ class Test__require_dataset_id(unittest2.TestCase):
         OTHER = 'OTHER'
         with self._monkey(None):
             with _NoCommitBatch(dataset_id=ID, connection=object()):
-                self.assertEqual(self._callFUT(keys=[_Key(OTHER)]), ID)
+                self.assertEqual(self._callFUT(first_key=_Key(OTHER)), ID)
 
     def test_implicit_unset_w_existing_transaction_wo_keys(self):
         ID = 'DATASET'
@@ -67,7 +67,7 @@ class Test__require_dataset_id(unittest2.TestCase):
         OTHER = 'OTHER'
         with self._monkey(None):
             with _NoCommitTransaction(dataset_id=ID, connection=object()):
-                self.assertEqual(self._callFUT(keys=[_Key(OTHER)]), ID)
+                self.assertEqual(self._callFUT(first_key=_Key(OTHER)), ID)
 
     def test_implicit_unset_passed_explicitly_wo_keys(self):
         ID = 'DATASET'
@@ -79,7 +79,7 @@ class Test__require_dataset_id(unittest2.TestCase):
         ID = 'DATASET'
         OTHER = 'OTHER'
         with self._monkey(None):
-            self.assertEqual(self._callFUT(ID, keys=[_Key(OTHER)]), ID)
+            self.assertEqual(self._callFUT(ID, first_key=_Key(OTHER)), ID)
 
     def test_id_implicit_set_wo_keys(self):
         IMPLICIT_ID = 'IMPLICIT'
@@ -92,7 +92,7 @@ class Test__require_dataset_id(unittest2.TestCase):
         IMPLICIT_ID = 'IMPLICIT'
         OTHER = 'OTHER'
         with self._monkey(IMPLICIT_ID):
-            self.assertEqual(self._callFUT(keys=[_Key(OTHER)]), OTHER)
+            self.assertEqual(self._callFUT(first_key=_Key(OTHER)), OTHER)
 
     def test_id_implicit_set_passed_explicitly_wo_keys(self):
         ID = 'DATASET'
@@ -106,7 +106,7 @@ class Test__require_dataset_id(unittest2.TestCase):
         IMPLICIT_ID = 'IMPLICIT'
         OTHER = 'OTHER'
         with self._monkey(IMPLICIT_ID):
-            self.assertEqual(self._callFUT(ID, keys=[_Key(OTHER)]), ID)
+            self.assertEqual(self._callFUT(ID, first_key=_Key(OTHER)), ID)
 
 
 class Test__require_connection(unittest2.TestCase):
