@@ -664,7 +664,7 @@ those results into an iterable of the actual objects you want:</p>
   <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
     <span class="n">items</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">[])</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-      <span class="k">yield</span> <span class="n">MyItemClass</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">other_arg</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+      <span class="k">yield</span> <span class="n">MyItemClass</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">other_arg</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You then can use this to get <strong>all</strong> the results from a resource:</p>

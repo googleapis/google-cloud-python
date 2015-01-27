@@ -99,7 +99,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    def get_items_from_response(self, response):</span>
 <span class="sd">      items = response.get(&#39;items&#39;, [])</span>
 <span class="sd">      for item in items:</span>
-<span class="sd">        yield MyItemClass.from_dict(item, other_arg=True)</span>
+<span class="sd">        yield MyItemClass(properties=item, other_arg=True)</span>
 
 <span class="sd">You then can use this to get **all** the results from a resource::</span>
 

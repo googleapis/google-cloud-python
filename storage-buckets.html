@@ -94,7 +94,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'selfLink': 'self_link', 'etag': 'etag', 'owner': 'owner', 'metageneration': 'metageneration', 'timeCreated': 'time_created', 'acl': 'acl', 'defaultObjectAcl': 'get_default_object_acl()', 'versioning': 'versioning_enabled', 'lifecycle': 'get_lifecycle()', 'cors': 'get_cors()', 'storageClass': 'storage_class', 'id': 'id', 'name': 'name', 'logging': 'get_logging()', 'projectNumber': 'project_number', 'location': 'location'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'timeCreated': 'time_created', 'logging': 'get_logging()', 'lifecycle': 'get_lifecycle()', 'versioning': 'versioning_enabled', 'projectNumber': 'project_number', 'acl': 'acl', 'storageClass': 'storage_class', 'cors': 'get_cors()', 'location': 'location', 'defaultObjectAcl': 'get_default_object_acl()', 'etag': 'etag', 'selfLink': 'self_link', 'id': 'id', 'name': 'name', 'owner': 'owner', 'metageneration': 'metageneration'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -337,24 +337,6 @@ attributes to <tt class="docutils literal"><span class="pre">None</span></tt>.</
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="gcloud.storage.bucket.Bucket.from_dict">
-<em class="property">classmethod </em><tt class="descname">from_dict</tt><big>(</big><em>bucket_dict</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.from_dict" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a new bucket from a dictionary of data from Cloud Storage.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket_dict</strong> (<em>dict</em>) &#8211; The dictionary of data to construct a bucket from.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">Bucket</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A bucket constructed from the data provided.</td>
 </tr>
 </tbody>
 </table>
