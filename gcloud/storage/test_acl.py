@@ -384,7 +384,7 @@ class Test_ACL(unittest2.TestCase):
         from gcloud.storage.acl import _ACLEntity
         TYPE = 'type'
         ID = 'id'
-        KEY = '%s-%s' % (TYPE, ID)
+        ENTITY_VAL = '%s-%s' % (TYPE, ID)
         ROLE = 'role'
         entity = _ACLEntity(TYPE, ID)
         entity.grant(ROLE)
@@ -393,8 +393,8 @@ class Test_ACL(unittest2.TestCase):
         before = acl.entity(TYPE, ID)
         acl.add_entity(entity)
         self.assertTrue(acl.loaded)
-        self.assertFalse(acl.get_entity(KEY) is before)
-        self.assertTrue(acl.get_entity(KEY) is entity)
+        self.assertFalse(acl.get_entity(ENTITY_VAL) is before)
+        self.assertTrue(acl.get_entity(ENTITY_VAL) is entity)
         self.assertEqual(list(acl),
                          [{'entity': 'type-id', 'role': ROLE}])
         self.assertEqual(list(acl.get_entities()), [entity])
@@ -659,38 +659,38 @@ class Test_ObjectACL(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
-        key = object()
-        acl = self._makeOne(key)
+        blob = object()
+        acl = self._makeOne(blob)
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
-        self.assertTrue(acl.key is key)
+        self.assertTrue(acl.blob is blob)
 
     def test_reload_eager_empty(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         ROLE = 'role'
         after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
         connection = _Connection(after)
         bucket = _Bucket(connection, NAME)
-        key = _Key(bucket, KEY)
-        acl = self._makeOne(key)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
         acl.loaded = True
         self.assertTrue(acl.reload() is acl)
         self.assertEqual(list(acl), after['items'])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % KEY)
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % BLOB_NAME)
 
     def test_reload_eager_nonempty(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         ROLE = 'role'
         after = {'items': []}
         connection = _Connection(after)
         bucket = _Bucket(connection, NAME)
-        key = _Key(bucket, KEY)
-        acl = self._makeOne(key)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
         acl.loaded = True
         acl.entity('allUsers', ROLE)
         self.assertTrue(acl.reload() is acl)
@@ -698,57 +698,57 @@ class Test_ObjectACL(unittest2.TestCase):
 
     def test_reload_lazy(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         ROLE = 'role'
         after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
         connection = _Connection(after)
         bucket = _Bucket(connection, NAME)
-        key = _Key(bucket, KEY)
-        acl = self._makeOne(key)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
         self.assertTrue(acl.reload() is acl)
         self.assertEqual(list(acl),
                          [{'entity': 'allUsers', 'role': ROLE}])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % KEY)
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % BLOB_NAME)
 
     def test_save_none_set_none_passed(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         connection = _Connection()
         bucket = _Bucket(connection, NAME)
-        key = _Key(bucket, KEY)
-        acl = self._makeOne(key)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
         self.assertTrue(acl.save() is acl)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
     def test_save_existing_set_none_passed(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         connection = _Connection({'foo': 'Foo', 'acl': []})
         bucket = _Bucket(connection, NAME)
-        key = _Key(bucket, KEY)
-        acl = self._makeOne(key)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
         acl.loaded = True
         self.assertTrue(acl.save() is acl)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'], {'acl': []})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_save_existing_set_new_passed(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         ROLE = 'role'
         new_acl = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'foo': 'Foo', 'acl': new_acl})
         bucket = _Bucket(connection, NAME)
-        key = _Key(bucket, KEY)
-        acl = self._makeOne(key)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
         acl.loaded = True
         acl.entity('allUsers', 'other-role')
         self.assertTrue(acl.save(new_acl) is acl)
@@ -756,18 +756,18 @@ class Test_ObjectACL(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'], {'acl': new_acl})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_clear(self):
         NAME = 'name'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         ROLE = 'role'
         connection = _Connection({'foo': 'Foo', 'acl': []})
         bucket = _Bucket(connection, NAME)
-        key = _Key(bucket, KEY)
-        acl = self._makeOne(key)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
         acl.loaded = True
         acl.entity('allUsers', ROLE)
         self.assertTrue(acl.clear() is acl)
@@ -775,16 +775,16 @@ class Test_ObjectACL(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % KEY)
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'], {'acl': []})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
-class _Key(object):
+class _Blob(object):
 
-    def __init__(self, bucket, key):
+    def __init__(self, bucket, blob):
         self.bucket = bucket
-        self.key = key
+        self.blob = blob
 
     @property
     def connection(self):
@@ -792,7 +792,7 @@ class _Key(object):
 
     @property
     def path(self):
-        return '%s/o/%s' % (self.bucket.path, self.key)
+        return '%s/o/%s' % (self.bucket.path, self.blob)
 
 
 class _Bucket(object):

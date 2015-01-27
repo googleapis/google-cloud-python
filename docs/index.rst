@@ -10,8 +10,8 @@
   datastore-transactions
   datastore-batches
   storage-api
+  storage-blobs
   storage-buckets
-  storage-keys
   storage-acl
 
 
@@ -48,5 +48,5 @@ Cloud Storage
 
   from gcloud import storage
   bucket = storage.get_bucket('<your-bucket-name>', '<your-project-id>')
-  key = bucket.new_key('my-test-file.txt')
-  key = key.upload_contents_from_string('this is test content!')
+  blob = bucket.new_blob('my-test-file.txt')
+  blob = blob.upload_contents_from_string('this is test content!')

@@ -69,7 +69,7 @@ ignore =
 # - protected-access: helpers use '_foo' of classes from generated code.
 # - redefined-builtin:  use of 'id', 'type', 'filter' args in API-bound funcs;
 #                       use of 'NotImplemented' to map HTTP response code.
-# - similarities:  'Bucket' and 'Key' define 'metageneration' and 'owner' with
+# - similarities:  'Bucket' and 'Blob' define 'metageneration' and 'owner' with
 #                  identical implementation but different docstrings.
 # - star-args:  standard Python idioms for varargs:
 #                  ancestor = Query().filter(*order_props)

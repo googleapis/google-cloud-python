@@ -126,7 +126,7 @@ class Iterator(object):
         accept the API response of a request for the next page of items,
         and return a list (or other iterable) of items.
 
-        Typically this method will construct a Bucket or a Key from the
+        Typically this method will construct a Bucket or a Blob from the
         page of results in the response.
 
         :type response: dict

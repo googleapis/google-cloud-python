@@ -4,7 +4,7 @@ Getting started with Cloud Storage
 This tutorial focuses on using ``gcloud`` to access
 Google Cloud Storage.
 We'll go through the basic concepts,
-how to operate on buckets and keys,
+how to operate on buckets and blobs,
 and how to handle access control,
 among other things.
 
@@ -114,32 +114,31 @@ so if you want to group data into "directories",
 you can do that.
 
 The fundamental container for a file in Cloud Storage
-is called an Object,
-however ``gcloud`` uses the term ``Key``
-to avoid confusion between ``object`` and ``Object``.
+is called an Object, however ``gcloud`` uses the term ``Blob``
+to avoid confusion with the Python built-in ``object``.
 
 If you want to set some data,
-you just create a ``Key`` inside your bucket
-and store your data inside the key::
+you just create a ``Blob`` inside your bucket
+and store your data inside the blob::
 
-  >>> key = bucket.new_key('greeting.txt')
-  >>> key.set_contents_from_string('Hello world!')
+  >>> blob = bucket.new_blob('greeting.txt')
+  >>> blob.set_contents_from_string('Hello world!')
 
-:func:`new_key <gcloud.storage.bucket.Bucket.new_key>`
-creates a :class:`Key <gcloud.storage.key.Key>` object locally
+:func:`new_blob <gcloud.storage.bucket.Bucket.new_blob>`
+creates a :class:`Blob <gcloud.storage.blob.Blob>` object locally
 and
-:func:`set_contents_from_string <gcloud.storage.key.Key.set_contents_from_string>`
-allows you to put a string into the key.
+:func:`set_contents_from_string <gcloud.storage.blob.Blob.set_contents_from_string>`
+allows you to put a string into the blob.
 
 Now we can test if it worked::
 
-  >>> key = bucket.get_key('greeting.txt')
-  >>> print key.get_contents_as_string()
+  >>> blob = bucket.get_blob('greeting.txt')
+  >>> print blob.get_contents_as_string()
   Hello world!
 
 What if you want to save the contents to a file?
 
-  >>> key.get_contents_to_filename('greetings.txt')
+  >>> blob.get_contents_to_filename('greetings.txt')
 
 Then you can look at the file in a terminal::
 
@@ -149,32 +148,32 @@ Then you can look at the file in a terminal::
 And what about when you're not dealing with text?
 That's pretty simple too::
 
-  >>> key = bucket.new_key('kitten.jpg')
-  >>> key.set_contents_from_filename('kitten.jpg')
+  >>> blob = bucket.new_blob('kitten.jpg')
+  >>> blob.set_contents_from_filename('kitten.jpg')
 
 And to test whether it worked?
 
-  >>> key = bucket.get_key('kitten.jpg')
-  >>> key.get_contents_to_filename('kitten2.jpg')
+  >>> blob = bucket.get_blob('kitten.jpg')
+  >>> blob.get_contents_to_filename('kitten2.jpg')
 
 and check if they are the same in a terminal::
 
   $ diff kitten.jpg kitten2.jpg
 
 Notice that we're using
-:func:`get_key <gcloud.storage.bucket.Bucket.get_key>`
-to retrieve a key we know exists remotely.
-If the key doesn't exist, it will return ``None``.
+:func:`get_blob <gcloud.storage.bucket.Bucket.get_blob>`
+to retrieve a blob we know exists remotely.
+If the blob doesn't exist, it will return ``None``.
 
-.. note:: ``get_key`` is **not** retrieving the entire object's data.
+.. note:: ``get_blob`` is **not** retrieving the entire object's data.
 
-If you want to "get-or-create" the key
+If you want to "get-or-create" the blob
 (that is, overwrite it if it already exists),
-you can use :func:`new_key <gcloud.storage.bucket.Bucket.new_key>`.
-However, keep in mind, the key is not created
+you can use :func:`new_blob <gcloud.storage.bucket.Bucket.new_blob>`.
+However, keep in mind, the blob is not created
 until you store some data inside of it.
 
-If you want to check whether a key exists,
+If you want to check whether a blob exists,
 you can use the ``in`` operator in Python::
 
   >>> print 'kitten.jpg' in bucket
@@ -191,17 +190,17 @@ to retrieve the bucket object::
 
   >>> bucket = connection.get_bucket('my-bucket')
 
-If you want to get all the keys in the bucket,
+If you want to get all the blobs in the bucket,
 you can use
-:func:`get_all_keys <gcloud.storage.bucket.Bucket.get_all_keys>`::
+:func:`get_all_blobs <gcloud.storage.bucket.Bucket.get_all_blobs>`::
 
-  >>> keys = bucket.get_all_keys()
+  >>> blobs = bucket.get_all_blobs()
 
-However, if you're looking to iterate through the keys,
+However, if you're looking to iterate through the blobs,
 you can use the bucket itself as an iterator::
 
-  >>> for key in bucket:
-  ...   print key
+  >>> for blob in bucket:
+  ...   print blob
 
 Deleting a bucket
 -----------------
@@ -234,7 +233,7 @@ Managing access control
 -----------------------
 
 Cloud storage provides fine-grained access control
-for both buckets and keys.
+for both buckets and blobs.
 `gcloud` tries to simplify access control
 by working with entities and "grants".
 On any ACL,

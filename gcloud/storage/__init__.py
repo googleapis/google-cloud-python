@@ -19,9 +19,9 @@ You'll typically use these to get started with the API:
 >>> import gcloud.storage
 >>> bucket = gcloud.storage.get_bucket('bucket-id-here', 'project-id')
 >>> # Then do other things...
->>> key = bucket.get_key('/remote/path/to/file.txt')
->>> print key.get_contents_as_string()
->>> key.set_contents_from_string('New contents!')
+>>> blob = bucket.get_blob('/remote/path/to/file.txt')
+>>> print blob.get_contents_as_string()
+>>> blob.set_contents_from_string('New contents!')
 >>> bucket.upload_file('/remote/path/storage.txt', '/local/path.txt')
 
 The main concepts with this API are:
@@ -32,7 +32,7 @@ The main concepts with this API are:
 - :class:`gcloud.storage.bucket.Bucket` which represents a particular
   bucket (akin to a mounted disk on a computer).
 
-- :class:`gcloud.storage.key.Key` which represents a pointer to a
+- :class:`gcloud.storage.blob.Blob` which represents a pointer to a
   particular entity in Cloud Storage (akin to a file path on a remote
   machine).
 """

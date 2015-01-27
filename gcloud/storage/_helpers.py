@@ -79,11 +79,11 @@ class _PropertyMixin(object):
             ...     bucket.enable_versioning()
             ...     bucket.disable_website()
 
-        or for a key::
+        or for a blob::
 
-            >>> with key.batch:
-            ...     key.content_type = 'image/jpeg'
-            ...     key.content_encoding = 'gzip'
+            >>> with blob.batch:
+            ...     blob.content_type = 'image/jpeg'
+            ...     blob.content_encoding = 'gzip'
 
         Updates will be aggregated and sent as a single call to
         :meth:`_patch_properties` IFF the ``with`` block exits without

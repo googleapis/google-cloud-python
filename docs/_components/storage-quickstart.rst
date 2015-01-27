@@ -53,22 +53,22 @@ and instantiating the demo connection::
   >>> connection = demo.get_connection()
 
 Once you have the connection,
-you can create buckets and keys::
+you can create buckets and blobs::
 
   >>> connection.get_all_buckets()
   [<Bucket: ...>, ...]
   >>> bucket = connection.create_bucket('my-new-bucket')
   >>> print bucket
   <Bucket: my-new-bucket>
-  >>> key = bucket.new_key('my-test-file.txt')
-  >>> print key
-  <Key: my-new-bucket, my-test-file.txt>
-  >>> key = key.set_contents_from_string('this is test content!')
-  >>> print key.get_contents_as_string()
+  >>> blob = bucket.new_blob('my-test-file.txt')
+  >>> print blob
+  <Blob: my-new-bucket, my-test-file.txt>
+  >>> blob = blob.set_contents_from_string('this is test content!')
+  >>> print blob.get_contents_as_string()
   'this is test content!'
-  >>> print bucket.get_all_keys()
-  [<Key: my-new-bucket, my-test-file.txt>]
-  >>> key.delete()
+  >>> print bucket.get_all_blobs()
+  [<Blob: my-new-bucket, my-test-file.txt>]
+  >>> blob.delete()
   >>> bucket.delete()
 
 .. note::

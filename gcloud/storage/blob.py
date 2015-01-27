@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud storage keys."""
+"""Create / interact with Google Cloud Storage blobs."""
 
 import copy
 import mimetypes
@@ -30,7 +30,7 @@ from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
 
 
-class Key(_PropertyMixin):
+class Blob(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``."""
 
     CUSTOM_PROPERTY_ACCESSORS = {
@@ -65,19 +65,19 @@ class Key(_PropertyMixin):
     _acl = None
 
     def __init__(self, bucket=None, name=None, properties=None):
-        """Key constructor.
+        """Blob constructor.
 
         :type bucket: :class:`gcloud.storage.bucket.Bucket`
-        :param bucket: The bucket to which this key belongs.
+        :param bucket: The bucket to which this blob belongs.
 
         :type name: string
-        :param name: The name of the key.  This corresponds to the
+        :param name: The name of the blob.  This corresponds to the
                      unique path of the object in the bucket.
 
         :type properties: dict
         :param properties: All the other data provided by Cloud Storage.
         """
-        super(Key, self).__init__(name=name, properties=properties)
+        super(Blob, self).__init__(name=name, properties=properties)
         self.bucket = bucket
 
     @property
@@ -88,22 +88,22 @@ class Key(_PropertyMixin):
         return self._acl
 
     @classmethod
-    def from_dict(cls, key_dict, bucket=None):
-        """Instantiate a :class:`Key` from data returned by the JSON API.
+    def from_dict(cls, blob_dict, bucket=None):
+        """Instantiate a :class:`Blob` from data returned by the JSON API.
 
-        :type key_dict: dict
-        :param key_dict: A dictionary of data returned from getting an
-                         Cloud Storage object.
+        :type blob_dict: dict
+        :param blob_dict: A dictionary of data returned from getting an
+                          Cloud Storage object.
 
         :type bucket: :class:`gcloud.storage.bucket.Bucket`
-        :param bucket: The bucket to which this key belongs (and by
+        :param bucket: The bucket to which this blob belongs (and by
                        proxy, which connection to use).
 
-        :rtype: :class:`Key`
-        :returns: A key based on the data provided.
+        :rtype: :class:`Blob`
+        :returns: A blob based on the data provided.
         """
 
-        return cls(bucket=bucket, name=key_dict['name'], properties=key_dict)
+        return cls(bucket=bucket, name=blob_dict['name'], properties=blob_dict)
 
     def __repr__(self):
         if self.bucket:
@@ -111,11 +111,11 @@ class Key(_PropertyMixin):
         else:
             bucket_name = None
 
-        return '<Key: %s, %s>' % (bucket_name, self.name)
+        return '<Blob: %s, %s>' % (bucket_name, self.name)
 
     @property
     def connection(self):
-        """Getter property for the connection to use with this Key.
+        """Getter property for the connection to use with this Blob.
 
         :rtype: :class:`gcloud.storage.connection.Connection` or None
         :returns: The connection to use, or None if no connection is set.
@@ -125,24 +125,24 @@ class Key(_PropertyMixin):
 
     @property
     def path(self):
-        """Getter property for the URL path to this Key.
+        """Getter property for the URL path to this Blob.
 
         :rtype: string
-        :returns: The URL path to this Key.
+        :returns: The URL path to this Blob.
         """
         if not self.bucket:
             raise ValueError('Cannot determine path without a bucket defined.')
         elif not self.name:
-            raise ValueError('Cannot determine path without a key name.')
+            raise ValueError('Cannot determine path without a blob name.')
 
         return self.bucket.path + '/o/' + urllib.quote(self.name, safe='')
 
     @property
     def public_url(self):
-        """The public URL for this key's object.
+        """The public URL for this blob's object.
 
         :rtype: `string`
-        :returns: The public URL for this key.
+        :returns: The public URL for this blob.
         """
         return '{storage_base_url}/{bucket_name}/{quoted_name}'.format(
             storage_base_url='http://commondatastorage.googleapis.com',
@@ -150,14 +150,14 @@ class Key(_PropertyMixin):
             quoted_name=urllib.quote(self.name, safe=''))
 
     def generate_signed_url(self, expiration, method='GET'):
-        """Generates a signed URL for this key.
+        """Generates a signed URL for this blob.
 
-        If you have a key that you want to allow access to for a set
+        If you have a blob that you want to allow access to for a set
         amount of time, you can use this method to generate a URL that
         is only valid within a certain time period.
 
         This is particularly useful if you don't want publicly
-        accessible keys, but don't want to require users to explicitly
+        accessible blobs, but don't want to require users to explicitly
         log in.
 
         :type expiration: int, long, datetime.datetime, datetime.timedelta
@@ -178,50 +178,50 @@ class Key(_PropertyMixin):
                                                    method=method)
 
     def exists(self):
-        """Determines whether or not this key exists.
+        """Determines whether or not this blob exists.
 
         :rtype: boolean
-        :returns: True if the key exists in Cloud Storage.
+        :returns: True if the blob exists in Cloud Storage.
         """
-        return self.bucket.get_key(self.name) is not None
+        return self.bucket.get_blob(self.name) is not None
 
     def rename(self, new_name):
-        """Renames this key using copy and delete operations.
+        """Renames this blob using copy and delete operations.
 
-        Effectively, copies key to the same bucket with a new name, then
-        deletes the key.
+        Effectively, copies blob to the same bucket with a new name, then
+        deletes the blob.
 
         .. warning::
           This method will first duplicate the data and then delete the
-          old key.  This means that with very large objects renaming
+          old blob.  This means that with very large objects renaming
           could be a very (temporarily) costly or a very slow operation.
 
         :type new_name: string
-        :param new_name: The new name for this key.
+        :param new_name: The new name for this blob.
 
-        :rtype: :class:`Key`
-        :returns: The newly-copied key.
+        :rtype: :class:`Blob`
+        :returns: The newly-copied blob.
         """
-        new_key = self.bucket.copy_key(self, self.bucket, new_name)
-        self.bucket.delete_key(self)
-        return new_key
+        new_blob = self.bucket.copy_blob(self, self.bucket, new_name)
+        self.bucket.delete_blob(self)
+        return new_blob
 
     def delete(self):
-        """Deletes a key from Cloud Storage.
+        """Deletes a blob from Cloud Storage.
 
-        :rtype: :class:`Key`
-        :returns: The key that was just deleted.
+        :rtype: :class:`Blob`
+        :returns: The blob that was just deleted.
         :raises: :class:`gcloud.storage.exceptions.NotFound`
                  (propagated from
-                 :meth:`gcloud.storage.bucket.Bucket.delete_key`).
+                 :meth:`gcloud.storage.bucket.Bucket.delete_blob`).
         """
-        return self.bucket.delete_key(self)
+        return self.bucket.delete_blob(self)
 
     def download_to_file(self, file_obj):
-        """Download the contents of this key into a file-like object.
+        """Download the contents of this blob into a file-like object.
 
         :type file_obj: file
-        :param file_obj: A file handle to which to write the key's data.
+        :param file_obj: A file handle to which to write the blob's data.
 
         :raises: :class:`gcloud.storage.exceptions.NotFound`
         """
@@ -246,7 +246,7 @@ class Key(_PropertyMixin):
     get_contents_to_file = download_to_file
 
     def download_to_filename(self, filename):
-        """Download the contents of this key into a named file.
+        """Download the contents of this blob into a named file.
 
         :type filename: string
         :param filename: A filename to be passed to ``open``.
@@ -267,10 +267,10 @@ class Key(_PropertyMixin):
     get_contents_to_filename = download_to_filename
 
     def download_as_string(self):
-        """Download the contents of this key as a string.
+        """Download the contents of this blob as a string.
 
         :rtype: string
-        :returns: The data stored in this key.
+        :returns: The data stored in this blob.
         :raises: :class:`gcloud.storage.exceptions.NotFound`
         """
         string_buffer = StringIO()
@@ -282,11 +282,11 @@ class Key(_PropertyMixin):
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
                          content_type=None, num_retries=6):
-        """Upload the contents of this key from a file-like object.
+        """Upload the contents of this blob from a file-like object.
 
         .. note::
-           The effect of uploading to an existing key depends on the
-           "versioning" and "lifecycle" policies defined on the key's
+           The effect of uploading to an existing blob depends on the
+           "versioning" and "lifecycle" policies defined on the blob's
            bucket.  In the absence of those policies, upload will
            overwrite any existing contents.
 
@@ -356,11 +356,11 @@ class Key(_PropertyMixin):
     set_contents_from_file = upload_from_file
 
     def upload_from_filename(self, filename):
-        """Upload this key's contents from the content of f named file.
+        """Upload this blob's contents from the content of a named file.
 
         .. note::
-           The effect of uploading to an existing key depends on the
-           "versioning" and "lifecycle" policies defined on the key's
+           The effect of uploading to an existing blob depends on the
+           "versioning" and "lifecycle" policies defined on the blob's
            bucket.  In the absence of those policies, upload will
            overwrite any existing contents.
 
@@ -381,11 +381,11 @@ class Key(_PropertyMixin):
     set_contents_from_filename = upload_from_filename
 
     def upload_from_string(self, data, content_type='text/plain'):
-        """Upload contents of this key from the provided string.
+        """Upload contents of this blob from the provided string.
 
         .. note::
-           The effect of uploading to an existing key depends on the
-           "versioning" and "lifecycle" policies defined on the key's
+           The effect of uploading to an existing blob depends on the
+           "versioning" and "lifecycle" policies defined on the blob's
            bucket.  In the absence of those policies, upload will
            overwrite any existing contents.
 
@@ -395,10 +395,10 @@ class Key(_PropertyMixin):
            API documents for details.
 
         :type data: string
-        :param data: The data to store in this key.
+        :param data: The data to store in this blob.
 
-        :rtype: :class:`Key`
-        :returns: The updated Key object.
+        :rtype: :class:`Blob`
+        :returns: The updated Blob object.
         """
         string_buffer = StringIO()
         string_buffer.write(data)
@@ -411,7 +411,7 @@ class Key(_PropertyMixin):
     set_contents_from_string = upload_from_string
 
     def make_public(self):
-        """Make this key public giving all users read access.
+        """Make this blob public giving all users read access.
 
         :returns: The current object.
         """

@@ -76,14 +76,14 @@ class TestConnection(unittest2.TestCase):
             {'status': '200', 'content-type': 'application/json'},
             '{}',
         )
-        keys = list(conn)
-        self.assertEqual(len(keys), 0)
+        blobs = list(conn)
+        self.assertEqual(len(blobs), 0)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
     def test___iter___non_empty(self):
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
             conn.API_BASE_URL,
@@ -93,11 +93,11 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"items": [{"name": "%s"}]}' % KEY,
+            '{"items": [{"name": "%s"}]}' % BLOB_NAME,
         )
-        keys = list(conn)
-        self.assertEqual(len(keys), 1)
-        self.assertEqual(keys[0].name, KEY)
+        blobs = list(conn)
+        self.assertEqual(len(blobs), 1)
+        self.assertEqual(blobs[0].name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
@@ -122,20 +122,20 @@ class TestConnection(unittest2.TestCase):
 
     def test___contains___hit(self):
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
             'b',
-            'key?project=%s' % PROJECT,
+            '%s?project=%s' % (BLOB_NAME, PROJECT),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % KEY,
+            '{"name": "%s"}' % BLOB_NAME,
         )
-        self.assertTrue(KEY in conn)
+        self.assertTrue(BLOB_NAME in conn)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
@@ -370,14 +370,14 @@ class TestConnection(unittest2.TestCase):
             {'status': '200', 'content-type': 'application/json'},
             '{}',
         )
-        keys = conn.get_all_buckets()
-        self.assertEqual(len(keys), 0)
+        blobs = conn.get_all_buckets()
+        self.assertEqual(len(blobs), 0)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_get_all_buckets_non_empty(self):
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
             conn.API_BASE_URL,
@@ -387,11 +387,11 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"items": [{"name": "%s"}]}' % KEY,
+            '{"items": [{"name": "%s"}]}' % BLOB_NAME,
         )
-        keys = conn.get_all_buckets()
-        self.assertEqual(len(keys), 1)
-        self.assertEqual(keys[0].name, KEY)
+        blobs = conn.get_all_buckets()
+        self.assertEqual(len(blobs), 1)
+        self.assertEqual(blobs[0].name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
@@ -418,23 +418,23 @@ class TestConnection(unittest2.TestCase):
     def test_get_bucket_hit(self):
         from gcloud.storage.bucket import Bucket
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
             'b',
-            'key?project=%s' % PROJECT,
+            '%s?project=%s' % (BLOB_NAME, PROJECT),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % KEY,
+            '{"name": "%s"}' % BLOB_NAME,
         )
-        bucket = conn.get_bucket(KEY)
+        bucket = conn.get_bucket(BLOB_NAME)
         self.assertTrue(isinstance(bucket, Bucket))
         self.assertTrue(bucket.connection is conn)
-        self.assertEqual(bucket.name, KEY)
+        self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
@@ -460,30 +460,30 @@ class TestConnection(unittest2.TestCase):
     def test_lookup_hit(self):
         from gcloud.storage.bucket import Bucket
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
             'b',
-            'key?project=%s' % PROJECT,
+            '%s?project=%s' % (BLOB_NAME, PROJECT),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % KEY,
+            '{"name": "%s"}' % BLOB_NAME,
         )
-        bucket = conn.lookup(KEY)
+        bucket = conn.lookup(BLOB_NAME)
         self.assertTrue(isinstance(bucket, Bucket))
         self.assertTrue(bucket.connection is conn)
-        self.assertEqual(bucket.name, KEY)
+        self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_create_bucket_ok(self):
         from gcloud.storage.bucket import Bucket
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
             conn.API_BASE_URL,
@@ -493,17 +493,17 @@ class TestConnection(unittest2.TestCase):
             ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % KEY,
+            '{"name": "%s"}' % BLOB_NAME,
         )
-        bucket = conn.create_bucket(KEY)
+        bucket = conn.create_bucket(BLOB_NAME)
         self.assertTrue(isinstance(bucket, Bucket))
         self.assertTrue(bucket.connection is conn)
-        self.assertEqual(bucket.name, KEY)
+        self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_delete_bucket_defaults_miss(self):
-        _deleted_keys = []
+        _deleted_blobs = []
 
         class _Bucket(object):
 
@@ -512,14 +512,14 @@ class TestConnection(unittest2.TestCase):
                 self.path = '/b/' + name
 
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
             'b',
-            'key?project=%s' % PROJECT,
+            '%s?project=%s' % (BLOB_NAME, PROJECT),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -530,21 +530,21 @@ class TestConnection(unittest2.TestCase):
             return _Bucket(name)
 
         conn.new_bucket = _new_bucket
-        self.assertEqual(conn.delete_bucket(KEY), True)
-        self.assertEqual(_deleted_keys, [])
+        self.assertEqual(conn.delete_bucket(BLOB_NAME), True)
+        self.assertEqual(_deleted_blobs, [])
         self.assertEqual(http._called_with['method'], 'DELETE')
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_delete_bucket_force_True(self):
-        _deleted_keys = []
+        _deleted_blobs = []
 
-        class _Key(object):
+        class _Blob(object):
 
             def __init__(self, name):
                 self._name = name
 
             def delete(self):
-                _deleted_keys.append(self._name)
+                _deleted_blobs.append(self._name)
 
         class _Bucket(object):
 
@@ -553,17 +553,17 @@ class TestConnection(unittest2.TestCase):
                 self.path = '/b/' + name
 
             def __iter__(self):
-                return iter([_Key(x) for x in ('foo', 'bar')])
+                return iter([_Blob(x) for x in ('foo', 'bar')])
 
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
             'b',
-            'key?project=%s' % PROJECT,
+            '%s?project=%s' % (BLOB_NAME, PROJECT),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -574,28 +574,28 @@ class TestConnection(unittest2.TestCase):
             return _Bucket(name)
 
         conn.new_bucket = _new_bucket
-        self.assertEqual(conn.delete_bucket(KEY, True), True)
-        self.assertEqual(_deleted_keys, ['foo', 'bar'])
+        self.assertEqual(conn.delete_bucket(BLOB_NAME, True), True)
+        self.assertEqual(_deleted_blobs, ['foo', 'bar'])
         self.assertEqual(http._called_with['method'], 'DELETE')
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_new_bucket_w_existing(self):
         from gcloud.storage.bucket import Bucket
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
-        existing = Bucket(self, KEY)
+        existing = Bucket(self, BLOB_NAME)
         self.assertTrue(conn.new_bucket(existing) is existing)
 
-    def test_new_bucket_w_key(self):
+    def test_new_bucket_w_blob(self):
         from gcloud.storage.bucket import Bucket
         PROJECT = 'project'
-        KEY = 'key'
+        BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
-        bucket = conn.new_bucket(KEY)
+        bucket = conn.new_bucket(BLOB_NAME)
         self.assertTrue(isinstance(bucket, Bucket))
         self.assertTrue(bucket.connection is conn)
-        self.assertEqual(bucket.name, KEY)
+        self.assertEqual(bucket.name, BLOB_NAME)
 
     def test_new_bucket_w_invalid(self):
         PROJECT = 'project'
@@ -610,7 +610,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.storage import connection as MUT
 
         ENDPOINT = 'http://api.example.com'
-        RESOURCE = '/name/key'
+        RESOURCE = '/name/path'
         PROJECT = 'project'
         SIGNED = base64.b64encode('DEADBEEF')
         conn = self._makeOne(PROJECT, _Credentials())
@@ -664,8 +664,8 @@ class Test__BucketIterator(unittest2.TestCase):
 
     def test_get_items_from_response_non_empty(self):
         from gcloud.storage.bucket import Bucket
-        KEY = 'key'
-        response = {'items': [{'name': KEY}]}
+        BLOB_NAME = 'blob-name'
+        response = {'items': [{'name': BLOB_NAME}]}
         connection = object()
         iterator = self._makeOne(connection)
         buckets = list(iterator.get_items_from_response(response))
@@ -673,7 +673,7 @@ class Test__BucketIterator(unittest2.TestCase):
         bucket = buckets[0]
         self.assertTrue(isinstance(bucket, Bucket))
         self.assertTrue(bucket.connection is connection)
-        self.assertEqual(bucket.name, KEY)
+        self.assertEqual(bucket.name, BLOB_NAME)
 
 
 class Test__get_expiration_seconds(unittest2.TestCase):

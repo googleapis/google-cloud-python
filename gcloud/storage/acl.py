@@ -491,15 +491,15 @@ class DefaultObjectACL(BucketACL):
 
 
 class ObjectACL(ACL):
-    """An ACL specifically for a key."""
+    """An ACL specifically for a Cloud Storage object / blob.
 
-    def __init__(self, key):
-        """
-        :type key: :class:`gcloud.storage.key.Key`
-        :param key: The key that this ACL corresponds to.
-        """
+    :type blob: :class:`gcloud.storage.blob.Blob`
+    :param blob: The blob that this ACL corresponds to.
+    """
+
+    def __init__(self, blob):
         super(ObjectACL, self).__init__()
-        self.key = key
+        self.blob = blob
 
     def reload(self):
         """Reload the ACL data from Cloud Storage.
@@ -509,8 +509,8 @@ class ObjectACL(ACL):
         """
         self.entities.clear()
 
-        url_path = '%s/acl' % self.key.path
-        found = self.key.connection.api_request(method='GET', path=url_path)
+        url_path = '%s/acl' % self.blob.path
+        found = self.blob.connection.api_request(method='GET', path=url_path)
         self.loaded = True
         for entry in found['items']:
             self.add_entity(self.entity_from_dict(entry))
@@ -518,7 +518,7 @@ class ObjectACL(ACL):
         return self
 
     def save(self, acl=None):
-        """Save the ACL data for this key.
+        """Save the ACL data for this blob.
 
         :type acl: :class:`gcloud.storage.acl.ACL`
         :param acl: The ACL object to save.  If left blank, this will
@@ -531,8 +531,8 @@ class ObjectACL(ACL):
             save_to_backend = True
 
         if save_to_backend:
-            result = self.key.connection.api_request(
-                method='PATCH', path=self.key.path, data={'acl': list(acl)},
+            result = self.blob.connection.api_request(
+                method='PATCH', path=self.blob.path, data={'acl': list(acl)},
                 query_params={'projection': 'full'})
             self.entities.clear()
             for entry in result['acl']:
@@ -542,11 +542,11 @@ class ObjectACL(ACL):
         return self
 
     def clear(self):
-        """Remove all ACL rules from the key.
+        """Remove all ACL rules from the blob.
 
         Note that this won't actually remove *ALL* the rules, but it
         will remove all the non-default rules.  In short, you'll still
-        have access to a key that you created even after you clear ACL
+        have access to a blob that you created even after you clear ACL
         rules with this method.
         """
         return self.save([])

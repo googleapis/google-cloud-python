@@ -333,7 +333,7 @@ class Connection(_Base):
     def get_all_buckets(self):
         """Get all buckets in the project.
 
-        This will not populate the list of keys available in each
+        This will not populate the list of blobs available in each
         bucket.
 
         You can also iterate over the connection object, so these two
@@ -469,14 +469,14 @@ class Connection(_Base):
         :raises: :class:`gcloud.storage.exceptions.NotFound` if the
                  bucket doesn't exist, or
                  :class:`gcloud.storage.exceptions.Conflict` if the
-                 bucket has keys and `force` is not passed.
+                 bucket has blobs and `force` is not passed.
         """
         bucket = self.new_bucket(bucket)
 
         # This force delete operation is slow.
         if force:
-            for key in bucket:
-                key.delete()
+            for blob in bucket:
+                blob.delete()
 
         self.api_request(method='DELETE', path=bucket.path)
         return True
@@ -513,7 +513,7 @@ class Connection(_Base):
 
         :type resource: string
         :param resource: A pointer to a specific resource
-                         (typically, ``/bucket-name/path/to/key.txt``).
+                         (typically, ``/bucket-name/path/to/blob.txt``).
 
         :type expiration: int, long, datetime.datetime, datetime.timedelta
         :param expiration: When the signed URL should expire.

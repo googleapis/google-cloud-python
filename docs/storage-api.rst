@@ -1,6 +1,6 @@
 .. toctree::
   :maxdepth: 0
-  :hidden:  
+  :hidden:
 
 Storage
 -------
