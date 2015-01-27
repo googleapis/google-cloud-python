@@ -72,17 +72,23 @@ _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 def set_default_dataset_id(dataset_id=None):
     """Set default dataset ID either explicitly or implicitly as fall-back.
 
-    In implicit case, currently only supports enviroment variable but will
-    support App Engine, Compute Engine and other environments in the future.
-
-    Local environment variable used is:
-    - GCLOUD_DATASET_ID
+    In implicit case, supports three cases. In order of precedence, the
+    implicit cases are:
+    - GCLOUD_DATASET_ID environment variable
+    - Google App Engine application ID
+    - Google Compute Engine project ID (from metadata server)
 
     :type dataset_id: string
     :param dataset_id: Optional. The dataset ID to use as default.
     """
     if dataset_id is None:
         dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
+
+    if dataset_id is None:
+        dataset_id = _implicit_environ.app_engine_id()
+
+    if dataset_id is None:
+        dataset_id = _implicit_environ.compute_engine_id()
 
     if dataset_id is not None:
         _implicit_environ.DATASET_ID = dataset_id
