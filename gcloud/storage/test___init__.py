@@ -69,3 +69,270 @@ class Test_get_bucket(unittest2.TestCase):
         self.assertTrue(found is bucket)
         self.assertEqual(_called_with, [((PROJECT,), {})])
         self.assertEqual(connection._called_with, BUCKET)
+
+
+class Test_set_default_bucket_name(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.storage import _implicit_environ
+        self._replaced_bucket_name = _implicit_environ.BUCKET_NAME
+        _implicit_environ.BUCKET_NAME = None
+
+    def tearDown(self):
+        from gcloud.storage import _implicit_environ
+        _implicit_environ.BUCKET_NAME = self._replaced_bucket_name
+
+    def _callFUT(self, bucket_name=None):
+        from gcloud.storage import set_default_bucket_name
+        return set_default_bucket_name(bucket_name=bucket_name)
+
+    def _monkey(self, implicit_bucket_name):
+        import os
+        from gcloud.storage import _BUCKET_ENV_VAR_NAME
+        from gcloud._testing import _Monkey
+        environ = {_BUCKET_ENV_VAR_NAME: implicit_bucket_name}
+        return _Monkey(os, getenv=environ.get)
+
+    def test_no_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        with self._monkey(None):
+            self._callFUT()
+        self.assertEqual(_implicit_environ.BUCKET_NAME, None)
+
+    def test_set_from_env_var(self):
+        from gcloud.storage import _implicit_environ
+        IMPLICIT_BUCKET_NAME = 'IMPLICIT'
+        with self._monkey(IMPLICIT_BUCKET_NAME):
+            self._callFUT()
+        self.assertEqual(_implicit_environ.BUCKET_NAME, IMPLICIT_BUCKET_NAME)
+
+    def test_set_explicit_w_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        EXPLICIT_BUCKET_NAME = 'EXPLICIT'
+        with self._monkey(None):
+            self._callFUT(EXPLICIT_BUCKET_NAME)
+        self.assertEqual(_implicit_environ.BUCKET_NAME, EXPLICIT_BUCKET_NAME)
+
+    def test_set_explicit_no_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        IMPLICIT_BUCKET_NAME = 'IMPLICIT'
+        EXPLICIT_BUCKET_NAME = 'EXPLICIT'
+        with self._monkey(IMPLICIT_BUCKET_NAME):
+            self._callFUT(EXPLICIT_BUCKET_NAME)
+        self.assertEqual(_implicit_environ.BUCKET_NAME, EXPLICIT_BUCKET_NAME)
+
+    def test_set_explicit_None_wo_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        with self._monkey(None):
+            self._callFUT(None)
+        self.assertEqual(_implicit_environ.BUCKET_NAME, None)
+
+    def test_set_explicit_None_w_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        IMPLICIT_BUCKET_NAME = 'IMPLICIT'
+        with self._monkey(IMPLICIT_BUCKET_NAME):
+            self._callFUT(None)
+        self.assertEqual(_implicit_environ.BUCKET_NAME, IMPLICIT_BUCKET_NAME)
+
+
+class Test_set_default_project(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.storage import _implicit_environ
+        self._replaced_project = _implicit_environ.PROJECT
+        _implicit_environ.PROJECT = None
+
+    def tearDown(self):
+        from gcloud.storage import _implicit_environ
+        _implicit_environ.PROJECT = self._replaced_project
+
+    def _callFUT(self, project=None):
+        from gcloud.storage import set_default_project
+        return set_default_project(project=project)
+
+    def _monkey(self, implicit_project):
+        import os
+        from gcloud.storage import _PROJECT_ENV_VAR_NAME
+        from gcloud._testing import _Monkey
+        environ = {_PROJECT_ENV_VAR_NAME: implicit_project}
+        return _Monkey(os, getenv=environ.get)
+
+    def test_no_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        with self._monkey(None):
+            self._callFUT()
+        self.assertEqual(_implicit_environ.PROJECT, None)
+
+    def test_set_from_env_var(self):
+        from gcloud.storage import _implicit_environ
+        IMPLICIT_PROJECT = 'IMPLICIT'
+        with self._monkey(IMPLICIT_PROJECT):
+            self._callFUT()
+        self.assertEqual(_implicit_environ.PROJECT, IMPLICIT_PROJECT)
+
+    def test_set_explicit_w_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        EXPLICIT_PROJECT = 'EXPLICIT'
+        with self._monkey(None):
+            self._callFUT(EXPLICIT_PROJECT)
+        self.assertEqual(_implicit_environ.PROJECT, EXPLICIT_PROJECT)
+
+    def test_set_explicit_no_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        IMPLICIT_PROJECT = 'IMPLICIT'
+        EXPLICIT_PROJECT = 'EXPLICIT'
+        with self._monkey(IMPLICIT_PROJECT):
+            self._callFUT(EXPLICIT_PROJECT)
+        self.assertEqual(_implicit_environ.PROJECT, EXPLICIT_PROJECT)
+
+    def test_set_explicit_None_wo_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        with self._monkey(None):
+            self._callFUT(None)
+        self.assertEqual(_implicit_environ.PROJECT, None)
+
+    def test_set_explicit_None_w_env_var_set(self):
+        from gcloud.storage import _implicit_environ
+        IMPLICIT_PROJECT = 'IMPLICIT'
+        with self._monkey(IMPLICIT_PROJECT):
+            self._callFUT(None)
+        self.assertEqual(_implicit_environ.PROJECT, IMPLICIT_PROJECT)
+
+
+class Test_set_default_connection(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.storage import _implicit_environ
+        self._replaced_connection = _implicit_environ.CONNECTION
+        _implicit_environ.CONNECTION = None
+
+    def tearDown(self):
+        from gcloud.storage import _implicit_environ
+        _implicit_environ.CONNECTION = self._replaced_connection
+
+    def _callFUT(self, project=None, connection=None):
+        from gcloud.storage import set_default_connection
+        return set_default_connection(project=project, connection=connection)
+
+    def test_set_explicit(self):
+        from gcloud.storage import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+        fake_cnxn = object()
+        self._callFUT(connection=fake_cnxn)
+        self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
+
+    def test_set_implicit_no_project(self):
+        from gcloud._testing import _Monkey
+        from gcloud import storage
+        from gcloud.storage import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+
+        fake_cnxn = object()
+        _called_args = []
+        _called_kwargs = []
+
+        def mock_get_connection(*args, **kwargs):
+            _called_args.append(args)
+            _called_kwargs.append(kwargs)
+            return fake_cnxn
+
+        with _Monkey(storage, get_connection=mock_get_connection):
+            self._callFUT()
+
+        self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
+        self.assertEqual(_called_args, [(None,)])
+        self.assertEqual(_called_kwargs, [{}])
+
+    def test_set_implicit_with_implicit_project(self):
+        from gcloud._testing import _Monkey
+        from gcloud import storage
+        from gcloud.storage import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+
+        fake_cnxn = object()
+        _called_args = []
+        _called_kwargs = []
+
+        def mock_get_connection(*args, **kwargs):
+            _called_args.append(args)
+            _called_kwargs.append(kwargs)
+            return fake_cnxn
+
+        PROJECT = 'project'
+
+        with _Monkey(_implicit_environ, PROJECT=PROJECT):
+            with _Monkey(storage, get_connection=mock_get_connection):
+                self._callFUT()
+
+        self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
+        self.assertEqual(_called_args, [(PROJECT,)])
+        self.assertEqual(_called_kwargs, [{}])
+
+    def test_set_implicit_with_explicit_project(self):
+        from gcloud._testing import _Monkey
+        from gcloud import storage
+        from gcloud.storage import _implicit_environ
+
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+
+        fake_cnxn = object()
+        _called_args = []
+        _called_kwargs = []
+
+        def mock_get_connection(*args, **kwargs):
+            _called_args.append(args)
+            _called_kwargs.append(kwargs)
+            return fake_cnxn
+
+        PROJECT = 'project'
+
+        with _Monkey(storage, get_connection=mock_get_connection):
+            self._callFUT(PROJECT)
+
+        self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
+        self.assertEqual(_called_args, [(PROJECT,)])
+        self.assertEqual(_called_kwargs, [{}])
+
+
+class Test_set_defaults(unittest2.TestCase):
+
+    def _callFUT(self, bucket_name=None, project=None, connection=None):
+        from gcloud.storage import set_defaults
+        return set_defaults(bucket_name=bucket_name, project=project,
+                            connection=connection)
+
+    def test_it(self):
+        from gcloud._testing import _Monkey
+        from gcloud import storage
+
+        BUCKET_NAME = object()
+        PROJECT = object()
+        CONNECTION = object()
+
+        SET_BUCKET_NAME_CALLED = []
+
+        def call_set_bucket_name(bucket_name=None):
+            SET_BUCKET_NAME_CALLED.append(bucket_name)
+
+        SET_PROJECT_CALLED = []
+
+        def call_set_project(project=None):
+            SET_PROJECT_CALLED.append(project)
+
+        SET_CONNECTION_CALLED = []
+
+        def call_set_connection(project=None, connection=None):
+            SET_CONNECTION_CALLED.append((project, connection))
+
+        with _Monkey(storage, set_default_bucket_name=call_set_bucket_name,
+                     set_default_connection=call_set_connection,
+                     set_default_project=call_set_project):
+            self._callFUT(bucket_name=BUCKET_NAME, project=PROJECT,
+                          connection=CONNECTION)
+
+        self.assertEqual(SET_BUCKET_NAME_CALLED, [BUCKET_NAME])
+        self.assertEqual(SET_PROJECT_CALLED, [PROJECT])
+        self.assertEqual(SET_CONNECTION_CALLED, [(PROJECT, CONNECTION)])
