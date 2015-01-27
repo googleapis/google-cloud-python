@@ -242,9 +242,6 @@ class Blob(_PropertyMixin):
         download.StreamInChunks(callback=lambda *args: None,
                                 finish_callback=lambda *args: None)
 
-    # NOTE: Alias for boto-like API.
-    get_contents_to_file = download_to_file
-
     def download_to_filename(self, filename):
         """Download the contents of this blob into a named file.
 
@@ -263,9 +260,6 @@ class Blob(_PropertyMixin):
         )
         os.utime(file_obj.name, (mtime, mtime))
 
-    # NOTE: Alias for boto-like API.
-    get_contents_to_filename = download_to_filename
-
     def download_as_string(self):
         """Download the contents of this blob as a string.
 
@@ -276,9 +270,6 @@ class Blob(_PropertyMixin):
         string_buffer = StringIO()
         self.download_to_file(string_buffer)
         return string_buffer.getvalue()
-
-    # NOTE: Alias for boto-like API.
-    get_contents_as_string = download_as_string
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
                          content_type=None, num_retries=6):
@@ -352,9 +343,6 @@ class Blob(_PropertyMixin):
         else:
             http_wrapper.MakeRequest(conn.http, request, retries=num_retries)
 
-    # NOTE: Alias for boto-like API.
-    set_contents_from_file = upload_from_file
-
     def upload_from_filename(self, filename):
         """Upload this blob's contents from the content of a named file.
 
@@ -376,9 +364,6 @@ class Blob(_PropertyMixin):
 
         with open(filename, 'rb') as file_obj:
             self.upload_from_file(file_obj, content_type=content_type)
-
-    # NOTE: Alias for boto-like API.
-    set_contents_from_filename = upload_from_filename
 
     def upload_from_string(self, data, content_type='text/plain'):
         """Upload contents of this blob from the provided string.
@@ -406,9 +391,6 @@ class Blob(_PropertyMixin):
                               size=string_buffer.len,
                               content_type=content_type)
         return self
-
-    # NOTE: Alias for boto-like API.
-    set_contents_from_string = upload_from_string
 
     def make_public(self):
         """Make this blob public giving all users read access.

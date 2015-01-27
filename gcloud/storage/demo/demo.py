@@ -39,10 +39,10 @@ print(connection.get_all_buckets())
 blob = bucket.new_blob("my-new-file.txt")
 
 # Now let's put some data in there.
-blob.set_contents_from_string("this is some data!")
+blob.upload_from_string("this is some data!")
 
 # ... and we can read that data back again.
-print(blob.get_contents_as_string())
+print(blob.download_as_string())
 
 # Now let's delete that blob.
 print(blob.delete())

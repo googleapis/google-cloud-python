@@ -63,8 +63,8 @@ you can create buckets and blobs::
   >>> blob = bucket.new_blob('my-test-file.txt')
   >>> print blob
   <Blob: my-new-bucket, my-test-file.txt>
-  >>> blob = blob.set_contents_from_string('this is test content!')
-  >>> print blob.get_contents_as_string()
+  >>> blob = blob.upload_from_string('this is test content!')
+  >>> print blob.download_as_string()
   'this is test content!'
   >>> print bucket.get_all_blobs()
   [<Blob: my-new-bucket, my-test-file.txt>]
