@@ -225,10 +225,11 @@ with the same set of credentials (unlikely):</p>
 <dt id="gcloud.datastore.__init__.set_default_dataset_id">
 <tt class="descclassname">gcloud.datastore.__init__.</tt><tt class="descname">set_default_dataset_id</tt><big>(</big><em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#set_default_dataset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.set_default_dataset_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Set default dataset ID either explicitly or implicitly as fall-back.</p>
-<p>In implicit case, currently only supports enviroment variable but will
-support App Engine, Compute Engine and other environments in the future.</p>
-<p>Local environment variable used is:
-- GCLOUD_DATASET_ID</p>
+<p>In implicit case, supports three cases. In order of precedence, the
+implicit cases are:
+- GCLOUD_DATASET_ID environment variable
+- Google App Engine application ID
+- Google Compute Engine project ID (from metadata server)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
