@@ -16,14 +16,11 @@ from __future__ import print_function
 import os
 import sys
 
-from gcloud import storage
-
 
 # From shell environ. May be None.
 PROJECT_ID = os.getenv('GCLOUD_TESTS_PROJECT_ID')
 DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
 CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-CACHED_RETURN_VALS = {}
 
 ENVIRON_ERROR_MSG = """\
 To run the regression tests, you need to set some environment variables.
@@ -46,13 +43,3 @@ def get_environ(require_datastore=False, require_storage=False):
         'project_id': PROJECT_ID,
         'dataset_id': DATASET_ID,
     }
-
-
-def get_storage_connection():
-    environ = get_environ(require_storage=True)
-    project_id = environ['project_id']
-    key = ('get_storage_connection', project_id)
-    if key not in CACHED_RETURN_VALS:
-        # Cache return value for the environment.
-        CACHED_RETURN_VALS[key] = storage.get_connection(project_id)
-    return CACHED_RETURN_VALS[key]

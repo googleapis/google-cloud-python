@@ -20,23 +20,25 @@ import time
 import unittest2
 
 from gcloud import storage
-# This assumes the command is being run via tox hence the
-# repository root is the current directory.
-from regression import regression_utils
+from gcloud.storage import _implicit_environ
 
 
 HTTP = httplib2.Http()
 SHARED_BUCKETS = {}
 
+storage._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
+storage.set_defaults()
+
+CONNECTION = _implicit_environ.CONNECTION
+
 
 def setUpModule():
     if 'test_bucket' not in SHARED_BUCKETS:
-        connection = regression_utils.get_storage_connection()
         # %d rounds milliseconds to nearest integer.
         bucket_name = 'new%d' % (1000 * time.time(),)
         # In the **very** rare case the bucket name is reserved, this
         # fails with a ConnectionError.
-        SHARED_BUCKETS['test_bucket'] = connection.create_bucket(bucket_name)
+        SHARED_BUCKETS['test_bucket'] = CONNECTION.create_bucket(bucket_name)
 
 
 def safe_delete(bucket):
@@ -55,14 +57,7 @@ def tearDownModule():
         safe_delete(bucket)
 
 
-class TestStorage(unittest2.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        cls.connection = regression_utils.get_storage_connection()
-
-
-class TestStorageBuckets(TestStorage):
+class TestStorageBuckets(unittest2.TestCase):
 
     def setUp(self):
         self.case_buckets_to_delete = []
@@ -74,8 +69,8 @@ class TestStorageBuckets(TestStorage):
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'
         self.assertRaises(storage.exceptions.NotFound,
-                          self.connection.get_bucket, new_bucket_name)
-        created = self.connection.create_bucket(new_bucket_name)
+                          CONNECTION.get_bucket, new_bucket_name)
+        created = CONNECTION.create_bucket(new_bucket_name)
         self.case_buckets_to_delete.append(created)
         self.assertEqual(created.name, new_bucket_name)
 
@@ -87,17 +82,17 @@ class TestStorageBuckets(TestStorage):
         ]
         created_buckets = []
         for bucket_name in buckets_to_create:
-            bucket = self.connection.create_bucket(bucket_name)
+            bucket = CONNECTION.create_bucket(bucket_name)
             self.case_buckets_to_delete.append(bucket)
 
         # Retrieve the buckets.
-        all_buckets = self.connection.get_all_buckets()
+        all_buckets = CONNECTION.get_all_buckets()
         created_buckets = [bucket for bucket in all_buckets
                            if bucket.name in buckets_to_create]
         self.assertEqual(len(created_buckets), len(buckets_to_create))
 
 
-class TestStorageFiles(TestStorage):
+class TestStorageFiles(unittest2.TestCase):
 
     FILES = {
         'logo': {
