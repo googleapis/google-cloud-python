@@ -241,6 +241,80 @@ set of credentials:</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="gcloud.storage.__init__.set_default_bucket_name">
+<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">set_default_bucket_name</tt><big>(</big><em>bucket_name=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_default_bucket_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_default_bucket_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Set default bucket name either explicitly or implicitly as fall-back.</p>
+<p>In implicit case, currently only supports enviroment variable but will
+support App Engine, Compute Engine and other environments in the future.</p>
+<p>Local environment variable used is:
+- GCLOUD_BUCKET_NAME</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket_name</strong> (<em>string</em>) &#8211; Optional. The bucket name to use as default.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.storage.__init__.set_default_connection">
+<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">set_default_connection</tt><big>(</big><em>project=None</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_default_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_default_connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Set default connection either explicitly or implicitly as fall-back.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>project</strong> (<em>string</em>) &#8211; Optional. The name of the project to connect to.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; A connection provided to be the default.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.storage.__init__.set_default_project">
+<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">set_default_project</tt><big>(</big><em>project=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_default_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_default_project" title="Permalink to this definition">#</a></dt>
+<dd><p>Set default bucket name either explicitly or implicitly as fall-back.</p>
+<p>In implicit case, currently only supports enviroment variable but will
+support App Engine, Compute Engine and other environments in the future.</p>
+<p>Local environment variable used is:
+- GCLOUD_PROJECT</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> (<em>string</em>) &#8211; Optional. The project name to use as default.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.storage.__init__.set_defaults">
+<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">set_defaults</tt><big>(</big><em>bucket_name=None</em>, <em>project=None</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_defaults" title="Permalink to this definition">#</a></dt>
+<dd><p>Set defaults either explicitly or implicitly as fall-back.</p>
+<p>Uses the arguments to call the individual default methods.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bucket_name</strong> (<em>string</em>) &#8211; Optional. The bucket name to use as default.</li>
+<li><strong>project</strong> (<em>string</em>) &#8211; Optional. The name of the project to connect to.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; A connection provided to be the default.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="module-gcloud.storage.connection">
 <span id="connections"></span><h2>Connections<a class="headerlink" href="#module-gcloud.storage.connection" title="Permalink to this headline">#</a></h2>

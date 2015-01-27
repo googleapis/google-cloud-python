@@ -111,7 +111,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">  machine).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 
 
@@ -119,7 +122,85 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
          <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span><span class="p">,</span>
          <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_write&#39;</span><span class="p">)</span>
 
+<span class="n">_BUCKET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;GCLOUD_BUCKET_NAME&#39;</span>
+<span class="n">_PROJECT_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;GCLOUD_PROJECT&#39;</span>
 
+
+<div class="viewcode-block" id="set_default_bucket_name"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.set_default_bucket_name">[docs]</a><span class="k">def</span> <span class="nf">set_default_bucket_name</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set default bucket name either explicitly or implicitly as fall-back.</span>
+
+<span class="sd">    In implicit case, currently only supports enviroment variable but will</span>
+<span class="sd">    support App Engine, Compute Engine and other environments in the future.</span>
+
+<span class="sd">    Local environment variable used is:</span>
+<span class="sd">    - GCLOUD_BUCKET_NAME</span>
+
+<span class="sd">    :type bucket_name: string</span>
+<span class="sd">    :param bucket_name: Optional. The bucket name to use as default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">bucket_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">bucket_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_BUCKET_ENV_VAR_NAME</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">bucket_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">BUCKET_NAME</span> <span class="o">=</span> <span class="n">bucket_name</span>
+
+</div>
+<div class="viewcode-block" id="set_default_project"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.set_default_project">[docs]</a><span class="k">def</span> <span class="nf">set_default_project</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set default bucket name either explicitly or implicitly as fall-back.</span>
+
+<span class="sd">    In implicit case, currently only supports enviroment variable but will</span>
+<span class="sd">    support App Engine, Compute Engine and other environments in the future.</span>
+
+<span class="sd">    Local environment variable used is:</span>
+<span class="sd">    - GCLOUD_PROJECT</span>
+
+<span class="sd">    :type project: string</span>
+<span class="sd">    :param project: Optional. The project name to use as default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_PROJECT_ENV_VAR_NAME</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">PROJECT</span> <span class="o">=</span> <span class="n">project</span>
+
+</div>
+<div class="viewcode-block" id="set_default_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.set_default_connection">[docs]</a><span class="k">def</span> <span class="nf">set_default_connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set default connection either explicitly or implicitly as fall-back.</span>
+
+<span class="sd">    :type project: string</span>
+<span class="sd">    :param project: Optional. The name of the project to connect to.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: A connection provided to be the default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">PROJECT</span>
+
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+    <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span> <span class="o">=</span> <span class="n">connection</span>
+
+</div>
+<div class="viewcode-block" id="set_defaults"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.set_defaults">[docs]</a><span class="k">def</span> <span class="nf">set_defaults</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set defaults either explicitly or implicitly as fall-back.</span>
+
+<span class="sd">    Uses the arguments to call the individual default methods.</span>
+
+<span class="sd">    :type bucket_name: string</span>
+<span class="sd">    :param bucket_name: Optional. The bucket name to use as default.</span>
+
+<span class="sd">    :type project: string</span>
+<span class="sd">    :param project: Optional. The name of the project to connect to.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: A connection provided to be the default.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">set_default_bucket_name</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">)</span>
+    <span class="c"># NOTE: `set_default_project` is called before `set_default_connection`</span>
+    <span class="c">#       since `set_default_connection` falls back to implicit project.</span>
+    <span class="n">set_default_project</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+    <span class="n">set_default_connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+
+</div>
 <div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to Cloud Storage.</span>
 
