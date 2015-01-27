@@ -27,7 +27,7 @@ from gcloud.datastore import helpers
 def _require_dataset_id(dataset_id=None, keys=()):
     """Infer a dataset ID from the environment, if not passed explicitly.
 
-    Order or precedence:
+    Order of precedence:
 
     - Passed `dataset_id` (if not None).
     - `dataset_id` of current batch / transaction (if current exists).
@@ -38,8 +38,8 @@ def _require_dataset_id(dataset_id=None, keys=()):
     :type dataset_id: string
     :param dataset_id: Optional.
 
-    :type dataset_id: list of :class:`gcloud.datastore.key.Key`
-    :param dataset_id: Optional.
+    :type keys: list of :class:`gcloud.datastore.key.Key`
+    :param keys: Optional.
 
     :rtype: string
     :returns: A dataset ID based on the current environment.
