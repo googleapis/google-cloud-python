@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="gcloud 0.3.0 documentation" href="index.html" />
-    <link rel="next" title="Buckets" href="storage-buckets.html" />
+    <link rel="next" title="Blobs / Objects" href="storage-blobs.html" />
     <link rel="prev" title="Batches" href="datastore-batches.html" /> 
   </head>
   <body>
@@ -129,21 +129,21 @@ and instantiating the demo connection:</p>
 </pre></div>
 </div>
 <p>Once you have the connection,
-you can create buckets and keys:</p>
+you can create buckets and blobs:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">()</span>
 <span class="go">[&lt;Bucket: ...&gt;, ...]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s">&#39;my-new-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span>
 <span class="go">&lt;Bucket: my-new-bucket&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="s">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">key</span>
-<span class="go">&lt;Key: my-new-bucket, my-test-file.txt&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">key</span><span class="o">.</span><span class="n">get_contents_as_string</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_blob</span><span class="p">(</span><span class="s">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span>
+<span class="go">&lt;Blob: my-new-bucket, my-test-file.txt&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span><span class="o">.</span><span class="n">get_contents_as_string</span><span class="p">()</span>
 <span class="go">&#39;this is test content!&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_keys</span><span class="p">()</span>
-<span class="go">[&lt;Key: my-new-bucket, my-test-file.txt&gt;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="go">[&lt;Blob: my-new-bucket, my-test-file.txt&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -166,9 +166,9 @@ you can create buckets and keys:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;bucket-id-here&#39;</span><span class="p">,</span> <span class="s">&#39;project-id&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Then do other things...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="s">&#39;/remote/path/to/file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">key</span><span class="o">.</span><span class="n">get_contents_as_string</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">key</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;New contents!&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s">&#39;/remote/path/to/file.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span><span class="o">.</span><span class="n">get_contents_as_string</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;New contents!&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;/remote/path/storage.txt&#39;</span><span class="p">,</span> <span class="s">&#39;/local/path.txt&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -178,7 +178,7 @@ you can create buckets and keys:</p>
 connection between your machine and the Cloud Storage API.</li>
 <li><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> which represents a particular
 bucket (akin to a mounted disk on a computer).</li>
-<li><a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a> which represents a pointer to a
+<li><a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a> which represents a pointer to a
 particular entity in Cloud Storage (akin to a file path on a remote
 machine).</li>
 </ul>
@@ -463,7 +463,7 @@ a bucket object:</p>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> if the
 bucket doesn&#8217;t exist, or
 <a class="reference internal" href="#gcloud.storage.exceptions.Conflict" title="gcloud.storage.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Conflict</span></tt></a> if the
-bucket has keys and <cite>force</cite> is not passed.</p>
+bucket has blobs and <cite>force</cite> is not passed.</p>
 </td>
 </tr>
 </tbody>
@@ -480,7 +480,7 @@ bucket has keys and <cite>force</cite> is not passed.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<em>string</em>) &#8211; A pointer to a specific resource
-(typically, <tt class="docutils literal"><span class="pre">/bucket-name/path/to/key.txt</span></tt>).</li>
+(typically, <tt class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></tt>).</li>
 <li><strong>expiration</strong> (<em>int, long, datetime.datetime, datetime.timedelta</em>) &#8211; When the signed URL should expire.</li>
 <li><strong>method</strong> (<em>string</em>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
 <li><strong>content_md5</strong> (<em>string</em>) &#8211; The MD5 hash of the object referenced by
@@ -505,7 +505,7 @@ until expiration.</p>
 <dt id="gcloud.storage.connection.Connection.get_all_buckets">
 <tt class="descname">get_all_buckets</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.get_all_buckets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.get_all_buckets" title="Permalink to this definition">#</a></dt>
 <dd><p>Get all buckets in the project.</p>
-<p>This will not populate the list of keys available in each
+<p>This will not populate the list of blobs available in each
 bucket.</p>
 <p>You can also iterate over the connection object, so these two
 operations are identical:</p>
@@ -715,7 +715,7 @@ requests):</p>
 <p>This method should be overridden by a subclass.  It should
 accept the API response of a request for the next page of items,
 and return a list (or other iterable) of items.</p>
-<p>Typically this method will construct a Bucket or a Key from the
+<p>Typically this method will construct a Bucket or a Blob from the
 page of results in the response.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1086,8 +1086,8 @@ page of results in the response.</p>
 <li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
 </ul>
 

@@ -407,7 +407,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Connection.get_all_buckets"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_all_buckets">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_buckets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get all buckets in the project.</span>
 
-<span class="sd">        This will not populate the list of keys available in each</span>
+<span class="sd">        This will not populate the list of blobs available in each</span>
 <span class="sd">        bucket.</span>
 
 <span class="sd">        You can also iterate over the connection object, so these two</span>
@@ -543,14 +543,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound` if the</span>
 <span class="sd">                 bucket doesn&#39;t exist, or</span>
 <span class="sd">                 :class:`gcloud.storage.exceptions.Conflict` if the</span>
-<span class="sd">                 bucket has keys and `force` is not passed.</span>
+<span class="sd">                 bucket has blobs and `force` is not passed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
 
         <span class="c"># This force delete operation is slow.</span>
         <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">:</span>
-                <span class="n">key</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">:</span>
+                <span class="n">blob</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">True</span>
@@ -587,7 +587,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :type resource: string</span>
 <span class="sd">        :param resource: A pointer to a specific resource</span>
-<span class="sd">                         (typically, ``/bucket-name/path/to/key.txt``).</span>
+<span class="sd">                         (typically, ``/bucket-name/path/to/blob.txt``).</span>
 
 <span class="sd">        :type expiration: int, long, datetime.datetime, datetime.timedelta</span>
 <span class="sd">        :param expiration: When the signed URL should expire.</span>
@@ -696,8 +696,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-batches.html">Batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-buckets.html">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-acl.html">ACL</a></li>
 </ul>
 

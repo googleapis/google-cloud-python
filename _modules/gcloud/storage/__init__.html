@@ -93,9 +93,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">&gt;&gt;&gt; import gcloud.storage</span>
 <span class="sd">&gt;&gt;&gt; bucket = gcloud.storage.get_bucket(&#39;bucket-id-here&#39;, &#39;project-id&#39;)</span>
 <span class="sd">&gt;&gt;&gt; # Then do other things...</span>
-<span class="sd">&gt;&gt;&gt; key = bucket.get_key(&#39;/remote/path/to/file.txt&#39;)</span>
-<span class="sd">&gt;&gt;&gt; print key.get_contents_as_string()</span>
-<span class="sd">&gt;&gt;&gt; key.set_contents_from_string(&#39;New contents!&#39;)</span>
+<span class="sd">&gt;&gt;&gt; blob = bucket.get_blob(&#39;/remote/path/to/file.txt&#39;)</span>
+<span class="sd">&gt;&gt;&gt; print blob.get_contents_as_string()</span>
+<span class="sd">&gt;&gt;&gt; blob.set_contents_from_string(&#39;New contents!&#39;)</span>
 <span class="sd">&gt;&gt;&gt; bucket.upload_file(&#39;/remote/path/storage.txt&#39;, &#39;/local/path.txt&#39;)</span>
 
 <span class="sd">The main concepts with this API are:</span>
@@ -106,7 +106,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">- :class:`gcloud.storage.bucket.Bucket` which represents a particular</span>
 <span class="sd">  bucket (akin to a mounted disk on a computer).</span>
 
-<span class="sd">- :class:`gcloud.storage.key.Key` which represents a pointer to a</span>
+<span class="sd">- :class:`gcloud.storage.blob.Blob` which represents a pointer to a</span>
 <span class="sd">  particular entity in Cloud Storage (akin to a file path on a remote</span>
 <span class="sd">  machine).</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -179,8 +179,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-batches.html">Batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-buckets.html">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-acl.html">ACL</a></li>
 </ul>
 

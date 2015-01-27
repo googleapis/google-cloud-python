@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="gcloud 0.3.0 documentation" href="index.html" />
-    <link rel="next" title="Keys" href="storage-keys.html" />
-    <link rel="prev" title="Storage" href="storage-api.html" /> 
+    <link rel="next" title="ACL" href="storage-acl.html" />
+    <link rel="prev" title="Blobs / Objects" href="storage-blobs.html" /> 
   </head>
   <body>
     <header class="page-header fixed" role="banner">
@@ -94,7 +94,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'owner': 'owner', 'name': 'name', 'projectNumber': 'project_number', 'logging': 'get_logging()', 'lifecycle': 'get_lifecycle()', 'storageClass': 'storage_class', 'metageneration': 'metageneration', 'cors': 'get_cors()', 'timeCreated': 'time_created', 'id': 'id', 'etag': 'etag', 'defaultObjectAcl': 'get_default_object_acl()', 'acl': 'acl', 'versioning': 'versioning_enabled', 'location': 'location', 'selfLink': 'self_link'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'lifecycle': 'get_lifecycle()', 'versioning': 'versioning_enabled', 'storageClass': 'storage_class', 'acl': 'acl', 'logging': 'get_logging()', 'name': 'name', 'timeCreated': 'time_created', 'metageneration': 'metageneration', 'owner': 'owner', 'id': 'id', 'selfLink': 'self_link', 'projectNumber': 'project_number', 'defaultObjectAcl': 'get_default_object_acl()', 'etag': 'etag', 'location': 'location', 'cors': 'get_cors()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -116,7 +116,7 @@ if your bucket name is a domain name
 (and to do that, you need to get approved somehow...).</p>
 </div>
 <p>If you want this bucket to host a website, just provide the name
-of an index page and a page to use when a key isn&#8217;t found:</p>
+of an index page and a page to use when a blob isn&#8217;t found:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
@@ -163,25 +163,25 @@ Typically something like index.html.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.copy_key">
-<tt class="descname">copy_key</tt><big>(</big><em>key</em>, <em>destination_bucket</em>, <em>new_name=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.copy_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.copy_key" title="Permalink to this definition">#</a></dt>
-<dd><p>Copy the given key to the given bucket, optionally with a new name.</p>
+<dt id="gcloud.storage.bucket.Bucket.copy_blob">
+<tt class="descname">copy_blob</tt><big>(</big><em>blob</em>, <em>destination_bucket</em>, <em>new_name=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.copy_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.copy_blob" title="Permalink to this definition">#</a></dt>
+<dd><p>Copy the given blob to the given bucket, optionally with a new name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>key</strong> (string or <a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; The key to be copied.</li>
-<li><strong>destination_bucket</strong> (<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket into which the key should be
+<li><strong>blob</strong> (string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; The blob to be copied.</li>
+<li><strong>destination_bucket</strong> (<a class="reference internal" href="#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket into which the blob should be
 copied.</li>
 <li><strong>new_name</strong> (<em>string</em>) &#8211; (optional) the new name for the copied file.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The new Key.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The new Blob.</p>
 </td>
 </tr>
 </tbody>
@@ -203,39 +203,39 @@ bucket doesn&#8217;t exist, this will raise a
 <a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>.  If the bucket is
 not empty, this will raise an Exception.</p>
 <p>If you want to delete a non-empty bucket you can pass in a force
-parameter set to true.  This will iterate through the bucket&#8217;s
-keys and delete the related objects, before deleting the bucket.</p>
+parameter set to <tt class="docutils literal"><span class="pre">True</span></tt>.  This will iterate through and delete the
+bucket&#8217;s objects, before deleting the bucket.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>full</strong> &#8211; If True, empties the bucket&#8217;s objects then deletes it.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>force</strong> (<em>boolean</em>) &#8211; If True, empties the bucket&#8217;s objects then deletes it.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> if the
 bucket does not exist, or
 <a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.Conflict" title="gcloud.storage.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Conflict</span></tt></a> if the
-bucket has keys and <cite>force</cite> is not passed.</td>
+bucket has blobs and <cite>force</cite> is not passed.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.delete_key">
-<tt class="descname">delete_key</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete_key" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes a key from the current bucket.</p>
-<p>If the key isn&#8217;t found, raise a
+<dt id="gcloud.storage.bucket.Bucket.delete_blob">
+<tt class="descname">delete_blob</tt><big>(</big><em>blob</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete_blob" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes a blob from the current bucket.</p>
+<p>If the blob isn&#8217;t found, raise a
 <a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_keys</span><span class="p">()</span>
-<span class="go">[&lt;Key: my-bucket, my-file.txt&gt;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="s">&#39;my-file.txt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="go">[&lt;Blob: my-bucket, my-file.txt&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s">&#39;my-file.txt&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>  <span class="n">bucket</span><span class="o">.</span><span class="n">delete_key</span><span class="p">(</span><span class="s">&#39;doesnt-exist&#39;</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s">&#39;doesnt-exist&#39;</span><span class="p">)</span>
 <span class="gp">... </span><span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="k">pass</span>
 </pre></div>
@@ -244,19 +244,19 @@ bucket has keys and <cite>force</cite> is not passed.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>key</strong> (string or <a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; A key name or Key object to delete.</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>blob</strong> (string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; A blob name or Blob object to delete.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The key that was just deleted.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The blob that was just deleted.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> (to suppress
-the exception, call <tt class="docutils literal"><span class="pre">delete_keys</span></tt>, passing a no-op
+the exception, call <tt class="docutils literal"><span class="pre">delete_blobs</span></tt>, passing a no-op
 <tt class="docutils literal"><span class="pre">on_error</span></tt> callback, e.g.:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_keys</span><span class="p">([</span><span class="n">key</span><span class="p">],</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="k">pass</span><span class="p">)</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">([</span><span class="n">blob</span><span class="p">],</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="k">pass</span><span class="p">)</span>
 </pre></div>
 </div>
 </td>
@@ -266,17 +266,17 @@ the exception, call <tt class="docutils literal"><span class="pre">delete_keys</
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.delete_keys">
-<tt class="descname">delete_keys</tt><big>(</big><em>keys</em>, <em>on_error=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete_keys" title="Permalink to this definition">#</a></dt>
-<dd><p>Deletes a list of keys from the current bucket.</p>
-<p>Uses <a class="reference internal" href="#gcloud.storage.bucket.Bucket.delete_key" title="gcloud.storage.bucket.Bucket.delete_key"><tt class="xref py py-func docutils literal"><span class="pre">Bucket.delete_key()</span></tt></a> to delete each individual key.</p>
+<dt id="gcloud.storage.bucket.Bucket.delete_blobs">
+<tt class="descname">delete_blobs</tt><big>(</big><em>blobs</em>, <em>on_error=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete_blobs" title="Permalink to this definition">#</a></dt>
+<dd><p>Deletes a list of blobs from the current bucket.</p>
+<p>Uses <a class="reference internal" href="#gcloud.storage.bucket.Bucket.delete_blob" title="gcloud.storage.bucket.Bucket.delete_blob"><tt class="xref py py-func docutils literal"><span class="pre">Bucket.delete_blob()</span></tt></a> to delete each individual blob.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>keys</strong> (list of string or <a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; A list of key names or Key objects to delete.</li>
-<li><strong>on_error</strong> (<em>a callable taking (key)</em>) &#8211; If not <tt class="docutils literal"><span class="pre">None</span></tt>, called once for each key raising
+<li><strong>blobs</strong> (list of string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; A list of blob names or Blob objects to delete.</li>
+<li><strong>on_error</strong> (<em>a callable taking (blob)</em>) &#8211; If not <tt class="docutils literal"><span class="pre">None</span></tt>, called once for each blob raising
 <a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>;
 otherwise, the exception is propagated.</li>
 </ul>
@@ -361,22 +361,50 @@ attributes to <tt class="docutils literal"><span class="pre">None</span></tt>.</
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.get_all_keys">
-<tt class="descname">get_all_keys</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_all_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_all_keys" title="Permalink to this definition">#</a></dt>
-<dd><p>List all the keys in this bucket.</p>
-<p>This will <strong>not</strong> retrieve all the data for all the keys, it
-will only retrieve the keys.</p>
+<dt id="gcloud.storage.bucket.Bucket.get_all_blobs">
+<tt class="descname">get_all_blobs</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_all_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_all_blobs" title="Permalink to this definition">#</a></dt>
+<dd><p>List all the blobs in this bucket.</p>
+<p>This will <strong>not</strong> retrieve all the data for all the blobs, it
+will only retrieve the blob paths.</p>
 <p>This is equivalent to:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">blobs</span> <span class="o">=</span> <span class="p">[</span><span class="n">blob</span> <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">]</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of all the Key objects in this bucket.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of all the Blob objects in this bucket.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.get_blob">
+<tt class="descname">get_blob</tt><big>(</big><em>blob</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_blob" title="Permalink to this definition">#</a></dt>
+<dd><p>Get a blob object by name.</p>
+<p>This will return None if the blob doesn&#8217;t exist:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s">&#39;/path/to/blob.txt&#39;</span><span class="p">)</span>
+<span class="go">&lt;Blob: my-bucket, /path/to/blob.txt&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s">&#39;/does-not-exist.txt&#39;</span><span class="p">)</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blob</strong> (string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; The name of the blob to retrieve.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a> or None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The blob object if it exists, otherwise None.</td>
 </tr>
 </tbody>
 </table>
@@ -415,34 +443,6 @@ Cloud Storage.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-acl.html#gcloud.storage.acl.DefaultObjectACL" title="gcloud.storage.acl.DefaultObjectACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.DefaultObjectACL</span></tt></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A DefaultObjectACL object for this bucket.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.get_key">
-<tt class="descname">get_key</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_key" title="Permalink to this definition">#</a></dt>
-<dd><p>Get a key object by name.</p>
-<p>This will return None if the key doesn&#8217;t exist:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="s">&#39;/path/to/key.txt&#39;</span><span class="p">)</span>
-<span class="go">&lt;Key: my-bucket, /path/to/key.txt&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_key</span><span class="p">(</span><span class="s">&#39;/does-not-exist.txt&#39;</span><span class="p">)</span>
-<span class="go">None</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (string or <a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; The name of the key to retrieve.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a> or None</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The key object if it exists, otherwise None.</td>
 </tr>
 </tbody>
 </table>
@@ -504,22 +504,22 @@ Cloud Storage.</p>
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.iterator">
 <tt class="descname">iterator</tt><big>(</big><em>prefix=None</em>, <em>delimiter=None</em>, <em>max_results=None</em>, <em>versions=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.iterator" title="Permalink to this definition">#</a></dt>
-<dd><p>Return an iterator used to find keys in the bucket.</p>
+<dd><p>Return an iterator used to find blobs in the bucket.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>prefix</strong> (<em>string or None</em>) &#8211; optional prefix used to filter keys.</li>
+<li><strong>prefix</strong> (<em>string or None</em>) &#8211; optional prefix used to filter blobs.</li>
 <li><strong>delimiter</strong> (<em>string or None</em>) &#8211; optional delimter, used with <tt class="docutils literal"><span class="pre">prefix</span></tt> to
 emulate hierarchy.</li>
-<li><strong>max_results</strong> (<em>integer or None</em>) &#8211; maximum number of keys to return.</li>
+<li><strong>max_results</strong> (<em>integer or None</em>) &#8211; maximum number of blobs to return.</li>
 <li><strong>versions</strong> (<em>boolean or None</em>) &#8211; whether object versions should be returned as
-separate keys.</li>
+separate blobs.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">_KeyIterator</span></tt></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">_BlobIterator</span></tt></p>
 </td>
 </tr>
 </tbody>
@@ -551,7 +551,7 @@ separate keys.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>recursive</strong> (<em>boolean</em>) &#8211; If True, this will make all keys inside the bucket
+<li><strong>recursive</strong> (<em>boolean</em>) &#8211; If True, this will make all blobs inside the bucket
 public as well.</li>
 <li><strong>future</strong> (<em>boolean</em>) &#8211; If True, this will make all objects created in the
 future public as well.</li>
@@ -578,21 +578,21 @@ future public as well.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.new_key">
-<tt class="descname">new_key</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.new_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.new_key" title="Permalink to this definition">#</a></dt>
-<dd><p>Given path name (or Key), return a <a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">storage.key.Key</span></tt></a> object.</p>
-<p>This is really useful when you&#8217;re not sure if you have a Key
-object or a string path name.  Given either of those types, this
-returns the corresponding Key object.</p>
+<dt id="gcloud.storage.bucket.Bucket.new_blob">
+<tt class="descname">new_blob</tt><big>(</big><em>blob</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.new_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.new_blob" title="Permalink to this definition">#</a></dt>
+<dd><p>Given path name (or Blob), return a <tt class="xref py py-class docutils literal"><span class="pre">Blob</span></tt> object.</p>
+<p>This is really useful when you&#8217;re not sure if you have a <tt class="docutils literal"><span class="pre">Blob</span></tt>
+instance or a string path name.  Given either of those types, this
+returns the corresponding <tt class="docutils literal"><span class="pre">Blob</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (string or <a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; A path name or actual key object.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blob</strong> (string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; A path name or actual blob object.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A Key object with the path provided.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A Blob object with the path provided.</td>
 </tr>
 </tbody>
 </table>
@@ -724,7 +724,7 @@ returns the corresponding Key object.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.upload_file">
-<tt class="descname">upload_file</tt><big>(</big><em>filename</em>, <em>key=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.upload_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.upload_file" title="Permalink to this definition">#</a></dt>
+<tt class="descname">upload_file</tt><big>(</big><em>filename</em>, <em>blob=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.upload_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.upload_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Shortcut method to upload a file into this bucket.</p>
 <p>Use this method to quickly put a local file in Cloud Storage.</p>
 <p>For example:</p>
@@ -732,19 +732,19 @@ returns the corresponding Key object.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">,</span> <span class="s">&#39;remote-text-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_keys</span><span class="p">()</span>
-<span class="go">[&lt;Key: my-bucket, remote-text-file.txt&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="go">[&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
 </pre></div>
 </div>
-<p>If you don&#8217;t provide a key value, we will try to upload the file
-using the local filename as the key (<strong>not</strong> the complete
+<p>If you don&#8217;t provide a blob value, we will try to upload the file
+using the local filename as the blob (<strong>not</strong> the complete
 path):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_keys</span><span class="p">()</span>
-<span class="go">[&lt;Key: my-bucket, my-file.txt&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="go">[&lt;Blob: my-bucket, my-file.txt&gt;]</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -753,7 +753,7 @@ path):</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>filename</strong> (<em>string</em>) &#8211; Local path to the file you want to upload.</li>
-<li><strong>key</strong> (string or <a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; The key (either an object or a remote path) of where
+<li><strong>blob</strong> (string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; The blob (either an object or a remote path) of where
 to put the file.  If this is blank, we will try to
 upload the file to the root of the bucket with the
 same name as on your local file system.</li>
@@ -766,7 +766,7 @@ same name as on your local file system.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.upload_file_object">
-<tt class="descname">upload_file_object</tt><big>(</big><em>file_obj</em>, <em>key=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.upload_file_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.upload_file_object" title="Permalink to this definition">#</a></dt>
+<tt class="descname">upload_file_object</tt><big>(</big><em>file_obj</em>, <em>blob=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.upload_file_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.upload_file_object" title="Permalink to this definition">#</a></dt>
 <dd><p>Shortcut method to upload a file object into this bucket.</p>
 <p>Use this method to quickly put a local file in Cloud Storage.</p>
 <p>For example:</p>
@@ -774,19 +774,19 @@ same name as on your local file system.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">),</span> <span class="s">&#39;remote-text-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_keys</span><span class="p">()</span>
-<span class="go">[&lt;Key: my-bucket, remote-text-file.txt&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="go">[&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
 </pre></div>
 </div>
-<p>If you don&#8217;t provide a key value, we will try to upload the file
-using the local filename as the key (<strong>not</strong> the complete
+<p>If you don&#8217;t provide a blob value, we will try to upload the file
+using the local filename as the blob (<strong>not</strong> the complete
 path):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_keys</span><span class="p">()</span>
-<span class="go">[&lt;Key: my-bucket, my-file.txt&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="go">[&lt;Blob: my-bucket, my-file.txt&gt;]</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -795,7 +795,7 @@ path):</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
-<li><strong>key</strong> (string or <a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; The key (either an object or a remote path) of where
+<li><strong>blob</strong> (string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; The blob (either an object or a remote path) of where
 to put the file.  If this is blank, we will try to
 upload the file to the root of the bucket with the
 same name as on your local file system.</li>
@@ -841,8 +841,8 @@ details.</p>
 <li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
 </ul>
 

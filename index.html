@@ -117,8 +117,8 @@ you can clone the repository from GitHub:</p>
 <p><a class="reference external" href="https://developers.google.com/storage/">Google Cloud Storage</a> allows you to store data on Google infrastructure.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;&lt;your-bucket-name&gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;your-project-id&gt;&#39;</span><span class="p">)</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_key</span><span class="p">(</span><span class="s">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">upload_contents_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
+<span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_blob</span><span class="p">(</span><span class="s">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
+<span class="n">blob</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">upload_contents_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -137,8 +137,8 @@ you can clone the repository from GitHub:</p>
 <li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
 </ul>
 

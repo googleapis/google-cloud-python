@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="gcloud 0.3.0 documentation" href="index.html" />
-    <link rel="prev" title="Keys" href="storage-keys.html" /> 
+    <link rel="prev" title="Buckets" href="storage-buckets.html" /> 
   </head>
   <body>
     <header class="page-header fixed" role="banner">
@@ -521,24 +521,24 @@ current entries.</td>
 
 <dl class="class">
 <dt id="gcloud.storage.acl.ObjectACL">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.acl.</tt><tt class="descname">ObjectACL</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ObjectACL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ObjectACL" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.storage.acl.</tt><tt class="descname">ObjectACL</tt><big>(</big><em>blob</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ObjectACL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ObjectACL" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></tt></a></p>
-<p>An ACL specifically for a key.</p>
+<p>An ACL specifically for a Cloud Storage object / blob.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="storage-keys.html#gcloud.storage.key.Key" title="gcloud.storage.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.key.Key</span></tt></a>) &#8211; The key that this ACL corresponds to.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>blob</strong> (<a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; The blob that this ACL corresponds to.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="gcloud.storage.acl.ObjectACL.clear">
 <tt class="descname">clear</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ObjectACL.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ObjectACL.clear" title="Permalink to this definition">#</a></dt>
-<dd><p>Remove all ACL rules from the key.</p>
+<dd><p>Remove all ACL rules from the blob.</p>
 <p>Note that this won&#8217;t actually remove <em>ALL</em> the rules, but it
 will remove all the non-default rules.  In short, you&#8217;ll still
-have access to a key that you created even after you clear ACL
+have access to a blob that you created even after you clear ACL
 rules with this method.</p>
 </dd></dl>
 
@@ -561,7 +561,7 @@ rules with this method.</p>
 <dl class="method">
 <dt id="gcloud.storage.acl.ObjectACL.save">
 <tt class="descname">save</tt><big>(</big><em>acl=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/acl.html#ObjectACL.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ObjectACL.save" title="Permalink to this definition">#</a></dt>
-<dd><p>Save the ACL data for this key.</p>
+<dd><p>Save the ACL data for this blob.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -590,8 +590,8 @@ save the entries set locally on the ACL.</td>
 <li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-keys.html">Keys</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">ACL</a></li>
 </ul>
 
