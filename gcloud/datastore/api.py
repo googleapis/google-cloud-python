@@ -24,10 +24,21 @@ from gcloud.datastore.transaction import Transaction
 from gcloud.datastore import helpers
 
 
-def _require_dataset_id(dataset_id=None):
+def _require_dataset_id(dataset_id=None, keys=()):
     """Infer a dataset ID from the environment, if not passed explicitly.
 
+    Order or precedence:
+
+    - Passed `dataset_id` (if not None).
+    - `dataset_id` of current batch / transaction (if current exists).
+    - `dataset_id` of first key in `keys`
+    - `dataset_id` inferred from the environment (if `set_default_dataset_id`
+      has been called).
+
     :type dataset_id: string
+    :param dataset_id: Optional.
+
+    :type dataset_id: list of :class:`gcloud.datastore.key.Key`
     :param dataset_id: Optional.
 
     :rtype: string
@@ -35,15 +46,16 @@ def _require_dataset_id(dataset_id=None):
     :raises: :class:`EnvironmentError` if ``dataset_id`` is ``None``,
              and cannot be inferred from the environment.
     """
-    if dataset_id is None:
-        top = Batch.current()
-        if top is not None:
-            dataset_id = top.dataset_id
-        else:
-            if _implicit_environ.DATASET_ID is None:
-                raise EnvironmentError('Dataset ID could not be inferred.')
-            dataset_id = _implicit_environ.DATASET_ID
-    return dataset_id
+    if dataset_id is not None:
+        return dataset_id
+    top = Batch.current()
+    if top is not None:
+        return top.dataset_id
+    if len(keys) > 0:
+        return keys[0].dataset_id
+    if _implicit_environ.DATASET_ID is None:
+        raise EnvironmentError('Dataset ID could not be inferred.')
+    return _implicit_environ.DATASET_ID
 
 
 def _require_connection(connection=None):
@@ -103,10 +115,7 @@ def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
         return []
 
     connection = _require_connection(connection)
-    try:
-        dataset_id = _require_dataset_id(dataset_id)
-    except EnvironmentError:
-        dataset_id = keys[0].dataset_id
+    dataset_id = _require_dataset_id(dataset_id, keys)
 
     if list(set([key.dataset_id for key in keys])) != [dataset_id]:
         raise ValueError('Keys do not match dataset ID')
@@ -161,10 +170,8 @@ def put(entities, connection=None, dataset_id=None):
         return
 
     connection = _require_connection(connection)
-    try:
-        dataset_id = _require_dataset_id(dataset_id)
-    except EnvironmentError:
-        dataset_id = entities[0].key.dataset_id
+    keys = [entity.key for entity in entities]
+    dataset_id = _require_dataset_id(dataset_id, keys)
 
     current = Batch.current()
     in_batch = current is not None
@@ -199,10 +206,7 @@ def delete(keys, connection=None, dataset_id=None):
         return
 
     connection = _require_connection(connection)
-    try:
-        dataset_id = _require_dataset_id(dataset_id)
-    except EnvironmentError:
-        dataset_id = keys[0].dataset_id
+    dataset_id = _require_dataset_id(dataset_id, keys)
 
     # We allow partial keys to attempt a delete, the backend will fail.
     current = Batch.current()

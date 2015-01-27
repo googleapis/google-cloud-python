@@ -19,50 +19,94 @@ class Test__require_dataset_id(unittest2.TestCase):
 
     _MARKER = object()
 
-    def _callFUT(self, passed=_MARKER):
+    def _callFUT(self, passed=_MARKER, keys=()):
         from gcloud.datastore.api import _require_dataset_id
         if passed is self._MARKER:
-            return _require_dataset_id()
-        return _require_dataset_id(passed)
+            return _require_dataset_id(keys=keys)
+        return _require_dataset_id(dataset_id=passed, keys=keys)
 
     def _monkey(self, dataset_id):
         from gcloud.datastore import _implicit_environ
         from gcloud._testing import _Monkey
         return _Monkey(_implicit_environ, DATASET_ID=dataset_id)
 
-    def test_implicit_unset(self):
+    def test_implicit_unset_wo_keys(self):
         with self._monkey(None):
             with self.assertRaises(EnvironmentError):
                 self._callFUT()
 
-    def test_implicit_unset_w_existing_batch(self):
+    def test_implicit_unset_w_keys(self):
+        from gcloud.datastore.test_batch import _Key
+        ID = 'DATASET'
+        with self._monkey(None):
+            self.assertEqual(self._callFUT(keys=[_Key(ID)]), ID)
+
+    def test_implicit_unset_w_existing_batch_wo_keys(self):
         ID = 'DATASET'
         with self._monkey(None):
             with _NoCommitBatch(dataset_id=ID, connection=object()):
                 self.assertEqual(self._callFUT(), ID)
 
-    def test_implicit_unset_w_existing_transaction(self):
+    def test_implicit_unset_w_existing_batch_w_keys(self):
+        from gcloud.datastore.test_batch import _Key
+        ID = 'DATASET'
+        OTHER = 'OTHER'
+        with self._monkey(None):
+            with _NoCommitBatch(dataset_id=ID, connection=object()):
+                self.assertEqual(self._callFUT(keys=[_Key(OTHER)]), ID)
+
+    def test_implicit_unset_w_existing_transaction_wo_keys(self):
         ID = 'DATASET'
         with self._monkey(None):
             with _NoCommitTransaction(dataset_id=ID, connection=object()):
                 self.assertEqual(self._callFUT(), ID)
 
-    def test_implicit_unset_passed_explicitly(self):
+    def test_implicit_unset_w_existing_transaction_w_keys(self):
+        from gcloud.datastore.test_batch import _Key
+        ID = 'DATASET'
+        OTHER = 'OTHER'
+        with self._monkey(None):
+            with _NoCommitTransaction(dataset_id=ID, connection=object()):
+                self.assertEqual(self._callFUT(keys=[_Key(OTHER)]), ID)
+
+    def test_implicit_unset_passed_explicitly_wo_keys(self):
         ID = 'DATASET'
         with self._monkey(None):
             self.assertEqual(self._callFUT(ID), ID)
 
-    def test_id_implicit_set(self):
+    def test_implicit_unset_passed_explicitly_w_keys(self):
+        from gcloud.datastore.test_batch import _Key
+        ID = 'DATASET'
+        OTHER = 'OTHER'
+        with self._monkey(None):
+            self.assertEqual(self._callFUT(ID, keys=[_Key(OTHER)]), ID)
+
+    def test_id_implicit_set_wo_keys(self):
         IMPLICIT_ID = 'IMPLICIT'
         with self._monkey(IMPLICIT_ID):
             stored_id = self._callFUT()
         self.assertTrue(stored_id is IMPLICIT_ID)
 
-    def test_id_implicit_set_passed_explicitly(self):
+    def test_id_implicit_set_w_keys(self):
+        from gcloud.datastore.test_batch import _Key
+        IMPLICIT_ID = 'IMPLICIT'
+        OTHER = 'OTHER'
+        with self._monkey(IMPLICIT_ID):
+            self.assertEqual(self._callFUT(keys=[_Key(OTHER)]), OTHER)
+
+    def test_id_implicit_set_passed_explicitly_wo_keys(self):
         ID = 'DATASET'
         IMPLICIT_ID = 'IMPLICIT'
         with self._monkey(IMPLICIT_ID):
             self.assertEqual(self._callFUT(ID), ID)
+
+    def test_id_implicit_set_passed_explicitly_w_keys(self):
+        from gcloud.datastore.test_batch import _Key
+        ID = 'DATASET'
+        IMPLICIT_ID = 'IMPLICIT'
+        OTHER = 'OTHER'
+        with self._monkey(IMPLICIT_ID):
+            self.assertEqual(self._callFUT(ID, keys=[_Key(OTHER)]), ID)
 
 
 class Test__require_connection(unittest2.TestCase):
@@ -560,6 +604,28 @@ class Test_delete_function(unittest2.TestCase):
 
         result = self._callFUT([key], connection=connection,
                                dataset_id=_DATASET)
+        self.assertEqual(result, None)
+        self.assertEqual(len(connection._committed), 1)
+        dataset_id, mutation = connection._committed[0]
+        self.assertEqual(dataset_id, _DATASET)
+        self.assertEqual(list(mutation.delete), [key.to_protobuf()])
+
+    def test_wo_batch_w_key_different_than_default_dataset_id(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DEFAULT_DATASET = 'DEFAULT'
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        key = _Key(_DATASET)
+
+        with _Monkey(_implicit_environ,
+                     CONNECTION=connection,
+                     DATASET_ID=_DEFAULT_DATASET):
+            result = self._callFUT([key])
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
         dataset_id, mutation = connection._committed[0]
