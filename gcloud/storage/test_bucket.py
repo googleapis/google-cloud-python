@@ -62,12 +62,9 @@ class Test__BlobIterator(unittest2.TestCase):
 
 class Test_Bucket(unittest2.TestCase):
 
-    def _getTargetClass(self):
-        from gcloud.storage.bucket import Bucket
-        return Bucket
-
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        from gcloud.storage.bucket import Bucket
+        return Bucket(*args, **kw)
 
     def test_ctor_defaults(self):
         bucket = self._makeOne()
@@ -88,23 +85,21 @@ class Test_Bucket(unittest2.TestCase):
         self.assertTrue(bucket._acl is None)
         self.assertTrue(bucket._default_object_acl is None)
 
-    def test_from_dict_defaults(self):
+    def test_ctor_no_name_defaults(self):
         NAME = 'name'
         properties = {'key': 'value', 'name': NAME}
-        klass = self._getTargetClass()
-        bucket = klass.from_dict(properties)
+        bucket = self._makeOne(properties=properties)
         self.assertEqual(bucket.connection, None)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket.properties, properties)
         self.assertTrue(bucket._acl is None)
         self.assertTrue(bucket._default_object_acl is None)
 
-    def test_from_dict_explicit(self):
+    def test_ctor_no_name_explicit(self):
         NAME = 'name'
         connection = _Connection()
         properties = {'key': 'value', 'name': NAME}
-        klass = self._getTargetClass()
-        bucket = klass.from_dict(properties, connection)
+        bucket = self._makeOne(connection=connection, properties=properties)
         self.assertTrue(bucket.connection is connection)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket.properties, properties)
