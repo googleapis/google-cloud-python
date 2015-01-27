@@ -315,10 +315,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="c"># by default.</span>
         <span class="n">download</span><span class="o">.</span><span class="n">StreamInChunks</span><span class="p">(</span><span class="n">callback</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
                                 <span class="n">finish_callback</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
-
-    <span class="c"># NOTE: Alias for boto-like API.</span></div>
-    <span class="n">get_contents_to_file</span> <span class="o">=</span> <span class="n">download_to_file</span>
-
+</div>
 <div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
 
@@ -336,10 +333,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                 <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">T%H:%M:%S.</span><span class="si">%f</span><span class="s">z&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span>
         <span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">mtime</span><span class="p">,</span> <span class="n">mtime</span><span class="p">))</span>
-
-    <span class="c"># NOTE: Alias for boto-like API.</span></div>
-    <span class="n">get_contents_to_filename</span> <span class="o">=</span> <span class="n">download_to_filename</span>
-
+</div>
 <div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob as a string.</span>
 
@@ -350,10 +344,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
-
-    <span class="c"># NOTE: Alias for boto-like API.</span></div>
-    <span class="n">get_contents_as_string</span> <span class="o">=</span> <span class="n">download_as_string</span>
-
+</div>
 <div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                          <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this blob from a file-like object.</span>
@@ -425,10 +416,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                                   <span class="n">finish_callback</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">http_wrapper</span><span class="o">.</span><span class="n">MakeRequest</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
-
-    <span class="c"># NOTE: Alias for boto-like API.</span></div>
-    <span class="n">set_contents_from_file</span> <span class="o">=</span> <span class="n">upload_from_file</span>
-
+</div>
 <div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this blob&#39;s contents from the content of a named file.</span>
 
@@ -450,10 +438,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
-
-    <span class="c"># NOTE: Alias for boto-like API.</span></div>
-    <span class="n">set_contents_from_filename</span> <span class="o">=</span> <span class="n">upload_from_filename</span>
-
+</div>
 <div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;text/plain&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload contents of this blob from the provided string.</span>
 
@@ -480,10 +465,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                               <span class="n">size</span><span class="o">=</span><span class="n">string_buffer</span><span class="o">.</span><span class="n">len</span><span class="p">,</span>
                               <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="c"># NOTE: Alias for boto-like API.</span></div>
-    <span class="n">set_contents_from_string</span> <span class="o">=</span> <span class="n">upload_from_string</span>
-
+</div>
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
 

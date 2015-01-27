@@ -104,7 +104,7 @@ unique path of the object in the bucket.</li>
 
 <dl class="attribute">
 <dt id="gcloud.storage.blob.Blob.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'owner': 'owner', 'generation': 'generation', 'updated': 'updated', 'timeDeleted': 'time_deleted', 'etag': 'etag', 'acl': 'acl', 'contentLanguage': 'content_language', 'id': 'id', 'size': 'size', 'name': 'name', 'mediaLink': 'media_link', 'componentCount': 'component_count', 'cacheControl': 'cache_control', 'contentType': 'content_type', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'storageClass': 'storage_class', 'contentEncoding': 'content_encoding', 'contentDisposition': 'content_disposition'}</em><a class="headerlink" href="#gcloud.storage.blob.Blob.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'updated': 'updated', 'selfLink': 'self_link', 'etag': 'etag', 'owner': 'owner', 'metageneration': 'metageneration', 'componentCount': 'component_count', 'acl': 'acl', 'contentDisposition': 'content_disposition', 'timeDeleted': 'time_deleted', 'name': 'name', 'generation': 'generation', 'mediaLink': 'media_link', 'contentLanguage': 'content_language', 'contentEncoding': 'content_encoding', 'contentType': 'content_type', 'id': 'id', 'size': 'size', 'cacheControl': 'cache_control', 'storageClass': 'storage_class'}</em><a class="headerlink" href="#gcloud.storage.blob.Blob.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -429,56 +429,6 @@ until expiration.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.storage.blob.Blob.get_contents_as_string">
-<tt class="descname">get_contents_as_string</tt><big>(</big><big>)</big><a class="headerlink" href="#gcloud.storage.blob.Blob.get_contents_as_string" title="Permalink to this definition">#</a></dt>
-<dd><p>Download the contents of this blob as a string.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The data stored in this blob.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.blob.Blob.get_contents_to_file">
-<tt class="descname">get_contents_to_file</tt><big>(</big><em>file_obj</em><big>)</big><a class="headerlink" href="#gcloud.storage.blob.Blob.get_contents_to_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Download the contents of this blob into a file-like object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle to which to write the blob&#8217;s data.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.blob.Blob.get_contents_to_filename">
-<tt class="descname">get_contents_to_filename</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#gcloud.storage.blob.Blob.get_contents_to_filename" title="Permalink to this definition">#</a></dt>
-<dd><p>Download the contents of this blob into a named file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>string</em>) &#8211; A filename to be passed to <tt class="docutils literal"><span class="pre">open</span></tt>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="gcloud.storage.blob.Blob.id">
 <tt class="descname">id</tt><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.id" title="Permalink to this definition">#</a></dt>
@@ -656,90 +606,6 @@ could be a very (temporarily) costly or a very slow operation.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.blob.Blob.set_contents_from_file">
-<tt class="descname">set_contents_from_file</tt><big>(</big><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em>, <em>num_retries=6</em><big>)</big><a class="headerlink" href="#gcloud.storage.blob.Blob.set_contents_from_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Upload the contents of this blob from a file-like object.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>The effect of uploading to an existing blob depends on the
-&#8220;versioning&#8221; and &#8220;lifecycle&#8221; policies defined on the blob&#8217;s
-bucket.  In the absence of those policies, upload will
-overwrite any existing contents.</p>
-<p class="last">See the <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">object versioning</a> and
-<a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
-API documents for details.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
-<li><strong>rewind</strong> (<em>boolean</em>) &#8211; If True, seek to the beginning of the file handle before
-writing the file to Cloud Storage.</li>
-<li><strong>size</strong> (<em>int</em>) &#8211; The number of bytes to read from the file handle.
-If not provided, we&#8217;ll try to guess the size using
-<tt class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></tt></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.blob.Blob.set_contents_from_filename">
-<tt class="descname">set_contents_from_filename</tt><big>(</big><em>filename</em><big>)</big><a class="headerlink" href="#gcloud.storage.blob.Blob.set_contents_from_filename" title="Permalink to this definition">#</a></dt>
-<dd><p>Upload this blob&#8217;s contents from the content of a named file.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>The effect of uploading to an existing blob depends on the
-&#8220;versioning&#8221; and &#8220;lifecycle&#8221; policies defined on the blob&#8217;s
-bucket.  In the absence of those policies, upload will
-overwrite any existing contents.</p>
-<p class="last">See the <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">object versioning</a> and
-<a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
-API documents for details.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>string</em>) &#8211; The path to the file.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.blob.Blob.set_contents_from_string">
-<tt class="descname">set_contents_from_string</tt><big>(</big><em>data</em>, <em>content_type='text/plain'</em><big>)</big><a class="headerlink" href="#gcloud.storage.blob.Blob.set_contents_from_string" title="Permalink to this definition">#</a></dt>
-<dd><p>Upload contents of this blob from the provided string.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>The effect of uploading to an existing blob depends on the
-&#8220;versioning&#8221; and &#8220;lifecycle&#8221; policies defined on the blob&#8217;s
-bucket.  In the absence of those policies, upload will
-overwrite any existing contents.</p>
-<p class="last">See the <a class="reference external" href="https://cloud.google.com/storage/docs/object-versioning">object versioning</a> and
-<a class="reference external" href="https://cloud.google.com/storage/docs/lifecycle">lifecycle</a>
-API documents for details.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>string</em>) &#8211; The data to store in this blob.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">Blob</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The updated Blob object.</td>
 </tr>
 </tbody>
 </table>

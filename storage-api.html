@@ -138,8 +138,8 @@ you can create buckets and blobs:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">new_blob</span><span class="p">(</span><span class="s">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span>
 <span class="go">&lt;Blob: my-new-bucket, my-test-file.txt&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span><span class="o">.</span><span class="n">get_contents_as_string</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span><span class="o">.</span><span class="n">download_as_string</span><span class="p">()</span>
 <span class="go">&#39;this is test content!&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
 <span class="go">[&lt;Blob: my-new-bucket, my-test-file.txt&gt;]</span>
@@ -167,8 +167,8 @@ you can create buckets and blobs:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">gcloud</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;bucket-id-here&#39;</span><span class="p">,</span> <span class="s">&#39;project-id&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># Then do other things...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="s">&#39;/remote/path/to/file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span><span class="o">.</span><span class="n">get_contents_as_string</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span><span class="o">.</span><span class="n">set_contents_from_string</span><span class="p">(</span><span class="s">&#39;New contents!&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span><span class="o">.</span><span class="n">download_as_string</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s">&#39;New contents!&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;/remote/path/storage.txt&#39;</span><span class="p">,</span> <span class="s">&#39;/local/path.txt&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
