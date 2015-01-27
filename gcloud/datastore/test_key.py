@@ -152,6 +152,25 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(clone.kind, _KIND)
         self.assertEqual(clone.path, _PATH)
 
+    def test__clone_with_parent(self):
+        _DATASET = 'DATASET-ALT'
+        _NAMESPACE = 'NAMESPACE'
+        _KIND1 = 'PARENT'
+        _KIND2 = 'KIND'
+        _ID1 = 1234
+        _ID2 = 2345
+        _PATH = [{'kind': _KIND1, 'id': _ID1}, {'kind': _KIND2, 'id': _ID2}]
+
+        parent = self._makeOne(_KIND1, _ID1, namespace=_NAMESPACE,
+                               dataset_id=_DATASET)
+        key = self._makeOne(_KIND2, _ID2, parent=parent)
+        self.assertTrue(key.parent is parent)
+        clone = key._clone()
+        self.assertTrue(clone.parent is key.parent)
+        self.assertEqual(clone.dataset_id, _DATASET)
+        self.assertEqual(clone.namespace, _NAMESPACE)
+        self.assertEqual(clone.path, _PATH)
+
     def test_completed_key_on_partial_w_id(self):
         key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
         _ID = 1234
