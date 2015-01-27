@@ -78,6 +78,33 @@ class Test_set_default_dataset_id(unittest2.TestCase):
             self._callFUT(None)
         self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
 
+    def test_set_implicit_from_appengine(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+
+        APP_ENGINE_ID = 'GAE'
+        APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
+
+        with self._monkey(None):
+            with _Monkey(_implicit_environ, app_identity=APP_IDENTITY):
+                self._callFUT()
+
+        self.assertEqual(_implicit_environ.DATASET_ID, APP_ENGINE_ID)
+
+    def test_set_implicit_both_env_and_appengine(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+
+        IMPLICIT_DATASET_ID = 'IMPLICIT'
+        APP_ENGINE_ID = 'GAE'
+        APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
+
+        with self._monkey(IMPLICIT_DATASET_ID):
+            with _Monkey(_implicit_environ, app_identity=APP_IDENTITY):
+                self._callFUT()
+
+        self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
+
 
 class Test_set_default_connection(unittest2.TestCase):
 
@@ -165,3 +192,12 @@ class Test_get_connection(unittest2.TestCase):
         self.assertTrue(isinstance(found, Connection))
         self.assertTrue(found._credentials is client._signed)
         self.assertTrue(client._get_app_default_called)
+
+
+class _AppIdentity(object):
+
+    def __init__(self, app_id):
+        self.app_id = app_id
+
+    def get_application_id(self):
+        return self.app_id

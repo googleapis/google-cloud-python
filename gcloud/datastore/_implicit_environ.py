@@ -18,9 +18,27 @@ Acts as a mutable namespace to allow the datastore package to
 imply the current dataset ID and connection from the enviroment.
 """
 
+try:
+    from google.appengine.api import app_identity
+except ImportError:
+    app_identity = None
+
 
 DATASET_ID = None
 """Module global to allow persistent implied dataset ID from enviroment."""
 
 CONNECTION = None
 """Module global to allow persistent implied connection from enviroment."""
+
+
+def app_engine_id():
+    """Gets the App Engine application ID if it can be inferred.
+
+    :rtype: string or ``NoneType``
+    :returns: App Engine application ID if running in App Engine,
+              else ``None``.
+    """
+    if app_identity is None:
+        return None
+
+    return app_identity.get_application_id()
