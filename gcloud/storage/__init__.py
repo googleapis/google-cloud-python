@@ -37,13 +37,94 @@ The main concepts with this API are:
   machine).
 """
 
+import os
+
 from gcloud import credentials
+from gcloud.storage import _implicit_environ
 from gcloud.storage.connection import Connection
 
 
 SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
          'https://www.googleapis.com/auth/devstorage.read_only',
          'https://www.googleapis.com/auth/devstorage.read_write')
+
+_BUCKET_ENV_VAR_NAME = 'GCLOUD_BUCKET_NAME'
+_PROJECT_ENV_VAR_NAME = 'GCLOUD_PROJECT'
+
+
+def set_default_bucket_name(bucket_name=None):
+    """Set default bucket name either explicitly or implicitly as fall-back.
+
+    In implicit case, currently only supports enviroment variable but will
+    support App Engine, Compute Engine and other environments in the future.
+
+    Local environment variable used is:
+    - GCLOUD_BUCKET_NAME
+
+    :type bucket_name: string
+    :param bucket_name: Optional. The bucket name to use as default.
+    """
+    if bucket_name is None:
+        bucket_name = os.getenv(_BUCKET_ENV_VAR_NAME)
+
+    if bucket_name is not None:
+        _implicit_environ.BUCKET_NAME = bucket_name
+
+
+def set_default_project(project=None):
+    """Set default bucket name either explicitly or implicitly as fall-back.
+
+    In implicit case, currently only supports enviroment variable but will
+    support App Engine, Compute Engine and other environments in the future.
+
+    Local environment variable used is:
+    - GCLOUD_PROJECT
+
+    :type project: string
+    :param project: Optional. The project name to use as default.
+    """
+    if project is None:
+        project = os.getenv(_PROJECT_ENV_VAR_NAME)
+
+    if project is not None:
+        _implicit_environ.PROJECT = project
+
+
+def set_default_connection(project=None, connection=None):
+    """Set default connection either explicitly or implicitly as fall-back.
+
+    :type project: string
+    :param project: Optional. The name of the project to connect to.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: A connection provided to be the default.
+    """
+    if project is None:
+        project = _implicit_environ.PROJECT
+
+    connection = connection or get_connection(project)
+    _implicit_environ.CONNECTION = connection
+
+
+def set_defaults(bucket_name=None, project=None, connection=None):
+    """Set defaults either explicitly or implicitly as fall-back.
+
+    Uses the arguments to call the individual default methods.
+
+    :type bucket_name: string
+    :param bucket_name: Optional. The bucket name to use as default.
+
+    :type project: string
+    :param project: Optional. The name of the project to connect to.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: A connection provided to be the default.
+    """
+    set_default_bucket_name(bucket_name=bucket_name)
+    # NOTE: `set_default_project` is called before `set_default_connection`
+    #       since `set_default_connection` falls back to implicit project.
+    set_default_project(project=project)
+    set_default_connection(project=project, connection=connection)
 
 
 def get_connection(project):
