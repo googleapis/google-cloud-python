@@ -393,6 +393,58 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">for</span> <span class="n">key_pb</span> <span class="ow">in</span> <span class="n">key_pbs</span><span class="p">:</span>
         <span class="n">key_pb</span> <span class="o">=</span> <span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
         <span class="n">request_field_pb</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_dataset_ids_equal</span><span class="p">(</span><span class="n">dataset_id1</span><span class="p">,</span> <span class="n">dataset_id2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compares two dataset IDs for fuzzy equality.</span>
+
+<span class="sd">    Each may be prefixed or unprefixed (but not null, since dataset ID</span>
+<span class="sd">    is required on a key). The only allowed prefixes are &#39;s~&#39; and &#39;e~&#39;.</span>
+
+<span class="sd">    Two identical prefixed match</span>
+
+<span class="sd">      &gt;&gt;&gt; &#39;s~foo&#39; == &#39;s~foo&#39;</span>
+<span class="sd">      &gt;&gt;&gt; &#39;e~bar&#39; == &#39;e~bar&#39;</span>
+
+<span class="sd">    while non-identical prefixed don&#39;t</span>
+
+<span class="sd">      &gt;&gt;&gt; &#39;s~foo&#39; != &#39;s~bar&#39;</span>
+<span class="sd">      &gt;&gt;&gt; &#39;s~foo&#39; != &#39;e~foo&#39;</span>
+
+<span class="sd">    As for non-prefixed, they can match other non-prefixed or</span>
+<span class="sd">    prefixed:</span>
+
+<span class="sd">      &gt;&gt;&gt; &#39;foo&#39; == &#39;foo&#39;</span>
+<span class="sd">      &gt;&gt;&gt; &#39;foo&#39; == &#39;s~foo&#39;</span>
+<span class="sd">      &gt;&gt;&gt; &#39;foo&#39; == &#39;e~foo&#39;</span>
+<span class="sd">      &gt;&gt;&gt; &#39;foo&#39; != &#39;bar&#39;</span>
+<span class="sd">      &gt;&gt;&gt; &#39;foo&#39; != &#39;s~bar&#39;</span>
+
+<span class="sd">    (Ties are resolved since &#39;foo&#39; can only be an alias for one of</span>
+<span class="sd">    s~foo or e~foo in the backend.)</span>
+
+<span class="sd">    :type dataset_id1: string</span>
+<span class="sd">    :param dataset_id1: A dataset ID.</span>
+
+<span class="sd">    :type dataset_id2: string</span>
+<span class="sd">    :param dataset_id2: A dataset ID.</span>
+
+<span class="sd">    :rtype: boolean</span>
+<span class="sd">    :returns: Boolean indicating if the IDs are the same.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dataset_id1</span> <span class="o">==</span> <span class="n">dataset_id2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">if</span> <span class="n">dataset_id1</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;s~&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">dataset_id1</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;e~&#39;</span><span class="p">):</span>
+        <span class="c"># If `dataset_id1` is prefixed and not matching, then the only way</span>
+        <span class="c"># they can match is if `dataset_id2` is unprefixed.</span>
+        <span class="k">return</span> <span class="n">dataset_id1</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="n">dataset_id2</span>
+    <span class="k">elif</span> <span class="n">dataset_id2</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;s~&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">dataset_id2</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;e~&#39;</span><span class="p">):</span>
+        <span class="c"># Here we know `dataset_id1` is unprefixed and `dataset_id2`</span>
+        <span class="c"># is prefixed.</span>
+        <span class="k">return</span> <span class="n">dataset_id1</span> <span class="o">==</span> <span class="n">dataset_id2</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+
+    <span class="k">return</span> <span class="bp">False</span>
 </pre></div>
 
       </section><!-- end of .content -->

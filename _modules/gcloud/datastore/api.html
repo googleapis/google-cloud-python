@@ -98,22 +98,38 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 
 
-<span class="k">def</span> <span class="nf">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">first_key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Infer a dataset ID from the environment, if not passed explicitly.</span>
+
+<span class="sd">    Order of precedence:</span>
+
+<span class="sd">    - Passed `dataset_id` (if not None).</span>
+<span class="sd">    - `dataset_id` of current batch / transaction (if current exists).</span>
+<span class="sd">    - `dataset_id` of first key</span>
+<span class="sd">    - `dataset_id` inferred from the environment (if `set_default_dataset_id`</span>
+<span class="sd">      has been called).</span>
 
 <span class="sd">    :type dataset_id: string</span>
 <span class="sd">    :param dataset_id: Optional.</span>
+
+<span class="sd">    :type first_key: :class:`gcloud.datastore.key.Key` or None</span>
+<span class="sd">    :param first_key: Optional: first key being manipulated.</span>
 
 <span class="sd">    :rtype: string</span>
 <span class="sd">    :returns: A dataset ID based on the current environment.</span>
 <span class="sd">    :raises: :class:`EnvironmentError` if ``dataset_id`` is ``None``,</span>
 <span class="sd">             and cannot be inferred from the environment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Dataset ID could not be inferred.&#39;</span><span class="p">)</span>
-        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span>
-    <span class="k">return</span> <span class="n">dataset_id</span>
+    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dataset_id</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">Batch</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">top</span><span class="o">.</span><span class="n">dataset_id</span>
+    <span class="k">if</span> <span class="n">first_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">first_key</span><span class="o">.</span><span class="n">dataset_id</span>
+    <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Dataset ID could not be inferred.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span>
 
 
 <span class="k">def</span> <span class="nf">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -128,38 +144,17 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">             cannot be inferred from the environment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Connection could not be inferred.&#39;</span><span class="p">)</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Batch</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">top</span><span class="o">.</span><span class="n">connection</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Connection could not be inferred.&#39;</span><span class="p">)</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
     <span class="k">return</span> <span class="n">connection</span>
 
 
-<span class="k">def</span> <span class="nf">_get_dataset_id_from_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Determines dataset ID from a list of keys.</span>
-
-<span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
-<span class="sd">    :param keys: The keys from the same dataset.</span>
-
-<span class="sd">    :rtype: string</span>
-<span class="sd">    :returns: The dataset ID of the keys.</span>
-<span class="sd">    :raises: :class:`ValueError` if the key dataset IDs don&#39;t agree.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;None not allowed&#39;</span><span class="p">)</span>
-
-    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dataset_id</span>
-    <span class="c"># Rather than creating a list or set of all dataset IDs, we iterate</span>
-    <span class="c"># and check. We could allow the backend to check this for us if IDs</span>
-    <span class="c"># with no prefix worked (GoogleCloudPlatform/google-cloud-datastore#59)</span>
-    <span class="c"># or if we made sure that a prefix s~ or e~ was on each key.</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
-        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">!=</span> <span class="n">dataset_id</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;All keys in get must be from the same dataset.&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">dataset_id</span>
-
-
-<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Retrieves entities, along with their attributes.</span>
 
 <span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
@@ -177,22 +172,35 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
 <span class="sd">    :param connection: Optional. The connection used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :type dataset_id: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
 
 <span class="sd">    :rtype: list of :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">    :returns: The requested entities.</span>
+<span class="sd">    :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,</span>
+<span class="sd">             and cannot be inferred from the environment.  ValueError if</span>
+<span class="sd">             one or more of ``keys`` has a dataset ID which does not match</span>
+<span class="sd">             the passed / inferred dataset ID.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[]</span>
 
     <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
-    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_get_dataset_id_from_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]))</span> <span class="o">!=</span> <span class="p">[</span><span class="n">dataset_id</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Keys do not match dataset ID&#39;</span><span class="p">)</span>
 
     <span class="n">transaction</span> <span class="o">=</span> <span class="n">Transaction</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
 
     <span class="n">entity_pbs</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span>
         <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span>
         <span class="n">key_pbs</span><span class="o">=</span><span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">],</span>
-        <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="n">deferred</span><span class="p">,</span>
+        <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span>
+        <span class="n">deferred</span><span class="o">=</span><span class="n">deferred</span><span class="p">,</span>
         <span class="n">transaction_id</span><span class="o">=</span><span class="n">transaction</span> <span class="ow">and</span> <span class="n">transaction</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -213,7 +221,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">return</span> <span class="n">entities</span>
 
 </div>
-<div class="viewcode-block" id="put"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.put">[docs]</a><span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="put"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.put">[docs]</a><span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Save the entities in the Cloud Datastore.</span>
 
 <span class="sd">    :type entities: list of :class:`gcloud.datastore.entity.Entity`</span>
@@ -221,17 +229,26 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
 <span class="sd">    :param connection: Optional connection used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :type dataset_id: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,</span>
+<span class="sd">             and cannot be inferred from the environment.  ValueError if</span>
+<span class="sd">             one or more entities has a key with a dataset ID not matching</span>
+<span class="sd">             the passed / inferred dataset ID.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">entities</span><span class="p">:</span>
         <span class="k">return</span>
 
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 
     <span class="n">current</span> <span class="o">=</span> <span class="n">Batch</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
     <span class="n">in_batch</span> <span class="o">=</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span><span class="p">:</span>
-        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">entity</span><span class="o">.</span><span class="n">key</span> <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entities</span><span class="p">]</span>
-        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_get_dataset_id_from_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
         <span class="n">current</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entities</span><span class="p">:</span>
         <span class="n">current</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
@@ -239,7 +256,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">current</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 </div>
-<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Delete the keys in the Cloud Datastore.</span>
 
 <span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
@@ -247,17 +264,27 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
 <span class="sd">    :param connection: Optional connection used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :type dataset_id: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,</span>
+<span class="sd">             and cannot be inferred from the environment.  ValueError if</span>
+<span class="sd">             one or more keys has a dataset ID not matching the passed /</span>
+<span class="sd">             inferred dataset ID.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
         <span class="k">return</span>
 
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="c"># We allow partial keys to attempt a delete, the backend will fail.</span>
     <span class="n">current</span> <span class="o">=</span> <span class="n">Batch</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
     <span class="n">in_batch</span> <span class="o">=</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span><span class="p">:</span>
-        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_get_dataset_id_from_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
         <span class="n">current</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
         <span class="n">current</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>

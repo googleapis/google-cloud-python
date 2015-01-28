@@ -589,16 +589,25 @@ Query objects rather than via protobufs.</p>
 
 <dl class="function">
 <dt id="gcloud.datastore.api.delete">
-<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">delete</tt><big>(</big><em>keys</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.delete" title="Permalink to this definition">#</a></dt>
+<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">delete</tt><big>(</big><em>keys</em>, <em>connection=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete the keys in the Cloud Datastore.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>keys</strong> (list of <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; The keys to be deleted from the datastore.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.
+If not passed, inferred from the environment.</li>
+<li><strong>dataset_id</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional. The dataset ID used to connect to datastore.
+If not passed, inferred from the environment.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">EnvironmentError if <tt class="docutils literal"><span class="pre">connection</span></tt> or <tt class="docutils literal"><span class="pre">dataset_id</span></tt> not passed,
+and cannot be inferred from the environment.  ValueError if
+one or more keys has a dataset ID not matching the passed /
+inferred dataset ID.</p>
 </td>
 </tr>
 </tbody>
@@ -607,7 +616,7 @@ Query objects rather than via protobufs.</p>
 
 <dl class="function">
 <dt id="gcloud.datastore.api.get">
-<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">get</tt><big>(</big><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.get" title="Permalink to this definition">#</a></dt>
+<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">get</tt><big>(</big><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>connection=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves entities, along with their attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -621,14 +630,23 @@ Use only as a keyword param.</li>
 <li><strong>deferred</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the keys returned
 by the backend as &#8220;deferred&#8221; will be copied into it.
 Use only as a keyword param.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional. The connection used to connect to datastore.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional. The connection used to connect to datastore.
+If not passed, inferred from the environment.</li>
+<li><strong>dataset_id</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional. The dataset ID used to connect to datastore.
+If not passed, inferred from the environment.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested entities.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The requested entities.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">EnvironmentError if <tt class="docutils literal"><span class="pre">connection</span></tt> or <tt class="docutils literal"><span class="pre">dataset_id</span></tt> not passed,
+and cannot be inferred from the environment.  ValueError if
+one or more of <tt class="docutils literal"><span class="pre">keys</span></tt> has a dataset ID which does not match
+the passed / inferred dataset ID.</p>
 </td>
 </tr>
 </tbody>
@@ -637,16 +655,25 @@ Use only as a keyword param.</li>
 
 <dl class="function">
 <dt id="gcloud.datastore.api.put">
-<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">put</tt><big>(</big><em>entities</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.put" title="Permalink to this definition">#</a></dt>
+<tt class="descclassname">gcloud.datastore.api.</tt><tt class="descname">put</tt><big>(</big><em>entities</em>, <em>connection=None</em>, <em>dataset_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/api.html#put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.put" title="Permalink to this definition">#</a></dt>
 <dd><p>Save the entities in the Cloud Datastore.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>entities</strong> (list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>) &#8211; The entities to be saved to the datastore.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional connection used to connect to datastore.
+If not passed, inferred from the environment.</li>
+<li><strong>dataset_id</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; Optional. The dataset ID used to connect to datastore.
+If not passed, inferred from the environment.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">EnvironmentError if <tt class="docutils literal"><span class="pre">connection</span></tt> or <tt class="docutils literal"><span class="pre">dataset_id</span></tt> not passed,
+and cannot be inferred from the environment.  ValueError if
+one or more entities has a key with a dataset ID not matching
+the passed / inferred dataset ID.</p>
 </td>
 </tr>
 </tbody>

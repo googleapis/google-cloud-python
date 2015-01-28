@@ -215,7 +215,8 @@ context manager.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; the key to be deleted.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if key is not complete.</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if key is not complete, or if the key&#8217;s
+<tt class="docutils literal"><span class="pre">dataset_id</span></tt> does not match ours.</td>
 </tr>
 </tbody>
 </table>
@@ -266,7 +267,8 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>) &#8211; the entity to be saved.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if entity has no key assigned.</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if entity has no key assigned, or if the key&#8217;s
+<tt class="docutils literal"><span class="pre">dataset_id</span></tt> does not match ours.</td>
 </tr>
 </tbody>
 </table>
