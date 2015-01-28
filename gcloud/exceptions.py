@@ -93,12 +93,12 @@ class BadRequest(ClientError):
 
 class Unauthorized(ClientError):
     """Exception mapping a '401 Unauthorized' response."""
-    code = 400
+    code = 401
 
 
 class Forbidden(ClientError):
     """Exception mapping a '403 Forbidden' response."""
-    code = 400
+    code = 403
 
 
 class NotFound(ClientError):
