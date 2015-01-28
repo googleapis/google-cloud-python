@@ -24,22 +24,38 @@ from gcloud.datastore.transaction import Transaction
 from gcloud.datastore import helpers
 
 
-def _require_dataset_id(dataset_id=None):
+def _require_dataset_id(dataset_id=None, first_key=None):
     """Infer a dataset ID from the environment, if not passed explicitly.
+
+    Order of precedence:
+
+    - Passed `dataset_id` (if not None).
+    - `dataset_id` of current batch / transaction (if current exists).
+    - `dataset_id` of first key
+    - `dataset_id` inferred from the environment (if `set_default_dataset_id`
+      has been called).
 
     :type dataset_id: string
     :param dataset_id: Optional.
+
+    :type first_key: :class:`gcloud.datastore.key.Key` or None
+    :param first_key: Optional: first key being manipulated.
 
     :rtype: string
     :returns: A dataset ID based on the current environment.
     :raises: :class:`EnvironmentError` if ``dataset_id`` is ``None``,
              and cannot be inferred from the environment.
     """
-    if dataset_id is None:
-        if _implicit_environ.DATASET_ID is None:
-            raise EnvironmentError('Dataset ID could not be inferred.')
-        dataset_id = _implicit_environ.DATASET_ID
-    return dataset_id
+    if dataset_id is not None:
+        return dataset_id
+    top = Batch.current()
+    if top is not None:
+        return top.dataset_id
+    if first_key is not None:
+        return first_key.dataset_id
+    if _implicit_environ.DATASET_ID is None:
+        raise EnvironmentError('Dataset ID could not be inferred.')
+    return _implicit_environ.DATASET_ID
 
 
 def _require_connection(connection=None):
@@ -54,38 +70,17 @@ def _require_connection(connection=None):
              cannot be inferred from the environment.
     """
     if connection is None:
-        if _implicit_environ.CONNECTION is None:
-            raise EnvironmentError('Connection could not be inferred.')
-        connection = _implicit_environ.CONNECTION
+        top = Batch.current()
+        if top is not None:
+            connection = top.connection
+        else:
+            if _implicit_environ.CONNECTION is None:
+                raise EnvironmentError('Connection could not be inferred.')
+            connection = _implicit_environ.CONNECTION
     return connection
 
 
-def _get_dataset_id_from_keys(keys):
-    """Determines dataset ID from a list of keys.
-
-    :type keys: list of :class:`gcloud.datastore.key.Key`
-    :param keys: The keys from the same dataset.
-
-    :rtype: string
-    :returns: The dataset ID of the keys.
-    :raises: :class:`ValueError` if the key dataset IDs don't agree.
-    """
-    if any(key is None for key in keys):
-        raise ValueError('None not allowed')
-
-    dataset_id = keys[0].dataset_id
-    # Rather than creating a list or set of all dataset IDs, we iterate
-    # and check. We could allow the backend to check this for us if IDs
-    # with no prefix worked (GoogleCloudPlatform/google-cloud-datastore#59)
-    # or if we made sure that a prefix s~ or e~ was on each key.
-    for key in keys[1:]:
-        if key.dataset_id != dataset_id:
-            raise ValueError('All keys in get must be from the same dataset.')
-
-    return dataset_id
-
-
-def get(keys, missing=None, deferred=None, connection=None):
+def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
     """Retrieves entities, along with their attributes.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
@@ -103,22 +98,35 @@ def get(keys, missing=None, deferred=None, connection=None):
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: Optional. The connection used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :type dataset_id: :class:`gcloud.datastore.connection.Connection`
+    :param dataset_id: Optional. The dataset ID used to connect to datastore.
+                       If not passed, inferred from the environment.
 
     :rtype: list of :class:`gcloud.datastore.entity.Entity`
     :returns: The requested entities.
+    :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,
+             and cannot be inferred from the environment.  ValueError if
+             one or more of ``keys`` has a dataset ID which does not match
+             the passed / inferred dataset ID.
     """
     if not keys:
         return []
 
     connection = _require_connection(connection)
-    dataset_id = _get_dataset_id_from_keys(keys)
+    dataset_id = _require_dataset_id(dataset_id, keys[0])
+
+    if list(set([key.dataset_id for key in keys])) != [dataset_id]:
+        raise ValueError('Keys do not match dataset ID')
 
     transaction = Transaction.current()
 
     entity_pbs = connection.lookup(
         dataset_id=dataset_id,
         key_pbs=[k.to_protobuf() for k in keys],
-        missing=missing, deferred=deferred,
+        missing=missing,
+        deferred=deferred,
         transaction_id=transaction and transaction.id,
     )
 
@@ -139,7 +147,7 @@ def get(keys, missing=None, deferred=None, connection=None):
     return entities
 
 
-def put(entities, connection=None):
+def put(entities, connection=None, dataset_id=None):
     """Save the entities in the Cloud Datastore.
 
     :type entities: list of :class:`gcloud.datastore.entity.Entity`
@@ -147,17 +155,26 @@ def put(entities, connection=None):
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: Optional connection used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :type dataset_id: :class:`gcloud.datastore.connection.Connection`
+    :param dataset_id: Optional. The dataset ID used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,
+             and cannot be inferred from the environment.  ValueError if
+             one or more entities has a key with a dataset ID not matching
+             the passed / inferred dataset ID.
     """
     if not entities:
         return
 
-    connection = connection or _implicit_environ.CONNECTION
+    connection = _require_connection(connection)
+    dataset_id = _require_dataset_id(dataset_id, entities[0].key)
 
     current = Batch.current()
     in_batch = current is not None
     if not in_batch:
-        keys = [entity.key for entity in entities]
-        dataset_id = _get_dataset_id_from_keys(keys)
         current = Batch(dataset_id=dataset_id, connection=connection)
     for entity in entities:
         current.put(entity)
@@ -165,7 +182,7 @@ def put(entities, connection=None):
         current.commit()
 
 
-def delete(keys, connection=None):
+def delete(keys, connection=None, dataset_id=None):
     """Delete the keys in the Cloud Datastore.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
@@ -173,17 +190,27 @@ def delete(keys, connection=None):
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: Optional connection used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :type dataset_id: :class:`gcloud.datastore.connection.Connection`
+    :param dataset_id: Optional. The dataset ID used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,
+             and cannot be inferred from the environment.  ValueError if
+             one or more keys has a dataset ID not matching the passed /
+             inferred dataset ID.
     """
     if not keys:
         return
 
-    connection = connection or _implicit_environ.CONNECTION
+    connection = _require_connection(connection)
+    dataset_id = _require_dataset_id(dataset_id, keys[0])
 
     # We allow partial keys to attempt a delete, the backend will fail.
     current = Batch.current()
     in_batch = current is not None
     if not in_batch:
-        dataset_id = _get_dataset_id_from_keys(keys)
         current = Batch(dataset_id=dataset_id, connection=connection)
     for key in keys:
         current.delete(key)

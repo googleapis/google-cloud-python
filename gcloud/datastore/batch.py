@@ -210,10 +210,15 @@ class Batch(object):
         :type entity: :class:`gcloud.datastore.entity.Entity`
         :param entity: the entity to be saved.
 
-        :raises: ValueError if entity has no key assigned.
+        :raises: ValueError if entity has no key assigned, or if the key's
+                 ``dataset_id`` does not match ours.
         """
         if entity.key is None:
             raise ValueError("Entity must have a key")
+
+        if not helpers._dataset_ids_equal(self._dataset_id,
+                                          entity.key.dataset_id):
+            raise ValueError("Key must be from same dataset as batch")
 
         _assign_entity_to_mutation(
             self.mutation, entity, self._auto_id_entities)
@@ -224,10 +229,15 @@ class Batch(object):
         :type key: :class:`gcloud.datastore.key.Key`
         :param key: the key to be deleted.
 
-        :raises: ValueError if key is not complete.
+        :raises: ValueError if key is not complete, or if the key's
+                 ``dataset_id`` does not match ours.
         """
         if key.is_partial:
             raise ValueError("Key must be complete")
+
+        if not helpers._dataset_ids_equal(self._dataset_id,
+                                          key.dataset_id):
+            raise ValueError("Key must be from same dataset as batch")
 
         key_pb = key.to_protobuf()
         helpers._add_keys_to_request(self.mutation.delete, [key_pb])
