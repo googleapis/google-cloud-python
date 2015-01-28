@@ -30,11 +30,3 @@ Iterators
   :members:
   :undoc-members:
   :show-inheritance:
-
-Exceptions
-~~~~~~~~~~
-
-.. automodule:: gcloud.storage.exceptions
-  :members:
-  :undoc-members:
-  :show-inheritance:

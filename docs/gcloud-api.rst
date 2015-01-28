@@ -28,3 +28,11 @@ Credentials
   :members:
   :undoc-members:
   :show-inheritance:
+
+Exceptions
+~~~~~~~~~~
+
+.. automodule:: gcloud.exceptions
+  :members:
+  :undoc-members:
+  :show-inheritance:

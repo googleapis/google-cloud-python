@@ -15,11 +15,11 @@
 import unittest2
 
 
-class Test_StorageError(unittest2.TestCase):
+class Test_GCloudError(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.exceptions import StorageError
-        return StorageError
+        from gcloud.exceptions import GCloudError
+        return GCloudError
 
     def _makeOne(self, *args):
         return self._getTargetClass()(*args)
@@ -49,11 +49,11 @@ class Test_StorageError(unittest2.TestCase):
 class Test_make_exception(unittest2.TestCase):
 
     def _callFUT(self, response, content):
-        from gcloud.storage.exceptions import make_exception
+        from gcloud.exceptions import make_exception
         return make_exception(response, content)
 
     def test_hit_w_content_as_str(self):
-        from gcloud.storage.exceptions import NotFound
+        from gcloud.exceptions import NotFound
         response = _Response(404)
         content = '{"message": "Not Found"}'
         exception = self._callFUT(response, content)
@@ -62,7 +62,7 @@ class Test_make_exception(unittest2.TestCase):
         self.assertEqual(list(exception.errors), [])
 
     def test_miss_w_content_as_dict(self):
-        from gcloud.storage.exceptions import StorageError
+        from gcloud.exceptions import GCloudError
         ERROR = {
             'domain': 'global',
             'location': 'test',
@@ -73,7 +73,7 @@ class Test_make_exception(unittest2.TestCase):
         response = _Response(600)
         content = {"message": "Unknown Error", "error": {"errors": [ERROR]}}
         exception = self._callFUT(response, content)
-        self.assertTrue(isinstance(exception, StorageError))
+        self.assertTrue(isinstance(exception, GCloudError))
         self.assertEqual(exception.message, 'Unknown Error')
         self.assertEqual(list(exception.errors), [ERROR])
 

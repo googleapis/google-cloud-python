@@ -22,7 +22,7 @@ import json
 _HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
 
 
-class StorageError(Exception):
+class GCloudError(Exception):
     """Base error class for gcloud errors (abstract).
 
     Each subclass represents a single type of HTTP error response.
@@ -34,7 +34,7 @@ class StorageError(Exception):
     """
 
     def __init__(self, message, errors=()):
-        super(StorageError, self).__init__()
+        super(GCloudError, self).__init__()
         # suppress deprecation warning under 2.6.x
         self.message = message
         self._errors = [error.copy() for error in errors]
@@ -52,7 +52,7 @@ class StorageError(Exception):
         return [error.copy() for error in self._errors]
 
 
-class Redirection(StorageError):
+class Redirection(GCloudError):
     """Base for 3xx responses
 
     This class is abstract.
@@ -79,7 +79,7 @@ class ResumeIncomplete(Redirection):
     code = 308
 
 
-class ClientError(StorageError):
+class ClientError(GCloudError):
     """Base for 4xx responses
 
     This class is abstract
@@ -93,12 +93,12 @@ class BadRequest(ClientError):
 
 class Unauthorized(ClientError):
     """Exception mapping a '401 Unauthorized' response."""
-    code = 400
+    code = 401
 
 
 class Forbidden(ClientError):
     """Exception mapping a '403 Forbidden' response."""
-    code = 400
+    code = 403
 
 
 class NotFound(ClientError):
@@ -136,7 +136,7 @@ class TooManyRequests(ClientError):
     code = 429
 
 
-class ServerError(StorageError):
+class ServerError(GCloudError):
     """Base for 5xx responses:  (abstract)"""
 
 
@@ -158,7 +158,7 @@ class ServiceUnavailable(ServerError):
 def make_exception(response, content):
     """Factory:  create exception based on HTTP response code.
 
-    :rtype: instance of :class:`StorageError`, or a concrete subclass.
+    :rtype: instance of :class:`GCloudError`, or a concrete subclass.
     """
 
     if isinstance(content, str):
@@ -171,7 +171,7 @@ def make_exception(response, content):
     try:
         klass = _HTTP_CODE_TO_EXCEPTION[response.status]
     except KeyError:
-        error = StorageError(message, errors)
+        error = GCloudError(message, errors)
         error.code = response.status
     else:
         error = klass(message, errors)
@@ -187,7 +187,7 @@ def _walk_subclasses(klass):
 
 
 # Build the code->exception class mapping.
-for eklass in _walk_subclasses(StorageError):
+for eklass in _walk_subclasses(GCloudError):
     code = getattr(eklass, 'code', None)
     if code is not None:
         _HTTP_CODE_TO_EXCEPTION[code] = eklass

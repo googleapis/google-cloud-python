@@ -14,9 +14,8 @@
 
 """Connections to gcloud datastore API servers."""
 
-import six
-
 from gcloud import connection
+from gcloud.exceptions import make_exception
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 
@@ -54,7 +53,7 @@ class Connection(connection.Connection):
 
         :rtype: string
         :returns: The string response content from the API call.
-        :raises: :class:`six.moves.http_client.HTTPException` if the response
+        :raises: :class:`gcloud.exceptions.GCloudError` if the response
                  code is not 200 OK.
         """
         headers = {
@@ -68,9 +67,7 @@ class Connection(connection.Connection):
 
         status = headers['status']
         if status != '200':
-            message = ('Request failed with status code %s. '
-                       'Error was: %s' % (status, content))
-            raise six.moves.http_client.HTTPException(message)
+            raise make_exception(headers, content)
 
         return content
 

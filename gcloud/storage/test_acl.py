@@ -815,7 +815,7 @@ class _Connection(object):
         self._deleted = []
 
     def api_request(self, **kw):
-        from gcloud.storage.exceptions import NotFound
+        from gcloud.exceptions import NotFound
         self._requested.append(kw)
 
         try:
