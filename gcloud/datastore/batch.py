@@ -193,22 +193,6 @@ class Batch(object):
 
         self._auto_id_entities.append(entity)
 
-    def _match_dataset_id(self, other_id):
-        """Ensure that `other_id` matches our `dataset_id`.
-
-        Helper for :meth:`put` and :meth:`delete`.
-
-        :type other_id: string
-        :param other_id: the dataset ID to compare
-
-        :raises: ValueError if `other_id` does not match (even after stripping
-                 any prefix).
-        """
-        other_id = other_id.rsplit('~', 1)[-1]
-        our_id = self._dataset_id.rsplit('~', 1)[-1]
-        if other_id != our_id:
-            raise ValueError("Key must be from same dataset as batch")
-
     def put(self, entity):
         """Remember an entity's state to be saved during ``commit``.
 
@@ -232,7 +216,9 @@ class Batch(object):
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        self._match_dataset_id(entity.key.dataset_id)
+        if not helpers._dataset_ids_equal(self._dataset_id,
+                                          entity.key.dataset_id):
+            raise ValueError("Key must be from same dataset as batch")
 
         _assign_entity_to_mutation(
             self.mutation, entity, self._auto_id_entities)
@@ -249,7 +235,9 @@ class Batch(object):
         if key.is_partial:
             raise ValueError("Key must be complete")
 
-        self._match_dataset_id(key.dataset_id)
+        if not helpers._dataset_ids_equal(self._dataset_id,
+                                          key.dataset_id):
+            raise ValueError("Key must be from same dataset as batch")
 
         key_pb = key.to_protobuf()
         helpers._add_keys_to_request(self.mutation.delete, [key_pb])
