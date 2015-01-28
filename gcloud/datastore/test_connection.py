@@ -100,17 +100,16 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], DATA)
 
     def test__request_not_200(self):
-        import six
+        from gcloud.exceptions import BadRequest
 
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
         DATA = 'DATA'
         conn = self._makeOne()
-        conn._http = Http({'status': '400'}, 'Bad Request')
-        with self.assertRaises(six.moves.http_client.HTTPException) as e:
+        conn._http = Http({'status': '400'}, '{"message": "Bad Request"}')
+        with self.assertRaises(BadRequest) as e:
             conn._request(DATASET_ID, METHOD, DATA)
-        expected_message = ('Request failed with status code 400. '
-                            'Error was: Bad Request')
+        expected_message = ('400 Bad Request')
         self.assertEqual(str(e.exception), expected_message)
 
     def test__rpc(self):
@@ -845,12 +844,13 @@ class Http(object):
     _called_with = None
 
     def __init__(self, headers, content):
-        self._headers = headers
+        from httplib2 import Response
+        self._response = Response(headers)
         self._content = content
 
     def request(self, **kw):
         self._called_with = kw
-        return self._headers, self._content
+        return self._response, self._content
 
 
 class HttpMultiple(object):
