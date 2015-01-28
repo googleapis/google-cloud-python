@@ -19,6 +19,7 @@ import tempfile
 import time
 import unittest2
 
+from gcloud import exceptions
 from gcloud import storage
 from gcloud.storage import _implicit_environ
 
@@ -45,7 +46,7 @@ def safe_delete(bucket):
     for blob in bucket:
         try:
             blob.delete()
-        except storage.exceptions.NotFound:
+        except exceptions.NotFound:
             print('Delete failed with 404: %r' % (blob,))
 
     # Passing force=False does not try to delete the contained files.
@@ -68,7 +69,7 @@ class TestStorageBuckets(unittest2.TestCase):
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'
-        self.assertRaises(storage.exceptions.NotFound,
+        self.assertRaises(exceptions.NotFound,
                           CONNECTION.get_bucket, new_bucket_name)
         created = CONNECTION.create_bucket(new_bucket_name)
         self.case_buckets_to_delete.append(created)

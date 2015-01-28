@@ -277,7 +277,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertRaises(TypeError, bucket.new_blob, object())
 
     def test_delete_default_miss(self):
-        from gcloud.storage.exceptions import NotFound
+        from gcloud.exceptions import NotFound
         NAME = 'name'
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
@@ -293,7 +293,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(connection._deleted, [(NAME, True)])
 
     def test_delete_blob_miss(self):
-        from gcloud.storage.exceptions import NotFound
+        from gcloud.exceptions import NotFound
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
@@ -334,7 +334,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
     def test_delete_blobs_miss_no_on_error(self):
-        from gcloud.storage.exceptions import NotFound
+        from gcloud.exceptions import NotFound
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         NONESUCH = 'nonesuch'
@@ -982,7 +982,7 @@ class _Connection(object):
         self._deleted = []
 
     def api_request(self, **kw):
-        from gcloud.storage.exceptions import NotFound
+        from gcloud.exceptions import NotFound
         self._requested.append(kw)
 
         try:
@@ -993,7 +993,7 @@ class _Connection(object):
             return response
 
     def delete_bucket(self, bucket, force=False):
-        from gcloud.storage.exceptions import NotFound
+        from gcloud.exceptions import NotFound
         self._deleted.append((bucket, force))
         if not self._delete_ok:
             raise NotFound('miss')

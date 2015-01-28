@@ -17,9 +17,9 @@
 import os
 import six
 
+from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
-from gcloud.storage import exceptions
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
@@ -159,7 +159,7 @@ class Bucket(_PropertyMixin):
             response = self.connection.api_request(method='GET',
                                                    path=blob.path)
             return Blob(properties=response, bucket=self)
-        except exceptions.NotFound:
+        except NotFound:
             return None
 
     def get_all_blobs(self):
@@ -239,7 +239,7 @@ class Bucket(_PropertyMixin):
 
         The bucket **must** be empty in order to delete it.  If the
         bucket doesn't exist, this will raise a
-        :class:`gcloud.storage.exceptions.NotFound`.  If the bucket is
+        :class:`gcloud.exceptions.NotFound`.  If the bucket is
         not empty, this will raise an Exception.
 
         If you want to delete a non-empty bucket you can pass in a force
@@ -249,9 +249,9 @@ class Bucket(_PropertyMixin):
         :type force: boolean
         :param force: If True, empties the bucket's objects then deletes it.
 
-        :raises: :class:`gcloud.storage.exceptions.NotFound` if the
+        :raises: :class:`gcloud.exceptions.NotFound` if the
                  bucket does not exist, or
-                 :class:`gcloud.storage.exceptions.Conflict` if the
+                 :class:`gcloud.exceptions.Conflict` if the
                  bucket has blobs and `force` is not passed.
         """
         return self.connection.delete_bucket(self.name, force=force)
@@ -260,12 +260,12 @@ class Bucket(_PropertyMixin):
         """Deletes a blob from the current bucket.
 
         If the blob isn't found, raise a
-        :class:`gcloud.storage.exceptions.NotFound`.
+        :class:`gcloud.exceptions.NotFound`.
 
         For example::
 
+          >>> from gcloud.exceptions import NotFound
           >>> from gcloud import storage
-          >>> from gcloud.storage import exceptions
           >>> connection = storage.get_connection(project)
           >>> bucket = connection.get_bucket('my-bucket')
           >>> print bucket.get_all_blobs()
@@ -273,7 +273,7 @@ class Bucket(_PropertyMixin):
           >>> bucket.delete_blob('my-file.txt')
           >>> try:
           ...   bucket.delete_blob('doesnt-exist')
-          ... except exceptions.NotFound:
+          ... except NotFound:
           ...   pass
 
 
@@ -282,7 +282,7 @@ class Bucket(_PropertyMixin):
 
         :rtype: :class:`gcloud.storage.blob.Blob`
         :returns: The blob that was just deleted.
-        :raises: :class:`gcloud.storage.exceptions.NotFound` (to suppress
+        :raises: :class:`gcloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.::
 
@@ -302,16 +302,16 @@ class Bucket(_PropertyMixin):
 
         :type on_error: a callable taking (blob)
         :param on_error: If not ``None``, called once for each blob raising
-                         :class:`gcloud.storage.exceptions.NotFound`;
+                         :class:`gcloud.exceptions.NotFound`;
                          otherwise, the exception is propagated.
 
-        :raises: :class:`gcloud.storage.exceptions.NotFound` (if
+        :raises: :class:`gcloud.exceptions.NotFound` (if
                  `on_error` is not passed).
         """
         for blob in blobs:
             try:
                 self.delete_blob(blob)
-            except exceptions.NotFound:
+            except NotFound:
                 if on_error is not None:
                     on_error(blob)
                 else:

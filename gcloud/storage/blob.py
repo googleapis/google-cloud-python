@@ -195,7 +195,7 @@ class Blob(_PropertyMixin):
 
         :rtype: :class:`Blob`
         :returns: The blob that was just deleted.
-        :raises: :class:`gcloud.storage.exceptions.NotFound`
+        :raises: :class:`gcloud.exceptions.NotFound`
                  (propagated from
                  :meth:`gcloud.storage.bucket.Bucket.delete_blob`).
         """
@@ -207,7 +207,7 @@ class Blob(_PropertyMixin):
         :type file_obj: file
         :param file_obj: A file handle to which to write the blob's data.
 
-        :raises: :class:`gcloud.storage.exceptions.NotFound`
+        :raises: :class:`gcloud.exceptions.NotFound`
         """
 
         download_url = self.media_link
@@ -232,7 +232,7 @@ class Blob(_PropertyMixin):
         :type filename: string
         :param filename: A filename to be passed to ``open``.
 
-        :raises: :class:`gcloud.storage.exceptions.NotFound`
+        :raises: :class:`gcloud.exceptions.NotFound`
         """
         with open(filename, 'wb') as file_obj:
             self.download_to_file(file_obj)
@@ -249,7 +249,7 @@ class Blob(_PropertyMixin):
 
         :rtype: string
         :returns: The data stored in this blob.
-        :raises: :class:`gcloud.storage.exceptions.NotFound`
+        :raises: :class:`gcloud.exceptions.NotFound`
         """
         string_buffer = StringIO()
         self.download_to_file(string_buffer)

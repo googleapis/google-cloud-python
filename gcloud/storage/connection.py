@@ -29,7 +29,8 @@ from oauth2client import service_account
 import pytz
 
 from gcloud.connection import Connection as _Base
-from gcloud.storage import exceptions
+from gcloud.exceptions import make_exception
+from gcloud.exceptions import NotFound
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
 import six
@@ -320,7 +321,7 @@ class Connection(_Base):
             method=method, url=url, data=data, content_type=content_type)
 
         if not 200 <= response.status < 300:
-            raise exceptions.make_exception(response, content)
+            raise make_exception(response, content)
 
         if content and expect_json:
             content_type = response.get('content-type', '')
@@ -364,11 +365,11 @@ class Connection(_Base):
         For example::
 
           >>> from gcloud import storage
-          >>> from gcloud.storage import exceptions
+          >>> from gcloud.exceptions import NotFound
           >>> connection = storage.get_connection(project)
           >>> try:
           >>>   bucket = connection.get_bucket('my-bucket')
-          >>> except exceptions.NotFound:
+          >>> except NotFound:
           >>>   print 'Sorry, that bucket does not exist!'
 
         :type bucket_name: string
@@ -405,7 +406,7 @@ class Connection(_Base):
         """
         try:
             return self.get_bucket(bucket_name)
-        except exceptions.NotFound:
+        except NotFound:
             return None
 
     def create_bucket(self, bucket):
@@ -452,10 +453,10 @@ class Connection(_Base):
         If the bucket doesn't exist, this will raise a
         :class:`gcloud.storage.exceptions.NotFound`::
 
-          >>> from gcloud.storage import exceptions
+          >>> from gcloud.exceptions import NotFound
           >>> try:
           >>>   connection.delete_bucket('my-bucket')
-          >>> except exceptions.NotFound:
+          >>> except NotFound:
           >>>   print 'That bucket does not exist!'
 
         :type bucket: string or :class:`gcloud.storage.bucket.Bucket`
