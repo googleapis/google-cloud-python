@@ -30,12 +30,19 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         from gcloud.datastore import set_default_dataset_id
         return set_default_dataset_id(dataset_id=dataset_id)
 
-    def _monkey(self, implicit_dataset_id):
+    def _monkey(self, implicit_dataset_id, httplib=None, app_identity=None):
+        from contextlib import nested
         import os
-        from gcloud.datastore import _DATASET_ENV_VAR_NAME
+
         from gcloud._testing import _Monkey
+        from gcloud.datastore import _DATASET_ENV_VAR_NAME
+        from gcloud.datastore import _implicit_environ
+
         environ = {_DATASET_ENV_VAR_NAME: implicit_dataset_id}
-        return _Monkey(os, getenv=environ.get)
+        httplib = httplib or _Httplib(None, status=404)
+        return nested(_Monkey(os, getenv=environ.get),
+                      _Monkey(_implicit_environ, httplib=httplib,
+                              app_identity=app_identity))
 
     def test_no_env_var_set(self):
         from gcloud.datastore import _implicit_environ
@@ -79,102 +86,92 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
 
     def test_set_implicit_from_appengine(self):
-        from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
 
         APP_ENGINE_ID = 'GAE'
         APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
 
-        with self._monkey(None):
-            with _Monkey(_implicit_environ, app_identity=APP_IDENTITY):
-                self._callFUT()
+        with self._monkey(None, app_identity=APP_IDENTITY):
+            self._callFUT()
 
         self.assertEqual(_implicit_environ.DATASET_ID, APP_ENGINE_ID)
 
     def test_set_implicit_both_env_and_appengine(self):
-        from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
 
         IMPLICIT_DATASET_ID = 'IMPLICIT'
         APP_IDENTITY = _AppIdentity('GAE')
 
-        with self._monkey(IMPLICIT_DATASET_ID):
-            with _Monkey(_implicit_environ, app_identity=APP_IDENTITY):
-                self._callFUT()
+        with self._monkey(IMPLICIT_DATASET_ID, app_identity=APP_IDENTITY):
+            self._callFUT()
 
         self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
 
     def _implicit_compute_engine_helper(self, status):
-        from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
 
         COMPUTE_ENGINE_ID = 'GCE'
-        HTTPLIB2 = _Httplib2(COMPUTE_ENGINE_ID, status=status)
-        if status == '200':
+        HTTPLIB = _Httplib(COMPUTE_ENGINE_ID, status=status)
+        if status == 200:
             EXPECTED_ID = COMPUTE_ENGINE_ID
         else:
             EXPECTED_ID = None
 
-        with self._monkey(None):
-            with _Monkey(_implicit_environ, httplib2=HTTPLIB2):
-                self._callFUT()
+        with self._monkey(None, httplib=HTTPLIB):
+            self._callFUT()
 
         self.assertEqual(_implicit_environ.DATASET_ID, EXPECTED_ID)
-        self.assertEqual(len(HTTPLIB2._http_instances), 1)
+        self.assertEqual(len(HTTPLIB._http_connections), 1)
 
-        (timeout, http_instance), = HTTPLIB2._http_instances
+        (host, timeout, http_connection), = HTTPLIB._http_connections
+        self.assertEqual(host, '169.254.169.254')
         self.assertEqual(timeout, 0.1)
         self.assertEqual(
-            http_instance._called_uris,
-            ['http://169.254.169.254/computeMetadata/v1/project/project-id'])
+            http_connection._called_args,
+            [('GET', '/computeMetadata/v1/project/project-id')])
         expected_kwargs = {
-            'method': 'GET',
             'headers': {
                 'Metadata-Flavor': 'Google',
             },
         }
-        self.assertEqual(http_instance._called_kwargs, [expected_kwargs])
+        self.assertEqual(http_connection._called_kwargs, [expected_kwargs])
+        self.assertEqual(http_connection._close_count, 1)
 
     def test_set_implicit_from_compute_engine(self):
-        self._implicit_compute_engine_helper('200')
+        self._implicit_compute_engine_helper(200)
 
     def test_set_implicit_from_compute_engine_bad_status(self):
-        self._implicit_compute_engine_helper('404')
+        self._implicit_compute_engine_helper(404)
 
     def test_set_implicit_from_compute_engine_raise_timeout(self):
         self._implicit_compute_engine_helper('RAISE')
 
     def test_set_implicit_both_appengine_and_compute(self):
-        from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
 
         APP_ENGINE_ID = 'GAE'
         APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
-        HTTPLIB2 = _Httplib2('GCE')
+        HTTPLIB = _Httplib('GCE')
 
-        with self._monkey(None):
-            with _Monkey(_implicit_environ, app_identity=APP_IDENTITY,
-                         httplib2=HTTPLIB2):
-                self._callFUT()
+        with self._monkey(None, httplib=HTTPLIB, app_identity=APP_IDENTITY):
+            self._callFUT()
 
         self.assertEqual(_implicit_environ.DATASET_ID, APP_ENGINE_ID)
-        self.assertEqual(len(HTTPLIB2._http_instances), 0)
+        self.assertEqual(len(HTTPLIB._http_connections), 0)
 
     def test_set_implicit_three_env_appengine_and_compute(self):
-        from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
 
         IMPLICIT_DATASET_ID = 'IMPLICIT'
         APP_IDENTITY = _AppIdentity('GAE')
-        HTTPLIB2 = _Httplib2('GCE')
+        HTTPLIB = _Httplib('GCE')
 
-        with self._monkey(IMPLICIT_DATASET_ID):
-            with _Monkey(_implicit_environ, app_identity=APP_IDENTITY,
-                         httplib2=HTTPLIB2):
-                self._callFUT()
+        with self._monkey(IMPLICIT_DATASET_ID, httplib=HTTPLIB,
+                          app_identity=APP_IDENTITY):
+            self._callFUT()
 
         self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
-        self.assertEqual(len(HTTPLIB2._http_instances), 0)
+        self.assertEqual(len(HTTPLIB._http_connections), 0)
 
 
 class Test_set_default_connection(unittest2.TestCase):
@@ -274,33 +271,48 @@ class _AppIdentity(object):
         return self.app_id
 
 
-class _Http(object):
+class _HTTPResponse(object):
+
+    def __init__(self, status, data):
+        self.status = status
+        self.data = data
+
+    def read(self):
+        return self.data
+
+
+class _HTTPConnection(object):
 
     def __init__(self, parent):
         self.parent = parent
-        self._called_uris = []
+        self._close_count = 0
+        self._called_args = []
         self._called_kwargs = []
 
-    def request(self, uri, **kwargs):
-        import socket
-
-        self._called_uris.append(uri)
+    def request(self, method, uri, **kwargs):
+        self._called_args.append((method, uri))
         self._called_kwargs.append(kwargs)
+
+    def getresponse(self):
+        import socket
 
         if self.parent.status == 'RAISE':
             raise socket.timeout('timed out')
         else:
-            return {'status': self.parent.status}, self.parent.project_id
+            return _HTTPResponse(self.parent.status, self.parent.project_id)
+
+    def close(self):
+        self._close_count += 1
 
 
-class _Httplib2(object):
+class _Httplib(object):
 
-    def __init__(self, project_id, status='200'):
+    def __init__(self, project_id, status=200):
         self.project_id = project_id
         self.status = status
-        self._http_instances = []
+        self._http_connections = []
 
-    def Http(self, timeout=None):
-        result = _Http(self)
-        self._http_instances.append((timeout, result))
+    def HTTPConnection(self, host, timeout=None):
+        result = _HTTPConnection(self)
+        self._http_connections.append((host, timeout, result))
         return result
