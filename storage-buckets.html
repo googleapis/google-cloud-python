@@ -94,7 +94,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'selfLink': 'self_link', 'storageClass': 'storage_class', 'metageneration': 'metageneration', 'defaultObjectAcl': 'get_default_object_acl()', 'timeCreated': 'time_created', 'name': 'name', 'logging': 'get_logging()', 'versioning': 'versioning_enabled', 'location': 'location', 'etag': 'etag', 'id': 'id', 'acl': 'acl', 'projectNumber': 'project_number', 'cors': 'get_cors()', 'lifecycle': 'get_lifecycle()', 'owner': 'owner'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'location': 'location', 'storageClass': 'storage_class', 'acl': 'acl', 'timeCreated': 'time_created', 'defaultObjectAcl': 'get_default_object_acl()', 'metageneration': 'metageneration', 'logging': 'get_logging()', 'cors': 'get_cors()', 'selfLink': 'self_link', 'projectNumber': 'project_number', 'owner': 'owner', 'name': 'name', 'lifecycle': 'get_lifecycle()', 'id': 'id', 'etag': 'etag', 'versioning': 'versioning_enabled'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -200,7 +200,7 @@ copied.</li>
 <dd><p>Delete this bucket.</p>
 <p>The bucket <strong>must</strong> be empty in order to delete it.  If the
 bucket doesn&#8217;t exist, this will raise a
-<a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>.  If the bucket is
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a>.  If the bucket is
 not empty, this will raise an Exception.</p>
 <p>If you want to delete a non-empty bucket you can pass in a force
 parameter set to <tt class="docutils literal"><span class="pre">True</span></tt>.  This will iterate through and delete the
@@ -211,9 +211,9 @@ bucket&#8217;s objects, before deleting the bucket.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>force</strong> (<em>boolean</em>) &#8211; If True, empties the bucket&#8217;s objects then deletes it.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> if the
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a> if the
 bucket does not exist, or
-<a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.Conflict" title="gcloud.storage.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Conflict</span></tt></a> if the
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></tt></a> if the
 bucket has blobs and <cite>force</cite> is not passed.</td>
 </tr>
 </tbody>
@@ -225,10 +225,10 @@ bucket has blobs and <cite>force</cite> is not passed.</td>
 <tt class="descname">delete_blob</tt><big>(</big><em>blob</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a blob from the current bucket.</p>
 <p>If the blob isn&#8217;t found, raise a
-<a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>.</p>
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a>.</p>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
@@ -236,7 +236,7 @@ bucket has blobs and <cite>force</cite> is not passed.</td>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s">&#39;my-file.txt&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s">&#39;doesnt-exist&#39;</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+<span class="gp">... </span><span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="k">pass</span>
 </pre></div>
 </div>
@@ -253,7 +253,7 @@ bucket has blobs and <cite>force</cite> is not passed.</td>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The blob that was just deleted.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> (to suppress
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a> (to suppress
 the exception, call <tt class="docutils literal"><span class="pre">delete_blobs</span></tt>, passing a no-op
 <tt class="docutils literal"><span class="pre">on_error</span></tt> callback, e.g.:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">([</span><span class="n">blob</span><span class="p">],</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="k">pass</span><span class="p">)</span>
@@ -277,12 +277,12 @@ the exception, call <tt class="docutils literal"><span class="pre">delete_blobs<
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>blobs</strong> (list of string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; A list of blob names or Blob objects to delete.</li>
 <li><strong>on_error</strong> (<em>a callable taking (blob)</em>) &#8211; If not <tt class="docutils literal"><span class="pre">None</span></tt>, called once for each blob raising
-<a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a>;
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a>;
 otherwise, the exception is propagated.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="storage-api.html#gcloud.storage.exceptions.NotFound" title="gcloud.storage.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></a> (if
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a> (if
 <cite>on_error</cite> is not passed).</p>
 </td>
 </tr>

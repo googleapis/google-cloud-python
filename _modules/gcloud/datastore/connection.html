@@ -88,9 +88,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">&quot;&quot;&quot;Connections to gcloud datastore API servers.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">six</span>
-
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 
@@ -128,7 +127,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The string response content from the API call.</span>
-<span class="sd">        :raises: :class:`six.moves.http_client.HTTPException` if the response</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.GCloudError` if the response</span>
 <span class="sd">                 code is not 200 OK.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
@@ -142,9 +141,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="n">status</span> <span class="o">=</span> <span class="n">headers</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="s">&#39;200&#39;</span><span class="p">:</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Request failed with status code </span><span class="si">%s</span><span class="s">. &#39;</span>
-                       <span class="s">&#39;Error was: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">content</span><span class="p">))</span>
-            <span class="k">raise</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">http_client</span><span class="o">.</span><span class="n">HTTPException</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">content</span>
 

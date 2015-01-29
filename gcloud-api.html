@@ -240,6 +240,289 @@ needed service account settings.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-gcloud.exceptions">
+<span id="exceptions"></span><h2>Exceptions<a class="headerlink" href="#module-gcloud.exceptions" title="Permalink to this headline">#</a></h2>
+<p>Custom exceptions for gcloud.storage package.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/status-codes">https://cloud.google.com/storage/docs/json_api/v1/status-codes</a></p>
+<dl class="exception">
+<dt id="gcloud.exceptions.BadRequest">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">BadRequest</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#BadRequest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.BadRequest" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;400 Bad Request&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.BadRequest.code">
+<tt class="descname">code</tt><em class="property"> = 400</em><a class="headerlink" href="#gcloud.exceptions.BadRequest.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.ClientError">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">ClientError</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#ClientError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.ClientError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.GCloudError" title="gcloud.exceptions.GCloudError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.GCloudError</span></tt></a></p>
+<p>Base for 4xx responses</p>
+<p>This class is abstract</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.Conflict">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">Conflict</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#Conflict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.Conflict" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;409 Conflict&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.Conflict.code">
+<tt class="descname">code</tt><em class="property"> = 409</em><a class="headerlink" href="#gcloud.exceptions.Conflict.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.Forbidden">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">Forbidden</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#Forbidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.Forbidden" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;403 Forbidden&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.Forbidden.code">
+<tt class="descname">code</tt><em class="property"> = 403</em><a class="headerlink" href="#gcloud.exceptions.Forbidden.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.GCloudError">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">GCloudError</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#GCloudError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.GCloudError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Base error class for gcloud errors (abstract).</p>
+<p>Each subclass represents a single type of HTTP error response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.GCloudError.code">
+<tt class="descname">code</tt><em class="property"> = None</em><a class="headerlink" href="#gcloud.exceptions.GCloudError.code" title="Permalink to this definition">#</a></dt>
+<dd><p>HTTP status code.  Concrete subclasses <em>must</em> define.</p>
+<p>See: <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.exceptions.GCloudError.errors">
+<tt class="descname">errors</tt><a class="reference internal" href="_modules/gcloud/exceptions.html#GCloudError.errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.GCloudError.errors" title="Permalink to this definition">#</a></dt>
+<dd><p>Detailed error information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(dict)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of mappings describing each error.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.InternalServerError">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">InternalServerError</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#InternalServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.InternalServerError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ServerError" title="gcloud.exceptions.ServerError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ServerError</span></tt></a></p>
+<p>Exception mapping a &#8216;500 Internal Server Error&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.InternalServerError.code">
+<tt class="descname">code</tt><em class="property"> = 500</em><a class="headerlink" href="#gcloud.exceptions.InternalServerError.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.LengthRequired">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">LengthRequired</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#LengthRequired"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.LengthRequired" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;411 Length Required&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.LengthRequired.code">
+<tt class="descname">code</tt><em class="property"> = 411</em><a class="headerlink" href="#gcloud.exceptions.LengthRequired.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.MethodNotAllowed">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">MethodNotAllowed</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#MethodNotAllowed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.MethodNotAllowed" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;405 Method Not Allowed&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.MethodNotAllowed.code">
+<tt class="descname">code</tt><em class="property"> = 405</em><a class="headerlink" href="#gcloud.exceptions.MethodNotAllowed.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.MovedPermanently">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">MovedPermanently</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#MovedPermanently"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.MovedPermanently" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.Redirection" title="gcloud.exceptions.Redirection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Redirection</span></tt></a></p>
+<p>Exception mapping a &#8216;301 Moved Permanently&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.MovedPermanently.code">
+<tt class="descname">code</tt><em class="property"> = 301</em><a class="headerlink" href="#gcloud.exceptions.MovedPermanently.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.NotFound">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">NotFound</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#NotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.NotFound" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;404 Not Found&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.NotFound.code">
+<tt class="descname">code</tt><em class="property"> = 404</em><a class="headerlink" href="#gcloud.exceptions.NotFound.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.NotImplemented">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">NotImplemented</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#NotImplemented"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.NotImplemented" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ServerError" title="gcloud.exceptions.ServerError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ServerError</span></tt></a></p>
+<p>Exception mapping a &#8216;501 Not Implemented&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.NotImplemented.code">
+<tt class="descname">code</tt><em class="property"> = 501</em><a class="headerlink" href="#gcloud.exceptions.NotImplemented.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.NotModified">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">NotModified</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#NotModified"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.NotModified" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.Redirection" title="gcloud.exceptions.Redirection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Redirection</span></tt></a></p>
+<p>Exception mapping a &#8216;304 Not Modified&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.NotModified.code">
+<tt class="descname">code</tt><em class="property"> = 304</em><a class="headerlink" href="#gcloud.exceptions.NotModified.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.PreconditionFailed">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">PreconditionFailed</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#PreconditionFailed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.PreconditionFailed" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;412 Precondition Failed&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.PreconditionFailed.code">
+<tt class="descname">code</tt><em class="property"> = 412</em><a class="headerlink" href="#gcloud.exceptions.PreconditionFailed.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.Redirection">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">Redirection</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#Redirection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.Redirection" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.GCloudError" title="gcloud.exceptions.GCloudError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.GCloudError</span></tt></a></p>
+<p>Base for 3xx responses</p>
+<p>This class is abstract.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.RequestRangeNotSatisfiable">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">RequestRangeNotSatisfiable</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#RequestRangeNotSatisfiable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.RequestRangeNotSatisfiable" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;416 Request Range Not Satisfiable&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.RequestRangeNotSatisfiable.code">
+<tt class="descname">code</tt><em class="property"> = 416</em><a class="headerlink" href="#gcloud.exceptions.RequestRangeNotSatisfiable.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.ResumeIncomplete">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">ResumeIncomplete</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#ResumeIncomplete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.ResumeIncomplete" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.Redirection" title="gcloud.exceptions.Redirection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Redirection</span></tt></a></p>
+<p>Exception mapping a &#8216;308 Resume Incomplete&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.ResumeIncomplete.code">
+<tt class="descname">code</tt><em class="property"> = 308</em><a class="headerlink" href="#gcloud.exceptions.ResumeIncomplete.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.ServerError">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">ServerError</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#ServerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.ServerError" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.GCloudError" title="gcloud.exceptions.GCloudError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.GCloudError</span></tt></a></p>
+<p>Base for 5xx responses:  (abstract)</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.ServiceUnavailable">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">ServiceUnavailable</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#ServiceUnavailable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.ServiceUnavailable" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ServerError" title="gcloud.exceptions.ServerError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ServerError</span></tt></a></p>
+<p>Exception mapping a &#8216;503 Service Unavailable&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.ServiceUnavailable.code">
+<tt class="descname">code</tt><em class="property"> = 503</em><a class="headerlink" href="#gcloud.exceptions.ServiceUnavailable.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.TemporaryRedirect">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">TemporaryRedirect</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#TemporaryRedirect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.TemporaryRedirect" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.Redirection" title="gcloud.exceptions.Redirection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Redirection</span></tt></a></p>
+<p>Exception mapping a &#8216;307 Temporary Redirect&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.TemporaryRedirect.code">
+<tt class="descname">code</tt><em class="property"> = 307</em><a class="headerlink" href="#gcloud.exceptions.TemporaryRedirect.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.TooManyRequests">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">TooManyRequests</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#TooManyRequests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.TooManyRequests" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;429 Too Many Requests&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.TooManyRequests.code">
+<tt class="descname">code</tt><em class="property"> = 429</em><a class="headerlink" href="#gcloud.exceptions.TooManyRequests.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="gcloud.exceptions.Unauthorized">
+<em class="property">exception </em><tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">Unauthorized</tt><big>(</big><em>message</em>, <em>errors=()</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#Unauthorized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.Unauthorized" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.exceptions.ClientError" title="gcloud.exceptions.ClientError"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.ClientError</span></tt></a></p>
+<p>Exception mapping a &#8216;401 Unauthorized&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.exceptions.Unauthorized.code">
+<tt class="descname">code</tt><em class="property"> = 401</em><a class="headerlink" href="#gcloud.exceptions.Unauthorized.code" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.exceptions.eklass">
+<tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">eklass</tt><a class="headerlink" href="#gcloud.exceptions.eklass" title="Permalink to this definition">#</a></dt>
+<dd><p>alias of <a class="reference internal" href="#gcloud.exceptions.ServiceUnavailable" title="gcloud.exceptions.ServiceUnavailable"><tt class="xref py py-class docutils literal"><span class="pre">ServiceUnavailable</span></tt></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.exceptions.make_exception">
+<tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">make_exception</tt><big>(</big><em>response</em>, <em>content</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#make_exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.make_exception" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  create exception based on HTTP response code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">instance of <a class="reference internal" href="#gcloud.exceptions.GCloudError" title="gcloud.exceptions.GCloudError"><tt class="xref py py-class docutils literal"><span class="pre">GCloudError</span></tt></a>, or a concrete subclass.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 </div>
 
 

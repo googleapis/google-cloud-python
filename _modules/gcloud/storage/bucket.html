@@ -91,9 +91,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">exceptions</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">BucketACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
@@ -233,7 +233,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span>
                                                    <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Blob</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
 </div>
 <div class="viewcode-block" id="Bucket.get_all_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_all_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -313,7 +313,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        The bucket **must** be empty in order to delete it.  If the</span>
 <span class="sd">        bucket doesn&#39;t exist, this will raise a</span>
-<span class="sd">        :class:`gcloud.storage.exceptions.NotFound`.  If the bucket is</span>
+<span class="sd">        :class:`gcloud.exceptions.NotFound`.  If the bucket is</span>
 <span class="sd">        not empty, this will raise an Exception.</span>
 
 <span class="sd">        If you want to delete a non-empty bucket you can pass in a force</span>
@@ -323,9 +323,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type force: boolean</span>
 <span class="sd">        :param force: If True, empties the bucket&#39;s objects then deletes it.</span>
 
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound` if the</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound` if the</span>
 <span class="sd">                 bucket does not exist, or</span>
-<span class="sd">                 :class:`gcloud.storage.exceptions.Conflict` if the</span>
+<span class="sd">                 :class:`gcloud.exceptions.Conflict` if the</span>
 <span class="sd">                 bucket has blobs and `force` is not passed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">)</span>
@@ -334,12 +334,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Deletes a blob from the current bucket.</span>
 
 <span class="sd">        If the blob isn&#39;t found, raise a</span>
-<span class="sd">        :class:`gcloud.storage.exceptions.NotFound`.</span>
+<span class="sd">        :class:`gcloud.exceptions.NotFound`.</span>
 
 <span class="sd">        For example::</span>
 
+<span class="sd">          &gt;&gt;&gt; from gcloud.exceptions import NotFound</span>
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; from gcloud.storage import exceptions</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
@@ -347,7 +347,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; bucket.delete_blob(&#39;my-file.txt&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; try:</span>
 <span class="sd">          ...   bucket.delete_blob(&#39;doesnt-exist&#39;)</span>
-<span class="sd">          ... except exceptions.NotFound:</span>
+<span class="sd">          ... except NotFound:</span>
 <span class="sd">          ...   pass</span>
 
 
@@ -356,7 +356,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: :class:`gcloud.storage.blob.Blob`</span>
 <span class="sd">        :returns: The blob that was just deleted.</span>
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound` (to suppress</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound` (to suppress</span>
 <span class="sd">                 the exception, call ``delete_blobs``, passing a no-op</span>
 <span class="sd">                 ``on_error`` callback, e.g.::</span>
 
@@ -376,16 +376,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :type on_error: a callable taking (blob)</span>
 <span class="sd">        :param on_error: If not ``None``, called once for each blob raising</span>
-<span class="sd">                         :class:`gcloud.storage.exceptions.NotFound`;</span>
+<span class="sd">                         :class:`gcloud.exceptions.NotFound`;</span>
 <span class="sd">                         otherwise, the exception is propagated.</span>
 
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound` (if</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound` (if</span>
 <span class="sd">                 `on_error` is not passed).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
-            <span class="k">except</span> <span class="n">exceptions</span><span class="o">.</span><span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">on_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="n">on_error</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>

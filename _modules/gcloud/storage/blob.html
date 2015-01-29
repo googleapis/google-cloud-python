@@ -269,7 +269,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: :class:`Blob`</span>
 <span class="sd">        :returns: The blob that was just deleted.</span>
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound`</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">                 (propagated from</span>
 <span class="sd">                 :meth:`gcloud.storage.bucket.Bucket.delete_blob`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -281,7 +281,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle to which to write the blob&#39;s data.</span>
 
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound`</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span>
@@ -306,7 +306,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type filename: string</span>
 <span class="sd">        :param filename: A filename to be passed to ``open``.</span>
 
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound`</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
@@ -323,7 +323,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The data stored in this blob.</span>
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound`</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">)</span>
