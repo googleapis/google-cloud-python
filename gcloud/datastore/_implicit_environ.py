@@ -69,15 +69,12 @@ def compute_engine_id():
     headers = {'Metadata-Flavor': 'Google'}
     connection = httplib.HTTPConnection(host, timeout=0.1)
 
-    content = None
     try:
         connection.request('GET', uri_path, headers=headers)
         response = connection.getresponse()
         if response.status == 200:
-            content = response.read()
+            return response.read()
     except socket.error:  # socket.timeout or socket.error(64, 'Host is down')
         pass
     finally:
         connection.close()
-
-    return content
