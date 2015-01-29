@@ -18,7 +18,7 @@ Acts as a mutable namespace to allow the datastore package to
 imply the current dataset ID and connection from the enviroment.
 """
 
-import httplib2
+import httplib
 import socket
 
 try:
@@ -64,17 +64,20 @@ def compute_engine_id():
     :returns: Compute Engine project ID if the metadata service is available,
               else ``None``.
     """
-    http = httplib2.Http(timeout=0.1)
-    uri = 'http://169.254.169.254/computeMetadata/v1/project/project-id'
+    host = '169.254.169.254'
+    uri_path = '/computeMetadata/v1/project/project-id'
     headers = {'Metadata-Flavor': 'Google'}
+    connection = httplib.HTTPConnection(host, timeout=0.1)
 
-    response = content = None
+    content = None
     try:
-        response, content = http.request(uri, method='GET', headers=headers)
-    except socket.timeout:
+        connection.request('GET', uri_path, headers=headers)
+        response = connection.getresponse()
+        if response.status == 200:
+            content = response.read()
+    except socket.error:  # socket.timeout or socket.error(64, 'Host is down')
         pass
-
-    if response is None or response['status'] != '200':
-        return None
+    finally:
+        connection.close()
 
     return content
