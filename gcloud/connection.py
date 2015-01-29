@@ -14,9 +14,9 @@
 
 """ Shared implementation of connections to API servers."""
 
-from pkg_resources import get_distribution
-
 import httplib2
+
+import gcloud
 
 
 class Connection(object):
@@ -29,12 +29,6 @@ class Connection(object):
     API_BASE_URL = 'https://www.googleapis.com'
     """The base of the API call URL."""
 
-    _EMPTY = object()
-    """A pointer to represent an empty value for default arguments."""
-
-    USER_AGENT = "gcloud-python/{0}".format(get_distribution('gcloud').version)
-    """The user agent for gcloud-python requests."""
-
     def __init__(self, credentials=None):
         """Constructor for Connection.
 
@@ -44,6 +38,11 @@ class Connection(object):
         """
         self._http = None
         self._credentials = credentials
+
+    @gcloud._UserAgentReifyProperty  # pragma: NO COVER
+    def user_agent(self):
+        """The user agent for gcloud-python requests."""
+        # The decorator will handle the value.
 
     @property
     def credentials(self):

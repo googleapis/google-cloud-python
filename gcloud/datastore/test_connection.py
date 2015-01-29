@@ -44,7 +44,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(called_with['headers']['Content-Type'],
                          'application/x-protobuf')
         self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+                         conn.user_agent)
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
@@ -409,7 +409,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers']['Content-Type'],
                          'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self.assertEqual(cw['headers']['User-Agent'], conn.user_agent)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])

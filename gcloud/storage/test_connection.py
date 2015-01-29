@@ -194,7 +194,7 @@ class TestConnection(unittest2.TestCase):
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -214,7 +214,7 @@ class TestConnection(unittest2.TestCase):
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
             'Content-Type': 'application/json',
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -234,7 +234,7 @@ class TestConnection(unittest2.TestCase):
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
             'X-Foo': 'foo',
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -258,7 +258,7 @@ class TestConnection(unittest2.TestCase):
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -305,7 +305,7 @@ class TestConnection(unittest2.TestCase):
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -333,7 +333,7 @@ class TestConnection(unittest2.TestCase):
             'Accept-Encoding': 'gzip',
             'Content-Length': len(DATAJ),
             'Content-Type': 'application/json',
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 

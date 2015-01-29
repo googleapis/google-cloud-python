@@ -59,7 +59,7 @@ class Connection(connection.Connection):
         headers = {
             'Content-Type': 'application/x-protobuf',
             'Content-Length': str(len(data)),
-            'User-Agent': self.USER_AGENT,
+            'User-Agent': self.user_agent,
         }
         headers, content = self.http.request(
             uri=self.build_api_url(dataset_id=dataset_id, method=method),
