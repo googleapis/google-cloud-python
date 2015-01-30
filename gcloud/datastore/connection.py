@@ -136,20 +136,19 @@ class Connection(connection.Connection):
         >>> from gcloud import datastore
         >>> datastore.set_defaults()
         >>> key = datastore.Key('MyKind', 1234, dataset_id='dataset-id')
-        >>> datastore.get(key)
-        <Entity object>
+        >>> datastore.get([key])
+        [<Entity object>]
 
         Using the ``connection`` class directly:
 
-        >>> connection.lookup('dataset-id', key.to_protobuf())
-        <Entity protobuf>
+        >>> connection.lookup('dataset-id', [key.to_protobuf()])
+        [<Entity protobuf>]
 
         :type dataset_id: string
         :param dataset_id: The ID of the dataset to look up the keys.
 
         :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
-                       (or a single Key)
-        :param key_pbs: The key (or keys) to retrieve from the datastore.
+        :param key_pbs: The keys to retrieve from the datastore.
 
         :type missing: an empty list or None.
         :param missing: If a list is passed, the key-only entity protobufs
@@ -188,12 +187,6 @@ class Connection(connection.Connection):
 
         lookup_request = datastore_pb.LookupRequest()
         _set_read_options(lookup_request, eventual, transaction_id)
-
-        single_key = isinstance(key_pbs, datastore_pb.Key)
-
-        if single_key:
-            key_pbs = [key_pbs]
-
         helpers._add_keys_to_request(lookup_request.key, key_pbs)
 
         results, missing_found, deferred_found = self._lookup(
@@ -204,12 +197,6 @@ class Connection(connection.Connection):
 
         if deferred is not None:
             deferred.extend(deferred_found)
-
-        if single_key:
-            if results:
-                return results[0]
-            else:
-                return None
 
         return results
 
