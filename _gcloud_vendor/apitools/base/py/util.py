@@ -4,11 +4,12 @@
 import collections
 import os
 import random
-import urllib
-import urllib2
 
 import six
 from six.moves import http_client
+from six.moves.urllib.error import URLError
+from six.moves.urllib.parse import quote
+from six.moves.urllib.request import urlopen
 
 from _gcloud_vendor.apitools.base.py import exceptions
 
@@ -44,8 +45,8 @@ def DetectGce():
     True iff we're running on a GCE instance.
   """
   try:
-    o = urllib2.urlopen('http://metadata.google.internal')
-  except urllib2.URLError:
+    o = urlopen('http://metadata.google.internal')
+  except URLError:
     return False
   return (o.getcode() == http_client.OK and
           o.headers.get('metadata-flavor') == 'Google')
@@ -103,7 +104,7 @@ def ExpandRelativePath(method_config, params, relative_path=None):
       if not isinstance(value, six.string_types):
         value = str(value)
       path = path.replace(param_template,
-                          urllib.quote(value.encode('utf_8'), reserved_chars))
+                          quote(value.encode('utf_8'), reserved_chars))
     except TypeError as e:
       raise exceptions.InvalidUserInputError(
           'Error setting required parameter %s to value %s: %s' % (

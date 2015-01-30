@@ -175,7 +175,7 @@ class Test__pb_attr_value(unittest2.TestCase):
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
         name, value = self._callFUT(naive)
         self.assertEqual(name, 'timestamp_microseconds_value')
-        self.assertEqual(value / 1000000, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value // 1000000, calendar.timegm(utc.timetuple()))
         self.assertEqual(value % 1000000, 4375)
 
     def test_datetime_w_zone(self):
@@ -186,7 +186,7 @@ class Test__pb_attr_value(unittest2.TestCase):
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
         name, value = self._callFUT(utc)
         self.assertEqual(name, 'timestamp_microseconds_value')
-        self.assertEqual(value / 1000000, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value // 1000000, calendar.timegm(utc.timetuple()))
         self.assertEqual(value % 1000000, 4375)
 
     def test_key(self):
@@ -227,8 +227,12 @@ class Test__pb_attr_value(unittest2.TestCase):
         self.assertRaises(ValueError, self._callFUT, too_large)
 
     def test_native_str(self):
+        import six
         name, value = self._callFUT('str')
-        self.assertEqual(name, 'blob_value')
+        if six.PY2:
+            self.assertEqual(name, 'blob_value')
+        else:  # pragma: NO COVER
+            self.assertEqual(name, 'string_value')
         self.assertEqual(value, 'str')
 
     def test_bytes(self):
@@ -382,7 +386,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, pytz.utc)
         self._callFUT(pb, utc)
         value = pb.timestamp_microseconds_value
-        self.assertEqual(value / 1000000, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value // 1000000, calendar.timegm(utc.timetuple()))
         self.assertEqual(value % 1000000, 4375)
 
     def test_key(self):
@@ -439,9 +443,13 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(value, must_be_long)
 
     def test_native_str(self):
+        import six
         pb = self._makePB()
         self._callFUT(pb, 'str')
-        value = pb.blob_value
+        if six.PY2:
+            value = pb.blob_value
+        else:  # pragma: NO COVER
+            value = pb.string_value
         self.assertEqual(value, 'str')
 
     def test_bytes(self):
@@ -463,7 +471,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         entity = Entity()
         self._callFUT(pb, entity)
         value = pb.entity_value
-        self.assertEqual(value.key.SerializeToString(), '')
+        self.assertEqual(value.key.SerializeToString(), b'')
         props = list(value.property)
         self.assertEqual(len(props), 0)
 

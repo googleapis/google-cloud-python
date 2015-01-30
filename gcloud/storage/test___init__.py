@@ -86,30 +86,35 @@ class Test_set_default_bucket(unittest2.TestCase):
         from gcloud.storage import set_default_bucket
         return set_default_bucket(bucket=bucket)
 
-    def _monkey(self, implicit_bucket_name, connection=None):
-        from contextlib import nested
+    def _monkeyEnviron(self, implicit_bucket_name):
         import os
 
         from gcloud._testing import _Monkey
         from gcloud.storage import _BUCKET_ENV_VAR_NAME
-        from gcloud.storage import _implicit_environ
 
         environ = {_BUCKET_ENV_VAR_NAME: implicit_bucket_name}
-        return nested(_Monkey(os, getenv=environ.get),
-                      _Monkey(_implicit_environ, CONNECTION=connection))
+        return _Monkey(os, getenv=environ.get)
+
+    def _monkeyImplicit(self, connection):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import _implicit_environ
+
+        return _Monkey(_implicit_environ, CONNECTION=connection)
 
     def test_no_env_var_set(self):
         from gcloud.storage import _implicit_environ
-        with self._monkey(None):
-            self._callFUT()
+        with self._monkeyEnviron(None):
+            with self._monkeyImplicit(None):
+                self._callFUT()
         self.assertEqual(_implicit_environ.BUCKET, None)
 
     def test_set_from_env_var(self):
         from gcloud.storage import _implicit_environ
         IMPLICIT_BUCKET_NAME = 'IMPLICIT'
         CONNECTION = object()
-        with self._monkey(IMPLICIT_BUCKET_NAME, connection=CONNECTION):
-            self._callFUT()
+        with self._monkeyEnviron(IMPLICIT_BUCKET_NAME):
+            with self._monkeyImplicit(CONNECTION):
+                self._callFUT()
 
         self.assertEqual(_implicit_environ.BUCKET.name, IMPLICIT_BUCKET_NAME)
         self.assertEqual(_implicit_environ.BUCKET.connection, CONNECTION)
@@ -117,8 +122,9 @@ class Test_set_default_bucket(unittest2.TestCase):
     def test_set_explicit_w_env_var_set(self):
         from gcloud.storage import _implicit_environ
         EXPLICIT_BUCKET = object()
-        with self._monkey(None):
-            self._callFUT(EXPLICIT_BUCKET)
+        with self._monkeyEnviron(None):
+            with self._monkeyImplicit(None):
+                self._callFUT(EXPLICIT_BUCKET)
         self.assertEqual(_implicit_environ.BUCKET, EXPLICIT_BUCKET)
 
     def test_set_explicit_no_env_var_set(self):
@@ -126,30 +132,34 @@ class Test_set_default_bucket(unittest2.TestCase):
         IMPLICIT_BUCKET_NAME = 'IMPLICIT'
         CONNECTION = object()
         EXPLICIT_BUCKET = object()
-        with self._monkey(IMPLICIT_BUCKET_NAME, connection=CONNECTION):
-            self._callFUT(EXPLICIT_BUCKET)
+        with self._monkeyEnviron(IMPLICIT_BUCKET_NAME):
+            with self._monkeyImplicit(CONNECTION):
+                self._callFUT(EXPLICIT_BUCKET)
         self.assertEqual(_implicit_environ.BUCKET, EXPLICIT_BUCKET)
 
     def test_set_explicit_None_wo_env_var_set(self):
         from gcloud.storage import _implicit_environ
         CONNECTION = object()
-        with self._monkey(None, connection=CONNECTION):
-            self._callFUT(None)
+        with self._monkeyEnviron(None):
+            with self._monkeyImplicit(CONNECTION):
+                self._callFUT(None)
         self.assertEqual(_implicit_environ.BUCKET, None)
 
     def test_set_explicit_None_wo_connection_set(self):
         from gcloud.storage import _implicit_environ
         IMPLICIT_BUCKET_NAME = 'IMPLICIT'
-        with self._monkey(IMPLICIT_BUCKET_NAME, connection=None):
-            self._callFUT(None)
+        with self._monkeyEnviron(IMPLICIT_BUCKET_NAME):
+            with self._monkeyImplicit(None):
+                self._callFUT(None)
         self.assertEqual(_implicit_environ.BUCKET, None)
 
     def test_set_explicit_None_w_env_var_set(self):
         from gcloud.storage import _implicit_environ
         IMPLICIT_BUCKET_NAME = 'IMPLICIT'
         CONNECTION = object()
-        with self._monkey(IMPLICIT_BUCKET_NAME, connection=CONNECTION):
-            self._callFUT(None)
+        with self._monkeyEnviron(IMPLICIT_BUCKET_NAME):
+            with self._monkeyImplicit(CONNECTION):
+                self._callFUT(None)
         self.assertEqual(_implicit_environ.BUCKET.name, IMPLICIT_BUCKET_NAME)
         self.assertEqual(_implicit_environ.BUCKET.connection, CONNECTION)
 

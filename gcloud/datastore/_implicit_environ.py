@@ -18,8 +18,9 @@ Acts as a mutable namespace to allow the datastore package to
 imply the current dataset ID and connection from the enviroment.
 """
 
-import httplib
 import socket
+
+from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
 
 try:
     from google.appengine.api import app_identity
@@ -67,7 +68,7 @@ def compute_engine_id():
     host = '169.254.169.254'
     uri_path = '/computeMetadata/v1/project/project-id'
     headers = {'Metadata-Flavor': 'Google'}
-    connection = httplib.HTTPConnection(host, timeout=0.1)
+    connection = HTTPConnection(host, timeout=0.1)
 
     try:
         connection.request('GET', uri_path, headers=headers)

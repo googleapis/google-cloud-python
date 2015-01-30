@@ -22,7 +22,7 @@ class TestCredentials(unittest2.TestCase):
         from gcloud import credentials
         from gcloud._testing import _Monkey
         CLIENT_EMAIL = 'phred@example.com'
-        PRIVATE_KEY = 'SEEkR1t'
+        PRIVATE_KEY = b'SEEkR1t'
         client = _Client()
         with _Monkey(credentials, client=client):
             with NamedTemporaryFile() as file_obj:
@@ -43,7 +43,7 @@ class TestCredentials(unittest2.TestCase):
         from gcloud import credentials
         from gcloud._testing import _Monkey
         CLIENT_EMAIL = 'phred@example.com'
-        PRIVATE_KEY = 'SEEkR1t'
+        PRIVATE_KEY = b'SEEkR1t'
         SCOPE = 'SCOPE'
         client = _Client()
         with _Monkey(credentials, client=client):
@@ -69,13 +69,14 @@ class Test_generate_signed_url(unittest2.TestCase):
 
     def test_w_expiration_int(self):
         import base64
-        import urlparse
+        from six.moves.urllib.parse import parse_qs
+        from six.moves.urllib.parse import urlsplit
         from gcloud._testing import _Monkey
         from gcloud import credentials as MUT
 
         ENDPOINT = 'http://api.example.com'
         RESOURCE = '/name/path'
-        SIGNED = base64.b64encode('DEADBEEF')
+        SIGNED = base64.b64encode(b'DEADBEEF')
         CREDENTIALS = _Credentials()
 
         def _get_signed_query_params(*args):
@@ -90,13 +91,14 @@ class Test_generate_signed_url(unittest2.TestCase):
             url = self._callFUT(CREDENTIALS, RESOURCE, 1000,
                                 api_access_endpoint=ENDPOINT)
 
-        scheme, netloc, path, qs, frag = urlparse.urlsplit(url)
+        scheme, netloc, path, qs, frag = urlsplit(url)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'api.example.com')
         self.assertEqual(path, RESOURCE)
-        params = urlparse.parse_qs(qs)
+        params = parse_qs(qs)
         self.assertEqual(len(params), 3)
-        self.assertEqual(params['Signature'], [SIGNED])
+        # In Py3k, parse_qs gives us text values:
+        self.assertEqual(params['Signature'], [SIGNED.decode('ascii')])
         self.assertEqual(params['Expires'], ['1000'])
         self.assertEqual(params['GoogleAccessId'],
                          [_Credentials.service_account_name])
@@ -140,17 +142,17 @@ class Test__get_signed_query_params(unittest2.TestCase):
         sha256 = _SHA256()
 
         EXPIRATION = '100'
-        SIGNATURE_STRING = 'dummy_signature'
+        SIGNATURE_STRING = b'dummy_signature'
         with _Monkey(MUT, crypt=crypt, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
                      SHA256=sha256):
             result = self._callFUT(credentials, EXPIRATION, SIGNATURE_STRING)
 
         if crypt._pkcs12_key_as_pem_called:
             self.assertEqual(crypt._private_key_text,
-                             base64.b64encode('dummy_private_key_text'))
+                             base64.b64encode(b'dummy_private_key_text'))
             self.assertEqual(crypt._private_key_password, 'notasecret')
         self.assertEqual(sha256._signature_string, SIGNATURE_STRING)
-        SIGNED = base64.b64encode('DEADBEEF')
+        SIGNED = base64.b64encode(b'DEADBEEF')
         expected_query = {
             'Expires': EXPIRATION,
             'GoogleAccessId': account_name,
@@ -164,7 +166,7 @@ class Test__get_signed_query_params(unittest2.TestCase):
         scopes = []
         ACCOUNT_NAME = 'dummy_service_account_name'
         credentials = client.SignedJwtAssertionCredentials(
-            ACCOUNT_NAME, 'dummy_private_key_text', scopes)
+            ACCOUNT_NAME, b'dummy_private_key_text', scopes)
         self._run_test_with_credentials(credentials, ACCOUNT_NAME)
 
     def test_service_account_via_json_key(self):
@@ -203,7 +205,7 @@ class Test__get_pem_key(unittest2.TestCase):
         from gcloud import credentials as MUT
 
         scopes = []
-        PRIVATE_KEY = 'dummy_private_key_text'
+        PRIVATE_KEY = b'dummy_private_key_text'
         credentials = client.SignedJwtAssertionCredentials(
             'dummy_service_account_name', PRIVATE_KEY, scopes)
         crypt = _Crypt()
@@ -376,7 +378,7 @@ class _PKCS1_v1_5(object):
 
     def sign(self, signature_hash):
         self._signature_hash = signature_hash
-        return 'DEADBEEF'
+        return b'DEADBEEF'
 
 
 class _SHA256(object):

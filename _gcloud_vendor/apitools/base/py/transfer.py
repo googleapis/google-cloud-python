@@ -9,7 +9,6 @@ import io
 import json
 import mimetypes
 import os
-import StringIO
 import threading
 
 from six.moves import http_client
@@ -568,7 +567,7 @@ class Upload(_Transfer):
 
     # encode the body: note that we can't use `as_string`, because
     # it plays games with `From ` lines.
-    fp = StringIO.StringIO()
+    fp = io.StringIO()
     g = email_generator.Generator(fp, mangle_from_=False)
     g.flatten(msg_root, unixfrom=False)
     http_request.body = fp.getvalue()

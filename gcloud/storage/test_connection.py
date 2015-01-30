@@ -151,8 +151,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.build_api_url('/foo'), URI)
 
     def test_build_api_url_w_extra_query_params(self):
-        from urlparse import parse_qsl
-        from urlparse import urlsplit
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         uri = conn.build_api_url('/foo', {'bar': 'baz'})
@@ -283,8 +283,8 @@ class TestConnection(unittest2.TestCase):
                          'CONTENT')
 
     def test_api_request_w_query_params(self):
-        from urlparse import parse_qsl
-        from urlparse import urlsplit
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         http = conn._http = Http(

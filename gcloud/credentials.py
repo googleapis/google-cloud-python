@@ -17,8 +17,8 @@
 import base64
 import calendar
 import datetime
-import urllib
 import six
+from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
@@ -260,4 +260,4 @@ def generate_signed_url(credentials, resource, expiration,
     # Return the built URL.
     return '{endpoint}{resource}?{querystring}'.format(
         endpoint=api_access_endpoint, resource=resource,
-        querystring=urllib.urlencode(query_params))
+        querystring=urlencode(query_params))
