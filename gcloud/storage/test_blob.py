@@ -332,8 +332,12 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
+        query_params = {
+            'uploadType': 'media',
+            'name': BLOB_NAME,
+            'project': 'PROJECT',
+        }
+        self.assertEqual(dict(parse_qsl(qs)), query_params)
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], '6')
@@ -376,8 +380,12 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'resumable', 'name': BLOB_NAME})
+        query_params = {
+            'uploadType': 'resumable',
+            'name': BLOB_NAME,
+            'project': 'PROJECT',
+        }
+        self.assertEqual(dict(parse_qsl(qs)), query_params)
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['X-Upload-Content-Length'], '6')
@@ -431,8 +439,12 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': 'parent/child'})
+        query_params = {
+            'uploadType': 'media',
+            'name': 'parent/child',
+            'project': 'PROJECT',
+        }
+        self.assertEqual(dict(parse_qsl(qs)), query_params)
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], '6')
@@ -471,8 +483,12 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
+        query_params = {
+            'uploadType': 'media',
+            'name': BLOB_NAME,
+            'project': 'PROJECT',
+        }
+        self.assertEqual(dict(parse_qsl(qs)), query_params)
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], '6')
@@ -507,8 +523,12 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
+        query_params = {
+            'project': 'PROJECT',
+            'uploadType': 'media',
+            'name': BLOB_NAME,
+        }
+        self.assertEqual(dict(parse_qsl(qs)), query_params)
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], '6')
@@ -545,8 +565,12 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
-        self.assertEqual(dict(parse_qsl(qs)),
-                         {'uploadType': 'media', 'name': BLOB_NAME})
+        query_params = {
+            'uploadType': 'media',
+            'name': BLOB_NAME,
+            'project': 'PROJECT',
+        }
+        self.assertEqual(dict(parse_qsl(qs)), query_params)
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], str(len(ENCODED)))
@@ -906,6 +930,7 @@ class _Connection(_Responder):
     API_BASE_URL = 'http://example.com'
     USER_AGENT = 'testing 1.2.3'
     credentials = object()
+    project = 'PROJECT'
 
     def __init__(self, *responses):
         super(_Connection, self).__init__(*responses)
@@ -915,7 +940,7 @@ class _Connection(_Responder):
     def api_request(self, **kw):
         return self._respond(**kw)
 
-    def build_api_url(self, path, query_params=None,
+    def build_api_url(self, project, path, query_params=None,
                       api_base_url=API_BASE_URL, upload=False):
         from six.moves.urllib.parse import urlencode
         from six.moves.urllib.parse import urlsplit
@@ -923,7 +948,9 @@ class _Connection(_Responder):
         # mimic the build_api_url interface, but avoid unused param and
         # missed coverage errors
         upload = not upload  # pragma NO COVER
-        qs = urlencode(query_params or {})
+        query_params = query_params or {}
+        query_params['project'] = project
+        qs = urlencode(query_params)
         scheme, netloc, _, _, _ = urlsplit(api_base_url)
         return urlunsplit((scheme, netloc, path, qs, ''))
 

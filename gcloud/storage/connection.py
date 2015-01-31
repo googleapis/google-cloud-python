@@ -66,6 +66,9 @@ class Connection(_Base):
 
       >>> print 'my-bucket-name' in connection
       True
+
+    :type project: string
+    :param project: The project name to connect to.
     """
 
     API_VERSION = 'v1'
@@ -75,10 +78,6 @@ class Connection(_Base):
     """A template for the URL of a particular API call."""
 
     def __init__(self, project, *args, **kwargs):
-        """:type project: string
-
-        :param project: The project name to connect to.
-        """
         super(Connection, self).__init__(*args, **kwargs)
         self.project = project
 
@@ -88,11 +87,15 @@ class Connection(_Base):
     def __contains__(self, bucket_name):
         return self.lookup(bucket_name) is not None
 
-    def build_api_url(self, path, query_params=None, api_base_url=None,
+    @classmethod
+    def build_api_url(cls, project, path, query_params=None, api_base_url=None,
                       api_version=None, upload=False):
         """Construct an API url given a few components, some optional.
 
         Typically, you shouldn't need to use this method.
+
+        :type project: string
+        :param project: The project name to connect to.
 
         :type path: string
         :param path: The path to the resource (ie, ``'/b/bucket-name'``).
@@ -116,23 +119,23 @@ class Connection(_Base):
         :rtype: string
         :returns: The URL assembled from the pieces provided.
         """
-        api_base_url = api_base_url or self.API_BASE_URL
+        api_base_url = api_base_url or cls.API_BASE_URL
         if upload:
             api_base_url += '/upload'
 
-        url = self.API_URL_TEMPLATE.format(
-            api_base_url=(api_base_url or self.API_BASE_URL),
-            api_version=(api_version or self.API_VERSION),
+        url = cls.API_URL_TEMPLATE.format(
+            api_base_url=(api_base_url or cls.API_BASE_URL),
+            api_version=(api_version or cls.API_VERSION),
             path=path)
 
         query_params = query_params or {}
-        query_params.update({'project': self.project})
+        query_params.update({'project': project})
         url += '?' + urlencode(query_params)
 
         return url
 
-    def make_request(self, method, url, data=None, content_type=None,
-                     headers=None):
+    def _make_request(self, method, url, data=None, content_type=None,
+                      headers=None):
         """A low level method to send a request to the API.
 
         Typically, you shouldn't need to use this method.
@@ -224,7 +227,8 @@ class Connection(_Base):
 
         :raises: Exception if the response code is not 200 OK.
         """
-        url = self.build_api_url(path=path, query_params=query_params,
+        url = self.build_api_url(project=self.project, path=path,
+                                 query_params=query_params,
                                  api_base_url=api_base_url,
                                  api_version=api_version)
 
@@ -234,7 +238,7 @@ class Connection(_Base):
             data = json.dumps(data)
             content_type = 'application/json'
 
-        response, content = self.make_request(
+        response, content = self._make_request(
             method=method, url=url, data=data, content_type=content_type)
 
         if not 200 <= response.status < 300:
