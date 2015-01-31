@@ -296,7 +296,7 @@ class Connection(_Base):
         :returns: The bucket matching the name provided.
         :raises: :class:`gcloud.exceptions.NotFound`
         """
-        bucket = self.new_bucket(bucket_name)
+        bucket = Bucket(connection=self, name=bucket_name)
         response = self.api_request(method='GET', path=bucket.path)
         return Bucket(properties=response, connection=self)
 
@@ -326,7 +326,7 @@ class Connection(_Base):
         except NotFound:
             return None
 
-    def create_bucket(self, bucket):
+    def create_bucket(self, bucket_name):
         """Create a new bucket.
 
         For example::
@@ -337,33 +337,26 @@ class Connection(_Base):
           >>> print bucket
           <Bucket: my-bucket>
 
-        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`
-        :param bucket: The bucket name (or bucket object) to create.
+        :type bucket_name: string
+        :param bucket_name: The bucket name to create.
 
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
         :raises: :class:`gcloud.exceptions.Conflict` if
                  there is a confict (bucket already exists, invalid name, etc.)
         """
-        bucket = self.new_bucket(bucket)
         response = self.api_request(method='POST', path='/b',
-                                    data={'name': bucket.name})
+                                    data={'name': bucket_name})
         return Bucket(properties=response, connection=self)
 
-    def delete_bucket(self, bucket):
+    def delete_bucket(self, bucket_name):
         """Delete a bucket.
 
-        You can use this method to delete a bucket by name, or to delete
-        a bucket object::
+        You can use this method to delete a bucket by name.
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
           >>> connection.delete_bucket('my-bucket')
-
-        You can also delete pass in the bucket object::
-
-          >>> bucket = connection.get_bucket('other-bucket')
-          >>> connection.delete_bucket(bucket)
 
         If the bucket doesn't exist, this will raise a
         :class:`gcloud.exceptions.NotFound`::
@@ -383,36 +376,11 @@ class Connection(_Base):
           >>> except Conflict:
           >>>   print 'That bucket is not empty!'
 
-        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`
-        :param bucket: The bucket name (or bucket object) to delete.
+        :type bucket_name: string
+        :param bucket_name: The bucket name to delete.
         """
-        bucket = self.new_bucket(bucket)
-        self.api_request(method='DELETE', path=bucket.path)
-
-    def new_bucket(self, bucket):
-        """Factory method for creating a new (unsaved) bucket object.
-
-        This method is really useful when you're not sure whether you
-        have an actual :class:`gcloud.storage.bucket.Bucket` object or
-        just a name of a bucket.  It always returns the object::
-
-           >>> bucket = connection.new_bucket('bucket')
-           >>> print bucket
-           <Bucket: bucket>
-           >>> bucket = connection.new_bucket(bucket)
-           >>> print bucket
-           <Bucket: bucket>
-
-        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`
-        :param bucket: A name of a bucket or an existing Bucket object.
-        """
-        if isinstance(bucket, Bucket):
-            return bucket
-
-        if isinstance(bucket, six.string_types):
-            return Bucket(connection=self, name=bucket)
-
-        raise TypeError('Invalid bucket: %s' % bucket)
+        bucket_path = '/b/' + bucket_name
+        self.api_request(method='DELETE', path=bucket_path)
 
 
 class _BucketIterator(Iterator):

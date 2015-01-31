@@ -505,12 +505,6 @@ class TestConnection(unittest2.TestCase):
     def test_delete_bucket_defaults_miss(self):
         _deleted_blobs = []
 
-        class _Bucket(object):
-
-            def __init__(self, name):
-                self._name = name
-                self.path = '/b/' + name
-
         PROJECT = 'project'
         BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
@@ -526,37 +520,10 @@ class TestConnection(unittest2.TestCase):
             '{}',
         )
 
-        def _new_bucket(name):
-            return _Bucket(name)
-
-        conn.new_bucket = _new_bucket
         self.assertEqual(conn.delete_bucket(BLOB_NAME), None)
         self.assertEqual(_deleted_blobs, [])
         self.assertEqual(http._called_with['method'], 'DELETE')
         self.assertEqual(http._called_with['uri'], URI)
-
-    def test_new_bucket_w_existing(self):
-        from gcloud.storage.bucket import Bucket
-        PROJECT = 'project'
-        BLOB_NAME = 'blob-name'
-        conn = self._makeOne(PROJECT)
-        existing = Bucket(self, BLOB_NAME)
-        self.assertTrue(conn.new_bucket(existing) is existing)
-
-    def test_new_bucket_w_blob(self):
-        from gcloud.storage.bucket import Bucket
-        PROJECT = 'project'
-        BLOB_NAME = 'blob-name'
-        conn = self._makeOne(PROJECT)
-        bucket = conn.new_bucket(BLOB_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
-        self.assertEqual(bucket.name, BLOB_NAME)
-
-    def test_new_bucket_w_invalid(self):
-        PROJECT = 'project'
-        conn = self._makeOne(PROJECT)
-        self.assertRaises(TypeError, conn.new_bucket, object())
 
 
 class Test__BucketIterator(unittest2.TestCase):
