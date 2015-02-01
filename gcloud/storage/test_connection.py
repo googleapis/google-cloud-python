@@ -438,48 +438,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
-    def test_lookup_miss(self):
-        PROJECT = 'project'
-        NONESUCH = 'nonesuch'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b',
-            'nonesuch?project=%s' % PROJECT,
-        ])
-        http = conn._http = Http(
-            {'status': '404', 'content-type': 'application/json'},
-            '{}',
-        )
-        self.assertEqual(conn.lookup(NONESUCH), None)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-
-    def test_lookup_hit(self):
-        from gcloud.storage.bucket import Bucket
-        PROJECT = 'project'
-        BLOB_NAME = 'blob-name'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b',
-            '%s?project=%s' % (BLOB_NAME, PROJECT),
-        ])
-        http = conn._http = Http(
-            {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % BLOB_NAME,
-        )
-        bucket = conn.lookup(BLOB_NAME)
-        self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
-        self.assertEqual(bucket.name, BLOB_NAME)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-
     def test_create_bucket_ok(self):
         from gcloud.storage.bucket import Bucket
         PROJECT = 'project'
