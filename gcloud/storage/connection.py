@@ -14,19 +14,8 @@
 
 """Create / interact with gcloud storage connections."""
 
-import base64
-import calendar
-import datetime
 import json
 import urllib
-
-from Crypto.Hash import SHA256
-from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
-from oauth2client import client
-from oauth2client import crypt
-from oauth2client import service_account
-import pytz
 
 from gcloud.connection import Connection as _Base
 from gcloud.exceptions import make_exception
@@ -34,76 +23,6 @@ from gcloud.exceptions import NotFound
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
 import six
-
-
-def _utcnow():  # pragma: NO COVER testing replaces
-    """Returns current time as UTC datetime.
-
-    NOTE: on the module namespace so tests can replace it.
-    """
-    return datetime.datetime.utcnow()
-
-
-def _get_pem_key(credentials):
-    """Gets RSA key for a PEM payload from a credentials object.
-
-    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
-                       :class:`service_account._ServiceAccountCredentials`
-    :param credentials: The credentials used to create an RSA key
-                        for signing text.
-
-    :rtype: :class:`Crypto.PublicKey.RSA._RSAobj`
-    :returns: An RSA object used to sign text.
-    :raises: `TypeError` if `credentials` is the wrong type.
-    """
-    if isinstance(credentials, client.SignedJwtAssertionCredentials):
-        # Take our PKCS12 (.p12) key and make it into a RSA key we can use.
-        pem_text = crypt.pkcs12_key_as_pem(credentials.private_key,
-                                           credentials.private_key_password)
-    elif isinstance(credentials, service_account._ServiceAccountCredentials):
-        pem_text = credentials._private_key_pkcs8_text
-    else:
-        raise TypeError((credentials,
-                         'not a valid service account credentials type'))
-
-    return RSA.importKey(pem_text)
-
-
-def _get_signed_query_params(credentials, expiration, signature_string):
-    """Gets query parameters for creating a signed URL.
-
-    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
-                       :class:`service_account._ServiceAccountCredentials`
-    :param credentials: The credentials used to create an RSA key
-                        for signing text.
-
-    :type expiration: int or long
-    :param expiration: When the signed URL should expire.
-
-    :type signature_string: string
-    :param signature_string: The string to be signed by the credentials.
-
-    :rtype: dict
-    :returns: Query parameters matching the signing credentials with a
-              signed payload.
-    """
-    pem_key = _get_pem_key(credentials)
-    # Sign the string with the RSA key.
-    signer = PKCS1_v1_5.new(pem_key)
-    signature_hash = SHA256.new(signature_string)
-    signature_bytes = signer.sign(signature_hash)
-    signature = base64.b64encode(signature_bytes)
-
-    if isinstance(credentials, client.SignedJwtAssertionCredentials):
-        service_account_name = credentials.service_account_name
-    elif isinstance(credentials, service_account._ServiceAccountCredentials):
-        service_account_name = credentials._service_account_email
-    # We know one of the above must occur since `_get_pem_key` fails if not.
-    return {
-        'GoogleAccessId': service_account_name,
-        'Expires': str(expiration),
-        'Signature': signature,
-    }
 
 
 class Connection(_Base):
@@ -154,8 +73,6 @@ class Connection(_Base):
 
     API_URL_TEMPLATE = '{api_base_url}/storage/{api_version}{path}'
     """A template for the URL of a particular API call."""
-
-    API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
 
     def __init__(self, project, *args, **kwargs):
         """:type project: string
@@ -507,53 +424,6 @@ class Connection(_Base):
 
         raise TypeError('Invalid bucket: %s' % bucket)
 
-    def generate_signed_url(self, resource, expiration,
-                            method='GET', content_md5=None,
-                            content_type=None):
-        """Generate signed URL to provide query-string auth'n to a resource.
-
-        :type resource: string
-        :param resource: A pointer to a specific resource
-                         (typically, ``/bucket-name/path/to/blob.txt``).
-
-        :type expiration: int, long, datetime.datetime, datetime.timedelta
-        :param expiration: When the signed URL should expire.
-
-        :type method: string
-        :param method: The HTTP verb that will be used when requesting the URL.
-
-        :type content_md5: string
-        :param content_md5: The MD5 hash of the object referenced by
-                            ``resource``.
-
-        :type content_type: string
-        :param content_type: The content type of the object referenced by
-                             ``resource``.
-
-        :rtype: string
-        :returns: A signed URL you can use to access the resource
-                  until expiration.
-        """
-        expiration = _get_expiration_seconds(expiration)
-
-        # Generate the string to sign.
-        signature_string = '\n'.join([
-            method,
-            content_md5 or '',
-            content_type or '',
-            str(expiration),
-            resource])
-
-        # Set the right query parameters.
-        query_params = _get_signed_query_params(self.credentials,
-                                                expiration,
-                                                signature_string)
-
-        # Return the built URL.
-        return '{endpoint}{resource}?{querystring}'.format(
-            endpoint=self.API_ACCESS_ENDPOINT, resource=resource,
-            querystring=urllib.urlencode(query_params))
-
 
 class _BucketIterator(Iterator):
     """An iterator listing all buckets.
@@ -577,35 +447,3 @@ class _BucketIterator(Iterator):
         """
         for item in response.get('items', []):
             yield Bucket(properties=item, connection=self.connection)
-
-
-def _get_expiration_seconds(expiration):
-    """Convert 'expiration' to a number of seconds in the future.
-
-    :type expiration: int, long, datetime.datetime, datetime.timedelta
-    :param expiration: When the signed URL should expire.
-
-    :rtype: int
-    :returns: a timestamp as an absolute number of seconds.
-    """
-    # If it's a timedelta, add it to `now` in UTC.
-    if isinstance(expiration, datetime.timedelta):
-        now = _utcnow().replace(tzinfo=pytz.utc)
-        expiration = now + expiration
-
-    # If it's a datetime, convert to a timestamp.
-    if isinstance(expiration, datetime.datetime):
-        # Make sure the timezone on the value is UTC
-        # (either by converting or replacing the value).
-        if expiration.tzinfo:
-            expiration = expiration.astimezone(pytz.utc)
-        else:
-            expiration = expiration.replace(tzinfo=pytz.utc)
-
-        # Turn the datetime into a timestamp (seconds, not microseconds).
-        expiration = int(calendar.timegm(expiration.timetuple()))
-
-    if not isinstance(expiration, six.integer_types):
-        raise TypeError('Expected an integer timestamp, datetime, or '
-                        'timedelta. Got %s' % type(expiration))
-    return expiration

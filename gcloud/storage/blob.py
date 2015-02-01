@@ -25,9 +25,13 @@ import urllib
 from _gcloud_vendor.apitools.base.py import http_wrapper
 from _gcloud_vendor.apitools.base.py import transfer
 
+from gcloud.credentials import generate_signed_url
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
+
+
+_API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
 
 
 class Blob(_PropertyMixin):
@@ -157,9 +161,11 @@ class Blob(_PropertyMixin):
         resource = '/{bucket_name}/{quoted_name}'.format(
             bucket_name=self.bucket.name,
             quoted_name=urllib.quote(self.name, safe=''))
-        return self.connection.generate_signed_url(resource=resource,
-                                                   expiration=expiration,
-                                                   method=method)
+
+        return generate_signed_url(
+            self.connection.credentials, resource=resource,
+            api_access_endpoint=_API_ACCESS_ENDPOINT,
+            expiration=expiration, method=method)
 
     def exists(self):
         """Determines whether or not this blob exists.
