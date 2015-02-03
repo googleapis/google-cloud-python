@@ -412,7 +412,7 @@ commit will be non-transactional.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.lookup">
-<tt class="descname">lookup</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>eventual=False</em>, <em>transaction_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.lookup" title="Permalink to this definition">#</a></dt>
+<tt class="descname">lookup</tt><big>(</big><em>dataset_id</em>, <em>key_pbs</em>, <em>eventual=False</em>, <em>transaction_id=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.lookup" title="Permalink to this definition">#</a></dt>
 <dd><p>Lookup keys from a dataset in the Cloud Datastore.</p>
 <p>Maps the <tt class="docutils literal"><span class="pre">DatastoreService.Lookup</span></tt> protobuf RPC.</p>
 <p>This method deals only with protobufs
@@ -438,12 +438,6 @@ under the hood in <tt class="xref py py-func docutils literal"><span class="pre"
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset to look up the keys.</li>
 <li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></tt>) &#8211; The keys to retrieve from the datastore.</li>
-<li><strong>missing</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the key-only entity protobufs
-returned by the backend as &#8220;missing&#8221; will be copied
-into it.  Use only as a keyword param.</li>
-<li><strong>deferred</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the key protobufs returned
-by the backend as &#8220;deferred&#8221; will be copied into it.
-Use only as a keyword param.</li>
 <li><strong>eventual</strong> (<em>boolean</em>) &#8211; If False (the default), request <tt class="docutils literal"><span class="pre">STRONG</span></tt> read
 consistency.  If True, request <tt class="docutils literal"><span class="pre">EVENTUAL</span></tt> read
 consistency.</li>
@@ -453,18 +447,14 @@ the given transaction.  Incompatible with
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Entity</span></tt>
-(or a single Entity)</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The entities corresponding to the keys provided.
-If a single key was provided and no results matched,
-this will return None.
-If multiple keys were provided and no results matched,
-this will return an empty list.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if <tt class="docutils literal"><span class="pre">eventual</span></tt> is True</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A triple of (<tt class="docutils literal"><span class="pre">results</span></tt>, <tt class="docutils literal"><span class="pre">missing</span></tt>, <tt class="docutils literal"><span class="pre">deferred</span></tt>) where
+both <tt class="docutils literal"><span class="pre">results</span></tt> and <tt class="docutils literal"><span class="pre">missing</span></tt> are lists of
+<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Entity</span></tt> and
+<tt class="docutils literal"><span class="pre">deferred</span></tt> is a list of
+<tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></tt>.</p>
 </td>
 </tr>
 </tbody>
