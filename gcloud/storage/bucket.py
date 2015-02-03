@@ -128,13 +128,25 @@ class Bucket(_PropertyMixin):
         """
         return self._connection
 
+    @staticmethod
+    def path_helper(bucket_name):
+        """Relative URL path for a bucket.
+
+        :type bucket_name: string
+        :param bucket_name: The bucket name in the path.
+
+        :rtype: string
+        :returns: The relative URL path for ``bucket_name``.
+        """
+        return '/b/' + bucket_name
+
     @property
     def path(self):
         """The URL path to this bucket."""
         if not self.name:
             raise ValueError('Cannot determine path without bucket name.')
 
-        return '/b/' + self.name
+        return self.path_helper(self.name)
 
     def get_blob(self, blob):
         """Get a blob object by name.
