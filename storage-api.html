@@ -461,7 +461,7 @@ use the default for the library.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.create_bucket">
-<tt class="descname">create_bucket</tt><big>(</big><em>bucket</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.create_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.create_bucket" title="Permalink to this definition">#</a></dt>
+<tt class="descname">create_bucket</tt><big>(</big><em>bucket_name</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.create_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.create_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a new bucket.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
@@ -475,7 +475,7 @@ use the default for the library.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (string or <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket name (or bucket object) to create.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket_name</strong> (<em>string</em>) &#8211; The bucket name to create.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a></td>
 </tr>
@@ -490,18 +490,12 @@ there is a confict (bucket already exists, invalid name, etc.)</td>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.delete_bucket">
-<tt class="descname">delete_bucket</tt><big>(</big><em>bucket</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.delete_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.delete_bucket" title="Permalink to this definition">#</a></dt>
+<tt class="descname">delete_bucket</tt><big>(</big><em>bucket_name</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.delete_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.delete_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete a bucket.</p>
-<p>You can use this method to delete a bucket by name, or to delete
-a bucket object:</p>
+<p>You can use this method to delete a bucket by name.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>You can also delete pass in the bucket object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;other-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If the bucket doesn&#8217;t exist, this will raise a
@@ -526,7 +520,7 @@ a bucket object:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (string or <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket name (or bucket object) to delete.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket_name</strong> (<em>string</em>) &#8211; The bucket name to delete.</td>
 </tr>
 </tbody>
 </table>
@@ -650,31 +644,6 @@ and <tt class="docutils literal"><span class="pre">content</span></tt> (a string
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The HTTP response object and the content of the response.</p>
 </td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.connection.Connection.new_bucket">
-<tt class="descname">new_bucket</tt><big>(</big><em>bucket</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.new_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.new_bucket" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory method for creating a new (unsaved) bucket object.</p>
-<p>This method is really useful when you&#8217;re not sure whether you
-have an actual <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> object or
-just a name of a bucket.  It always returns the object:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="s">&#39;bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span>
-<span class="go">&lt;Bucket: bucket&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span>
-<span class="go">&lt;Bucket: bucket&gt;</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (string or <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; A name of a bucket or an existing Bucket object.</td>
 </tr>
 </tbody>
 </table>

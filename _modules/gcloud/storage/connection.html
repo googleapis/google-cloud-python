@@ -96,7 +96,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
-<span class="kn">import</span> <span class="nn">six</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">_Base</span><span class="p">):</span>
@@ -370,7 +369,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: The bucket matching the name provided.</span>
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 </div>
@@ -400,7 +399,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
 </div>
-<div class="viewcode-block" id="Connection.create_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.create_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.create_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.create_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new bucket.</span>
 
 <span class="sd">        For example::</span>
@@ -411,33 +410,26 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; print bucket</span>
 <span class="sd">          &lt;Bucket: my-bucket&gt;</span>
 
-<span class="sd">        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">        :param bucket: The bucket name (or bucket object) to create.</span>
+<span class="sd">        :type bucket_name: string</span>
+<span class="sd">        :param bucket_name: The bucket name to create.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The newly created bucket.</span>
 <span class="sd">        :raises: :class:`gcloud.exceptions.Conflict` if</span>
 <span class="sd">                 there is a confict (bucket already exists, invalid name, etc.)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span>
-                                    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+                                    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket_name</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Connection.delete_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.delete_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.delete_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.delete_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete a bucket.</span>
 
-<span class="sd">        You can use this method to delete a bucket by name, or to delete</span>
-<span class="sd">        a bucket object::</span>
+<span class="sd">        You can use this method to delete a bucket by name.</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; connection.delete_bucket(&#39;my-bucket&#39;)</span>
-
-<span class="sd">        You can also delete pass in the bucket object::</span>
-
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;other-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; connection.delete_bucket(bucket)</span>
 
 <span class="sd">        If the bucket doesn&#39;t exist, this will raise a</span>
 <span class="sd">        :class:`gcloud.exceptions.NotFound`::</span>
@@ -457,36 +449,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; except Conflict:</span>
 <span class="sd">          &gt;&gt;&gt;   print &#39;That bucket is not empty!&#39;</span>
 
-<span class="sd">        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">        :param bucket: The bucket name (or bucket object) to delete.</span>
+<span class="sd">        :type bucket_name: string</span>
+<span class="sd">        :param bucket_name: The bucket name to delete.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.new_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.new_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">new_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory method for creating a new (unsaved) bucket object.</span>
-
-<span class="sd">        This method is really useful when you&#39;re not sure whether you</span>
-<span class="sd">        have an actual :class:`gcloud.storage.bucket.Bucket` object or</span>
-<span class="sd">        just a name of a bucket.  It always returns the object::</span>
-
-<span class="sd">           &gt;&gt;&gt; bucket = connection.new_bucket(&#39;bucket&#39;)</span>
-<span class="sd">           &gt;&gt;&gt; print bucket</span>
-<span class="sd">           &lt;Bucket: bucket&gt;</span>
-<span class="sd">           &gt;&gt;&gt; bucket = connection.new_bucket(bucket)</span>
-<span class="sd">           &gt;&gt;&gt; print bucket</span>
-<span class="sd">           &lt;Bucket: bucket&gt;</span>
-
-<span class="sd">        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">        :param bucket: A name of a bucket or an existing Bucket object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">Bucket</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">bucket</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
-
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Invalid bucket: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">bucket</span><span class="p">)</span>
+        <span class="n">bucket_path</span> <span class="o">=</span> <span class="n">Bucket</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket_path</span><span class="p">)</span>
 
 </div></div>
 <span class="k">class</span> <span class="nc">_BucketIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
