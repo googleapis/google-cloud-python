@@ -422,13 +422,13 @@ under the hood in <tt class="xref py py-func docutils literal"><span class="pre"
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="go">&lt;Entity object&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="n">key</span><span class="p">])</span>
+<span class="go">[&lt;Entity object&gt;]</span>
 </pre></div>
 </div>
 <p>Using the <tt class="docutils literal"><span class="pre">connection</span></tt> class directly:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
-<span class="go">&lt;Entity protobuf&gt;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()])</span>
+<span class="go">[&lt;Entity protobuf&gt;]</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -437,8 +437,7 @@ under the hood in <tt class="xref py py-func docutils literal"><span class="pre"
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset to look up the keys.</li>
-<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></tt>
-(or a single Key)) &#8211; The key (or keys) to retrieve from the datastore.</li>
+<li><strong>key_pbs</strong> (list of <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></tt>) &#8211; The keys to retrieve from the datastore.</li>
 <li><strong>missing</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the key-only entity protobufs
 returned by the backend as &#8220;missing&#8221; will be copied
 into it.  Use only as a keyword param.</li>
