@@ -22,8 +22,8 @@ infer the current dataset ID and connection from the enviroment.
 PROJECT = None
 """Module global to allow persistent implied project from enviroment."""
 
-BUCKET_NAME = None
-"""Module global to allow persistent implied bucket name from enviroment."""
+BUCKET = None
+"""Module global to allow persistent implied bucket from enviroment."""
 
 CONNECTION = None
 """Module global to allow persistent implied connection from enviroment."""
