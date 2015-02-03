@@ -194,7 +194,8 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.lookup(DATASET_ID, key_pb), None)
+        found = conn.lookup(DATASET_ID, [key_pb])
+        self.assertEqual(len(found), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
@@ -220,7 +221,8 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.lookup(DATASET_ID, key_pb, eventual=True), None)
+        found = conn.lookup(DATASET_ID, [key_pb], eventual=True)
+        self.assertEqual(len(found), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
@@ -258,8 +260,8 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found = conn.lookup(DATASET_ID, key_pb, transaction_id=TRANSACTION)
-        self.assertEqual(found, None)
+        found = conn.lookup(DATASET_ID, [key_pb], transaction_id=TRANSACTION)
+        self.assertEqual(len(found), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
@@ -289,7 +291,7 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found = conn.lookup(DATASET_ID, key_pb)
+        found, = conn.lookup(DATASET_ID, [key_pb])
         self.assertEqual(found.key.path_element[0].kind, 'Kind')
         self.assertEqual(found.key.path_element[0].id, 1234)
         cw = http._called_with
