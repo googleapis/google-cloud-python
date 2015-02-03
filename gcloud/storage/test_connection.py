@@ -530,52 +530,8 @@ class TestConnection(unittest2.TestCase):
             return _Bucket(name)
 
         conn.new_bucket = _new_bucket
-        self.assertEqual(conn.delete_bucket(BLOB_NAME), True)
+        self.assertEqual(conn.delete_bucket(BLOB_NAME), None)
         self.assertEqual(_deleted_blobs, [])
-        self.assertEqual(http._called_with['method'], 'DELETE')
-        self.assertEqual(http._called_with['uri'], URI)
-
-    def test_delete_bucket_force_True(self):
-        _deleted_blobs = []
-
-        class _Blob(object):
-
-            def __init__(self, name):
-                self._name = name
-
-            def delete(self):
-                _deleted_blobs.append(self._name)
-
-        class _Bucket(object):
-
-            def __init__(self, name):
-                self._name = name
-                self.path = '/b/' + name
-
-            def __iter__(self):
-                return iter([_Blob(x) for x in ('foo', 'bar')])
-
-        PROJECT = 'project'
-        BLOB_NAME = 'blob-name'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b',
-            '%s?project=%s' % (BLOB_NAME, PROJECT),
-        ])
-        http = conn._http = Http(
-            {'status': '200', 'content-type': 'application/json'},
-            '{}',
-        )
-
-        def _new_bucket(name):
-            return _Bucket(name)
-
-        conn.new_bucket = _new_bucket
-        self.assertEqual(conn.delete_bucket(BLOB_NAME, True), True)
-        self.assertEqual(_deleted_blobs, ['foo', 'bar'])
         self.assertEqual(http._called_with['method'], 'DELETE')
         self.assertEqual(http._called_with['uri'], URI)
 

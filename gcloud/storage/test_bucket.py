@@ -282,15 +282,63 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
         self.assertRaises(NotFound, bucket.delete)
-        self.assertEqual(connection._deleted, [(NAME, False)])
+        self.assertEqual(connection._deleted, [NAME])
 
     def test_delete_explicit_hit(self):
         NAME = 'name'
-        connection = _Connection()
+        GET_BLOBS_RESP = {'items': []}
+        connection = _Connection(GET_BLOBS_RESP)
         connection._delete_ok = True
         bucket = self._makeOne(connection, NAME)
-        self.assertTrue(bucket.delete(True))
-        self.assertEqual(connection._deleted, [(NAME, True)])
+        self.assertEqual(bucket.delete(force=True), None)
+        self.assertEqual(connection._deleted, [NAME])
+
+    def test_delete_explicit_force_delete_blobs(self):
+        NAME = 'name'
+        BLOB_NAME1 = 'blob-name1'
+        BLOB_NAME2 = 'blob-name2'
+        GET_BLOBS_RESP = {
+            'items': [
+                {'name': BLOB_NAME1},
+                {'name': BLOB_NAME2},
+            ],
+        }
+        DELETE_BLOB1_RESP = DELETE_BLOB2_RESP = {}
+        connection = _Connection(GET_BLOBS_RESP, DELETE_BLOB1_RESP,
+                                 DELETE_BLOB2_RESP)
+        connection._delete_ok = True
+        bucket = self._makeOne(connection, NAME)
+        self.assertEqual(bucket.delete(force=True), None)
+        self.assertEqual(connection._deleted, [NAME])
+
+    def test_delete_explicit_force_miss_blobs(self):
+        NAME = 'name'
+        BLOB_NAME = 'blob-name1'
+        GET_BLOBS_RESP = {'items': [{'name': BLOB_NAME}]}
+        # Note the connection does not have a response for the blob.
+        connection = _Connection(GET_BLOBS_RESP)
+        connection._delete_ok = True
+        bucket = self._makeOne(connection, NAME)
+        self.assertEqual(bucket.delete(force=True), None)
+        self.assertEqual(connection._deleted, [NAME])
+
+    def test_delete_explicit_too_many(self):
+        NAME = 'name'
+        BLOB_NAME1 = 'blob-name1'
+        BLOB_NAME2 = 'blob-name2'
+        GET_BLOBS_RESP = {
+            'items': [
+                {'name': BLOB_NAME1},
+                {'name': BLOB_NAME2},
+            ],
+        }
+        connection = _Connection(GET_BLOBS_RESP)
+        connection._delete_ok = True
+        bucket = self._makeOne(connection, NAME)
+
+        # Make the Bucket refuse to delete with 2 objects.
+        bucket._MAX_OBJECTS_FOR_BUCKET_DELETE = 1
+        self.assertRaises(ValueError, bucket.delete, force=True)
 
     def test_delete_blob_miss(self):
         from gcloud.exceptions import NotFound
@@ -992,9 +1040,9 @@ class _Connection(object):
         else:
             return response
 
-    def delete_bucket(self, bucket, force=False):
+    def delete_bucket(self, bucket):
         from gcloud.exceptions import NotFound
-        self._deleted.append((bucket, force))
+        self._deleted.append(bucket)
         if not self._delete_ok:
             raise NotFound('miss')
         return True
