@@ -138,6 +138,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_iterator_class</span> <span class="o">=</span> <span class="n">_BlobIterator</span>
 
+    <span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span> <span class="o">=</span> <span class="mi">256</span>
+    <span class="sd">&quot;&quot;&quot;Maximum number of existing objects allowed in Bucket.delete().&quot;&quot;&quot;</span>
+
     <span class="n">CUSTOM_PROPERTY_ACCESSORS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="s">&#39;acl&#39;</span><span class="p">,</span>
         <span class="s">&#39;cors&#39;</span><span class="p">:</span> <span class="s">&#39;get_cors()&#39;</span><span class="p">,</span>
@@ -311,24 +314,41 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this bucket.</span>
 
-<span class="sd">        The bucket **must** be empty in order to delete it.  If the</span>
-<span class="sd">        bucket doesn&#39;t exist, this will raise a</span>
-<span class="sd">        :class:`gcloud.exceptions.NotFound`.  If the bucket is</span>
-<span class="sd">        not empty, this will raise an Exception.</span>
+<span class="sd">        The bucket **must** be empty in order to submit a delete request. If</span>
+<span class="sd">        ``force=True`` is passed, this will first attempt to delete all the</span>
+<span class="sd">        objects / blobs in the bucket (i.e. try to empty the bucket).</span>
 
-<span class="sd">        If you want to delete a non-empty bucket you can pass in a force</span>
-<span class="sd">        parameter set to ``True``.  This will iterate through and delete the</span>
-<span class="sd">        bucket&#39;s objects, before deleting the bucket.</span>
+<span class="sd">        If the bucket doesn&#39;t exist, this will raise</span>
+<span class="sd">        :class:`gcloud.exceptions.NotFound`.  If the bucket is not empty</span>
+<span class="sd">        (and ``force=False``), will raise :class:`gcloud.exceptions.Conflict`.</span>
+
+<span class="sd">        If ``force=True`` and the bucket contains more than 256 objects / blobs</span>
+<span class="sd">        this will cowardly refuse to delete the objects (or the bucket). This</span>
+<span class="sd">        is to prevent accidental bucket deletion and to prevent extremely long</span>
+<span class="sd">        runtime of this method.</span>
 
 <span class="sd">        :type force: boolean</span>
 <span class="sd">        :param force: If True, empties the bucket&#39;s objects then deletes it.</span>
 
-<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound` if the</span>
-<span class="sd">                 bucket does not exist, or</span>
-<span class="sd">                 :class:`gcloud.exceptions.Conflict` if the</span>
-<span class="sd">                 bucket has blobs and `force` is not passed.</span>
+<span class="sd">        :raises: :class:`ValueError` if ``force`` is ``True`` and the bucket</span>
+<span class="sd">                 contains more than 256 objects / blobs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">force</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
+            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterator</span><span class="p">(</span>
+                <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s">&#39;Refusing to delete bucket with more than &#39;</span>
+                    <span class="s">&#39;</span><span class="si">%d</span><span class="s"> objects. If you actually want to delete &#39;</span>
+                    <span class="s">&#39;this bucket, please delete the objects &#39;</span>
+                    <span class="s">&#39;yourself before calling Bucket.delete().&#39;</span>
+                <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span><span class="p">,)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+            <span class="c"># Ignore 404 errors on delete.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from the current bucket.</span>
@@ -360,7 +380,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                 the exception, call ``delete_blobs``, passing a no-op</span>
 <span class="sd">                 ``on_error`` callback, e.g.::</span>
 
-<span class="sd">                 &gt;&gt;&gt; bucket.delete_blobs([blob], on_error=lambda blob: pass)</span>
+<span class="sd">                 &gt;&gt;&gt; bucket.delete_blobs([blob], on_error=lambda blob: None)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_blob</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>

@@ -431,7 +431,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Get a bucket by name.</span>
 
 <span class="sd">        If the bucket isn&#39;t found, this will raise a</span>
-<span class="sd">        :class:`gcloud.storage.exceptions.NotFound`.  If you would</span>
+<span class="sd">        :class:`gcloud.exceptions.NotFound`.  If you would</span>
 <span class="sd">        rather get a bucket by name, and return ``None`` if the bucket</span>
 <span class="sd">        isn&#39;t found (like ``{}.get(&#39;...&#39;)``) then use</span>
 <span class="sd">        :func:`Connection.lookup`.</span>
@@ -451,7 +451,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The bucket matching the name provided.</span>
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound`</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
@@ -499,7 +499,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The newly created bucket.</span>
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.Conflict` if</span>
+<span class="sd">        :raises: :class:`gcloud.exceptions.Conflict` if</span>
 <span class="sd">                 there is a confict (bucket already exists, invalid name, etc.)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
@@ -507,7 +507,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                                     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
         <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Connection.delete_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.delete_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.delete_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.delete_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete a bucket.</span>
 
 <span class="sd">        You can use this method to delete a bucket by name, or to delete</span>
@@ -516,16 +516,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; connection.delete_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          True</span>
 
 <span class="sd">        You can also delete pass in the bucket object::</span>
 
 <span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;other-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; connection.delete_bucket(bucket)</span>
-<span class="sd">          True</span>
 
 <span class="sd">        If the bucket doesn&#39;t exist, this will raise a</span>
-<span class="sd">        :class:`gcloud.storage.exceptions.NotFound`::</span>
+<span class="sd">        :class:`gcloud.exceptions.NotFound`::</span>
 
 <span class="sd">          &gt;&gt;&gt; from gcloud.exceptions import NotFound</span>
 <span class="sd">          &gt;&gt;&gt; try:</span>
@@ -533,28 +531,20 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; except NotFound:</span>
 <span class="sd">          &gt;&gt;&gt;   print &#39;That bucket does not exist!&#39;</span>
 
+<span class="sd">        If the bucket still has objects in it, this will raise a</span>
+<span class="sd">        :class:`gcloud.exceptions.Conflict`::</span>
+
+<span class="sd">          &gt;&gt;&gt; from gcloud.exceptions import Conflict</span>
+<span class="sd">          &gt;&gt;&gt; try:</span>
+<span class="sd">          &gt;&gt;&gt;   connection.delete_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; except Conflict:</span>
+<span class="sd">          &gt;&gt;&gt;   print &#39;That bucket is not empty!&#39;</span>
+
 <span class="sd">        :type bucket: string or :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">        :param bucket: The bucket name (or bucket object) to create.</span>
-
-<span class="sd">        :type force: boolean</span>
-<span class="sd">        :param full: If True, empties the bucket&#39;s objects then deletes it.</span>
-
-<span class="sd">        :rtype: boolean</span>
-<span class="sd">        :returns: True if the bucket was deleted.</span>
-<span class="sd">        :raises: :class:`gcloud.storage.exceptions.NotFound` if the</span>
-<span class="sd">                 bucket doesn&#39;t exist, or</span>
-<span class="sd">                 :class:`gcloud.storage.exceptions.Conflict` if the</span>
-<span class="sd">                 bucket has blobs and `force` is not passed.</span>
+<span class="sd">        :param bucket: The bucket name (or bucket object) to delete.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bucket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
-
-        <span class="c"># This force delete operation is slow.</span>
-        <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">:</span>
-                <span class="n">blob</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">True</span>
 </div>
 <div class="viewcode-block" id="Connection.new_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.new_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">new_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for creating a new (unsaved) bucket object.</span>

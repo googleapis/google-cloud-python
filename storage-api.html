@@ -486,7 +486,7 @@ use the default for the library.</li>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The newly created bucket.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Conflict</span></tt> if
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></tt></a> if
 there is a confict (bucket already exists, invalid name, etc.)</td>
 </tr>
 </tbody>
@@ -495,24 +495,22 @@ there is a confict (bucket already exists, invalid name, etc.)</td>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.delete_bucket">
-<tt class="descname">delete_bucket</tt><big>(</big><em>bucket</em>, <em>force=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.delete_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.delete_bucket" title="Permalink to this definition">#</a></dt>
+<tt class="descname">delete_bucket</tt><big>(</big><em>bucket</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.delete_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.delete_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete a bucket.</p>
 <p>You can use this method to delete a bucket by name, or to delete
 a bucket object:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="go">True</span>
 </pre></div>
 </div>
 <p>You can also delete pass in the bucket object:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;other-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
-<span class="go">True</span>
 </pre></div>
 </div>
 <p>If the bucket doesn&#8217;t exist, this will raise a
-<tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt>:</p>
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
@@ -520,27 +518,20 @@ a bucket object:</p>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="s">&#39;That bucket does not exist!&#39;</span>
 </pre></div>
 </div>
+<p>If the bucket still has objects in it, this will raise a
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">Conflict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">except</span> <span class="n">Conflict</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="s">&#39;That bucket is not empty!&#39;</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>bucket</strong> (string or <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket name (or bucket object) to create.</li>
-<li><strong>full</strong> &#8211; If True, empties the bucket&#8217;s objects then deletes it.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">boolean</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the bucket was deleted.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt> if the
-bucket doesn&#8217;t exist, or
-<tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.Conflict</span></tt> if the
-bucket has blobs and <cite>force</cite> is not passed.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (string or <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket name (or bucket object) to delete.</td>
 </tr>
 </tbody>
 </table>
@@ -611,7 +602,7 @@ operations are identical:</p>
 <tt class="descname">get_bucket</tt><big>(</big><em>bucket_name</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.get_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.get_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a bucket by name.</p>
 <p>If the bucket isn&#8217;t found, this will raise a
-<tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt>.  If you would
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a>.  If you would
 rather get a bucket by name, and return <tt class="docutils literal"><span class="pre">None</span></tt> if the bucket
 isn&#8217;t found (like <tt class="docutils literal"><span class="pre">{}.get('...')</span></tt>) then use
 <a class="reference internal" href="#gcloud.storage.connection.Connection.lookup" title="gcloud.storage.connection.Connection.lookup"><tt class="xref py py-func docutils literal"><span class="pre">Connection.lookup()</span></tt></a>.</p>
@@ -635,7 +626,7 @@ isn&#8217;t found (like <tt class="docutils literal"><span class="pre">{}.get('.
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The bucket matching the name provided.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a></td>
 </tr>
 </tbody>
 </table>

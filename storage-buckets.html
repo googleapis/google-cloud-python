@@ -94,7 +94,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'name': 'name', 'cors': 'get_cors()', 'versioning': 'versioning_enabled', 'location': 'location', 'owner': 'owner', 'storageClass': 'storage_class', 'timeCreated': 'time_created', 'projectNumber': 'project_number', 'acl': 'acl', 'logging': 'get_logging()', 'etag': 'etag', 'lifecycle': 'get_lifecycle()', 'id': 'id', 'selfLink': 'self_link', 'metageneration': 'metageneration', 'defaultObjectAcl': 'get_default_object_acl()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'name': 'name', 'metageneration': 'metageneration', 'acl': 'acl', 'selfLink': 'self_link', 'storageClass': 'storage_class', 'timeCreated': 'time_created', 'logging': 'get_logging()', 'location': 'location', 'projectNumber': 'project_number', 'etag': 'etag', 'id': 'id', 'versioning': 'versioning_enabled', 'lifecycle': 'get_lifecycle()', 'owner': 'owner', 'cors': 'get_cors()', 'defaultObjectAcl': 'get_default_object_acl()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -198,23 +198,24 @@ copied.</li>
 <dt id="gcloud.storage.bucket.Bucket.delete">
 <tt class="descname">delete</tt><big>(</big><em>force=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete this bucket.</p>
-<p>The bucket <strong>must</strong> be empty in order to delete it.  If the
-bucket doesn&#8217;t exist, this will raise a
-<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a>.  If the bucket is
-not empty, this will raise an Exception.</p>
-<p>If you want to delete a non-empty bucket you can pass in a force
-parameter set to <tt class="docutils literal"><span class="pre">True</span></tt>.  This will iterate through and delete the
-bucket&#8217;s objects, before deleting the bucket.</p>
+<p>The bucket <strong>must</strong> be empty in order to submit a delete request. If
+<tt class="docutils literal"><span class="pre">force=True</span></tt> is passed, this will first attempt to delete all the
+objects / blobs in the bucket (i.e. try to empty the bucket).</p>
+<p>If the bucket doesn&#8217;t exist, this will raise
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a>.  If the bucket is not empty
+(and <tt class="docutils literal"><span class="pre">force=False</span></tt>), will raise <a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></tt></a>.</p>
+<p>If <tt class="docutils literal"><span class="pre">force=True</span></tt> and the bucket contains more than 256 objects / blobs
+this will cowardly refuse to delete the objects (or the bucket). This
+is to prevent accidental bucket deletion and to prevent extremely long
+runtime of this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>force</strong> (<em>boolean</em>) &#8211; If True, empties the bucket&#8217;s objects then deletes it.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a> if the
-bucket does not exist, or
-<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></tt></a> if the
-bucket has blobs and <cite>force</cite> is not passed.</td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if <tt class="docutils literal"><span class="pre">force</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt> and the bucket
+contains more than 256 objects / blobs.</td>
 </tr>
 </tbody>
 </table>
@@ -256,7 +257,7 @@ bucket has blobs and <cite>force</cite> is not passed.</td>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a> (to suppress
 the exception, call <tt class="docutils literal"><span class="pre">delete_blobs</span></tt>, passing a no-op
 <tt class="docutils literal"><span class="pre">on_error</span></tt> callback, e.g.:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">([</span><span class="n">blob</span><span class="p">],</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="k">pass</span><span class="p">)</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">([</span><span class="n">blob</span><span class="p">],</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
 </pre></div>
 </div>
 </td>
