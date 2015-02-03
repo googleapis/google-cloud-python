@@ -220,6 +220,7 @@ class Test_get_function(unittest2.TestCase):
             'dataset_id': DATASET_ID,
             'key_pbs': [key.to_protobuf()],
             'transaction_id': None,
+            'eventual': False,
         }
         self.assertEqual(connection._called_with, expected)
 
@@ -251,6 +252,30 @@ class Test_get_function(unittest2.TestCase):
         self.assertEqual([missed.key.to_protobuf() for missed in missing],
                          [key.to_protobuf()])
 
+    def test_w_missing_non_empty(self):
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        CONNECTION = object()
+        key = Key('Kind', 1234, dataset_id=DATASET_ID)
+
+        missing = ['this', 'list', 'is', 'not', 'empty']
+        self.assertRaises(ValueError, self._callFUT,
+                          [key], connection=CONNECTION,
+                          missing=missing)
+
+    def test_w_deferred_non_empty(self):
+        from gcloud.datastore.key import Key
+
+        DATASET_ID = 'DATASET'
+        CONNECTION = object()
+        key = Key('Kind', 1234, dataset_id=DATASET_ID)
+
+        deferred = ['this', 'list', 'is', 'not', 'empty']
+        self.assertRaises(ValueError, self._callFUT,
+                          [key], connection=CONNECTION,
+                          deferred=deferred)
+
     def test_miss_w_deferred(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
@@ -268,6 +293,94 @@ class Test_get_function(unittest2.TestCase):
         self.assertEqual(entities, [])
         self.assertEqual([def_key.to_protobuf() for def_key in deferred],
                          [key.to_protobuf()])
+
+    def _verifyProtobufCall(self, called_with, URI, conn):
+        self.assertEqual(called_with['uri'], URI)
+        self.assertEqual(called_with['method'], 'POST')
+        self.assertEqual(called_with['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(called_with['headers']['User-Agent'],
+                         conn.USER_AGENT)
+
+    def test_w_deferred_from_backend_but_not_passed(self):
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore.connection import Connection
+        from gcloud.datastore.key import Key
+        from gcloud.datastore import test_connection
+
+        # Shortening name, import line above was too long.
+        cmp_key_after_req = test_connection._compare_key_pb_after_request
+
+        DATASET_ID = 'DATASET'
+        key1 = Key('Kind', dataset_id=DATASET_ID)
+        key2 = Key('Kind', 2345, dataset_id=DATASET_ID)
+        key_pb1 = key1.to_protobuf()
+        key_pb2 = key2.to_protobuf()
+
+        # Build mock first response.
+        rsp_pb1 = datastore_pb.LookupResponse()
+        entity1 = datastore_pb.Entity()
+        entity1.key.CopyFrom(key_pb1)
+        # Add the entity to the "found" part of the response.
+        rsp_pb1.found.add(entity=entity1)
+        # Add the second key to the "deferred" part of the response.
+        rsp_pb1.deferred.add().CopyFrom(key_pb2)
+
+        # Build mock second response.
+        rsp_pb2 = datastore_pb.LookupResponse()
+        # Add in entity that was deferred.
+        entity2 = datastore_pb.Entity()
+        entity2.key.CopyFrom(key_pb2)
+        rsp_pb2.found.add(entity=entity2)
+
+        conn = Connection()
+        # Add mock http object to connection with response from above.
+        http = conn._http = _HttpMultiple(
+            ({'status': '200'}, rsp_pb1.SerializeToString()),
+            ({'status': '200'}, rsp_pb2.SerializeToString()),
+        )
+
+        missing = []
+        found = self._callFUT([key1, key2], missing=missing, connection=conn)
+        self.assertEqual(len(found), 2)
+        self.assertEqual(len(missing), 0)
+
+        # Check the actual contents on the response.
+        self.assertEqual(found[0].key.path, key1.path)
+        self.assertEqual(found[0].key.dataset_id, key1.dataset_id)
+        self.assertEqual(found[1].key.path, key2.path)
+        self.assertEqual(found[1].key.dataset_id, key2.dataset_id)
+
+        # Check that our http object was called correctly.
+        cw = http._called_with
+        rq_class = datastore_pb.LookupRequest
+        request = rq_class()
+        self.assertEqual(len(cw), 2)
+
+        # Make URI to check for requests.
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'datastore',
+            conn.API_VERSION,
+            'datasets',
+            DATASET_ID,
+            'lookup',
+        ])
+
+        # Make sure the first called with argument checks out.
+        self._verifyProtobufCall(cw[0], URI, conn)
+        request.ParseFromString(cw[0]['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 2)
+        cmp_key_after_req(self, key_pb1, keys[0])
+        cmp_key_after_req(self, key_pb2, keys[1])
+
+        # Make sure the second called with argument checks out.
+        self._verifyProtobufCall(cw[1], URI, conn)
+        request.ParseFromString(cw[1]['body'])
+        keys = list(request.key)
+        self.assertEqual(len(keys), 1)
+        cmp_key_after_req(self, key_pb2, keys[0])
 
     def test_hit(self):
         from gcloud.datastore.key import Key
@@ -366,6 +479,7 @@ class Test_get_function(unittest2.TestCase):
             'dataset_id': DATASET_ID,
             'key_pbs': [key.to_protobuf()],
             'transaction_id': None,
+            'eventual': False,
         }
         self.assertEqual(CUSTOM_CONNECTION._called_with, expected_called_with)
 
@@ -403,6 +517,7 @@ class Test_get_function(unittest2.TestCase):
             'dataset_id': DATASET_ID,
             'key_pbs': [key.to_protobuf()],
             'transaction_id': TRANSACTION,
+            'eventual': False,
         }
         self.assertEqual(CUSTOM_CONNECTION._called_with, expected_called_with)
 
@@ -413,6 +528,37 @@ class Test_get_function(unittest2.TestCase):
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
+
+    def test_max_loops(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import api
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+
+        # Make a found entity pb to be returned from mock backend.
+        entity_pb = self._make_entity_pb(DATASET_ID, KIND, ID,
+                                         'foo', 'Foo')
+
+        # Make a connection to return the entity pb.
+        connection = _Connection(entity_pb)
+
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
+        deferred = []
+        missing = []
+        with _Monkey(api, _MAX_LOOPS=-1):
+            result = self._callFUT([key], missing=missing, deferred=deferred,
+                                   connection=connection,
+                                   dataset_id=DATASET_ID)
+
+        # Make sure we have no results, even though the connection has been
+        # set up as in `test_hit` to return a single result.
+        self.assertEqual(result, [])
+        self.assertEqual(missing, [])
+        self.assertEqual(deferred, [])
 
 
 class Test_put_function(unittest2.TestCase):
@@ -785,3 +931,15 @@ class _NoCommitTransaction(object):
     def __exit__(self, *args):
         from gcloud.datastore.batch import _BATCHES
         _BATCHES.pop()
+
+
+class _HttpMultiple(object):
+
+    def __init__(self, *responses):
+        self._called_with = []
+        self._responses = list(responses)
+
+    def request(self, **kw):
+        self._called_with.append(kw)
+        result, self._responses = self._responses[0], self._responses[1:]
+        return result

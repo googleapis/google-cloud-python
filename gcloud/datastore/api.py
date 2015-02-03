@@ -24,6 +24,10 @@ from gcloud.datastore.transaction import Transaction
 from gcloud.datastore import helpers
 
 
+_MAX_LOOPS = 128
+"""Maximum number of iterations to wait for deferred keys."""
+
+
 def _require_dataset_id(dataset_id=None, first_key=None):
     """Infer a dataset ID from the environment, if not passed explicitly.
 
@@ -80,6 +84,85 @@ def _require_connection(connection=None):
     return connection
 
 
+def _extended_lookup(connection, dataset_id, key_pbs,
+                     missing=None, deferred=None,
+                     eventual=False, transaction_id=None):
+    """Repeat lookup until all keys found (unless stop requested).
+
+    Helper method for :func:`get`.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: The connection used to connect to datastore.
+
+    :type dataset_id: string
+    :param dataset_id: The ID of the dataset of which to make the request.
+
+    :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
+    :param key_pbs: The keys to retrieve from the datastore.
+
+    :type missing: an empty list or None.
+    :param missing: If a list is passed, the key-only entity protobufs
+                    returned by the backend as "missing" will be copied
+                    into it.  Use only as a keyword param.
+
+    :type deferred: an empty list or None.
+    :param deferred: If a list is passed, the key protobufs returned
+                     by the backend as "deferred" will be copied into it.
+                     Use only as a keyword param.
+
+    :type eventual: boolean
+    :param eventual: If False (the default), request ``STRONG`` read
+                     consistency.  If True, request ``EVENTUAL`` read
+                     consistency.
+
+    :type transaction_id: string
+    :param transaction_id: If passed, make the request in the scope of
+                           the given transaction.  Incompatible with
+                           ``eventual==True``.
+
+    :rtype: list of :class:`gcloud.datastore._datastore_v1_pb2.Entity`
+    :returns: The requested entities.
+    :raises: :class:`ValueError` if missing / deferred are not null or
+             empty list.
+    """
+    if missing is not None and missing != []:
+        raise ValueError('missing must be None or an empty list')
+
+    if deferred is not None and deferred != []:
+        raise ValueError('deferred must be None or an empty list')
+
+    results = []
+
+    loop_num = 0
+    while loop_num < _MAX_LOOPS:  # loop against possible deferred.
+        loop_num += 1
+
+        results_found, missing_found, deferred_found = connection.lookup(
+            dataset_id=dataset_id,
+            key_pbs=key_pbs,
+            eventual=eventual,
+            transaction_id=transaction_id,
+        )
+
+        results.extend(results_found)
+
+        if missing is not None:
+            missing.extend(missing_found)
+
+        if deferred is not None:
+            deferred.extend(deferred_found)
+            break
+
+        if len(deferred_found) == 0:
+            break
+
+        # We have deferred keys, and the user didn't ask to know about
+        # them, so retry (but only with the deferred ones).
+        key_pbs = deferred_found
+
+    return results
+
+
 def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
     """Retrieves entities, along with their attributes.
 
@@ -122,7 +205,8 @@ def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
 
     transaction = Transaction.current()
 
-    entity_pbs = connection.lookup(
+    entity_pbs = _extended_lookup(
+        connection,
         dataset_id=dataset_id,
         key_pbs=[k.to_protobuf() for k in keys],
         missing=missing,

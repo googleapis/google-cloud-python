@@ -194,8 +194,10 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found = conn.lookup(DATASET_ID, [key_pb])
+        found, missing, deferred = conn.lookup(DATASET_ID, [key_pb])
         self.assertEqual(len(found), 0)
+        self.assertEqual(len(missing), 0)
+        self.assertEqual(len(deferred), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
@@ -221,8 +223,11 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found = conn.lookup(DATASET_ID, [key_pb], eventual=True)
+        found, missing, deferred = conn.lookup(DATASET_ID, [key_pb],
+                                               eventual=True)
         self.assertEqual(len(found), 0)
+        self.assertEqual(len(missing), 0)
+        self.assertEqual(len(deferred), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
@@ -260,8 +265,11 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found = conn.lookup(DATASET_ID, [key_pb], transaction_id=TRANSACTION)
+        found, missing, deferred = conn.lookup(DATASET_ID, [key_pb],
+                                               transaction_id=TRANSACTION)
         self.assertEqual(len(found), 0)
+        self.assertEqual(len(missing), 0)
+        self.assertEqual(len(deferred), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
@@ -291,7 +299,9 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found, = conn.lookup(DATASET_ID, [key_pb])
+        (found,), missing, deferred = conn.lookup(DATASET_ID, [key_pb])
+        self.assertEqual(len(missing), 0)
+        self.assertEqual(len(deferred), 0)
         self.assertEqual(found.key.path_element[0].kind, 'Kind')
         self.assertEqual(found.key.path_element[0].id, 1234)
         cw = http._called_with
@@ -320,7 +330,10 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.lookup(DATASET_ID, [key_pb1, key_pb2]), [])
+        found, missing, deferred = conn.lookup(DATASET_ID, [key_pb1, key_pb2])
+        self.assertEqual(len(found), 0)
+        self.assertEqual(len(missing), 0)
+        self.assertEqual(len(deferred), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.LookupRequest
@@ -352,9 +365,9 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        missing = []
-        result = conn.lookup(DATASET_ID, [key_pb1, key_pb2], missing=missing)
+        result, missing, deferred = conn.lookup(DATASET_ID, [key_pb1, key_pb2])
         self.assertEqual(result, [])
+        self.assertEqual(len(deferred), 0)
         self.assertEqual([missed.key for missed in missing],
                          [key_pb1, key_pb2])
         cw = http._called_with
@@ -366,16 +379,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(keys), 2)
         _compare_key_pb_after_request(self, key_pb1, keys[0])
         _compare_key_pb_after_request(self, key_pb2, keys[1])
-
-    def test_lookup_multiple_keys_w_missing_non_empty(self):
-        DATASET_ID = 'DATASET'
-        key_pb1 = self._make_key_pb(DATASET_ID)
-        key_pb2 = self._make_key_pb(DATASET_ID, id=2345)
-        conn = self._makeOne()
-        missing = ['this', 'list', 'is', 'not', 'empty']
-        self.assertRaises(
-            ValueError,
-            conn.lookup, DATASET_ID, [key_pb1, key_pb2], missing=missing)
 
     def test_lookup_multiple_keys_w_deferred(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
@@ -396,9 +399,9 @@ class TestConnection(unittest2.TestCase):
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        deferred = []
-        result = conn.lookup(DATASET_ID, [key_pb1, key_pb2], deferred=deferred)
+        result, missing, deferred = conn.lookup(DATASET_ID, [key_pb1, key_pb2])
         self.assertEqual(result, [])
+        self.assertEqual(len(missing), 0)
         self.assertEqual([def_key for def_key in deferred], [key_pb1, key_pb2])
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
@@ -414,68 +417,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(keys), 2)
         _compare_key_pb_after_request(self, key_pb1, keys[0])
         _compare_key_pb_after_request(self, key_pb2, keys[1])
-
-    def test_lookup_multiple_keys_w_deferred_non_empty(self):
-        DATASET_ID = 'DATASET'
-        key_pb1 = self._make_key_pb(DATASET_ID)
-        key_pb2 = self._make_key_pb(DATASET_ID, id=2345)
-        conn = self._makeOne()
-        deferred = ['this', 'list', 'is', 'not', 'empty']
-        self.assertRaises(
-            ValueError,
-            conn.lookup, DATASET_ID, [key_pb1, key_pb2], deferred=deferred)
-
-    def test_lookup_multiple_keys_w_deferred_from_backend_but_not_passed(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
-
-        DATASET_ID = 'DATASET'
-        key_pb1 = self._make_key_pb(DATASET_ID)
-        key_pb2 = self._make_key_pb(DATASET_ID, id=2345)
-        rsp_pb1 = datastore_pb.LookupResponse()
-        entity1 = datastore_pb.Entity()
-        entity1.key.CopyFrom(key_pb1)
-        rsp_pb1.found.add(entity=entity1)
-        rsp_pb1.deferred.add().CopyFrom(key_pb2)
-        rsp_pb2 = datastore_pb.LookupResponse()
-        entity2 = datastore_pb.Entity()
-        entity2.key.CopyFrom(key_pb2)
-        rsp_pb2.found.add(entity=entity2)
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'datastore',
-            conn.API_VERSION,
-            'datasets',
-            DATASET_ID,
-            'lookup',
-        ])
-        http = conn._http = HttpMultiple(
-            ({'status': '200'}, rsp_pb1.SerializeToString()),
-            ({'status': '200'}, rsp_pb2.SerializeToString()),
-            )
-        found = conn.lookup(DATASET_ID, [key_pb1, key_pb2])
-        self.assertEqual(len(found), 2)
-        self.assertEqual(found[0].key.path_element[0].kind, 'Kind')
-        self.assertEqual(found[0].key.path_element[0].id, 1234)
-        self.assertEqual(found[1].key.path_element[0].kind, 'Kind')
-        self.assertEqual(found[1].key.path_element[0].id, 2345)
-        cw = http._called_with
-        rq_class = datastore_pb.LookupRequest
-        request = rq_class()
-        self.assertEqual(len(cw), 2)
-
-        self._verifyProtobufCall(cw[0], URI, conn)
-        request.ParseFromString(cw[0]['body'])
-        keys = list(request.key)
-        self.assertEqual(len(keys), 2)
-        _compare_key_pb_after_request(self, key_pb1, keys[0])
-        _compare_key_pb_after_request(self, key_pb2, keys[1])
-
-        self._verifyProtobufCall(cw[1], URI, conn)
-        request.ParseFromString(cw[1]['body'])
-        keys = list(request.key)
-        self.assertEqual(len(keys), 1)
-        self.assertEqual(keys[0], key_pb2)
 
     def test_run_query_w_eventual_no_transaction(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
@@ -855,18 +796,6 @@ class Http(object):
         return self._response, self._content
 
 
-class HttpMultiple(object):
-
-    def __init__(self, *responses):
-        self._called_with = []
-        self._responses = list(responses)
-
-    def request(self, **kw):
-        self._called_with.append(kw)
-        result, self._responses = self._responses[0], self._responses[1:]
-        return result
-
-
 def _compare_key_pb_after_request(test, key_before, key_after):
     test.assertFalse(key_after.partition_id.HasField('dataset_id'))
     test.assertEqual(key_before.partition_id.namespace,
@@ -886,13 +815,7 @@ class _Connection(object):
 
     def lookup(self, **kw):
         self._called_with = kw
-        missing = kw.pop('missing', None)
-        if missing is not None:
-            missing.extend(self._missing)
-        deferred = kw.pop('deferred', None)
-        if deferred is not None:
-            deferred.extend(self._deferred)
-        return self._result
+        return self._result, self._missing[:], self._deferred[:]
 
     def allocate_ids(self, dataset_id, key_pbs):
         self._called_dataset_id = dataset_id
