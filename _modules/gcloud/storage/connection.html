@@ -88,19 +88,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud storage connections.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">import</span> <span class="nn">calendar</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">urllib</span>
-
-<span class="kn">from</span> <span class="nn">Crypto.Hash</span> <span class="kn">import</span> <span class="n">SHA256</span>
-<span class="kn">from</span> <span class="nn">Crypto.PublicKey</span> <span class="kn">import</span> <span class="n">RSA</span>
-<span class="kn">from</span> <span class="nn">Crypto.Signature</span> <span class="kn">import</span> <span class="n">PKCS1_v1_5</span>
-<span class="kn">from</span> <span class="nn">oauth2client</span> <span class="kn">import</span> <span class="n">client</span>
-<span class="kn">from</span> <span class="nn">oauth2client</span> <span class="kn">import</span> <span class="n">crypt</span>
-<span class="kn">from</span> <span class="nn">oauth2client</span> <span class="kn">import</span> <span class="n">service_account</span>
-<span class="kn">import</span> <span class="nn">pytz</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.connection</span> <span class="kn">import</span> <span class="n">Connection</span> <span class="k">as</span> <span class="n">_Base</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
@@ -108,76 +97,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 <span class="kn">import</span> <span class="nn">six</span>
-
-
-<span class="k">def</span> <span class="nf">_utcnow</span><span class="p">():</span>  <span class="c"># pragma: NO COVER testing replaces</span>
-    <span class="sd">&quot;&quot;&quot;Returns current time as UTC datetime.</span>
-
-<span class="sd">    NOTE: on the module namespace so tests can replace it.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">_get_pem_key</span><span class="p">(</span><span class="n">credentials</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Gets RSA key for a PEM payload from a credentials object.</span>
-
-<span class="sd">    :type credentials: :class:`client.SignedJwtAssertionCredentials`,</span>
-<span class="sd">                       :class:`service_account._ServiceAccountCredentials`</span>
-<span class="sd">    :param credentials: The credentials used to create an RSA key</span>
-<span class="sd">                        for signing text.</span>
-
-<span class="sd">    :rtype: :class:`Crypto.PublicKey.RSA._RSAobj`</span>
-<span class="sd">    :returns: An RSA object used to sign text.</span>
-<span class="sd">    :raises: `TypeError` if `credentials` is the wrong type.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">SignedJwtAssertionCredentials</span><span class="p">):</span>
-        <span class="c"># Take our PKCS12 (.p12) key and make it into a RSA key we can use.</span>
-        <span class="n">pem_text</span> <span class="o">=</span> <span class="n">crypt</span><span class="o">.</span><span class="n">pkcs12_key_as_pem</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">private_key</span><span class="p">,</span>
-                                           <span class="n">credentials</span><span class="o">.</span><span class="n">private_key_password</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">service_account</span><span class="o">.</span><span class="n">_ServiceAccountCredentials</span><span class="p">):</span>
-        <span class="n">pem_text</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">_private_key_pkcs8_text</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">((</span><span class="n">credentials</span><span class="p">,</span>
-                         <span class="s">&#39;not a valid service account credentials type&#39;</span><span class="p">))</span>
-
-    <span class="k">return</span> <span class="n">RSA</span><span class="o">.</span><span class="n">importKey</span><span class="p">(</span><span class="n">pem_text</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_get_signed_query_params</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">signature_string</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Gets query parameters for creating a signed URL.</span>
-
-<span class="sd">    :type credentials: :class:`client.SignedJwtAssertionCredentials`,</span>
-<span class="sd">                       :class:`service_account._ServiceAccountCredentials`</span>
-<span class="sd">    :param credentials: The credentials used to create an RSA key</span>
-<span class="sd">                        for signing text.</span>
-
-<span class="sd">    :type expiration: int or long</span>
-<span class="sd">    :param expiration: When the signed URL should expire.</span>
-
-<span class="sd">    :type signature_string: string</span>
-<span class="sd">    :param signature_string: The string to be signed by the credentials.</span>
-
-<span class="sd">    :rtype: dict</span>
-<span class="sd">    :returns: Query parameters matching the signing credentials with a</span>
-<span class="sd">              signed payload.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pem_key</span> <span class="o">=</span> <span class="n">_get_pem_key</span><span class="p">(</span><span class="n">credentials</span><span class="p">)</span>
-    <span class="c"># Sign the string with the RSA key.</span>
-    <span class="n">signer</span> <span class="o">=</span> <span class="n">PKCS1_v1_5</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">pem_key</span><span class="p">)</span>
-    <span class="n">signature_hash</span> <span class="o">=</span> <span class="n">SHA256</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">signature_string</span><span class="p">)</span>
-    <span class="n">signature_bytes</span> <span class="o">=</span> <span class="n">signer</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">signature_hash</span><span class="p">)</span>
-    <span class="n">signature</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">signature_bytes</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">SignedJwtAssertionCredentials</span><span class="p">):</span>
-        <span class="n">service_account_name</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">service_account_name</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">service_account</span><span class="o">.</span><span class="n">_ServiceAccountCredentials</span><span class="p">):</span>
-        <span class="n">service_account_name</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">_service_account_email</span>
-    <span class="c"># We know one of the above must occur since `_get_pem_key` fails if not.</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s">&#39;GoogleAccessId&#39;</span><span class="p">:</span> <span class="n">service_account_name</span><span class="p">,</span>
-        <span class="s">&#39;Expires&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
-        <span class="s">&#39;Signature&#39;</span><span class="p">:</span> <span class="n">signature</span><span class="p">,</span>
-    <span class="p">}</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">_Base</span><span class="p">):</span>
@@ -228,8 +147,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
     <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/storage/{api_version}{path}&#39;</span>
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
-
-    <span class="n">API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://storage.googleapis.com&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;:type project: string</span>
@@ -570,53 +487,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
 
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Invalid bucket: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">bucket</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.generate_signed_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span>
-                            <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">content_md5</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                            <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate signed URL to provide query-string auth&#39;n to a resource.</span>
-
-<span class="sd">        :type resource: string</span>
-<span class="sd">        :param resource: A pointer to a specific resource</span>
-<span class="sd">                         (typically, ``/bucket-name/path/to/blob.txt``).</span>
-
-<span class="sd">        :type expiration: int, long, datetime.datetime, datetime.timedelta</span>
-<span class="sd">        :param expiration: When the signed URL should expire.</span>
-
-<span class="sd">        :type method: string</span>
-<span class="sd">        :param method: The HTTP verb that will be used when requesting the URL.</span>
-
-<span class="sd">        :type content_md5: string</span>
-<span class="sd">        :param content_md5: The MD5 hash of the object referenced by</span>
-<span class="sd">                            ``resource``.</span>
-
-<span class="sd">        :type content_type: string</span>
-<span class="sd">        :param content_type: The content type of the object referenced by</span>
-<span class="sd">                             ``resource``.</span>
-
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: A signed URL you can use to access the resource</span>
-<span class="sd">                  until expiration.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">expiration</span> <span class="o">=</span> <span class="n">_get_expiration_seconds</span><span class="p">(</span><span class="n">expiration</span><span class="p">)</span>
-
-        <span class="c"># Generate the string to sign.</span>
-        <span class="n">signature_string</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-            <span class="n">method</span><span class="p">,</span>
-            <span class="n">content_md5</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
-            <span class="n">content_type</span> <span class="ow">or</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
-            <span class="nb">str</span><span class="p">(</span><span class="n">expiration</span><span class="p">),</span>
-            <span class="n">resource</span><span class="p">])</span>
-
-        <span class="c"># Set the right query parameters.</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="n">_get_signed_query_params</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span>
-                                                <span class="n">expiration</span><span class="p">,</span>
-                                                <span class="n">signature_string</span><span class="p">)</span>
-
-        <span class="c"># Return the built URL.</span>
-        <span class="k">return</span> <span class="s">&#39;{endpoint}{resource}?{querystring}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">endpoint</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">API_ACCESS_ENDPOINT</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-            <span class="n">querystring</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">))</span>
 
 </div></div>
 <span class="k">class</span> <span class="nc">_BucketIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
@@ -641,38 +511,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="k">yield</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_get_expiration_seconds</span><span class="p">(</span><span class="n">expiration</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert &#39;expiration&#39; to a number of seconds in the future.</span>
-
-<span class="sd">    :type expiration: int, long, datetime.datetime, datetime.timedelta</span>
-<span class="sd">    :param expiration: When the signed URL should expire.</span>
-
-<span class="sd">    :rtype: int</span>
-<span class="sd">    :returns: a timestamp as an absolute number of seconds.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c"># If it&#39;s a timedelta, add it to `now` in UTC.</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">):</span>
-        <span class="n">now</span> <span class="o">=</span> <span class="n">_utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-        <span class="n">expiration</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="n">expiration</span>
-
-    <span class="c"># If it&#39;s a datetime, convert to a timestamp.</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
-        <span class="c"># Make sure the timezone on the value is UTC</span>
-        <span class="c"># (either by converting or replacing the value).</span>
-        <span class="k">if</span> <span class="n">expiration</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span>
-            <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">astimezone</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">expiration</span> <span class="o">=</span> <span class="n">expiration</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
-
-        <span class="c"># Turn the datetime into a timestamp (seconds, not microseconds).</span>
-        <span class="n">expiration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">calendar</span><span class="o">.</span><span class="n">timegm</span><span class="p">(</span><span class="n">expiration</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()))</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expiration</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected an integer timestamp, datetime, or &#39;</span>
-                        <span class="s">&#39;timedelta. Got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">expiration</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">expiration</span>
 </pre></div>
 
       </section><!-- end of .content -->

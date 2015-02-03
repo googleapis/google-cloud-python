@@ -372,11 +372,6 @@ the project using Python&#8217;s <tt class="docutils literal"><span class="pre">
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="gcloud.storage.connection.Connection.API_ACCESS_ENDPOINT">
-<tt class="descname">API_ACCESS_ENDPOINT</tt><em class="property"> = 'https://storage.googleapis.com'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_ACCESS_ENDPOINT" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
 <dt id="gcloud.storage.connection.Connection.API_URL_TEMPLATE">
 <tt class="descname">API_URL_TEMPLATE</tt><em class="property"> = '{api_base_url}/storage/{api_version}{path}'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
 <dd><p>A template for the URL of a particular API call.</p>
@@ -532,37 +527,6 @@ a bucket object:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (string or <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket name (or bucket object) to delete.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.connection.Connection.generate_signed_url">
-<tt class="descname">generate_signed_url</tt><big>(</big><em>resource</em>, <em>expiration</em>, <em>method='GET'</em>, <em>content_md5=None</em>, <em>content_type=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.generate_signed_url" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate signed URL to provide query-string auth&#8217;n to a resource.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<em>string</em>) &#8211; A pointer to a specific resource
-(typically, <tt class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></tt>).</li>
-<li><strong>expiration</strong> (<em>int, long, datetime.datetime, datetime.timedelta</em>) &#8211; When the signed URL should expire.</li>
-<li><strong>method</strong> (<em>string</em>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
-<li><strong>content_md5</strong> (<em>string</em>) &#8211; The MD5 hash of the object referenced by
-<tt class="docutils literal"><span class="pre">resource</span></tt>.</li>
-<li><strong>content_type</strong> (<em>string</em>) &#8211; The content type of the object referenced by
-<tt class="docutils literal"><span class="pre">resource</span></tt>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">string</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
-until expiration.</p>
-</td>
 </tr>
 </tbody>
 </table>

@@ -152,6 +152,40 @@ however they should be capable of returning advanced types.</p>
 <span id="credentials"></span><h2>Credentials<a class="headerlink" href="#module-gcloud.credentials" title="Permalink to this headline">#</a></h2>
 <p>A simple wrapper around the OAuth2 credentials library.</p>
 <dl class="function">
+<dt id="gcloud.credentials.generate_signed_url">
+<tt class="descclassname">gcloud.credentials.</tt><tt class="descname">generate_signed_url</tt><big>(</big><em>credentials</em>, <em>resource</em>, <em>expiration</em>, <em>api_access_endpoint=''</em>, <em>method='GET'</em>, <em>content_md5=None</em>, <em>content_type=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/credentials.html#generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.generate_signed_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate signed URL to provide query-string auth&#8217;n to a resource.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></tt>) &#8211; Credentials object with an associated private key to
+sign text.</li>
+<li><strong>resource</strong> (<em>string</em>) &#8211; A pointer to a specific resource
+(typically, <tt class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></tt>).</li>
+<li><strong>expiration</strong> (<em>int, long, datetime.datetime, datetime.timedelta</em>) &#8211; When the signed URL should expire.</li>
+<li><strong>api_access_endpoint</strong> (<em>string</em>) &#8211; Optional URI base. Defaults to empty string.</li>
+<li><strong>method</strong> (<em>string</em>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
+<li><strong>content_md5</strong> (<em>string</em>) &#8211; The MD5 hash of the object referenced by
+<tt class="docutils literal"><span class="pre">resource</span></tt>.</li>
+<li><strong>content_type</strong> (<em>string</em>) &#8211; The content type of the object referenced by
+<tt class="docutils literal"><span class="pre">resource</span></tt>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">string</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
+until expiration.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="gcloud.credentials.get_credentials">
 <tt class="descclassname">gcloud.credentials.</tt><tt class="descname">get_credentials</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/credentials.html#get_credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_credentials" title="Permalink to this definition">#</a></dt>
 <dd><p>Gets credentials implicitly from the current environment.</p>

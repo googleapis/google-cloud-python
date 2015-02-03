@@ -99,9 +99,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">_gcloud_vendor.apitools.base.py</span> <span class="kn">import</span> <span class="n">http_wrapper</span>
 <span class="kn">from</span> <span class="nn">_gcloud_vendor.apitools.base.py</span> <span class="kn">import</span> <span class="n">transfer</span>
 
+<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">generate_signed_url</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">ObjectACL</span>
+
+
+<span class="n">_API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://storage.googleapis.com&#39;</span>
 
 
 <div class="viewcode-block" id="Blob"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob">[docs]</a><span class="k">class</span> <span class="nc">Blob</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
@@ -231,9 +235,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">resource</span> <span class="o">=</span> <span class="s">&#39;/{bucket_name}/{quoted_name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">quoted_name</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">generate_signed_url</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
-                                                   <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">,</span>
-                                                   <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">generate_signed_url</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
+            <span class="n">api_access_endpoint</span><span class="o">=</span><span class="n">_API_ACCESS_ENDPOINT</span><span class="p">,</span>
+            <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Blob.exists"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this blob exists.</span>
