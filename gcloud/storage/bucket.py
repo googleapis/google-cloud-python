@@ -64,6 +64,9 @@ class Bucket(_PropertyMixin):
     """
     _iterator_class = _BlobIterator
 
+    _MAX_OBJECTS_FOR_BUCKET_DELETE = 256
+    """Maximum number of existing objects allowed in Bucket.delete()."""
+
     CUSTOM_PROPERTY_ACCESSORS = {
         'acl': 'acl',
         'cors': 'get_cors()',
@@ -237,24 +240,41 @@ class Bucket(_PropertyMixin):
     def delete(self, force=False):
         """Delete this bucket.
 
-        The bucket **must** be empty in order to delete it.  If the
-        bucket doesn't exist, this will raise a
-        :class:`gcloud.exceptions.NotFound`.  If the bucket is
-        not empty, this will raise an Exception.
+        The bucket **must** be empty in order to submit a delete request. If
+        ``force=True`` is passed, this will first attempt to delete all the
+        objects / blobs in the bucket (i.e. try to empty the bucket).
 
-        If you want to delete a non-empty bucket you can pass in a force
-        parameter set to ``True``.  This will iterate through and delete the
-        bucket's objects, before deleting the bucket.
+        If the bucket doesn't exist, this will raise
+        :class:`gcloud.exceptions.NotFound`.  If the bucket is not empty
+        (and ``force=False``), will raise :class:`gcloud.exceptions.Conflict`.
+
+        If ``force=True`` and the bucket contains more than 256 objects / blobs
+        this will cowardly refuse to delete the objects (or the bucket). This
+        is to prevent accidental bucket deletion and to prevent extremely long
+        runtime of this method.
 
         :type force: boolean
         :param force: If True, empties the bucket's objects then deletes it.
 
-        :raises: :class:`gcloud.exceptions.NotFound` if the
-                 bucket does not exist, or
-                 :class:`gcloud.exceptions.Conflict` if the
-                 bucket has blobs and `force` is not passed.
+        :raises: :class:`ValueError` if ``force`` is ``True`` and the bucket
+                 contains more than 256 objects / blobs.
         """
-        return self.connection.delete_bucket(self.name, force=force)
+        if force:
+            blobs = list(self.iterator(
+                max_results=self._MAX_OBJECTS_FOR_BUCKET_DELETE + 1))
+            if len(blobs) > self._MAX_OBJECTS_FOR_BUCKET_DELETE:
+                message = (
+                    'Refusing to delete bucket with more than '
+                    '%d objects. If you actually want to delete '
+                    'this bucket, please delete the objects '
+                    'yourself before calling Bucket.delete().'
+                ) % (self._MAX_OBJECTS_FOR_BUCKET_DELETE,)
+                raise ValueError(message)
+
+            # Ignore 404 errors on delete.
+            self.delete_blobs(blobs, on_error=lambda blob: None)
+
+        self.connection.delete_bucket(self.name)
 
     def delete_blob(self, blob):
         """Deletes a blob from the current bucket.
@@ -286,7 +306,7 @@ class Bucket(_PropertyMixin):
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.::
 
-                 >>> bucket.delete_blobs([blob], on_error=lambda blob: pass)
+                 >>> bucket.delete_blobs([blob], on_error=lambda blob: None)
         """
         blob = self.new_blob(blob)
         self.connection.api_request(method='DELETE', path=blob.path)
