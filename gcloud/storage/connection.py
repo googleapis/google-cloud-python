@@ -22,7 +22,6 @@ from gcloud.exceptions import make_exception
 from gcloud.exceptions import NotFound
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
-import six
 
 
 class Connection(_Base):
@@ -379,7 +378,7 @@ class Connection(_Base):
         :type bucket_name: string
         :param bucket_name: The bucket name to delete.
         """
-        bucket_path = '/b/' + bucket_name
+        bucket_path = Bucket.path_helper(bucket_name)
         self.api_request(method='DELETE', path=bucket_path)
 
 
