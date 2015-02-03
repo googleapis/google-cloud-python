@@ -113,6 +113,9 @@ class Test_Blob(unittest2.TestCase):
             'http://commondatastorage.googleapis.com/name/parent%2Fchild')
 
     def test_generate_signed_url_w_default_method(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import blob as MUT
+
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37Z'
         connection = _Connection()
@@ -120,12 +123,25 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(bucket, BLOB_NAME)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37Z')
-        self.assertEqual(blob.generate_signed_url(EXPIRATION), URI)
+
+        SIGNER = _Signer()
+        with _Monkey(MUT, generate_signed_url=SIGNER):
+            self.assertEqual(blob.generate_signed_url(EXPIRATION), URI)
+
         PATH = '/name/%s' % (BLOB_NAME,)
-        self.assertEqual(connection._signed,
-                         [(PATH, EXPIRATION, {'method': 'GET'})])
+        EXPECTED_ARGS = (_Connection.credentials,)
+        EXPECTED_KWARGS = {
+            'api_access_endpoint': 'https://storage.googleapis.com',
+            'expiration': EXPIRATION,
+            'method': 'GET',
+            'resource': PATH,
+        }
+        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_generate_signed_url_w_slash_in_name(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import blob as MUT
+
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37Z'
         connection = _Connection()
@@ -133,12 +149,24 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(bucket, BLOB_NAME)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37Z')
-        self.assertEqual(blob.generate_signed_url(EXPIRATION), URI)
-        self.assertEqual(connection._signed,
-                         [('/name/parent%2Fchild',
-                           EXPIRATION, {'method': 'GET'})])
+
+        SIGNER = _Signer()
+        with _Monkey(MUT, generate_signed_url=SIGNER):
+            self.assertEqual(blob.generate_signed_url(EXPIRATION), URI)
+
+        EXPECTED_ARGS = (_Connection.credentials,)
+        EXPECTED_KWARGS = {
+            'api_access_endpoint': 'https://storage.googleapis.com',
+            'expiration': EXPIRATION,
+            'method': 'GET',
+            'resource': '/name/parent%2Fchild',
+        }
+        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_generate_signed_url_w_explicit_method(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import blob as MUT
+
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37Z'
         connection = _Connection()
@@ -146,11 +174,21 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(bucket, BLOB_NAME)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37Z')
-        self.assertEqual(blob.generate_signed_url(EXPIRATION, method='POST'),
-                         URI)
+
+        SIGNER = _Signer()
+        with _Monkey(MUT, generate_signed_url=SIGNER):
+            self.assertEqual(
+                blob.generate_signed_url(EXPIRATION, method='POST'), URI)
+
         PATH = '/name/%s' % (BLOB_NAME,)
-        self.assertEqual(connection._signed,
-                         [(PATH, EXPIRATION, {'method': 'POST'})])
+        EXPECTED_ARGS = (_Connection.credentials,)
+        EXPECTED_KWARGS = {
+            'api_access_endpoint': 'https://storage.googleapis.com',
+            'expiration': EXPIRATION,
+            'method': 'POST',
+            'resource': PATH,
+        }
+        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_exists_miss(self):
         NONESUCH = 'nonesuch'
@@ -825,6 +863,7 @@ class _Connection(_Responder):
 
     API_BASE_URL = 'http://example.com'
     USER_AGENT = 'testing 1.2.3'
+    credentials = object()
 
     def __init__(self, *responses):
         super(_Connection, self).__init__(*responses)
@@ -845,11 +884,6 @@ class _Connection(_Responder):
         qs = urlencode(query_params or {})
         scheme, netloc, _, _, _ = urlsplit(api_base_url)
         return urlunsplit((scheme, netloc, path, qs, ''))
-
-    def generate_signed_url(self, resource, expiration, **kw):
-        self._signed.append((resource, expiration, kw))
-        return ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
-                '&Expiration=%s' % expiration)
 
 
 class _HTTP(_Responder):
@@ -879,3 +913,14 @@ class _Bucket(object):
     def delete_blob(self, blob):
         del self._blobs[blob.name]
         self._deleted.append(blob.name)
+
+
+class _Signer(object):
+
+    def __init__(self):
+        self._signed = []
+
+    def __call__(self, *args, **kwargs):
+        self._signed.append((args, kwargs))
+        return ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
+                '&Expiration=%s' % kwargs.get('expiration'))
