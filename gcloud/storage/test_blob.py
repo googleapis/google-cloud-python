@@ -229,40 +229,42 @@ class Test_Blob(unittest2.TestCase):
         self.assertFalse(blob.exists())
 
     def test_download_to_file(self):
-        import httplib
-        from StringIO import StringIO
+        from six.moves.http_client import OK
+        from six.moves.http_client import PARTIAL_CONTENT
+        from io import BytesIO
         BLOB_NAME = 'blob-name'
-        chunk1_response = {'status': httplib.PARTIAL_CONTENT,
+        chunk1_response = {'status': PARTIAL_CONTENT,
                            'content-range': 'bytes 0-2/6'}
-        chunk2_response = {'status': httplib.OK,
+        chunk2_response = {'status': OK,
                            'content-range': 'bytes 3-5/6'}
         connection = _Connection(
-            (chunk1_response, 'abc'),
-            (chunk2_response, 'def'),
+            (chunk1_response, b'abc'),
+            (chunk2_response, b'def'),
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(bucket, BLOB_NAME, properties)
         blob.CHUNK_SIZE = 3
-        fh = StringIO()
+        fh = BytesIO()
         blob.download_to_file(fh)
-        self.assertEqual(fh.getvalue(), 'abcdef')
+        self.assertEqual(fh.getvalue(), b'abcdef')
 
     def test_download_to_filename(self):
-        import httplib
         import os
         import time
         import datetime
+        from six.moves.http_client import OK
+        from six.moves.http_client import PARTIAL_CONTENT
         from tempfile import NamedTemporaryFile
         BLOB_NAME = 'blob-name'
-        chunk1_response = {'status': httplib.PARTIAL_CONTENT,
+        chunk1_response = {'status': PARTIAL_CONTENT,
                            'content-range': 'bytes 0-2/6'}
-        chunk2_response = {'status': httplib.OK,
+        chunk2_response = {'status': OK,
                            'content-range': 'bytes 3-5/6'}
         connection = _Connection(
-            (chunk1_response, 'abc'),
-            (chunk2_response, 'def'),
+            (chunk1_response, b'abc'),
+            (chunk2_response, b'def'),
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
@@ -273,7 +275,7 @@ class Test_Blob(unittest2.TestCase):
         with NamedTemporaryFile() as f:
             blob.download_to_filename(f.name)
             f.flush()
-            with open(f.name) as g:
+            with open(f.name, 'rb') as g:
                 wrote = g.read()
                 mtime = os.path.getmtime(f.name)
                 updatedTime = time.mktime(
@@ -281,19 +283,20 @@ class Test_Blob(unittest2.TestCase):
                         blob.properties['updated'],
                         '%Y-%m-%dT%H:%M:%S.%fz').timetuple()
                 )
-        self.assertEqual(wrote, 'abcdef')
+        self.assertEqual(wrote, b'abcdef')
         self.assertEqual(mtime, updatedTime)
 
     def test_download_as_string(self):
-        import httplib
+        from six.moves.http_client import OK
+        from six.moves.http_client import PARTIAL_CONTENT
         BLOB_NAME = 'blob-name'
-        chunk1_response = {'status': httplib.PARTIAL_CONTENT,
+        chunk1_response = {'status': PARTIAL_CONTENT,
                            'content-range': 'bytes 0-2/6'}
-        chunk2_response = {'status': httplib.OK,
+        chunk2_response = {'status': OK,
                            'content-range': 'bytes 3-5/6'}
         connection = _Connection(
-            (chunk1_response, 'abc'),
-            (chunk2_response, 'def'),
+            (chunk1_response, b'abc'),
+            (chunk2_response, b'def'),
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
@@ -301,18 +304,18 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(bucket, BLOB_NAME, properties)
         blob.CHUNK_SIZE = 3
         fetched = blob.download_as_string()
-        self.assertEqual(fetched, 'abcdef')
+        self.assertEqual(fetched, b'abcdef')
 
     def test_upload_from_file_simple(self):
-        import httplib
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
         from tempfile import NamedTemporaryFile
-        from urlparse import parse_qsl
-        from urlparse import urlsplit
         BLOB_NAME = 'blob-name'
-        DATA = 'ABCDEF'
-        response = {'status': httplib.OK}
+        DATA = b'ABCDEF'
+        response = {'status': OK}
         connection = _Connection(
-            (response, ''),
+            (response, b''),
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(bucket, BLOB_NAME)
@@ -337,24 +340,24 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(headers['Content-Type'], 'application/unknown')
 
     def test_upload_from_file_resumable(self):
-        import httplib
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
         from tempfile import NamedTemporaryFile
-        from urlparse import parse_qsl
-        from urlparse import urlsplit
         from gcloud._testing import _Monkey
         from _gcloud_vendor.apitools.base.py import http_wrapper
         from _gcloud_vendor.apitools.base.py import transfer
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = 'ABCDEF'
-        loc_response = {'status': httplib.OK, 'location': UPLOAD_URL}
+        DATA = b'ABCDEF'
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
         chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
                            'range': 'bytes 0-4'}
-        chunk2_response = {'status': httplib.OK}
+        chunk2_response = {'status': OK}
         connection = _Connection(
-            (loc_response, ''),
-            (chunk1_response, ''),
-            (chunk2_response, ''),
+            (loc_response, b''),
+            (chunk1_response, b''),
+            (chunk2_response, b''),
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(bucket, BLOB_NAME)
@@ -396,18 +399,18 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(headers['Content-Range'], 'bytes 5-5/6')
 
     def test_upload_from_file_w_slash_in_name(self):
-        import httplib
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
         from tempfile import NamedTemporaryFile
-        from urlparse import parse_qsl
-        from urlparse import urlsplit
         from _gcloud_vendor.apitools.base.py import http_wrapper
         BLOB_NAME = 'parent/child'
         UPLOAD_URL = 'http://example.com/upload/name/parent%2Fchild'
-        DATA = 'ABCDEF'
-        loc_response = {'status': httplib.OK, 'location': UPLOAD_URL}
+        DATA = b'ABCDEF'
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
         chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
                            'range': 'bytes 0-4'}
-        chunk2_response = {'status': httplib.OK}
+        chunk2_response = {'status': OK}
         connection = _Connection(
             (loc_response, ''),
             (chunk1_response, ''),
@@ -436,18 +439,18 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(headers['Content-Type'], 'application/unknown')
 
     def test_upload_from_filename(self):
-        import httplib
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
         from tempfile import NamedTemporaryFile
-        from urlparse import parse_qsl
-        from urlparse import urlsplit
         from _gcloud_vendor.apitools.base.py import http_wrapper
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = 'ABCDEF'
-        loc_response = {'status': httplib.OK, 'location': UPLOAD_URL}
+        DATA = b'ABCDEF'
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
         chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
                            'range': 'bytes 0-4'}
-        chunk2_response = {'status': httplib.OK}
+        chunk2_response = {'status': OK}
         connection = _Connection(
             (loc_response, ''),
             (chunk1_response, ''),
@@ -475,18 +478,18 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(headers['Content-Length'], '6')
         self.assertEqual(headers['Content-Type'], 'image/jpeg')
 
-    def test_upload_from_string(self):
-        import httplib
-        from urlparse import parse_qsl
-        from urlparse import urlsplit
+    def test_upload_from_string_w_bytes(self):
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
         from _gcloud_vendor.apitools.base.py import http_wrapper
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
-        DATA = 'ABCDEF'
-        loc_response = {'status': httplib.OK, 'location': UPLOAD_URL}
+        DATA = b'ABCDEF'
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
         chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
                            'range': 'bytes 0-4'}
-        chunk2_response = {'status': httplib.OK}
+        chunk2_response = {'status': OK}
         connection = _Connection(
             (loc_response, ''),
             (chunk1_response, ''),
@@ -510,6 +513,45 @@ class Test_Blob(unittest2.TestCase):
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], '6')
         self.assertEqual(headers['Content-Type'], 'text/plain')
+        self.assertEqual(rq[0]['body'], DATA)
+
+    def test_upload_from_string_w_text(self):
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+        from _gcloud_vendor.apitools.base.py import http_wrapper
+        BLOB_NAME = 'blob-name'
+        UPLOAD_URL = 'http://example.com/upload/name/key'
+        DATA = u'ABCDEF\u1234'
+        ENCODED = DATA.encode('utf-8')
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
+        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
+                           'range': 'bytes 0-4'}
+        chunk2_response = {'status': OK}
+        connection = _Connection(
+            (loc_response, ''),
+            (chunk1_response, ''),
+            (chunk2_response, ''),
+        )
+        bucket = _Bucket(connection)
+        blob = self._makeOne(bucket, BLOB_NAME)
+        blob.CHUNK_SIZE = 5
+        blob.upload_from_string(DATA)
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
+        self.assertEqual(rq[0]['method'], 'POST')
+        uri = rq[0]['uri']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'media', 'name': BLOB_NAME})
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        self.assertEqual(headers['Content-Length'], str(len(ENCODED)))
+        self.assertEqual(headers['Content-Type'], 'text/plain')
+        self.assertEqual(rq[0]['body'], ENCODED)
 
     def test_make_public(self):
         from gcloud.storage.acl import _ACLEntity
@@ -875,9 +917,9 @@ class _Connection(_Responder):
 
     def build_api_url(self, path, query_params=None,
                       api_base_url=API_BASE_URL, upload=False):
-        from urllib import urlencode
-        from urlparse import urlsplit
-        from urlparse import urlunsplit
+        from six.moves.urllib.parse import urlencode
+        from six.moves.urllib.parse import urlsplit
+        from six.moves.urllib.parse import urlunsplit
         # mimic the build_api_url interface, but avoid unused param and
         # missed coverage errors
         upload = not upload  # pragma NO COVER

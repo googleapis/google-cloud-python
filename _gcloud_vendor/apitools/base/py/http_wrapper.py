@@ -9,11 +9,11 @@ import collections
 import logging
 import socket
 import time
-import urlparse
 
 import httplib2
 from six.moves import http_client
 from six.moves import range
+from six.moves.urllib.parse import urlsplit
 
 from _gcloud_vendor.apitools.base.py import exceptions
 from _gcloud_vendor.apitools.base.py import util
@@ -127,7 +127,7 @@ def MakeRequest(http, http_request, retries=5, redirections=5):
   # wants control over the underlying connection for managing callbacks
   # or hash digestion.
   if getattr(http, 'connections', None):
-    url_scheme = urlparse.urlsplit(http_request.url).scheme
+    url_scheme = urlsplit(http_request.url).scheme
     if url_scheme and url_scheme in http.connections:
       connection_type = http.connections[url_scheme]
   for retry in range(retries + 1):

@@ -238,11 +238,11 @@ class TestConnection(unittest2.TestCase):
         _compare_key_pb_after_request(self, key_pb, keys[0])
         self.assertEqual(request.read_options.read_consistency,
                          datastore_pb.ReadOptions.EVENTUAL)
-        self.assertEqual(request.read_options.transaction, '')
+        self.assertEqual(request.read_options.transaction, b'')
 
     def test_lookup_single_key_empty_response_w_eventual_and_transaction(self):
         DATASET_ID = 'DATASET'
-        TRANSACTION = 'TRANSACTION'
+        TRANSACTION = b'TRANSACTION'
         key_pb = self._make_key_pb(DATASET_ID)
         conn = self._makeOne()
         self.assertRaises(ValueError, conn.lookup, DATASET_ID, key_pb,
@@ -252,7 +252,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
-        TRANSACTION = 'TRANSACTION'
+        TRANSACTION = b'TRANSACTION'
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
@@ -455,7 +455,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.query, q_pb)
         self.assertEqual(request.read_options.read_consistency,
                          datastore_pb.ReadOptions.EVENTUAL)
-        self.assertEqual(request.read_options.transaction, '')
+        self.assertEqual(request.read_options.transaction, b'')
 
     def test_run_query_wo_eventual_w_transaction(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
@@ -463,7 +463,7 @@ class TestConnection(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
-        TRANSACTION = 'TRANSACTION'
+        TRANSACTION = b'TRANSACTION'
         q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
@@ -503,7 +503,7 @@ class TestConnection(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
-        TRANSACTION = 'TRANSACTION'
+        TRANSACTION = b'TRANSACTION'
         q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
@@ -584,7 +584,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
-        TRANSACTION = 'TRANSACTION'
+        TRANSACTION = b'TRANSACTION'
         rsp_pb = datastore_pb.BeginTransactionResponse()
         rsp_pb.transaction = TRANSACTION
         conn = self._makeOne()
@@ -609,7 +609,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
-        TRANSACTION = 'TRANSACTION'
+        TRANSACTION = b'TRANSACTION'
         rsp_pb = datastore_pb.BeginTransactionResponse()
         rsp_pb.transaction = TRANSACTION
         conn = self._makeOne()
@@ -660,7 +660,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, '')
+        self.assertEqual(request.transaction, b'')
         self.assertEqual(request.mutation, mutation)
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
@@ -686,7 +686,7 @@ class TestConnection(unittest2.TestCase):
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.commit(DATASET_ID, mutation, 'xact')
+        result = conn.commit(DATASET_ID, mutation, b'xact')
         self.assertEqual(result.index_updates, 0)
         self.assertEqual(list(result.insert_auto_id_key), [])
         cw = http._called_with
@@ -694,14 +694,14 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(request.transaction, 'xact')
+        self.assertEqual(request.transaction, b'xact')
         self.assertEqual(request.mutation, mutation)
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
 
     def test_rollback_ok(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         DATASET_ID = 'DATASET'
-        TRANSACTION = 'xact'
+        TRANSACTION = b'xact'
 
         rsp_pb = datastore_pb.RollbackResponse()
         conn = self._makeOne()
@@ -821,7 +821,7 @@ class _Connection(object):
         self._called_dataset_id = dataset_id
         self._called_key_pbs = key_pbs
         num_pbs = len(key_pbs)
-        return [_KeyProto(i) for i in range(num_pbs)]
+        return [_KeyProto(i) for i in list(range(num_pbs))]
 
 
 class _PathElementProto(object):

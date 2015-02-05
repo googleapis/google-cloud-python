@@ -19,8 +19,10 @@ import mimetypes
 import os
 import time
 import datetime
-from StringIO import StringIO
-import urllib
+from io import BytesIO
+
+import six
+from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
 from _gcloud_vendor.apitools.base.py import http_wrapper
 from _gcloud_vendor.apitools.base.py import transfer
@@ -123,7 +125,7 @@ class Blob(_PropertyMixin):
         elif not self.name:
             raise ValueError('Cannot determine path without a blob name.')
 
-        return self.bucket.path + '/o/' + urllib.quote(self.name, safe='')
+        return self.bucket.path + '/o/' + quote(self.name, safe='')
 
     @property
     def public_url(self):
@@ -135,7 +137,7 @@ class Blob(_PropertyMixin):
         return '{storage_base_url}/{bucket_name}/{quoted_name}'.format(
             storage_base_url='http://commondatastorage.googleapis.com',
             bucket_name=self.bucket.name,
-            quoted_name=urllib.quote(self.name, safe=''))
+            quoted_name=quote(self.name, safe=''))
 
     def generate_signed_url(self, expiration, method='GET'):
         """Generates a signed URL for this blob.
@@ -160,7 +162,7 @@ class Blob(_PropertyMixin):
         """
         resource = '/{bucket_name}/{quoted_name}'.format(
             bucket_name=self.bucket.name,
-            quoted_name=urllib.quote(self.name, safe=''))
+            quoted_name=quote(self.name, safe=''))
 
         return generate_signed_url(
             self.connection.credentials, resource=resource,
@@ -253,11 +255,11 @@ class Blob(_PropertyMixin):
     def download_as_string(self):
         """Download the contents of this blob as a string.
 
-        :rtype: string
+        :rtype: bytes
         :returns: The data stored in this blob.
         :raises: :class:`gcloud.exceptions.NotFound`
         """
-        string_buffer = StringIO()
+        string_buffer = BytesIO()
         self.download_to_file(string_buffer)
         return string_buffer.getvalue()
 
@@ -369,16 +371,19 @@ class Blob(_PropertyMixin):
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
 
-        :type data: string
-        :param data: The data to store in this blob.
+        :type data: bytes or text
+        :param data: The data to store in this blob.  If the value is
+                     text, it will be encoded as UTF-8.
 
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
         """
-        string_buffer = StringIO()
+        if isinstance(data, six.text_type):
+            data = data.encode('utf-8')
+        string_buffer = BytesIO()
         string_buffer.write(data)
         self.upload_from_file(file_obj=string_buffer, rewind=True,
-                              size=string_buffer.len,
+                              size=len(data),
                               content_type=content_type)
         return self
 

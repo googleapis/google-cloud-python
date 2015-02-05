@@ -864,7 +864,7 @@ class Test_allocate_ids_function(unittest2.TestCase):
         result = self._callFUT(INCOMPLETE_KEY, NUM_IDS, connection=CONNECTION)
 
         # Check the IDs returned match.
-        self.assertEqual([key.id for key in result], range(NUM_IDS))
+        self.assertEqual([key.id for key in result], list(range(NUM_IDS)))
 
         # Check connection is called correctly.
         self.assertEqual(CONNECTION._called_dataset_id, DATASET_ID)
@@ -884,7 +884,7 @@ class Test_allocate_ids_function(unittest2.TestCase):
             result = self._callFUT(INCOMPLETE_KEY, NUM_IDS)
 
         # Check the IDs returned.
-        self.assertEqual([key.id for key in result], range(NUM_IDS))
+        self.assertEqual([key.id for key in result], list(range(NUM_IDS)))
 
     def test_with_already_completed_key(self):
         from gcloud.datastore import _implicit_environ

@@ -15,7 +15,6 @@
 """Create / interact with gcloud datastore keys."""
 
 import copy
-from itertools import izip
 import six
 
 from gcloud.datastore import _implicit_environ
@@ -102,7 +101,7 @@ class Key(object):
             id_or_name_list += (partial_ending,)
 
         result = []
-        for kind, id_or_name in izip(kind_list, id_or_name_list):
+        for kind, id_or_name in zip(kind_list, id_or_name_list):
             curr_key_part = {}
             if isinstance(kind, six.string_types):
                 curr_key_part['kind'] = kind
