@@ -17,6 +17,15 @@ import unittest2
 
 class Test__UserAgentReifyProperty(unittest2.TestCase):
 
+    def setUp(self):
+        from gcloud.connection import Connection
+        self._original_connection_user_agent = Connection.user_agent
+        Connection.user_agent = self._makeOne(_NamedObject('user_agent'))
+
+    def tearDown(self):
+        from gcloud.connection import Connection
+        Connection.user_agent = self._original_connection_user_agent
+
     def _getTargetClass(self):
         from gcloud import _UserAgentReifyProperty
         return _UserAgentReifyProperty
@@ -25,8 +34,8 @@ class Test__UserAgentReifyProperty(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_defaults(self):
-        ua_prop = self._makeOne(NamedObject())
-        self.assertEqual(ua_prop._property_name, NamedObject.NAME_VAL)
+        ua_prop = self._makeOne(_NamedObject())
+        self.assertEqual(ua_prop._property_name, _NamedObject.NAME_VAL)
         self.assertEqual(ua_prop._curr_environ, None)
         self.assertEqual(ua_prop._user_agent, None)
 
@@ -36,8 +45,8 @@ class Test__UserAgentReifyProperty(unittest2.TestCase):
 
         NON_NULL = object()
         with _Monkey(gcloud, appengine=NON_NULL):
-            ua_prop = self._makeOne(NamedObject())
-        self.assertEqual(ua_prop._property_name, NamedObject.NAME_VAL)
+            ua_prop = self._makeOne(_NamedObject())
+        self.assertEqual(ua_prop._property_name, _NamedObject.NAME_VAL)
         self.assertEqual(ua_prop._curr_environ, '-GAE')
         self.assertEqual(ua_prop._user_agent, None)
 
@@ -100,6 +109,21 @@ class Test__UserAgentReifyProperty(unittest2.TestCase):
         expected_ua = 'gcloud-python/{0}'.format(gcloud.__version__)
         self.assertEqual(cnxn.user_agent, expected_ua)
 
+    def test___get___access_twice(self):
+        import gcloud
+        from gcloud.connection import Connection
+
+        expected_ua = 'gcloud-python/{0}'.format(gcloud.__version__)
+
+        self.assertEqual(Connection.user_agent._user_agent, None)
+        value = Connection.user_agent.__get__(_NamedObject())
+        self.assertEqual(value, expected_ua)
+
+        # Now test using it a second time.
+        self.assertEqual(Connection.user_agent._user_agent, expected_ua)
+        value_again = Connection.user_agent.__get__(_NamedObject())
+        self.assertEqual(value_again, expected_ua)
+
     def test_instance_property_connection_with_appengine(self):
         import gcloud
         from gcloud._testing import _Monkey
@@ -107,7 +131,7 @@ class Test__UserAgentReifyProperty(unittest2.TestCase):
 
         NON_NULL = object()
         with _Monkey(gcloud, appengine=NON_NULL):
-            local_prop = self._makeOne(NamedObject('user_agent'))
+            local_prop = self._makeOne(_NamedObject('user_agent'))
             with _Monkey(Connection, user_agent=local_prop):
                 cnxn = Connection()
                 value = cnxn.user_agent
@@ -130,7 +154,7 @@ class Test__UserAgentReifyProperty(unittest2.TestCase):
             return CONNECTION
 
         with _Monkey(gcloud, HTTPConnection=_factory):
-            local_prop = self._makeOne(NamedObject('user_agent'))
+            local_prop = self._makeOne(_NamedObject('user_agent'))
             with _Monkey(Connection, user_agent=local_prop):
                 cnxn = Connection()
                 value = cnxn.user_agent
@@ -139,7 +163,7 @@ class Test__UserAgentReifyProperty(unittest2.TestCase):
         self.assertEqual(value, expected_ua)
 
 
-class NamedObject(object):
+class _NamedObject(object):
 
     NAME_VAL = object()
 

@@ -36,7 +36,10 @@ class TestConnection(unittest2.TestCase):
         return pb
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        conn = self._getTargetClass()(*args, **kw)
+        # Set the user agent so the user_agent is not lazily loaded.
+        setattr(conn, 'user_agent', 'gcloud-python/test')
+        return conn
 
     def _verifyProtobufCall(self, called_with, URI, conn):
         self.assertEqual(called_with['uri'], URI)
