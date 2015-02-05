@@ -32,9 +32,8 @@ class Transaction(Batch):
 
       >>> datastore.set_defaults()
 
-      >>> with Transaction() as xact:
-      ...     datastore.put(entity1)
-      ...     datastore.put(entity2)
+      >>> with Transaction():
+      ...     datastore.put([entity1, entity2])
 
     Because it derives from :class:`Batch`, :class`Transaction` also provides
     :meth:`put` and :meth:`delete` methods::
@@ -46,7 +45,7 @@ class Transaction(Batch):
     By default, the transaction is rolled back if the transaction block
     exits with an error::
 
-      >>> with Transaction() as txn:
+      >>> with Transaction():
       ...     do_some_work()
       ...     raise SomeException()  # rolls back
 
@@ -71,7 +70,25 @@ class Transaction(Batch):
          ...     entity = Entity(key=Key('Thing'))
          ...     datastore.put([entity])
          ...     assert entity.key.is_partial  # There is no ID on this key.
+         ...
          >>> assert not entity.key.is_partial  # There *is* an ID.
+
+       After completion, you can determine if a commit succeeded or failed.
+       For example, trying to delete a key that doesn't exist::
+
+         >>> with Transaction() as xact:
+         ...     xact.delete(key)
+         ...
+         >>> xact.succeeded
+         False
+
+       or successfully storing two entities:
+
+         >>> with Transaction() as xact:
+         ...     datastore.put([entity1, entity2])
+         ...
+         >>> xact.succeeded
+         True
 
     If you don't want to use the context manager you can initialize a
     transaction manually::
@@ -80,7 +97,7 @@ class Transaction(Batch):
       >>> transaction.begin()
 
       >>> entity = Entity(key=Key('Thing'))
-      >>> transaction.put([entity])
+      >>> transaction.put(entity)
 
       >>> if error:
       ...     transaction.rollback()
@@ -97,9 +114,17 @@ class Transaction(Batch):
              are not set.
     """
 
+    _IN_PROGRESS = 1
+    """Enum value for _IN_PROGRESS status of transaction."""
+
+    _FINISHED = 2
+    """Enum value for _FINISHED status of transaction."""
+
     def __init__(self, dataset_id=None, connection=None):
         super(Transaction, self).__init__(dataset_id, connection)
         self._id = None
+        self._status = None
+        self._commit_success = False
 
     @property
     def id(self):
@@ -123,13 +148,32 @@ class Transaction(Batch):
         if isinstance(top, Transaction):
             return top
 
+    @property
+    def succeeded(self):
+        """Determines if transaction has succeeded or failed.
+
+        :rtype: boolean
+        :returns: Boolean indicating successful commit.
+        :raises: :class:`ValueError` if the transaction is still in progress.
+        """
+        if self._status != self._FINISHED:
+            raise ValueError('Transaction not yet finished. '
+                             'Success not known.')
+
+        return self._commit_success
+
     def begin(self):
         """Begins a transaction.
 
         This method is called automatically when entering a with
         statement, however it can be called explicitly if you don't want
         to use a context manager.
+
+        :raises: :class:`ValueError` if the transaction has already begun.
         """
+        if self._status is not None:
+            raise ValueError('Transaction already started previously.')
+        self._status = self._IN_PROGRESS
         self._id = self.connection.begin_transaction(self._dataset_id)
 
     def rollback(self):
@@ -140,8 +184,12 @@ class Transaction(Batch):
         - Sets the current connection's transaction reference to None.
         - Sets the current transaction's ID to None.
         """
-        self.connection.rollback(self._dataset_id, self._id)
-        self._id = None
+        try:
+            self.connection.rollback(self._dataset_id, self._id)
+        finally:
+            self._status = self._FINISHED
+            # Clear our own ID in case this gets accidentally reused.
+            self._id = None
 
     def commit(self):
         """Commits the transaction.
@@ -154,7 +202,10 @@ class Transaction(Batch):
 
         - Sets the current transaction's ID to None.
         """
-        super(Transaction, self).commit()
-
-        # Clear our own ID in case this gets accidentally reused.
-        self._id = None
+        try:
+            super(Transaction, self).commit()
+        finally:
+            self._commit_success = True
+            self._status = self._FINISHED
+            # Clear our own ID in case this gets accidentally reused.
+            self._id = None

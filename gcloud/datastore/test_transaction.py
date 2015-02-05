@@ -47,6 +47,8 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.dataset_id, _DATASET)
         self.assertEqual(xact.connection, connection)
         self.assertEqual(xact.id, None)
+        self.assertEqual(xact._status, None)
+        self.assertTrue(xact._commit_success is False)
         self.assertTrue(isinstance(xact.mutation, Mutation))
         self.assertEqual(len(xact._auto_id_entities), 0)
 
@@ -64,6 +66,8 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.id, None)
         self.assertEqual(xact.dataset_id, DATASET_ID)
         self.assertEqual(xact.connection, CONNECTION)
+        self.assertEqual(xact._status, None)
+        self.assertTrue(xact._commit_success is False)
 
     def test_current(self):
         from gcloud.datastore.test_api import _NoCommitBatch
@@ -90,6 +94,47 @@ class TestTransaction(unittest2.TestCase):
         self.assertTrue(xact1.current() is None)
         self.assertTrue(xact2.current() is None)
 
+    def test_succeeded_fresh_transaction(self):
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        xact = self._makeOne(dataset_id=_DATASET, connection=connection)
+        self.assertEqual(xact._status, None)
+
+        success = marker = object()
+        with self.assertRaises(ValueError):
+            success = xact.succeeded
+        self.assertTrue(success is marker)
+
+    def test_succeeded_in_progress(self):
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        xact = self._makeOne(dataset_id=_DATASET, connection=connection)
+        xact.begin()
+        self.assertEqual(xact._status, self._getTargetClass()._IN_PROGRESS)
+
+        success = marker = object()
+        with self.assertRaises(ValueError):
+            success = xact.succeeded
+        self.assertTrue(success is marker)
+
+    def test_succeeded_on_success(self):
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        xact = self._makeOne(dataset_id=_DATASET, connection=connection)
+        xact.begin()
+        xact.commit()
+        self.assertEqual(xact._status, self._getTargetClass()._FINISHED)
+        self.assertTrue(xact.succeeded is True)
+
+    def test_succeeded_on_failure(self):
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        xact = self._makeOne(dataset_id=_DATASET, connection=connection)
+        xact.begin()
+        xact.rollback()
+        self.assertEqual(xact._status, self._getTargetClass()._FINISHED)
+        self.assertTrue(xact.succeeded is False)
+
     def test_begin(self):
         _DATASET = 'DATASET'
         connection = _Connection(234)
@@ -97,6 +142,19 @@ class TestTransaction(unittest2.TestCase):
         xact.begin()
         self.assertEqual(xact.id, 234)
         self.assertEqual(connection._begun, _DATASET)
+
+    def test_begin_tombstoned(self):
+        _DATASET = 'DATASET'
+        connection = _Connection(234)
+        xact = self._makeOne(dataset_id=_DATASET, connection=connection)
+        xact.begin()
+        self.assertEqual(xact.id, 234)
+        self.assertEqual(connection._begun, _DATASET)
+
+        xact.rollback()
+        self.assertEqual(xact.id, None)
+
+        self.assertRaises(ValueError, xact.begin)
 
     def test_rollback(self):
         _DATASET = 'DATASET'
