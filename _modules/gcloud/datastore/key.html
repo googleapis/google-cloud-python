@@ -89,7 +89,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud datastore keys.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">izip</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
@@ -176,7 +175,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">id_or_name_list</span> <span class="o">+=</span> <span class="p">(</span><span class="n">partial_ending</span><span class="p">,)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">id_or_name</span> <span class="ow">in</span> <span class="n">izip</span><span class="p">(</span><span class="n">kind_list</span><span class="p">,</span> <span class="n">id_or_name_list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">id_or_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kind_list</span><span class="p">,</span> <span class="n">id_or_name_list</span><span class="p">):</span>
             <span class="n">curr_key_part</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
                 <span class="n">curr_key_part</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kind</span>

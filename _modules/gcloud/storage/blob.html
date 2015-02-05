@@ -93,8 +93,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
-<span class="kn">import</span> <span class="nn">urllib</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>  <span class="c"># pylint: disable=F0401</span>
 
 <span class="kn">from</span> <span class="nn">_gcloud_vendor.apitools.base.py</span> <span class="kn">import</span> <span class="n">http_wrapper</span>
 <span class="kn">from</span> <span class="nn">_gcloud_vendor.apitools.base.py</span> <span class="kn">import</span> <span class="n">transfer</span>
@@ -197,7 +199,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot determine path without a blob name.&#39;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
 </div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Blob.public_url"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.public_url">[docs]</a>    <span class="k">def</span> <span class="nf">public_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -209,7 +211,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="s">&#39;{storage_base_url}/{bucket_name}/{quoted_name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">storage_base_url</span><span class="o">=</span><span class="s">&#39;http://commondatastorage.googleapis.com&#39;</span><span class="p">,</span>
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">quoted_name</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
+            <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="Blob.generate_signed_url"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a signed URL for this blob.</span>
@@ -234,7 +236,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="s">&#39;/{bucket_name}/{quoted_name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">quoted_name</span><span class="o">=</span><span class="n">urllib</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
+            <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">generate_signed_url</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">credentials</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
@@ -327,11 +329,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob as a string.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: bytes</span>
 <span class="sd">        :returns: The data stored in this blob.</span>
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+        <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
 </div>
@@ -443,16 +445,19 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
 <span class="sd">           API documents for details.</span>
 
-<span class="sd">        :type data: string</span>
-<span class="sd">        :param data: The data to store in this blob.</span>
+<span class="sd">        :type data: bytes or text</span>
+<span class="sd">        :param data: The data to store in this blob.  If the value is</span>
+<span class="sd">                     text, it will be encoded as UTF-8.</span>
 
 <span class="sd">        :rtype: :class:`Blob`</span>
 <span class="sd">        :returns: The updated Blob object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
         <span class="n">string_buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                              <span class="n">size</span><span class="o">=</span><span class="n">string_buffer</span><span class="o">.</span><span class="n">len</span><span class="p">,</span>
+                              <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
                               <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 </div>
