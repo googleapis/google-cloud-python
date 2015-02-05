@@ -216,8 +216,7 @@ class Batch(object):
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        if not helpers._dataset_ids_equal(self._dataset_id,
-                                          entity.key.dataset_id):
+        if self._dataset_id != entity.key.dataset_id:
             raise ValueError("Key must be from same dataset as batch")
 
         _assign_entity_to_mutation(
@@ -235,8 +234,7 @@ class Batch(object):
         if key.is_partial:
             raise ValueError("Key must be complete")
 
-        if not helpers._dataset_ids_equal(self._dataset_id,
-                                          key.dataset_id):
+        if self._dataset_id != key.dataset_id:
             raise ValueError("Key must be from same dataset as batch")
 
         key_pb = key.to_protobuf()
@@ -309,7 +307,6 @@ def _assign_entity_to_mutation(mutation_pb, entity, auto_id_entities):
     auto_id = entity.key.is_partial
 
     key_pb = entity.key.to_protobuf()
-    key_pb = helpers._prepare_key_for_request(key_pb)
 
     if auto_id:
         insert = mutation_pb.insert_auto_id.add()
