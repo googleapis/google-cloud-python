@@ -141,42 +141,43 @@ class TestConnection(unittest2.TestCase):
 
     def test_build_api_url_no_extra_query_params(self):
         PROJECT = 'project'
-        conn = self._makeOne(PROJECT)
+        klass = self._getTargetClass()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            klass.API_BASE_URL,
             'storage',
-            conn.API_VERSION,
+            klass.API_VERSION,
             'foo?project=%s' % PROJECT,
         ])
-        self.assertEqual(conn.build_api_url('/foo'), URI)
+        self.assertEqual(klass.build_api_url(PROJECT, '/foo'), URI)
 
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         PROJECT = 'project'
-        conn = self._makeOne(PROJECT)
-        uri = conn.build_api_url('/foo', {'bar': 'baz'})
+        klass = self._getTargetClass()
+        uri = klass.build_api_url(PROJECT, '/foo', query_params={'bar': 'baz'})
         scheme, netloc, path, qs, _ = urlsplit(uri)
-        self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
+        self.assertEqual('%s://%s' % (scheme, netloc), klass.API_BASE_URL)
         self.assertEqual(path,
-                         '/'.join(['', 'storage', conn.API_VERSION, 'foo']))
+                         '/'.join(['', 'storage', klass.API_VERSION, 'foo']))
         parms = dict(parse_qsl(qs))
         self.assertEqual(parms['project'], PROJECT)
         self.assertEqual(parms['bar'], 'baz')
 
     def test_build_api_url_w_upload(self):
         PROJECT = 'project'
-        conn = self._makeOne(PROJECT)
+        klass = self._getTargetClass()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            klass.API_BASE_URL,
             'upload',
             'storage',
-            conn.API_VERSION,
+            klass.API_VERSION,
             'foo?project=%s' % PROJECT,
         ])
-        self.assertEqual(conn.build_api_url('/foo', upload=True), URI)
+        self.assertEqual(klass.build_api_url(PROJECT, '/foo', upload=True),
+                         URI)
 
-    def test_make_request_no_data_no_content_type_no_headers(self):
+    def test__make_request_no_data_no_content_type_no_headers(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
@@ -184,7 +185,7 @@ class TestConnection(unittest2.TestCase):
             {'status': '200', 'content-type': 'text/plain'},
             '',
         )
-        headers, content = conn.make_request('GET', URI)
+        headers, content = conn._make_request('GET', URI)
         self.assertEqual(headers['status'], '200')
         self.assertEqual(headers['content-type'], 'text/plain')
         self.assertEqual(content, '')
@@ -198,7 +199,7 @@ class TestConnection(unittest2.TestCase):
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
-    def test_make_request_w_data_no_extra_headers(self):
+    def test__make_request_w_data_no_extra_headers(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
@@ -206,7 +207,7 @@ class TestConnection(unittest2.TestCase):
             {'status': '200', 'content-type': 'text/plain'},
             '',
         )
-        conn.make_request('GET', URI, {}, 'application/json')
+        conn._make_request('GET', URI, {}, 'application/json')
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], {})
@@ -218,7 +219,7 @@ class TestConnection(unittest2.TestCase):
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
-    def test_make_request_w_extra_headers(self):
+    def test__make_request_w_extra_headers(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
@@ -226,7 +227,7 @@ class TestConnection(unittest2.TestCase):
             {'status': '200', 'content-type': 'text/plain'},
             '',
         )
-        conn.make_request('GET', URI, headers={'X-Foo': 'foo'})
+        conn._make_request('GET', URI, headers={'X-Foo': 'foo'})
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], None)

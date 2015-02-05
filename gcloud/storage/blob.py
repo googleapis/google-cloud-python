@@ -314,14 +314,15 @@ class Blob(_PropertyMixin):
 
         # Temporary URL, until we know simple vs. resumable.
         upload_url = conn.build_api_url(
-            path=self.bucket.path + '/o', upload=True)
+            project=conn.project, path=self.bucket.path + '/o', upload=True)
 
         # Use apitools 'Upload' facility.
         request = http_wrapper.Request(upload_url, 'POST', headers)
 
         upload.ConfigureRequest(upload_config, request, url_builder)
         query_params = url_builder.query_params
-        request.url = conn.build_api_url(path=self.bucket.path + '/o',
+        request.url = conn.build_api_url(project=conn.project,
+                                         path=self.bucket.path + '/o',
                                          query_params=query_params,
                                          upload=True)
         upload.InitializeUpload(request, conn.http)
