@@ -114,17 +114,22 @@ class Transaction(Batch):
              are not set.
     """
 
+    _INITIAL = 0
+    """Enum value for _INITIAL status of transaction."""
+
     _IN_PROGRESS = 1
     """Enum value for _IN_PROGRESS status of transaction."""
 
-    _FINISHED = 2
+    _ABORTED = 2
+    """Enum value for _ABORTED status of transaction."""
+
+    _FINISHED = 3
     """Enum value for _FINISHED status of transaction."""
 
     def __init__(self, dataset_id=None, connection=None):
         super(Transaction, self).__init__(dataset_id, connection)
         self._id = None
-        self._status = None
-        self._commit_success = False
+        self._status = self._INITIAL
 
     @property
     def id(self):
@@ -148,20 +153,6 @@ class Transaction(Batch):
         if isinstance(top, Transaction):
             return top
 
-    @property
-    def succeeded(self):
-        """Determines if transaction has succeeded or failed.
-
-        :rtype: boolean
-        :returns: Boolean indicating successful commit.
-        :raises: :class:`ValueError` if the transaction is still in progress.
-        """
-        if self._status != self._FINISHED:
-            raise ValueError('Transaction not yet finished. '
-                             'Success not known.')
-
-        return self._commit_success
-
     def begin(self):
         """Begins a transaction.
 
@@ -171,7 +162,7 @@ class Transaction(Batch):
 
         :raises: :class:`ValueError` if the transaction has already begun.
         """
-        if self._status is not None:
+        if self._status != self._INITIAL:
             raise ValueError('Transaction already started previously.')
         self._status = self._IN_PROGRESS
         self._id = self.connection.begin_transaction(self._dataset_id)
@@ -187,7 +178,7 @@ class Transaction(Batch):
         try:
             self.connection.rollback(self._dataset_id, self._id)
         finally:
-            self._status = self._FINISHED
+            self._status = self._ABORTED
             # Clear our own ID in case this gets accidentally reused.
             self._id = None
 
@@ -205,7 +196,6 @@ class Transaction(Batch):
         try:
             super(Transaction, self).commit()
         finally:
-            self._commit_success = True
             self._status = self._FINISHED
             # Clear our own ID in case this gets accidentally reused.
             self._id = None
