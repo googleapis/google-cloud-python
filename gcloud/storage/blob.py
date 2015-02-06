@@ -30,6 +30,7 @@ from _gcloud_vendor.apitools.base.py import transfer
 from gcloud.credentials import generate_signed_url
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
+from gcloud.storage import _implicit_environ
 from gcloud.storage.acl import ObjectACL
 
 
@@ -37,7 +38,19 @@ _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
 
 
 class Blob(_PropertyMixin):
-    """A wrapper around Cloud Storage's concept of an ``Object``."""
+    """A wrapper around Cloud Storage's concept of an ``Object``.
+
+    :type name: string
+    :param name: The name of the blob.  This corresponds to the
+                 unique path of the object in the bucket.
+
+    :type bucket: :class:`gcloud.storage.bucket.Bucket`
+    :param bucket: The bucket to which this blob belongs. Required, unless the
+                   implicit default bucket has been set.
+
+    :type properties: dict
+    :param properties: All the other data provided by Cloud Storage.
+    """
 
     CUSTOM_PROPERTY_ACCESSORS = {
         'acl': 'acl',
@@ -70,22 +83,18 @@ class Blob(_PropertyMixin):
     # ACL rules are lazily retrieved.
     _acl = None
 
-    def __init__(self, bucket=None, name=None, properties=None):
-        """Blob constructor.
-
-        :type bucket: :class:`gcloud.storage.bucket.Bucket`
-        :param bucket: The bucket to which this blob belongs.
-
-        :type name: string
-        :param name: The name of the blob.  This corresponds to the
-                     unique path of the object in the bucket.
-
-        :type properties: dict
-        :param properties: All the other data provided by Cloud Storage.
-        """
+    def __init__(self, name, bucket=None, properties=None):
         if name is None and properties is not None:
             name = properties.get('name')
+
+        if bucket is None:
+            bucket = _implicit_environ.BUCKET
+
+        if bucket is None:
+            raise ValueError('A Blob must have a bucket set.')
+
         super(Blob, self).__init__(name=name, properties=properties)
+
         self.bucket = bucket
 
     @property
@@ -120,9 +129,7 @@ class Blob(_PropertyMixin):
         :rtype: string
         :returns: The URL path to this Blob.
         """
-        if not self.bucket:
-            raise ValueError('Cannot determine path without a bucket defined.')
-        elif not self.name:
+        if not self.name:
             raise ValueError('Cannot determine path without a blob name.')
 
         return self.bucket.path + '/o/' + quote(self.name, safe='')

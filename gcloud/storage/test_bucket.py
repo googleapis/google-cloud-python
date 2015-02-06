@@ -259,8 +259,8 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_new_blob_existing(self):
         from gcloud.storage.blob import Blob
-        existing = Blob()
         bucket = self._makeOne()
+        existing = Blob(None, bucket=bucket)
         self.assertTrue(bucket.new_blob(existing) is existing)
 
     def test_new_blob_str(self):

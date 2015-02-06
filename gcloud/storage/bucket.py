@@ -50,7 +50,7 @@ class _BlobIterator(Iterator):
         """
         self.prefixes = tuple(response.get('prefixes', ()))
         for item in response.get('items', []):
-            yield Blob(properties=item, bucket=self.bucket)
+            yield Blob(None, properties=item, bucket=self.bucket)
 
 
 class Bucket(_PropertyMixin):
@@ -173,7 +173,7 @@ class Bucket(_PropertyMixin):
         try:
             response = self.connection.api_request(method='GET',
                                                    path=blob.path)
-            return Blob(properties=response, bucket=self)
+            return Blob(None, bucket=self, properties=response)
         except NotFound:
             return None
 
