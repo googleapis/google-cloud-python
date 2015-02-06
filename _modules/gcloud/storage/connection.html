@@ -160,7 +160,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_BucketIterator</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
 
 <div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                       <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -348,10 +352,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;Get a bucket by name.</span>
 
 <span class="sd">        If the bucket isn&#39;t found, this will raise a</span>
-<span class="sd">        :class:`gcloud.exceptions.NotFound`.  If you would</span>
-<span class="sd">        rather get a bucket by name, and return ``None`` if the bucket</span>
-<span class="sd">        isn&#39;t found (like ``{}.get(&#39;...&#39;)``) then use</span>
-<span class="sd">        :func:`Connection.lookup`.</span>
+<span class="sd">        :class:`gcloud.storage.exceptions.NotFound`.</span>
 
 <span class="sd">        For example::</span>
 
@@ -373,32 +374,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get a bucket by name, returning None if not found.</span>
-
-<span class="sd">        You can use this if you would rather checking for a None value</span>
-<span class="sd">        than catching an exception::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;doesnt-exist&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket</span>
-<span class="sd">          None</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket</span>
-<span class="sd">          &lt;Bucket: my-bucket&gt;</span>
-
-<span class="sd">        :type bucket_name: string</span>
-<span class="sd">        :param bucket_name: The name of the bucket to get.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">        :returns: The bucket matching the name provided or None if not found.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span>
 </div>
 <div class="viewcode-block" id="Connection.create_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.create_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new bucket.</span>
