@@ -86,7 +86,11 @@ class Connection(_Base):
         return iter(_BucketIterator(connection=self))
 
     def __contains__(self, bucket_name):
-        return self.lookup(bucket_name) is not None
+        try:
+            self.get_bucket(bucket_name)
+            return True
+        except NotFound:
+            return False
 
     def build_api_url(self, path, query_params=None, api_base_url=None,
                       api_version=None, upload=False):
@@ -274,10 +278,7 @@ class Connection(_Base):
         """Get a bucket by name.
 
         If the bucket isn't found, this will raise a
-        :class:`gcloud.exceptions.NotFound`.  If you would
-        rather get a bucket by name, and return ``None`` if the bucket
-        isn't found (like ``{}.get('...')``) then use
-        :func:`Connection.lookup`.
+        :class:`gcloud.storage.exceptions.NotFound`.
 
         For example::
 
@@ -299,32 +300,6 @@ class Connection(_Base):
         bucket = Bucket(connection=self, name=bucket_name)
         response = self.api_request(method='GET', path=bucket.path)
         return Bucket(properties=response, connection=self)
-
-    def lookup(self, bucket_name):
-        """Get a bucket by name, returning None if not found.
-
-        You can use this if you would rather checking for a None value
-        than catching an exception::
-
-          >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
-          >>> bucket = connection.get_bucket('doesnt-exist')
-          >>> print bucket
-          None
-          >>> bucket = connection.get_bucket('my-bucket')
-          >>> print bucket
-          <Bucket: my-bucket>
-
-        :type bucket_name: string
-        :param bucket_name: The name of the bucket to get.
-
-        :rtype: :class:`gcloud.storage.bucket.Bucket`
-        :returns: The bucket matching the name provided or None if not found.
-        """
-        try:
-            return self.get_bucket(bucket_name)
-        except NotFound:
-            return None
 
     def create_bucket(self, bucket_name):
         """Create a new bucket.
