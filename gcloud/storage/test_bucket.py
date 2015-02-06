@@ -517,8 +517,11 @@ class Test_Bucket(unittest2.TestCase):
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
-            bucket.upload_file_object(FILEOBJECT)
+            found = bucket.upload_file_object(FILEOBJECT)
         self.assertEqual(_uploaded, [(bucket, FILENAME, FILEOBJECT)])
+        self.assertTrue(isinstance(found, _Blob))
+        self.assertEqual(found._name, FILENAME)
+        self.assertTrue(found._bucket is bucket)
 
     def test_upload_file_object_explicit_blob(self):
         from gcloud._testing import _Monkey
@@ -539,8 +542,11 @@ class Test_Bucket(unittest2.TestCase):
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
-            bucket.upload_file_object(FILEOBJECT, BLOB_NAME)
+            found = bucket.upload_file_object(FILEOBJECT, BLOB_NAME)
         self.assertEqual(_uploaded, [(bucket, BLOB_NAME, FILEOBJECT)])
+        self.assertTrue(isinstance(found, _Blob))
+        self.assertEqual(found._name, BLOB_NAME)
+        self.assertTrue(found._bucket is bucket)
 
     def test_get_cors_eager(self):
         NAME = 'name'

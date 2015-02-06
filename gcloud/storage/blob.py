@@ -381,9 +381,6 @@ class Blob(_PropertyMixin):
         :type data: bytes or text
         :param data: The data to store in this blob.  If the value is
                      text, it will be encoded as UTF-8.
-
-        :rtype: :class:`Blob`
-        :returns: The updated Blob object.
         """
         if isinstance(data, six.text_type):
             data = data.encode('utf-8')
@@ -392,7 +389,6 @@ class Blob(_PropertyMixin):
         self.upload_from_file(file_obj=string_buffer, rewind=True,
                               size=len(data),
                               content_type=content_type)
-        return self
 
     def make_public(self):
         """Make this blob public giving all users read access.

@@ -405,6 +405,9 @@ class Bucket(_PropertyMixin):
                      to put the file.  If this is blank, we will try to
                      upload the file to the root of the bucket with the
                      same name as on your local file system.
+
+        :rtype: :class:`Blob`
+        :returns: The updated Blob object.
         """
         if blob is None:
             blob = os.path.basename(filename)
@@ -445,12 +448,16 @@ class Bucket(_PropertyMixin):
                      to put the file.  If this is blank, we will try to
                      upload the file to the root of the bucket with the
                      same name as on your local file system.
+
+        :rtype: :class:`Blob`
+        :returns: The updated Blob object.
         """
         if blob:
             blob = self.new_blob(blob)
         else:
             blob = self.new_blob(os.path.basename(file_obj.name))
-        return blob.upload_from_file(file_obj)
+        blob.upload_from_file(file_obj)
+        return blob
 
     def get_cors(self):
         """Retrieve CORS policies configured for this bucket.
