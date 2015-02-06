@@ -106,9 +106,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">      &gt;&gt;&gt; datastore.set_defaults()</span>
 
-<span class="sd">      &gt;&gt;&gt; with Transaction() as xact:</span>
-<span class="sd">      ...     datastore.put(entity1)</span>
-<span class="sd">      ...     datastore.put(entity2)</span>
+<span class="sd">      &gt;&gt;&gt; with Transaction():</span>
+<span class="sd">      ...     datastore.put([entity1, entity2])</span>
 
 <span class="sd">    Because it derives from :class:`Batch`, :class`Transaction` also provides</span>
 <span class="sd">    :meth:`put` and :meth:`delete` methods::</span>
@@ -120,7 +119,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    By default, the transaction is rolled back if the transaction block</span>
 <span class="sd">    exits with an error::</span>
 
-<span class="sd">      &gt;&gt;&gt; with Transaction() as txn:</span>
+<span class="sd">      &gt;&gt;&gt; with Transaction():</span>
 <span class="sd">      ...     do_some_work()</span>
 <span class="sd">      ...     raise SomeException()  # rolls back</span>
 
@@ -145,7 +144,25 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">         ...     entity = Entity(key=Key(&#39;Thing&#39;))</span>
 <span class="sd">         ...     datastore.put([entity])</span>
 <span class="sd">         ...     assert entity.key.is_partial  # There is no ID on this key.</span>
+<span class="sd">         ...</span>
 <span class="sd">         &gt;&gt;&gt; assert not entity.key.is_partial  # There *is* an ID.</span>
+
+<span class="sd">       After completion, you can determine if a commit succeeded or failed.</span>
+<span class="sd">       For example, trying to delete a key that doesn&#39;t exist::</span>
+
+<span class="sd">         &gt;&gt;&gt; with Transaction() as xact:</span>
+<span class="sd">         ...     xact.delete(key)</span>
+<span class="sd">         ...</span>
+<span class="sd">         &gt;&gt;&gt; xact.succeeded</span>
+<span class="sd">         False</span>
+
+<span class="sd">       or successfully storing two entities:</span>
+
+<span class="sd">         &gt;&gt;&gt; with Transaction() as xact:</span>
+<span class="sd">         ...     datastore.put([entity1, entity2])</span>
+<span class="sd">         ...</span>
+<span class="sd">         &gt;&gt;&gt; xact.succeeded</span>
+<span class="sd">         True</span>
 
 <span class="sd">    If you don&#39;t want to use the context manager you can initialize a</span>
 <span class="sd">    transaction manually::</span>
@@ -154,7 +171,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">      &gt;&gt;&gt; transaction.begin()</span>
 
 <span class="sd">      &gt;&gt;&gt; entity = Entity(key=Key(&#39;Thing&#39;))</span>
-<span class="sd">      &gt;&gt;&gt; transaction.put([entity])</span>
+<span class="sd">      &gt;&gt;&gt; transaction.put(entity)</span>
 
 <span class="sd">      &gt;&gt;&gt; if error:</span>
 <span class="sd">      ...     transaction.rollback()</span>
@@ -171,9 +188,22 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">             are not set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">_INITIAL</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="sd">&quot;&quot;&quot;Enum value for _INITIAL status of transaction.&quot;&quot;&quot;</span>
+
+    <span class="n">_IN_PROGRESS</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="sd">&quot;&quot;&quot;Enum value for _IN_PROGRESS status of transaction.&quot;&quot;&quot;</span>
+
+    <span class="n">_ABORTED</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="sd">&quot;&quot;&quot;Enum value for _ABORTED status of transaction.&quot;&quot;&quot;</span>
+
+    <span class="n">_FINISHED</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="sd">&quot;&quot;&quot;Enum value for _FINISHED status of transaction.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_INITIAL</span>
 
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Transaction.id"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -203,7 +233,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        This method is called automatically when entering a with</span>
 <span class="sd">        statement, however it can be called explicitly if you don&#39;t want</span>
 <span class="sd">        to use a context manager.</span>
+
+<span class="sd">        :raises: :class:`ValueError` if the transaction has already begun.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_INITIAL</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Transaction already started previously.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_IN_PROGRESS</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">begin_transaction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Transaction.rollback"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -214,8 +249,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        - Sets the current connection&#39;s transaction reference to None.</span>
 <span class="sd">        - Sets the current transaction&#39;s ID to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">rollback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">rollback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ABORTED</span>
+            <span class="c"># Clear our own ID in case this gets accidentally reused.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span>
 </div>
 <div class="viewcode-block" id="Transaction.commit"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Commits the transaction.</span>
@@ -228,10 +267,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        - Sets the current transaction&#39;s ID to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-
-        <span class="c"># Clear our own ID in case this gets accidentally reused.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span></div></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Transaction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_FINISHED</span>
+            <span class="c"># Clear our own ID in case this gets accidentally reused.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->

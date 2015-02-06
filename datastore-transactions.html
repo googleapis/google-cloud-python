@@ -90,9 +90,8 @@ mutation, and execute those within a transaction:</p>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">()</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity1</span><span class="p">,</span> <span class="n">entity2</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>Because it derives from <tt class="xref py py-class docutils literal"><span class="pre">Batch</span></tt>, :class`Transaction` also provides
@@ -104,7 +103,7 @@ mutation, and execute those within a transaction:</p>
 </div>
 <p>By default, the transaction is rolled back if the transaction block
 exits with an error:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">txn</span><span class="p">:</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">do_some_work</span><span class="p">()</span>
 <span class="gp">... </span>    <span class="k">raise</span> <span class="n">SomeException</span><span class="p">()</span>  <span class="c"># rolls back</span>
 </pre></div>
@@ -125,11 +124,29 @@ try:</p>
 committed.</p>
 <p>Once you exit the transaction (or call <tt class="docutils literal"><span class="pre">commit()</span></tt>), the
 automatically generated ID will be assigned to the entity:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">():</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity</span><span class="p">])</span>
 <span class="gp">... </span>    <span class="k">assert</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There is no ID on this key.</span>
+<span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There *is* an ID.</span>
+</pre></div>
+</div>
+<p>After completion, you can determine if a commit succeeded or failed.
+For example, trying to delete a key that doesn&#8217;t exist:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">xact</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xact</span><span class="o">.</span><span class="n">succeeded</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>or successfully storing two entities:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity1</span><span class="p">,</span> <span class="n">entity2</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xact</span><span class="o">.</span><span class="n">succeeded</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 </div>
@@ -139,7 +156,7 @@ transaction manually:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">entity</span> <span class="o">=</span> <span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transaction</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">error</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">transaction</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
@@ -170,6 +187,14 @@ are not set.</p>
 <p>This method is called automatically when entering a with
 statement, however it can be called explicitly if you don&#8217;t want
 to use a context manager.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if the transaction has already begun.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
