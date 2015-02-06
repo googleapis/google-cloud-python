@@ -289,6 +289,9 @@ class Blob(_PropertyMixin):
         :param size: The number of bytes to read from the file handle.
                      If not provided, we'll try to guess the size using
                      :func:`os.fstat`
+
+        :rtype: :class:`Blob`
+        :returns: The updated Blob object.
         """
         # Rewind the file if desired.
         if rewind:
@@ -335,6 +338,8 @@ class Blob(_PropertyMixin):
         else:
             http_wrapper.MakeRequest(conn.http, request, retries=num_retries)
 
+        return self
+
     def upload_from_filename(self, filename):
         """Upload this blob's contents from the content of a named file.
 
@@ -351,11 +356,16 @@ class Blob(_PropertyMixin):
 
         :type filename: string
         :param filename: The path to the file.
+
+        :rtype: :class:`Blob`
+        :returns: The updated Blob object.
         """
         content_type, _ = mimetypes.guess_type(filename)
 
         with open(filename, 'rb') as file_obj:
             self.upload_from_file(file_obj, content_type=content_type)
+
+        return self
 
     def upload_from_string(self, data, content_type='text/plain'):
         """Upload contents of this blob from the provided string.
