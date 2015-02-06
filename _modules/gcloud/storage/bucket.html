@@ -479,6 +479,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                     to put the file.  If this is blank, we will try to</span>
 <span class="sd">                     upload the file to the root of the bucket with the</span>
 <span class="sd">                     same name as on your local file system.</span>
+
+<span class="sd">        :rtype: :class:`Blob`</span>
+<span class="sd">        :returns: The updated Blob object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">blob</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">blob</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -519,12 +522,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                     to put the file.  If this is blank, we will try to</span>
 <span class="sd">                     upload the file to the root of the bucket with the</span>
 <span class="sd">                     same name as on your local file system.</span>
+
+<span class="sd">        :rtype: :class:`Blob`</span>
+<span class="sd">        :returns: The updated Blob object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">blob</span><span class="p">:</span>
             <span class="n">blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_blob</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_blob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+        <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">blob</span>
 </div>
 <div class="viewcode-block" id="Bucket.get_cors"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_cors">[docs]</a>    <span class="k">def</span> <span class="nf">get_cors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve CORS policies configured for this bucket.</span>

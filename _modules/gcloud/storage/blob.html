@@ -455,9 +455,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type data: bytes or text</span>
 <span class="sd">        :param data: The data to store in this blob.  If the value is</span>
 <span class="sd">                     text, it will be encoded as UTF-8.</span>
-
-<span class="sd">        :rtype: :class:`Blob`</span>
-<span class="sd">        :returns: The updated Blob object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">text_type</span><span class="p">):</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span>
@@ -466,7 +463,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
                               <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
                               <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
 </div>
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>

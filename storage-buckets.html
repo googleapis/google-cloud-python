@@ -94,7 +94,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'acl': 'acl', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'cors': 'get_cors()', 'versioning': 'versioning_enabled', 'owner': 'owner', 'location': 'location', 'logging': 'get_logging()', 'lifecycle': 'get_lifecycle()', 'timeCreated': 'time_created', 'storageClass': 'storage_class', 'defaultObjectAcl': 'get_default_object_acl()', 'id': 'id', 'projectNumber': 'project_number', 'etag': 'etag', 'name': 'name'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'versioning': 'versioning_enabled', 'owner': 'owner', 'selfLink': 'self_link', 'lifecycle': 'get_lifecycle()', 'id': 'id', 'etag': 'etag', 'defaultObjectAcl': 'get_default_object_acl()', 'cors': 'get_cors()', 'location': 'location', 'metageneration': 'metageneration', 'acl': 'acl', 'storageClass': 'storage_class', 'projectNumber': 'project_number', 'timeCreated': 'time_created', 'name': 'name', 'logging': 'get_logging()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -752,13 +752,19 @@ path):</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>filename</strong> (<em>string</em>) &#8211; Local path to the file you want to upload.</li>
 <li><strong>blob</strong> (string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; The blob (either an object or a remote path) of where
 to put the file.  If this is blank, we will try to
 upload the file to the root of the bucket with the
 same name as on your local file system.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">Blob</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated Blob object.</p>
 </td>
 </tr>
 </tbody>
@@ -794,13 +800,19 @@ path):</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
 <li><strong>blob</strong> (string or <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>) &#8211; The blob (either an object or a remote path) of where
 to put the file.  If this is blank, we will try to
 upload the file to the root of the bucket with the
 same name as on your local file system.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><tt class="xref py py-class docutils literal"><span class="pre">Blob</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated Blob object.</p>
 </td>
 </tr>
 </tbody>

@@ -104,7 +104,7 @@ implicit default bucket has been set.</li>
 
 <dl class="attribute">
 <dt id="gcloud.storage.blob.Blob.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'contentDisposition': 'content_disposition', 'acl': 'acl', 'generation': 'generation', 'updated': 'updated', 'selfLink': 'self_link', 'contentEncoding': 'content_encoding', 'contentType': 'content_type', 'name': 'name', 'mediaLink': 'media_link', 'size': 'size', 'storageClass': 'storage_class', 'contentLanguage': 'content_language', 'cacheControl': 'cache_control', 'owner': 'owner', 'timeDeleted': 'time_deleted', 'componentCount': 'component_count', 'id': 'id', 'etag': 'etag', 'metageneration': 'metageneration'}</em><a class="headerlink" href="#gcloud.storage.blob.Blob.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'updated': 'updated', 'cacheControl': 'cache_control', 'owner': 'owner', 'selfLink': 'self_link', 'contentDisposition': 'content_disposition', 'id': 'id', 'etag': 'etag', 'size': 'size', 'mediaLink': 'media_link', 'metageneration': 'metageneration', 'generation': 'generation', 'acl': 'acl', 'storageClass': 'storage_class', 'componentCount': 'component_count', 'contentEncoding': 'content_encoding', 'timeDeleted': 'time_deleted', 'contentLanguage': 'content_language', 'name': 'name', 'contentType': 'content_type'}</em><a class="headerlink" href="#gcloud.storage.blob.Blob.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -729,10 +729,6 @@ API documents for details.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>bytes or text</em>) &#8211; The data to store in this blob.  If the value is
 text, it will be encoded as UTF-8.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">Blob</span></tt></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The updated Blob object.</td>
 </tr>
 </tbody>
 </table>
