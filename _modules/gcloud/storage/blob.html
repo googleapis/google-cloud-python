@@ -104,6 +104,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">generate_signed_url</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">ObjectACL</span>
 
 
@@ -111,7 +112,19 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 
 <div class="viewcode-block" id="Blob"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob">[docs]</a><span class="k">class</span> <span class="nc">Blob</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A wrapper around Cloud Storage&#39;s concept of an ``Object``.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;A wrapper around Cloud Storage&#39;s concept of an ``Object``.</span>
+
+<span class="sd">    :type name: string</span>
+<span class="sd">    :param name: The name of the blob.  This corresponds to the</span>
+<span class="sd">                 unique path of the object in the bucket.</span>
+
+<span class="sd">    :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">    :param bucket: The bucket to which this blob belongs. Required, unless the</span>
+<span class="sd">                   implicit default bucket has been set.</span>
+
+<span class="sd">    :type properties: dict</span>
+<span class="sd">    :param properties: All the other data provided by Cloud Storage.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">CUSTOM_PROPERTY_ACCESSORS</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="s">&#39;acl&#39;</span><span class="p">,</span>
@@ -144,22 +157,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="c"># ACL rules are lazily retrieved.</span>
     <span class="n">_acl</span> <span class="o">=</span> <span class="bp">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Blob constructor.</span>
-
-<span class="sd">        :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">        :param bucket: The bucket to which this blob belongs.</span>
-
-<span class="sd">        :type name: string</span>
-<span class="sd">        :param name: The name of the blob.  This corresponds to the</span>
-<span class="sd">                     unique path of the object in the bucket.</span>
-
-<span class="sd">        :type properties: dict</span>
-<span class="sd">        :param properties: All the other data provided by Cloud Storage.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">properties</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">bucket</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">BUCKET</span>
+
+        <span class="k">if</span> <span class="n">bucket</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;A Blob must have a bucket set.&#39;</span><span class="p">)</span>
+
         <span class="nb">super</span><span class="p">(</span><span class="n">Blob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="n">properties</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
 
     <span class="nd">@property</span>
@@ -194,9 +203,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The URL path to this Blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot determine path without a bucket defined.&#39;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot determine path without a blob name.&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>

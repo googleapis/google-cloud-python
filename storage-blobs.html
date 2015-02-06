@@ -77,18 +77,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>Create / interact with Google Cloud Storage blobs.</p>
 <dl class="class">
 <dt id="gcloud.storage.blob.Blob">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.blob.</tt><tt class="descname">Blob</tt><big>(</big><em>bucket=None</em>, <em>name=None</em>, <em>properties=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.storage.blob.</tt><tt class="descname">Blob</tt><big>(</big><em>name</em>, <em>bucket=None</em>, <em>properties=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage._helpers._PropertyMixin</span></tt></p>
 <p>A wrapper around Cloud Storage&#8217;s concept of an <tt class="docutils literal"><span class="pre">Object</span></tt>.</p>
-<p>Blob constructor.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>bucket</strong> (<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket to which this blob belongs.</li>
 <li><strong>name</strong> (<em>string</em>) &#8211; The name of the blob.  This corresponds to the
 unique path of the object in the bucket.</li>
+<li><strong>bucket</strong> (<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; The bucket to which this blob belongs. Required, unless the
+implicit default bucket has been set.</li>
 <li><strong>properties</strong> (<em>dict</em>) &#8211; All the other data provided by Cloud Storage.</li>
 </ul>
 </td>
@@ -104,7 +104,7 @@ unique path of the object in the bucket.</li>
 
 <dl class="attribute">
 <dt id="gcloud.storage.blob.Blob.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'cacheControl': 'cache_control', 'generation': 'generation', 'updated': 'updated', 'contentType': 'content_type', 'contentEncoding': 'content_encoding', 'selfLink': 'self_link', 'timeDeleted': 'time_deleted', 'mediaLink': 'media_link', 'metageneration': 'metageneration', 'size': 'size', 'name': 'name', 'storageClass': 'storage_class', 'etag': 'etag', 'componentCount': 'component_count', 'acl': 'acl', 'owner': 'owner', 'contentLanguage': 'content_language', 'id': 'id', 'contentDisposition': 'content_disposition'}</em><a class="headerlink" href="#gcloud.storage.blob.Blob.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'contentDisposition': 'content_disposition', 'acl': 'acl', 'generation': 'generation', 'updated': 'updated', 'selfLink': 'self_link', 'contentEncoding': 'content_encoding', 'contentType': 'content_type', 'name': 'name', 'mediaLink': 'media_link', 'size': 'size', 'storageClass': 'storage_class', 'contentLanguage': 'content_language', 'cacheControl': 'cache_control', 'owner': 'owner', 'timeDeleted': 'time_deleted', 'componentCount': 'component_count', 'id': 'id', 'etag': 'etag', 'metageneration': 'metageneration'}</em><a class="headerlink" href="#gcloud.storage.blob.Blob.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
