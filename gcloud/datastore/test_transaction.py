@@ -47,6 +47,7 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.dataset_id, _DATASET)
         self.assertEqual(xact.connection, connection)
         self.assertEqual(xact.id, None)
+        self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
         self.assertTrue(isinstance(xact.mutation, Mutation))
         self.assertEqual(len(xact._auto_id_entities), 0)
 
@@ -64,6 +65,7 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.id, None)
         self.assertEqual(xact.dataset_id, DATASET_ID)
         self.assertEqual(xact.connection, CONNECTION)
+        self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
 
     def test_current(self):
         from gcloud.datastore.test_api import _NoCommitBatch
@@ -97,6 +99,19 @@ class TestTransaction(unittest2.TestCase):
         xact.begin()
         self.assertEqual(xact.id, 234)
         self.assertEqual(connection._begun, _DATASET)
+
+    def test_begin_tombstoned(self):
+        _DATASET = 'DATASET'
+        connection = _Connection(234)
+        xact = self._makeOne(dataset_id=_DATASET, connection=connection)
+        xact.begin()
+        self.assertEqual(xact.id, 234)
+        self.assertEqual(connection._begun, _DATASET)
+
+        xact.rollback()
+        self.assertEqual(xact.id, None)
+
+        self.assertRaises(ValueError, xact.begin)
 
     def test_rollback(self):
         _DATASET = 'DATASET'
