@@ -16,11 +16,12 @@
 # Don't worry though. You don't need to do anything, just keep hitting enter...
 
 # Let's start by importing the demo module and initializing our connection.
+from gcloud import datastore
 from gcloud.datastore import demo
+
 demo.initialize()
 
 # Let's import the package containing our helper classes:
-from gcloud import datastore
 
 # Let's create a new entity of type "Thing" and name it 'Toy':
 key = datastore.Key('Thing')
