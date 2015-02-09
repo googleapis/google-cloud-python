@@ -17,8 +17,6 @@
 The non-private functions are part of the API.
 """
 
-__all__ = ('entity_from_protobuf', 'key_from_protobuf')
-
 import calendar
 import datetime
 
@@ -29,6 +27,8 @@ import six
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
+
+__all__ = ('entity_from_protobuf', 'key_from_protobuf')
 
 INT_VALUE_CHECKER = Int64ValueChecker()
 

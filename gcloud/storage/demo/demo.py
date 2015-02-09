@@ -19,14 +19,16 @@
 # Don't worry though. You don't need to do anything, just keep hitting enter...
 
 # Let's start by importing the demo module and getting a connection:
+import time
+
 from gcloud.storage import demo
+
 connection = demo.get_connection()
 
 # OK, now let's look at all of the buckets...
 print(connection.get_all_buckets())  # This might take a second...
 
 # Now let's create a new bucket...
-import time
 bucket_name = ("bucket-%s" % time.time()).replace(".", "")  # Get rid of dots.
 print(bucket_name)
 bucket = connection.create_bucket(bucket_name)
