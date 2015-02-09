@@ -352,15 +352,9 @@ Console).</p>
 </div>
 <p>A <a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">Connection</span></tt></a> is actually iterable and will return the
 <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> objects inside the project:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="p">:</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">bucket</span>
 <span class="go">&lt;Bucket: my-bucket-name&gt;</span>
-</pre></div>
-</div>
-<p>In that same way, you can check for whether a bucket exists inside
-the project using Python&#8217;s <tt class="docutils literal"><span class="pre">in</span></tt> operator:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&#39;my-bucket-name&#39;</span> <span class="ow">in</span> <span class="n">connection</span>
-<span class="go">True</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -537,9 +531,6 @@ operations are identical:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">():</span>
-<span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">bucket</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># ... is the same as ...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">bucket</span>
 </pre></div>
 </div>

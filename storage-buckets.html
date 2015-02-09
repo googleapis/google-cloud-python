@@ -94,7 +94,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'lifecycle': 'get_lifecycle()', 'storageClass': 'storage_class', 'timeCreated': 'time_created', 'logging': 'get_logging()', 'name': 'name', 'metageneration': 'metageneration', 'owner': 'owner', 'versioning': 'versioning_enabled', 'acl': 'acl', 'location': 'location', 'defaultObjectAcl': 'get_default_object_acl()', 'etag': 'etag', 'selfLink': 'self_link', 'cors': 'get_cors()', 'projectNumber': 'project_number', 'id': 'id'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'timeCreated': 'time_created', 'acl': 'acl', 'defaultObjectAcl': 'get_default_object_acl()', 'location': 'location', 'cors': 'get_cors()', 'logging': 'get_logging()', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'storageClass': 'storage_class', 'owner': 'owner', 'projectNumber': 'project_number', 'id': 'id', 'versioning': 'versioning_enabled', 'etag': 'etag', 'name': 'name', 'lifecycle': 'get_lifecycle()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 
@@ -338,6 +338,22 @@ attributes to <tt class="docutils literal"><span class="pre">None</span></tt>.</
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.exists">
+<tt class="descname">exists</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.exists" title="Permalink to this definition">#</a></dt>
+<dd><p>Determines whether or not this bucket exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the bucket exists in Cloud Storage.</td>
 </tr>
 </tbody>
 </table>

@@ -94,7 +94,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">gcloud.connection</span> <span class="kn">import</span> <span class="n">Connection</span> <span class="k">as</span> <span class="n">_Base</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
-<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 
@@ -131,15 +130,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    A :class:`Connection` is actually iterable and will return the</span>
 <span class="sd">    :class:`gcloud.storage.bucket.Bucket` objects inside the project::</span>
 
-<span class="sd">      &gt;&gt;&gt; for bucket in connection:</span>
+<span class="sd">      &gt;&gt;&gt; for bucket in connection.get_all_buckets():</span>
 <span class="sd">      &gt;&gt;&gt;   print bucket</span>
 <span class="sd">      &lt;Bucket: my-bucket-name&gt;</span>
-
-<span class="sd">    In that same way, you can check for whether a bucket exists inside</span>
-<span class="sd">    the project using Python&#39;s ``in`` operator::</span>
-
-<span class="sd">      &gt;&gt;&gt; print &#39;my-bucket-name&#39; in connection</span>
-<span class="sd">      True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1&#39;</span>
@@ -155,16 +148,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
-
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_BucketIterator</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">True</span>
-        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
 
 <div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                       <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
@@ -339,14 +322,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
 <span class="sd">          &gt;&gt;&gt; for bucket in connection.get_all_buckets():</span>
 <span class="sd">          &gt;&gt;&gt;   print bucket</span>
-<span class="sd">          &gt;&gt;&gt; # ... is the same as ...</span>
-<span class="sd">          &gt;&gt;&gt; for bucket in connection:</span>
-<span class="sd">          &gt;&gt;&gt;   print bucket</span>
 
 <span class="sd">        :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.</span>
 <span class="sd">        :returns: All buckets belonging to this project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_BucketIterator</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="Connection.get_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a bucket by name.</span>

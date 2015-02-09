@@ -179,6 +179,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_blob</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
 
+<div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determines whether or not this bucket exists.</span>
+
+<span class="sd">        :rtype: boolean</span>
+<span class="sd">        :returns: True if the bucket exists in Cloud Storage.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Bucket.acl"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.acl">[docs]</a>    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create our ACL on demand.&quot;&quot;&quot;</span>
