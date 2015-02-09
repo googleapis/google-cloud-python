@@ -190,7 +190,7 @@ The :class:`Connection <gcloud.storage.connection.Connection>` object
 itself is iterable, so you can loop over it, or call ``list`` on it to get
 a list object::
 
-  >>> for bucket in connection:
+  >>> for bucket in connection.get_all_buckets():
   ...   print bucket.name
   >>> print list(connection)
 
