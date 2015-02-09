@@ -63,82 +63,6 @@ class TestConnection(unittest2.TestCase):
         self.assertTrue(conn.http is authorized)
         self.assertTrue(isinstance(creds._called_with, httplib2.Http))
 
-    def test___iter___empty(self):
-        PROJECT = 'project'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b?project=%s' % PROJECT,
-        ])
-        http = conn._http = Http(
-            {'status': '200', 'content-type': 'application/json'},
-            '{}',
-        )
-        blobs = list(conn)
-        self.assertEqual(len(blobs), 0)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-
-    def test___iter___non_empty(self):
-        PROJECT = 'project'
-        BLOB_NAME = 'blob-name'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b?project=%s' % PROJECT,
-        ])
-        http = conn._http = Http(
-            {'status': '200', 'content-type': 'application/json'},
-            '{"items": [{"name": "%s"}]}' % BLOB_NAME,
-        )
-        blobs = list(conn)
-        self.assertEqual(len(blobs), 1)
-        self.assertEqual(blobs[0].name, BLOB_NAME)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-
-    def test___contains___miss(self):
-        PROJECT = 'project'
-        NONESUCH = 'nonesuch'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b',
-            'nonesuch?project=%s' % PROJECT,
-        ])
-        http = conn._http = Http(
-            {'status': '404', 'content-type': 'application/json'},
-            '{}',
-        )
-        self.assertFalse(NONESUCH in conn)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-
-    def test___contains___hit(self):
-        PROJECT = 'project'
-        BLOB_NAME = 'blob-name'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b',
-            '%s?project=%s' % (BLOB_NAME, PROJECT),
-        ])
-        http = conn._http = Http(
-            {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % BLOB_NAME,
-        )
-        self.assertTrue(BLOB_NAME in conn)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-
     def test_build_api_url_no_extra_query_params(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
@@ -370,14 +294,14 @@ class TestConnection(unittest2.TestCase):
             {'status': '200', 'content-type': 'application/json'},
             '{}',
         )
-        blobs = conn.get_all_buckets()
-        self.assertEqual(len(blobs), 0)
+        buckets = list(conn.get_all_buckets())
+        self.assertEqual(len(buckets), 0)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_get_all_buckets_non_empty(self):
         PROJECT = 'project'
-        BLOB_NAME = 'blob-name'
+        BUCKET_NAME = 'bucket-name'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
             conn.API_BASE_URL,
@@ -387,11 +311,11 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"items": [{"name": "%s"}]}' % BLOB_NAME,
+            '{"items": [{"name": "%s"}]}' % BUCKET_NAME,
         )
-        blobs = conn.get_all_buckets()
-        self.assertEqual(len(blobs), 1)
-        self.assertEqual(blobs[0].name, BLOB_NAME)
+        buckets = list(conn.get_all_buckets())
+        self.assertEqual(len(buckets), 1)
+        self.assertEqual(buckets[0].name, BUCKET_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 

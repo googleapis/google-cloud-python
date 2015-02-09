@@ -20,7 +20,6 @@ from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
 from gcloud.connection import Connection as _Base
 from gcloud.exceptions import make_exception
-from gcloud.exceptions import NotFound
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
 
@@ -57,15 +56,9 @@ class Connection(_Base):
     A :class:`Connection` is actually iterable and will return the
     :class:`gcloud.storage.bucket.Bucket` objects inside the project::
 
-      >>> for bucket in connection:
+      >>> for bucket in connection.get_all_buckets():
       >>>   print bucket
       <Bucket: my-bucket-name>
-
-    In that same way, you can check for whether a bucket exists inside
-    the project using Python's ``in`` operator::
-
-      >>> print 'my-bucket-name' in connection
-      True
     """
 
     API_VERSION = 'v1'
@@ -81,16 +74,6 @@ class Connection(_Base):
         """
         super(Connection, self).__init__(*args, **kwargs)
         self.project = project
-
-    def __iter__(self):
-        return iter(_BucketIterator(connection=self))
-
-    def __contains__(self, bucket_name):
-        try:
-            self.get_bucket(bucket_name)
-            return True
-        except NotFound:
-            return False
 
     def build_api_url(self, path, query_params=None, api_base_url=None,
                       api_version=None, upload=False):
@@ -265,14 +248,11 @@ class Connection(_Base):
           >>> connection = storage.get_connection(project)
           >>> for bucket in connection.get_all_buckets():
           >>>   print bucket
-          >>> # ... is the same as ...
-          >>> for bucket in connection:
-          >>>   print bucket
 
         :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.
         :returns: All buckets belonging to this project.
         """
-        return list(self)
+        return iter(_BucketIterator(connection=self))
 
     def get_bucket(self, bucket_name):
         """Get a bucket by name.

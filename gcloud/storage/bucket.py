@@ -105,6 +105,18 @@ class Bucket(_PropertyMixin):
     def __contains__(self, blob):
         return self.get_blob(blob) is not None
 
+    def exists(self):
+        """Determines whether or not this bucket exists.
+
+        :rtype: boolean
+        :returns: True if the bucket exists in Cloud Storage.
+        """
+        try:
+            self.connection.get_bucket(self.name)
+            return True
+        except NotFound:
+            return False
+
     @property
     def acl(self):
         """Create our ACL on demand."""
