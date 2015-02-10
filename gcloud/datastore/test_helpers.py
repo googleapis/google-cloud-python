@@ -525,27 +525,3 @@ class Test__prepare_key_for_request(unittest2.TestCase):
         key = datastore_pb.Key()
         new_key = self._callFUT(key)
         self.assertTrue(new_key is key)
-
-
-class Test__dataset_ids_equal(unittest2.TestCase):
-
-    def _callFUT(self, dataset_id1, dataset_id2):
-        from gcloud.datastore.helpers import _dataset_ids_equal
-        return _dataset_ids_equal(dataset_id1, dataset_id2)
-
-    def test_identical_prefixed(self):
-        self.assertTrue(self._callFUT('s~foo', 's~foo'))
-        self.assertTrue(self._callFUT('e~bar', 'e~bar'))
-
-    def test_different_prefixed(self):
-        self.assertFalse(self._callFUT('s~foo', 's~bar'))
-        self.assertFalse(self._callFUT('s~foo', 'e~foo'))
-
-    def test_all_unprefixed(self):
-        self.assertTrue(self._callFUT('foo', 'foo'))
-        self.assertFalse(self._callFUT('foo', 'bar'))
-
-    def test_unprefixed_with_prefixed(self):
-        self.assertTrue(self._callFUT('foo', 's~foo'))
-        self.assertTrue(self._callFUT('foo', 'e~foo'))
-        self.assertFalse(self._callFUT('foo', 's~bar'))

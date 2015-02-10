@@ -21,6 +21,7 @@ except ImportError:     # pragma: NO COVER (who doesn't have it?)
 
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import helpers
+from gcloud.datastore.key import _dataset_ids_equal
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
 
@@ -216,8 +217,7 @@ class Batch(object):
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        if not helpers._dataset_ids_equal(self._dataset_id,
-                                          entity.key.dataset_id):
+        if not _dataset_ids_equal(self._dataset_id, entity.key.dataset_id):
             raise ValueError("Key must be from same dataset as batch")
 
         _assign_entity_to_mutation(
@@ -235,8 +235,7 @@ class Batch(object):
         if key.is_partial:
             raise ValueError("Key must be complete")
 
-        if not helpers._dataset_ids_equal(self._dataset_id,
-                                          key.dataset_id):
+        if not _dataset_ids_equal(self._dataset_id, key.dataset_id):
             raise ValueError("Key must be from same dataset as batch")
 
         key_pb = key.to_protobuf()

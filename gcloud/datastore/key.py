@@ -93,7 +93,7 @@ class Key(object):
             return False
 
         return (self.flat_path == other.flat_path and
-                self.dataset_id == other.dataset_id and
+                _dataset_ids_equal(self.dataset_id, other.dataset_id) and
                 self.namespace == other.namespace)
 
     def __ne__(self, other):
@@ -406,3 +406,55 @@ def _validate_dataset_id(dataset_id, parent):
             dataset_id = _implicit_environ.DATASET_ID
 
     return dataset_id
+
+
+def _dataset_ids_equal(dataset_id1, dataset_id2):
+    """Compares two dataset IDs for fuzzy equality.
+
+    Each may be prefixed or unprefixed (but not null, since dataset ID
+    is required on a key). The only allowed prefixes are 's~' and 'e~'.
+
+    Two identical prefixed match
+
+      >>> 's~foo' == 's~foo'
+      >>> 'e~bar' == 'e~bar'
+
+    while non-identical prefixed don't
+
+      >>> 's~foo' != 's~bar'
+      >>> 's~foo' != 'e~foo'
+
+    As for non-prefixed, they can match other non-prefixed or
+    prefixed:
+
+      >>> 'foo' == 'foo'
+      >>> 'foo' == 's~foo'
+      >>> 'foo' == 'e~foo'
+      >>> 'foo' != 'bar'
+      >>> 'foo' != 's~bar'
+
+    (Ties are resolved since 'foo' can only be an alias for one of
+    s~foo or e~foo in the backend.)
+
+    :type dataset_id1: string
+    :param dataset_id1: A dataset ID.
+
+    :type dataset_id2: string
+    :param dataset_id2: A dataset ID.
+
+    :rtype: boolean
+    :returns: Boolean indicating if the IDs are the same.
+    """
+    if dataset_id1 == dataset_id2:
+        return True
+
+    if dataset_id1.startswith('s~') or dataset_id1.startswith('e~'):
+        # If `dataset_id1` is prefixed and not matching, then the only way
+        # they can match is if `dataset_id2` is unprefixed.
+        return dataset_id1[2:] == dataset_id2
+    elif dataset_id2.startswith('s~') or dataset_id2.startswith('e~'):
+        # Here we know `dataset_id1` is unprefixed and `dataset_id2`
+        # is prefixed.
+        return dataset_id1 == dataset_id2[2:]
+
+    return False
