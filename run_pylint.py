@@ -107,12 +107,12 @@ def is_production_filename(filename):
                 or filename.startswith('regression'))
 
 
-def get_files_for_linting():
+def get_files_for_linting(allow_limited=True):
     """Gets a list of files in the repository.
 
-    By default, returns all files via `git ls-files`. However, in some cases
+    By default, returns all files via ``git ls-files``. However, in some cases
     uses a specific commit or branch (a so-called diff base) to compare
-    against for changed files.
+    against for changed files. (This requires ``allow_limited=True``.)
 
     To speed up linting on Travis pull requests against master, we manually
     set the diff base to origin/master. We don't do this on non-pull requests
@@ -120,9 +120,16 @@ def get_files_for_linting():
     One could potentially use ${TRAVIS_COMMIT_RANGE} to find a diff base but
     this value is not dependable.
 
-    To allow faster local `tox` runs, the environment variables
-    `GCLOUD_REMOTE_FOR_LINT` and `GCLOUD_BRANCH_FOR_LINT` can be set to specify
-    a remote branch to diff against.
+    To allow faster local ``tox`` runs, the environment variables
+    ``GCLOUD_REMOTE_FOR_LINT`` and ``GCLOUD_BRANCH_FOR_LINT`` can be set to
+    specify a remote branch to diff against.
+
+    :type allow_limited: boolean
+    :param allow_limited: Boolean indicating if a reduced set of files can
+                          be used.
+
+    :rtype: list
+    :returns: List of filenames to be linted.
     """
     diff_base = None
     if (os.getenv('TRAVIS_BRANCH') == 'master' and
@@ -137,34 +144,37 @@ def get_files_for_linting():
         if remote is not None and branch is not None:
             diff_base = '%s/%s' % (remote, branch)
 
-    if diff_base is None:
-        print 'Diff base not specified, listing all files in repository.'
-        result = subprocess.check_output(['git', 'ls-files'])
-    else:
+    if diff_base is not None and allow_limited:
         result = subprocess.check_output(['git', 'diff', '--name-only',
                                           diff_base])
         print 'Using files changed relative to %s:' % (diff_base,)
         print '-' * 60
         print result.rstrip('\n')  # Don't print trailing newlines.
         print '-' * 60
+    else:
+        print 'Diff base not specified, listing all files in repository.'
+        result = subprocess.check_output(['git', 'ls-files'])
 
     return result.rstrip('\n').split('\n')
 
 
-def get_python_files():
+def get_python_files(all_files=None):
     """Gets a list of all Python files in the repository that need linting.
 
-    Relies on get_files_for_linting() to determine which files should be
-    considered.
+    Relies on :func:`get_files_for_linting()` to determine which files should
+    be considered.
 
-    NOTE: This requires `git` to be installed and requires that this
-          is run within the `git` repository.
+    NOTE: This requires ``git`` to be installed and requires that this
+          is run within the ``git`` repository.
 
-    :rtype: `tuple`
+    :type all_files: list or ``NoneType``
+    :param all_files: Optional list of files to be linted.
+
+    :rtype: tuple
     :returns: A tuple containing two lists. The first list contains
               all production files and the next all test/demo files.
     """
-    all_files = get_files_for_linting()
+    all_files = all_files or get_files_for_linting()
 
     library_files = []
     non_library_files = []
@@ -203,8 +213,17 @@ def main():
     """Script entry point. Lints both sets of files."""
     make_test_rc(PRODUCTION_RC, TEST_RC_ADDITIONS, TEST_RC)
     library_files, non_library_files = get_python_files()
-    lint_fileset(library_files, PRODUCTION_RC, 'library code')
-    lint_fileset(non_library_files, TEST_RC, 'test and demo code')
+    try:
+        lint_fileset(library_files, PRODUCTION_RC, 'library code')
+        lint_fileset(non_library_files, TEST_RC, 'test and demo code')
+    except SystemExit:
+        message = 'Restricted lint failed, expanding to full fileset.'
+        print >> sys.stderr, message
+        all_files = get_files_for_linting(allow_limited=False)
+        library_files, non_library_files = get_python_files(
+            all_files=all_files)
+        lint_fileset(library_files, PRODUCTION_RC, 'library code')
+        lint_fileset(non_library_files, TEST_RC, 'test and demo code')
 
 
 if __name__ == '__main__':
