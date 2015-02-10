@@ -75,6 +75,24 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
   <div class="section" id="module-gcloud.storage.bucket">
 <span id="buckets"></span><h1>Buckets<a class="headerlink" href="#module-gcloud.storage.bucket" title="Permalink to this headline">#</a></h1>
 <p>Create / interact with gcloud storage buckets.</p>
+<p>If you want to check whether a blob exists, you can use the <tt class="docutils literal"><span class="pre">in</span></tt> operator
+in Python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&#39;kitten.jpg&#39;</span> <span class="ow">in</span> <span class="n">bucket</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&#39;does-not-exist&#39;</span> <span class="ow">in</span> <span class="n">bucket</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>If you want to get all the blobs in the bucket, you can use
+<a class="reference internal" href="#gcloud.storage.bucket.Bucket.get_all_blobs" title="gcloud.storage.bucket.Bucket.get_all_blobs"><tt class="xref py py-func docutils literal"><span class="pre">get_all_blobs</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">blobs</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also use the bucket as an iterator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="k">print</span> <span class="n">blob</span>
+</pre></div>
+</div>
 <dl class="class">
 <dt id="gcloud.storage.bucket.Bucket">
 <em class="property">class </em><tt class="descclassname">gcloud.storage.bucket.</tt><tt class="descname">Bucket</tt><big>(</big><em>connection=None</em>, <em>name=None</em>, <em>properties=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket" title="Permalink to this definition">#</a></dt>
@@ -94,7 +112,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS">
-<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'timeCreated': 'time_created', 'acl': 'acl', 'defaultObjectAcl': 'get_default_object_acl()', 'location': 'location', 'cors': 'get_cors()', 'logging': 'get_logging()', 'metageneration': 'metageneration', 'selfLink': 'self_link', 'storageClass': 'storage_class', 'owner': 'owner', 'projectNumber': 'project_number', 'id': 'id', 'versioning': 'versioning_enabled', 'etag': 'etag', 'name': 'name', 'lifecycle': 'get_lifecycle()'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
+<tt class="descname">CUSTOM_PROPERTY_ACCESSORS</tt><em class="property"> = {'versioning': 'versioning_enabled', 'etag': 'etag', 'selfLink': 'self_link', 'cors': 'get_cors()', 'owner': 'owner', 'location': 'location', 'id': 'id', 'timeCreated': 'time_created', 'projectNumber': 'project_number', 'acl': 'acl', 'metageneration': 'metageneration', 'name': 'name', 'defaultObjectAcl': 'get_default_object_acl()', 'lifecycle': 'get_lifecycle()', 'logging': 'get_logging()', 'storageClass': 'storage_class'}</em><a class="headerlink" href="#gcloud.storage.bucket.Bucket.CUSTOM_PROPERTY_ACCESSORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Map field name -&gt; accessor for fields w/ custom accessors.</p>
 </dd></dl>
 

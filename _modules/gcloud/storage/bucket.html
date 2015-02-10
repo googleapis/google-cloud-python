@@ -86,7 +86,26 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="c"># See the License for the specific language governing permissions and</span>
 <span class="c"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Create / interact with gcloud storage buckets.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Create / interact with gcloud storage buckets.</span>
+
+<span class="sd">If you want to check whether a blob exists, you can use the ``in`` operator</span>
+<span class="sd">in Python::</span>
+
+<span class="sd">  &gt;&gt;&gt; print &#39;kitten.jpg&#39; in bucket</span>
+<span class="sd">  True</span>
+<span class="sd">  &gt;&gt;&gt; print &#39;does-not-exist&#39; in bucket</span>
+<span class="sd">  False</span>
+
+<span class="sd">If you want to get all the blobs in the bucket, you can use</span>
+<span class="sd">:func:`get_all_blobs &lt;gcloud.storage.bucket.Bucket.get_all_blobs&gt;`::</span>
+
+<span class="sd">  &gt;&gt;&gt; blobs = bucket.get_all_blobs()</span>
+
+<span class="sd">You can also use the bucket as an iterator::</span>
+
+<span class="sd">  &gt;&gt;&gt; for blob in bucket:</span>
+<span class="sd">  ...   print blob</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">six</span>
