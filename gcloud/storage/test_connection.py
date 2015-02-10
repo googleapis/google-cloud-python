@@ -100,7 +100,7 @@ class TestConnection(unittest2.TestCase):
         ])
         self.assertEqual(conn.build_api_url('/foo', upload=True), URI)
 
-    def test_make_request_no_data_no_content_type_no_headers(self):
+    def test__make_request_no_data_no_content_type_no_headers(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
@@ -108,7 +108,7 @@ class TestConnection(unittest2.TestCase):
             {'status': '200', 'content-type': 'text/plain'},
             '',
         )
-        headers, content = conn.make_request('GET', URI)
+        headers, content = conn._make_request('GET', URI)
         self.assertEqual(headers['status'], '200')
         self.assertEqual(headers['content-type'], 'text/plain')
         self.assertEqual(content, '')
@@ -122,7 +122,7 @@ class TestConnection(unittest2.TestCase):
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
-    def test_make_request_w_data_no_extra_headers(self):
+    def test__make_request_w_data_no_extra_headers(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
@@ -130,7 +130,7 @@ class TestConnection(unittest2.TestCase):
             {'status': '200', 'content-type': 'text/plain'},
             '',
         )
-        conn.make_request('GET', URI, {}, 'application/json')
+        conn._make_request('GET', URI, {}, 'application/json')
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], {})
@@ -142,7 +142,7 @@ class TestConnection(unittest2.TestCase):
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
-    def test_make_request_w_extra_headers(self):
+    def test__make_request_w_extra_headers(self):
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
@@ -150,7 +150,7 @@ class TestConnection(unittest2.TestCase):
             {'status': '200', 'content-type': 'text/plain'},
             '',
         )
-        conn.make_request('GET', URI, headers={'X-Foo': 'foo'})
+        conn._make_request('GET', URI, headers={'X-Foo': 'foo'})
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], None)

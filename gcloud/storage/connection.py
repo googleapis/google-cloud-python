@@ -27,12 +27,17 @@ from gcloud.storage.iterator import Iterator
 class Connection(_Base):
     """A connection to Google Cloud Storage via the JSON REST API.
 
-    This class should understand only the basic types (and protobufs) in
-    method arguments, however should be capable of returning advanced
-    types.
+    This defines :meth:`Connection.api_request` for making a generic JSON
+    API request and most API requests are created elsewhere (e.g. in
+    :class:`gcloud.storage.bucket.Bucket` and
+    :class:`gcloud.storage.blob.Blob`).
+
+    Methods for getting, creating and deleting individual buckets as well
+    as listing buckets associated with a project are defined here. This
+    corresponds to the "storage.buckets" resource in the API.
 
     See :class:`gcloud.connection.Connection` for a full list of
-    parameters.  :class:`Connection` differs only in needing a project
+    parameters. This subclass differs only in needing a project
     name (which you specify when creating a project in the Cloud
     Console).
 
@@ -47,14 +52,14 @@ class Connection(_Base):
 
       >>> bucket.delete()
       >>> # or
-      >>> connection.delete_bucket(bucket)
+      >>> connection.delete_bucket(bucket.name)
 
     If you want to access an existing bucket::
 
       >>> bucket = connection.get_bucket('my-bucket-name')
 
-    A :class:`Connection` is actually iterable and will return the
-    :class:`gcloud.storage.bucket.Bucket` objects inside the project::
+    You can also iterate through all :class:`gcloud.storage.bucket.Bucket`
+    objects inside the project::
 
       >>> for bucket in connection.get_all_buckets():
       >>>   print bucket
@@ -118,8 +123,8 @@ class Connection(_Base):
 
         return url
 
-    def make_request(self, method, url, data=None, content_type=None,
-                     headers=None):
+    def _make_request(self, method, url, data=None, content_type=None,
+                      headers=None):
         """A low level method to send a request to the API.
 
         Typically, you shouldn't need to use this method.
@@ -221,7 +226,7 @@ class Connection(_Base):
             data = json.dumps(data)
             content_type = 'application/json'
 
-        response, content = self.make_request(
+        response, content = self._make_request(
             method=method, url=url, data=data, content_type=content_type)
 
         if not 200 <= response.status < 300:
@@ -249,6 +254,8 @@ class Connection(_Base):
           >>> for bucket in connection.get_all_buckets():
           >>>   print bucket
 
+        This implements "storage.buckets.list".
+
         :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.
         :returns: All buckets belonging to this project.
         """
@@ -269,6 +276,8 @@ class Connection(_Base):
           >>>   bucket = connection.get_bucket('my-bucket')
           >>> except NotFound:
           >>>   print 'Sorry, that bucket does not exist!'
+
+        This implements "storage.buckets.get".
 
         :type bucket_name: string
         :param bucket_name: The name of the bucket to get.
@@ -291,6 +300,8 @@ class Connection(_Base):
           >>> bucket = connection.create_bucket('my-bucket')
           >>> print bucket
           <Bucket: my-bucket>
+
+        This implements "storage.buckets.insert".
 
         :type bucket_name: string
         :param bucket_name: The bucket name to create.
@@ -330,6 +341,8 @@ class Connection(_Base):
           >>>   connection.delete_bucket('my-bucket')
           >>> except Conflict:
           >>>   print 'That bucket is not empty!'
+
+        This implements "storage.buckets.delete".
 
         :type bucket_name: string
         :param bucket_name: The bucket name to delete.
