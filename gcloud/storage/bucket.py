@@ -12,7 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud storage buckets."""
+"""Create / interact with gcloud storage buckets.
+
+If you want to check whether a blob exists, you can use the ``in`` operator
+in Python::
+
+  >>> print 'kitten.jpg' in bucket
+  True
+  >>> print 'does-not-exist' in bucket
+  False
+
+If you want to get all the blobs in the bucket, you can use
+:func:`get_all_blobs <gcloud.storage.bucket.Bucket.get_all_blobs>`::
+
+  >>> blobs = bucket.get_all_blobs()
+
+You can also use the bucket as an iterator::
+
+  >>> for blob in bucket:
+  ...   print blob
+"""
 
 import os
 import six
