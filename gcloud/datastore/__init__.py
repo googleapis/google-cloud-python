@@ -69,6 +69,48 @@ SCOPE = ('https://www.googleapis.com/auth/datastore',
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 
 
+def _find_true_dataset_id(dataset_id, connection=None):
+    """Find the true (unaliased) dataset ID.
+
+    If the given ID already has a 's~' or 'e~' prefix, does nothing.
+    Otherwise, looks up a bogus Key('__MissingLookupKind', 1) and reads the
+    true prefixed dataset ID from the response (either from found or from
+    missing).
+
+    For some context, see:
+      github.com/GoogleCloudPlatform/gcloud-python/pull/528
+      github.com/GoogleCloudPlatform/google-cloud-datastore/issues/59
+
+    :type dataset_id: string
+    :param dataset_id: The dataset ID to un-alias / prefix.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional. A connection provided to be the default.
+
+    :rtype: string
+    :returns: The true / prefixed / un-aliased dataset ID.
+    """
+    if dataset_id.startswith('s~') or dataset_id.startswith('e~'):
+        return dataset_id
+
+    connection = connection or _implicit_environ.CONNECTION
+
+    # Create the bogus Key protobuf to be looked up and remove
+    # the dataset ID so the backend won't complain.
+    bogus_key_pb = Key('__MissingLookupKind', 1,
+                       dataset_id=dataset_id).to_protobuf()
+    bogus_key_pb.partition_id.ClearField('dataset_id')
+
+    found_pbs, missing_pbs, _ = connection.lookup(dataset_id, [bogus_key_pb])
+    # By not passing in `deferred`, lookup will continue until
+    # all results are `found` or `missing`.
+    all_pbs = missing_pbs + found_pbs
+    # We only asked for one, so should only receive one.
+    returned_pb, = all_pbs
+
+    return returned_pb.key.partition_id.dataset_id
+
+
 def set_default_dataset_id(dataset_id=None):
     """Set default dataset ID either explicitly or implicitly as fall-back.
 
@@ -91,6 +133,7 @@ def set_default_dataset_id(dataset_id=None):
         dataset_id = _implicit_environ.compute_engine_id()
 
     if dataset_id is not None:
+        dataset_id = _find_true_dataset_id(dataset_id)
         _implicit_environ.DATASET_ID = dataset_id
 
 
@@ -120,8 +163,9 @@ def set_defaults(dataset_id=None, connection=None):
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: A connection provided to be the default.
     """
-    set_default_dataset_id(dataset_id=dataset_id)
+    # Set CONNECTION first in case _find_true_dataset_id needs it.
     set_default_connection(connection=connection)
+    set_default_dataset_id(dataset_id=dataset_id)
 
 
 def get_connection():

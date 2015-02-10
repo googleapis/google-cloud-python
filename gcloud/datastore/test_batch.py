@@ -215,28 +215,9 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         entity = _Entity(_PROPERTIES)
         entity.exclude_from_indexes = ('baz', 'spam')
-        key = entity.key = _Key('s~' + _DATASET)
+        entity.key = _Key('s~' + _DATASET)
 
-        batch.put(entity)
-
-        insert_auto_ids = list(batch.mutation.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutation.upsert)
-        self.assertEqual(len(upserts), 1)
-
-        upsert = upserts[0]
-        self.assertEqual(upsert.key, key._key)
-        props = dict([(prop.name, prop.value) for prop in upsert.property])
-        self.assertTrue(props['foo'].indexed)
-        self.assertFalse(props['baz'].indexed)
-        self.assertTrue(props['spam'].indexed)
-        self.assertFalse(props['spam'].list_value[0].indexed)
-        self.assertFalse(props['spam'].list_value[1].indexed)
-        self.assertFalse(props['spam'].list_value[2].indexed)
-        self.assertFalse('frotz' in props)
-
-        deletes = list(batch.mutation.delete)
-        self.assertEqual(len(deletes), 0)
+        self.assertRaises(ValueError, batch.put, entity)
 
     def test_delete_w_partial_key(self):
         _DATASET = 'DATASET'
@@ -277,15 +258,7 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(dataset_id=_DATASET, connection=connection)
         key = _Key('s~' + _DATASET)
 
-        batch.delete(key)
-
-        insert_auto_ids = list(batch.mutation.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutation.upsert)
-        self.assertEqual(len(upserts), 0)
-        deletes = list(batch.mutation.delete)
-        self.assertEqual(len(deletes), 1)
-        self.assertEqual(deletes[0], key._key)
+        self.assertRaises(ValueError, batch.delete, key)
 
     def test_commit(self):
         _DATASET = 'DATASET'

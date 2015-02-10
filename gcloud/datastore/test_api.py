@@ -306,10 +306,6 @@ class Test_get_function(unittest2.TestCase):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
         from gcloud.datastore.connection import Connection
         from gcloud.datastore.key import Key
-        from gcloud.datastore import test_connection
-
-        # Shortening name, import line above was too long.
-        cmp_key_after_req = test_connection._compare_key_pb_after_request
 
         DATASET_ID = 'DATASET'
         key1 = Key('Kind', dataset_id=DATASET_ID)
@@ -372,15 +368,15 @@ class Test_get_function(unittest2.TestCase):
         request.ParseFromString(cw[0]['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 2)
-        cmp_key_after_req(self, key_pb1, keys[0])
-        cmp_key_after_req(self, key_pb2, keys[1])
+        self.assertEqual(key_pb1, keys[0])
+        self.assertEqual(key_pb2, keys[1])
 
         # Make sure the second called with argument checks out.
         self._verifyProtobufCall(cw[1], URI, conn)
         request.ParseFromString(cw[1]['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 1)
-        cmp_key_after_req(self, key_pb2, keys[0])
+        self.assertEqual(key_pb2, keys[0])
 
     def test_hit(self):
         from gcloud.datastore.key import Key

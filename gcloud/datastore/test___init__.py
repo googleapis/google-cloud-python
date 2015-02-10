@@ -64,7 +64,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
 
     def test_set_from_env_var(self):
         from gcloud.datastore import _implicit_environ
-        IMPLICIT_DATASET_ID = 'IMPLICIT'
+        IMPLICIT_DATASET_ID = 's~IMPLICIT'
 
         with self._monkeyEnviron(IMPLICIT_DATASET_ID):
             with self._monkeyImplicit():
@@ -74,7 +74,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
 
     def test_set_explicit_w_env_var_set(self):
         from gcloud.datastore import _implicit_environ
-        EXPLICIT_DATASET_ID = 'EXPLICIT'
+        EXPLICIT_DATASET_ID = 's~EXPLICIT'
 
         with self._monkeyEnviron(None):
             with self._monkeyImplicit():
@@ -84,8 +84,8 @@ class Test_set_default_dataset_id(unittest2.TestCase):
 
     def test_set_explicit_no_env_var_set(self):
         from gcloud.datastore import _implicit_environ
-        IMPLICIT_DATASET_ID = 'IMPLICIT'
-        EXPLICIT_DATASET_ID = 'EXPLICIT'
+        IMPLICIT_DATASET_ID = 's~IMPLICIT'
+        EXPLICIT_DATASET_ID = 's~EXPLICIT'
 
         with self._monkeyEnviron(IMPLICIT_DATASET_ID):
             with self._monkeyImplicit():
@@ -104,7 +104,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
 
     def test_set_explicit_None_w_env_var_set(self):
         from gcloud.datastore import _implicit_environ
-        IMPLICIT_DATASET_ID = 'IMPLICIT'
+        IMPLICIT_DATASET_ID = 's~IMPLICIT'
 
         with self._monkeyEnviron(IMPLICIT_DATASET_ID):
             with self._monkeyImplicit():
@@ -115,7 +115,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
     def test_set_implicit_from_appengine(self):
         from gcloud.datastore import _implicit_environ
 
-        APP_ENGINE_ID = 'GAE'
+        APP_ENGINE_ID = 's~GAE'
         APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
 
         with self._monkeyEnviron(None):
@@ -127,8 +127,8 @@ class Test_set_default_dataset_id(unittest2.TestCase):
     def test_set_implicit_both_env_and_appengine(self):
         from gcloud.datastore import _implicit_environ
 
-        IMPLICIT_DATASET_ID = 'IMPLICIT'
-        APP_IDENTITY = _AppIdentity('GAE')
+        IMPLICIT_DATASET_ID = 's~IMPLICIT'
+        APP_IDENTITY = _AppIdentity('s~GAE')
 
         with self._monkeyEnviron(IMPLICIT_DATASET_ID):
             with self._monkeyImplicit(app_identity=APP_IDENTITY):
@@ -139,7 +139,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
     def _implicit_compute_engine_helper(self, status):
         from gcloud.datastore import _implicit_environ
 
-        COMPUTE_ENGINE_ID = 'GCE'
+        COMPUTE_ENGINE_ID = 's~GCE'
         if status == 200:
             EXPECTED_ID = COMPUTE_ENGINE_ID
         else:
@@ -180,9 +180,9 @@ class Test_set_default_dataset_id(unittest2.TestCase):
     def test_set_implicit_both_appengine_and_compute(self):
         from gcloud.datastore import _implicit_environ
 
-        APP_ENGINE_ID = 'GAE'
+        APP_ENGINE_ID = 's~GAE'
         APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
-        connection = _HTTPConnection(200, 'GCE')
+        connection = _HTTPConnection(200, 's~GCE')
 
         with self._monkeyEnviron(None):
             with self._monkeyImplicit(connection=connection,
@@ -196,9 +196,9 @@ class Test_set_default_dataset_id(unittest2.TestCase):
     def test_set_implicit_three_env_appengine_and_compute(self):
         from gcloud.datastore import _implicit_environ
 
-        IMPLICIT_DATASET_ID = 'IMPLICIT'
-        APP_IDENTITY = _AppIdentity('GAE')
-        connection = _HTTPConnection(200, 'GCE')
+        IMPLICIT_DATASET_ID = 's~IMPLICIT'
+        APP_IDENTITY = _AppIdentity('s~GAE')
+        connection = _HTTPConnection(200, 's~GCE')
 
         with self._monkeyEnviron(IMPLICIT_DATASET_ID):
             with self._monkeyImplicit(connection=connection,
@@ -208,6 +208,67 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
         self.assertEqual(connection.host, None)
         self.assertEqual(connection.timeout, None)
+
+
+class Test__find_true_dataset_id(unittest2.TestCase):
+
+    def _callFUT(self, dataset_id, connection=None):
+        from gcloud.datastore import _find_true_dataset_id
+        return _find_true_dataset_id(dataset_id, connection=connection)
+
+    def test_prefixed(self):
+        PREFIXED = 's~DATASET'
+        result = self._callFUT(PREFIXED)
+        self.assertEqual(PREFIXED, result)
+
+    def test_unprefixed_no_connection(self):
+        from gcloud.datastore import _implicit_environ
+
+        UNPREFIXED = 'DATASET'
+        self.assertEqual(_implicit_environ.CONNECTION, None)
+        with self.assertRaises(AttributeError):
+            self._callFUT(UNPREFIXED)
+
+    def test_unprefixed_bogus_key_miss(self):
+        UNPREFIXED = 'DATASET'
+        PREFIX = 's~'
+        CONNECTION = _Connection(PREFIX, from_missing=False)
+        result = self._callFUT(UNPREFIXED, connection=CONNECTION)
+
+        self.assertEqual(CONNECTION._called_dataset_id, UNPREFIXED)
+
+        self.assertEqual(len(CONNECTION._lookup_result), 1)
+
+        # Make sure just one.
+        called_key_pb, = CONNECTION._called_key_pbs
+        path_element = called_key_pb.path_element
+        self.assertEqual(len(path_element), 1)
+        self.assertEqual(path_element[0].kind, '__MissingLookupKind')
+        self.assertEqual(path_element[0].id, 1)
+        self.assertFalse(path_element[0].HasField('name'))
+
+        PREFIXED = PREFIX + UNPREFIXED
+        self.assertEqual(result, PREFIXED)
+
+    def test_unprefixed_bogus_key_hit(self):
+        UNPREFIXED = 'DATASET'
+        PREFIX = 'e~'
+        CONNECTION = _Connection(PREFIX, from_missing=True)
+        result = self._callFUT(UNPREFIXED, connection=CONNECTION)
+
+        self.assertEqual(CONNECTION._called_dataset_id, UNPREFIXED)
+        self.assertEqual(CONNECTION._lookup_result, [])
+
+        # Make sure just one.
+        called_key_pb, = CONNECTION._called_key_pbs
+        path_element = called_key_pb.path_element
+        self.assertEqual(len(path_element), 1)
+        self.assertEqual(path_element[0].kind, '__MissingLookupKind')
+        self.assertEqual(path_element[0].id, 1)
+        self.assertFalse(path_element[0].HasField('name'))
+
+        PREFIXED = PREFIX + UNPREFIXED
+        self.assertEqual(result, PREFIXED)
 
 
 class Test_set_default_connection(unittest2.TestCase):
@@ -350,3 +411,35 @@ class _TimeoutHTTPConnection(_BaseHTTPConnection):
     def getresponse(self):
         import socket
         raise socket.timeout('timed out')
+
+
+class _Connection(object):
+
+    _called_dataset_id = _called_key_pbs = _lookup_result = None
+
+    def __init__(self, prefix, from_missing=False):
+        self.prefix = prefix
+        self.from_missing = from_missing
+
+    def lookup(self, dataset_id, key_pbs):
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+
+        # Store the arguments called with.
+        self._called_dataset_id = dataset_id
+        self._called_key_pbs = key_pbs
+
+        key_pb, = key_pbs
+
+        response = datastore_pb.Entity()
+        response.key.CopyFrom(key_pb)
+        response.key.partition_id.dataset_id = self.prefix + dataset_id
+
+        missing = []
+        deferred = []
+        if self.from_missing:
+            missing[:] = [response]
+            self._lookup_result = []
+        else:
+            self._lookup_result = [response]
+
+        return self._lookup_result, missing, deferred

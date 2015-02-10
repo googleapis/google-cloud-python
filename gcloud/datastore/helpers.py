@@ -24,7 +24,6 @@ from google.protobuf.internal.type_checkers import Int64ValueChecker
 import pytz
 import six
 
-from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
@@ -280,33 +279,6 @@ def _set_protobuf_value(value_pb, val):
         setattr(value_pb, attr, val)
 
 
-def _prepare_key_for_request(key_pb):
-    """Add protobuf keys to a request object.
-
-    :type key_pb: :class:`gcloud.datastore._datastore_v1_pb2.Key`
-    :param key_pb: A key to be added to a request.
-
-    :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Key`
-    :returns: A key which will be added to a request. It will be the
-              original if nothing needs to be changed.
-    """
-    if key_pb.partition_id.HasField('dataset_id'):
-        # We remove the dataset_id from the protobuf. This is because
-        # the backend fails a request if the key contains un-prefixed
-        # dataset ID. The backend fails because requests to
-        #     /datastore/.../datasets/foo/...
-        # and
-        #     /datastore/.../datasets/s~foo/...
-        # both go to the datastore given by 's~foo'. So if the key
-        # protobuf in the request body has dataset_id='foo', the
-        # backend will reject since 'foo' != 's~foo'.
-        new_key_pb = datastore_pb.Key()
-        new_key_pb.CopyFrom(key_pb)
-        new_key_pb.partition_id.ClearField('dataset_id')
-        key_pb = new_key_pb
-    return key_pb
-
-
 def _add_keys_to_request(request_field_pb, key_pbs):
     """Add protobuf keys to a request object.
 
@@ -317,57 +289,4 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     :param key_pbs: The keys to add to a request.
     """
     for key_pb in key_pbs:
-        key_pb = _prepare_key_for_request(key_pb)
         request_field_pb.add().CopyFrom(key_pb)
-
-
-def _dataset_ids_equal(dataset_id1, dataset_id2):
-    """Compares two dataset IDs for fuzzy equality.
-
-    Each may be prefixed or unprefixed (but not null, since dataset ID
-    is required on a key). The only allowed prefixes are 's~' and 'e~'.
-
-    Two identical prefixed match
-
-      >>> 's~foo' == 's~foo'
-      >>> 'e~bar' == 'e~bar'
-
-    while non-identical prefixed don't
-
-      >>> 's~foo' != 's~bar'
-      >>> 's~foo' != 'e~foo'
-
-    As for non-prefixed, they can match other non-prefixed or
-    prefixed:
-
-      >>> 'foo' == 'foo'
-      >>> 'foo' == 's~foo'
-      >>> 'foo' == 'e~foo'
-      >>> 'foo' != 'bar'
-      >>> 'foo' != 's~bar'
-
-    (Ties are resolved since 'foo' can only be an alias for one of
-    s~foo or e~foo in the backend.)
-
-    :type dataset_id1: string
-    :param dataset_id1: A dataset ID.
-
-    :type dataset_id2: string
-    :param dataset_id2: A dataset ID.
-
-    :rtype: boolean
-    :returns: Boolean indicating if the IDs are the same.
-    """
-    if dataset_id1 == dataset_id2:
-        return True
-
-    if dataset_id1.startswith('s~') or dataset_id1.startswith('e~'):
-        # If `dataset_id1` is prefixed and not matching, then the only way
-        # they can match is if `dataset_id2` is unprefixed.
-        return dataset_id1[2:] == dataset_id2
-    elif dataset_id2.startswith('s~') or dataset_id2.startswith('e~'):
-        # Here we know `dataset_id1` is unprefixed and `dataset_id2`
-        # is prefixed.
-        return dataset_id1 == dataset_id2[2:]
-
-    return False
