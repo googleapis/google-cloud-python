@@ -382,13 +382,14 @@ class Test_Blob(unittest2.TestCase):
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        blob.CHUNK_SIZE = 5
+        UPLOAD_CHUNK_SIZE = 5
         # Set the threshhold low enough that we force a resumable uploada.
         with _Monkey(transfer, _RESUMABLE_UPLOAD_THRESHOLD=5):
             with NamedTemporaryFile() as fh:
                 fh.write(DATA)
                 fh.flush()
-                blob.upload_from_file(fh, rewind=True)
+                blob.upload_from_file(fh, rewind=True,
+                                      upload_chunk_size=UPLOAD_CHUNK_SIZE)
         rq = connection.http._requested
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -408,16 +409,18 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(rq[1]['uri'], UPLOAD_URL)
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[1]['headers'].items()])
-        self.assertEqual(rq[1]['body'], DATA[:5])
+        self.assertEqual(rq[1]['body'], DATA[:UPLOAD_CHUNK_SIZE])
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[1]['headers'].items()])
         self.assertEqual(headers['Content-Range'], 'bytes 0-4/6')
         self.assertEqual(rq[2]['method'], 'PUT')
         self.assertEqual(rq[2]['uri'], UPLOAD_URL)
-        self.assertEqual(rq[2]['body'], DATA[5:])
+        self.assertEqual(rq[2]['body'], DATA[UPLOAD_CHUNK_SIZE:])
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[2]['headers'].items()])
-        self.assertEqual(headers['Content-Range'], 'bytes 5-5/6')
+        content_range = 'bytes %d-%d/%d' % (
+            UPLOAD_CHUNK_SIZE, UPLOAD_CHUNK_SIZE, len(DATA))
+        self.assertEqual(headers['Content-Range'], content_range)
 
     def test_upload_from_file_w_slash_in_name(self):
         from six.moves.http_client import OK
