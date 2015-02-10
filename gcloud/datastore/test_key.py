@@ -171,6 +171,149 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(clone.namespace, _NAMESPACE)
         self.assertEqual(clone.path, _PATH)
 
+    def test___eq_____ne___w_non_key(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _NAME = 'one'
+        key = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
+        self.assertRaises(NotImplementedError, lambda: key == object())
+        self.assertRaises(NotImplementedError, lambda: key != object())
+
+    def test___eq_____ne___two_incomplete_keys_same_kind(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        key1 = self._makeOne(_KIND, dataset_id=_DATASET)
+        key2 = self._makeOne(_KIND, dataset_id=_DATASET)
+        self.assertFalse(key1 == key2)
+        self.assertTrue(key1 != key2)
+
+    def test___eq_____ne___incomplete_key_w_complete_key_same_kind(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _ID = 1234
+        key1 = self._makeOne(_KIND, dataset_id=_DATASET)
+        key2 = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
+        self.assertFalse(key1 == key2)
+        self.assertTrue(key1 != key2)
+
+    def test___eq_____ne___complete_key_w_incomplete_key_same_kind(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _ID = 1234
+        key1 = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
+        key2 = self._makeOne(_KIND, dataset_id=_DATASET)
+        self.assertFalse(key1 == key2)
+        self.assertTrue(key1 != key2)
+
+    def test___eq_____ne___same_kind_different_ids(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _ID1 = 1234
+        _ID2 = 2345
+        key1 = self._makeOne(_KIND, _ID1, dataset_id=_DATASET)
+        key2 = self._makeOne(_KIND, _ID2, dataset_id=_DATASET)
+        self.assertFalse(key1 == key2)
+        self.assertTrue(key1 != key2)
+
+    def test___eq_____ne___same_kind_and_id(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _ID = 1234
+        key1 = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
+        key2 = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
+        self.assertTrue(key1 == key2)
+        self.assertFalse(key1 != key2)
+
+    def test___eq_____ne___same_kind_and_id_different_dataset(self):
+        _DATASET1 = 'DATASET1'
+        _DATASET2 = 'DATASET2'
+        _KIND = 'KIND'
+        _ID = 1234
+        key1 = self._makeOne(_KIND, _ID, dataset_id=_DATASET1)
+        key2 = self._makeOne(_KIND, _ID, dataset_id=_DATASET2)
+        self.assertFalse(key1 == key2)
+        self.assertTrue(key1 != key2)
+
+    def test___eq_____ne___same_kind_and_id_different_namespace(self):
+        _DATASET = 'DATASET'
+        _NAMESPACE1 = 'NAMESPACE1'
+        _NAMESPACE2 = 'NAMESPACE2'
+        _KIND = 'KIND'
+        _ID = 1234
+        key1 = self._makeOne(_KIND, _ID, dataset_id=_DATASET,
+                             namespace=_NAMESPACE1)
+        key2 = self._makeOne(_KIND, _ID, dataset_id=_DATASET,
+                             namespace=_NAMESPACE2)
+        self.assertFalse(key1 == key2)
+        self.assertTrue(key1 != key2)
+
+    def test___eq_____ne___same_kind_different_names(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _NAME1 = 'one'
+        _NAME2 = 'two'
+        key1 = self._makeOne(_KIND, _NAME1, dataset_id=_DATASET)
+        key2 = self._makeOne(_KIND, _NAME2, dataset_id=_DATASET)
+        self.assertFalse(key1 == key2)
+        self.assertTrue(key1 != key2)
+
+    def test___eq_____ne___same_kind_and_name(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _NAME = 'one'
+        key1 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
+        key2 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
+        self.assertTrue(key1 == key2)
+        self.assertFalse(key1 != key2)
+
+    def test___eq_____ne___same_kind_and_name_different_dataset(self):
+        _DATASET1 = 'DATASET1'
+        _DATASET2 = 'DATASET2'
+        _KIND = 'KIND'
+        _NAME = 'one'
+        key1 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET1)
+        key2 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET2)
+        self.assertFalse(key1 == key2)
+        self.assertTrue(key1 != key2)
+
+    def test___eq_____ne___same_kind_and_name_different_namespace(self):
+        _DATASET = 'DATASET'
+        _NAMESPACE1 = 'NAMESPACE1'
+        _NAMESPACE2 = 'NAMESPACE2'
+        _KIND = 'KIND'
+        _NAME = 'one'
+        key1 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET,
+                             namespace=_NAMESPACE1)
+        key2 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET,
+                             namespace=_NAMESPACE2)
+        self.assertFalse(key1 == key2)
+        self.assertTrue(key1 != key2)
+
+    def test___hash___incomplete(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        key = self._makeOne(_KIND, dataset_id=_DATASET)
+        self.assertNotEqual(hash(key),
+                            hash(_KIND) + hash(_DATASET) + hash(None))
+
+    def test___hash___completed_w_id(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _ID = 1234
+        key = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
+        self.assertNotEqual(hash(key),
+                            hash(_KIND) + hash(_ID) +
+                            hash(_DATASET) + hash(None))
+
+    def test___hash___completed_w_name(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        _NAME = 'NAME'
+        key = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
+        self.assertNotEqual(hash(key),
+                            hash(_KIND) + hash(_NAME) +
+                            hash(_DATASET) + hash(None))
+
     def test_completed_key_on_partial_w_id(self):
         key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
         _ID = 1234

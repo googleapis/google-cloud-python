@@ -75,6 +75,50 @@ class Key(object):
         # _combine_args() is called.
         self._path = self._combine_args()
 
+    def __eq__(self, other):
+        """Compare two keys for equality.
+
+        Incomplete keys never compare equal to any other key.
+
+        Completed keys compare equal if they have the same path, dataset ID,
+        and namespace.
+
+        :rtype: boolean
+        :returns: True if the keys compare equal, else False.
+        """
+        if not isinstance(other, Key):
+            raise NotImplementedError
+
+        if self.is_partial or other.is_partial:
+            return False
+
+        return (self.flat_path == other.flat_path and
+                self.dataset_id == other.dataset_id and
+                self.namespace == other.namespace)
+
+    def __ne__(self, other):
+        """Compare two keys for inequality.
+
+        Incomplete keys never compare equal to any other key.
+
+        Completed keys compare equal if they have the same path, dataset ID,
+        and namespace.
+
+        :rtype: boolean
+        :returns: False if the keys compare equal, else True.
+        """
+        return not self == other
+
+    def __hash__(self):
+        """Hash a keys for use in a dictionary lookp.
+
+        :rtype: integer
+        :returns: a hash of the key's state.
+        """
+        return (hash(self.flat_path) +
+                hash(self.dataset_id) +
+                hash(self.namespace))
+
     @staticmethod
     def _parse_path(path_args):
         """Parses positional arguments into key path with kinds and IDs.
