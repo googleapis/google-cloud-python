@@ -53,6 +53,44 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(sorted(entity.exclude_from_indexes),
                          sorted(_EXCLUDE_FROM_INDEXES))
 
+    def test___eq_____ne___w_non_entitye(self):
+        from gcloud.datastore.key import Key
+        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        entity = self._makeOne(key=key)
+        self.assertRaises(NotImplementedError, lambda: entity == object())
+        self.assertRaises(NotImplementedError, lambda: entity != object())
+
+    def test___eq_____ne___w_different_keys(self):
+        from gcloud.datastore.key import Key
+        _ID1 = 1234
+        _ID2 = 2345
+        key1 = Key(_KIND, _ID1, dataset_id=_DATASET_ID)
+        entity1 = self._makeOne(key=key1)
+        key2 = Key(_KIND, _ID2, dataset_id=_DATASET_ID)
+        entity2 = self._makeOne(key=key2)
+        self.assertFalse(entity1 == entity2)
+        self.assertTrue(entity1 != entity2)
+
+    def test___eq_____ne___w_same_keys(self):
+        from gcloud.datastore.key import Key
+        key1 = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        entity1 = self._makeOne(key=key1)
+        key2 = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        entity2 = self._makeOne(key=key2)
+        self.assertTrue(entity1 == entity2)
+        self.assertFalse(entity1 != entity2)
+
+    def test___eq_____ne___w_same_keys_different_props(self):
+        from gcloud.datastore.key import Key
+        key1 = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        entity1 = self._makeOne(key=key1)
+        entity1['foo'] = 'Foo'
+        key2 = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        entity2 = self._makeOne(key=key2)
+        entity1['bar'] = 'Bar'
+        self.assertFalse(entity1 == entity2)
+        self.assertTrue(entity1 != entity2)
+
     def test___repr___no_key_empty(self):
         entity = self._makeOne()
         self.assertEqual(repr(entity), '<Entity {}>')

@@ -77,6 +77,32 @@ class Entity(dict):
         self.key = key
         self._exclude_from_indexes = set(exclude_from_indexes)
 
+    def __eq__(self, other):
+        """Compare two entities for equality.
+
+        Entities compare equal if their keys compare equal, and their
+        properties compare equal.
+
+        :rtype: boolean
+        :returns: True if the entities compare equal, else False.
+        """
+        if not isinstance(other, Entity):
+            raise NotImplementedError
+
+        return (self.key == other.key and
+                dict(self) == dict(other))
+
+    def __ne__(self, other):
+        """Compare two entities for inequality.
+
+        Entities compare equal if their keys compare equal, and their
+        properties compare equal.
+
+        :rtype: boolean
+        :returns: False if the entities compare equal, else True.
+        """
+        return not self == other
+
     @property
     def kind(self):
         """Get the kind of the current entity.
