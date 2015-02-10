@@ -24,6 +24,20 @@ class Connection(object):
 
     Subclasses should understand only the basic types in method arguments,
     however they should be capable of returning advanced types.
+
+    If no value is passed in for ``http``, a :class:`httplib2.Http` object
+    will be created and authorized with the ``credentials``. If not, the
+    ``credentials`` and ``http`` need not be related.
+
+    Subclasses may seek to use the private key from ``credentials`` to sign
+    data.
+
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+                       :class:`NoneType`
+    :param credentials: The OAuth2 Credentials to use for this connection.
+
+    :type http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param http: An optional HTTP object to make requests.
     """
 
     API_BASE_URL = 'https://www.googleapis.com'
@@ -35,14 +49,8 @@ class Connection(object):
     USER_AGENT = "gcloud-python/{0}".format(get_distribution('gcloud').version)
     """The user agent for gcloud-python requests."""
 
-    def __init__(self, credentials=None):
-        """Constructor for Connection.
-
-        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
-                           :class:`NoneType`
-        :param credentials: The OAuth2 Credentials to use for this connection.
-        """
-        self._http = None
+    def __init__(self, credentials=None, http=None):
+        self._http = http
         self._credentials = credentials
 
     @property
