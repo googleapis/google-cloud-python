@@ -326,11 +326,15 @@ support App Engine, Compute Engine and other environments in the future.</p>
 <em class="property">class </em><tt class="descclassname">gcloud.storage.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>project</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></a></p>
 <p>A connection to Google Cloud Storage via the JSON REST API.</p>
-<p>This class should understand only the basic types (and protobufs) in
-method arguments, however should be capable of returning advanced
-types.</p>
+<p>This defines <a class="reference internal" href="#gcloud.storage.connection.Connection.api_request" title="gcloud.storage.connection.Connection.api_request"><tt class="xref py py-meth docutils literal"><span class="pre">Connection.api_request()</span></tt></a> for making a generic JSON
+API request and most API requests are created elsewhere (e.g. in
+<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> and
+<a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>).</p>
+<p>Methods for getting, creating and deleting individual buckets as well
+as listing buckets associated with a project are defined here. This
+corresponds to the &#8220;storage.buckets&#8221; resource in the API.</p>
 <p>See <a class="reference internal" href="gcloud-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></a> for a full list of
-parameters.  <a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">Connection</span></tt></a> differs only in needing a project
+parameters. This subclass differs only in needing a project
 name (which you specify when creating a project in the Cloud
 Console).</p>
 <p>A typical use of this is to operate on
@@ -343,15 +347,15 @@ Console).</p>
 <p>You can then delete this bucket:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># or</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If you want to access an existing bucket:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket-name&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>A <a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">Connection</span></tt></a> is actually iterable and will return the
-<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> objects inside the project:</p>
+<p>You can also iterate through all <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>
+objects inside the project:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">bucket</span>
 <span class="go">&lt;Bucket: my-bucket-name&gt;</span>
@@ -465,6 +469,7 @@ use the default for the library.</li>
 <span class="go">&lt;Bucket: my-bucket&gt;</span>
 </pre></div>
 </div>
+<p>This implements &#8220;storage.buckets.insert&#8221;.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -510,6 +515,7 @@ there is a confict (bucket already exists, invalid name, etc.)</td>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="s">&#39;That bucket is not empty!&#39;</span>
 </pre></div>
 </div>
+<p>This implements &#8220;storage.buckets.delete&#8221;.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -534,6 +540,7 @@ operations are identical:</p>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">bucket</span>
 </pre></div>
 </div>
+<p>This implements &#8220;storage.buckets.list&#8221;.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -562,6 +569,7 @@ operations are identical:</p>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="s">&#39;Sorry, that bucket does not exist!&#39;</span>
 </pre></div>
 </div>
+<p>This implements &#8220;storage.buckets.get&#8221;.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -573,35 +581,6 @@ operations are identical:</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The bucket matching the name provided.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.connection.Connection.make_request">
-<tt class="descname">make_request</tt><big>(</big><em>method</em>, <em>url</em>, <em>data=None</em>, <em>content_type=None</em>, <em>headers=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.make_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.make_request" title="Permalink to this definition">#</a></dt>
-<dd><p>A low level method to send a request to the API.</p>
-<p>Typically, you shouldn&#8217;t need to use this method.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>method</strong> (<em>string</em>) &#8211; The HTTP method to use in the request.</li>
-<li><strong>url</strong> (<em>string</em>) &#8211; The URL to send the request to.</li>
-<li><strong>data</strong> (<em>string</em>) &#8211; The data to send as the body of the request.</li>
-<li><strong>content_type</strong> (<em>string</em>) &#8211; The proper MIME type of the data provided.</li>
-<li><strong>headers</strong> (<em>dict</em>) &#8211; A dictionary of HTTP headers to send with the request.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple of <tt class="docutils literal"><span class="pre">response</span></tt> (a dictionary of sorts)
-and <tt class="docutils literal"><span class="pre">content</span></tt> (a string).</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The HTTP response object and the content of the response.</p>
-</td>
 </tr>
 </tbody>
 </table>

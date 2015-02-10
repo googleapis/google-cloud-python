@@ -101,12 +101,17 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">_Base</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Storage via the JSON REST API.</span>
 
-<span class="sd">    This class should understand only the basic types (and protobufs) in</span>
-<span class="sd">    method arguments, however should be capable of returning advanced</span>
-<span class="sd">    types.</span>
+<span class="sd">    This defines :meth:`Connection.api_request` for making a generic JSON</span>
+<span class="sd">    API request and most API requests are created elsewhere (e.g. in</span>
+<span class="sd">    :class:`gcloud.storage.bucket.Bucket` and</span>
+<span class="sd">    :class:`gcloud.storage.blob.Blob`).</span>
+
+<span class="sd">    Methods for getting, creating and deleting individual buckets as well</span>
+<span class="sd">    as listing buckets associated with a project are defined here. This</span>
+<span class="sd">    corresponds to the &quot;storage.buckets&quot; resource in the API.</span>
 
 <span class="sd">    See :class:`gcloud.connection.Connection` for a full list of</span>
-<span class="sd">    parameters.  :class:`Connection` differs only in needing a project</span>
+<span class="sd">    parameters. This subclass differs only in needing a project</span>
 <span class="sd">    name (which you specify when creating a project in the Cloud</span>
 <span class="sd">    Console).</span>
 
@@ -121,14 +126,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">      &gt;&gt;&gt; bucket.delete()</span>
 <span class="sd">      &gt;&gt;&gt; # or</span>
-<span class="sd">      &gt;&gt;&gt; connection.delete_bucket(bucket)</span>
+<span class="sd">      &gt;&gt;&gt; connection.delete_bucket(bucket.name)</span>
 
 <span class="sd">    If you want to access an existing bucket::</span>
 
 <span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket-name&#39;)</span>
 
-<span class="sd">    A :class:`Connection` is actually iterable and will return the</span>
-<span class="sd">    :class:`gcloud.storage.bucket.Bucket` objects inside the project::</span>
+<span class="sd">    You can also iterate through all :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">    objects inside the project::</span>
 
 <span class="sd">      &gt;&gt;&gt; for bucket in connection.get_all_buckets():</span>
 <span class="sd">      &gt;&gt;&gt;   print bucket</span>
@@ -192,8 +197,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">return</span> <span class="n">url</span>
 </div>
-<div class="viewcode-block" id="Connection.make_request"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.make_request">[docs]</a>    <span class="k">def</span> <span class="nf">make_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                     <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_make_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                      <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A low level method to send a request to the API.</span>
 
 <span class="sd">        Typically, you shouldn&#39;t need to use this method.</span>
@@ -234,7 +239,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                                  <span class="n">body</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-</div>
+
 <div class="viewcode-block" id="Connection.api_request"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.api_request">[docs]</a>    <span class="k">def</span> <span class="nf">api_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                     <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                     <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
@@ -295,7 +300,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="n">content_type</span> <span class="o">=</span> <span class="s">&#39;application/json&#39;</span>
 
-        <span class="n">response</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_request</span><span class="p">(</span>
+        <span class="n">response</span><span class="p">,</span> <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
@@ -323,6 +328,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; for bucket in connection.get_all_buckets():</span>
 <span class="sd">          &gt;&gt;&gt;   print bucket</span>
 
+<span class="sd">        This implements &quot;storage.buckets.list&quot;.</span>
+
 <span class="sd">        :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.</span>
 <span class="sd">        :returns: All buckets belonging to this project.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -343,6 +350,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt;   bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; except NotFound:</span>
 <span class="sd">          &gt;&gt;&gt;   print &#39;Sorry, that bucket does not exist!&#39;</span>
+
+<span class="sd">        This implements &quot;storage.buckets.get&quot;.</span>
 
 <span class="sd">        :type bucket_name: string</span>
 <span class="sd">        :param bucket_name: The name of the bucket to get.</span>
@@ -365,6 +374,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; bucket = connection.create_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket</span>
 <span class="sd">          &lt;Bucket: my-bucket&gt;</span>
+
+<span class="sd">        This implements &quot;storage.buckets.insert&quot;.</span>
 
 <span class="sd">        :type bucket_name: string</span>
 <span class="sd">        :param bucket_name: The bucket name to create.</span>
@@ -404,6 +415,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt;   connection.delete_bucket(&#39;my-bucket&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; except Conflict:</span>
 <span class="sd">          &gt;&gt;&gt;   print &#39;That bucket is not empty!&#39;</span>
+
+<span class="sd">        This implements &quot;storage.buckets.delete&quot;.</span>
 
 <span class="sd">        :type bucket_name: string</span>
 <span class="sd">        :param bucket_name: The bucket name to delete.</span>
