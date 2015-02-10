@@ -56,10 +56,3 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(creds)
         self.assertTrue(conn.http is authorized)
         self.assertTrue(isinstance(creds._called_with, Http))
-
-    def test_user_agent_format(self):
-        from pkg_resources import get_distribution
-        expected_ua = 'gcloud-python/{0}'.format(
-            get_distribution('gcloud').version)
-        conn = self._makeOne()
-        self.assertEqual(conn.USER_AGENT, expected_ua)

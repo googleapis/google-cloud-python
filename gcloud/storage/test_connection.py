@@ -22,7 +22,10 @@ class TestConnection(unittest2.TestCase):
         return Connection
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        conn = self._getTargetClass()(*args, **kw)
+        # Set the user agent so the user_agent is not lazily loaded.
+        setattr(conn, 'user_agent', 'gcloud-python/test')
+        return conn
 
     def test_ctor_defaults(self):
         PROJECT = 'project'
@@ -118,7 +121,7 @@ class TestConnection(unittest2.TestCase):
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -138,7 +141,7 @@ class TestConnection(unittest2.TestCase):
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
             'Content-Type': 'application/json',
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -158,7 +161,7 @@ class TestConnection(unittest2.TestCase):
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
             'X-Foo': 'foo',
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -182,7 +185,7 @@ class TestConnection(unittest2.TestCase):
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -229,7 +232,7 @@ class TestConnection(unittest2.TestCase):
         expected_headers = {
             'Accept-Encoding': 'gzip',
             'Content-Length': 0,
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 
@@ -257,7 +260,7 @@ class TestConnection(unittest2.TestCase):
             'Accept-Encoding': 'gzip',
             'Content-Length': len(DATAJ),
             'Content-Type': 'application/json',
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
 

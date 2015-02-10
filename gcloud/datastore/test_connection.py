@@ -36,7 +36,10 @@ class TestConnection(unittest2.TestCase):
         return pb
 
     def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+        conn = self._getTargetClass()(*args, **kw)
+        # Set the user agent so the user_agent is not lazily loaded.
+        setattr(conn, 'user_agent', 'gcloud-python/test')
+        return conn
 
     def _verifyProtobufCall(self, called_with, URI, conn):
         self.assertEqual(called_with['uri'], URI)
@@ -44,7 +47,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(called_with['headers']['Content-Type'],
                          'application/x-protobuf')
         self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+                         conn.user_agent)
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
@@ -409,7 +412,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['method'], 'POST')
         self.assertEqual(cw['headers']['Content-Type'],
                          'application/x-protobuf')
-        self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
+        self.assertEqual(cw['headers']['User-Agent'], conn.user_agent)
         rq_class = datastore_pb.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])

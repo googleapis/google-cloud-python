@@ -307,7 +307,7 @@ class Blob(_PropertyMixin):
         headers = {
             'Accept': 'application/json',
             'Accept-Encoding': 'gzip, deflate',
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': conn.user_agent,
         }
 
         upload = transfer.Upload(file_obj,

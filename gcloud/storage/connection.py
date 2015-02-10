@@ -161,7 +161,7 @@ class Connection(_Base):
         if content_type:
             headers['Content-Type'] = content_type
 
-        headers['User-Agent'] = self.USER_AGENT
+        headers['User-Agent'] = self.user_agent
 
         return self.http.request(uri=url, method=method, headers=headers,
                                  body=data)

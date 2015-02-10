@@ -300,7 +300,7 @@ class Test_get_function(unittest2.TestCase):
         self.assertEqual(called_with['headers']['Content-Type'],
                          'application/x-protobuf')
         self.assertEqual(called_with['headers']['User-Agent'],
-                         conn.USER_AGENT)
+                         conn.user_agent)
 
     def test_w_deferred_from_backend_but_not_passed(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb

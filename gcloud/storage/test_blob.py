@@ -925,11 +925,11 @@ class _Responder(object):
 class _Connection(_Responder):
 
     API_BASE_URL = 'http://example.com'
-    USER_AGENT = 'testing 1.2.3'
     credentials = object()
 
     def __init__(self, *responses):
         super(_Connection, self).__init__(*responses)
+        self.user_agent = 'testing 1.2.3'
         self._signed = []
         self.http = _HTTP(*responses)
 
