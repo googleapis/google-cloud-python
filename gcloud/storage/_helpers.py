@@ -17,6 +17,9 @@
 These are *not* part of the API.
 """
 
+from Crypto.Hash import MD5
+import base64
+
 
 class _PropertyMixin(object):
     """Abstract mixin for cloud storage classes with associated propertties.
@@ -187,3 +190,14 @@ def _scalar_property(fieldname):
         self._patch_properties({fieldname: value})
 
     return property(_getter, _setter)
+
+
+def _base64_md5hash(bytes_to_sign):
+    """Get MD5 hash of bytes (as base64).
+
+    :type bytes_to_sign: bytes
+    :param bytes_to_sign: Bytes used to compute an MD5 hash (as base64).
+    """
+    hash = MD5.new(data=bytes_to_sign)
+    digest_bytes = hash.digest()
+    return base64.b64encode(digest_bytes)

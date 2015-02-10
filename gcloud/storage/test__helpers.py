@@ -237,6 +237,35 @@ class Test__scalar_property(unittest2.TestCase):
         self.assertEqual(test._patched, {'solfege': 'Latido'})
 
 
+class Test__base64_md5hash(unittest2.TestCase):
+
+    def _callFUT(self, bytes_to_sign):
+        from gcloud.storage._helpers import _base64_md5hash
+        return _base64_md5hash(bytes_to_sign)
+
+    def test_it(self):
+        BYTES_TO_SIGN = b'FOO'
+        SIGNED_CONTENT = self._callFUT(BYTES_TO_SIGN)
+        self.assertEqual(SIGNED_CONTENT, b'kBiQqOnIz21aGlQrIp/r/w==')
+
+    def test_it_with_stubs(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import _helpers as MUT
+
+        BASE64 = _Base64()
+        DIGEST_VAL = object()
+        BYTES_TO_SIGN = object()
+        MD5 = _MD5(DIGEST_VAL)
+
+        with _Monkey(MUT, base64=BASE64, MD5=MD5):
+            SIGNED_CONTENT = self._callFUT(BYTES_TO_SIGN)
+
+        self.assertTrue(SIGNED_CONTENT is DIGEST_VAL)
+        self.assertEqual(BASE64._called_b64encode, [DIGEST_VAL])
+        self.assertEqual(MD5._new_called, [BYTES_TO_SIGN])
+        self.assertEqual(MD5.hash_obj.num_digest_calls, 1)
+
+
 class _Connection(object):
 
     def __init__(self, *responses):
@@ -247,3 +276,34 @@ class _Connection(object):
         self._requested.append(kw)
         response, self._responses = self._responses[0], self._responses[1:]
         return response
+
+
+class _MD5Hash(object):
+
+    def __init__(self, digest_val):
+        self.digest_val = digest_val
+        self.num_digest_calls = 0
+
+    def digest(self):
+        self.num_digest_calls += 1
+        return self.digest_val
+
+class _MD5(object):
+
+    def __init__(self, digest_val):
+        self.hash_obj = _MD5Hash(digest_val)
+        self._new_called = []
+
+    def new(self, data=None):
+        self._new_called.append(data)
+        return self.hash_obj
+
+
+class _Base64(object):
+
+    def __init__(self):
+        self._called_b64encode = []
+
+    def b64encode(self, value):
+        self._called_b64encode.append(value)
+        return value
