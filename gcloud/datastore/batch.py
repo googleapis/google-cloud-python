@@ -13,66 +13,15 @@
 # limitations under the License.
 
 """Create / interact with a batch of updates / deletes."""
-try:
-    from threading import local as Local
-except ImportError:     # pragma: NO COVER (who doesn't have it?)
-    class Local(object):
-        """Placeholder for non-threaded applications."""
 
+from gcloud._localstack import _LocalStack
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import helpers
 from gcloud.datastore.key import _dataset_ids_equal
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
 
-class _Batches(Local):
-    """Manage a thread-local LIFO stack of active batches / transactions.
-
-    Intended for use only in :class:`gcloud.datastore.batch.Batch.__enter__`
-    """
-    def __init__(self):
-        super(_Batches, self).__init__()
-        self._stack = []
-
-    def __iter__(self):
-        """Iterate the stack in LIFO order.
-        """
-        return iter(reversed(self._stack))
-
-    def push(self, batch):
-        """Push a batch / transaction onto our stack.
-
-        Intended for use only in :meth:`gcloud.datastore.batch.Batch.__enter__`
-
-        :type batch: :class:`gcloud.datastore.batch.Batch` or
-                    :class:`gcloud.datastore.transaction.Transaction`
-        """
-        self._stack.append(batch)
-
-    def pop(self):
-        """Pop a batch / transaction from our stack.
-
-        Intended for use only in :meth:`gcloud.datastore.batch.Batch.__enter__`
-
-        :rtype: :class:`gcloud.datastore.batch.Batch` or
-                :class:`gcloud.datastore.transaction.Transaction`
-        :raises: IndexError if the stack is empty.
-        """
-        return self._stack.pop()
-
-    @property
-    def top(self):
-        """Get the top-most batch / transaction
-
-        :rtype: :class:`gcloud.datastore.batch.Batch` or
-                :class:`gcloud.datastore.transaction.Transaction` or None
-        :returns: the top-most item, or None if the stack is empty.
-        """
-        if len(self._stack) > 0:
-            return self._stack[-1]
-
-
-_BATCHES = _Batches()
+_BATCHES = _LocalStack()
 
 
 class Batch(object):

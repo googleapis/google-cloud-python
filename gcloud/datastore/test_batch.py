@@ -15,34 +15,6 @@
 import unittest2
 
 
-class Test_Batches(unittest2.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.datastore.batch import _Batches
-
-        return _Batches
-
-    def _makeOne(self):
-        return self._getTargetClass()()
-
-    def test_it(self):
-        batch1, batch2 = object(), object()
-        batches = self._makeOne()
-        self.assertEqual(list(batches), [])
-        self.assertTrue(batches.top is None)
-        batches.push(batch1)
-        self.assertTrue(batches.top is batch1)
-        batches.push(batch2)
-        self.assertTrue(batches.top is batch2)
-        popped = batches.pop()
-        self.assertTrue(popped is batch2)
-        self.assertTrue(batches.top is batch1)
-        self.assertEqual(list(batches), [batch1])
-        popped = batches.pop()
-        self.assertTrue(batches.top is None)
-        self.assertEqual(list(batches), [])
-
-
 class TestBatch(unittest2.TestCase):
 
     def _getTargetClass(self):
