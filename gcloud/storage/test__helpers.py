@@ -244,26 +244,44 @@ class Test__base64_md5hash(unittest2.TestCase):
         return _base64_md5hash(bytes_to_sign)
 
     def test_it(self):
+        from io import BytesIO
         BYTES_TO_SIGN = b'FOO'
-        SIGNED_CONTENT = self._callFUT(BYTES_TO_SIGN)
+        BUFFER = BytesIO()
+        BUFFER.write(BYTES_TO_SIGN)
+        BUFFER.seek(0)
+
+        SIGNED_CONTENT = self._callFUT(BUFFER)
         self.assertEqual(SIGNED_CONTENT, b'kBiQqOnIz21aGlQrIp/r/w==')
 
     def test_it_with_stubs(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import _helpers as MUT
 
+        class _Buffer(object):
+
+            def __init__(self, return_vals):
+                self.return_vals = return_vals
+                self._block_sizes = []
+
+            def read(self, block_size):
+                self._block_sizes.append(block_size)
+                return self.return_vals.pop()
+
         BASE64 = _Base64()
         DIGEST_VAL = object()
-        BYTES_TO_SIGN = object()
+        BYTES_TO_SIGN = b'BYTES_TO_SIGN'
+        BUFFER = _Buffer([b'', BYTES_TO_SIGN])
         MD5 = _MD5(DIGEST_VAL)
 
         with _Monkey(MUT, base64=BASE64, MD5=MD5):
-            SIGNED_CONTENT = self._callFUT(BYTES_TO_SIGN)
+            SIGNED_CONTENT = self._callFUT(BUFFER)
 
+        self.assertEqual(BUFFER._block_sizes, [8192, 8192])
         self.assertTrue(SIGNED_CONTENT is DIGEST_VAL)
         self.assertEqual(BASE64._called_b64encode, [DIGEST_VAL])
-        self.assertEqual(MD5._new_called, [BYTES_TO_SIGN])
+        self.assertEqual(MD5._new_called, [None])
         self.assertEqual(MD5.hash_obj.num_digest_calls, 1)
+        self.assertEqual(MD5.hash_obj._blocks, [BYTES_TO_SIGN])
 
 
 class _Connection(object):
@@ -283,10 +301,15 @@ class _MD5Hash(object):
     def __init__(self, digest_val):
         self.digest_val = digest_val
         self.num_digest_calls = 0
+        self._blocks = []
+
+    def update(self, block):
+        self._blocks.append(block)
 
     def digest(self):
         self.num_digest_calls += 1
         return self.digest_val
+
 
 class _MD5(object):
 

@@ -100,7 +100,7 @@ class TestStorageFiles(unittest2.TestCase):
         super(TestStorageFiles, cls).setUpClass()
         for file_data in cls.FILES.values():
             with open(file_data['path'], 'rb') as file_obj:
-                file_data['hash'] = _base64_md5hash(file_obj.read())
+                file_data['hash'] = _base64_md5hash(file_obj)
         cls.bucket = SHARED_BUCKETS['test_bucket']
 
     def setUp(self):
