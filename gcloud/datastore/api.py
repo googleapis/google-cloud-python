@@ -163,7 +163,7 @@ def _extended_lookup(connection, dataset_id, key_pbs,
     return results
 
 
-def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
+def get(*keys, missing=None, deferred=None, connection=None, dataset_id=None):
     """Retrieves entities, along with their attributes.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
@@ -231,7 +231,7 @@ def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
     return entities
 
 
-def put(entities, connection=None, dataset_id=None):
+def put(*entities, connection=None, dataset_id=None):
     """Save the entities in the Cloud Datastore.
 
     :type entities: list of :class:`gcloud.datastore.entity.Entity`
@@ -266,7 +266,7 @@ def put(entities, connection=None, dataset_id=None):
         current.commit()
 
 
-def delete(keys, connection=None, dataset_id=None):
+def delete(*keys, connection=None, dataset_id=None):
     """Delete the keys in the Cloud Datastore.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
