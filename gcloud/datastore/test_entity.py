@@ -53,7 +53,7 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(sorted(entity.exclude_from_indexes),
                          sorted(_EXCLUDE_FROM_INDEXES))
 
-    def test___eq_____ne___w_non_entitye(self):
+    def test___eq_____ne___w_non_entity(self):
         from gcloud.datastore.key import Key
         key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
         entity = self._makeOne(key=key)
