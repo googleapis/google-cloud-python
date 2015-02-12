@@ -176,8 +176,8 @@ class TestKey(unittest2.TestCase):
         _KIND = 'KIND'
         _NAME = 'one'
         key = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
-        self.assertRaises(NotImplementedError, lambda: key == object())
-        self.assertRaises(NotImplementedError, lambda: key != object())
+        self.assertFalse(key == object())
+        self.assertTrue(key != object())
 
     def test___eq_____ne___two_incomplete_keys_same_kind(self):
         _DATASET = 'DATASET'

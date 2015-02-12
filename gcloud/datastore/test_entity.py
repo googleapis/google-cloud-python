@@ -57,8 +57,8 @@ class TestEntity(unittest2.TestCase):
         from gcloud.datastore.key import Key
         key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
         entity = self._makeOne(key=key)
-        self.assertRaises(NotImplementedError, lambda: entity == object())
-        self.assertRaises(NotImplementedError, lambda: entity != object())
+        self.assertFalse(entity == object())
+        self.assertTrue(entity != object())
 
     def test___eq_____ne___w_different_keys(self):
         from gcloud.datastore.key import Key
