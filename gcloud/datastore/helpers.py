@@ -45,7 +45,10 @@ def entity_from_protobuf(pb):
     :rtype: :class:`gcloud.datastore.entity.Entity`
     :returns: The entity derived from the protobuf.
     """
-    key = key_from_protobuf(pb.key)
+    key = None
+    if pb.HasField('key'):
+        key = key_from_protobuf(pb.key)
+
     entity_props = {}
     exclude_from_indexes = []
 

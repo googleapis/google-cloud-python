@@ -104,6 +104,48 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._callFUT(entity_pb)
 
+    def test_entity_no_key(self):
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+
+        entity_pb = datastore_pb.Entity()
+        entity = self._callFUT(entity_pb)
+
+        self.assertEqual(entity.key, None)
+        self.assertEqual(dict(entity), {})
+
+    def test_nested_entity_no_key(self):
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+
+        DATASET_ID = 's~FOO'
+        KIND = 'KIND'
+        INSIDE_NAME = 'IFOO'
+        OUTSIDE_NAME = 'OBAR'
+        INSIDE_VALUE = 1337
+
+        entity_inside = datastore_pb.Entity()
+        inside_prop = entity_inside.property.add()
+        inside_prop.name = INSIDE_NAME
+        inside_prop.value.integer_value = INSIDE_VALUE
+
+        entity_pb = datastore_pb.Entity()
+        entity_pb.key.partition_id.dataset_id = DATASET_ID
+        element = entity_pb.key.path_element.add()
+        element.kind = KIND
+
+        outside_prop = entity_pb.property.add()
+        outside_prop.name = OUTSIDE_NAME
+        outside_prop.value.entity_value.CopyFrom(entity_inside)
+
+        entity = self._callFUT(entity_pb)
+        self.assertEqual(entity.key.dataset_id, DATASET_ID)
+        self.assertEqual(entity.key.flat_path, (KIND,))
+        self.assertEqual(len(entity), 1)
+
+        inside_entity = entity[OUTSIDE_NAME]
+        self.assertEqual(inside_entity.key, None)
+        self.assertEqual(len(inside_entity), 1)
+        self.assertEqual(inside_entity[INSIDE_NAME], INSIDE_VALUE)
+
 
 class Test_key_from_protobuf(unittest2.TestCase):
 
