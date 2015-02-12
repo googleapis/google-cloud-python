@@ -91,6 +91,58 @@ class TestEntity(unittest2.TestCase):
         self.assertFalse(entity1 == entity2)
         self.assertTrue(entity1 != entity2)
 
+    def test___eq_____ne___w_same_keys_props_w_equiv_keys_as_value(self):
+        from gcloud.datastore.key import Key
+        key1 = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        key2 = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        entity1 = self._makeOne(key=key1)
+        entity1['some_key'] = key1
+        entity2 = self._makeOne(key=key1)
+        entity2['some_key'] = key2
+        self.assertTrue(entity1 == entity2)
+        self.assertFalse(entity1 != entity2)
+
+    def test___eq_____ne___w_same_keys_props_w_diff_keys_as_value(self):
+        from gcloud.datastore.key import Key
+        _ID1 = 1234
+        _ID2 = 2345
+        key1 = Key(_KIND, _ID1, dataset_id=_DATASET_ID)
+        key2 = Key(_KIND, _ID2, dataset_id=_DATASET_ID)
+        entity1 = self._makeOne(key=key1)
+        entity1['some_key'] = key1
+        entity2 = self._makeOne(key=key1)
+        entity2['some_key'] = key2
+        self.assertFalse(entity1 == entity2)
+        self.assertTrue(entity1 != entity2)
+
+    def test___eq_____ne___w_same_keys_props_w_equiv_entities_as_value(self):
+        from gcloud.datastore.key import Key
+        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        entity1 = self._makeOne(key=key)
+        sub1 = self._makeOne()
+        sub1.update({'foo': 'Foo'})
+        entity1['some_entity'] = sub1
+        entity2 = self._makeOne(key=key)
+        sub2 = self._makeOne()
+        sub2.update({'foo': 'Foo'})
+        entity2['some_entity'] = sub2
+        self.assertTrue(entity1 == entity2)
+        self.assertFalse(entity1 != entity2)
+
+    def test___eq_____ne___w_same_keys_props_w_diff_entities_as_value(self):
+        from gcloud.datastore.key import Key
+        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        entity1 = self._makeOne(key=key)
+        sub1 = self._makeOne()
+        sub1.update({'foo': 'Foo'})
+        entity1['some_entity'] = sub1
+        entity2 = self._makeOne(key=key)
+        sub2 = self._makeOne()
+        sub2.update({'foo': 'Bar'})
+        entity2['some_entity'] = sub2
+        self.assertFalse(entity1 == entity2)
+        self.assertTrue(entity1 != entity2)
+
     def test___repr___no_key_empty(self):
         entity = self._makeOne()
         self.assertEqual(repr(entity), '<Entity {}>')

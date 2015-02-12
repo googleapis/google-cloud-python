@@ -90,7 +90,7 @@ class Entity(dict):
             return NotImplemented
 
         return (self.key == other.key and
-                dict(self) == dict(other))
+                super(Entity, self).__eq__(other))
 
     def __ne__(self, other):
         """Compare two entities for inequality.
