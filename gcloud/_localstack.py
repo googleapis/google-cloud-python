@@ -13,7 +13,7 @@
 # limitations under the License.
 """Thread-local resource stack.
 
-Not an API.
+This module is not part of the public API surface of `gcloud`.
 """
 
 try:
