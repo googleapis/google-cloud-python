@@ -32,6 +32,20 @@ class Connection(object):
     Subclasses may seek to use the private key from ``credentials`` to sign
     data.
 
+    A custom (non-``httplib2``) HTTP object must have a ``request`` method
+    which accepts the following arguments:
+
+    * ``uri``
+    * ``method``
+    * ``body``
+    * ``headers``
+
+    In addition, ``redirections`` and ``connection_type`` may be used.
+
+    Without the use of ``credentials.authorize(http)``, a custom ``http``
+    object will also need to be able to add a bearer token to API
+    requests and handle token refresh on 401 errors.
+
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for this connection.
