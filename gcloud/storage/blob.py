@@ -216,11 +216,59 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self)
 
-    def download_to_file(self, file_obj):
+    def download(self, filename_or_buffer=None):
+        """Download the contents of this blob.
+
+        Supports downloading
+        - directly as string (via a temporary buffer)
+        - into a file on the local filesystem
+        - into an existing buffer (possibly to a file)
+
+        If called with no arguments, returns a string::
+
+          >>> print blob.download()
+          'contents-of-blob'
+
+        :type filename_or_buffer: string, writable buffer or ``NoneType``
+        :param filename_or_buffer: An optional filename or a writable buffer
+                                   to download contents into.
+
+        :raises: :class:`gcloud.exceptions.NotFound`
+        :rtype: string or ``NoneType``
+        :returns: The downloaded file if ``filename_or_buffer`` is ``None``.
+        """
+        return_string = update_mtime = False
+
+        if filename_or_buffer is None:
+            buffer_obj = BytesIO()
+            return_string = True
+        elif isinstance(filename_or_buffer, six.string_types):
+            buffer_obj = open(filename_or_buffer, 'wb')
+            update_mtime = True
+        else:
+            buffer_obj = filename_or_buffer
+
+        try:
+            self._download_to_buffer(buffer_obj)
+
+            if return_string:
+                return buffer_obj.getvalue()
+        finally:
+            if update_mtime:
+                buffer_obj.close()
+
+                mtime = time.mktime(
+                    datetime.datetime.strptime(
+                        self.properties['updated'],
+                        '%Y-%m-%dT%H:%M:%S.%fz').timetuple()
+                )
+                os.utime(buffer_obj.name, (mtime, mtime))
+
+    def _download_to_buffer(self, buffer_obj):
         """Download the contents of this blob into a file-like object.
 
-        :type file_obj: file
-        :param file_obj: A file handle to which to write the blob's data.
+        :type buffer_obj: writable object
+        :param buffer_obj: A buffer object with a write() method.
 
         :raises: :class:`gcloud.exceptions.NotFound`
         """
@@ -228,7 +276,8 @@ class Blob(_PropertyMixin):
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
-        download = transfer.Download.FromStream(file_obj, auto_transfer=False)
+        download = transfer.Download.FromStream(buffer_obj,
+                                                auto_transfer=False)
         download.chunksize = self.CHUNK_SIZE
         headers = {'Range': 'bytes=0-%d' % (self.CHUNK_SIZE - 1)}
         request = http_wrapper.Request(download_url, 'GET', headers)
@@ -241,6 +290,16 @@ class Blob(_PropertyMixin):
         download.StreamInChunks(callback=lambda *args: None,
                                 finish_callback=lambda *args: None)
 
+    def download_to_file(self, file_obj):
+        """Download the contents of this blob into a file-like object.
+
+        :type file_obj: file
+        :param file_obj: A file handle to which to write the blob's data.
+
+        :raises: :class:`gcloud.exceptions.NotFound`
+        """
+        self.download(file_obj)
+
     def download_to_filename(self, filename):
         """Download the contents of this blob into a named file.
 
@@ -249,15 +308,7 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`gcloud.exceptions.NotFound`
         """
-        with open(filename, 'wb') as file_obj:
-            self.download_to_file(file_obj)
-
-        mtime = time.mktime(
-            datetime.datetime.strptime(
-                self.properties['updated'],
-                '%Y-%m-%dT%H:%M:%S.%fz').timetuple()
-        )
-        os.utime(file_obj.name, (mtime, mtime))
+        self.download(filename)
 
     def download_as_string(self):
         """Download the contents of this blob as a string.
@@ -266,9 +317,7 @@ class Blob(_PropertyMixin):
         :returns: The data stored in this blob.
         :raises: :class:`gcloud.exceptions.NotFound`
         """
-        string_buffer = BytesIO()
-        self.download_to_file(string_buffer)
-        return string_buffer.getvalue()
+        return self.download()
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
                          content_type=None, num_retries=6):
