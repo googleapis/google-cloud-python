@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from Crypto.Hash import MD5
-import base64
 import httplib2
 import tempfile
 import time
@@ -21,6 +19,7 @@ import unittest2
 
 from gcloud import exceptions
 from gcloud import storage
+from gcloud.storage._helpers import _base64_md5hash
 from gcloud.storage import _implicit_environ
 
 
@@ -96,18 +95,12 @@ class TestStorageFiles(unittest2.TestCase):
         }
     }
 
-    @staticmethod
-    def _get_base64_md5hash(filename):
-        with open(filename, 'rb') as file_obj:
-            hash = MD5.new(data=file_obj.read())
-        digest_bytes = hash.digest()
-        return base64.b64encode(digest_bytes)
-
     @classmethod
     def setUpClass(cls):
         super(TestStorageFiles, cls).setUpClass()
         for file_data in cls.FILES.values():
-            file_data['hash'] = cls._get_base64_md5hash(file_data['path'])
+            with open(file_data['path'], 'rb') as file_obj:
+                file_data['hash'] = _base64_md5hash(file_obj)
         cls.bucket = SHARED_BUCKETS['test_bucket']
 
     def setUp(self):
