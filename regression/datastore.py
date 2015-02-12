@@ -92,16 +92,8 @@ class TestDatastoreSave(TestDatastore):
         if key_id is not None:
             self.assertEqual(entity.key.id, key_id)
         retrieved_entity, = datastore.get([entity.key])
-        # Check the keys are the same.
-        self.assertEqual(retrieved_entity.key.path, entity.key.path)
-        self.assertEqual(retrieved_entity.key.namespace, entity.key.namespace)
-        self.assertTrue(_compare_dataset_ids(
-            retrieved_entity.key.dataset_id, entity.key.dataset_id))
-
-        # Check the data is the same.
-        retrieved_dict = dict(retrieved_entity.items())
-        entity_dict = dict(entity.items())
-        self.assertEqual(retrieved_dict, entity_dict)
+        # Check the given and retrieved are the the same.
+        self.assertEqual(retrieved_entity, entity)
 
     def test_post_with_name(self):
         self._generic_test_post(name='post1')
@@ -162,12 +154,7 @@ class TestDatastoreSaveKeys(TestDatastore):
         query.add_filter('linkedTo', '=', key)
 
         stored_persons = list(query.fetch(limit=2))
-        self.assertEqual(len(stored_persons), 1)
-
-        stored_person = stored_persons[0]
-        self.assertEqual(stored_person['fullName'], entity['fullName'])
-        self.assertEqual(stored_person.key.path, key.path)
-        self.assertEqual(stored_person.key.namespace, key.namespace)
+        self.assertEqual(stored_persons, [entity])
 
 
 class TestDatastoreQuery(TestDatastore):
@@ -258,31 +245,24 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
         arya_entity = entities[0]
-        arya_dict = dict(arya_entity.items())
+        arya_dict = dict(arya_entity)
         self.assertEqual(arya_dict, {'name': 'Arya', 'family': 'Stark'})
 
         catelyn_stark_entity = entities[2]
-        catelyn_stark_dict = dict(catelyn_stark_entity.items())
+        catelyn_stark_dict = dict(catelyn_stark_entity)
         self.assertEqual(catelyn_stark_dict,
                          {'name': 'Catelyn', 'family': 'Stark'})
 
         catelyn_tully_entity = entities[3]
-        catelyn_tully_dict = dict(catelyn_tully_entity.items())
+        catelyn_tully_dict = dict(catelyn_tully_entity)
         self.assertEqual(catelyn_tully_dict,
                          {'name': 'Catelyn', 'family': 'Tully'})
 
         # Check both Catelyn keys are the same.
-        catelyn_stark_key = catelyn_stark_entity.key
-        catelyn_tully_key = catelyn_tully_entity.key
-        self.assertEqual(catelyn_stark_key.path, catelyn_tully_key.path)
-        self.assertEqual(catelyn_stark_key.namespace,
-                         catelyn_tully_key.namespace)
-        # Also check the dataset_id since both retrieved from datastore.
-        self.assertEqual(catelyn_stark_key.dataset_id,
-                         catelyn_tully_key.dataset_id)
+        self.assertEqual(catelyn_stark_entity.key, catelyn_tully_entity.key)
 
         sansa_entity = entities[8]
-        sansa_dict = dict(sansa_entity.items())
+        sansa_dict = dict(sansa_entity)
         self.assertEqual(sansa_dict, {'name': 'Sansa', 'family': 'Stark'})
 
     def test_query_paginate_with_offset(self):
@@ -358,22 +338,4 @@ class TestDatastoreTransaction(TestDatastore):
         # This will always return after the transaction.
         retrieved_entity, = datastore.get([entity.key])
         self.case_entities_to_delete.append(retrieved_entity)
-        retrieved_dict = dict(retrieved_entity.items())
-        entity_dict = dict(entity.items())
-        self.assertEqual(retrieved_dict, entity_dict)
-
-
-def _compare_dataset_ids(dataset_id1, dataset_id2):
-    if dataset_id1 == dataset_id2:
-        return True
-
-    if dataset_id1.startswith('s~') or dataset_id1.startswith('e~'):
-        # If `dataset_id1` is prefixed and not matching, then the only way
-        # they can match is if `dataset_id2` is unprefixed.
-        return dataset_id1[2:] == dataset_id2
-    elif dataset_id2.startswith('s~') or dataset_id2.startswith('e~'):
-        # Here we know `dataset_id1` is unprefixed and `dataset_id2`
-        # is prefixed.
-        return dataset_id1 == dataset_id2[2:]
-
-    return False
+        self.assertEqual(retrieved_entity, entity)
