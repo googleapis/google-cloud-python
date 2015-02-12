@@ -80,6 +80,8 @@ def set_default_dataset_id(dataset_id=None):
 
     :type dataset_id: string
     :param dataset_id: Optional. The dataset ID to use as default.
+
+    :raises: :class:`EnvironmentError` if no dataset ID was implied.
     """
     if dataset_id is None:
         dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
@@ -92,6 +94,8 @@ def set_default_dataset_id(dataset_id=None):
 
     if dataset_id is not None:
         _implicit_environ.DATASET_ID = dataset_id
+    else:
+        raise EnvironmentError('No dataset ID could be inferred.')
 
 
 def set_default_connection(connection=None):

@@ -58,7 +58,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
 
         with self._monkeyEnviron(None):
             with self._monkeyImplicit():
-                self._callFUT()
+                self.assertRaises(EnvironmentError, self._callFUT)
 
         self.assertEqual(_implicit_environ.DATASET_ID, None)
 
@@ -98,7 +98,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
 
         with self._monkeyEnviron(None):
             with self._monkeyImplicit():
-                self._callFUT(None)
+                self.assertRaises(EnvironmentError, self._callFUT, None)
 
         self.assertEqual(_implicit_environ.DATASET_ID, None)
 
@@ -152,7 +152,10 @@ class Test_set_default_dataset_id(unittest2.TestCase):
 
         with self._monkeyEnviron(None):
             with self._monkeyImplicit(connection=connection):
-                self._callFUT()
+                if EXPECTED_ID is None:
+                    self.assertRaises(EnvironmentError, self._callFUT)
+                else:
+                    self._callFUT()
 
         self.assertEqual(_implicit_environ.DATASET_ID, EXPECTED_ID)
         self.assertEqual(connection.host, '169.254.169.254')
