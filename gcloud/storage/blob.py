@@ -271,7 +271,8 @@ class Blob(_PropertyMixin):
         return string_buffer.getvalue()
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
-                         content_type=None, num_retries=6):
+                         content_type=None, num_retries=6,
+                         upload_chunk_size=None):
         """Upload the contents of this blob from a file-like object.
 
         .. note::
@@ -285,6 +286,11 @@ class Blob(_PropertyMixin):
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
 
+        The current ``Blob``'s chunk size is not used by default. Default
+        behavior is instead to attempt uploading the entire object. See
+        https://github.com/GoogleCloudPlatform/gcloud-python/issues/546
+        for more details.
+
         :type file_obj: file
         :param file_obj: A file handle open for reading.
 
@@ -296,6 +302,15 @@ class Blob(_PropertyMixin):
         :param size: The number of bytes to read from the file handle.
                      If not provided, we'll try to guess the size using
                      :func:`os.fstat`
+
+        :type content_type: string or ``NoneType``
+        :param content_type: Optional content type of uploaded content.
+
+        :type num_retries: int
+        :param num_retries: Optional number of retries. Defaults to 6.
+
+        :type upload_chunk_size: int or ``NoneType``
+        :param upload_chunk_size: Optional size of chunks to upload with.
         """
         # Rewind the file if desired.
         if rewind:
@@ -313,7 +328,7 @@ class Blob(_PropertyMixin):
         upload = transfer.Upload(file_obj,
                                  content_type or 'application/unknown',
                                  total_bytes, auto_transfer=False,
-                                 chunksize=self.CHUNK_SIZE)
+                                 chunksize=upload_chunk_size)
 
         url_builder = _UrlBuilder(bucket_name=self.bucket.name,
                                   object_name=self.name)
@@ -611,7 +626,7 @@ class Blob(_PropertyMixin):
 
 
 class _UploadConfig(object):
-    """ Faux message FBO apitools' 'ConfigureRequest'.
+    """Faux message for benefit of apitools' 'ConfigureRequest'.
 
     Values extracted from apitools
     'samples/storage_sample/storage/storage_v1_client.py'
@@ -625,7 +640,7 @@ class _UploadConfig(object):
 
 
 class _UrlBuilder(object):
-    """Faux builder FBO apitools' 'ConfigureRequest'"""
+    """Faux builder for benefit of apitools' 'ConfigureRequest'"""
     def __init__(self, bucket_name, object_name):
         self.query_params = {'name': object_name}
         self._bucket_name = bucket_name
