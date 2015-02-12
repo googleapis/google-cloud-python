@@ -85,18 +85,38 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>Shared implementation of connections to API servers.</p>
 <dl class="class">
 <dt id="gcloud.connection.Connection">
-<em class="property">class </em><tt class="descclassname">gcloud.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em>, <em>http=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>A generic connection to Google Cloud Platform.</p>
 <p>Subclasses should understand only the basic types in method arguments,
 however they should be capable of returning advanced types.</p>
-<p>Constructor for Connection.</p>
+<p>If no value is passed in for <tt class="docutils literal"><span class="pre">http</span></tt>, a <tt class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></tt> object
+will be created and authorized with the <tt class="docutils literal"><span class="pre">credentials</span></tt>. If not, the
+<tt class="docutils literal"><span class="pre">credentials</span></tt> and <tt class="docutils literal"><span class="pre">http</span></tt> need not be related.</p>
+<p>Subclasses may seek to use the private key from <tt class="docutils literal"><span class="pre">credentials</span></tt> to sign
+data.</p>
+<p>A custom (non-<tt class="docutils literal"><span class="pre">httplib2</span></tt>) HTTP object must have a <tt class="docutils literal"><span class="pre">request</span></tt> method
+which accepts the following arguments:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">uri</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">method</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">body</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">headers</span></tt></li>
+</ul>
+<p>In addition, <tt class="docutils literal"><span class="pre">redirections</span></tt> and <tt class="docutils literal"><span class="pre">connection_type</span></tt> may be used.</p>
+<p>Without the use of <tt class="docutils literal"><span class="pre">credentials.authorize(http)</span></tt>, a custom <tt class="docutils literal"><span class="pre">http</span></tt>
+object will also need to be able to add a bearer token to API
+requests and handle token refresh on 401 errors.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt> or
-<tt class="xref py py-class docutils literal"><span class="pre">NoneType</span></tt>) &#8211; The OAuth2 Credentials to use for this connection.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt> or
+<tt class="xref py py-class docutils literal"><span class="pre">NoneType</span></tt>) &#8211; The OAuth2 Credentials to use for this connection.</li>
+<li><strong>http</strong> (<tt class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></tt> or class that defines <tt class="docutils literal"><span class="pre">request()</span></tt>.) &#8211; An optional HTTP object to make requests.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>

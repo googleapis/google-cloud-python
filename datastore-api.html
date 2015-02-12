@@ -271,7 +271,7 @@ implicit cases are:
 <p>Connections to gcloud datastore API servers.</p>
 <dl class="class">
 <dt id="gcloud.datastore.connection.Connection">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em>, <em>http=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></a></p>
 <p>A connection to the Google Cloud Datastore via the Protobuf API.</p>
 <p>This class should understand only the basic types (and protobufs)
@@ -281,16 +281,6 @@ in method arguments, however should be capable of returning advanced types.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt>) &#8211; The OAuth2 Credentials to use for this connection.</td>
-</tr>
-</tbody>
-</table>
-<p>Constructor for Connection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt> or
-<tt class="xref py py-class docutils literal"><span class="pre">NoneType</span></tt>) &#8211; The OAuth2 Credentials to use for this connection.</td>
 </tr>
 </tbody>
 </table>
