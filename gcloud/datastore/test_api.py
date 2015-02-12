@@ -162,10 +162,10 @@ class Test__require_connection(unittest2.TestCase):
 
 class Test_get_function(unittest2.TestCase):
 
-    def _callFUT(self, keys, missing=None, deferred=None,
+    def _callFUT(self, *keys, missing=None, deferred=None,
                  connection=None, dataset_id=None):
         from gcloud.datastore.api import get
-        return get(keys, missing=missing, deferred=deferred,
+        return get(*keys, missing=missing, deferred=deferred,
                    connection=connection, dataset_id=dataset_id)
 
     def _make_entity_pb(self, dataset_id, kind, integer_id,
@@ -190,10 +190,10 @@ class Test_get_function(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         key = Key('Kind', 1234, dataset_id=DATASET_ID)
         self.assertRaises(EnvironmentError,
-                          self._callFUT, [key], dataset_id=DATASET_ID)
+                          self._callFUT, key, dataset_id=DATASET_ID)
 
     def test_no_keys(self):
-        results = self._callFUT([])
+        results = self._callFUT()
         self.assertEqual(results, [])
 
     def test_miss(self):
@@ -203,7 +203,7 @@ class Test_get_function(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         connection = _Connection()
         key = Key('Kind', 1234, dataset_id=DATASET_ID)
-        results = self._callFUT([key], connection=connection,
+        results = self._callFUT(key, connection=connection,
                                 dataset_id=DATASET_ID)
         self.assertEqual(results, [])
 
@@ -214,7 +214,7 @@ class Test_get_function(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         connection = _Connection()
         key = Key('Kind', 1234, dataset_id=DATASET_ID)
-        results = self._callFUT([key], connection=connection)
+        results = self._callFUT(key, connection=connection)
         self.assertEqual(results, [])
         expected = {
             'dataset_id': DATASET_ID,
@@ -246,7 +246,7 @@ class Test_get_function(unittest2.TestCase):
 
         key = Key(KIND, ID, dataset_id=DATASET_ID)
         missing = []
-        entities = self._callFUT([key], connection=connection,
+        entities = self._callFUT(key, connection=connection,
                                  missing=missing, dataset_id=DATASET_ID)
         self.assertEqual(entities, [])
         self.assertEqual([missed.key.to_protobuf() for missed in missing],
@@ -261,7 +261,7 @@ class Test_get_function(unittest2.TestCase):
 
         missing = ['this', 'list', 'is', 'not', 'empty']
         self.assertRaises(ValueError, self._callFUT,
-                          [key], connection=CONNECTION,
+                          key, connection=CONNECTION,
                           missing=missing)
 
     def test_w_deferred_non_empty(self):
@@ -273,7 +273,7 @@ class Test_get_function(unittest2.TestCase):
 
         deferred = ['this', 'list', 'is', 'not', 'empty']
         self.assertRaises(ValueError, self._callFUT,
-                          [key], connection=CONNECTION,
+                          key, connection=CONNECTION,
                           deferred=deferred)
 
     def test_miss_w_deferred(self):
@@ -288,7 +288,7 @@ class Test_get_function(unittest2.TestCase):
         connection._deferred = [key.to_protobuf()]
 
         deferred = []
-        entities = self._callFUT([key], connection=connection,
+        entities = self._callFUT(key, connection=connection,
                                  deferred=deferred, dataset_id=DATASET_ID)
         self.assertEqual(entities, [])
         self.assertEqual([def_key.to_protobuf() for def_key in deferred],
@@ -399,7 +399,7 @@ class Test_get_function(unittest2.TestCase):
         connection = _Connection(entity_pb)
 
         key = Key(KIND, ID, dataset_id=DATASET_ID)
-        result, = self._callFUT([key], connection=connection,
+        result, = self._callFUT(key, connection=connection,
                                 dataset_id=DATASET_ID)
         new_key = result.key
 
@@ -473,7 +473,7 @@ class Test_get_function(unittest2.TestCase):
         key = Key(KIND, ID, dataset_id=DATASET_ID)
         with _Monkey(_implicit_environ, CONNECTION=CUSTOM_CONNECTION,
                      DATASET_ID=DATASET_ID):
-            result, = self._callFUT([key])
+            result, = self._callFUT(key)
 
         expected_called_with = {
             'dataset_id': DATASET_ID,
@@ -510,7 +510,7 @@ class Test_get_function(unittest2.TestCase):
 
         key = Key(KIND, ID, dataset_id=DATASET_ID)
         with _NoCommitTransaction(DATASET_ID, CUSTOM_CONNECTION, TRANSACTION):
-            result, = self._callFUT([key], connection=CUSTOM_CONNECTION,
+            result, = self._callFUT(key, connection=CUSTOM_CONNECTION,
                                     dataset_id=DATASET_ID)
 
         expected_called_with = {
@@ -550,7 +550,7 @@ class Test_get_function(unittest2.TestCase):
         deferred = []
         missing = []
         with _Monkey(api, _MAX_LOOPS=-1):
-            result = self._callFUT([key], missing=missing, deferred=deferred,
+            result = self._callFUT(key, missing=missing, deferred=deferred,
                                    connection=connection,
                                    dataset_id=DATASET_ID)
 
@@ -563,9 +563,9 @@ class Test_get_function(unittest2.TestCase):
 
 class Test_put_function(unittest2.TestCase):
 
-    def _callFUT(self, entities, connection=None, dataset_id=None):
+    def _callFUT(self, *entities, connection=None, dataset_id=None):
         from gcloud.datastore.api import put
-        return put(entities, connection=connection, dataset_id=dataset_id)
+        return put(*entities, connection=connection, dataset_id=dataset_id)
 
     def test_no_connection(self):
         from gcloud.datastore import _implicit_environ
@@ -611,7 +611,7 @@ class Test_put_function(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
 
         self.assertEqual(_implicit_environ.CONNECTION, None)
-        result = self._callFUT([])
+        result = self._callFUT()
         self.assertEqual(result, None)
 
     def test_no_batch_w_partial_key(self):
@@ -696,9 +696,9 @@ class Test_put_function(unittest2.TestCase):
 
 class Test_delete_function(unittest2.TestCase):
 
-    def _callFUT(self, keys, connection=None, dataset_id=None):
+    def _callFUT(self, *keys, connection=None, dataset_id=None):
         from gcloud.datastore.api import delete
-        return delete(keys, connection=connection, dataset_id=dataset_id)
+        return delete(*keys, connection=connection, dataset_id=dataset_id)
 
     def test_no_connection(self):
         from gcloud.datastore import _implicit_environ
@@ -710,7 +710,7 @@ class Test_delete_function(unittest2.TestCase):
 
         self.assertEqual(_implicit_environ.CONNECTION, None)
         with self.assertRaises(EnvironmentError):
-            self._callFUT([key], dataset_id=_DATASET)
+            self._callFUT(key, dataset_id=_DATASET)
 
     def test_no_dataset_id(self):
         from gcloud.datastore import _implicit_environ
@@ -724,7 +724,7 @@ class Test_delete_function(unittest2.TestCase):
 
         self.assertEqual(_implicit_environ.CONNECTION, None)
 
-        result = self._callFUT([key], connection=connection)
+        result = self._callFUT(key, connection=connection)
 
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
@@ -736,7 +736,7 @@ class Test_delete_function(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
 
         self.assertEqual(_implicit_environ.CONNECTION, None)
-        result = self._callFUT([])
+        result = self._callFUT()
         self.assertEqual(result, None)
 
     def test_no_batch(self):
@@ -748,7 +748,7 @@ class Test_delete_function(unittest2.TestCase):
         connection = _Connection()
         key = _Key(_DATASET)
 
-        result = self._callFUT([key], connection=connection,
+        result = self._callFUT(key, connection=connection,
                                dataset_id=_DATASET)
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
@@ -771,7 +771,7 @@ class Test_delete_function(unittest2.TestCase):
         with _Monkey(_implicit_environ,
                      CONNECTION=connection,
                      DATASET_ID=_DEFAULT_DATASET):
-            result = self._callFUT([key])
+            result = self._callFUT(key)
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
         dataset_id, mutation = connection._committed[0]
@@ -789,7 +789,7 @@ class Test_delete_function(unittest2.TestCase):
 
         # Set up Batch on stack so we can check it is used.
         with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
-            result = self._callFUT([key])
+            result = self._callFUT(key)
 
         self.assertEqual(result, None)
         self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
@@ -810,7 +810,7 @@ class Test_delete_function(unittest2.TestCase):
 
         # Set up Batch on stack so we can check it is used.
         with _NoCommitTransaction(_DATASET, connection) as CURR_BATCH:
-            result = self._callFUT([key])
+            result = self._callFUT(key)
 
         self.assertEqual(result, None)
         self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
@@ -836,7 +836,7 @@ class Test_delete_function(unittest2.TestCase):
                      DATASET_ID=_DATASET):
             # Set up Batch on stack so we can check it is used.
             with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
-                result = self._callFUT([key])
+                result = self._callFUT(key)
 
         self.assertEqual(result, None)
         self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
