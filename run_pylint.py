@@ -128,8 +128,9 @@ def get_files_for_linting(allow_limited=True):
     :param allow_limited: Boolean indicating if a reduced set of files can
                           be used.
 
-    :rtype: list
-    :returns: List of filenames to be linted.
+    :rtype: pair
+    :returns: Tuple of the diff base using the the list of filenames to be
+              linted.
     """
     diff_base = None
     if (os.getenv('TRAVIS_BRANCH') == 'master' and
@@ -155,7 +156,7 @@ def get_files_for_linting(allow_limited=True):
         print 'Diff base not specified, listing all files in repository.'
         result = subprocess.check_output(['git', 'ls-files'])
 
-    return result.rstrip('\n').split('\n')
+    return result.rstrip('\n').split('\n'), diff_base
 
 
 def get_python_files(all_files=None):
@@ -171,10 +172,14 @@ def get_python_files(all_files=None):
     :param all_files: Optional list of files to be linted.
 
     :rtype: tuple
-    :returns: A tuple containing two lists. The first list contains
-              all production files and the next all test/demo files.
+    :returns: A tuple containing two lists and a boolean. The first list
+              contains all production files, the next all test/demo files and
+              the boolean indicates if a restricted fileset was used.
     """
-    all_files = all_files or get_files_for_linting()
+    using_restricted = False
+    if all_files is None:
+        all_files, diff_base = get_files_for_linting()
+        using_restricted = diff_base is not None
 
     library_files = []
     non_library_files = []
@@ -185,7 +190,7 @@ def get_python_files(all_files=None):
             else:
                 non_library_files.append(filename)
 
-    return library_files, non_library_files
+    return library_files, non_library_files, using_restricted
 
 
 def lint_fileset(filenames, rcfile, description):
@@ -212,15 +217,18 @@ def lint_fileset(filenames, rcfile, description):
 def main():
     """Script entry point. Lints both sets of files."""
     make_test_rc(PRODUCTION_RC, TEST_RC_ADDITIONS, TEST_RC)
-    library_files, non_library_files = get_python_files()
+    library_files, non_library_files, using_restricted = get_python_files()
     try:
         lint_fileset(library_files, PRODUCTION_RC, 'library code')
         lint_fileset(non_library_files, TEST_RC, 'test and demo code')
     except SystemExit:
+        if not using_restricted:
+            raise
+
         message = 'Restricted lint failed, expanding to full fileset.'
         print >> sys.stderr, message
-        all_files = get_files_for_linting(allow_limited=False)
-        library_files, non_library_files = get_python_files(
+        all_files, _ = get_files_for_linting(allow_limited=False)
+        library_files, non_library_files, _ = get_python_files(
             all_files=all_files)
         lint_fileset(library_files, PRODUCTION_RC, 'library code')
         lint_fileset(non_library_files, TEST_RC, 'test and demo code')
