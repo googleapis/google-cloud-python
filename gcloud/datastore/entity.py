@@ -87,7 +87,7 @@ class Entity(dict):
         :returns: True if the entities compare equal, else False.
         """
         if not isinstance(other, Entity):
-            raise NotImplementedError
+            return NotImplemented
 
         return (self.key == other.key and
                 dict(self) == dict(other))

@@ -87,7 +87,7 @@ class Key(object):
         :returns: True if the keys compare equal, else False.
         """
         if not isinstance(other, Key):
-            raise NotImplementedError
+            return NotImplemented
 
         if self.is_partial or other.is_partial:
             return False
