@@ -193,7 +193,7 @@ class Test_get_function(unittest2.TestCase):
                           self._callFUT, key, dataset_id=DATASET_ID)
 
     def test_no_keys(self):
-        results = self._callFUT([])
+        results = self._callFUT()
         self.assertEqual(results, [])
 
     def test_miss(self):
@@ -611,7 +611,7 @@ class Test_put_function(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
 
         self.assertEqual(_implicit_environ.CONNECTION, None)
-        result = self._callFUT([])
+        result = self._callFUT()
         self.assertEqual(result, None)
 
     def test_no_batch_w_partial_key(self):
@@ -736,7 +736,7 @@ class Test_delete_function(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
 
         self.assertEqual(_implicit_environ.CONNECTION, None)
-        result = self._callFUT([])
+        result = self._callFUT()
         self.assertEqual(result, None)
 
     def test_no_batch(self):
