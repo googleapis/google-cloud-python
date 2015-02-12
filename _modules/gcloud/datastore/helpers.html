@@ -119,7 +119,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :rtype: :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">    :returns: The entity derived from the protobuf.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">pb</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+
     <span class="n">entity_props</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="p">[]</span>
 
