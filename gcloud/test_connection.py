@@ -32,6 +32,13 @@ class TestConnection(unittest2.TestCase):
         creds = object()
         conn = self._makeOne(creds)
         self.assertTrue(conn.credentials is creds)
+        self.assertEqual(conn._http, None)
+
+    def test_ctor_explicit_http(self):
+        http = object()
+        conn = self._makeOne(http=http)
+        self.assertEqual(conn.credentials, None)
+        self.assertTrue(conn.http is http)
 
     def test_http_w_existing(self):
         conn = self._makeOne()
