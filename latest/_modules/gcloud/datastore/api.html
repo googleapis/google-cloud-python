@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gcloud.datastore.api &mdash; gcloud 0.4.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/github.min.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.4.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.4.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="../../../_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">                    
+          <li>
+            <a href=" 
+https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
+              <img src="../../../_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="../../../_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+        <h1 class="page-title">Python</h1>
+
+          <div class="versions">
+            <span class="v-current">0.4.0</span>
+            <!--
+            <a href="versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              See version History
+            </a>-->
+          </div><!-- end of .versions -->
+      </header>
+                
+      <section class="content">
+        
+  <h1>Source code for gcloud.datastore.api</h1><div class="highlight"><pre>
+<span class="c"># Copyright 2014 Google Inc. All rights reserved.</span>
+<span class="c">#</span>
+<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c"># you may not use this file except in compliance with the License.</span>
+<span class="c"># You may obtain a copy of the License at</span>
+<span class="c">#</span>
+<span class="c">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c">#</span>
+<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c"># See the License for the specific language governing permissions and</span>
+<span class="c"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Methods for interacting with Google Cloud Datastore.</span>
+
+<span class="sd">Allows interacting with the datastore via user-friendly Key, Entity and</span>
+<span class="sd">Query objects rather than via protobufs.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
+
+
+<span class="n">_MAX_LOOPS</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="sd">&quot;&quot;&quot;Maximum number of iterations to wait for deferred keys.&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">first_key</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Infer a dataset ID from the environment, if not passed explicitly.</span>
+
+<span class="sd">    Order of precedence:</span>
+
+<span class="sd">    - Passed `dataset_id` (if not None).</span>
+<span class="sd">    - `dataset_id` of current batch / transaction (if current exists).</span>
+<span class="sd">    - `dataset_id` of first key</span>
+<span class="sd">    - `dataset_id` inferred from the environment (if `set_default_dataset_id`</span>
+<span class="sd">      has been called).</span>
+
+<span class="sd">    :type dataset_id: string</span>
+<span class="sd">    :param dataset_id: Optional.</span>
+
+<span class="sd">    :type first_key: :class:`gcloud.datastore.key.Key` or None</span>
+<span class="sd">    :param first_key: Optional: first key being manipulated.</span>
+
+<span class="sd">    :rtype: string</span>
+<span class="sd">    :returns: A dataset ID based on the current environment.</span>
+<span class="sd">    :raises: :class:`EnvironmentError` if ``dataset_id`` is ``None``,</span>
+<span class="sd">             and cannot be inferred from the environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dataset_id</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="n">Batch</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">top</span><span class="o">.</span><span class="n">dataset_id</span>
+    <span class="k">if</span> <span class="n">first_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">first_key</span><span class="o">.</span><span class="n">dataset_id</span>
+    <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Dataset ID could not be inferred.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">DATASET_ID</span>
+
+
+<span class="k">def</span> <span class="nf">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Infer a connection from the environment, if not passed explicitly.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: Optional.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :returns: A connection based on the current environment.</span>
+<span class="sd">    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and</span>
+<span class="sd">             cannot be inferred from the environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">Batch</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">top</span><span class="o">.</span><span class="n">connection</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Connection could not be inferred.&#39;</span><span class="p">)</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">CONNECTION</span>
+    <span class="k">return</span> <span class="n">connection</span>
+
+
+<span class="k">def</span> <span class="nf">_extended_lookup</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span>
+                     <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">eventual</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Repeat lookup until all keys found (unless stop requested).</span>
+
+<span class="sd">    Helper method for :func:`get`.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: The connection used to connect to datastore.</span>
+
+<span class="sd">    :type dataset_id: string</span>
+<span class="sd">    :param dataset_id: The ID of the dataset of which to make the request.</span>
+
+<span class="sd">    :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`</span>
+<span class="sd">    :param key_pbs: The keys to retrieve from the datastore.</span>
+
+<span class="sd">    :type missing: an empty list or None.</span>
+<span class="sd">    :param missing: If a list is passed, the key-only entity protobufs</span>
+<span class="sd">                    returned by the backend as &quot;missing&quot; will be copied</span>
+<span class="sd">                    into it.  Use only as a keyword param.</span>
+
+<span class="sd">    :type deferred: an empty list or None.</span>
+<span class="sd">    :param deferred: If a list is passed, the key protobufs returned</span>
+<span class="sd">                     by the backend as &quot;deferred&quot; will be copied into it.</span>
+<span class="sd">                     Use only as a keyword param.</span>
+
+<span class="sd">    :type eventual: boolean</span>
+<span class="sd">    :param eventual: If False (the default), request ``STRONG`` read</span>
+<span class="sd">                     consistency.  If True, request ``EVENTUAL`` read</span>
+<span class="sd">                     consistency.</span>
+
+<span class="sd">    :type transaction_id: string</span>
+<span class="sd">    :param transaction_id: If passed, make the request in the scope of</span>
+<span class="sd">                           the given transaction.  Incompatible with</span>
+<span class="sd">                           ``eventual==True``.</span>
+
+<span class="sd">    :rtype: list of :class:`gcloud.datastore._datastore_v1_pb2.Entity`</span>
+<span class="sd">    :returns: The requested entities.</span>
+<span class="sd">    :raises: :class:`ValueError` if missing / deferred are not null or</span>
+<span class="sd">             empty list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">missing</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;missing must be None or an empty list&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">deferred</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;deferred must be None or an empty list&#39;</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">loop_num</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">loop_num</span> <span class="o">&lt;</span> <span class="n">_MAX_LOOPS</span><span class="p">:</span>  <span class="c"># loop against possible deferred.</span>
+        <span class="n">loop_num</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">results_found</span><span class="p">,</span> <span class="n">missing_found</span><span class="p">,</span> <span class="n">deferred_found</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span>
+            <span class="n">key_pbs</span><span class="o">=</span><span class="n">key_pbs</span><span class="p">,</span>
+            <span class="n">eventual</span><span class="o">=</span><span class="n">eventual</span><span class="p">,</span>
+            <span class="n">transaction_id</span><span class="o">=</span><span class="n">transaction_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">results_found</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">missing</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">missing_found</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">deferred</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">deferred_found</span><span class="p">)</span>
+            <span class="k">break</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">deferred_found</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="c"># We have deferred keys, and the user didn&#39;t ask to know about</span>
+        <span class="c"># them, so retry (but only with the deferred ones).</span>
+        <span class="n">key_pbs</span> <span class="o">=</span> <span class="n">deferred_found</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves entities, along with their attributes.</span>
+
+<span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param keys: The keys to be retrieved from the datastore.</span>
+
+<span class="sd">    :type missing: an empty list or None.</span>
+<span class="sd">    :param missing: If a list is passed, the key-only entities returned</span>
+<span class="sd">                    by the backend as &quot;missing&quot; will be copied into it.</span>
+<span class="sd">                    Use only as a keyword param.</span>
+
+<span class="sd">    :type deferred: an empty list or None.</span>
+<span class="sd">    :param deferred: If a list is passed, the keys returned</span>
+<span class="sd">                     by the backend as &quot;deferred&quot; will be copied into it.</span>
+<span class="sd">                     Use only as a keyword param.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: Optional. The connection used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :type dataset_id: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :rtype: list of :class:`gcloud.datastore.entity.Entity`</span>
+<span class="sd">    :returns: The requested entities.</span>
+<span class="sd">    :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,</span>
+<span class="sd">             and cannot be inferred from the environment.  ValueError if</span>
+<span class="sd">             one or more of ``keys`` has a dataset ID which does not match</span>
+<span class="sd">             the passed / inferred dataset ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]))</span> <span class="o">!=</span> <span class="p">[</span><span class="n">dataset_id</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Keys do not match dataset ID&#39;</span><span class="p">)</span>
+
+    <span class="n">transaction</span> <span class="o">=</span> <span class="n">Transaction</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+
+    <span class="n">entity_pbs</span> <span class="o">=</span> <span class="n">_extended_lookup</span><span class="p">(</span>
+        <span class="n">connection</span><span class="p">,</span>
+        <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span>
+        <span class="n">key_pbs</span><span class="o">=</span><span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">],</span>
+        <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span>
+        <span class="n">deferred</span><span class="o">=</span><span class="n">deferred</span><span class="p">,</span>
+        <span class="n">transaction_id</span><span class="o">=</span><span class="n">transaction</span> <span class="ow">and</span> <span class="n">transaction</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">missing</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">missed_pb</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">missed_pb</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">deferred</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">deferred</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">helpers</span><span class="o">.</span><span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">deferred_pb</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">deferred_pb</span> <span class="ow">in</span> <span class="n">deferred</span><span class="p">]</span>
+
+    <span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">entity_pb</span> <span class="ow">in</span> <span class="n">entity_pbs</span><span class="p">:</span>
+        <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">entities</span>
+
+</div>
+<div class="viewcode-block" id="put"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.put">[docs]</a><span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Save the entities in the Cloud Datastore.</span>
+
+<span class="sd">    :type entities: list of :class:`gcloud.datastore.entity.Entity`</span>
+<span class="sd">    :param entities: The entities to be saved to the datastore.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: Optional connection used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :type dataset_id: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,</span>
+<span class="sd">             and cannot be inferred from the environment.  ValueError if</span>
+<span class="sd">             one or more entities has a key with a dataset ID not matching</span>
+<span class="sd">             the passed / inferred dataset ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">entities</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="n">current</span> <span class="o">=</span> <span class="n">Batch</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+    <span class="n">in_batch</span> <span class="o">=</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span><span class="p">:</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">entities</span><span class="p">:</span>
+        <span class="n">current</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span><span class="p">:</span>
+        <span class="n">current</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Delete the keys in the Cloud Datastore.</span>
+
+<span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param keys: The keys to be deleted from the datastore.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: Optional connection used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :type dataset_id: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,</span>
+<span class="sd">             and cannot be inferred from the environment.  ValueError if</span>
+<span class="sd">             one or more keys has a dataset ID not matching the passed /</span>
+<span class="sd">             inferred dataset ID.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+    <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_require_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c"># We allow partial keys to attempt a delete, the backend will fail.</span>
+    <span class="n">current</span> <span class="o">=</span> <span class="n">Batch</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+    <span class="n">in_batch</span> <span class="o">=</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span><span class="p">:</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="n">current</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span><span class="p">:</span>
+        <span class="n">current</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="allocate_ids"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.allocate_ids">[docs]</a><span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="p">,</span> <span class="n">num_ids</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Allocates a list of IDs from a partial key.</span>
+
+<span class="sd">    :type incomplete_key: A :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param incomplete_key: Partial key to use as base for allocated IDs.</span>
+
+<span class="sd">    :type num_ids: integer</span>
+<span class="sd">    :param num_ids: The number of IDs to allocate.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: Optional. The connection used to connect to datastore.</span>
+
+<span class="sd">    :rtype: list of :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :returns: The (complete) keys allocated with ``incomplete_key`` as root.</span>
+<span class="sd">    :raises: :class:`ValueError` if ``incomplete_key`` is not a partial key.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">((</span><span class="s">&#39;Key is not partial.&#39;</span><span class="p">,</span> <span class="n">incomplete_key</span><span class="p">))</span>
+
+    <span class="n">incomplete_key_pb</span> <span class="o">=</span> <span class="n">incomplete_key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
+    <span class="n">incomplete_key_pbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">incomplete_key_pb</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_ids</span>
+
+    <span class="n">allocated_key_pbs</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+                                                <span class="n">incomplete_key_pbs</span><span class="p">)</span>
+    <span class="n">allocated_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">allocated_key_pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+                     <span class="k">for</span> <span class="n">allocated_key_pb</span> <span class="ow">in</span> <span class="n">allocated_key_pbs</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">allocated_id</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">allocated_id</span> <span class="ow">in</span> <span class="n">allocated_ids</span><span class="p">]</span></div>
+</pre></div>
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <ul><li><a href="../../../index.html">gcloud</a></li></ul>
+        <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">GCloud Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-acl.html">ACL</a></li>
+</ul>
+
+        <ul class="external-links">
+          <li>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/" title="Python on Github">
+              <img src="../../../_static/images/icon-link-github.svg" alt="Github icon" />
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues" title="Python issues on Github">
+              <img src="../../../_static/images/icon-link-github.svg" alt="Github icon" />
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="http://stackoverflow.com/questions/tagged/gcloud-python" title="gcloud on StackOverflow">
+              <img src="../../../_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              gcloud
+            </a>
+          </li>
+          <li>
+            <a href="https://pypi.python.org/pypi/gcloud" title="Python package manager">
+              <img src="../../../_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              Package Manager
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="../../../_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="../../../_static/js/plugins.js"></script>
+    <script src="../../../_static/js/main.js"></script>
+  
+  </body>
+</html>
