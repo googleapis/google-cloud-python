@@ -11,6 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Thread-local resource stack.
+
+Not an API.
+"""
 
 try:
     from threading import local as Local
