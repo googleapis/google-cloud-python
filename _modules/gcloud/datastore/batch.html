@@ -95,6 +95,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">_dataset_ids_equal</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 
 
@@ -290,8 +291,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Entity must have a key&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_dataset_ids_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
-                                          <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_dataset_ids_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Key must be from same dataset as batch&quot;</span><span class="p">)</span>
 
         <span class="n">_assign_entity_to_mutation</span><span class="p">(</span>
@@ -309,8 +309,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Key must be complete&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_dataset_ids_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span>
-                                          <span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_dataset_ids_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Key must be from same dataset as batch&quot;</span><span class="p">)</span>
 
         <span class="n">key_pb</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
