@@ -155,18 +155,35 @@ class ServiceUnavailable(ServerError):
     code = 503
 
 
-def make_exception(response, content):
+def make_exception(response, content, use_json=True):
     """Factory:  create exception based on HTTP response code.
 
+    :type response: :class:`httplib2.Response` or other HTTP response object
+    :param response: A response object that defines a status code as the
+                     status attribute.
+
+    :type content: string or dictionary
+    :param content: The body of the HTTP error response.
+
+    :type use_json: boolean
+    :param use_json: Flag indicating if ``content`` is expected to be JSON.
+
     :rtype: instance of :class:`GCloudError`, or a concrete subclass.
+    :returns: Exception specific to the error response.
     """
+    message = content
+    errors = ()
 
     if isinstance(content, str):
-        content = json.loads(content)
+        if use_json:
+            payload = json.loads(content)
+        else:
+            payload = {}
+    else:
+        payload = content
 
-    message = content.get('message')
-    error = content.get('error', {})
-    errors = error.get('errors', ())
+    message = payload.get('message', message)
+    errors = payload.get('error', {}).get('errors', ())
 
     try:
         klass = _HTTP_CODE_TO_EXCEPTION[response.status]

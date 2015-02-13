@@ -106,10 +106,10 @@ class TestConnection(unittest2.TestCase):
         METHOD = 'METHOD'
         DATA = 'DATA'
         conn = self._makeOne()
-        conn._http = Http({'status': '400'}, '{"message": "Bad Request"}')
+        conn._http = Http({'status': '400'}, 'Entity value is indexed.')
         with self.assertRaises(BadRequest) as e:
             conn._request(DATASET_ID, METHOD, DATA)
-        expected_message = ('400 Bad Request')
+        expected_message = '400 Entity value is indexed.'
         self.assertEqual(str(e.exception), expected_message)
 
     def test__rpc(self):
