@@ -327,7 +327,9 @@ class Test_Blob(unittest2.TestCase):
         fetched = blob.download_as_string()
         self.assertEqual(fetched, b'abcdef')
 
-    def test_upload_from_file_simple(self):
+    def _upload_from_file_simple_test_helper(self, properties=None,
+                                             content_type_arg=None,
+                                             expected_content_type=None):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
@@ -339,12 +341,13 @@ class Test_Blob(unittest2.TestCase):
             (response, b''),
         )
         bucket = _Bucket(connection)
-        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob.CHUNK_SIZE = 5
         with NamedTemporaryFile() as fh:
             fh.write(DATA)
             fh.flush()
-            blob.upload_from_file(fh, rewind=True)
+            blob.upload_from_file(fh, rewind=True,
+                                  content_type=content_type_arg)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -358,7 +361,31 @@ class Test_Blob(unittest2.TestCase):
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], '6')
-        self.assertEqual(headers['Content-Type'], 'application/unknown')
+        self.assertEqual(headers['Content-Type'], expected_content_type)
+
+    def test_upload_from_file_simple(self):
+        self._upload_from_file_simple_test_helper(
+            expected_content_type='application/octet-stream')
+
+    def test_upload_from_file_simple_with_content_type(self):
+        EXPECTED_CONTENT_TYPE = 'foo/bar'
+        self._upload_from_file_simple_test_helper(
+            properties={'contentType': EXPECTED_CONTENT_TYPE},
+            expected_content_type=EXPECTED_CONTENT_TYPE)
+
+    def test_upload_from_file_simple_with_content_type_passed(self):
+        EXPECTED_CONTENT_TYPE = 'foo/bar'
+        self._upload_from_file_simple_test_helper(
+            content_type_arg=EXPECTED_CONTENT_TYPE,
+            expected_content_type=EXPECTED_CONTENT_TYPE)
+
+    def test_upload_from_file_simple_both_content_type_sources(self):
+        EXPECTED_CONTENT_TYPE = 'foo/bar'
+        ALT_CONTENT_TYPE = 'foo/baz'
+        self._upload_from_file_simple_test_helper(
+            properties={'contentType': ALT_CONTENT_TYPE},
+            content_type_arg=EXPECTED_CONTENT_TYPE,
+            expected_content_type=EXPECTED_CONTENT_TYPE)
 
     def test_upload_from_file_resumable(self):
         from six.moves.http_client import OK
@@ -403,7 +430,7 @@ class Test_Blob(unittest2.TestCase):
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['X-Upload-Content-Length'], '6')
         self.assertEqual(headers['X-Upload-Content-Type'],
-                         'application/unknown')
+                         'application/octet-stream')
         self.assertEqual(rq[1]['method'], 'PUT')
         self.assertEqual(rq[1]['uri'], UPLOAD_URL)
         headers = dict(
@@ -457,9 +484,11 @@ class Test_Blob(unittest2.TestCase):
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], '6')
-        self.assertEqual(headers['Content-Type'], 'application/unknown')
+        self.assertEqual(headers['Content-Type'], 'application/octet-stream')
 
-    def test_upload_from_filename(self):
+    def _upload_from_filename_test_helper(self, properties=None,
+                                          content_type_arg=None,
+                                          expected_content_type=None):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
@@ -478,12 +507,13 @@ class Test_Blob(unittest2.TestCase):
             (chunk2_response, ''),
         )
         bucket = _Bucket(connection)
-        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket,
+                             properties=properties)
         blob.CHUNK_SIZE = 5
         with NamedTemporaryFile(suffix='.jpeg') as fh:
             fh.write(DATA)
             fh.flush()
-            blob.upload_from_filename(fh.name)
+            blob.upload_from_filename(fh.name, content_type=content_type_arg)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -497,7 +527,31 @@ class Test_Blob(unittest2.TestCase):
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], '6')
-        self.assertEqual(headers['Content-Type'], 'image/jpeg')
+        self.assertEqual(headers['Content-Type'], expected_content_type)
+
+    def test_upload_from_filename(self):
+        self._upload_from_filename_test_helper(
+            expected_content_type='image/jpeg')
+
+    def test_upload_from_filename_with_content_type(self):
+        EXPECTED_CONTENT_TYPE = 'foo/bar'
+        self._upload_from_filename_test_helper(
+            properties={'contentType': EXPECTED_CONTENT_TYPE},
+            expected_content_type=EXPECTED_CONTENT_TYPE)
+
+    def test_upload_from_filename_with_content_type_passed(self):
+        EXPECTED_CONTENT_TYPE = 'foo/bar'
+        self._upload_from_filename_test_helper(
+            content_type_arg=EXPECTED_CONTENT_TYPE,
+            expected_content_type=EXPECTED_CONTENT_TYPE)
+
+    def test_upload_from_filename_both_content_type_sources(self):
+        EXPECTED_CONTENT_TYPE = 'foo/bar'
+        ALT_CONTENT_TYPE = 'foo/baz'
+        self._upload_from_filename_test_helper(
+            properties={'contentType': ALT_CONTENT_TYPE},
+            content_type_arg=EXPECTED_CONTENT_TYPE,
+            expected_content_type=EXPECTED_CONTENT_TYPE)
 
     def test_upload_from_string_w_bytes(self):
         from six.moves.http_client import OK

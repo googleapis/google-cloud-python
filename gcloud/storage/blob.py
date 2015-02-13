@@ -274,6 +274,11 @@ class Blob(_PropertyMixin):
                          content_type=None, num_retries=6):
         """Upload the contents of this blob from a file-like object.
 
+        The content type of the upload will either be
+        - The value passed in to the function (if any)
+        - The value stored on the current blob
+        - The default value of 'application/octet-stream'
+
         .. note::
            The effect of uploading to an existing blob depends on the
            "versioning" and "lifecycle" policies defined on the blob's
@@ -296,7 +301,16 @@ class Blob(_PropertyMixin):
         :param size: The number of bytes to read from the file handle.
                      If not provided, we'll try to guess the size using
                      :func:`os.fstat`
+
+        :type content_type: string or ``NoneType``
+        :param content_type: Optional type of content being uploaded.
+
+        :type num_retries: integer
+        :param num_retries: Number of upload retries. Defaults to 6.
         """
+        content_type = (content_type or self._properties.get('contentType') or
+                        'application/octet-stream')
+
         # Rewind the file if desired.
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
@@ -310,9 +324,8 @@ class Blob(_PropertyMixin):
             'User-Agent': conn.USER_AGENT,
         }
 
-        upload = transfer.Upload(file_obj,
-                                 content_type or 'application/unknown',
-                                 total_bytes, auto_transfer=False,
+        upload = transfer.Upload(file_obj, content_type, total_bytes,
+                                 auto_transfer=False,
                                  chunksize=self.CHUNK_SIZE)
 
         url_builder = _UrlBuilder(bucket_name=self.bucket.name,
@@ -342,8 +355,13 @@ class Blob(_PropertyMixin):
         else:
             http_wrapper.MakeRequest(conn.http, request, retries=num_retries)
 
-    def upload_from_filename(self, filename):
+    def upload_from_filename(self, filename, content_type=None):
         """Upload this blob's contents from the content of a named file.
+
+        The content type of the upload will either be
+        - The value passed in to the function (if any)
+        - The value stored on the current blob
+        - The value given by mimetypes.guess_type
 
         .. note::
            The effect of uploading to an existing blob depends on the
@@ -358,8 +376,13 @@ class Blob(_PropertyMixin):
 
         :type filename: string
         :param filename: The path to the file.
+
+        :type content_type: string or ``NoneType``
+        :param content_type: Optional type of content being uploaded.
         """
-        content_type, _ = mimetypes.guess_type(filename)
+        content_type = content_type or self._properties.get('contentType')
+        if content_type is None:
+            content_type, _ = mimetypes.guess_type(filename)
 
         with open(filename, 'rb') as file_obj:
             self.upload_from_file(file_obj, content_type=content_type)
