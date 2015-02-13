@@ -61,6 +61,54 @@ class TestCredentials(unittest2.TestCase):
         self.assertEqual(client._called_with, expected_called_with)
 
 
+class Test_get_for_service_account_json(unittest2.TestCase):
+
+    def _callFUT(self, private_key_path, scope=None):
+        from gcloud.credentials import get_for_service_account_json
+        return get_for_service_account_json(private_key_path, scope=scope)
+
+    def test_it(self):
+        from gcloud._testing import _Monkey
+        from gcloud import credentials as MUT
+
+        CREDS = _Credentials()
+        _filenames = []
+
+        def get_creds(filename):
+            _filenames.append(filename)
+            return CREDS
+
+        FILENAME = object()
+
+        renames = {'_get_application_default_credential_from_file': get_creds}
+        with _Monkey(MUT, **renames):
+            self._callFUT(FILENAME)
+
+        self.assertEqual(_filenames, [FILENAME])
+        self.assertFalse(hasattr(CREDS, '_scopes'))
+
+    def test_it_with_scope(self):
+        from gcloud._testing import _Monkey
+        from gcloud import credentials as MUT
+
+        CREDS = _Credentials()
+        _filenames = []
+
+        def get_creds(filename):
+            _filenames.append(filename)
+            return CREDS
+
+        FILENAME = object()
+        SCOPE = object()
+
+        renames = {'_get_application_default_credential_from_file': get_creds}
+        with _Monkey(MUT, **renames):
+            self._callFUT(FILENAME, scope=SCOPE)
+
+        self.assertEqual(_filenames, [FILENAME])
+        self.assertEqual(CREDS._scopes, SCOPE)
+
+
 class Test_generate_signed_url(unittest2.TestCase):
 
     def _callFUT(self, *args, **kwargs):

@@ -24,6 +24,7 @@ from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from oauth2client import client
+from oauth2client.client import _get_application_default_credential_from_file
 from oauth2client import crypt
 from oauth2client import service_account
 import pytz
@@ -72,8 +73,34 @@ def get_credentials():
     return client.GoogleCredentials.get_application_default()
 
 
+def get_for_service_account_json(private_key_path, scope=None):
+    """Gets the credentials for a service account with JSON key.
+
+    :type private_key_path: string
+    :param private_key_path: The path to a private key file (this file was
+                             given to you when you created the service
+                             account). This file must be in JSON key format.
+
+    :type scope: string or tuple of string
+    :param scope: The scope against which to authenticate. (Different services
+                  require different scopes, check the documentation for which
+                  scope is required for the different levels of access to any
+                  particular API.)
+
+    :rtype: :class:`oauth2client.client.GoogleCredentials`,
+            :class:`oauth2client.service_account._ServiceAccountCredentials`
+    :returns: New service account or Google (for a user JSON key file)
+              credentials object.
+    """
+    credentials = _get_application_default_credential_from_file(
+        private_key_path)
+    if scope is not None:
+        credentials = credentials.create_scoped(scope)
+    return credentials
+
+
 def get_for_service_account_p12(client_email, private_key_path, scope=None):
-    """Gets the credentials for a service account.
+    """Gets the credentials for a service account with PKCS12 / p12 key.
 
     .. note::
       This method is not used by default, instead :func:`get_credentials`
