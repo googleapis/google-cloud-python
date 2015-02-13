@@ -67,7 +67,7 @@ class Connection(connection.Connection):
 
         status = headers['status']
         if status != '200':
-            raise make_exception(headers, content)
+            raise make_exception(headers, content, use_json=False)
 
         return content
 
