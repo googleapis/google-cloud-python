@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.exceptions &mdash; gcloud 32e50eb documentation</title>
+    <title>gcloud.exceptions &mdash; gcloud c6718f3 documentation</title>
     
     <link rel="stylesheet" href="../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '32e50eb',
+        VERSION:     'c6718f3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 32e50eb documentation" href="../../index.html" />
+    <link rel="top" title="gcloud c6718f3 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body>
@@ -60,7 +60,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">32e50eb</span>
+            <span class="v-current">c6718f3</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -229,18 +229,35 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="n">code</span> <span class="o">=</span> <span class="mi">503</span>
 
 </div>
-<div class="viewcode-block" id="make_exception"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.make_exception">[docs]</a><span class="k">def</span> <span class="nf">make_exception</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+<div class="viewcode-block" id="make_exception"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.make_exception">[docs]</a><span class="k">def</span> <span class="nf">make_exception</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Factory:  create exception based on HTTP response code.</span>
 
+<span class="sd">    :type response: :class:`httplib2.Response` or other HTTP response object</span>
+<span class="sd">    :param response: A response object that defines a status code as the</span>
+<span class="sd">                     status attribute.</span>
+
+<span class="sd">    :type content: string or dictionary</span>
+<span class="sd">    :param content: The body of the HTTP error response.</span>
+
+<span class="sd">    :type use_json: boolean</span>
+<span class="sd">    :param use_json: Flag indicating if ``content`` is expected to be JSON.</span>
+
 <span class="sd">    :rtype: instance of :class:`GCloudError`, or a concrete subclass.</span>
+<span class="sd">    :returns: Exception specific to the error response.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">content</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_json</span><span class="p">:</span>
+            <span class="n">payload</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">payload</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">content</span>
 
-    <span class="n">message</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;message&#39;</span><span class="p">)</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">,</span> <span class="p">{})</span>
-    <span class="n">errors</span> <span class="o">=</span> <span class="n">error</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;errors&#39;</span><span class="p">,</span> <span class="p">())</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;message&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;errors&#39;</span><span class="p">,</span> <span class="p">())</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">klass</span> <span class="o">=</span> <span class="n">_HTTP_CODE_TO_EXCEPTION</span><span class="p">[</span><span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">]</span>

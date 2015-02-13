@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 32e50eb documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud c6718f3 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '32e50eb',
+        VERSION:     'c6718f3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 32e50eb documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud c6718f3 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -60,7 +60,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">32e50eb</span>
+            <span class="v-current">c6718f3</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -348,6 +348,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                          <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this blob from a file-like object.</span>
 
+<span class="sd">        The content type of the upload will either be</span>
+<span class="sd">        - The value passed in to the function (if any)</span>
+<span class="sd">        - The value stored on the current blob</span>
+<span class="sd">        - The default value of &#39;application/octet-stream&#39;</span>
+
 <span class="sd">        .. note::</span>
 <span class="sd">           The effect of uploading to an existing blob depends on the</span>
 <span class="sd">           &quot;versioning&quot; and &quot;lifecycle&quot; policies defined on the blob&#39;s</span>
@@ -370,7 +375,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :param size: The number of bytes to read from the file handle.</span>
 <span class="sd">                     If not provided, we&#39;ll try to guess the size using</span>
 <span class="sd">                     :func:`os.fstat`</span>
+
+<span class="sd">        :type content_type: string or ``NoneType``</span>
+<span class="sd">        :param content_type: Optional type of content being uploaded.</span>
+
+<span class="sd">        :type num_retries: integer</span>
+<span class="sd">        :param num_retries: Number of upload retries. Defaults to 6.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">content_type</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contentType&#39;</span><span class="p">)</span> <span class="ow">or</span>
+                        <span class="s">&#39;application/octet-stream&#39;</span><span class="p">)</span>
+
         <span class="c"># Rewind the file if desired.</span>
         <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
             <span class="n">file_obj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
@@ -384,9 +398,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="s">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">conn</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="n">upload</span> <span class="o">=</span> <span class="n">transfer</span><span class="o">.</span><span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span>
-                                 <span class="n">content_type</span> <span class="ow">or</span> <span class="s">&#39;application/unknown&#39;</span><span class="p">,</span>
-                                 <span class="n">total_bytes</span><span class="p">,</span> <span class="n">auto_transfer</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">upload</span> <span class="o">=</span> <span class="n">transfer</span><span class="o">.</span><span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span>
+                                 <span class="n">auto_transfer</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                                  <span class="n">chunksize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
 
         <span class="n">url_builder</span> <span class="o">=</span> <span class="n">_UrlBuilder</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
@@ -416,8 +429,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">else</span><span class="p">:</span>
             <span class="n">http_wrapper</span><span class="o">.</span><span class="n">MakeRequest</span><span class="p">(</span><span class="n">conn</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this blob&#39;s contents from the content of a named file.</span>
+
+<span class="sd">        The content type of the upload will either be</span>
+<span class="sd">        - The value passed in to the function (if any)</span>
+<span class="sd">        - The value stored on the current blob</span>
+<span class="sd">        - The value given by mimetypes.guess_type</span>
 
 <span class="sd">        .. note::</span>
 <span class="sd">           The effect of uploading to an existing blob depends on the</span>
@@ -432,8 +450,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :type filename: string</span>
 <span class="sd">        :param filename: The path to the file.</span>
+
+<span class="sd">        :type content_type: string or ``NoneType``</span>
+<span class="sd">        :param content_type: Optional type of content being uploaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="n">content_type</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contentType&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">content_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>

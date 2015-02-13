@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>GCloud Package &mdash; gcloud 32e50eb documentation</title>
+    <title>GCloud Package &mdash; gcloud c6718f3 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '32e50eb',
+        VERSION:     'c6718f3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 32e50eb documentation" href="index.html" />
+    <link rel="top" title="gcloud c6718f3 documentation" href="index.html" />
     <link rel="next" title="Datastore" href="datastore-api.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -61,7 +61,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">32e50eb</span>
+            <span class="v-current">c6718f3</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -564,13 +564,25 @@ needed service account settings.</p>
 
 <dl class="function">
 <dt id="gcloud.exceptions.make_exception">
-<tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">make_exception</tt><big>(</big><em>response</em>, <em>content</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#make_exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.make_exception" title="Permalink to this definition">#</a></dt>
+<tt class="descclassname">gcloud.exceptions.</tt><tt class="descname">make_exception</tt><big>(</big><em>response</em>, <em>content</em>, <em>use_json=True</em><big>)</big><a class="reference internal" href="_modules/gcloud/exceptions.html#make_exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.make_exception" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory:  create exception based on HTTP response code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">instance of <a class="reference internal" href="#gcloud.exceptions.GCloudError" title="gcloud.exceptions.GCloudError"><tt class="xref py py-class docutils literal"><span class="pre">GCloudError</span></tt></a>, or a concrete subclass.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>response</strong> (<tt class="xref py py-class docutils literal"><span class="pre">httplib2.Response</span></tt> or other HTTP response object) &#8211; A response object that defines a status code as the
+status attribute.</li>
+<li><strong>content</strong> (<em>string or dictionary</em>) &#8211; The body of the HTTP error response.</li>
+<li><strong>use_json</strong> (<em>boolean</em>) &#8211; Flag indicating if <tt class="docutils literal"><span class="pre">content</span></tt> is expected to be JSON.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">instance of <a class="reference internal" href="#gcloud.exceptions.GCloudError" title="gcloud.exceptions.GCloudError"><tt class="xref py py-class docutils literal"><span class="pre">GCloudError</span></tt></a>, or a concrete subclass.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Exception specific to the error response.</p>
+</td>
 </tr>
 </tbody>
 </table>

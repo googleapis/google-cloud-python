@@ -596,17 +596,26 @@ h2, h3 {
 /* Docs Content
    ========================================================================== */
 
-.admonition-title {
-  background-color: #e5ecf9;
-  padding: 8px;
-}
-
 .admonition {
   background-color: #f8f8f8;
 }
 
+.admonition p.admonition-title {
+  background-color: #e5ecf9;
+  font-weight: bold;
+  padding: 8px;
+}
+
 .admonition pre {
   background-color: #eeeeee !important;
+}
+
+.admonition p {
+  padding: 0 8px;
+}
+
+.admonition .last {
+  padding-bottom: 8px;
 }
 
 .docs-header {

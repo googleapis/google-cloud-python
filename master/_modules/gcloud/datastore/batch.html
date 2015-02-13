@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.batch &mdash; gcloud 32e50eb documentation</title>
+    <title>gcloud.datastore.batch &mdash; gcloud c6718f3 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '32e50eb',
+        VERSION:     'c6718f3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 32e50eb documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud c6718f3 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -60,7 +60,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">32e50eb</span>
+            <span class="v-current">c6718f3</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -87,66 +87,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="c"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;Create / interact with a batch of updates / deletes.&quot;&quot;&quot;</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">local</span> <span class="k">as</span> <span class="n">Local</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>     <span class="c"># pragma: NO COVER (who doesn&#39;t have it?)</span>
-    <span class="k">class</span> <span class="nc">Local</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Placeholder for non-threaded applications.&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">gcloud._localstack</span> <span class="kn">import</span> <span class="n">_LocalStack</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">_dataset_ids_equal</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 
 
-<span class="k">class</span> <span class="nc">_Batches</span><span class="p">(</span><span class="n">Local</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Manage a thread-local LIFO stack of active batches / transactions.</span>
-
-<span class="sd">    Intended for use only in :class:`gcloud.datastore.batch.Batch.__enter__`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">_Batches</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Iterate the stack in LIFO order.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="p">))</span>
-
-    <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Push a batch / transaction onto our stack.</span>
-
-<span class="sd">        Intended for use only in :meth:`gcloud.datastore.batch.Batch.__enter__`</span>
-
-<span class="sd">        :type batch: :class:`gcloud.datastore.batch.Batch` or</span>
-<span class="sd">                    :class:`gcloud.datastore.transaction.Transaction`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Pop a batch / transaction from our stack.</span>
-
-<span class="sd">        Intended for use only in :meth:`gcloud.datastore.batch.Batch.__enter__`</span>
-
-<span class="sd">        :rtype: :class:`gcloud.datastore.batch.Batch` or</span>
-<span class="sd">                :class:`gcloud.datastore.transaction.Transaction`</span>
-<span class="sd">        :raises: IndexError if the stack is empty.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">top</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the top-most batch / transaction</span>
-
-<span class="sd">        :rtype: :class:`gcloud.datastore.batch.Batch` or</span>
-<span class="sd">                :class:`gcloud.datastore.transaction.Transaction` or None</span>
-<span class="sd">        :returns: the top-most item, or None if the stack is empty.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-
-<span class="n">_BATCHES</span> <span class="o">=</span> <span class="n">_Batches</span><span class="p">()</span>
+<span class="n">_BATCHES</span> <span class="o">=</span> <span class="n">_LocalStack</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
