@@ -57,9 +57,6 @@ class Connection(object):
     API_BASE_URL = 'https://www.googleapis.com'
     """The base of the API call URL."""
 
-    _EMPTY = object()
-    """A pointer to represent an empty value for default arguments."""
-
     USER_AGENT = "gcloud-python/{0}".format(get_distribution('gcloud').version)
     """The user agent for gcloud-python requests."""
 
