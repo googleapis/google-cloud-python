@@ -73,13 +73,16 @@ def get_credentials():
     return client.GoogleCredentials.get_application_default()
 
 
-def get_for_service_account_json(private_key_path, scope=None):
+def get_for_service_account_json(json_credentials_path, scope=None):
     """Gets the credentials for a service account with JSON key.
 
-    :type private_key_path: string
-    :param private_key_path: The path to a private key file (this file was
-                             given to you when you created the service
-                             account). This file must be in JSON key format.
+    :type json_credentials_path: string
+    :param json_credentials_path: The path to a private key file (this file was
+                                  given to you when you created the service
+                                  account). This file must contain a JSON
+                                  object with a private key and other
+                                  credentials information (downloaded from the
+                                  Google APIs console).
 
     :type scope: string or tuple of string
     :param scope: The scope against which to authenticate. (Different services
@@ -93,7 +96,7 @@ def get_for_service_account_json(private_key_path, scope=None):
               credentials object.
     """
     credentials = _get_application_default_credential_from_file(
-        private_key_path)
+        json_credentials_path)
     if scope is not None:
         credentials = credentials.create_scoped(scope)
     return credentials

@@ -63,9 +63,9 @@ class TestCredentials(unittest2.TestCase):
 
 class Test_get_for_service_account_json(unittest2.TestCase):
 
-    def _callFUT(self, private_key_path, scope=None):
+    def _callFUT(self, json_credentials_path, scope=None):
         from gcloud.credentials import get_for_service_account_json
-        return get_for_service_account_json(private_key_path, scope=scope)
+        return get_for_service_account_json(json_credentials_path, scope=scope)
 
     def test_it(self):
         from gcloud._testing import _Monkey
