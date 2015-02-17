@@ -23,6 +23,7 @@ from gcloud.datastore.transaction import Transaction
 
 
 class Dataset(object):
+    """Convenience wrapper for invoking APIs/factories w/ a dataset ID."""
 
     def __init__(self, dataset_id):
         if dataset_id is None:
