@@ -67,6 +67,7 @@ SCOPE = ('https://www.googleapis.com/auth/datastore',
 """The scopes required for authenticating as a Cloud Datastore consumer."""
 
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
+_GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
 
 
 def set_default_dataset_id(dataset_id=None):
@@ -85,6 +86,9 @@ def set_default_dataset_id(dataset_id=None):
     """
     if dataset_id is None:
         dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
+
+    if dataset_id is None:
+        dataset_id = os.getenv(_GCD_DATASET_ENV_VAR_NAME)
 
     if dataset_id is None:
         dataset_id = _implicit_environ.app_engine_id()

@@ -14,10 +14,15 @@
 
 """Connections to gcloud datastore API servers."""
 
+import os
+
 from gcloud import connection
 from gcloud.exceptions import make_exception
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
+
+
+_GCD_HOST_ENV_VAR_NAME = 'DATASTORE_HOST'
 
 
 class Connection(connection.Connection):
@@ -29,6 +34,10 @@ class Connection(connection.Connection):
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: The OAuth2 Credentials to use for this connection.
     """
+
+    API_BASE_URL = os.getenv(_GCD_HOST_ENV_VAR_NAME,
+                             connection.Connection.API_BASE_URL)
+    """The base of the API call URL."""
 
     API_VERSION = 'v1beta2'
     """The version of the API, used in building the API call's URL."""

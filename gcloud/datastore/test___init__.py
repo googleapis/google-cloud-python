@@ -30,11 +30,11 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         from gcloud.datastore import set_default_dataset_id
         return set_default_dataset_id(dataset_id=dataset_id)
 
-    def _monkeyEnviron(self, implicit_dataset_id):
+    def _monkeyEnviron(self, implicit_dataset_id, environ=None):
         import os
         from gcloud._testing import _Monkey
         from gcloud.datastore import _DATASET_ENV_VAR_NAME
-        environ = {_DATASET_ENV_VAR_NAME: implicit_dataset_id}
+        environ = environ or {_DATASET_ENV_VAR_NAME: implicit_dataset_id}
         return _Monkey(os, getenv=environ.get)
 
     def _monkeyImplicit(self, connection=None, app_identity=None):
@@ -111,6 +111,55 @@ class Test_set_default_dataset_id(unittest2.TestCase):
                 self._callFUT(None)
 
         self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
+
+    def test_set_from_gcd_env_var(self):
+        from gcloud.datastore import _GCD_DATASET_ENV_VAR_NAME
+        from gcloud.datastore import _implicit_environ
+
+        GCD_DATASET_ID = 'GCD-IMPLICIT'
+        ENVIRON = {_GCD_DATASET_ENV_VAR_NAME: GCD_DATASET_ID}
+
+        with self._monkeyEnviron(None, environ=ENVIRON):
+            with self._monkeyImplicit():
+                self._callFUT()
+
+        self.assertEqual(_implicit_environ.DATASET_ID, GCD_DATASET_ID)
+
+    def test_set_gcd_and_production_env_vars(self):
+        from gcloud.datastore import _DATASET_ENV_VAR_NAME
+        from gcloud.datastore import _GCD_DATASET_ENV_VAR_NAME
+        from gcloud.datastore import _implicit_environ
+
+        IMPLICIT_DATASET_ID = 'IMPLICIT'
+        GCD_DATASET_ID = 'GCD-IMPLICIT'
+        ENVIRON = {
+            _DATASET_ENV_VAR_NAME: IMPLICIT_DATASET_ID,
+            _GCD_DATASET_ENV_VAR_NAME: GCD_DATASET_ID,
+        }
+
+        with self._monkeyEnviron(None, environ=ENVIRON):
+            with self._monkeyImplicit():
+                self._callFUT()
+
+        self.assertNotEqual(_implicit_environ.DATASET_ID, GCD_DATASET_ID)
+        self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
+
+    def test_set_gcd_env_vars_and_appengine(self):
+        from gcloud.datastore import _GCD_DATASET_ENV_VAR_NAME
+        from gcloud.datastore import _implicit_environ
+
+        GCD_DATASET_ID = 'GCD-IMPLICIT'
+        ENVIRON = {_GCD_DATASET_ENV_VAR_NAME: GCD_DATASET_ID}
+
+        APP_ENGINE_ID = 'GAE'
+        APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
+
+        with self._monkeyEnviron(None, environ=ENVIRON):
+            with self._monkeyImplicit(app_identity=APP_IDENTITY):
+                self._callFUT()
+
+        self.assertNotEqual(_implicit_environ.DATASET_ID, APP_ENGINE_ID)
+        self.assertEqual(_implicit_environ.DATASET_ID, GCD_DATASET_ID)
 
     def test_set_implicit_from_appengine(self):
         from gcloud.datastore import _implicit_environ

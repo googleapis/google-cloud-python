@@ -46,6 +46,47 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(called_with['headers']['User-Agent'],
                          conn.USER_AGENT)
 
+    def test_default_url(self):
+        from gcloud.connection import Connection
+
+        klass = self._getTargetClass()
+        self.assertEqual(klass.API_BASE_URL, Connection.API_BASE_URL)
+
+    def test_custom_url(self):
+        import os
+        import sys
+        from gcloud._testing import _Monkey
+        from gcloud.connection import Connection as BaseConnection
+        from gcloud.datastore.connection import _GCD_HOST_ENV_VAR_NAME
+
+        HOST = object()
+        fake_environ = {_GCD_HOST_ENV_VAR_NAME: HOST}
+
+        def fake_getenv(key, default_val=None):
+            return fake_environ.get(key, default_val)
+
+        # We want to temporarily all the gcloud.datastore modules except for
+        # the gcloud.datastore package itself. Then re-import.
+        gcloud_keys = [key for key in sys.modules
+                       if 'gcloud.datastore.' in key]
+        modules_as_is = sys.modules.copy()
+        try:
+            for key in gcloud_keys:
+                sys.modules.pop(key)
+
+            with _Monkey(os, getenv=fake_getenv):
+                from gcloud.datastore.connection import Connection
+        finally:
+            sys.modules.update(modules_as_is)
+
+        self.assertNotEqual(Connection.API_BASE_URL,
+                            BaseConnection.API_BASE_URL)
+        self.assertEqual(Connection.API_BASE_URL, HOST)
+
+        # Make sure the restored import.
+        from gcloud.datastore.connection import Connection
+        self.assertEqual(Connection.API_BASE_URL, BaseConnection.API_BASE_URL)
+
     def test_ctor_defaults(self):
         conn = self._makeOne()
         self.assertEqual(conn.credentials, None)
