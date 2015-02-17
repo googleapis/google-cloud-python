@@ -57,9 +57,9 @@ def _require_dataset_id(dataset_id=None, first_key=None):
         return top.dataset_id
     if first_key is not None:
         return first_key.dataset_id
-    if DEFAULT_ENVIRON.DATASET_ID is None:
+    if DEFAULT_ENVIRON.dataset_id is None:
         raise EnvironmentError('Dataset ID could not be inferred.')
-    return DEFAULT_ENVIRON.DATASET_ID
+    return DEFAULT_ENVIRON.dataset_id
 
 
 def _require_connection(connection=None):
@@ -78,9 +78,9 @@ def _require_connection(connection=None):
         if top is not None:
             connection = top.connection
         else:
-            if DEFAULT_ENVIRON.CONNECTION is None:
+            if DEFAULT_ENVIRON.connection is None:
                 raise EnvironmentError('Connection could not be inferred.')
-            connection = DEFAULT_ENVIRON.CONNECTION
+            connection = DEFAULT_ENVIRON.connection
     return connection
 
 

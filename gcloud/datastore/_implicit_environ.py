@@ -31,10 +31,10 @@ except ImportError:
 class Enviroment(object):
     """Container for environment settings."""
 
-    DATASET_ID = None
+    dataset_id = None
     """Attribute to allow persistent implied dataset ID from enviroment."""
 
-    CONNECTION = None
+    connection = None
     """Attribute to allow persistent implied connection from enviroment."""
 
 

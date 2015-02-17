@@ -31,8 +31,8 @@ class TestBatch(unittest2.TestCase):
         from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
         with _Monkey(DEFAULT_ENVIRON,
-                     DATASET_ID=None,
-                     CONNECTION=None):
+                     dataset_id=None,
+                     connection=None):
             self.assertRaises(ValueError, self._makeOne)
             self.assertRaises(ValueError, self._makeOne, dataset_id=object())
             self.assertRaises(ValueError, self._makeOne, connection=object())
@@ -56,8 +56,8 @@ class TestBatch(unittest2.TestCase):
         CONNECTION = _Connection()
 
         with _Monkey(DEFAULT_ENVIRON,
-                     DATASET_ID=DATASET_ID,
-                     CONNECTION=CONNECTION):
+                     dataset_id=DATASET_ID,
+                     connection=CONNECTION):
             batch = self._makeOne()
 
         self.assertEqual(batch.dataset_id, DATASET_ID)

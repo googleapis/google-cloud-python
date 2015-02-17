@@ -28,7 +28,7 @@ class Test__require_dataset_id(unittest2.TestCase):
     def _monkey(self, dataset_id):
         from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
         from gcloud._testing import _Monkey
-        return _Monkey(DEFAULT_ENVIRON, DATASET_ID=dataset_id)
+        return _Monkey(DEFAULT_ENVIRON, dataset_id=dataset_id)
 
     def test_implicit_unset_wo_keys(self):
         with self._monkey(None):
@@ -122,7 +122,7 @@ class Test__require_connection(unittest2.TestCase):
     def _monkey(self, connection):
         from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
         from gcloud._testing import _Monkey
-        return _Monkey(DEFAULT_ENVIRON, CONNECTION=connection)
+        return _Monkey(DEFAULT_ENVIRON, connection=connection)
 
     def test_implicit_unset(self):
         with self._monkey(None):
@@ -471,8 +471,8 @@ class Test_get_function(unittest2.TestCase):
         CUSTOM_CONNECTION = _Connection(entity_pb)
 
         key = Key(KIND, ID, dataset_id=DATASET_ID)
-        with _Monkey(DEFAULT_ENVIRON, CONNECTION=CUSTOM_CONNECTION,
-                     DATASET_ID=DATASET_ID):
+        with _Monkey(DEFAULT_ENVIRON, connection=CUSTOM_CONNECTION,
+                     dataset_id=DATASET_ID):
             result, = self._callFUT([key])
 
         expected_called_with = {
@@ -577,7 +577,7 @@ class Test_put_function(unittest2.TestCase):
         entity = _Entity(foo=u'bar')
         entity.key = _Key(_DATASET)
 
-        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, None)
+        self.assertEqual(DEFAULT_ENVIRON.connection, None)
         with self.assertRaises(EnvironmentError):
             self._callFUT([entity], dataset_id=_DATASET)
 
@@ -593,7 +593,7 @@ class Test_put_function(unittest2.TestCase):
         entity = _Entity(foo=u'bar')
         entity.key = _Key(_DATASET)
 
-        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, None)
+        self.assertEqual(DEFAULT_ENVIRON.connection, None)
         result = self._callFUT([entity], connection=connection)
 
         self.assertEqual(result, None)
@@ -610,7 +610,7 @@ class Test_put_function(unittest2.TestCase):
     def test_no_entities(self):
         from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
-        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, None)
+        self.assertEqual(DEFAULT_ENVIRON.connection, None)
         result = self._callFUT([])
         self.assertEqual(result, None)
 
@@ -677,7 +677,7 @@ class Test_put_function(unittest2.TestCase):
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(_DATASET)
 
-        with _Monkey(DEFAULT_ENVIRON, CONNECTION=connection):
+        with _Monkey(DEFAULT_ENVIRON, connection=connection):
             # Set up Batch on stack so we can check it is used.
             with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
                 result = self._callFUT([entity])
@@ -708,7 +708,7 @@ class Test_delete_function(unittest2.TestCase):
         _DATASET = 'DATASET'
         key = _Key(_DATASET)
 
-        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, None)
+        self.assertEqual(DEFAULT_ENVIRON.connection, None)
         with self.assertRaises(EnvironmentError):
             self._callFUT([key], dataset_id=_DATASET)
 
@@ -722,7 +722,7 @@ class Test_delete_function(unittest2.TestCase):
         connection = _Connection()
         key = _Key(_DATASET)
 
-        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, None)
+        self.assertEqual(DEFAULT_ENVIRON.connection, None)
 
         result = self._callFUT([key], connection=connection)
 
@@ -735,7 +735,7 @@ class Test_delete_function(unittest2.TestCase):
     def test_no_keys(self):
         from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
-        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, None)
+        self.assertEqual(DEFAULT_ENVIRON.connection, None)
         result = self._callFUT([])
         self.assertEqual(result, None)
 
@@ -769,8 +769,8 @@ class Test_delete_function(unittest2.TestCase):
         key = _Key(_DATASET)
 
         with _Monkey(DEFAULT_ENVIRON,
-                     CONNECTION=connection,
-                     DATASET_ID=_DEFAULT_DATASET):
+                     connection=connection,
+                     dataset_id=_DEFAULT_DATASET):
             result = self._callFUT([key])
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
@@ -832,8 +832,8 @@ class Test_delete_function(unittest2.TestCase):
         key = _Key(_DATASET)
 
         with _Monkey(DEFAULT_ENVIRON,
-                     CONNECTION=connection,
-                     DATASET_ID=_DATASET):
+                     connection=connection,
+                     dataset_id=_DATASET):
             # Set up Batch on stack so we can check it is used.
             with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
                 result = self._callFUT([key])
@@ -878,8 +878,8 @@ class Test_allocate_ids_function(unittest2.TestCase):
 
         CUSTOM_CONNECTION = _Connection()
         NUM_IDS = 2
-        with _Monkey(DEFAULT_ENVIRON, CONNECTION=CUSTOM_CONNECTION,
-                     DATASET_ID='DATASET'):
+        with _Monkey(DEFAULT_ENVIRON, connection=CUSTOM_CONNECTION,
+                     dataset_id='DATASET'):
             INCOMPLETE_KEY = Key('KIND')
             result = self._callFUT(INCOMPLETE_KEY, NUM_IDS)
 
@@ -893,8 +893,8 @@ class Test_allocate_ids_function(unittest2.TestCase):
         from gcloud._testing import _Monkey
 
         CUSTOM_CONNECTION = _Connection()
-        with _Monkey(DEFAULT_ENVIRON, CONNECTION=CUSTOM_CONNECTION,
-                     DATASET_ID='DATASET'):
+        with _Monkey(DEFAULT_ENVIRON, connection=CUSTOM_CONNECTION,
+                     dataset_id='DATASET'):
             COMPLETE_KEY = Key('KIND', 1234)
             self.assertRaises(ValueError, self._callFUT,
                               COMPLETE_KEY, 2)

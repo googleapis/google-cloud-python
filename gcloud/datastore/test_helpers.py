@@ -19,12 +19,12 @@ class Test_entity_from_protobuf(unittest2.TestCase):
 
     def setUp(self):
         from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
-        self._replaced_dataset_id = DEFAULT_ENVIRON.DATASET_ID
-        DEFAULT_ENVIRON.DATASET_ID = None
+        self._replaced_dataset_id = DEFAULT_ENVIRON.dataset_id
+        DEFAULT_ENVIRON.dataset_id = None
 
     def tearDown(self):
         from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
-        DEFAULT_ENVIRON.DATASET_ID = self._replaced_dataset_id
+        DEFAULT_ENVIRON.dataset_id = self._replaced_dataset_id
 
     def _callFUT(self, val):
         from gcloud.datastore.helpers import entity_from_protobuf

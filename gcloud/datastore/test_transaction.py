@@ -29,7 +29,7 @@ class TestTransaction(unittest2.TestCase):
     def test_ctor_missing_required(self):
         from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
-        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, None)
+        self.assertEqual(DEFAULT_ENVIRON.dataset_id, None)
 
         with self.assertRaises(ValueError):
             self._makeOne()
@@ -58,8 +58,8 @@ class TestTransaction(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         CONNECTION = _Connection()
 
-        with _Monkey(DEFAULT_ENVIRON, DATASET_ID=DATASET_ID,
-                     CONNECTION=CONNECTION):
+        with _Monkey(DEFAULT_ENVIRON, dataset_id=DATASET_ID,
+                     connection=CONNECTION):
             xact = self._makeOne()
 
         self.assertEqual(xact.id, None)
