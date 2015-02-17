@@ -32,14 +32,31 @@ except ImportError:
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 
 
+class _DatasetIDProperty(object):
+    """Descriptor for lazy loaded dataset ID."""
+
+    def __get__(self, obj, objtype):
+        if obj is None or objtype is not Environment:
+            return self
+
+        obj.dataset_id = get_default_dataset_id()
+        return obj.dataset_id
+
+
 class Environment(object):
-    """Container for environment settings."""
+    """Container for environment settings.
 
-    dataset_id = None
-    """Attribute to allow persistent implied dataset ID from environment."""
+    :type dataset_id: string
+    :param dataset_id: Persistent implied dataset ID from environment.
 
-    connection = None
-    """Attribute to allow persistent implied connection from environment."""
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Persistent implied connection from environment.
+    """
+
+    dataset_id = _DatasetIDProperty()
+
+    def __init__(self):
+        self.connection = None
 
 
 def app_engine_id():

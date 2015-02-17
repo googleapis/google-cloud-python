@@ -213,6 +213,56 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         self.assertEqual(connection.timeout, None)
 
 
+class Test_lazy_loaded_dataset_id(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore import _implicit_environ
+        self._replaced_default = _implicit_environ.DEFAULT_ENVIRON
+        _implicit_environ.DEFAULT_ENVIRON = _implicit_environ.Environment()
+
+    def tearDown(self):
+        from gcloud.datastore import _implicit_environ
+        _implicit_environ.DEFAULT_ENVIRON = self._replaced_default
+
+    def test_prop_default(self):
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import Environment
+
+        self.assertTrue(isinstance(Environment.dataset_id,
+                                   _implicit_environ._DatasetIDProperty))
+        self.assertEqual(_implicit_environ.DEFAULT_ENVIRON.dataset_id, None)
+
+    def test_prop_on_wrong_class(self):
+        from gcloud.datastore import _implicit_environ
+
+        data_prop = _implicit_environ._DatasetIDProperty()
+
+        class FakeEnv(object):
+            dataset_id = data_prop
+
+        self.assertTrue(FakeEnv.dataset_id is data_prop)
+        self.assertTrue(FakeEnv().dataset_id is data_prop)
+
+    def test_prop_descriptor(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+
+        self.assertFalse(
+            'dataset_id' in _implicit_environ.DEFAULT_ENVIRON.__dict__)
+
+        DEFAULT = object()
+
+        def mock_default():
+            return DEFAULT
+
+        with _Monkey(_implicit_environ, get_default_dataset_id=mock_default):
+            lazy_loaded = _implicit_environ.DEFAULT_ENVIRON.dataset_id
+
+        self.assertEqual(lazy_loaded, DEFAULT)
+        self.assertTrue(
+            'dataset_id' in _implicit_environ.DEFAULT_ENVIRON.__dict__)
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):
