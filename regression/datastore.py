@@ -17,12 +17,13 @@ import pytz
 import unittest2
 
 from gcloud import datastore
+from gcloud.datastore import _implicit_environ
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from regression import populate_datastore
 
 
-datastore._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+_implicit_environ._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
 datastore.set_defaults()
 
 
