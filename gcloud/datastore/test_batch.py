@@ -28,9 +28,9 @@ class TestBatch(unittest2.TestCase):
 
     def test_ctor_missing_required(self):
         from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
-        with _Monkey(_implicit_environ,
+        with _Monkey(DEFAULT_ENVIRON,
                      DATASET_ID=None,
                      CONNECTION=None):
             self.assertRaises(ValueError, self._makeOne)
@@ -50,12 +50,12 @@ class TestBatch(unittest2.TestCase):
 
     def test_ctor_implicit(self):
         from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
         from gcloud.datastore._datastore_v1_pb2 import Mutation
         DATASET_ID = 'DATASET'
         CONNECTION = _Connection()
 
-        with _Monkey(_implicit_environ,
+        with _Monkey(DEFAULT_ENVIRON,
                      DATASET_ID=DATASET_ID,
                      CONNECTION=CONNECTION):
             batch = self._makeOne()

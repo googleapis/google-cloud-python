@@ -17,7 +17,7 @@
 import copy
 import six
 
-from gcloud.datastore import _implicit_environ
+from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
 
@@ -400,10 +400,10 @@ def _validate_dataset_id(dataset_id, parent):
 
         if dataset_id is None:
 
-            if _implicit_environ.DATASET_ID is None:
+            if DEFAULT_ENVIRON.DATASET_ID is None:
                 raise ValueError("A Key must have a dataset ID set.")
 
-            dataset_id = _implicit_environ.DATASET_ID
+            dataset_id = DEFAULT_ENVIRON.DATASET_ID
 
     return dataset_id
 

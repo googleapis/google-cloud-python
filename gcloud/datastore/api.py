@@ -18,7 +18,7 @@ Allows interacting with the datastore via user-friendly Key, Entity and
 Query objects rather than via protobufs.
 """
 
-from gcloud.datastore import _implicit_environ
+from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.transaction import Transaction
 from gcloud.datastore import helpers
@@ -57,9 +57,9 @@ def _require_dataset_id(dataset_id=None, first_key=None):
         return top.dataset_id
     if first_key is not None:
         return first_key.dataset_id
-    if _implicit_environ.DATASET_ID is None:
+    if DEFAULT_ENVIRON.DATASET_ID is None:
         raise EnvironmentError('Dataset ID could not be inferred.')
-    return _implicit_environ.DATASET_ID
+    return DEFAULT_ENVIRON.DATASET_ID
 
 
 def _require_connection(connection=None):
@@ -78,9 +78,9 @@ def _require_connection(connection=None):
         if top is not None:
             connection = top.connection
         else:
-            if _implicit_environ.CONNECTION is None:
+            if DEFAULT_ENVIRON.CONNECTION is None:
                 raise EnvironmentError('Connection could not be inferred.')
-            connection = _implicit_environ.CONNECTION
+            connection = DEFAULT_ENVIRON.CONNECTION
     return connection
 
 

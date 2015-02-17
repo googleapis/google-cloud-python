@@ -18,13 +18,13 @@ import unittest2
 class Test_set_default_dataset_id(unittest2.TestCase):
 
     def setUp(self):
-        from gcloud.datastore import _implicit_environ
-        self._replaced_dataset_id = _implicit_environ.DATASET_ID
-        _implicit_environ.DATASET_ID = None
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
+        self._replaced_dataset_id = DEFAULT_ENVIRON.DATASET_ID
+        DEFAULT_ENVIRON.DATASET_ID = None
 
     def tearDown(self):
-        from gcloud.datastore import _implicit_environ
-        _implicit_environ.DATASET_ID = self._replaced_dataset_id
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
+        DEFAULT_ENVIRON.DATASET_ID = self._replaced_dataset_id
 
     def _callFUT(self, dataset_id=None):
         from gcloud.datastore import set_default_dataset_id
@@ -54,36 +54,36 @@ class Test_set_default_dataset_id(unittest2.TestCase):
                        app_identity=app_identity)
 
     def test_no_env_var_set(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
         with self._monkeyEnviron(None):
             with self._monkeyImplicit():
                 self.assertRaises(EnvironmentError, self._callFUT)
 
-        self.assertEqual(_implicit_environ.DATASET_ID, None)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, None)
 
     def test_set_from_env_var(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
         IMPLICIT_DATASET_ID = 'IMPLICIT'
 
         with self._monkeyEnviron(IMPLICIT_DATASET_ID):
             with self._monkeyImplicit():
                 self._callFUT()
 
-        self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, IMPLICIT_DATASET_ID)
 
     def test_set_explicit_w_env_var_set(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
         EXPLICIT_DATASET_ID = 'EXPLICIT'
 
         with self._monkeyEnviron(None):
             with self._monkeyImplicit():
                 self._callFUT(EXPLICIT_DATASET_ID)
 
-        self.assertEqual(_implicit_environ.DATASET_ID, EXPLICIT_DATASET_ID)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, EXPLICIT_DATASET_ID)
 
     def test_set_explicit_no_env_var_set(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
         IMPLICIT_DATASET_ID = 'IMPLICIT'
         EXPLICIT_DATASET_ID = 'EXPLICIT'
 
@@ -91,29 +91,29 @@ class Test_set_default_dataset_id(unittest2.TestCase):
             with self._monkeyImplicit():
                 self._callFUT(EXPLICIT_DATASET_ID)
 
-        self.assertEqual(_implicit_environ.DATASET_ID, EXPLICIT_DATASET_ID)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, EXPLICIT_DATASET_ID)
 
     def test_set_explicit_None_wo_env_var_set(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
         with self._monkeyEnviron(None):
             with self._monkeyImplicit():
                 self.assertRaises(EnvironmentError, self._callFUT, None)
 
-        self.assertEqual(_implicit_environ.DATASET_ID, None)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, None)
 
     def test_set_explicit_None_w_env_var_set(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
         IMPLICIT_DATASET_ID = 'IMPLICIT'
 
         with self._monkeyEnviron(IMPLICIT_DATASET_ID):
             with self._monkeyImplicit():
                 self._callFUT(None)
 
-        self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, IMPLICIT_DATASET_ID)
 
     def test_set_implicit_from_appengine(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
         APP_ENGINE_ID = 'GAE'
         APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
@@ -122,10 +122,10 @@ class Test_set_default_dataset_id(unittest2.TestCase):
             with self._monkeyImplicit(app_identity=APP_IDENTITY):
                 self._callFUT()
 
-        self.assertEqual(_implicit_environ.DATASET_ID, APP_ENGINE_ID)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, APP_ENGINE_ID)
 
     def test_set_implicit_both_env_and_appengine(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
         IMPLICIT_DATASET_ID = 'IMPLICIT'
         APP_IDENTITY = _AppIdentity('GAE')
@@ -134,10 +134,10 @@ class Test_set_default_dataset_id(unittest2.TestCase):
             with self._monkeyImplicit(app_identity=APP_IDENTITY):
                 self._callFUT()
 
-        self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, IMPLICIT_DATASET_ID)
 
     def _implicit_compute_engine_helper(self, status):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
         COMPUTE_ENGINE_ID = 'GCE'
         if status == 200:
@@ -157,7 +157,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
                 else:
                     self._callFUT()
 
-        self.assertEqual(_implicit_environ.DATASET_ID, EXPECTED_ID)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, EXPECTED_ID)
         self.assertEqual(connection.host, '169.254.169.254')
         self.assertEqual(connection.timeout, 0.1)
         self.assertEqual(
@@ -181,7 +181,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         self._implicit_compute_engine_helper('RAISE')
 
     def test_set_implicit_both_appengine_and_compute(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
         APP_ENGINE_ID = 'GAE'
         APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
@@ -192,12 +192,12 @@ class Test_set_default_dataset_id(unittest2.TestCase):
                                       app_identity=APP_IDENTITY):
                 self._callFUT()
 
-        self.assertEqual(_implicit_environ.DATASET_ID, APP_ENGINE_ID)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, APP_ENGINE_ID)
         self.assertEqual(connection.host, None)
         self.assertEqual(connection.timeout, None)
 
     def test_set_implicit_three_env_appengine_and_compute(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
         IMPLICIT_DATASET_ID = 'IMPLICIT'
         APP_IDENTITY = _AppIdentity('GAE')
@@ -208,7 +208,7 @@ class Test_set_default_dataset_id(unittest2.TestCase):
                                       app_identity=APP_IDENTITY):
                 self._callFUT()
 
-        self.assertEqual(_implicit_environ.DATASET_ID, IMPLICIT_DATASET_ID)
+        self.assertEqual(DEFAULT_ENVIRON.DATASET_ID, IMPLICIT_DATASET_ID)
         self.assertEqual(connection.host, None)
         self.assertEqual(connection.timeout, None)
 
@@ -216,38 +216,38 @@ class Test_set_default_dataset_id(unittest2.TestCase):
 class Test_set_default_connection(unittest2.TestCase):
 
     def setUp(self):
-        from gcloud.datastore import _implicit_environ
-        self._replaced_connection = _implicit_environ.CONNECTION
-        _implicit_environ.CONNECTION = None
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
+        self._replaced_connection = DEFAULT_ENVIRON.CONNECTION
+        DEFAULT_ENVIRON.CONNECTION = None
 
     def tearDown(self):
-        from gcloud.datastore import _implicit_environ
-        _implicit_environ.CONNECTION = self._replaced_connection
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
+        DEFAULT_ENVIRON.CONNECTION = self._replaced_connection
 
     def _callFUT(self, connection=None):
         from gcloud.datastore import set_default_connection
         return set_default_connection(connection=connection)
 
     def test_set_explicit(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
-        self.assertEqual(_implicit_environ.CONNECTION, None)
+        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, None)
         fake_cnxn = object()
         self._callFUT(connection=fake_cnxn)
-        self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
+        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, fake_cnxn)
 
     def test_set_implicit(self):
         from gcloud._testing import _Monkey
         from gcloud import datastore
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 
-        self.assertEqual(_implicit_environ.CONNECTION, None)
+        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, None)
 
         fake_cnxn = object()
         with _Monkey(datastore, get_connection=lambda: fake_cnxn):
             self._callFUT()
 
-        self.assertEqual(_implicit_environ.CONNECTION, fake_cnxn)
+        self.assertEqual(DEFAULT_ENVIRON.CONNECTION, fake_cnxn)
 
 
 class Test_set_defaults(unittest2.TestCase):

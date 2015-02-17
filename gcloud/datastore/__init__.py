@@ -93,7 +93,7 @@ def set_default_dataset_id(dataset_id=None):
         dataset_id = _implicit_environ.compute_engine_id()
 
     if dataset_id is not None:
-        _implicit_environ.DATASET_ID = dataset_id
+        _implicit_environ.DEFAULT_ENVIRON.DATASET_ID = dataset_id
     else:
         raise EnvironmentError('No dataset ID could be inferred.')
 
@@ -105,7 +105,7 @@ def set_default_connection(connection=None):
     :param connection: A connection provided to be the default.
     """
     connection = connection or get_connection()
-    _implicit_environ.CONNECTION = connection
+    _implicit_environ.DEFAULT_ENVIRON.CONNECTION = connection
 
 
 def set_defaults(dataset_id=None, connection=None):

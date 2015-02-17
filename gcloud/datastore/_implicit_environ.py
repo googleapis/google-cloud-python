@@ -28,11 +28,14 @@ except ImportError:
     app_identity = None
 
 
-DATASET_ID = None
-"""Module global to allow persistent implied dataset ID from enviroment."""
+class Enviroment(object):
+    """Container for environment settings."""
 
-CONNECTION = None
-"""Module global to allow persistent implied connection from enviroment."""
+    DATASET_ID = None
+    """Attribute to allow persistent implied dataset ID from enviroment."""
+
+    CONNECTION = None
+    """Attribute to allow persistent implied connection from enviroment."""
 
 
 def app_engine_id():
@@ -79,3 +82,6 @@ def compute_engine_id():
         pass
     finally:
         connection.close()
+
+
+DEFAULT_ENVIRON = Enviroment()

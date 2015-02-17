@@ -16,7 +16,7 @@
 
 import base64
 
-from gcloud.datastore import _implicit_environ
+from gcloud.datastore._implicit_environ import DEFAULT_ENVIRON
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.key import Key
@@ -80,7 +80,7 @@ class Query(object):
                  group_by=()):
 
         if dataset_id is None:
-            dataset_id = _implicit_environ.DATASET_ID
+            dataset_id = DEFAULT_ENVIRON.DATASET_ID
 
         if dataset_id is None:
             raise ValueError("No dataset ID supplied, and no default set.")
@@ -326,7 +326,7 @@ class Query(object):
                  default has been set.
         """
         if connection is None:
-            connection = _implicit_environ.CONNECTION
+            connection = DEFAULT_ENVIRON.CONNECTION
 
         if connection is None:
             raise ValueError("No connection passed, and no default set")
