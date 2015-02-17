@@ -23,6 +23,9 @@ if [[ "${TRAVIS_BRANCH}" == "master" ]] && \
        [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
   scripts/update_docs.sh
   scripts/update_wheels_project.sh
+elif [[ -n "${TRAVIS_TAG}" ]]; then
+  echo "Building new docs on a tag."
+  scripts/update_docs.sh
 else
   echo "Not in master on a non-pull request. Doing nothing."
 fi
