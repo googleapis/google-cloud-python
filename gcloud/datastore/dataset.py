@@ -24,7 +24,7 @@ from gcloud.datastore.transaction import Transaction
 
 class Dataset(object):
     """Convenience wrapper for invoking APIs/factories w/ a dataset ID.
-    
+
     :type dataset_id: string
     :param dataset_id: (required) dataset ID to pass to proxied API methods.
 
