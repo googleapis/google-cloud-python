@@ -87,17 +87,12 @@ class Dataset(object):
         return Transaction(dataset_id=self.dataset_id,
                            connection=self.connection)
 
-    def query(self,
-              kind=None,
-              namespace=None,
-              ancestor=None,
-              filters=(),
-              projection=(),
-              order=(),
-              group_by=()):
+    def query(self, **kwargs):
         """Proxy to :func:`gcloud.datastore.query.Query`.
 
         Passes our ``dataset_id``.
         """
-        return Query(self.dataset_id, kind, namespace, ancestor, filters,
-                     projection, order, group_by)
+        if 'dataset_id' in kwargs:
+            raise TypeError('Cannot pass dataset_id')
+        kwargs['dataset_id'] = self.dataset_id
+        return Query(**kwargs)

@@ -232,6 +232,12 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(xact.kwargs,
                          {'dataset_id': self.DATASET_ID, 'connection': conn})
 
+    def test_query_w_dataset_id(self):
+        KIND = 'KIND'
+        dataset = self._makeOne()
+        self.assertRaises(TypeError,
+                          dataset.query, kind=KIND, dataset_id=self.DATASET_ID)
+
     def test_query_w_defaults(self):
         from gcloud.datastore import dataset as MUT
         from gcloud._testing import _Monkey
@@ -241,9 +247,8 @@ class TestDataset(unittest2.TestCase):
             query = dataset.query()
 
         self.assertTrue(isinstance(query, _Dummy))
-        args = (self.DATASET_ID, None, None, None, (), (), (), ())
-        self.assertEqual(query.args, args)
-        self.assertEqual(query.kwargs, {})
+        self.assertEqual(query.args, ())
+        self.assertEqual(query.kwargs, {'dataset_id': self.DATASET_ID})
 
     def test_query_explicit(self):
         from gcloud.datastore import dataset as MUT
@@ -258,14 +263,29 @@ class TestDataset(unittest2.TestCase):
         dataset = self._makeOne()
 
         with _Monkey(MUT, Query=_Dummy):
-            query = dataset.query(KIND, NAMESPACE, ANCESTOR, FILTERS,
-                                  PROJECTION, ORDER, GROUP_BY)
+            query = dataset.query(
+                kind=KIND,
+                namespace=NAMESPACE,
+                ancestor=ANCESTOR,
+                filters=FILTERS,
+                projection=PROJECTION,
+                order=ORDER,
+                group_by=GROUP_BY,
+                )
 
         self.assertTrue(isinstance(query, _Dummy))
-        args = (self.DATASET_ID, KIND, NAMESPACE, ANCESTOR, FILTERS,
-                PROJECTION, ORDER, GROUP_BY)
-        self.assertEqual(query.args, args)
-        self.assertEqual(query.kwargs, {})
+        kwargs = {
+            'dataset_id': self.DATASET_ID,
+            'kind': KIND,
+            'namespace': NAMESPACE,
+            'ancestor': ANCESTOR,
+            'filters': FILTERS,
+            'projection': PROJECTION,
+            'order': ORDER,
+            'group_by': GROUP_BY,
+        }
+        self.assertEqual(query.args, ())
+        self.assertEqual(query.kwargs, kwargs)
 
 
 class _Dummy(object):
