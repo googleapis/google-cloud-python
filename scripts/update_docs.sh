@@ -51,6 +51,11 @@ else
     # Put the new release in latest and with the actual version.
     cp -R ../docs/_build/html/ latest/
     cp -R ../docs/_build/html/ "${CURRENT_VERSION}/"
+
+    # Also update the versions file.
+    ../.tox/docs/bin/python ../scripts/update_versions.py
+    # Update the files which were updated in the release.
+    git add versions.html versions.json
 fi
 
 # Update the files push to gh-pages.
