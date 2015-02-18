@@ -23,7 +23,14 @@ from gcloud.datastore.transaction import Transaction
 
 
 class Dataset(object):
-    """Convenience wrapper for invoking APIs/factories w/ a dataset ID."""
+    """Convenience wrapper for invoking APIs/factories w/ a dataset ID.
+    
+    :type dataset_id: string
+    :param dataset_id: (required) dataset ID to pass to proxied API methods.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`, or None
+    :param connection: (optional) connection to pass to proxied API methods
+    """
 
     def __init__(self, dataset_id, connection=None):
         if dataset_id is None:
