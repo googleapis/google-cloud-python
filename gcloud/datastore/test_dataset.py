@@ -157,26 +157,12 @@ class TestDataset(unittest2.TestCase):
         self.assertTrue(_called_with[0][1]['connection'] is conn)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
-    def test_key_w_conflicting_dataset_id(self):
+    def test_key_w_dataset_id(self):
         KIND = 'KIND'
         ID = 1234
         dataset = self._makeOne()
-        self.assertRaises(ValueError,
-                          dataset.key, KIND, ID, dataset_id='OTHER')
-
-    def test_key_w_matching_dataset_id(self):
-        from gcloud.datastore import dataset as MUT
-        from gcloud._testing import _Monkey
-        KIND = 'KIND'
-        ID = 1234
-        dataset = self._makeOne()
-
-        with _Monkey(MUT, Key=_Dummy):
-            key = dataset.key(KIND, ID, dataset_id=self.DATASET_ID)
-
-        self.assertTrue(isinstance(key, _Dummy))
-        self.assertEqual(key.args, (KIND, ID))
-        self.assertEqual(key.kwargs, {'dataset_id': self.DATASET_ID})
+        self.assertRaises(TypeError,
+                          dataset.key, KIND, ID, dataset_id=self.DATASET_ID)
 
     def test_key_wo_dataset_id(self):
         from gcloud.datastore import dataset as MUT

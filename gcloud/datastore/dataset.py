@@ -67,9 +67,8 @@ class Dataset(object):
 
         Passes our ``dataset_id``.
         """
-        dataset_id = kwargs.pop('dataset_id', None)
-        if dataset_id not in (None, self.dataset_id):
-            raise ValueError('Conflicting dataset_id')
+        if 'dataset_id' in kwargs:
+            raise TypeError('Cannot pass dataset_id')
         kwargs['dataset_id'] = self.dataset_id
         return Key(*path_args, **kwargs)
 
