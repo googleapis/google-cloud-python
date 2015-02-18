@@ -54,8 +54,11 @@ class TestDataset(unittest2.TestCase):
         with _Monkey(MUT, get=_get):
             dataset.get([key])
 
-        args = ([key], None, None, None, self.DATASET_ID)
-        self.assertEqual(_called_with, [(args, {})])
+        self.assertEqual(_called_with[0][0], ([key],))
+        self.assertTrue(_called_with[0][1]['missing'] is None)
+        self.assertTrue(_called_with[0][1]['deferred'] is None)
+        self.assertTrue(_called_with[0][1]['connection'] is None)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_get_explicit(self):
         from gcloud.datastore import dataset as MUT
@@ -73,8 +76,11 @@ class TestDataset(unittest2.TestCase):
         with _Monkey(MUT, get=_get):
             dataset.get([key], missing, deferred)
 
-        args = ([key], missing, deferred, conn, self.DATASET_ID)
-        self.assertEqual(_called_with, [(args, {})])
+        self.assertEqual(_called_with[0][0], ([key],))
+        self.assertTrue(_called_with[0][1]['missing'] is missing)
+        self.assertTrue(_called_with[0][1]['deferred'] is deferred)
+        self.assertTrue(_called_with[0][1]['connection'] is conn)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_put_wo_connection(self):
         from gcloud.datastore import dataset as MUT
@@ -91,8 +97,9 @@ class TestDataset(unittest2.TestCase):
         with _Monkey(MUT, put=_put):
             dataset.put([entity])
 
-        self.assertEqual(_called_with,
-                         [(([entity], None), {'dataset_id': self.DATASET_ID})])
+        self.assertEqual(_called_with[0][0], ([entity],))
+        self.assertTrue(_called_with[0][1]['connection'] is None)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_put_w_connection(self):
         from gcloud.datastore import dataset as MUT
@@ -109,8 +116,9 @@ class TestDataset(unittest2.TestCase):
         with _Monkey(MUT, put=_put):
             dataset.put([entity])
 
-        self.assertEqual(_called_with,
-                         [(([entity], conn), {'dataset_id': self.DATASET_ID})])
+        self.assertEqual(_called_with[0][0], ([entity],))
+        self.assertTrue(_called_with[0][1]['connection'] is conn)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_delete_wo_connection(self):
         from gcloud.datastore import dataset as MUT
@@ -127,8 +135,9 @@ class TestDataset(unittest2.TestCase):
         with _Monkey(MUT, delete=_delete):
             dataset.delete([key])
 
-        self.assertEqual(_called_with,
-                         [(([key], None), {'dataset_id': self.DATASET_ID})])
+        self.assertEqual(_called_with[0][0], ([key],))
+        self.assertTrue(_called_with[0][1]['connection'] is None)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_delete_w_connection(self):
         from gcloud.datastore import dataset as MUT
@@ -144,8 +153,9 @@ class TestDataset(unittest2.TestCase):
         with _Monkey(MUT, delete=_delete):
             dataset.delete([key])
 
-        self.assertEqual(_called_with,
-                         [(([key], conn), {'dataset_id': self.DATASET_ID})])
+        self.assertEqual(_called_with[0][0], ([key],))
+        self.assertTrue(_called_with[0][1]['connection'] is conn)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_key_w_conflicting_dataset_id(self):
         KIND = 'KIND'

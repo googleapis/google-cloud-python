@@ -43,21 +43,24 @@ class Dataset(object):
 
         Passes our ``dataset_id``.
         """
-        return get(keys, missing, deferred, self.connection, self.dataset_id)
+        return get(keys, missing=missing, deferred=deferred,
+                   connection=self.connection, dataset_id=self.dataset_id)
 
     def put(self, entities):
         """Proxy to :func:`gcloud.datastore.api.put`.
 
         Passes our ``dataset_id``.
         """
-        return put(entities, self.connection, dataset_id=self.dataset_id)
+        return put(entities, connection=self.connection,
+                   dataset_id=self.dataset_id)
 
     def delete(self, keys):
         """Proxy to :func:`gcloud.datastore.api.delete`.
 
         Passes our ``dataset_id``.
         """
-        return delete(keys, self.connection, dataset_id=self.dataset_id)
+        return delete(keys, connection=self.connection,
+                      dataset_id=self.dataset_id)
 
     def key(self, *path_args, **kwargs):
         """Proxy to :func:`gcloud.datastore.key.Key`.
