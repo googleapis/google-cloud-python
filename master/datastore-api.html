@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datastore &mdash; gcloud 018b467 documentation</title>
+    <title>Datastore &mdash; gcloud f56abdf documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '018b467',
+        VERSION:     'f56abdf',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 018b467 documentation" href="index.html" />
+    <link rel="top" title="gcloud f56abdf documentation" href="index.html" />
     <link rel="next" title="Entities" href="datastore-entities.html" />
     <link rel="prev" title="GCloud Package" href="gcloud-api.html" /> 
   </head>
@@ -61,7 +61,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">018b467</span>
+            <span class="v-current">f56abdf</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -271,7 +271,7 @@ implicit cases are:
 <p>Connections to gcloud datastore API servers.</p>
 <dl class="class">
 <dt id="gcloud.datastore.connection.Connection">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em>, <em>http=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><tt class="descclassname">gcloud.datastore.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em>, <em>http=None</em>, <em>api_base_url=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></a></p>
 <p>A connection to the Google Cloud Datastore via the Protobuf API.</p>
 <p>This class should understand only the basic types (and protobufs)
@@ -280,7 +280,12 @@ in method arguments, however should be capable of returning advanced types.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt>) &#8211; The OAuth2 Credentials to use for this connection.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>credentials</strong> (<tt class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></tt>) &#8211; The OAuth2 Credentials to use for this connection.</li>
+<li><strong>api_base_url</strong> (<em>string</em>) &#8211; The base of the API call URL. Defaults to the value
+from <a class="reference internal" href="gcloud-api.html#module-gcloud.connection" title="gcloud.connection"><tt class="xref py py-mod docutils literal"><span class="pre">gcloud.connection</span></tt></a>.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -349,9 +354,9 @@ SNAPSHOT (False).</li>
 </table>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="gcloud.datastore.connection.Connection.build_api_url">
-<em class="property">classmethod </em><tt class="descname">build_api_url</tt><big>(</big><em>dataset_id</em>, <em>method</em>, <em>base_url=None</em>, <em>api_version=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.build_api_url" title="Permalink to this definition">#</a></dt>
+<tt class="descname">build_api_url</tt><big>(</big><em>dataset_id</em>, <em>method</em>, <em>base_url=None</em>, <em>api_version=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.build_api_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct the URL for a particular API call.</p>
 <p>This method is used internally to come up with the URL to use when
 making RPCs to the Cloud Datastore API.</p>

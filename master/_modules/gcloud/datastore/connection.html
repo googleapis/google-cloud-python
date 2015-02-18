@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.connection &mdash; gcloud 018b467 documentation</title>
+    <title>gcloud.datastore.connection &mdash; gcloud f56abdf documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '018b467',
+        VERSION:     'f56abdf',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 018b467 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud f56abdf documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -60,7 +60,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">018b467</span>
+            <span class="v-current">f56abdf</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -88,10 +88,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">&quot;&quot;&quot;Connections to gcloud datastore API servers.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
+
+
+<span class="n">_GCD_HOST_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;DATASTORE_HOST&#39;</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
@@ -102,6 +107,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials`</span>
 <span class="sd">    :param credentials: The OAuth2 Credentials to use for this connection.</span>
+
+<span class="sd">    :type api_base_url: string</span>
+<span class="sd">    :param api_base_url: The base of the API call URL. Defaults to the value</span>
+<span class="sd">                         from :mod:`gcloud.connection`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1beta2&#39;</span>
@@ -110,6 +119,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;{api_base}/datastore/{api_version}&#39;</span>
                         <span class="s">&#39;/datasets/{dataset_id}/{method}&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">api_base_url</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">api_base_url</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_GCD_HOST_ENV_VAR_NAME</span><span class="p">,</span>
+                                     <span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_base_url</span> <span class="o">=</span> <span class="n">api_base_url</span>
 
     <span class="k">def</span> <span class="nf">_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a request over the Http transport to the Cloud Datastore API.</span>
@@ -167,8 +183,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                                  <span class="n">data</span><span class="o">=</span><span class="n">request_pb</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response_pb_cls</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                       <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct the URL for a particular API call.</span>
 
@@ -190,9 +205,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :param api_version: The version of the API to connect to.</span>
 <span class="sd">                            You shouldn&#39;t have to provide this.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">api_base</span><span class="o">=</span><span class="p">(</span><span class="n">base_url</span> <span class="ow">or</span> <span class="n">cls</span><span class="o">.</span><span class="n">API_BASE_URL</span><span class="p">),</span>
-            <span class="n">api_version</span><span class="o">=</span><span class="p">(</span><span class="n">api_version</span> <span class="ow">or</span> <span class="n">cls</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">),</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">api_base</span><span class="o">=</span><span class="p">(</span><span class="n">base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_base_url</span><span class="p">),</span>
+            <span class="n">api_version</span><span class="o">=</span><span class="p">(</span><span class="n">api_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">),</span>
             <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span>

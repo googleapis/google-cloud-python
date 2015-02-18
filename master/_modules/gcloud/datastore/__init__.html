@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.__init__ &mdash; gcloud 018b467 documentation</title>
+    <title>gcloud.datastore.__init__ &mdash; gcloud f56abdf documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '018b467',
+        VERSION:     'f56abdf',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 018b467 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud f56abdf documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -60,7 +60,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">018b467</span>
+            <span class="v-current">f56abdf</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -141,6 +141,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Datastore consumer.&quot;&quot;&quot;</span>
 
 <span class="n">_DATASET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;GCLOUD_DATASET_ID&#39;</span>
+<span class="n">_GCD_DATASET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;DATASTORE_DATASET&#39;</span>
 
 
 <div class="viewcode-block" id="set_default_dataset_id"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.set_default_dataset_id">[docs]</a><span class="k">def</span> <span class="nf">set_default_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -159,6 +160,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_DATASET_ENV_VAR_NAME</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_GCD_DATASET_ENV_VAR_NAME</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">app_engine_id</span><span class="p">()</span>

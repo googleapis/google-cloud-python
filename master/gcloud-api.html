@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>GCloud Package &mdash; gcloud 018b467 documentation</title>
+    <title>GCloud Package &mdash; gcloud f56abdf documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '018b467',
+        VERSION:     'f56abdf',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 018b467 documentation" href="index.html" />
+    <link rel="top" title="gcloud f56abdf documentation" href="index.html" />
     <link rel="next" title="Datastore" href="datastore-api.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -61,7 +61,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">018b467</span>
+            <span class="v-current">f56abdf</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -83,6 +83,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="section" id="module-gcloud.connection">
 <span id="connections"></span><h2>Connections<a class="headerlink" href="#module-gcloud.connection" title="Permalink to this headline">#</a></h2>
 <p>Shared implementation of connections to API servers.</p>
+<dl class="data">
+<dt id="gcloud.connection.API_BASE_URL">
+<tt class="descclassname">gcloud.connection.</tt><tt class="descname">API_BASE_URL</tt><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#gcloud.connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
+<dd><p>The base of the API call URL.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="gcloud.connection.Connection">
 <em class="property">class </em><tt class="descclassname">gcloud.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>credentials=None</em>, <em>http=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection" title="Permalink to this definition">#</a></dt>
@@ -120,12 +126,6 @@ requests and handle token refresh on 401 errors.</p>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="gcloud.connection.Connection.API_BASE_URL">
-<tt class="descname">API_BASE_URL</tt><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#gcloud.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
-<dd><p>The base of the API call URL.</p>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="gcloud.connection.Connection.USER_AGENT">
 <tt class="descname">USER_AGENT</tt><em class="property"> = 'gcloud-python/0.4.1'</em><a class="headerlink" href="#gcloud.connection.Connection.USER_AGENT" title="Permalink to this definition">#</a></dt>

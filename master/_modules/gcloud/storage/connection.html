@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.connection &mdash; gcloud 018b467 documentation</title>
+    <title>gcloud.storage.connection &mdash; gcloud f56abdf documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '018b467',
+        VERSION:     'f56abdf',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 018b467 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud f56abdf documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -60,7 +60,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">018b467</span>
+            <span class="v-current">f56abdf</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -92,13 +92,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="kn">import</span> <span class="n">urlencode</span>  <span class="c"># pylint: disable=F0401</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.connection</span> <span class="kn">import</span> <span class="n">Connection</span> <span class="k">as</span> <span class="n">_Base</span>
+<span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 
 
-<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">_Base</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Storage via the JSON REST API.</span>
 
 <span class="sd">    This defines :meth:`Connection.api_request` for making a generic JSON</span>
@@ -139,6 +139,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">      &gt;&gt;&gt;   print bucket</span>
 <span class="sd">      &lt;Bucket: my-bucket-name&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="n">base_connection</span><span class="o">.</span><span class="n">API_BASE_URL</span>
+    <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
 
     <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1&#39;</span>
     <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
