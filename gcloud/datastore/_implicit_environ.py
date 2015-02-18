@@ -79,3 +79,21 @@ def compute_engine_id():
         pass
     finally:
         connection.close()
+
+
+def get_default_connection():
+    """Get default connection.
+
+    :rtype: :class:`gcloud.datastore.connection.Connection` or ``NoneType``
+    :returns: The default connection if one has been set.
+    """
+    return CONNECTION
+
+
+def get_default_dataset_id():
+    """Get default dataset ID.
+
+    :rtype: string or ``NoneType``
+    :returns: The default dataset ID if one has been set.
+    """
+    return DATASET_ID
