@@ -47,45 +47,50 @@ class TestConnection(unittest2.TestCase):
                          conn.USER_AGENT)
 
     def test_default_url(self):
-        from gcloud.connection import Connection
+        from gcloud.connection import API_BASE_URL
 
-        klass = self._getTargetClass()
-        self.assertEqual(klass.API_BASE_URL, Connection.API_BASE_URL)
+        conn = self._makeOne()
+        self.assertEqual(conn.api_base_url, API_BASE_URL)
 
-    def test_custom_url(self):
+    def test_custom_url_from_env(self):
         import os
-        import sys
         from gcloud._testing import _Monkey
-        from gcloud.connection import Connection as BaseConnection
+        from gcloud.connection import API_BASE_URL
         from gcloud.datastore.connection import _GCD_HOST_ENV_VAR_NAME
 
         HOST = object()
         fake_environ = {_GCD_HOST_ENV_VAR_NAME: HOST}
 
-        def fake_getenv(key, default_val=None):
-            return fake_environ.get(key, default_val)
+        with _Monkey(os, getenv=fake_environ.get):
+            conn = self._makeOne()
 
-        # We want to temporarily all the gcloud.datastore modules except for
-        # the gcloud.datastore package itself. Then re-import.
-        gcloud_keys = [key for key in sys.modules
-                       if 'gcloud.datastore.' in key]
-        modules_as_is = sys.modules.copy()
-        try:
-            for key in gcloud_keys:
-                sys.modules.pop(key)
+        self.assertNotEqual(conn.api_base_url, API_BASE_URL)
+        self.assertEqual(conn.api_base_url, HOST)
 
-            with _Monkey(os, getenv=fake_getenv):
-                from gcloud.datastore.connection import Connection
-        finally:
-            sys.modules.update(modules_as_is)
+    def test_custom_url_from_constructor(self):
+        from gcloud.connection import API_BASE_URL
 
-        self.assertNotEqual(Connection.API_BASE_URL,
-                            BaseConnection.API_BASE_URL)
-        self.assertEqual(Connection.API_BASE_URL, HOST)
+        HOST = object()
+        conn = self._makeOne(api_base_url=HOST)
+        self.assertNotEqual(conn.api_base_url, API_BASE_URL)
+        self.assertEqual(conn.api_base_url, HOST)
 
-        # Make sure the restored import.
-        from gcloud.datastore.connection import Connection
-        self.assertEqual(Connection.API_BASE_URL, BaseConnection.API_BASE_URL)
+    def test_custom_url_constructor_and_env(self):
+        import os
+        from gcloud._testing import _Monkey
+        from gcloud.connection import API_BASE_URL
+        from gcloud.datastore.connection import _GCD_HOST_ENV_VAR_NAME
+
+        HOST1 = object()
+        HOST2 = object()
+        fake_environ = {_GCD_HOST_ENV_VAR_NAME: HOST1}
+
+        with _Monkey(os, getenv=fake_environ.get):
+            conn = self._makeOne(api_base_url=HOST2)
+
+        self.assertNotEqual(conn.api_base_url, API_BASE_URL)
+        self.assertNotEqual(conn.api_base_url, HOST1)
+        self.assertEqual(conn.api_base_url, HOST2)
 
     def test_ctor_defaults(self):
         conn = self._makeOne()
@@ -128,7 +133,7 @@ class TestConnection(unittest2.TestCase):
         DATA = b'DATA'
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -174,7 +179,7 @@ class TestConnection(unittest2.TestCase):
         METHOD = 'METHOD'
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -191,23 +196,23 @@ class TestConnection(unittest2.TestCase):
     def test_build_api_url_w_default_base_version(self):
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
-        klass = self._getTargetClass()
+        conn = self._makeOne()
         URI = '/'.join([
-            klass.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
-            klass.API_VERSION,
+            conn.API_VERSION,
             'datasets',
             DATASET_ID,
             METHOD,
         ])
-        self.assertEqual(klass.build_api_url(DATASET_ID, METHOD), URI)
+        self.assertEqual(conn.build_api_url(DATASET_ID, METHOD), URI)
 
     def test_build_api_url_w_explicit_base_version(self):
         BASE = 'http://example.com/'
         VER = '3.1415926'
         DATASET_ID = 'DATASET'
         METHOD = 'METHOD'
-        klass = self._getTargetClass()
+        conn = self._makeOne()
         URI = '/'.join([
             BASE,
             'datastore',
@@ -216,7 +221,7 @@ class TestConnection(unittest2.TestCase):
             DATASET_ID,
             METHOD,
         ])
-        self.assertEqual(klass.build_api_url(DATASET_ID, METHOD, BASE, VER),
+        self.assertEqual(conn.build_api_url(DATASET_ID, METHOD, BASE, VER),
                          URI)
 
     def test_lookup_single_key_empty_response(self):
@@ -227,7 +232,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -256,7 +261,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -298,7 +303,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -332,7 +337,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.found.add(entity=entity)
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -363,7 +368,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -398,7 +403,7 @@ class TestConnection(unittest2.TestCase):
         er_2.entity.key.CopyFrom(key_pb2)
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -432,7 +437,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.deferred.add().CopyFrom(key_pb2)
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -473,7 +478,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -513,7 +518,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -569,7 +574,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -603,7 +608,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.more_results = 3  # NO_MORE_RESULTS
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -630,7 +635,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.transaction = TRANSACTION
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -655,7 +660,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.transaction = TRANSACTION
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -685,7 +690,7 @@ class TestConnection(unittest2.TestCase):
         prop.value.string_value = u'Foo'
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -719,7 +724,7 @@ class TestConnection(unittest2.TestCase):
         prop.value.string_value = u'Foo'
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -747,7 +752,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.RollbackResponse()
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -770,7 +775,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb = datastore_pb.AllocateIdsResponse()
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
@@ -803,7 +808,7 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.key.add().CopyFrom(after_key_pbs[1])
         conn = self._makeOne()
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',

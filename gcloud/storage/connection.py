@@ -18,13 +18,13 @@ import json
 
 from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
-from gcloud.connection import Connection as _Base
+from gcloud import connection as base_connection
 from gcloud.exceptions import make_exception
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
 
 
-class Connection(_Base):
+class Connection(base_connection.Connection):
     """A connection to Google Cloud Storage via the JSON REST API.
 
     This defines :meth:`Connection.api_request` for making a generic JSON
@@ -65,6 +65,9 @@ class Connection(_Base):
       >>>   print bucket
       <Bucket: my-bucket-name>
     """
+
+    API_BASE_URL = base_connection.API_BASE_URL
+    """The base of the API call URL."""
 
     API_VERSION = 'v1'
     """The version of the API, used in building the API call's URL."""

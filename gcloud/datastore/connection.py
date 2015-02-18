@@ -33,11 +33,11 @@ class Connection(connection.Connection):
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: The OAuth2 Credentials to use for this connection.
-    """
 
-    API_BASE_URL = os.getenv(_GCD_HOST_ENV_VAR_NAME,
-                             connection.Connection.API_BASE_URL)
-    """The base of the API call URL."""
+    :type api_base_url: string
+    :param api_base_url: The base of the API call URL. Defaults to the value
+                         from :mod:`gcloud.connection`.
+    """
 
     API_VERSION = 'v1beta2'
     """The version of the API, used in building the API call's URL."""
@@ -45,6 +45,13 @@ class Connection(connection.Connection):
     API_URL_TEMPLATE = ('{api_base}/datastore/{api_version}'
                         '/datasets/{dataset_id}/{method}')
     """A template for the URL of a particular API call."""
+
+    def __init__(self, credentials=None, http=None, api_base_url=None):
+        super(Connection, self).__init__(credentials=credentials, http=http)
+        if api_base_url is None:
+            api_base_url = os.getenv(_GCD_HOST_ENV_VAR_NAME,
+                                     connection.API_BASE_URL)
+        self.api_base_url = api_base_url
 
     def _request(self, dataset_id, method, data):
         """Make a request over the Http transport to the Cloud Datastore API.
@@ -102,8 +109,7 @@ class Connection(connection.Connection):
                                  data=request_pb.SerializeToString())
         return response_pb_cls.FromString(response)
 
-    @classmethod
-    def build_api_url(cls, dataset_id, method, base_url=None,
+    def build_api_url(self, dataset_id, method, base_url=None,
                       api_version=None):
         """Construct the URL for a particular API call.
 
@@ -125,9 +131,9 @@ class Connection(connection.Connection):
         :param api_version: The version of the API to connect to.
                             You shouldn't have to provide this.
         """
-        return cls.API_URL_TEMPLATE.format(
-            api_base=(base_url or cls.API_BASE_URL),
-            api_version=(api_version or cls.API_VERSION),
+        return self.API_URL_TEMPLATE.format(
+            api_base=(base_url or self.api_base_url),
+            api_version=(api_version or self.API_VERSION),
             dataset_id=dataset_id, method=method)
 
     def lookup(self, dataset_id, key_pbs,
