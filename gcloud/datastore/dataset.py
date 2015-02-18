@@ -63,7 +63,7 @@ class Dataset(object):
                       dataset_id=self.dataset_id)
 
     def key(self, *path_args, **kwargs):
-        """Proxy to :func:`gcloud.datastore.key.Key`.
+        """Proxy to :class:`gcloud.datastore.key.Key`.
 
         Passes our ``dataset_id``.
         """
@@ -73,14 +73,14 @@ class Dataset(object):
         return Key(*path_args, **kwargs)
 
     def batch(self):
-        """Proxy to :func:`gcloud.datastore.batch.Batch`.
+        """Proxy to :class:`gcloud.datastore.batch.Batch`.
 
         Passes our ``dataset_id``.
         """
         return Batch(dataset_id=self.dataset_id, connection=self.connection)
 
     def transaction(self):
-        """Proxy to :func:`gcloud.datastore.transaction.Transaction`.
+        """Proxy to :class:`gcloud.datastore.transaction.Transaction`.
 
         Passes our ``dataset_id``.
         """
@@ -88,7 +88,7 @@ class Dataset(object):
                            connection=self.connection)
 
     def query(self, **kwargs):
-        """Proxy to :func:`gcloud.datastore.query.Query`.
+        """Proxy to :class:`gcloud.datastore.query.Query`.
 
         Passes our ``dataset_id``.
         """
