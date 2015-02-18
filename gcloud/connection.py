@@ -19,6 +19,10 @@ from pkg_resources import get_distribution
 import httplib2
 
 
+API_BASE_URL = 'https://www.googleapis.com'
+"""The base of the API call URL."""
+
+
 class Connection(object):
     """A generic connection to Google Cloud Platform.
 
@@ -53,9 +57,6 @@ class Connection(object):
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
     :param http: An optional HTTP object to make requests.
     """
-
-    API_BASE_URL = 'https://www.googleapis.com'
-    """The base of the API call URL."""
 
     USER_AGENT = "gcloud-python/{0}".format(get_distribution('gcloud').version)
     """The user agent for gcloud-python requests."""

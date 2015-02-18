@@ -359,7 +359,7 @@ class Test_get_function(unittest2.TestCase):
 
         # Make URI to check for requests.
         URI = '/'.join([
-            conn.API_BASE_URL,
+            conn.api_base_url,
             'datastore',
             conn.API_VERSION,
             'datasets',
