@@ -400,10 +400,9 @@ def _validate_dataset_id(dataset_id, parent):
 
         if dataset_id is None:
 
-            if _implicit_environ.DATASET_ID is None:
+            dataset_id = _implicit_environ.get_default_dataset_id()
+            if dataset_id is None:
                 raise ValueError("A Key must have a dataset ID set.")
-
-            dataset_id = _implicit_environ.DATASET_ID
 
     return dataset_id
 

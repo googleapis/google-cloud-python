@@ -80,7 +80,7 @@ class Query(object):
                  group_by=()):
 
         if dataset_id is None:
-            dataset_id = _implicit_environ.DATASET_ID
+            dataset_id = _implicit_environ.get_default_dataset_id()
 
         if dataset_id is None:
             raise ValueError("No dataset ID supplied, and no default set.")
@@ -326,7 +326,7 @@ class Query(object):
                  default has been set.
         """
         if connection is None:
-            connection = _implicit_environ.CONNECTION
+            connection = _implicit_environ.get_default_connection()
 
         if connection is None:
             raise ValueError("No connection passed, and no default set")

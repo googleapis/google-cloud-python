@@ -50,6 +50,8 @@ import os
 
 from gcloud import credentials
 from gcloud.datastore import _implicit_environ
+from gcloud.datastore._implicit_environ import get_default_connection
+from gcloud.datastore._implicit_environ import get_default_dataset_id
 from gcloud.datastore.api import allocate_ids
 from gcloud.datastore.api import delete
 from gcloud.datastore.api import get
