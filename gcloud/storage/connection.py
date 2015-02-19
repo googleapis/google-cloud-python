@@ -237,7 +237,7 @@ class Connection(base_connection.Connection):
             raise make_exception(response, content)
 
         if six.PY3 and isinstance(content, bytes):
-            content = content.decode('utf-8') # pragma: NO COVER Py3K
+            content = content.decode('utf-8')  # pragma: NO COVER Py3K
 
         if content and expect_json:
             content_type = response.get('content-type', '')
