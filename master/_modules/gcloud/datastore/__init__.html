@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.__init__ &mdash; gcloud 6ff634a documentation</title>
+    <title>gcloud.datastore.__init__ &mdash; gcloud 26dba83 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '6ff634a',
+        VERSION:     '26dba83',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 6ff634a documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 26dba83 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -60,7 +60,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <h1 class="page-title">Python</h1>
 
           <div class="versions">
-            <span class="v-current">6ff634a</span>
+            <span class="v-current">26dba83</span>
             <!--
             <a href="versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
@@ -120,12 +120,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">  when race conditions may occur.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_dataset_id</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">set_default_dataset_id</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">allocate_ids</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">delete</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">get</span>
@@ -142,42 +141,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
          <span class="s">&#39;https://www.googleapis.com/auth/userinfo.email&#39;</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Datastore consumer.&quot;&quot;&quot;</span>
 
-<span class="n">_DATASET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;GCLOUD_DATASET_ID&#39;</span>
-<span class="n">_GCD_DATASET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;DATASTORE_DATASET&#39;</span>
 
-
-<div class="viewcode-block" id="set_default_dataset_id"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.set_default_dataset_id">[docs]</a><span class="k">def</span> <span class="nf">set_default_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set default dataset ID either explicitly or implicitly as fall-back.</span>
-
-<span class="sd">    In implicit case, supports three cases. In order of precedence, the</span>
-<span class="sd">    implicit cases are:</span>
-<span class="sd">    - GCLOUD_DATASET_ID environment variable</span>
-<span class="sd">    - Google App Engine application ID</span>
-<span class="sd">    - Google Compute Engine project ID (from metadata server)</span>
-
-<span class="sd">    :type dataset_id: string</span>
-<span class="sd">    :param dataset_id: Optional. The dataset ID to use as default.</span>
-
-<span class="sd">    :raises: :class:`EnvironmentError` if no dataset ID was implied.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_DATASET_ENV_VAR_NAME</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_GCD_DATASET_ENV_VAR_NAME</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">app_engine_id</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">compute_engine_id</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">_DEFAULTS</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;No dataset ID could be inferred.&#39;</span><span class="p">)</span>
-
-</div>
 <div class="viewcode-block" id="set_default_connection"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.set_default_connection">[docs]</a><span class="k">def</span> <span class="nf">set_default_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set default connection either explicitly or implicitly as fall-back.</span>
 
