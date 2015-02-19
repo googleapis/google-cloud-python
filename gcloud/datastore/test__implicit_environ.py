@@ -397,6 +397,26 @@ class Test_lazy_loaded_dataset_id(unittest2.TestCase):
             'dataset_id' in _implicit_environ._DEFAULTS.__dict__)
 
 
+class Test_get_connection(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud.datastore._implicit_environ import get_connection
+        return get_connection()
+
+    def test_it(self):
+        from gcloud import credentials
+        from gcloud.datastore.connection import Connection
+        from gcloud.test_credentials import _Client
+        from gcloud._testing import _Monkey
+
+        client = _Client()
+        with _Monkey(credentials, client=client):
+            found = self._callFUT()
+        self.assertTrue(isinstance(found, Connection))
+        self.assertTrue(found._credentials is client._signed)
+        self.assertTrue(client._get_app_default_called)
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):

@@ -46,8 +46,9 @@ The main concepts with this API are:
   when race conditions may occur.
 """
 
-from gcloud import credentials
 from gcloud.datastore import _implicit_environ
+from gcloud.datastore._implicit_environ import SCOPE
+from gcloud.datastore._implicit_environ import get_connection
 from gcloud.datastore._implicit_environ import get_default_connection
 from gcloud.datastore._implicit_environ import get_default_dataset_id
 from gcloud.datastore._implicit_environ import set_default_dataset_id
@@ -61,11 +62,6 @@ from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
-
-
-SCOPE = ('https://www.googleapis.com/auth/datastore',
-         'https://www.googleapis.com/auth/userinfo.email')
-"""The scopes required for authenticating as a Cloud Datastore consumer."""
 
 
 def set_default_connection(connection=None):
@@ -96,25 +92,3 @@ def set_defaults(dataset_id=None, connection=None):
     """
     set_default_dataset_id(dataset_id=dataset_id)
     set_default_connection(connection=connection)
-
-
-def get_connection():
-    """Shortcut method to establish a connection to the Cloud Datastore.
-
-    Use this if you are going to access several datasets
-    with the same set of credentials (unlikely):
-
-    >>> from gcloud import datastore
-
-    >>> connection = datastore.get_connection()
-    >>> key1 = datastore.Key('Kind', 1234, dataset_id='dataset1')
-    >>> key2 = datastore.Key('Kind', 1234, dataset_id='dataset2')
-    >>> entity1 = datastore.get(key1, connection=connection)
-    >>> entity2 = datastore.get(key2, connection=connection)
-
-    :rtype: :class:`gcloud.datastore.connection.Connection`
-    :returns: A connection defined with the proper credentials.
-    """
-    implicit_credentials = credentials.get_credentials()
-    scoped_credentials = implicit_credentials.create_scoped(SCOPE)
-    return Connection(credentials=scoped_credentials)

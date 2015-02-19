@@ -28,6 +28,13 @@ try:
 except ImportError:
     app_identity = None
 
+from gcloud import credentials
+from gcloud.datastore.connection import Connection
+
+
+SCOPE = ('https://www.googleapis.com/auth/datastore',
+         'https://www.googleapis.com/auth/userinfo.email')
+"""The scopes required for authenticating as a Cloud Datastore consumer."""
 
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 _GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
@@ -141,6 +148,28 @@ def get_default_dataset_id():
     :returns: The default dataset ID if one has been set.
     """
     return _DEFAULTS.dataset_id
+
+
+def get_connection():
+    """Shortcut method to establish a connection to the Cloud Datastore.
+
+    Use this if you are going to access several datasets
+    with the same set of credentials (unlikely):
+
+    >>> from gcloud import datastore
+
+    >>> connection = datastore.get_connection()
+    >>> key1 = datastore.Key('Kind', 1234, dataset_id='dataset1')
+    >>> key2 = datastore.Key('Kind', 1234, dataset_id='dataset2')
+    >>> entity1 = datastore.get(key1, connection=connection)
+    >>> entity2 = datastore.get(key2, connection=connection)
+
+    :rtype: :class:`gcloud.datastore.connection.Connection`
+    :returns: A connection defined with the proper credentials.
+    """
+    implicit_credentials = credentials.get_credentials()
+    scoped_credentials = implicit_credentials.create_scoped(SCOPE)
+    return Connection(credentials=scoped_credentials)
 
 
 def get_default_connection():
