@@ -18,6 +18,7 @@ Acts as a mutable namespace to allow the datastore package to
 imply the current dataset ID and connection from the enviroment.
 """
 
+import os
 import socket
 
 from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
@@ -26,6 +27,10 @@ try:
     from google.appengine.api import app_identity
 except ImportError:
     app_identity = None
+
+
+_DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
+_GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
 
 
 class _DefaultsContainer(object):
@@ -88,6 +93,61 @@ def compute_engine_id():
         pass
     finally:
         connection.close()
+
+
+def _determine_default_dataset_id(dataset_id=None):
+    """Determine default dataset ID explicitly or implicitly as fall-back.
+
+    In implicit case, supports four environments. In order of precedence, the
+    implicit environments are:
+
+    * GCLOUD_DATASET_ID environment variable
+    * DATASTORE_DATASET environment variable (for ``gcd`` testing)
+    * Google App Engine application ID
+    * Google Compute Engine project ID (from metadata server)
+
+    :type dataset_id: string
+    :param dataset_id: Optional. The dataset ID to use as default.
+
+    :rtype: string or ``NoneType``
+    :returns: Default dataset ID if it can be determined.
+    """
+    if dataset_id is None:
+        dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
+
+    if dataset_id is None:
+        dataset_id = os.getenv(_GCD_DATASET_ENV_VAR_NAME)
+
+    if dataset_id is None:
+        dataset_id = app_engine_id()
+
+    if dataset_id is None:
+        dataset_id = compute_engine_id()
+
+    return dataset_id
+
+
+def set_default_dataset_id(dataset_id=None):
+    """Set default dataset ID either explicitly or implicitly as fall-back.
+
+    In implicit case, supports four environments. In order of precedence, the
+    implicit environments are:
+
+    * GCLOUD_DATASET_ID environment variable
+    * DATASTORE_DATASET environment variable (for ``gcd`` testing)
+    * Google App Engine application ID
+    * Google Compute Engine project ID (from metadata server)
+
+    :type dataset_id: string
+    :param dataset_id: Optional. The dataset ID to use as default.
+
+    :raises: :class:`EnvironmentError` if no dataset ID was implied.
+    """
+    dataset_id = _determine_default_dataset_id(dataset_id=dataset_id)
+    if dataset_id is not None:
+        _DEFAULTS.dataset_id = dataset_id
+    else:
+        raise EnvironmentError('No dataset ID could be inferred.')
 
 
 def get_default_connection():
