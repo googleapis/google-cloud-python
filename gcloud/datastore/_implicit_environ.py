@@ -18,6 +18,7 @@ Acts as a mutable namespace to allow the datastore package to
 imply the current dataset ID and connection from the enviroment.
 """
 
+import os
 import socket
 
 from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
@@ -28,11 +29,24 @@ except ImportError:
     app_identity = None
 
 
-DATASET_ID = None
-"""Module global to allow persistent implied dataset ID from enviroment."""
+_DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
+_GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
 
-CONNECTION = None
-"""Module global to allow persistent implied connection from enviroment."""
+
+class _DefaultsContainer(object):
+    """Container for defaults.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Persistent implied connection from environment.
+
+    :type dataset_id: string
+    :param dataset_id: Persistent implied dataset ID from environment.
+    """
+
+    def __init__(self, connection=None, dataset_id=None, implicit=False):
+        self.implicit = implicit
+        self.connection = connection
+        self.dataset_id = dataset_id
 
 
 def app_engine_id():
@@ -79,3 +93,79 @@ def compute_engine_id():
         pass
     finally:
         connection.close()
+
+
+def _determine_default_dataset_id(dataset_id=None):
+    """Determine default dataset ID explicitly or implicitly as fall-back.
+
+    In implicit case, supports four environments. In order of precedence, the
+    implicit environments are:
+
+    * GCLOUD_DATASET_ID environment variable
+    * DATASTORE_DATASET environment variable (for ``gcd`` testing)
+    * Google App Engine application ID
+    * Google Compute Engine project ID (from metadata server)
+
+    :type dataset_id: string
+    :param dataset_id: Optional. The dataset ID to use as default.
+
+    :rtype: string or ``NoneType``
+    :returns: Default dataset ID if it can be determined.
+    """
+    if dataset_id is None:
+        dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
+
+    if dataset_id is None:
+        dataset_id = os.getenv(_GCD_DATASET_ENV_VAR_NAME)
+
+    if dataset_id is None:
+        dataset_id = app_engine_id()
+
+    if dataset_id is None:
+        dataset_id = compute_engine_id()
+
+    return dataset_id
+
+
+def set_default_dataset_id(dataset_id=None):
+    """Set default dataset ID either explicitly or implicitly as fall-back.
+
+    In implicit case, supports four environments. In order of precedence, the
+    implicit environments are:
+
+    * GCLOUD_DATASET_ID environment variable
+    * DATASTORE_DATASET environment variable (for ``gcd`` testing)
+    * Google App Engine application ID
+    * Google Compute Engine project ID (from metadata server)
+
+    :type dataset_id: string
+    :param dataset_id: Optional. The dataset ID to use as default.
+
+    :raises: :class:`EnvironmentError` if no dataset ID was implied.
+    """
+    dataset_id = _determine_default_dataset_id(dataset_id=dataset_id)
+    if dataset_id is not None:
+        _DEFAULTS.dataset_id = dataset_id
+    else:
+        raise EnvironmentError('No dataset ID could be inferred.')
+
+
+def get_default_connection():
+    """Get default connection.
+
+    :rtype: :class:`gcloud.datastore.connection.Connection` or ``NoneType``
+    :returns: The default connection if one has been set.
+    """
+    return _DEFAULTS.connection
+
+
+def get_default_dataset_id():
+    """Get default dataset ID.
+
+    :rtype: string or ``NoneType``
+    :returns: The default dataset ID if one has been set.
+    """
+    return _DEFAULTS.dataset_id
+
+
+_DEFAULTS = _DefaultsContainer(implicit=True)

@@ -27,12 +27,9 @@ class TestBatch(unittest2.TestCase):
                                       connection=connection)
 
     def test_ctor_missing_required(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
 
-        with _Monkey(_implicit_environ,
-                     DATASET_ID=None,
-                     CONNECTION=None):
+        with _monkey_defaults():
             self.assertRaises(ValueError, self._makeOne)
             self.assertRaises(ValueError, self._makeOne, dataset_id=object())
             self.assertRaises(ValueError, self._makeOne, connection=object())
@@ -49,18 +46,15 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch._auto_id_entities, [])
 
     def test_ctor_implicit(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
         from gcloud.datastore._datastore_v1_pb2 import Mutation
-        DATASET_ID = 'DATASET'
+        _DATASET = 'DATASET'
         CONNECTION = _Connection()
 
-        with _Monkey(_implicit_environ,
-                     DATASET_ID=DATASET_ID,
-                     CONNECTION=CONNECTION):
+        with _monkey_defaults(connection=CONNECTION, dataset_id=_DATASET):
             batch = self._makeOne()
 
-        self.assertEqual(batch.dataset_id, DATASET_ID)
+        self.assertEqual(batch.dataset_id, _DATASET)
         self.assertEqual(batch.connection, CONNECTION)
         self.assertTrue(isinstance(batch.mutation, Mutation))
         self.assertEqual(batch._auto_id_entities, [])

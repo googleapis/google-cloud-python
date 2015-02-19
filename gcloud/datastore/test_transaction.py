@@ -17,6 +17,14 @@ import unittest2
 
 class TestTransaction(unittest2.TestCase):
 
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
     def _getTargetClass(self):
         from gcloud.datastore.transaction import Transaction
 
@@ -29,7 +37,7 @@ class TestTransaction(unittest2.TestCase):
     def test_ctor_missing_required(self):
         from gcloud.datastore import _implicit_environ
 
-        self.assertEqual(_implicit_environ.DATASET_ID, None)
+        self.assertEqual(_implicit_environ.get_default_dataset_id(), None)
 
         with self.assertRaises(ValueError):
             self._makeOne()
@@ -52,14 +60,11 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(len(xact._auto_id_entities), 0)
 
     def test_ctor_with_env(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
 
-        DATASET_ID = 'DATASET'
         CONNECTION = _Connection()
-
-        with _Monkey(_implicit_environ, DATASET_ID=DATASET_ID,
-                     CONNECTION=CONNECTION):
+        DATASET_ID = 'DATASET'
+        with _monkey_defaults(connection=CONNECTION, dataset_id=DATASET_ID):
             xact = self._makeOne()
 
         self.assertEqual(xact.id, None)

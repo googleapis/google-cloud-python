@@ -46,10 +46,11 @@ The main concepts with this API are:
   when race conditions may occur.
 """
 
-import os
-
 from gcloud import credentials
 from gcloud.datastore import _implicit_environ
+from gcloud.datastore._implicit_environ import get_default_connection
+from gcloud.datastore._implicit_environ import get_default_dataset_id
+from gcloud.datastore._implicit_environ import set_default_dataset_id
 from gcloud.datastore.api import allocate_ids
 from gcloud.datastore.api import delete
 from gcloud.datastore.api import get
@@ -66,41 +67,6 @@ SCOPE = ('https://www.googleapis.com/auth/datastore',
          'https://www.googleapis.com/auth/userinfo.email')
 """The scopes required for authenticating as a Cloud Datastore consumer."""
 
-_DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
-_GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
-
-
-def set_default_dataset_id(dataset_id=None):
-    """Set default dataset ID either explicitly or implicitly as fall-back.
-
-    In implicit case, supports three cases. In order of precedence, the
-    implicit cases are:
-    - GCLOUD_DATASET_ID environment variable
-    - Google App Engine application ID
-    - Google Compute Engine project ID (from metadata server)
-
-    :type dataset_id: string
-    :param dataset_id: Optional. The dataset ID to use as default.
-
-    :raises: :class:`EnvironmentError` if no dataset ID was implied.
-    """
-    if dataset_id is None:
-        dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
-
-    if dataset_id is None:
-        dataset_id = os.getenv(_GCD_DATASET_ENV_VAR_NAME)
-
-    if dataset_id is None:
-        dataset_id = _implicit_environ.app_engine_id()
-
-    if dataset_id is None:
-        dataset_id = _implicit_environ.compute_engine_id()
-
-    if dataset_id is not None:
-        _implicit_environ.DATASET_ID = dataset_id
-    else:
-        raise EnvironmentError('No dataset ID could be inferred.')
-
 
 def set_default_connection(connection=None):
     """Set default connection either explicitly or implicitly as fall-back.
@@ -109,7 +75,7 @@ def set_default_connection(connection=None):
     :param connection: A connection provided to be the default.
     """
     connection = connection or get_connection()
-    _implicit_environ.CONNECTION = connection
+    _implicit_environ._DEFAULTS.connection = connection
 
 
 def set_defaults(dataset_id=None, connection=None):

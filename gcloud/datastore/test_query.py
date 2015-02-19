@@ -17,6 +17,14 @@ import unittest2
 
 class TestQuery(unittest2.TestCase):
 
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
     def _getTargetClass(self):
         from gcloud.datastore.query import Query
         return Query
@@ -28,10 +36,10 @@ class TestQuery(unittest2.TestCase):
         self.assertRaises(ValueError, self._makeOne)
 
     def test_ctor_defaults_w_implicit_dataset_id(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
+
         _DATASET = 'DATASET'
-        with _Monkey(_implicit_environ, DATASET_ID=_DATASET):
+        with _monkey_defaults(dataset_id=_DATASET):
             query = self._makeOne()
         self.assertEqual(query.dataset_id, _DATASET)
         self.assertEqual(query.kind, None)
@@ -313,13 +321,14 @@ class TestQuery(unittest2.TestCase):
         self.assertRaises(ValueError, query.fetch)
 
     def test_fetch_defaults_w_implicit_connection(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
+
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         connection = _Connection()
         query = self._makeOne(_DATASET, _KIND)
-        with _Monkey(_implicit_environ, CONNECTION=connection):
+
+        with _monkey_defaults(connection=connection):
             iterator = query.fetch()
         self.assertTrue(iterator._query is query)
         self.assertEqual(iterator._limit, None)

@@ -70,8 +70,10 @@ class Batch(object):
         :raises: :class:`ValueError` if either a connection or dataset ID
                  are not set.
         """
-        self._connection = connection or _implicit_environ.CONNECTION
-        self._dataset_id = dataset_id or _implicit_environ.DATASET_ID
+        self._connection = (connection or
+                            _implicit_environ.get_default_connection())
+        self._dataset_id = (dataset_id or
+                            _implicit_environ.get_default_dataset_id())
 
         if self._connection is None or self._dataset_id is None:
             raise ValueError('A batch must have a connection and '
