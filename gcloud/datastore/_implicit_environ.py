@@ -28,11 +28,19 @@ except ImportError:
     app_identity = None
 
 
-DATASET_ID = None
-"""Module global to allow persistent implied dataset ID from enviroment."""
+class _DefaultsContainer(object):
+    """Container for defaults.
 
-CONNECTION = None
-"""Module global to allow persistent implied connection from enviroment."""
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Persistent implied connection from environment.
+
+    :type dataset_id: string
+    :param dataset_id: Persistent implied dataset ID from environment.
+    """
+
+    def __init__(self, connection=None, dataset_id=None):
+        self.connection = connection
+        self.dataset_id = dataset_id
 
 
 def app_engine_id():
@@ -87,7 +95,7 @@ def get_default_connection():
     :rtype: :class:`gcloud.datastore.connection.Connection` or ``NoneType``
     :returns: The default connection if one has been set.
     """
-    return CONNECTION
+    return _DEFAULTS.connection
 
 
 def get_default_dataset_id():
@@ -96,4 +104,7 @@ def get_default_dataset_id():
     :rtype: string or ``NoneType``
     :returns: The default dataset ID if one has been set.
     """
-    return DATASET_ID
+    return _DEFAULTS.dataset_id
+
+
+_DEFAULTS = _DefaultsContainer()

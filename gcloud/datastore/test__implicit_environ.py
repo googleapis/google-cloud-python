@@ -29,7 +29,8 @@ class Test_get_default_connection(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
 
         SENTINEL = object()
-        with _Monkey(_implicit_environ, CONNECTION=SENTINEL):
+        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(SENTINEL, None)
+        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
             self.assertEqual(self._callFUT(), SENTINEL)
 
 
@@ -47,5 +48,6 @@ class Test_get_default_dataset_id(unittest2.TestCase):
         from gcloud.datastore import _implicit_environ
 
         SENTINEL = object()
-        with _Monkey(_implicit_environ, DATASET_ID=SENTINEL):
+        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(None, SENTINEL)
+        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
             self.assertEqual(self._callFUT(), SENTINEL)

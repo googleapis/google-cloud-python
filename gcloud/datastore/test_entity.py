@@ -23,12 +23,13 @@ class TestEntity(unittest2.TestCase):
 
     def setUp(self):
         from gcloud.datastore import _implicit_environ
-        self._replaced_dataset_id = _implicit_environ.DATASET_ID
-        _implicit_environ.DATASET_ID = None
+        self._replaced_defaults = _implicit_environ._DEFAULTS
+        _implicit_environ._DEFAULTS = _implicit_environ._DefaultsContainer(
+            None, None)
 
     def tearDown(self):
         from gcloud.datastore import _implicit_environ
-        _implicit_environ.DATASET_ID = self._replaced_dataset_id
+        _implicit_environ._DEFAULTS = self._replaced_defaults
 
     def _getTargetClass(self):
         from gcloud.datastore.entity import Entity

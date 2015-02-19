@@ -20,14 +20,14 @@ class TestKey(unittest2.TestCase):
     _DEFAULT_DATASET = 'DATASET'
 
     def setUp(self):
-
         from gcloud.datastore import _implicit_environ
-        self._replaced_dataset_id = _implicit_environ.DATASET_ID
-        _implicit_environ.DATASET_ID = None
+        self._replaced_defaults = _implicit_environ._DEFAULTS
+        _implicit_environ._DEFAULTS = _implicit_environ._DefaultsContainer(
+            None, None)
 
     def tearDown(self):
         from gcloud.datastore import _implicit_environ
-        _implicit_environ.DATASET_ID = self._replaced_dataset_id
+        _implicit_environ._DEFAULTS = self._replaced_defaults
 
     def _getTargetClass(self):
         from gcloud.datastore.key import Key
@@ -39,7 +39,8 @@ class TestKey(unittest2.TestCase):
     def _monkeyDatasetID(self, dataset_id=_DEFAULT_DATASET):
         from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
-        return _Monkey(_implicit_environ, DATASET_ID=dataset_id)
+        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(None, dataset_id)
+        return _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS)
 
     def test_ctor_empty(self):
         self.assertRaises(ValueError, self._makeOne)
