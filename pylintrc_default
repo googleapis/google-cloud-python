@@ -73,6 +73,10 @@ ignore =
 #                  identical implementation but different docstrings.
 # - star-args:  standard Python idioms for varargs:
 #                  ancestor = Query().filter(*order_props)
+# - method-hidden: Decorating a method in a class (e.g. in _DefaultsContainer)
+#                      @_lazy_property_deco
+#                      def dataset_id():
+#                          ...
 disable =
     maybe-no-member,
     no-member,
@@ -80,6 +84,7 @@ disable =
     redefined-builtin,
     similarities,
     star-args,
+    method-hidden,
 
 
 [REPORTS]
