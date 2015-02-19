@@ -31,7 +31,9 @@ class TestQuery(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.datastore import _implicit_environ
         _DATASET = 'DATASET'
-        with _Monkey(_implicit_environ, DATASET_ID=_DATASET):
+
+        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(None, _DATASET)
+        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
             query = self._makeOne()
         self.assertEqual(query.dataset_id, _DATASET)
         self.assertEqual(query.kind, None)
@@ -319,7 +321,9 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         connection = _Connection()
         query = self._makeOne(_DATASET, _KIND)
-        with _Monkey(_implicit_environ, CONNECTION=connection):
+
+        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(connection, None)
+        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
             iterator = query.fetch()
         self.assertTrue(iterator._query is query)
         self.assertEqual(iterator._limit, None)
