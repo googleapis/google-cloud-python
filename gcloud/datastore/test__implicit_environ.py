@@ -321,6 +321,59 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         self.assertEqual(connection.timeout, None)
 
 
+class Test_lazy_loaded_dataset_id(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self, implicit=True)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
+    def test_prop_default(self):
+        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._implicit_environ import _DefaultsContainer
+        from gcloud.datastore._implicit_environ import _LazyProperty
+
+        self.assertTrue(isinstance(_DefaultsContainer.dataset_id,
+                                   _LazyProperty))
+        self.assertEqual(_implicit_environ._DEFAULTS.dataset_id, None)
+
+    def test_prop_on_wrong_class(self):
+        from gcloud.datastore._implicit_environ import _LazyProperty
+
+        # Don't actually need a callable for ``method`` since
+        # __get__ will just return ``self`` in this test.
+        data_prop = _LazyProperty('dataset_id', None)
+
+        class FakeEnv(object):
+            dataset_id = data_prop
+
+        self.assertTrue(FakeEnv.dataset_id is data_prop)
+        self.assertTrue(FakeEnv().dataset_id is data_prop)
+
+    def test_prop_descriptor(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+
+        self.assertFalse(
+            'dataset_id' in _implicit_environ._DEFAULTS.__dict__)
+
+        DEFAULT = object()
+
+        def mock_default():
+            return DEFAULT
+
+        with _Monkey(_implicit_environ,
+                     _determine_default_dataset_id=mock_default):
+            lazy_loaded = _implicit_environ._DEFAULTS.dataset_id
+
+        self.assertEqual(lazy_loaded, DEFAULT)
+        self.assertTrue(
+            'dataset_id' in _implicit_environ._DEFAULTS.__dict__)
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):

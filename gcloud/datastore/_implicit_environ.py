@@ -33,22 +33,6 @@ _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 _GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
 
 
-class _DefaultsContainer(object):
-    """Container for defaults.
-
-    :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: Persistent implied connection from environment.
-
-    :type dataset_id: string
-    :param dataset_id: Persistent implied dataset ID from environment.
-    """
-
-    def __init__(self, connection=None, dataset_id=None, implicit=False):
-        self.implicit = implicit
-        self.connection = connection
-        self.dataset_id = dataset_id
-
-
 def app_engine_id():
     """Gets the App Engine application ID if it can be inferred.
 
@@ -127,6 +111,15 @@ def _determine_default_dataset_id(dataset_id=None):
     return dataset_id
 
 
+def _lazy_dataset_id():
+    """Alias wrapper for _determine_default_dataset_id.
+
+    Unit test need to be able to replace _determine_default_dataset_id()
+    so we can't wrap the actual ``function`` object in a ``_LazyProperty``.
+    """
+    return _determine_default_dataset_id()
+
+
 def set_default_dataset_id(dataset_id=None):
     """Set default dataset ID either explicitly or implicitly as fall-back.
 
@@ -150,6 +143,15 @@ def set_default_dataset_id(dataset_id=None):
         raise EnvironmentError('No dataset ID could be inferred.')
 
 
+def get_default_dataset_id():
+    """Get default dataset ID.
+
+    :rtype: string or ``NoneType``
+    :returns: The default dataset ID if one has been set.
+    """
+    return _DEFAULTS.dataset_id
+
+
 def get_default_connection():
     """Get default connection.
 
@@ -159,13 +161,47 @@ def get_default_connection():
     return _DEFAULTS.connection
 
 
-def get_default_dataset_id():
-    """Get default dataset ID.
+class _LazyProperty(object):
+    """Descriptor for lazy loaded property.
 
-    :rtype: string or ``NoneType``
-    :returns: The default dataset ID if one has been set.
+    This follows the reify pattern: lazy evaluation and then replacement
+    after evaluation.
+
+    :type name: string
+    :param name: The name of the attribute / property being evaluated.
+
+    :type method: callable that takes no arguments
+    :param method: The method used to evaluate the property.
     """
-    return _DEFAULTS.dataset_id
+
+    def __init__(self, name, method):
+        self._name = name
+        self._method = method
+
+    def __get__(self, obj, objtype):
+        if obj is None or objtype is not _DefaultsContainer:
+            return self
+
+        setattr(obj, self._name, self._method())
+        return getattr(obj, self._name)
+
+
+class _DefaultsContainer(object):
+    """Container for defaults.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Persistent implied connection from environment.
+
+    :type dataset_id: string
+    :param dataset_id: Persistent implied dataset ID from environment.
+    """
+
+    dataset_id = _LazyProperty('dataset_id', _lazy_dataset_id)
+
+    def __init__(self, connection=None, dataset_id=None, implicit=False):
+        self.connection = connection
+        if dataset_id is not None or not implicit:
+            self.dataset_id = dataset_id
 
 
 _DEFAULTS = _DefaultsContainer(implicit=True)
