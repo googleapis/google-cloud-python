@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="https://cloud.google.com/images/gcp-favicon.ico">
     <link rel="stylesheet" href="_landing-page-static/css/normalize.css">
     <link rel="stylesheet" href="_landing-page-static/css/main.css">
+    <link rel="stylesheet" href="_landing-page-static/pygments.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono|Roboto:300,400,700,700italic,400italic|Open+Sans:300">
     <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/github.min.css">
   </head>
@@ -96,6 +97,19 @@
         instance, the one-line install is enough!</p>
 
       </div><!-- end of .col.col-left -->
+
+      <div class="col col-right">
+        <h4>Retrieve Datastore Entities</h4>
+
+        <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="n">datastore</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">()</span>
+
+<span class="n">product_key</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Product&#39;</span><span class="p">,</span> <span class="mi">123</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="n">product_key</span><span class="p">])</span>
+</pre></div>
+</div>
+
+      </div><!-- end of .col.col-right -->
     </div><!-- end of .container -->
   </section><!-- end of .featuring -->
 
