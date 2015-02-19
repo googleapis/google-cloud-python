@@ -24,9 +24,9 @@ def _monkey_defaults(*args, **kwargs):
     return _Monkey(_implicit_environ, _DEFAULTS=mock_defaults)
 
 
-def _setup_defaults(test_case):
+def _setup_defaults(test_case, *args, **kwargs):
     test_case._replaced_defaults = _implicit_environ._DEFAULTS
-    _implicit_environ._DEFAULTS = _DefaultsContainer()
+    _implicit_environ._DEFAULTS = _DefaultsContainer(*args, **kwargs)
 
 
 def _tear_down_defaults(test_case):
