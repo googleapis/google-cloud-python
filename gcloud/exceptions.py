@@ -18,6 +18,7 @@ See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
 """
 
 import json
+import six
 
 _HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
 
@@ -171,6 +172,9 @@ def make_exception(response, content, use_json=True):
     :rtype: instance of :class:`GCloudError`, or a concrete subclass.
     :returns: Exception specific to the error response.
     """
+    if six.PY3 and isinstance(content, bytes):
+        content = content.decode('utf-8')  # pragma: NO COVER Py3K
+
     message = content
     errors = ()
 
