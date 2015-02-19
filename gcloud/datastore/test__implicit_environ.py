@@ -321,6 +321,29 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         self.assertEqual(connection.timeout, None)
 
 
+class Test__lazy_property_deco(unittest2.TestCase):
+
+    def _callFUT(self, deferred_callable):
+        from gcloud.datastore._implicit_environ import _lazy_property_deco
+        return _lazy_property_deco(deferred_callable)
+
+    def test_on_function(self):
+        def test_func():
+            pass  # pragma: NO COVER never gets called
+
+        lazy_prop = self._callFUT(test_func)
+        self.assertTrue(lazy_prop._deferred_callable is test_func)
+        self.assertEqual(lazy_prop._name, 'test_func')
+
+    def test_on_staticmethod(self):
+        def test_func():
+            pass  # pragma: NO COVER never gets called
+
+        lazy_prop = self._callFUT(staticmethod(test_func))
+        self.assertTrue(lazy_prop._deferred_callable is test_func)
+        self.assertEqual(lazy_prop._name, 'test_func')
+
+
 class Test_lazy_loaded_dataset_id(unittest2.TestCase):
 
     def setUp(self):

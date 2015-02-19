@@ -111,15 +111,6 @@ def _determine_default_dataset_id(dataset_id=None):
     return dataset_id
 
 
-def _lazy_dataset_id():
-    """Alias wrapper for _determine_default_dataset_id.
-
-    Unit test need to be able to replace _determine_default_dataset_id()
-    so we can't wrap the actual ``function`` object in a ``_LazyProperty``.
-    """
-    return _determine_default_dataset_id()
-
-
 def set_default_dataset_id(dataset_id=None):
     """Set default dataset ID either explicitly or implicitly as fall-back.
 
@@ -170,20 +161,38 @@ class _LazyProperty(object):
     :type name: string
     :param name: The name of the attribute / property being evaluated.
 
-    :type method: callable that takes no arguments
-    :param method: The method used to evaluate the property.
+    :type deferred_callable: callable that takes no arguments
+    :param deferred_callable: The function / method used to evaluate the
+                              property.
     """
 
-    def __init__(self, name, method):
+    def __init__(self, name, deferred_callable):
         self._name = name
-        self._method = method
+        self._deferred_callable = deferred_callable
 
     def __get__(self, obj, objtype):
         if obj is None or objtype is not _DefaultsContainer:
             return self
 
-        setattr(obj, self._name, self._method())
+        setattr(obj, self._name, self._deferred_callable())
         return getattr(obj, self._name)
+
+
+def _lazy_property_deco(deferred_callable):
+    """Decorator a method to create a :class:`_LazyProperty`.
+
+    :type deferred_callable: callable that takes no arguments
+    :param deferred_callable: The function / method used to evaluate the
+                              property.
+
+    :rtype: :class:`_LazyProperty`.
+    :returns: A lazy property which defers the deferred_callable.
+    """
+    if isinstance(deferred_callable, staticmethod):
+        # H/T: http://stackoverflow.com/a/9527450/1068170
+        #      For Python2.7+ deferred_callable.__func__ would suffice.
+        deferred_callable = deferred_callable.__get__(True)
+    return _LazyProperty(deferred_callable.__name__, deferred_callable)
 
 
 class _DefaultsContainer(object):
@@ -196,7 +205,11 @@ class _DefaultsContainer(object):
     :param dataset_id: Persistent implied dataset ID from environment.
     """
 
-    dataset_id = _LazyProperty('dataset_id', _lazy_dataset_id)
+    @_lazy_property_deco
+    @staticmethod
+    def dataset_id():
+        """Return the implicit default dataset ID."""
+        return _determine_default_dataset_id()
 
     def __init__(self, connection=None, dataset_id=None, implicit=False):
         self.connection = connection
