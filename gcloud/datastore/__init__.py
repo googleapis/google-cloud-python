@@ -46,11 +46,11 @@ The main concepts with this API are:
   when race conditions may occur.
 """
 
-from gcloud.datastore import _implicit_environ
 from gcloud.datastore._implicit_environ import SCOPE
 from gcloud.datastore._implicit_environ import get_connection
 from gcloud.datastore._implicit_environ import get_default_connection
 from gcloud.datastore._implicit_environ import get_default_dataset_id
+from gcloud.datastore._implicit_environ import set_default_connection
 from gcloud.datastore._implicit_environ import set_default_dataset_id
 from gcloud.datastore.api import allocate_ids
 from gcloud.datastore.api import delete
@@ -62,16 +62,6 @@ from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
-
-
-def set_default_connection(connection=None):
-    """Set default connection either explicitly or implicitly as fall-back.
-
-    :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: A connection provided to be the default.
-    """
-    connection = connection or get_connection()
-    _implicit_environ._DEFAULTS.connection = connection
 
 
 def set_defaults(dataset_id=None, connection=None):

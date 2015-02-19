@@ -172,6 +172,16 @@ def get_connection():
     return Connection(credentials=scoped_credentials)
 
 
+def set_default_connection(connection=None):
+    """Set default connection either explicitly or implicitly as fall-back.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: A connection provided to be the default.
+    """
+    connection = connection or get_connection()
+    _DEFAULTS.connection = connection
+
+
 def get_default_connection():
     """Get default connection.
 
