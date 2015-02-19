@@ -18,14 +18,12 @@ import unittest2
 class Test_set_default_dataset_id(unittest2.TestCase):
 
     def setUp(self):
-        from gcloud.datastore import _implicit_environ
-        self._replaced_defaults = _implicit_environ._DEFAULTS
-        _implicit_environ._DEFAULTS = _implicit_environ._DefaultsContainer(
-            None, None)
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
 
     def tearDown(self):
-        from gcloud.datastore import _implicit_environ
-        _implicit_environ._DEFAULTS = self._replaced_defaults
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
 
     def _callFUT(self, dataset_id=None):
         from gcloud.datastore import set_default_dataset_id
@@ -276,14 +274,12 @@ class Test_set_default_dataset_id(unittest2.TestCase):
 class Test_set_default_connection(unittest2.TestCase):
 
     def setUp(self):
-        from gcloud.datastore import _implicit_environ
-        self._replaced_defaults = _implicit_environ._DEFAULTS
-        _implicit_environ._DEFAULTS = _implicit_environ._DefaultsContainer(
-            None, None)
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
 
     def tearDown(self):
-        from gcloud.datastore import _implicit_environ
-        _implicit_environ._DEFAULTS = self._replaced_defaults
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
 
     def _callFUT(self, connection=None):
         from gcloud.datastore import set_default_connection

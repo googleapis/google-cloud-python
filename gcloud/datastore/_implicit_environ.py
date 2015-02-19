@@ -38,7 +38,8 @@ class _DefaultsContainer(object):
     :param dataset_id: Persistent implied dataset ID from environment.
     """
 
-    def __init__(self, connection=None, dataset_id=None):
+    def __init__(self, connection=None, dataset_id=None, implicit=False):
+        self.implicit = implicit
         self.connection = connection
         self.dataset_id = dataset_id
 
@@ -107,4 +108,4 @@ def get_default_dataset_id():
     return _DEFAULTS.dataset_id
 
 
-_DEFAULTS = _DefaultsContainer()
+_DEFAULTS = _DefaultsContainer(implicit=True)

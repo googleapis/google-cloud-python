@@ -17,6 +17,14 @@ import unittest2
 
 class Test_get_default_connection(unittest2.TestCase):
 
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
     def _callFUT(self):
         from gcloud.datastore._implicit_environ import get_default_connection
         return get_default_connection()
@@ -25,16 +33,22 @@ class Test_get_default_connection(unittest2.TestCase):
         self.assertEqual(self._callFUT(), None)
 
     def test_preset(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
 
         SENTINEL = object()
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(SENTINEL, None)
-        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
+        with _monkey_defaults(connection=SENTINEL):
             self.assertEqual(self._callFUT(), SENTINEL)
 
 
 class Test_get_default_dataset_id(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
 
     def _callFUT(self):
         from gcloud.datastore._implicit_environ import get_default_dataset_id
@@ -44,10 +58,8 @@ class Test_get_default_dataset_id(unittest2.TestCase):
         self.assertEqual(self._callFUT(), None)
 
     def test_preset(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
 
         SENTINEL = object()
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(None, SENTINEL)
-        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
+        with _monkey_defaults(dataset_id=SENTINEL):
             self.assertEqual(self._callFUT(), SENTINEL)

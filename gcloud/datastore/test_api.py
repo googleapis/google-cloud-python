@@ -26,10 +26,8 @@ class Test__require_dataset_id(unittest2.TestCase):
         return _require_dataset_id(dataset_id=passed, first_key=first_key)
 
     def _monkey(self, dataset_id):
-        from gcloud.datastore import _implicit_environ
-        from gcloud._testing import _Monkey
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(None, dataset_id)
-        return _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS)
+        from gcloud.datastore._testing import _monkey_defaults
+        return _monkey_defaults(dataset_id=dataset_id)
 
     def test_implicit_unset_wo_keys(self):
         with self._monkey(None):
@@ -121,10 +119,8 @@ class Test__require_connection(unittest2.TestCase):
         return _require_connection(passed)
 
     def _monkey(self, connection):
-        from gcloud.datastore import _implicit_environ
-        from gcloud._testing import _Monkey
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(connection, None)
-        return _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS)
+        from gcloud.datastore._testing import _monkey_defaults
+        return _monkey_defaults(connection=connection)
 
     def test_implicit_unset(self):
         with self._monkey(None):
@@ -163,6 +159,14 @@ class Test__require_connection(unittest2.TestCase):
 
 
 class Test_get_function(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
 
     def _callFUT(self, keys, missing=None, deferred=None,
                  connection=None, dataset_id=None):
@@ -455,10 +459,9 @@ class Test_get_function(unittest2.TestCase):
                           dataset_id=DATASET_ID1)
 
     def test_implicit_wo_transaction(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
-        from gcloud._testing import _Monkey
 
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
@@ -473,9 +476,8 @@ class Test_get_function(unittest2.TestCase):
         CUSTOM_CONNECTION = _Connection(entity_pb)
 
         key = Key(KIND, ID, dataset_id=DATASET_ID)
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(CUSTOM_CONNECTION,
-                                                             DATASET_ID)
-        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
+        with _monkey_defaults(connection=CUSTOM_CONNECTION,
+                              dataset_id=DATASET_ID):
             result, = self._callFUT([key])
 
         expected_called_with = {
@@ -565,6 +567,14 @@ class Test_get_function(unittest2.TestCase):
 
 
 class Test_put_function(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
 
     def _callFUT(self, entities, connection=None, dataset_id=None):
         from gcloud.datastore.api import put
@@ -668,8 +678,7 @@ class Test_put_function(unittest2.TestCase):
         self.assertEqual(len(CURR_BATCH.mutation.delete), 0)
 
     def test_implicit_connection(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
@@ -680,8 +689,7 @@ class Test_put_function(unittest2.TestCase):
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(_DATASET)
 
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(connection, None)
-        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
+        with _monkey_defaults(connection=connection):
             # Set up Batch on stack so we can check it is used.
             with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
                 result = self._callFUT([entity])
@@ -699,6 +707,14 @@ class Test_put_function(unittest2.TestCase):
 
 
 class Test_delete_function(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
 
     def _callFUT(self, keys, connection=None, dataset_id=None):
         from gcloud.datastore.api import delete
@@ -761,8 +777,7 @@ class Test_delete_function(unittest2.TestCase):
         self.assertEqual(list(mutation.delete), [key.to_protobuf()])
 
     def test_wo_batch_w_key_different_than_default_dataset_id(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
 
@@ -772,9 +787,8 @@ class Test_delete_function(unittest2.TestCase):
         connection = _Connection()
         key = _Key(_DATASET)
 
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(connection,
-                                                             _DEFAULT_DATASET)
-        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
+        with _monkey_defaults(connection=connection,
+                              dataset_id=_DEFAULT_DATASET):
             result = self._callFUT([key])
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
@@ -825,8 +839,7 @@ class Test_delete_function(unittest2.TestCase):
         self.assertEqual(len(connection._committed), 0)
 
     def test_implicit_connection_and_dataset_id(self):
-        from gcloud._testing import _Monkey
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
 
@@ -835,9 +848,7 @@ class Test_delete_function(unittest2.TestCase):
         connection = _Connection()
         key = _Key(_DATASET)
 
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(connection,
-                                                             _DATASET)
-        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
+        with _monkey_defaults(connection=connection, dataset_id=_DATASET):
             # Set up Batch on stack so we can check it is used.
             with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
                 result = self._callFUT([key])
@@ -875,16 +886,14 @@ class Test_allocate_ids_function(unittest2.TestCase):
         self.assertEqual(len(CONNECTION._called_key_pbs), NUM_IDS)
 
     def test_w_implicit_connection(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
-        from gcloud._testing import _Monkey
 
         CUSTOM_CONNECTION = _Connection()
         NUM_IDS = 2
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(CUSTOM_CONNECTION,
-                                                             'DATASET')
-        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
+        with _monkey_defaults(connection=CUSTOM_CONNECTION,
+                              dataset_id='DATASET'):
             INCOMPLETE_KEY = Key('KIND')
             result = self._callFUT(INCOMPLETE_KEY, NUM_IDS)
 
@@ -892,15 +901,13 @@ class Test_allocate_ids_function(unittest2.TestCase):
         self.assertEqual([key.id for key in result], list(range(NUM_IDS)))
 
     def test_with_already_completed_key(self):
-        from gcloud.datastore import _implicit_environ
+        from gcloud.datastore._testing import _monkey_defaults
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
-        from gcloud._testing import _Monkey
 
         CUSTOM_CONNECTION = _Connection()
-        MOCK_DEFAULTS = _implicit_environ._DefaultsContainer(CUSTOM_CONNECTION,
-                                                             'DATASET')
-        with _Monkey(_implicit_environ, _DEFAULTS=MOCK_DEFAULTS):
+        with _monkey_defaults(connection=CUSTOM_CONNECTION,
+                              dataset_id='DATASET'):
             COMPLETE_KEY = Key('KIND', 1234)
             self.assertRaises(ValueError, self._callFUT,
                               COMPLETE_KEY, 2)
