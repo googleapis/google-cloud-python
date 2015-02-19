@@ -250,8 +250,15 @@ class _DefaultsContainer(object):
         """Return the implicit default dataset ID."""
         return _determine_default_dataset_id()
 
+    @_lazy_property_deco
+    @staticmethod
+    def connection():
+        """Return the implicit default connection.."""
+        return get_connection()
+
     def __init__(self, connection=None, dataset_id=None, implicit=False):
-        self.connection = connection
+        if connection is not None or not implicit:
+            self.connection = connection
         if dataset_id is not None or not implicit:
             self.dataset_id = dataset_id
 
