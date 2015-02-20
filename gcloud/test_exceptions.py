@@ -61,6 +61,15 @@ class Test_make_exception(unittest2.TestCase):
         self.assertEqual(exception.message, 'Not Found')
         self.assertEqual(list(exception.errors), [])
 
+    def test_hit_w_content_as_binary_string(self):
+        from gcloud.exceptions import BadRequest
+        response = _Response(400)
+        content = b'{"message": "Invalid argument."\n   }\n'
+        exception = self._callFUT(response, content)
+        self.assertTrue(isinstance(exception, BadRequest))
+        self.assertEqual(exception.message, 'Invalid argument.')
+        self.assertEqual(list(exception.errors), [])
+
     def test_miss_w_content_as_dict(self):
         from gcloud.exceptions import GCloudError
         ERROR = {
