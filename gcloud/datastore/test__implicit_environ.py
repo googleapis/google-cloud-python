@@ -65,6 +65,62 @@ class Test_get_default_dataset_id(unittest2.TestCase):
             self.assertEqual(self._callFUT(), SENTINEL)
 
 
+class Test__get_production_dataset_id(unittest2.TestCase):
+
+    def _callFUT(self, dataset_id=None):
+        from gcloud.datastore import _implicit_environ
+        return _implicit_environ._get_production_dataset_id()
+
+    def test_no_value(self):
+        import os
+        from gcloud._testing import _Monkey
+
+        environ = {}
+        with _Monkey(os, getenv=environ.get):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, None)
+
+    def test_value_set(self):
+        import os
+        from gcloud._testing import _Monkey
+        from gcloud.datastore._implicit_environ import _DATASET_ENV_VAR_NAME
+
+        MOCK_DATASET_ID = object()
+        environ = {_DATASET_ENV_VAR_NAME: MOCK_DATASET_ID}
+        with _Monkey(os, getenv=environ.get):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, MOCK_DATASET_ID)
+
+
+class Test__get_gcd_dataset_id(unittest2.TestCase):
+
+    def _callFUT(self, dataset_id=None):
+        from gcloud.datastore import _implicit_environ
+        return _implicit_environ._get_gcd_dataset_id()
+
+    def test_no_value(self):
+        import os
+        from gcloud._testing import _Monkey
+
+        environ = {}
+        with _Monkey(os, getenv=environ.get):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, None)
+
+    def test_value_set(self):
+        import os
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+
+        MOCK_DATASET_ID = object()
+        environ = {
+            _implicit_environ._GCD_DATASET_ENV_VAR_NAME: MOCK_DATASET_ID,
+        }
+        with _Monkey(os, getenv=environ.get):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, MOCK_DATASET_ID)
+
+
 class Test__determine_default_dataset_id(unittest2.TestCase):
 
     def _callFUT(self, dataset_id=None):
