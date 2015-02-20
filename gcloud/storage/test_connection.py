@@ -206,6 +206,16 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.api_request('GET', '/', expect_json=False),
                          'CONTENT')
 
+    def test_api_request_w_binary_json_string(self):
+        PROJECT = 'project'
+        conn = self._makeOne(PROJECT)
+        conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            b'{"foo": "bar"}'
+        )
+        self.assertEqual(conn.api_request('GET', '/', expect_json=True),
+                         {'foo': 'bar'})
+
     def test_api_request_w_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit

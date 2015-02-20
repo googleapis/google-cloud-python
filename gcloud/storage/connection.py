@@ -235,6 +235,9 @@ class Connection(base_connection.Connection):
         if not 200 <= response.status < 300:
             raise make_exception(response, content)
 
+        if not isinstance(content, str):
+            content = str(content.decode('utf-8'))
+
         if content and expect_json:
             content_type = response.get('content-type', '')
             if not content_type.startswith('application/json'):
