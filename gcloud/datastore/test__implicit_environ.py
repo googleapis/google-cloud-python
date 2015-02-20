@@ -121,6 +121,31 @@ class Test__get_gcd_dataset_id(unittest2.TestCase):
             self.assertEqual(dataset_id, MOCK_DATASET_ID)
 
 
+class Test_app_engine_id(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud.datastore import _implicit_environ
+        return _implicit_environ.app_engine_id()
+
+    def test_no_value(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+
+        with _Monkey(_implicit_environ, app_identity=None):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, None)
+
+    def test_value_set(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+
+        APP_ENGINE_ID = object()
+        APP_IDENTITY = _AppIdentity(APP_ENGINE_ID)
+        with _Monkey(_implicit_environ, app_identity=APP_IDENTITY):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, APP_ENGINE_ID)
+
+
 class Test__determine_default_dataset_id(unittest2.TestCase):
 
     def _callFUT(self, dataset_id=None):
