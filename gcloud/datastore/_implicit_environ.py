@@ -86,6 +86,16 @@ def compute_engine_id():
         connection.close()
 
 
+def _get_production_dataset_id():
+    """Gets the production application ID if it can be inferred."""
+    return os.getenv(_DATASET_ENV_VAR_NAME)
+
+
+def _get_gcd_dataset_id():
+    """Gets the GCD application ID if it can be inferred."""
+    return os.getenv(_GCD_DATASET_ENV_VAR_NAME)
+
+
 def _determine_default_dataset_id(dataset_id=None):
     """Determine default dataset ID explicitly or implicitly as fall-back.
 
@@ -104,10 +114,10 @@ def _determine_default_dataset_id(dataset_id=None):
     :returns: Default dataset ID if it can be determined.
     """
     if dataset_id is None:
-        dataset_id = os.getenv(_DATASET_ENV_VAR_NAME)
+        dataset_id = _get_production_dataset_id()
 
     if dataset_id is None:
-        dataset_id = os.getenv(_GCD_DATASET_ENV_VAR_NAME)
+        dataset_id = _get_gcd_dataset_id()
 
     if dataset_id is None:
         dataset_id = app_engine_id()

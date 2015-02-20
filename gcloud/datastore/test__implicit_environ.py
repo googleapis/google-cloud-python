@@ -65,6 +65,50 @@ class Test_get_default_dataset_id(unittest2.TestCase):
             self.assertEqual(self._callFUT(), SENTINEL)
 
 
+class Test__determine_default_dataset_id(unittest2.TestCase):
+
+    def _callFUT(self, dataset_id=None):
+        from gcloud.datastore import _implicit_environ
+        return _implicit_environ._determine_default_dataset_id(
+            dataset_id=dataset_id)
+
+    def test_it(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+
+        _callers = []
+
+        def prod_mock():
+            _callers.append('prod_mock')
+            return None
+
+        def gcd_mock():
+            _callers.append('gcd_mock')
+            return None
+
+        def gae_mock():
+            _callers.append('gae_mock')
+            return None
+
+        def gce_mock():
+            _callers.append('gce_mock')
+            return None
+
+        patched_methods = {
+            '_get_production_dataset_id': prod_mock,
+            '_get_gcd_dataset_id': gcd_mock,
+            'app_engine_id': gae_mock,
+            'compute_engine_id': gce_mock,
+        }
+
+        with _Monkey(_implicit_environ, **patched_methods):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, None)
+
+        self.assertEqual(_callers,
+                         ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
+
+
 class Test_set_default_dataset_id(unittest2.TestCase):
 
     def setUp(self):
