@@ -67,7 +67,7 @@ class Test_get_default_dataset_id(unittest2.TestCase):
 
 class Test__get_production_dataset_id(unittest2.TestCase):
 
-    def _callFUT(self, dataset_id=None):
+    def _callFUT(self):
         from gcloud.datastore import _implicit_environ
         return _implicit_environ._get_production_dataset_id()
 
@@ -94,7 +94,7 @@ class Test__get_production_dataset_id(unittest2.TestCase):
 
 class Test__get_gcd_dataset_id(unittest2.TestCase):
 
-    def _callFUT(self, dataset_id=None):
+    def _callFUT(self):
         from gcloud.datastore import _implicit_environ
         return _implicit_environ._get_gcd_dataset_id()
 
@@ -144,6 +144,43 @@ class Test_app_engine_id(unittest2.TestCase):
         with _Monkey(_implicit_environ, app_identity=APP_IDENTITY):
             dataset_id = self._callFUT()
             self.assertEqual(dataset_id, APP_ENGINE_ID)
+
+
+class Test_compute_engine_id(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud.datastore import _implicit_environ
+        return _implicit_environ.compute_engine_id()
+
+    def _monkeyConnection(self, connection):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import _implicit_environ
+
+        def _factory(host, timeout):
+            connection.host = host
+            connection.timeout = timeout
+            return connection
+
+        return _Monkey(_implicit_environ, HTTPConnection=_factory)
+
+    def test_bad_status(self):
+        connection = _HTTPConnection(404, None)
+        with self._monkeyConnection(connection):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, None)
+
+    def test_success(self):
+        COMPUTE_ENGINE_ID = object()
+        connection = _HTTPConnection(200, COMPUTE_ENGINE_ID)
+        with self._monkeyConnection(connection):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, COMPUTE_ENGINE_ID)
+
+    def test_socket_raises(self):
+        connection = _TimeoutHTTPConnection()
+        with self._monkeyConnection(connection):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, None)
 
 
 class Test__determine_default_dataset_id(unittest2.TestCase):
