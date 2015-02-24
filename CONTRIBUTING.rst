@@ -309,6 +309,45 @@ we have customized (e.g. rewriting imports) for our library:
 - ``67b06019549a4db8168ff4c5171c9d701ac94a15``
 - ``f4a53ee64fad5f3d7f29a0341e6a72a060edfcc2``
 
+Supported Python Versions
+-------------------------
+
+We support:
+
+-  `Python 2.6`_
+-  `Python 2.7`_
+
+We plan to support:
+
+-  `Python 3.3`_
+-  `Python 3.4`_
+
+.. _Python 2.6: https://docs.python.org/2.6/
+.. _Python 2.7: https://docs.python.org/2.7/
+.. _Python 3.3: https://docs.python.org/3.3/
+.. _Python 3.4: https://docs.python.org/3.4/
+
+Supported versions can be found in our ``tox.ini`` `config`_.
+
+.. _config: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/tox.ini
+
+We explicitly decided not to support `Python 2.5`_ due to `decreased usage`_
+and lack of continuous integration `support`_.
+
+.. _Python 2.5: https://docs.python.org/2.5/
+.. _decreased usage: https://caremad.io/2013/10/a-look-at-pypi-downloads/
+.. _support: http://blog.travis-ci.com/2013-11-18-upcoming-build-environment-updates/
+
+We also explicitly decided to support Python 3 beginning with version
+3.3. Reasons for this include:
+
+-  Encouraging use of newest versions of Python 3
+-  Taking the lead of prominent open-source `projects`_
+-  `Unicode literal support`_ which allows for a cleaner codebase that
+   works in both Python 2 and Python 3
+
+.. _projects: http://flask.pocoo.org/docs/0.10/python3/
+.. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
 
 Contributor License Agreements
 ------------------------------
