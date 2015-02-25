@@ -746,9 +746,10 @@ h2 .headerlink:hover {
 }
 
 #file-issue {
-  position: absolute;
-  right: 20px;
-  top: 20px;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    display: none;
 }
 
 .v-list {
@@ -1066,6 +1067,10 @@ h2 .headerlink:hover {
         padding: 0 0 0 1em;
         height: 70px;
         line-height: 70px;
+    }
+
+    #file-issue {
+        display: inline;
     }
 
     /*
