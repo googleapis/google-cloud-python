@@ -189,8 +189,8 @@ class Batch(object):
         if not _dataset_ids_equal(self._dataset_id, key.dataset_id):
             raise ValueError("Key must be from same dataset as batch")
 
-        key_pb = key.to_protobuf()
-        helpers._add_keys_to_request(self.mutation.delete, [key_pb])
+        key_pb = helpers._prepare_key_for_request(key.to_protobuf())
+        self.mutation.delete.add().CopyFrom(key_pb)
 
     def begin(self):
         """No-op

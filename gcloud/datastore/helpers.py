@@ -308,17 +308,3 @@ def _prepare_key_for_request(key_pb):
         new_key_pb.partition_id.ClearField('dataset_id')
         key_pb = new_key_pb
     return key_pb
-
-
-def _add_keys_to_request(request_field_pb, key_pbs):
-    """Add protobuf keys to a request object.
-
-    :type request_field_pb: `RepeatedCompositeFieldContainer`
-    :param request_field_pb: A repeated proto field that contains keys.
-
-    :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
-    :param key_pbs: The keys to add to a request.
-    """
-    for key_pb in key_pbs:
-        key_pb = _prepare_key_for_request(key_pb)
-        request_field_pb.add().CopyFrom(key_pb)

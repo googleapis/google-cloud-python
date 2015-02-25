@@ -28,6 +28,13 @@ try:
 except ImportError:
     app_identity = None
 
+from gcloud import credentials
+from gcloud.datastore.connection import Connection
+
+
+SCOPE = ('https://www.googleapis.com/auth/datastore',
+         'https://www.googleapis.com/auth/userinfo.email')
+"""The scopes required for authenticating as a Cloud Datastore consumer."""
 
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 _GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
@@ -143,6 +150,38 @@ def get_default_dataset_id():
     return _DEFAULTS.dataset_id
 
 
+def get_connection():
+    """Shortcut method to establish a connection to the Cloud Datastore.
+
+    Use this if you are going to access several datasets
+    with the same set of credentials (unlikely):
+
+    >>> from gcloud import datastore
+
+    >>> connection = datastore.get_connection()
+    >>> key1 = datastore.Key('Kind', 1234, dataset_id='dataset1')
+    >>> key2 = datastore.Key('Kind', 1234, dataset_id='dataset2')
+    >>> entity1 = datastore.get(key1, connection=connection)
+    >>> entity2 = datastore.get(key2, connection=connection)
+
+    :rtype: :class:`gcloud.datastore.connection.Connection`
+    :returns: A connection defined with the proper credentials.
+    """
+    implicit_credentials = credentials.get_credentials()
+    scoped_credentials = implicit_credentials.create_scoped(SCOPE)
+    return Connection(credentials=scoped_credentials)
+
+
+def set_default_connection(connection=None):
+    """Set default connection either explicitly or implicitly as fall-back.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: A connection provided to be the default.
+    """
+    connection = connection or get_connection()
+    _DEFAULTS.connection = connection
+
+
 def get_default_connection():
     """Get default connection.
 
@@ -211,8 +250,15 @@ class _DefaultsContainer(object):
         """Return the implicit default dataset ID."""
         return _determine_default_dataset_id()
 
+    @_lazy_property_deco
+    @staticmethod
+    def connection():
+        """Return the implicit default connection.."""
+        return get_connection()
+
     def __init__(self, connection=None, dataset_id=None, implicit=False):
-        self.connection = connection
+        if connection is not None or not implicit:
+            self.connection = connection
         if dataset_id is not None or not implicit:
             self.dataset_id = dataset_id
 

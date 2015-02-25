@@ -19,7 +19,6 @@ import os
 from gcloud import connection
 from gcloud.exceptions import make_exception
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
-from gcloud.datastore import helpers
 
 
 _GCD_HOST_ENV_VAR_NAME = 'DATASTORE_HOST'
@@ -183,7 +182,7 @@ class Connection(connection.Connection):
         """
         lookup_request = datastore_pb.LookupRequest()
         _set_read_options(lookup_request, eventual, transaction_id)
-        helpers._add_keys_to_request(lookup_request.key, key_pbs)
+        _add_keys_to_request(lookup_request.key, key_pbs)
 
         lookup_response = self._rpc(dataset_id, 'lookup', lookup_request,
                                     datastore_pb.LookupResponse)
@@ -363,7 +362,7 @@ class Connection(connection.Connection):
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
         request = datastore_pb.AllocateIdsRequest()
-        helpers._add_keys_to_request(request.key, key_pbs)
+        _add_keys_to_request(request.key, key_pbs)
         # Nothing to do with this response, so just execute the method.
         response = self._rpc(dataset_id, 'allocateIds', request,
                              datastore_pb.AllocateIdsResponse)
@@ -386,3 +385,39 @@ def _set_read_options(request, eventual, transaction_id):
         opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
     elif transaction_id:
         opts.transaction = transaction_id
+
+
+def _prepare_key_for_request(key_pb):  # pragma: NO COVER copied from helpers
+    """Add protobuf keys to a request object.
+
+    .. note::
+      This is copied from `helpers` to avoid a cycle:
+      _implicit_environ -> connection -> helpers -> key -> _implicit_environ
+
+    :type key_pb: :class:`gcloud.datastore._datastore_v1_pb2.Key`
+    :param key_pb: A key to be added to a request.
+
+    :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Key`
+    :returns: A key which will be added to a request. It will be the
+              original if nothing needs to be changed.
+    """
+    if key_pb.partition_id.HasField('dataset_id'):
+        new_key_pb = datastore_pb.Key()
+        new_key_pb.CopyFrom(key_pb)
+        new_key_pb.partition_id.ClearField('dataset_id')
+        key_pb = new_key_pb
+    return key_pb
+
+
+def _add_keys_to_request(request_field_pb, key_pbs):
+    """Add protobuf keys to a request object.
+
+    :type request_field_pb: `RepeatedCompositeFieldContainer`
+    :param request_field_pb: A repeated proto field that contains keys.
+
+    :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
+    :param key_pbs: The keys to add to a request.
+    """
+    for key_pb in key_pbs:
+        key_pb = _prepare_key_for_request(key_pb)
+        request_field_pb.add().CopyFrom(key_pb)
