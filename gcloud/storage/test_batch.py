@@ -80,18 +80,9 @@ class TestBatch(unittest2.TestCase):
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         self.assertTrue(batch._connection is connection)
-        self.assertTrue(batch._http._orig_http is http)
-        self.assertTrue(connection.http is batch._http)
-        self.assertEqual(batch._http._requests, [])
+        self.assertEqual(batch.project, connection.project)
         self.assertEqual(len(batch._requests), 0)
         self.assertEqual(len(batch._responses), 0)
-        self.assertEqual(batch._make_request, connection._make_request)
-        self.assertEqual(batch.api_request, connection.api_request)
-        self.assertEqual(batch.build_api_url, connection.build_api_url)
-        self.assertEqual(batch.get_all_buckets, connection.get_all_buckets)
-        self.assertEqual(batch.get_bucket, connection.get_bucket)
-        self.assertEqual(batch.create_bucket, connection.create_bucket)
-        self.assertEqual(batch.delete_bucket, connection.delete_bucket)
 
     def test__make_request_GET_forwarded_to_connection(self):
         URL = 'http://example.com/api'
@@ -102,9 +93,18 @@ class TestBatch(unittest2.TestCase):
         response, content = batch._make_request('GET', URL)
         self.assertTrue(response is expected)
         self.assertEqual(content, '')
-        self.assertEqual(http._requests,
-                         [('GET', URL, {}, None)])
-        self.assertEqual(batch._http._requests, [])
+        EXPECTED_HEADERS = [
+            ('Accept-Encoding', 'gzip'),
+            ('Content-Length', 0),
+        ]
+        self.assertEqual(len(http._requests), 1)
+        self.assertEqual(http._requests[0][0], 'GET')
+        self.assertEqual(http._requests[0][1], URL)
+        headers = http._requests[0][2]
+        for key, value in EXPECTED_HEADERS:
+            self.assertEqual(headers[key], value)
+        self.assertEqual(http._requests[0][3], None)
+        self.assertEqual(batch._requests, [])
 
     def test__make_request_POST_normal(self):
         URL = 'http://example.com/api'
@@ -115,8 +115,17 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(response.status, 204)
         self.assertEqual(content, '')
         self.assertEqual(http._requests, [])
-        self.assertEqual(batch._http._requests,
-                         [('POST', URL, {}, {'foo': 1})])
+        EXPECTED_HEADERS = [
+            ('Accept-Encoding', 'gzip'),
+            ('Content-Length', 10),
+        ]
+        self.assertEqual(len(batch._requests), 1)
+        self.assertEqual(batch._requests[0][0], 'POST')
+        self.assertEqual(batch._requests[0][1], URL)
+        headers = batch._requests[0][2]
+        for key, value in EXPECTED_HEADERS:
+            self.assertEqual(headers[key], value)
+        self.assertEqual(batch._requests[0][3], {'foo': 1})
 
     def test__make_request_PATCH_normal(self):
         URL = 'http://example.com/api'
@@ -127,8 +136,17 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(response.status, 204)
         self.assertEqual(content, '')
         self.assertEqual(http._requests, [])
-        self.assertEqual(batch._http._requests,
-                         [('PATCH', URL, {}, {'foo': 1})])
+        EXPECTED_HEADERS = [
+            ('Accept-Encoding', 'gzip'),
+            ('Content-Length', 10),
+        ]
+        self.assertEqual(len(batch._requests), 1)
+        self.assertEqual(batch._requests[0][0], 'PATCH')
+        self.assertEqual(batch._requests[0][1], URL)
+        headers = batch._requests[0][2]
+        for key, value in EXPECTED_HEADERS:
+            self.assertEqual(headers[key], value)
+        self.assertEqual(batch._requests[0][3], {'foo': 1})
 
     def test__make_request_DELETE_normal(self):
         URL = 'http://example.com/api'
@@ -139,16 +157,25 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(response.status, 204)
         self.assertEqual(content, '')
         self.assertEqual(http._requests, [])
-        self.assertEqual(batch._http._requests,
-                         [('DELETE', URL, {}, None)])
+        EXPECTED_HEADERS = [
+            ('Accept-Encoding', 'gzip'),
+            ('Content-Length', 0),
+        ]
+        self.assertEqual(len(batch._requests), 1)
+        self.assertEqual(batch._requests[0][0], 'DELETE')
+        self.assertEqual(batch._requests[0][1], URL)
+        headers = batch._requests[0][2]
+        for key, value in EXPECTED_HEADERS:
+            self.assertEqual(headers[key], value)
+        self.assertEqual(batch._requests[0][3], None)
 
     def test__make_request_POST_too_many_requests(self):
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
-        batch._http._MAX_BATCH_SIZE = 1
-        batch._http._requests.append(('POST', URL, {}, {'bar': 2}))
+        batch._MAX_BATCH_SIZE = 1
+        batch._requests.append(('POST', URL, {}, {'bar': 2}))
         self.assertRaises(ValueError,
                           batch._make_request, 'POST', URL, data={'foo': 1})
         self.assertTrue(connection.http is http)
@@ -195,11 +222,11 @@ class TestBatch(unittest2.TestCase):
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
-        batch._http._requests.append(('POST', URL, {}, {'foo': 1, 'bar': 2}))
-        batch._http._requests.append(('PATCH', URL, {}, {'bar': 3}))
-        batch._http._requests.append(('DELETE', URL, {}, None))
+        batch._requests.append(('POST', URL, {}, {'foo': 1, 'bar': 2}))
+        batch._requests.append(('PATCH', URL, {}, {'bar': 3}))
+        batch._requests.append(('DELETE', URL, {}, None))
         result = batch.finish()
-        self.assertEqual(len(result), len(batch._http._requests))
+        self.assertEqual(len(result), len(batch._requests))
         self.assertEqual(result[0][0], '200')
         self.assertEqual(result[0][1], 'OK')
         self.assertEqual(result[0][2], {'foo': 1, 'bar': 2})
@@ -239,9 +266,9 @@ class TestBatch(unittest2.TestCase):
         http = _HTTP((expected, 'NOT A MIME_RESPONSE'))
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
-        batch._http._requests.append(('POST', URL, {}, {'foo': 1, 'bar': 2}))
-        batch._http._requests.append(('PATCH', URL, {}, {'bar': 3}))
-        batch._http._requests.append(('DELETE', URL, {}, None))
+        batch._requests.append(('POST', URL, {}, {'foo': 1, 'bar': 2}))
+        batch._requests.append(('PATCH', URL, {}, {'bar': 3}))
+        batch._requests.append(('DELETE', URL, {}, None))
         self.assertRaises(ValueError, batch.finish)
 
     def test_as_context_mgr_wo_error(self):
@@ -295,7 +322,8 @@ class TestBatch(unittest2.TestCase):
             pass
 
         self.assertEqual(list(_BATCHES), [])
-        self.assertEqual(len(batch._requests), 0)
+        self.assertEqual(len(http._requests), 0)
+        self.assertEqual(len(batch._requests), 3)
         self.assertEqual(len(batch._responses), 0)
 
 
@@ -333,6 +361,8 @@ Content-Length: 0
 
 class _Connection(object):
 
+    project = 'TESTING'
+
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
@@ -341,9 +371,6 @@ class _Connection(object):
 
     def _make_request(self, method, url, data=None, content_type=None,
                       headers=None):
-        if headers is None:
-            headers = {}
-
         if content_type is not None:  # pragma: NO COVER
             headers['Content-Type'] = content_type
 

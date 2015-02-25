@@ -27,19 +27,10 @@ import sys
 import six
 
 from gcloud._localstack import _LocalStack
+from gcloud.storage.connection import Connection
 
 
 _BATCHES = _LocalStack()
-
-_PROXIED_ATTRS = [
-    '_make_request',
-    'api_request',
-    'build_api_url',
-    'get_all_buckets',
-    'get_bucket',
-    'create_bucket',
-    'delete_bucket',
-]
 
 
 class MIMEApplicationHTTP(MIMEApplication):
@@ -73,18 +64,55 @@ class MIMEApplicationHTTP(MIMEApplication):
             super_init(payload, 'http', encode_noop)
 
 
-class Batch(object):
+class NoContent(object):
+    """Emulate an HTTP '204 No Content' response."""
+    status = 204
+
+
+class Batch(Connection):
     """Proxy an underlying connection, batching up change operations.
 
     :type connection: :class:`gcloud.storage.connection.Connection`
     :param connection: the connection for which the batch proxies.
     """
+    _MAX_BATCH_SIZE = 1000
+
     def __init__(self, connection):
+        super(Batch, self).__init__(project=connection.project)
         self._connection = connection
-        self._http = _FauxHTTP(connection)
-        self._requests = self._responses = ()
-        for attr in _PROXIED_ATTRS:
-            setattr(self, attr, getattr(connection, attr))
+        self._requests = []
+        self._responses = []
+
+    def _do_request(self, method, url, headers, data):
+        """Override Connection:  defer actual HTTP request.
+
+        Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.
+
+        :type method: string
+        :param method: The HTTP method to use in the request.
+
+        :type url: string
+        :param url: The URL to send the request to.
+
+        :type headers: dict
+        :param headers: A dictionary of HTTP headers to send with the request.
+
+        :type data: string
+        :param data: The data to send as the body of the request.
+
+        :rtype: tuple of ``response`` (a dictionary of sorts)
+                and ``content`` (a string).
+        :returns: The HTTP response object and the content of the response.
+        """
+        if method == 'GET':
+            _req = self._connection.http.request
+            return _req(method=method, uri=url, headers=headers, body=data)
+
+        if len(self._requests) >= self._MAX_BATCH_SIZE:
+            raise ValueError("Too many deferred requests (max %d)" %
+                             self._MAX_BATCH_SIZE)
+        self._requests.append((method, url, headers, data))
+        return NoContent(), ''
 
     def finish(self):
         """Submit a single `multipart/mixed` request w/ deferred requests.
@@ -93,14 +121,12 @@ class Batch(object):
         :returns: one ``(status, reason, payload)`` tuple per deferred request.
         :raises: ValueError if no requests have been deferred.
         """
-        deferred = self._requests = self._http.finalize()
-
-        if len(deferred) == 0:
+        if len(self._requests) == 0:
             raise ValueError("No deferred requests")
 
         multi = MIMEMultipart()
 
-        for method, uri, headers, body in deferred:
+        for method, uri, headers, body in self._requests:
             subrequest = MIMEApplicationHTTP(method, uri, headers, body)
             multi.attach(subrequest)
 
@@ -132,8 +158,6 @@ class Batch(object):
         try:
             if exc_type is None:
                 self.finish()
-            else:
-                self._http.reset()
         finally:
             _BATCHES.pop()
 
@@ -158,52 +182,3 @@ def _unpack_batch_response(response, content):
         if ctype and ctype.startswith('application/json'):
             payload = json.loads(payload)
         yield status, reason, payload
-
-
-class NoContent(object):
-    """Emulate an HTTP '204 No Content' response."""
-    status = 204
-
-
-class _FauxHTTP(object):
-    """Emulate ``connection.http``, but store requests.
-
-    Only allow up to ``_MAX_BATCH_SIZE`` requests to be bathed.
-    """
-    _MAX_BATCH_SIZE = 1000
-
-    def __init__(self, connection):
-        self._connection = connection
-        self._requests = []
-        self._orig_http, connection.http = connection.http, self
-
-    def request(self, method, uri, headers, body):
-        """Emulate / proxy underlying HTTP request.
-
-        - Pass 'GET' requests through.
-
-        - Defer others for later processing
-        """
-        if method == 'GET':
-            _req = self._orig_http.request
-            return _req(method=method, uri=uri, headers=headers, body=body)
-
-        if len(self._requests) >= self._MAX_BATCH_SIZE:
-            self.reset()
-            raise ValueError("Too many deferred requests (max %d)" %
-                             self._MAX_BATCH_SIZE)
-
-        self._requests.append((method, uri, headers, body))
-        return NoContent(), ''
-
-    def reset(self):
-        """Restore the connection's ``http``."""
-        self._connection.http = self._orig_http
-
-    def finalize(self):
-        """Return the deferred requests.
-
-        First restores the connection's ``http`` via ``reset()``.
-        """
-        self.reset()
-        return self._requests
