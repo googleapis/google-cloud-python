@@ -745,6 +745,18 @@ h2 .headerlink:hover {
     opacity: 0.3;
 }
 
+#file-issue {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    display: none;
+}
+
+#file-issue-secondary {
+    margin-top: 1em;
+    display: inline-block;
+}
+
 .v-list {
     color: rgba(0,0,0,0.2);
 }
@@ -1022,26 +1034,6 @@ h2 .headerlink:hover {
 
 }
 
-@media only screen and (min-width: 45em) {
-
-    /*
-     Docs Header
-    */
-
-    .versions {
-        position: absolute;
-        top: 6em;
-        right: 2em;
-        margin: 0;
-    }
-
-    .v-btn {
-        font-size: 0.7em;
-        line-height: normal;
-    }
-
-}
-
 @media only screen and (min-width: 50em) {
 
     /*
@@ -1060,6 +1052,14 @@ h2 .headerlink:hover {
         padding: 0 0 0 1em;
         height: 70px;
         line-height: 70px;
+    }
+
+    #file-issue {
+        display: inline;
+    }
+
+    #file-issue-secondary {
+        display: none;
     }
 
     /*
@@ -1133,7 +1133,15 @@ h2 .headerlink:hover {
     }
 
     .versions {
-        top: 7em;
+        position: absolute;
+        top: 6em;
+        right: 2em;
+        margin: 0;
+    }
+
+    .v-btn {
+        font-size: 0.7em;
+        line-height: normal;
     }
 
     /*
