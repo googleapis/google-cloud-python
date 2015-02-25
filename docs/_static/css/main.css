@@ -745,6 +745,12 @@ h2 .headerlink:hover {
     opacity: 0.3;
 }
 
+#file-issue {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
 .v-list {
     color: rgba(0,0,0,0.2);
 }

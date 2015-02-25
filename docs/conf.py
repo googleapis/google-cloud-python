@@ -13,6 +13,7 @@
 
 from pkg_resources import get_distribution
 import sys, os
+import urllib
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -179,6 +180,8 @@ html_add_permalinks = '#'
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'gclouddoc'
 
+html_context = {}
+
 
 # -- Options for LaTeX output --------------------------------------------------
 
@@ -257,3 +260,14 @@ texinfo_documents = [
 # This pulls class descriptions from the class docstring,
 # and parameter definitions from the __init__ docstring.
 autoclass_content = 'both'
+
+issue_uri = ('https://github.com/GoogleCloudPlatform/gcloud-python/issues/'
+             'new?' + urllib.urlencode({'title': '[Documentation Issue] '}))
+issue_uri_template = (
+    issue_uri + '&' + urllib.urlencode({'body': 'Page Name: '}) + '{0}' +
+    urllib.quote('\nRelease: ') + '{1}')
+
+html_context.update(
+    issue_uri=issue_uri,
+    issue_uri_template=issue_uri_template,
+)

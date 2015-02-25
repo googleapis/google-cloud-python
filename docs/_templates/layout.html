@@ -81,6 +81,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
+      {%- if show_source and has_source and pagename %}
+      {%- set issue_uri = issue_uri_template.format(pagename, release) %}
+      {%- endif %}
+      <a href="{{ issue_uri }}" target="_blank" class="v-btn" id="file-issue">
+        <img src="_static/images/icon-link-github.svg" />
+        Report an Issue
+      </a>
     </header><!-- end of .page-header -->
     {% endblock %}
 
