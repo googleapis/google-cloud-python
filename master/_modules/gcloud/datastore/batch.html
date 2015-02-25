@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.batch &mdash; gcloud 277ba80 documentation</title>
+    <title>gcloud.datastore.batch &mdash; gcloud 0e41dc3 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '277ba80',
+        VERSION:     '0e41dc3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 277ba80 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 0e41dc3 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -62,7 +62,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (277ba80)
+              Version History (0e41dc3)
             </a>
           </div><!-- end of .versions -->
       </header>
@@ -261,8 +261,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_dataset_ids_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Key must be from same dataset as batch&quot;</span><span class="p">)</span>
 
-        <span class="n">key_pb</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
-        <span class="n">helpers</span><span class="o">.</span><span class="n">_add_keys_to_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="p">[</span><span class="n">key_pb</span><span class="p">])</span>
+        <span class="n">key_pb</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="o">.</span><span class="n">delete</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Batch.begin"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;No-op</span>
