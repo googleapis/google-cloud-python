@@ -627,6 +627,11 @@ class Test_put_function(unittest2.TestCase):
         result = self._callFUT([])
         self.assertEqual(result, None)
 
+    def test_w_single_empty_entity(self):
+        # https://github.com/GoogleCloudPlatform/gcloud-python/issues/649
+        from gcloud.datastore.entity import Entity
+        self.assertRaises(ValueError, self._callFUT, Entity())
+
     def test_no_batch_w_partial_key(self):
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Entity

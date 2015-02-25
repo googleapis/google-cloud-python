@@ -20,6 +20,7 @@ Query objects rather than via protobufs.
 
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore.batch import Batch
+from gcloud.datastore.entity import Entity
 from gcloud.datastore.transaction import Transaction
 from gcloud.datastore import helpers
 
@@ -252,6 +253,9 @@ def put(entities, connection=None, dataset_id=None):
              one or more entities has a key with a dataset ID not matching
              the passed / inferred dataset ID.
     """
+    if isinstance(entities, Entity):
+        raise ValueError("Pass a sequence of entities")
+
     if not entities:
         return
 
