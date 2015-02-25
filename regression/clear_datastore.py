@@ -21,7 +21,6 @@ from gcloud.datastore import _implicit_environ
 
 
 _implicit_environ._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
-datastore.set_defaults()
 
 
 FETCH_MAX = 20
