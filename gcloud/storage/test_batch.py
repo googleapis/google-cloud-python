@@ -222,6 +222,7 @@ class TestBatch(unittest2.TestCase):
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
+        batch.API_BASE_URL = 'http://api.example.com'
         batch._requests.append(('POST', URL, {}, {'foo': 1, 'bar': 2}))
         batch._requests.append(('PATCH', URL, {}, {'bar': 3}))
         batch._requests.append(('DELETE', URL, {}, None))
