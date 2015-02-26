@@ -406,7 +406,7 @@ class BucketACL(ACL):
         url_path = '%s/%s' % (self.bucket.path, self._URL_PATH_ELEM)
         found = self.bucket.connection.api_request(method='GET', path=url_path)
         self.loaded = True
-        for entry in found['items']:
+        for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
 
         return self
@@ -450,7 +450,7 @@ class BucketACL(ACL):
                 data={self._URL_PATH_ELEM: list(acl)},
                 query_params={'projection': 'full'})
             self.entities.clear()
-            for entry in result[self._URL_PATH_ELEM]:
+            for entry in result.get(self._URL_PATH_ELEM, ()):
                 self.add_entity(self.entity_from_dict(entry))
             self.loaded = True
 
@@ -512,7 +512,7 @@ class ObjectACL(ACL):
         url_path = '%s/acl' % self.blob.path
         found = self.blob.connection.api_request(method='GET', path=url_path)
         self.loaded = True
-        for entry in found['items']:
+        for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
 
         return self
@@ -535,7 +535,7 @@ class ObjectACL(ACL):
                 method='PATCH', path=self.blob.path, data={'acl': list(acl)},
                 query_params={'projection': 'full'})
             self.entities.clear()
-            for entry in result['acl']:
+            for entry in result.get('acl', ()):
                 self.add_entity(self.entity_from_dict(entry))
             self.loaded = True
 

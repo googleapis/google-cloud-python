@@ -536,6 +536,22 @@ class Test_BucketACL(unittest2.TestCase):
         self.assertFalse(acl.loaded)
         self.assertTrue(acl.bucket is bucket)
 
+    def test_reload_eager_missing(self):
+        # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
+        NAME = 'name'
+        ROLE = 'role'
+        connection = _Connection({})
+        bucket = _Bucket(connection, NAME)
+        acl = self._makeOne(bucket)
+        acl.loaded = True
+        acl.entity('allUsers', ROLE)
+        self.assertTrue(acl.reload() is acl)
+        self.assertEqual(list(acl), [])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/b/%s/acl' % NAME)
+
     def test_reload_eager_empty(self):
         NAME = 'name'
         ROLE = 'role'
@@ -588,6 +604,21 @@ class Test_BucketACL(unittest2.TestCase):
         self.assertTrue(acl.save() is acl)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
+
+    def test_save_existing_missing_none_passed(self):
+        NAME = 'name'
+        connection = _Connection({})
+        bucket = _Bucket(connection, NAME)
+        acl = self._makeOne(bucket)
+        acl.loaded = True
+        self.assertTrue(acl.save() is acl)
+        self.assertEqual(list(acl), [])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], {'acl': []})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_save_no_arg(self):
         NAME = 'name'
@@ -665,7 +696,36 @@ class Test_ObjectACL(unittest2.TestCase):
         self.assertFalse(acl.loaded)
         self.assertTrue(acl.blob is blob)
 
+    def test_reload_eager_missing(self):
+        # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
+        NAME = 'name'
+        BLOB_NAME = 'blob-name'
+        ROLE = 'role'
+        after = {}
+        connection = _Connection(after)
+        bucket = _Bucket(connection, NAME)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
+        acl.loaded = True
+        acl.entity('allUsers', ROLE)
+        self.assertTrue(acl.reload() is acl)
+        self.assertEqual(list(acl), [])
+
     def test_reload_eager_empty(self):
+        NAME = 'name'
+        BLOB_NAME = 'blob-name'
+        ROLE = 'role'
+        after = {'items': []}
+        connection = _Connection(after)
+        bucket = _Bucket(connection, NAME)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
+        acl.loaded = True
+        acl.entity('allUsers', ROLE)
+        self.assertTrue(acl.reload() is acl)
+        self.assertEqual(list(acl), [])
+
+    def test_reload_eager_nonempty(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         ROLE = 'role'
@@ -681,20 +741,6 @@ class Test_ObjectACL(unittest2.TestCase):
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/name/o/%s/acl' % BLOB_NAME)
-
-    def test_reload_eager_nonempty(self):
-        NAME = 'name'
-        BLOB_NAME = 'blob-name'
-        ROLE = 'role'
-        after = {'items': []}
-        connection = _Connection(after)
-        bucket = _Bucket(connection, NAME)
-        blob = _Blob(bucket, BLOB_NAME)
-        acl = self._makeOne(blob)
-        acl.loaded = True
-        acl.entity('allUsers', ROLE)
-        self.assertTrue(acl.reload() is acl)
-        self.assertEqual(list(acl), [])
 
     def test_reload_lazy(self):
         NAME = 'name'
@@ -723,6 +769,23 @@ class Test_ObjectACL(unittest2.TestCase):
         self.assertTrue(acl.save() is acl)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
+
+    def test_save_existing_missing_none_passed(self):
+        # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
+        NAME = 'name'
+        BLOB_NAME = 'blob-name'
+        connection = _Connection({'foo': 'Foo'})
+        bucket = _Bucket(connection, NAME)
+        blob = _Blob(bucket, BLOB_NAME)
+        acl = self._makeOne(blob)
+        acl.loaded = True
+        self.assertTrue(acl.save() is acl)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
+        self.assertEqual(kw[0]['data'], {'acl': []})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_save_existing_set_none_passed(self):
         NAME = 'name'
