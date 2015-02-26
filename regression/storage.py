@@ -21,6 +21,7 @@ from gcloud import exceptions
 from gcloud import storage
 from gcloud.storage._helpers import _base64_md5hash
 from gcloud.storage import _implicit_environ
+from gcloud.storage.batch import Batch
 
 
 HTTP = httplib2.Http()
@@ -52,15 +53,16 @@ class TestStorageBuckets(unittest2.TestCase):
         self.case_buckets_to_delete = []
 
     def tearDown(self):
-        for bucket in self.case_buckets_to_delete:
-            bucket.delete()
+        with Batch(CONNECTION) as batch:
+            for bucket_name in self.case_buckets_to_delete:
+                batch.get_bucket(bucket_name).delete()
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'
         self.assertRaises(exceptions.NotFound,
                           CONNECTION.get_bucket, new_bucket_name)
         created = CONNECTION.create_bucket(new_bucket_name)
-        self.case_buckets_to_delete.append(created)
+        self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
     def test_get_buckets(self):
@@ -72,7 +74,7 @@ class TestStorageBuckets(unittest2.TestCase):
         created_buckets = []
         for bucket_name in buckets_to_create:
             bucket = CONNECTION.create_bucket(bucket_name)
-            self.case_buckets_to_delete.append(bucket)
+            self.case_buckets_to_delete.append(bucket_name)
 
         # Retrieve the buckets.
         all_buckets = CONNECTION.get_all_buckets()

@@ -149,7 +149,8 @@ class Connection(base_connection.Connection):
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).
-        :returns: The HTTP response object and the content of the response.
+        :returns: The HTTP response object and the content of the response,
+                  returned by :meth:`_do_request`.
         """
         headers = headers or {}
         headers['Accept-Encoding'] = 'gzip'
@@ -166,6 +167,30 @@ class Connection(base_connection.Connection):
 
         headers['User-Agent'] = self.USER_AGENT
 
+        return self._do_request(method, url, headers, data)
+
+    def _do_request(self, method, url, headers, data):
+        """Low-level helper:  perform the actual API request over HTTP.
+
+        Allows :class:`gcloud.storage.batch.Batch` to override, deferring
+        the request.
+
+        :type method: string
+        :param method: The HTTP method to use in the request.
+
+        :type url: string
+        :param url: The URL to send the request to.
+
+        :type headers: dict
+        :param headers: A dictionary of HTTP headers to send with the request.
+
+        :type data: string
+        :param data: The data to send as the body of the request.
+
+        :rtype: tuple of ``response`` (a dictionary of sorts)
+                and ``content`` (a string).
+        :returns: The HTTP response object and the content of the response.
+        """
         return self.http.request(uri=url, method=method, headers=headers,
                                  body=data)
 
