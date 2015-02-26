@@ -57,7 +57,9 @@ class MIMEApplicationHTTP(MIMEApplication):
         lines.append('')
         lines.append(body)
         payload = '\r\n'.join(lines)
-        if sys.version_info[0] < 3:  # pragma: NO COVER  Python2
+        if six.PY2:  # pragma: NO COVER  Python2
+            # Sigh.  email.message.Message is an old-style class, so we
+            #        cannot use 'super()'.
             MIMEApplication.__init__(self, payload, 'http', encode_noop)
         else:                        # pragma: NO COVER  Python3
             super_init = super(MIMEApplicationHTTP, self).__init__
