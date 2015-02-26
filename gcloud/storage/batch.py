@@ -22,7 +22,6 @@ from email.mime.multipart import MIMEMultipart
 from email.parser import Parser
 import io
 import json
-import sys
 
 import six
 
