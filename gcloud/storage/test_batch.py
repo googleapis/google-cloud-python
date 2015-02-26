@@ -218,7 +218,7 @@ class TestBatch(unittest2.TestCase):
     def test_finish_nonempty(self):
         URL = 'http://api.example.com/other_api'
         expected = _Response()
-        expected['Content-Type'] = 'multipart/mixed; boundary="DEADBEEF="'
+        expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
@@ -263,7 +263,7 @@ class TestBatch(unittest2.TestCase):
     def test_finish_nonempty_non_multipart_response(self):
         URL = 'http://api.example.com/other_api'
         expected = _Response()
-        expected['Content-Type'] = 'text/plain'
+        expected['content-type'] = 'text/plain'
         http = _HTTP((expected, 'NOT A MIME_RESPONSE'))
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
@@ -276,7 +276,7 @@ class TestBatch(unittest2.TestCase):
         from gcloud.storage.batch import _BATCHES
         URL = 'http://example.com/api'
         expected = _Response()
-        expected['Content-Type'] = 'multipart/mixed; boundary="DEADBEEF="'
+        expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
         connection = _Connection(http=http)
 

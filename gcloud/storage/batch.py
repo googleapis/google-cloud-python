@@ -166,7 +166,7 @@ def _unpack_batch_response(response, content):
     """Convert response, content -> [(status, reason, payload)]."""
     parser = Parser()
     faux_message = ('Content-Type: %s\nMIME-Version: 1.0\n\n%s' %
-                    (response['Content-Type'], content))
+                    (response['content-type'], content))
 
     message = parser.parsestr(faux_message)
 
