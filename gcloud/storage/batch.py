@@ -143,7 +143,7 @@ class Batch(Connection):
         _, body = payload.split('\n\n', 1)
         headers = dict(multi._headers)
 
-        url = self._connection.build_api_url('/batch')
+        url = '%s/batch' % self.API_BASE_URL
 
         _req = self._connection._make_request
         response, content = _req('POST', url, data=body, headers=headers)
@@ -166,7 +166,7 @@ def _unpack_batch_response(response, content):
     """Convert response, content -> [(status, reason, payload)]."""
     parser = Parser()
     faux_message = ('Content-Type: %s\nMIME-Version: 1.0\n\n%s' %
-                    (response['Content-Type'], content))
+                    (response['content-type'], content))
 
     message = parser.parsestr(faux_message)
 
