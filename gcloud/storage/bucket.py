@@ -114,6 +114,7 @@ class Bucket(_PropertyMixin):
             name = properties.get('name')
         super(Bucket, self).__init__(name=name, properties=properties)
         self._connection = connection
+        self._changes = set()
 
     def __repr__(self):
         return '<Bucket: %s>' % self.name
@@ -511,6 +512,7 @@ class Bucket(_PropertyMixin):
         :param entries: A sequence of mappings describing each CORS policy.
         """
         self._patch_properties({'cors': entries})
+        self.patch()
 
     def get_default_object_acl(self):
         """Get the current Default Object ACL rules.
@@ -568,6 +570,7 @@ class Bucket(_PropertyMixin):
         :param rules: A sequence of mappings describing each lifecycle rule.
         """
         self._patch_properties({'lifecycle': {'rule': rules}})
+        self.patch()
 
     location = _scalar_property('location')
     """Retrieve location configured for this bucket.
@@ -604,6 +607,7 @@ class Bucket(_PropertyMixin):
         """
         info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
         self._patch_properties({'logging': info})
+        self.patch()
 
     def disable_logging(self):
         """Disable access logging for this bucket.
@@ -611,6 +615,7 @@ class Bucket(_PropertyMixin):
         See: https://cloud.google.com/storage/docs/accesslogs#disabling
         """
         self._patch_properties({'logging': None})
+        self.patch()
 
     @property
     def metageneration(self):
@@ -741,7 +746,8 @@ class Bucket(_PropertyMixin):
                 'notFoundPage': not_found_page,
             },
         }
-        return self._patch_properties(data)
+        self._patch_properties(data)
+        return self.patch()
 
     def disable_website(self):
         """Disable the website configuration for this bucket.
@@ -774,3 +780,40 @@ class Bucket(_PropertyMixin):
             for blob in self:
                 blob.acl.all().grant_read()
                 blob.save_acl()
+
+    def _patch_properties(self, properties):
+        """Update particular fields of this object's properties.
+
+        This method will only update the fields provided and will not
+        touch the other fields.
+
+        It **will not** reload the properties from the server as is done
+        in :meth:`_PropertyMixin._patch_properties`. The behavior is
+        local only and syncing occurs via :meth:`patch`.
+
+        :type properties: dict
+        :param properties: The dictionary of values to update.
+
+        :rtype: :class:`Bucket`
+        :returns: The current bucket.
+        """
+        self._changes.update(properties.keys())
+        self._properties.update(properties)
+        return self
+
+    def patch(self):
+        """Sends all changed properties in a PATCH request.
+
+        Updates the ``properties`` with the response from the backend.
+
+        :rtype: :class:`Bucket`
+        :returns: The current bucket.
+        """
+        # Pass '?projection=full' here because 'PATCH' documented not
+        # to work properly w/ 'noAcl'.
+        update_properties = dict((key, self._properties[key])
+                                 for key in self._changes)
+        self._properties = self.connection.api_request(
+            method='PATCH', path=self.path, data=update_properties,
+            query_params={'projection': 'full'})
+        return self

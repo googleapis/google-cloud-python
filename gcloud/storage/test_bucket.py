@@ -751,6 +751,7 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection({'location': 'AS'})
         bucket = self._makeOne(connection, NAME)
         bucket.location = 'AS'
+        bucket.patch()
         self.assertEqual(bucket.location, 'AS')
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -911,6 +912,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(connection, NAME, before)
         self.assertFalse(bucket.versioning_enabled)
         bucket.versioning_enabled = True
+        bucket.patch()
         self.assertTrue(bucket.versioning_enabled)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
