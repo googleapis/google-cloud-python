@@ -14,16 +14,55 @@
 
 """Module to provide implicit behavior based on enviroment.
 
-Acts as a mutable namespace to allow the datastore package to
-infer the current dataset ID and connection from the enviroment.
+Allows the storage package to infer the current project, default bucket
+and connection from the enviroment.
 """
 
 
-PROJECT = None
-"""Module global to allow persistent implied project from enviroment."""
+class _DefaultsContainer(object):
+    """Container for defaults.
 
-BUCKET = None
-"""Module global to allow persistent implied bucket from enviroment."""
+    :type project: string
+    :param project: Persistent implied project from environment.
 
-CONNECTION = None
-"""Module global to allow persistent implied connection from enviroment."""
+    :type bucket: :class:`gcloud.storage.bucket.Bucket`
+    :param bucket: Persistent implied default bucket from environment.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: Persistent implied connection from environment.
+    """
+
+    def __init__(self, project=None, bucket=None, connection=None):
+        self.project = project
+        self.bucket = bucket
+        self.connection = connection
+
+
+def get_default_project():
+    """Get default project.
+
+    :rtype: string or ``NoneType``
+    :returns: The default project if one has been set.
+    """
+    return _DEFAULTS.project
+
+
+def get_default_bucket():
+    """Get default bucket.
+
+    :rtype: :class:`gcloud.storage.bucket.Bucket` or ``NoneType``
+    :returns: The default bucket if one has been set.
+    """
+    return _DEFAULTS.bucket
+
+
+def get_default_connection():
+    """Get default connection.
+
+    :rtype: :class:`gcloud.storage.connection.Connection` or ``NoneType``
+    :returns: The default connection if one has been set.
+    """
+    return _DEFAULTS.connection
+
+
+_DEFAULTS = _DefaultsContainer()

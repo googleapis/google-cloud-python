@@ -88,7 +88,7 @@ class Blob(_PropertyMixin):
             name = properties.get('name')
 
         if bucket is None:
-            bucket = _implicit_environ.BUCKET
+            bucket = _implicit_environ.get_default_bucket()
 
         if bucket is None:
             raise ValueError('A Blob must have a bucket set.')
