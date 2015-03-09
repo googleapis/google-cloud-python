@@ -171,6 +171,9 @@ def make_exception(response, content, use_json=True):
     :rtype: instance of :class:`GCloudError`, or a concrete subclass.
     :returns: Exception specific to the error response.
     """
+    if not hasattr(content, 'keys') and not isinstance(content, str):
+        content = str(content.decode('utf-8'))
+
     message = content
     errors = ()
 
