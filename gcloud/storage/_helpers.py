@@ -138,25 +138,21 @@ class _PropertyMixin(object):
 
 
 class _PropertyBatch(object):
-    """Context manager: Batch updates to object's ``_patch_properties``
+    """Context manager: Batch updates to object.
 
     :type wrapped: class derived from :class:`_PropertyMixin`.
-    :param wrapped:  the instance whose property updates to defer/batch.
+    :param wrapped:  the instance whose property updates to batch.
     """
     def __init__(self, wrapped):
         self._wrapped = wrapped
-        self._deferred = {}
 
     def __enter__(self):
-        """Intercept / defer property updates."""
-        self._wrapped._patch_properties = self._deferred.update
+        """Do nothing method. Needed to be a context manager."""
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, exc_type, value, traceback):
         """Patch deferred property updates if no error."""
-        del self._wrapped._patch_properties
-        if type is None:
-            if self._deferred:
-                self._wrapped._patch_properties(self._deferred)
+        if exc_type is None:
+            self._wrapped.patch()
 
 
 def _scalar_property(fieldname):

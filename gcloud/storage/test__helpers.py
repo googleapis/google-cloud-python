@@ -53,7 +53,6 @@ class Test_PropertyMixin(unittest2.TestCase):
             derived._patch_properties({'foo': 'Foo'})
             derived._patch_properties({'bar': 'Baz'})
             derived._patch_properties({'foo': 'Qux'})
-        derived.patch()
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -97,7 +96,7 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
-class TestPropertyBatch(unittest2.TestCase):
+class Test_PropertyBatch(unittest2.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage._helpers import _PropertyBatch
@@ -129,21 +128,11 @@ class TestPropertyBatch(unittest2.TestCase):
         self.assertEqual(before, after)
         self.assertTrue(batch._wrapped is wrapped)
 
-    def test_cm_intercepts_restores__patch_properties(self):
-        wrapped = self._makeWrapped()
-        before = wrapped._patch_properties
-        batch = self._makeOne(wrapped)
-        with batch:
-            # No deferred patching -> no call to the real '_patch_properties'
-            during = wrapped._patch_properties
-        after = wrapped._patch_properties
-        self.assertNotEqual(before, during)
-        self.assertEqual(before, after)
-
-    def test___exit___w_error_skips__patch_properties(self):
+    def test___exit___w_error_skips_patch(self):
         class Testing(Exception):
             pass
-        wrapped = self._makeWrapped()
+        connection = _Connection()
+        wrapped = self._makeWrapped(connection)
         batch = self._makeOne(wrapped)
         try:
             with batch:
@@ -154,7 +143,10 @@ class TestPropertyBatch(unittest2.TestCase):
         except Testing:
             pass
 
-    def test___exit___no_error_aggregates__patch_properties(self):
+        kw = connection._requested
+        self.assertEqual(len(kw), 0)
+
+    def test___exit___no_error_calls_patch(self):
         connection = _Connection({'foo': 'Foo'})
         wrapped = self._makeWrapped(connection, '/path')
         batch = self._makeOne(wrapped)
@@ -165,7 +157,6 @@ class TestPropertyBatch(unittest2.TestCase):
             wrapped._patch_properties({'bar': 'Baz'})
             wrapped._patch_properties({'foo': 'Qux'})
             self.assertEqual(len(kw), 0)
-        wrapped.patch()
         # exited w/o error -> call to the real '_patch_properties'
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
