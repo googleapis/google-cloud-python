@@ -13,6 +13,7 @@
   storage-blobs
   storage-buckets
   storage-acl
+  pubsub-api
 
 
 Getting started
