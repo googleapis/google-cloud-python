@@ -64,7 +64,6 @@ with the Cloud Datastore using this Client Library.
 .. code:: python
 
     from gcloud import datastore
-    datastore.set_defaults()
     # Create, populate and persist an entity
     entity = datastore.Entity(key=datastore.Key('EntityKind'))
     entity.update({

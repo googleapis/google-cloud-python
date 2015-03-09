@@ -28,24 +28,21 @@ class Transaction(Batch):
     mutation, and execute those within a transaction::
 
       >>> from gcloud import datastore
-      >>> from gcloud.datastore.transaction import Transaction
 
-      >>> datastore.set_defaults()
-
-      >>> with Transaction():
+      >>> with datastore.Transaction():
       ...     datastore.put([entity1, entity2])
 
     Because it derives from :class:`Batch`, :class`Transaction` also provides
     :meth:`put` and :meth:`delete` methods::
 
-      >>> with Transaction() as xact:
+      >>> with datastore.Transaction() as xact:
       ...     xact.put(entity1)
       ...     xact.delete(entity2.key)
 
     By default, the transaction is rolled back if the transaction block
     exits with an error::
 
-      >>> with Transaction():
+      >>> with datastore.Transaction():
       ...     do_some_work()
       ...     raise SomeException()  # rolls back
 
@@ -56,8 +53,8 @@ class Transaction(Batch):
        entities will not be available at save time!  That means, if you
        try::
 
-         >>> with Transaction():
-         ...     entity = Entity(key=Key('Thing'))
+         >>> with datastore.Transaction():
+         ...     entity = datastore.Entity(key=Key('Thing'))
          ...     datastore.put([entity])
 
        ``entity`` won't have a complete Key until the transaction is
@@ -66,8 +63,8 @@ class Transaction(Batch):
        Once you exit the transaction (or call ``commit()``), the
        automatically generated ID will be assigned to the entity::
 
-         >>> with Transaction():
-         ...     entity = Entity(key=Key('Thing'))
+         >>> with datastore.Transaction():
+         ...     entity = datastore.Entity(key=Key('Thing'))
          ...     datastore.put([entity])
          ...     assert entity.key.is_partial  # There is no ID on this key.
          ...
@@ -76,7 +73,7 @@ class Transaction(Batch):
        After completion, you can determine if a commit succeeded or failed.
        For example, trying to delete a key that doesn't exist::
 
-         >>> with Transaction() as xact:
+         >>> with datastore.Transaction() as xact:
          ...     xact.delete(key)
          ...
          >>> xact.succeeded
@@ -84,7 +81,7 @@ class Transaction(Batch):
 
        or successfully storing two entities:
 
-         >>> with Transaction() as xact:
+         >>> with datastore.Transaction() as xact:
          ...     datastore.put([entity1, entity2])
          ...
          >>> xact.succeeded
@@ -93,10 +90,10 @@ class Transaction(Batch):
     If you don't want to use the context manager you can initialize a
     transaction manually::
 
-      >>> transaction = Transaction()
+      >>> transaction = datastore.Transaction()
       >>> transaction.begin()
 
-      >>> entity = Entity(key=Key('Thing'))
+      >>> entity = datastore.Entity(key=Key('Thing'))
       >>> transaction.put(entity)
 
       >>> if error:

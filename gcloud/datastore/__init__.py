@@ -18,8 +18,6 @@ You'll typically use these to get started with the API:
 
 >>> from gcloud import datastore
 
->>> datastore.set_defaults()
-
 >>> key = datastore.Key('EntityKind', 1234)
 >>> entity = datastore.Entity(key)
 >>> query = datastore.Query(kind='EntityKind')
