@@ -667,6 +667,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.cache_control = CACHE_CONTROL
+        blob.patch()
         self.assertEqual(blob.cache_control, CACHE_CONTROL)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -701,6 +702,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.content_disposition = CONTENT_DISPOSITION
+        blob.patch()
         self.assertEqual(blob.content_disposition, CONTENT_DISPOSITION)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -727,6 +729,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.content_encoding = CONTENT_ENCODING
+        blob.patch()
         self.assertEqual(blob.content_encoding, CONTENT_ENCODING)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -753,6 +756,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.content_language = CONTENT_LANGUAGE
+        blob.patch()
         self.assertEqual(blob.content_language, CONTENT_LANGUAGE)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -779,6 +783,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.content_type = CONTENT_TYPE
+        blob.patch()
         self.assertEqual(blob.content_type, CONTENT_TYPE)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -805,6 +810,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.crc32c = CRC32C
+        blob.patch()
         self.assertEqual(blob.crc32c, CRC32C)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -858,6 +864,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.md5_hash = MD5_HASH
+        blob.patch()
         self.assertEqual(blob.md5_hash, MD5_HASH)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -893,6 +900,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.metadata = METADATA
+        blob.patch()
         self.assertEqual(blob.metadata, METADATA)
         kw = connection._requested
         self.assertEqual(len(kw), 1)

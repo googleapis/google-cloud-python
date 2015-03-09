@@ -53,6 +53,7 @@ class Test_PropertyMixin(unittest2.TestCase):
             derived._patch_properties({'foo': 'Foo'})
             derived._patch_properties({'bar': 'Baz'})
             derived._patch_properties({'foo': 'Qux'})
+        derived.patch()
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -87,6 +88,7 @@ class Test_PropertyMixin(unittest2.TestCase):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
         self.assertTrue(derived._patch_properties({'foo': 'Foo'}) is derived)
+        derived.patch()
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -163,6 +165,7 @@ class TestPropertyBatch(unittest2.TestCase):
             wrapped._patch_properties({'bar': 'Baz'})
             wrapped._patch_properties({'foo': 'Qux'})
             self.assertEqual(len(kw), 0)
+        wrapped.patch()
         # exited w/o error -> call to the real '_patch_properties'
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')

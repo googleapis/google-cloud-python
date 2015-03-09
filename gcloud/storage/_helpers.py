@@ -106,8 +106,8 @@ class _PropertyMixin(object):
         This method will only update the fields provided and will not
         touch the other fields.
 
-        It will also reload the properties locally based on the server's
-        response.
+        It **will not** reload the properties from the server. The behavior is
+        local only and syncing occurs via :meth:`patch`.
 
         :type properties: dict
         :param properties: The dictionary of values to update.
@@ -115,11 +115,8 @@ class _PropertyMixin(object):
         :rtype: :class:`_PropertyMixin`
         :returns: The current object.
         """
-        # Pass '?projection=full' here because 'PATCH' documented not
-        # to work properly w/ 'noAcl'.
-        self._properties = self.connection.api_request(
-            method='PATCH', path=self.path, data=properties,
-            query_params={'projection': 'full'})
+        self._changes.update(properties.keys())
+        self._properties.update(properties)
         return self
 
     def patch(self):
