@@ -30,7 +30,6 @@ Cloud Datastore
 .. code-block:: python
 
   from gcloud import datastore
-  datastore.set_defaults()
 
   entity = datastore.Entity(key=datastore.Key('Person'))
   entity['name'] = 'Your name'

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.transaction &mdash; gcloud ef1a3da documentation</title>
+    <title>gcloud.datastore.transaction &mdash; gcloud 3c7316e documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'ef1a3da',
+        VERSION:     '3c7316e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud ef1a3da documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 3c7316e documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/transaction%0ARelease%3A%20ef1a3da" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/transaction%0ARelease%3A%203c7316e" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ef1a3da)
+              Version History (3c7316e)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -110,24 +110,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    mutation, and execute those within a transaction::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
-<span class="sd">      &gt;&gt;&gt; from gcloud.datastore.transaction import Transaction</span>
 
-<span class="sd">      &gt;&gt;&gt; datastore.set_defaults()</span>
-
-<span class="sd">      &gt;&gt;&gt; with Transaction():</span>
+<span class="sd">      &gt;&gt;&gt; with datastore.Transaction():</span>
 <span class="sd">      ...     datastore.put([entity1, entity2])</span>
 
 <span class="sd">    Because it derives from :class:`Batch`, :class`Transaction` also provides</span>
 <span class="sd">    :meth:`put` and :meth:`delete` methods::</span>
 
-<span class="sd">      &gt;&gt;&gt; with Transaction() as xact:</span>
+<span class="sd">      &gt;&gt;&gt; with datastore.Transaction() as xact:</span>
 <span class="sd">      ...     xact.put(entity1)</span>
 <span class="sd">      ...     xact.delete(entity2.key)</span>
 
 <span class="sd">    By default, the transaction is rolled back if the transaction block</span>
 <span class="sd">    exits with an error::</span>
 
-<span class="sd">      &gt;&gt;&gt; with Transaction():</span>
+<span class="sd">      &gt;&gt;&gt; with datastore.Transaction():</span>
 <span class="sd">      ...     do_some_work()</span>
 <span class="sd">      ...     raise SomeException()  # rolls back</span>
 
@@ -138,8 +135,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">       entities will not be available at save time!  That means, if you</span>
 <span class="sd">       try::</span>
 
-<span class="sd">         &gt;&gt;&gt; with Transaction():</span>
-<span class="sd">         ...     entity = Entity(key=Key(&#39;Thing&#39;))</span>
+<span class="sd">         &gt;&gt;&gt; with datastore.Transaction():</span>
+<span class="sd">         ...     entity = datastore.Entity(key=Key(&#39;Thing&#39;))</span>
 <span class="sd">         ...     datastore.put([entity])</span>
 
 <span class="sd">       ``entity`` won&#39;t have a complete Key until the transaction is</span>
@@ -148,8 +145,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">       Once you exit the transaction (or call ``commit()``), the</span>
 <span class="sd">       automatically generated ID will be assigned to the entity::</span>
 
-<span class="sd">         &gt;&gt;&gt; with Transaction():</span>
-<span class="sd">         ...     entity = Entity(key=Key(&#39;Thing&#39;))</span>
+<span class="sd">         &gt;&gt;&gt; with datastore.Transaction():</span>
+<span class="sd">         ...     entity = datastore.Entity(key=Key(&#39;Thing&#39;))</span>
 <span class="sd">         ...     datastore.put([entity])</span>
 <span class="sd">         ...     assert entity.key.is_partial  # There is no ID on this key.</span>
 <span class="sd">         ...</span>
@@ -158,7 +155,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">       After completion, you can determine if a commit succeeded or failed.</span>
 <span class="sd">       For example, trying to delete a key that doesn&#39;t exist::</span>
 
-<span class="sd">         &gt;&gt;&gt; with Transaction() as xact:</span>
+<span class="sd">         &gt;&gt;&gt; with datastore.Transaction() as xact:</span>
 <span class="sd">         ...     xact.delete(key)</span>
 <span class="sd">         ...</span>
 <span class="sd">         &gt;&gt;&gt; xact.succeeded</span>
@@ -166,7 +163,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">       or successfully storing two entities:</span>
 
-<span class="sd">         &gt;&gt;&gt; with Transaction() as xact:</span>
+<span class="sd">         &gt;&gt;&gt; with datastore.Transaction() as xact:</span>
 <span class="sd">         ...     datastore.put([entity1, entity2])</span>
 <span class="sd">         ...</span>
 <span class="sd">         &gt;&gt;&gt; xact.succeeded</span>
@@ -175,10 +172,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    If you don&#39;t want to use the context manager you can initialize a</span>
 <span class="sd">    transaction manually::</span>
 
-<span class="sd">      &gt;&gt;&gt; transaction = Transaction()</span>
+<span class="sd">      &gt;&gt;&gt; transaction = datastore.Transaction()</span>
 <span class="sd">      &gt;&gt;&gt; transaction.begin()</span>
 
-<span class="sd">      &gt;&gt;&gt; entity = Entity(key=Key(&#39;Thing&#39;))</span>
+<span class="sd">      &gt;&gt;&gt; entity = datastore.Entity(key=Key(&#39;Thing&#39;))</span>
 <span class="sd">      &gt;&gt;&gt; transaction.put(entity)</span>
 
 <span class="sd">      &gt;&gt;&gt; if error:</span>

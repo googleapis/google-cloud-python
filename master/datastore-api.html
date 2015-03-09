@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datastore &mdash; gcloud ef1a3da documentation</title>
+    <title>Datastore &mdash; gcloud 3c7316e documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'ef1a3da',
+        VERSION:     '3c7316e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud ef1a3da documentation" href="index.html" />
+    <link rel="top" title="gcloud 3c7316e documentation" href="index.html" />
     <link rel="next" title="Entities" href="datastore-entities.html" />
     <link rel="prev" title="GCloud Package" href="gcloud-api.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-api%0ARelease%3A%20ef1a3da" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-api%0ARelease%3A%203c7316e" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ef1a3da)
+              Version History (3c7316e)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -154,9 +154,6 @@ you can create entities and save them:</p>
 <p>Shortcut methods for getting set up with Google Cloud Datastore.</p>
 <p>You&#8217;ll typically use these to get started with the API:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
@@ -356,7 +353,6 @@ commit will be non-transactional.</li>
 <tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Entity</span></tt>) and is used
 under the hood in <tt class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.get()</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="n">key</span><span class="p">])</span>
 <span class="go">[&lt;Entity object&gt;]</span>
@@ -431,9 +427,6 @@ matching the query.</p>
 <p>Under the hood, the <a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></tt></a> class
 uses this method to fetch data:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">&#39;MyKind&#39;</span><span class="p">)</span>
