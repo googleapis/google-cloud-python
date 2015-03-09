@@ -94,7 +94,6 @@ class Bucket(_PropertyMixin):
             name = properties.get('name')
         super(Bucket, self).__init__(name=name, properties=properties)
         self._connection = connection
-        self._changes = set()
 
     def __repr__(self):
         return '<Bucket: %s>' % self.name
@@ -784,21 +783,4 @@ class Bucket(_PropertyMixin):
         """
         self._changes.update(properties.keys())
         self._properties.update(properties)
-        return self
-
-    def patch(self):
-        """Sends all changed properties in a PATCH request.
-
-        Updates the ``properties`` with the response from the backend.
-
-        :rtype: :class:`Bucket`
-        :returns: The current bucket.
-        """
-        # Pass '?projection=full' here because 'PATCH' documented not
-        # to work properly w/ 'noAcl'.
-        update_properties = dict((key, self._properties[key])
-                                 for key in self._changes)
-        self._properties = self.connection.api_request(
-            method='PATCH', path=self.path, data=update_properties,
-            query_params={'projection': 'full'})
         return self

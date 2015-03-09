@@ -50,6 +50,7 @@ class _PropertyMixin(object):
         """
         self.name = name
         self._properties = {}
+        self._changes = set()
         if properties is not None:
             self._properties.update(properties)
 
@@ -118,6 +119,23 @@ class _PropertyMixin(object):
         # to work properly w/ 'noAcl'.
         self._properties = self.connection.api_request(
             method='PATCH', path=self.path, data=properties,
+            query_params={'projection': 'full'})
+        return self
+
+    def patch(self):
+        """Sends all changed properties in a PATCH request.
+
+        Updates the ``properties`` with the response from the backend.
+
+        :rtype: :class:`Bucket`
+        :returns: The current bucket.
+        """
+        # Pass '?projection=full' here because 'PATCH' documented not
+        # to work properly w/ 'noAcl'.
+        update_properties = dict((key, self._properties[key])
+                                 for key in self._changes)
+        self._properties = self.connection.api_request(
+            method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'})
         return self
 
