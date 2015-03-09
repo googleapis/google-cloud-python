@@ -23,4 +23,4 @@ DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
 
 
 def initialize():
-    datastore.set_defaults(dataset_id=DATASET_ID)
+    datastore.set_default_dataset_id(DATASET_ID)

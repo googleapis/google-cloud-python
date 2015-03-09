@@ -30,8 +30,6 @@ class Transaction(Batch):
       >>> from gcloud import datastore
       >>> from gcloud.datastore.transaction import Transaction
 
-      >>> datastore.set_defaults()
-
       >>> with Transaction():
       ...     datastore.put([entity1, entity2])
 

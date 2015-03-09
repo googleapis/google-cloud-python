@@ -38,7 +38,6 @@ Add some data to your dataset
 Open a Python console and...
 
   >>> from gcloud import datastore
-  >>> datastore.set_defaults()
   >>> list(datastore.Query(kind='Person').fetch())
   []
   >>> entity = datastore.Entity(key=datastore.Key('Person'))
