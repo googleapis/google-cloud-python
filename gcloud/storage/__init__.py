@@ -41,6 +41,7 @@ import os
 
 from gcloud import credentials
 from gcloud.storage import _implicit_environ
+from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.connection import Connection
 
