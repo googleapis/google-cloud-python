@@ -86,26 +86,6 @@ class Bucket(_PropertyMixin):
     _MAX_OBJECTS_FOR_BUCKET_DELETE = 256
     """Maximum number of existing objects allowed in Bucket.delete()."""
 
-    CUSTOM_PROPERTY_ACCESSORS = {
-        'acl': 'acl',
-        'cors': 'get_cors()',
-        'defaultObjectAcl': 'get_default_object_acl()',
-        'etag': 'etag',
-        'id': 'id',
-        'lifecycle': 'get_lifecycle()',
-        'location': 'location',
-        'logging': 'get_logging()',
-        'metageneration': 'metageneration',
-        'name': 'name',
-        'owner': 'owner',
-        'projectNumber': 'project_number',
-        'selfLink': 'self_link',
-        'storageClass': 'storage_class',
-        'timeCreated': 'time_created',
-        'versioning': 'versioning_enabled',
-    }
-    """Map field name -> accessor for fields w/ custom accessors."""
-
     # ACL rules are lazily retrieved.
     _acl = _default_object_acl = None
 
@@ -590,6 +570,7 @@ class Bucket(_PropertyMixin):
         :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``
                   (if logging is enabled), or None (if not).
         """
+        self._reload_properties()
         info = self.properties.get('logging')
         if info is not None:
             return info.copy()

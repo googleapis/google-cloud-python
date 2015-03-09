@@ -52,29 +52,6 @@ class Blob(_PropertyMixin):
     :param properties: All the other data provided by Cloud Storage.
     """
 
-    CUSTOM_PROPERTY_ACCESSORS = {
-        'acl': 'acl',
-        'cacheControl': 'cache_control',
-        'contentDisposition': 'content_disposition',
-        'contentEncoding': 'content_encoding',
-        'contentLanguage': 'content_language',
-        'contentType': 'content_type',
-        'componentCount': 'component_count',
-        'etag': 'etag',
-        'generation': 'generation',
-        'id': 'id',
-        'mediaLink': 'media_link',
-        'metageneration': 'metageneration',
-        'name': 'name',
-        'owner': 'owner',
-        'selfLink': 'self_link',
-        'size': 'size',
-        'storageClass': 'storage_class',
-        'timeDeleted': 'time_deleted',
-        'updated': 'updated',
-    }
-    """Map field name -> accessor for fields w/ custom accessors."""
-
     CHUNK_SIZE = 1024 * 1024  # 1 MB.
     """The size of a chunk of data whenever iterating (1 MB).
 
