@@ -40,7 +40,7 @@ The main concepts with this API are:
 import os
 
 from gcloud import credentials
-from gcloud.storage._implicit_environ import _DEFAULTS
+from gcloud.storage import _implicit_environ
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
 from gcloud.storage._implicit_environ import get_default_project
@@ -80,7 +80,7 @@ def set_default_bucket(bucket=None):
             bucket = Bucket(connection=connection, name=bucket_name)
 
     if bucket is not None:
-        _DEFAULTS.bucket = bucket
+        _implicit_environ._DEFAULTS.bucket = bucket
 
 
 def set_default_project(project=None):
@@ -99,7 +99,7 @@ def set_default_project(project=None):
         project = os.getenv(_PROJECT_ENV_VAR_NAME)
 
     if project is not None:
-        _DEFAULTS.project = project
+        _implicit_environ._DEFAULTS.project = project
 
 
 def set_default_connection(project=None, connection=None):
@@ -115,7 +115,7 @@ def set_default_connection(project=None, connection=None):
         project = get_default_project()
 
     connection = connection or get_connection(project)
-    _DEFAULTS.connection = connection
+    _implicit_environ._DEFAULTS.connection = connection
 
 
 def set_defaults(bucket=None, project=None, connection=None):

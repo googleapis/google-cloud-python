@@ -29,6 +29,7 @@ class Test_Blob(unittest2.TestCase):
         from gcloud.storage import _implicit_environ
 
         FAKE_BUCKET = _Bucket(None)
+
         def mock_get_bucket():
             return FAKE_BUCKET
 
