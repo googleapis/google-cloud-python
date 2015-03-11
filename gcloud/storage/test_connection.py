@@ -101,13 +101,12 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.build_api_url('/foo', upload=True), URI)
 
     def test__make_request_no_data_no_content_type_no_headers(self):
-        import six
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
         http = conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            six.binary_type(''),
+            b'',
         )
         headers, content = conn._make_request('GET', URI)
         self.assertEqual(headers['status'], '200')
@@ -124,13 +123,12 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test__make_request_w_data_no_extra_headers(self):
-        import six
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
         http = conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            six.binary_type(''),
+            b'',
         )
         conn._make_request('GET', URI, {}, 'application/json')
         self.assertEqual(http._called_with['method'], 'GET')
@@ -145,13 +143,12 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test__make_request_w_extra_headers(self):
-        import six
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = 'http://example.com/test'
         http = conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            six.binary_type(''),
+            b'',
         )
         conn._make_request('GET', URI, headers={'X-Foo': 'foo'})
         self.assertEqual(http._called_with['method'], 'GET')
@@ -166,7 +163,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_api_request_defaults(self):
-        import six
         PROJECT = 'project'
         PATH = '/path/required'
         conn = self._makeOne(PROJECT)
@@ -177,7 +173,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            six.binary_type('{}'),
+            b'{}',
         )
         self.assertEqual(conn.api_request('GET', PATH), {})
         self.assertEqual(http._called_with['method'], 'GET')
@@ -191,23 +187,21 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['headers'], expected_headers)
 
     def test_api_request_w_non_json_response(self):
-        import six
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            six.binary_type('CONTENT'),
+            b'CONTENT',
         )
 
         self.assertRaises(TypeError, conn.api_request, 'GET', '/')
 
     def test_api_request_wo_json_expected(self):
-        import six
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            six.binary_type('CONTENT'),
+            b'CONTENT',
         )
         self.assertEqual(conn.api_request('GET', '/', expect_json=False),
                          'CONTENT')
@@ -215,12 +209,11 @@ class TestConnection(unittest2.TestCase):
     def test_api_request_w_query_params(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        import six
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            six.binary_type('{}'),
+            b'{}',
         )
         self.assertEqual(conn.api_request('GET', '/', {'foo': 'bar'}), {})
         self.assertEqual(http._called_with['method'], 'GET')
@@ -242,7 +235,6 @@ class TestConnection(unittest2.TestCase):
 
     def test_api_request_w_data(self):
         import json
-        import six
         PROJECT = 'project'
         DATA = {'foo': 'bar'}
         DATAJ = json.dumps(DATA)
@@ -255,7 +247,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            six.binary_type('{}'),
+            b'{}',
         )
         self.assertEqual(conn.api_request('POST', '/', data=DATA), {})
         self.assertEqual(http._called_with['method'], 'POST')
@@ -271,28 +263,25 @@ class TestConnection(unittest2.TestCase):
 
     def test_api_request_w_404(self):
         from gcloud.exceptions import NotFound
-        import six
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '404', 'content-type': 'text/plain'},
-            six.binary_type('{}')
+            b'{}',
         )
         self.assertRaises(NotFound, conn.api_request, 'GET', '/')
 
     def test_api_request_w_500(self):
         from gcloud.exceptions import InternalServerError
-        import six
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '500', 'content-type': 'text/plain'},
-            six.binary_type('{}'),
+            b'{}',
         )
         self.assertRaises(InternalServerError, conn.api_request, 'GET', '/')
 
     def test_get_all_buckets_empty(self):
-        import six
         PROJECT = 'project'
         conn = self._makeOne(PROJECT)
         URI = '/'.join([
@@ -303,7 +292,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            six.binary_type('{}'),
+            b'{}',
         )
         buckets = list(conn.get_all_buckets())
         self.assertEqual(len(buckets), 0)
@@ -311,7 +300,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_get_all_buckets_non_empty(self):
-        import six
         PROJECT = 'project'
         BUCKET_NAME = 'bucket-name'
         conn = self._makeOne(PROJECT)
@@ -323,7 +311,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            six.binary_type('{"items": [{"name": "%s"}]}' % BUCKET_NAME),
+            b'{"items": [{"name": "%s"}]}' % BUCKET_NAME,
         )
         buckets = list(conn.get_all_buckets())
         self.assertEqual(len(buckets), 1)
@@ -333,7 +321,6 @@ class TestConnection(unittest2.TestCase):
 
     def test_get_bucket_miss(self):
         from gcloud.exceptions import NotFound
-        import six
         PROJECT = 'project'
         NONESUCH = 'nonesuch'
         conn = self._makeOne(PROJECT)
@@ -346,7 +333,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '404', 'content-type': 'application/json'},
-            six.binary_type('{}'),
+            b'{}',
         )
         self.assertRaises(NotFound, conn.get_bucket, NONESUCH)
         self.assertEqual(http._called_with['method'], 'GET')
@@ -354,7 +341,6 @@ class TestConnection(unittest2.TestCase):
 
     def test_get_bucket_hit(self):
         from gcloud.storage.bucket import Bucket
-        import six
         PROJECT = 'project'
         BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
@@ -367,7 +353,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            six.binary_type('{"name": "%s"}' % BLOB_NAME),
+            b'{"name": "%s"}' % BLOB_NAME,
         )
         bucket = conn.get_bucket(BLOB_NAME)
         self.assertTrue(isinstance(bucket, Bucket))
@@ -378,7 +364,6 @@ class TestConnection(unittest2.TestCase):
 
     def test_create_bucket_ok(self):
         from gcloud.storage.bucket import Bucket
-        import six
         PROJECT = 'project'
         BLOB_NAME = 'blob-name'
         conn = self._makeOne(PROJECT)
@@ -390,7 +375,7 @@ class TestConnection(unittest2.TestCase):
             ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            six.binary_type('{"name": "%s"}' % BLOB_NAME),
+            b'{"name": "%s"}' % BLOB_NAME,
         )
         bucket = conn.create_bucket(BLOB_NAME)
         self.assertTrue(isinstance(bucket, Bucket))
@@ -400,7 +385,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_delete_bucket_defaults_miss(self):
-        import six
         _deleted_blobs = []
 
         PROJECT = 'project'
@@ -415,7 +399,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            six.binary_type('{}'),
+            b'{}',
         )
 
         self.assertEqual(conn.delete_bucket(BLOB_NAME), None)
