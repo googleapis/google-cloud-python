@@ -106,12 +106,12 @@ class TestConnection(unittest2.TestCase):
         URI = 'http://example.com/test'
         http = conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            '',
+            b'',
         )
         headers, content = conn._make_request('GET', URI)
         self.assertEqual(headers['status'], '200')
         self.assertEqual(headers['content-type'], 'text/plain')
-        self.assertEqual(content, '')
+        self.assertEqual(content, b'')
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
         self.assertEqual(http._called_with['body'], None)
@@ -128,7 +128,7 @@ class TestConnection(unittest2.TestCase):
         URI = 'http://example.com/test'
         http = conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            '',
+            b'',
         )
         conn._make_request('GET', URI, {}, 'application/json')
         self.assertEqual(http._called_with['method'], 'GET')
@@ -148,7 +148,7 @@ class TestConnection(unittest2.TestCase):
         URI = 'http://example.com/test'
         http = conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            '',
+            b'',
         )
         conn._make_request('GET', URI, headers={'X-Foo': 'foo'})
         self.assertEqual(http._called_with['method'], 'GET')
@@ -173,7 +173,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         self.assertEqual(conn.api_request('GET', PATH), {})
         self.assertEqual(http._called_with['method'], 'GET')
@@ -191,7 +191,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            'CONTENT',
+            b'CONTENT',
         )
 
         self.assertRaises(TypeError, conn.api_request, 'GET', '/')
@@ -201,10 +201,10 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            'CONTENT',
+            b'CONTENT',
         )
         self.assertEqual(conn.api_request('GET', '/', expect_json=False),
-                         'CONTENT')
+                         b'CONTENT')
 
     def test_api_request_w_query_params(self):
         from six.moves.urllib.parse import parse_qsl
@@ -213,7 +213,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         self.assertEqual(conn.api_request('GET', '/', {'foo': 'bar'}), {})
         self.assertEqual(http._called_with['method'], 'GET')
@@ -247,7 +247,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         self.assertEqual(conn.api_request('POST', '/', data=DATA), {})
         self.assertEqual(http._called_with['method'], 'POST')
@@ -267,7 +267,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '404', 'content-type': 'text/plain'},
-            '{}'
+            b'{}',
         )
         self.assertRaises(NotFound, conn.api_request, 'GET', '/')
 
@@ -277,7 +277,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '500', 'content-type': 'text/plain'},
-            '{}',
+            b'{}',
         )
         self.assertRaises(InternalServerError, conn.api_request, 'GET', '/')
 
