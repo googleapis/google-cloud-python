@@ -106,7 +106,7 @@ class TestConnection(unittest2.TestCase):
         URI = 'http://example.com/test'
         http = conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            '',
+            b'',
         )
         headers, content = conn._make_request('GET', URI)
         self.assertEqual(headers['status'], '200')
@@ -128,7 +128,7 @@ class TestConnection(unittest2.TestCase):
         URI = 'http://example.com/test'
         http = conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            '',
+            b'',
         )
         conn._make_request('GET', URI, {}, 'application/json')
         self.assertEqual(http._called_with['method'], 'GET')
@@ -148,7 +148,7 @@ class TestConnection(unittest2.TestCase):
         URI = 'http://example.com/test'
         http = conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            '',
+            b'',
         )
         conn._make_request('GET', URI, headers={'X-Foo': 'foo'})
         self.assertEqual(http._called_with['method'], 'GET')
@@ -173,7 +173,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         self.assertEqual(conn.api_request('GET', PATH), {})
         self.assertEqual(http._called_with['method'], 'GET')
@@ -191,7 +191,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            'CONTENT',
+            b'CONTENT',
         )
 
         self.assertRaises(TypeError, conn.api_request, 'GET', '/')
@@ -201,7 +201,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '200', 'content-type': 'text/plain'},
-            'CONTENT',
+            b'CONTENT',
         )
         self.assertEqual(conn.api_request('GET', '/', expect_json=False),
                          'CONTENT')
@@ -213,7 +213,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         self.assertEqual(conn.api_request('GET', '/', {'foo': 'bar'}), {})
         self.assertEqual(http._called_with['method'], 'GET')
@@ -247,7 +247,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         self.assertEqual(conn.api_request('POST', '/', data=DATA), {})
         self.assertEqual(http._called_with['method'], 'POST')
@@ -267,7 +267,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '404', 'content-type': 'text/plain'},
-            '{}'
+            b'{}',
         )
         self.assertRaises(NotFound, conn.api_request, 'GET', '/')
 
@@ -277,7 +277,7 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(PROJECT)
         conn._http = Http(
             {'status': '500', 'content-type': 'text/plain'},
-            '{}',
+            b'{}',
         )
         self.assertRaises(InternalServerError, conn.api_request, 'GET', '/')
 
@@ -292,7 +292,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         buckets = list(conn.get_all_buckets())
         self.assertEqual(len(buckets), 0)
@@ -311,7 +311,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"items": [{"name": "%s"}]}' % BUCKET_NAME,
+            b'{"items": [{"name": "%s"}]}' % BUCKET_NAME,
         )
         buckets = list(conn.get_all_buckets())
         self.assertEqual(len(buckets), 1)
@@ -333,7 +333,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '404', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         self.assertRaises(NotFound, conn.get_bucket, NONESUCH)
         self.assertEqual(http._called_with['method'], 'GET')
@@ -353,7 +353,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % BLOB_NAME,
+            b'{"name": "%s"}' % BLOB_NAME,
         )
         bucket = conn.get_bucket(BLOB_NAME)
         self.assertTrue(isinstance(bucket, Bucket))
@@ -375,7 +375,7 @@ class TestConnection(unittest2.TestCase):
             ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % BLOB_NAME,
+            b'{"name": "%s"}' % BLOB_NAME,
         )
         bucket = conn.create_bucket(BLOB_NAME)
         self.assertTrue(isinstance(bucket, Bucket))
@@ -399,7 +399,7 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
 
         self.assertEqual(conn.delete_bucket(BLOB_NAME), None)
