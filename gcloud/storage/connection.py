@@ -235,6 +235,6 @@ class Connection(base_connection.Connection):
             content_type = response.get('content-type', '')
             if not content_type.startswith('application/json'):
                 raise TypeError('Expected JSON, got %s' % content_type)
-            return json.loads(content)
+            return json.loads(content.decode('utf-8'))
 
         return content
