@@ -19,6 +19,11 @@ These are *not* part of the API.
 
 from Crypto.Hash import MD5
 import base64
+import binascii
+try:
+    import crcmod
+except ImportError:
+    crcmod = None
 
 
 class _PropertyMixin(object):
@@ -206,12 +211,36 @@ def _write_buffer_to_hash(buffer_object, hash_obj, digest_block_size=8192):
         block = buffer_object.read(digest_block_size)
 
 
+def _base64_crc32c(buffer_object):
+    """Get CRC-32C hash of bytes (as base64).
+
+    Here 32C stands for 32 bit hash using Castagnoli polynomial. See:
+        https://cloud.google.com/storage/docs/hashes-etags#_CRC32C
+
+    :type buffer_object: bytes buffer
+    :param buffer_object: Buffer containing bytes used to compute a CRC-32C
+                          hash (as base64) using the Castagnoli polynomial.
+
+    :rtype: string
+    :returns: The base64 encoded CRC-32C hash of the contents in buffer object.
+    """
+    if crcmod is None:
+        raise NotImplementedError('crcmod is not installed')
+    hash_obj = crcmod.predefined.Crc('crc-32c')
+    _write_buffer_to_hash(buffer_object, hash_obj)
+    digest_bytes = binascii.unhexlify(hash_obj.hexdigest())
+    return base64.b64encode(digest_bytes)
+
+
 def _base64_md5hash(buffer_object):
     """Get MD5 hash of bytes (as base64).
 
     :type buffer_object: bytes buffer
     :param buffer_object: Buffer containing bytes used to compute an MD5
                           hash (as base64).
+
+    :rtype: string
+    :returns: The base64 encoded MD5 hash of the contents in buffer object.
     """
     hash_obj = MD5.new()
     _write_buffer_to_hash(buffer_object, hash_obj)
