@@ -41,6 +41,9 @@ import os
 
 from gcloud import credentials
 from gcloud.storage import _implicit_environ
+from gcloud.storage._implicit_environ import get_default_bucket
+from gcloud.storage._implicit_environ import get_default_connection
+from gcloud.storage._implicit_environ import get_default_project
 from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.connection import Connection
@@ -71,13 +74,13 @@ def set_default_bucket(bucket=None):
     """
     if bucket is None:
         bucket_name = os.getenv(_BUCKET_ENV_VAR_NAME)
-        connection = _implicit_environ.CONNECTION
+        connection = get_default_connection()
 
         if bucket_name is not None and connection is not None:
             bucket = Bucket(connection=connection, name=bucket_name)
 
     if bucket is not None:
-        _implicit_environ.BUCKET = bucket
+        _implicit_environ._DEFAULTS.bucket = bucket
 
 
 def set_default_project(project=None):
@@ -96,7 +99,7 @@ def set_default_project(project=None):
         project = os.getenv(_PROJECT_ENV_VAR_NAME)
 
     if project is not None:
-        _implicit_environ.PROJECT = project
+        _implicit_environ._DEFAULTS.project = project
 
 
 def set_default_connection(project=None, connection=None):
@@ -109,10 +112,10 @@ def set_default_connection(project=None, connection=None):
     :param connection: A connection provided to be the default.
     """
     if project is None:
-        project = _implicit_environ.PROJECT
+        project = get_default_project()
 
     connection = connection or get_connection(project)
-    _implicit_environ.CONNECTION = connection
+    _implicit_environ._DEFAULTS.connection = connection
 
 
 def set_defaults(bucket=None, project=None, connection=None):

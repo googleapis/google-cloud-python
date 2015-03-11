@@ -29,7 +29,11 @@ class Test_Blob(unittest2.TestCase):
         from gcloud.storage import _implicit_environ
 
         FAKE_BUCKET = _Bucket(None)
-        with _Monkey(_implicit_environ, BUCKET=FAKE_BUCKET):
+
+        def mock_get_bucket():
+            return FAKE_BUCKET
+
+        with _Monkey(_implicit_environ, get_default_bucket=mock_get_bucket):
             blob = self._makeOne(None)
 
         self.assertEqual(blob.bucket, FAKE_BUCKET)
