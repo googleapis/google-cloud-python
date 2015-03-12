@@ -55,7 +55,7 @@ class Test_make_exception(unittest2.TestCase):
     def test_hit_w_content_as_str(self):
         from gcloud.exceptions import NotFound
         response = _Response(404)
-        content = '{"message": "Not Found"}'
+        content = b'{"message": "Not Found"}'
         exception = self._callFUT(response, content)
         self.assertTrue(isinstance(exception, NotFound))
         self.assertEqual(exception.message, 'Not Found')

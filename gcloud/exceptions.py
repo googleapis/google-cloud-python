@@ -18,6 +18,7 @@ See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
 """
 
 import json
+import six
 
 _HTTP_CODE_TO_EXCEPTION = {}  # populated at end of module
 
@@ -174,9 +175,10 @@ def make_exception(response, content, use_json=True):
     message = content
     errors = ()
 
-    if isinstance(content, str):
+    if isinstance(content, six.binary_type):
+        message = content.decode('utf-8')
         if use_json:
-            payload = json.loads(content)
+            payload = json.loads(message)
         else:
             payload = {}
     else:
