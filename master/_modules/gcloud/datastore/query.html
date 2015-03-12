@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.query &mdash; gcloud 83f92cc documentation</title>
+    <title>gcloud.datastore.query &mdash; gcloud fb35d7a documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '83f92cc',
+        VERSION:     'fb35d7a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 83f92cc documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud fb35d7a documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header class="page-header fixed" role="banner">
       <h1 class="logo">
         <a href="index.html" title="back to home">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%2083f92cc" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%20fb35d7a" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (83f92cc)
+              Version History (fb35d7a)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -177,13 +177,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">_group_by</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">group_by</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Query.dataset_id"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.dataset_id">[docs]</a>    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the dataset ID for this Query.</span>
 
 <span class="sd">        :rtype: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
-</div>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;This query&#39;s namespace</span>
@@ -194,7 +194,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span>
 
     <span class="nd">@namespace.setter</span>
-<div class="viewcode-block" id="Query.namespace"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.namespace">[docs]</a>    <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the query&#39;s namespace.</span>
 
 <span class="sd">        :type value: string</span>
@@ -202,7 +202,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Namespace must be a string&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">value</span>
-</div>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the Kind of the Query.</span>
@@ -212,7 +212,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span>
 
     <span class="nd">@kind.setter</span>
-<div class="viewcode-block" id="Query.kind"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.kind">[docs]</a>    <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the Kind of the Query.</span>
 
 <span class="sd">        :type value: string</span>
@@ -229,7 +229,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;Kind must be a string&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span> <span class="o">=</span> <span class="n">value</span>
-</div>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The ancestor key for the query.</span>
@@ -250,18 +250,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">_ancestor</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@ancestor.deleter</span>
-<div class="viewcode-block" id="Query.ancestor"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.ancestor">[docs]</a>    <span class="k">def</span> <span class="nf">ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove the ancestor for the query.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ancestor</span> <span class="o">=</span> <span class="bp">None</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Query.filters"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.filters">[docs]</a>    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Filters set on the query.</span>
 
 <span class="sd">        :rtype: sequence of (property_name, operator, value) tuples.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filters</span><span class="p">[:]</span>
-</div>
+
 <div class="viewcode-block" id="Query.add_filter"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.add_filter">[docs]</a>    <span class="k">def</span> <span class="nf">add_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">property_name</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Filter the query based on a property name, operator and a value.</span>
 
@@ -314,7 +314,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">[:]</span>
 
     <span class="nd">@projection.setter</span>
-<div class="viewcode-block" id="Query.projection"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.projection">[docs]</a>    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">projection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the fields returned the query.</span>
 
 <span class="sd">        :type projection: string or sequence of strings</span>
@@ -324,7 +324,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">projection</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">projection</span> <span class="o">=</span> <span class="p">[</span><span class="n">projection</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">projection</span>
-</div>
+
 <div class="viewcode-block" id="Query.keys_only"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.keys_only">[docs]</a>    <span class="k">def</span> <span class="nf">keys_only</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the projection to include only keys.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;__key__&#39;</span><span class="p">]</span>
@@ -338,7 +338,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">[:]</span>
 
     <span class="nd">@order.setter</span>
-<div class="viewcode-block" id="Query.order"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.order">[docs]</a>    <span class="k">def</span> <span class="nf">order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the fields used to sort query results.</span>
 
 <span class="sd">        Sort fields will be applied in the order specified.</span>
@@ -352,7 +352,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">value</span>
-</div>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Names of fields used to group query results.</span>
@@ -362,7 +362,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group_by</span><span class="p">[:]</span>
 
     <span class="nd">@group_by.setter</span>
-<div class="viewcode-block" id="Query.group_by"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.group_by">[docs]</a>    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set fields used to group query results.</span>
 
 <span class="sd">        :type value: string or sequence of strings</span>
@@ -372,7 +372,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_group_by</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">value</span>
-</div>
+
 <div class="viewcode-block" id="Query.fetch"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.fetch">[docs]</a>    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
               <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute the Query; return an iterator for the matching entities.</span>

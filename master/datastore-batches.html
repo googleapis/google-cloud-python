@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Batches &mdash; gcloud 83f92cc documentation</title>
+    <title>Batches &mdash; gcloud fb35d7a documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '83f92cc',
+        VERSION:     'fb35d7a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,11 +23,11 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 83f92cc documentation" href="index.html" />
+    <link rel="top" title="gcloud fb35d7a documentation" href="index.html" />
     <link rel="next" title="Storage" href="storage-api.html" />
     <link rel="prev" title="Transactions" href="datastore-transactions.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header class="page-header fixed" role="banner">
       <h1 class="logo">
         <a href="index.html" title="back to home">
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-batches%0ARelease%3A%2083f92cc" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-batches%0ARelease%3A%20fb35d7a" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (83f92cc)
+              Version History (fb35d7a)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -85,11 +85,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>Create / interact with a batch of updates / deletes.</p>
 <dl class="class">
 <dt id="gcloud.datastore.batch.Batch">
-<em class="property">class </em><tt class="descclassname">gcloud.datastore.batch.</tt><tt class="descname">Batch</tt><big>(</big><em>dataset_id=None</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.batch.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>An abstraction representing a collected group of updates / deletes.</p>
 <p>Used to build up a bulk mutuation.</p>
-<p>For example, the following snippet of code will put the two <tt class="docutils literal"><span class="pre">save</span></tt>
+<p>For example, the following snippet of code will put the two <code class="docutils literal"><span class="pre">save</span></code>
 operations and the delete operatiuon into the same mutation, and send
 them to the server in a single API request:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
@@ -101,7 +101,7 @@ them to the server in a single API request:</p>
 </pre></div>
 </div>
 <p>You can also use a batch as a context manager, in which case the
-<tt class="docutils literal"><span class="pre">commit</span></tt> will be called automatically if its block exits without
+<code class="docutils literal"><span class="pre">commit</span></code> will be called automatically if its block exits without
 raising an exception:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
@@ -123,12 +123,12 @@ raising an exception:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<tt class="xref py py-class docutils literal"><span class="pre">str</span></tt>.) &#8211; The ID of the dataset.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a>) &#8211; The connection used to connect to datastore.</li>
+<li><strong>dataset_id</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>.) &#8211; The ID of the dataset.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a>) &#8211; The connection used to connect to datastore.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if either a connection or dataset ID
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if either a connection or dataset ID
 are not set.</p>
 </td>
 </tr>
@@ -136,14 +136,14 @@ are not set.</p>
 </table>
 <dl class="method">
 <dt id="gcloud.datastore.batch.Batch.add_auto_id_entity">
-<tt class="descname">add_auto_id_entity</tt><big>(</big><em>entity</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.add_auto_id_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.add_auto_id_entity" title="Permalink to this definition">#</a></dt>
+<code class="descname">add_auto_id_entity</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.add_auto_id_entity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.add_auto_id_entity" title="Permalink to this definition">#</a></dt>
 <dd><p>Adds an entity to the list of entities to update with IDs.</p>
-<p>When an entity has a partial key, calling <tt class="docutils literal"><span class="pre">save()</span></tt> adds an
+<p>When an entity has a partial key, calling <code class="docutils literal"><span class="pre">save()</span></code> adds an
 insert_auto_id entry in the mutation.  In order to make sure we
 update the Entity once the transaction is committed, we need to
 keep track of which entities to update (and the order is
 important).</p>
-<p>When you call <tt class="docutils literal"><span class="pre">save()</span></tt> on an entity inside a transaction, if
+<p>When you call <code class="docutils literal"><span class="pre">save()</span></code> on an entity inside a transaction, if
 the entity has a partial key, it adds itself to the list of
 entities to be updated once the transaction is committed by
 calling this method.</p>
@@ -151,7 +151,7 @@ calling this method.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>) &#8211; The entity to be updated with a completed key.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a>) &#8211; The entity to be updated with a completed key.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if the entity&#8217;s key is alread completed.</td>
 </tr>
@@ -161,14 +161,14 @@ calling this method.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.batch.Batch.begin">
-<tt class="descname">begin</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.begin" title="Permalink to this definition">#</a></dt>
+<code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.begin" title="Permalink to this definition">#</a></dt>
 <dd><p>No-op</p>
-<p>Overridden by <a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></tt></a>.</p>
+<p>Overridden by <a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="gcloud.datastore.batch.Batch.commit">
-<tt class="descname">commit</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.commit" title="Permalink to this definition">#</a></dt>
+<code class="descname">commit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commits the batch.</p>
 <p>This is called automatically upon exiting a with statement,
 however it can be called explicitly if you don&#8217;t want to use a
@@ -177,13 +177,13 @@ context manager.</p>
 
 <dl class="attribute">
 <dt id="gcloud.datastore.batch.Batch.connection">
-<tt class="descname">connection</tt><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.connection" title="Permalink to this definition">#</a></dt>
+<code class="descname">connection</code><a class="headerlink" href="#gcloud.datastore.batch.Batch.connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for connection over which the batch will run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></tt></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The connection over which the batch will run.</td>
 </tr>
@@ -193,19 +193,19 @@ context manager.</p>
 
 <dl class="staticmethod">
 <dt id="gcloud.datastore.batch.Batch.current">
-<em class="property">static </em><tt class="descname">current</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.current" title="Permalink to this definition">#</a></dt>
+<em class="property">static </em><code class="descname">current</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.current" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the topmost batch / transaction, or None.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.datastore.batch.Batch.dataset_id">
-<tt class="descname">dataset_id</tt><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.dataset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.dataset_id" title="Permalink to this definition">#</a></dt>
+<code class="descname">dataset_id</code><a class="headerlink" href="#gcloud.datastore.batch.Batch.dataset_id" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for dataset ID in which the batch will run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The dataset ID in which the batch will run.</td>
 </tr>
@@ -215,16 +215,16 @@ context manager.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.batch.Batch.delete">
-<tt class="descname">delete</tt><big>(</big><em>key</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Remember a key to be deleted durring <tt class="docutils literal"><span class="pre">commit</span></tt>.</p>
+<code class="descname">delete</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Remember a key to be deleted durring <code class="docutils literal"><span class="pre">commit</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></tt></a>) &#8211; the key to be deleted.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; the key to be deleted.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if key is not complete, or if the key&#8217;s
-<tt class="docutils literal"><span class="pre">dataset_id</span></tt> does not match ours.</td>
+<code class="docutils literal"><span class="pre">dataset_id</span></code> does not match ours.</td>
 </tr>
 </tbody>
 </table>
@@ -232,19 +232,19 @@ context manager.</p>
 
 <dl class="attribute">
 <dt id="gcloud.datastore.batch.Batch.mutation">
-<tt class="descname">mutation</tt><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.mutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.mutation" title="Permalink to this definition">#</a></dt>
+<code class="descname">mutation</code><a class="headerlink" href="#gcloud.datastore.batch.Batch.mutation" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for the current mutation.</p>
 <p>Every batch is committed with a single Mutation
 representing the &#8216;work&#8217; to be done as part of the batch.
-Inside a batch, calling <tt class="docutils literal"><span class="pre">batch.put()</span></tt> with an entity, or
-<tt class="docutils literal"><span class="pre">batch.delete</span></tt> with a key, builds up the mutation.
+Inside a batch, calling <code class="docutils literal"><span class="pre">batch.put()</span></code> with an entity, or
+<code class="docutils literal"><span class="pre">batch.delete</span></code> with a key, builds up the mutation.
 This getter returns the Mutation protobuf that
 has been built-up so far.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Mutation</span></tt></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Mutation</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The Mutation protobuf to be sent in the commit request.</td>
 </tr>
@@ -254,8 +254,8 @@ has been built-up so far.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.batch.Batch.put">
-<tt class="descname">put</tt><big>(</big><em>entity</em><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.put" title="Permalink to this definition">#</a></dt>
-<dd><p>Remember an entity&#8217;s state to be saved during <tt class="docutils literal"><span class="pre">commit</span></tt>.</p>
+<code class="descname">put</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.put" title="Permalink to this definition">#</a></dt>
+<dd><p>Remember an entity&#8217;s state to be saved during <code class="docutils literal"><span class="pre">commit</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Any existing properties for the entity will be replaced by those
@@ -273,10 +273,10 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></tt></a>) &#8211; the entity to be saved.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a>) &#8211; the entity to be saved.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if entity has no key assigned, or if the key&#8217;s
-<tt class="docutils literal"><span class="pre">dataset_id</span></tt> does not match ours.</td>
+<code class="docutils literal"><span class="pre">dataset_id</span></code> does not match ours.</td>
 </tr>
 </tbody>
 </table>
@@ -284,9 +284,9 @@ Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 
 <dl class="method">
 <dt id="gcloud.datastore.batch.Batch.rollback">
-<tt class="descname">rollback</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.rollback" title="Permalink to this definition">#</a></dt>
+<code class="descname">rollback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.rollback" title="Permalink to this definition">#</a></dt>
 <dd><p>No-op</p>
-<p>Overridden by <a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></tt></a>.</p>
+<p>Overridden by <a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>.</p>
 </dd></dl>
 
 </dd></dl>

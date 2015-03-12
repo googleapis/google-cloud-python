@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 83f92cc documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud fb35d7a documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '83f92cc',
+        VERSION:     'fb35d7a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 83f92cc documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud fb35d7a documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header class="page-header fixed" role="banner">
       <h1 class="logo">
         <a href="index.html" title="back to home">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%2083f92cc" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20fb35d7a" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (83f92cc)
+              Version History (fb35d7a)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -170,7 +170,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">name</span> <span class="o">=</span> <span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">bucket</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">bucket</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">BUCKET</span>
+            <span class="n">bucket</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">get_default_bucket</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">bucket</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;A Blob must have a bucket set.&#39;</span><span class="p">)</span>
@@ -180,12 +180,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.acl"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.acl">[docs]</a>    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create our ACL on demand.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">ObjectACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span>
-</div>
+
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">:</span>
             <span class="n">bucket_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span>
@@ -195,7 +195,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="s">&#39;&lt;Blob: </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.connection"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.connection">[docs]</a>    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter property for the connection to use with this Blob.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.storage.connection.Connection` or None</span>
@@ -203,9 +203,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.path"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.path">[docs]</a>    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter property for the URL path to this Blob.</span>
 
 <span class="sd">        :rtype: string</span>
@@ -215,9 +215,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Cannot determine path without a blob name.&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o/&#39;</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.public_url"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.public_url">[docs]</a>    <span class="k">def</span> <span class="nf">public_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">public_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The public URL for this blob&#39;s object.</span>
 
 <span class="sd">        :rtype: `string`</span>
@@ -227,7 +227,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">storage_base_url</span><span class="o">=</span><span class="s">&#39;http://commondatastorage.googleapis.com&#39;</span><span class="p">,</span>
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">))</span>
-</div>
+
 <div class="viewcode-block" id="Blob.generate_signed_url"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a signed URL for this blob.</span>
 
@@ -559,7 +559,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.component_count"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.component_count">[docs]</a>    <span class="k">def</span> <span class="nf">component_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">component_count</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Number of underlying components that make up this object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -567,9 +567,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: integer</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;componentCount&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.etag"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.etag">[docs]</a>    <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ETag for the object.</span>
 
 <span class="sd">        See: http://tools.ietf.org/html/rfc2616#section-3.11 and</span>
@@ -578,9 +578,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;etag&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.generation"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.generation">[docs]</a>    <span class="k">def</span> <span class="nf">generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the generation for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -588,9 +588,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: integer</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;generation&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.id"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the ID for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -598,7 +598,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
-</div>
+
     <span class="n">md5_hash</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s">&#39;md5Hash&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;MD5 hash for this object.</span>
 
@@ -609,7 +609,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.media_link"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.media_link">[docs]</a>    <span class="k">def</span> <span class="nf">media_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">media_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the media download URI for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -617,7 +617,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;mediaLink&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve arbitrary/application specific metadata for the object.</span>
@@ -629,7 +629,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;metadata&#39;</span><span class="p">])</span>
 
     <span class="nd">@metadata.setter</span>
-<div class="viewcode-block" id="Blob.metadata"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.metadata">[docs]</a>    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update arbitrary/application specific metadata for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -637,9 +637,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type value: dict</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_properties</span><span class="p">({</span><span class="s">&#39;metadata&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">})</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.metageneration"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.metageneration">[docs]</a>    <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the metageneration for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -647,9 +647,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: integer</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;metageneration&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.owner"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.owner">[docs]</a>    <span class="k">def</span> <span class="nf">owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve info about the owner of the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -658,9 +658,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: mapping of owner&#39;s role/ID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;owner&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.self_link"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.self_link">[docs]</a>    <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the URI for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -668,9 +668,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;selfLink&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.size"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.size">[docs]</a>    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Size of the object,  in bytes.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -678,9 +678,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: integer</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;size&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.storage_class"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.storage_class">[docs]</a>    <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the storage class for the object.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects and</span>
@@ -690,9 +690,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: Currently one of &quot;STANDARD&quot;, &quot;DURABLE_REDUCED_AVAILABILITY&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;storageClass&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.time_deleted"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.time_deleted">[docs]</a>    <span class="k">def</span> <span class="nf">time_deleted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">time_deleted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the timestamp at which the object was deleted.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -702,9 +702,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                  has a &quot;live&quot; version.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;timeDeleted&#39;</span><span class="p">)</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Blob.updated"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.updated">[docs]</a>    <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the timestamp at which the object was updated.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
@@ -714,7 +714,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="s">&#39;updated&#39;</span><span class="p">]</span>
 
-</div></div>
+</div>
 <span class="k">class</span> <span class="nc">_UploadConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Faux message FBO apitools&#39; &#39;ConfigureRequest&#39;.</span>
 

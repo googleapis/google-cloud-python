@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Storage &mdash; gcloud 83f92cc documentation</title>
+    <title>Storage &mdash; gcloud fb35d7a documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '83f92cc',
+        VERSION:     'fb35d7a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,11 +23,11 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 83f92cc documentation" href="index.html" />
+    <link rel="top" title="gcloud fb35d7a documentation" href="index.html" />
     <link rel="next" title="Blobs / Objects" href="storage-blobs.html" />
     <link rel="prev" title="Batches" href="datastore-batches.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header class="page-header fixed" role="banner">
       <h1 class="logo">
         <a href="index.html" title="back to home">
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-api%0ARelease%3A%2083f92cc" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-api%0ARelease%3A%20fb35d7a" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (83f92cc)
+              Version History (fb35d7a)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -91,24 +91,24 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>The source code for the library
 (and demo code)
 lives on GitHub,
-You can install the library quickly with <tt class="docutils literal"><span class="pre">pip</span></tt>:</p>
+You can install the library quickly with <code class="docutils literal"><span class="pre">pip</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre>$ pip install gcloud
 </pre></div>
 </div>
 </div>
 <div class="section" id="run-the-demo">
 <h3>Run the demo<a class="headerlink" href="#run-the-demo" title="Permalink to this headline">#</a></h3>
-<p>In order to run the demo, you need to have registred an actual <tt class="docutils literal"><span class="pre">gcloud</span></tt>
+<p>In order to run the demo, you need to have registred an actual <code class="docutils literal"><span class="pre">gcloud</span></code>
 project and so you&#8217;ll need to provide some environment variables to facilitate
 authentication to your project:</p>
 <blockquote>
 <div><ul class="simple">
-<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></tt>: Developers Console project ID (e.g.
+<li><code class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></code>: Developers Console project ID (e.g.
 bamboo-shift-455).</li>
-<li><tt class="docutils literal"><span class="pre">GCLOUD_TESTS_DATASET_ID</span></tt>: The name of the dataset your tests connect to.
-This is typically the same as <tt class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></tt>: The path to a JSON key file;
-see <tt class="docutils literal"><span class="pre">regression/app_credentials.json.sample</span></tt> as an example. Such a file
+<li><code class="docutils literal"><span class="pre">GCLOUD_TESTS_DATASET_ID</span></code>: The name of the dataset your tests connect to.
+This is typically the same as <code class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code>: The path to a JSON key file;
+see <code class="docutils literal"><span class="pre">regression/app_credentials.json.sample</span></code> as an example. Such a file
 can be downloaded directly from the developer&#8217;s console by clicking
 &#8220;Generate new JSON key&#8221;. See private key
 <a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">docs</a>
@@ -123,7 +123,7 @@ included in the package:</p>
 </div>
 <p>And that&#8217;s it!
 You should be walking through
-a demonstration of using <tt class="docutils literal"><span class="pre">gcloud.storage</span></tt>
+a demonstration of using <code class="docutils literal"><span class="pre">gcloud.storage</span></code>
 to read and write data to Google Cloud Storage.</p>
 </div>
 <div class="section" id="try-it-yourself">
@@ -157,7 +157,7 @@ you can create buckets and blobs:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The <tt class="docutils literal"><span class="pre">get_connection</span></tt> method is just a shortcut for:</p>
+<p>The <code class="docutils literal"><span class="pre">get_connection</span></code> method is just a shortcut for:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">demo</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">demo</span><span class="o">.</span><span class="n">PROJECT_ID</span><span class="p">)</span>
@@ -168,7 +168,7 @@ you can create buckets and blobs:</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="module-gcloud.storage.__init__">
-<span id="gcloud-storage"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gcloud.storage</span></tt><a class="headerlink" href="#module-gcloud.storage.__init__" title="Permalink to this headline">#</a></h2>
+<span id="gcloud-storage"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">gcloud.storage</span></code><a class="headerlink" href="#module-gcloud.storage.__init__" title="Permalink to this headline">#</a></h2>
 <p>Shortcut methods for getting set up with Google Cloud Storage.</p>
 <p>You&#8217;ll typically use these to get started with the API:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gcloud.storage</span>
@@ -182,17 +182,17 @@ you can create buckets and blobs:</p>
 </div>
 <p>The main concepts with this API are:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a> which represents a
+<li><a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> which represents a
 connection between your machine and the Cloud Storage API.</li>
-<li><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> which represents a particular
+<li><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a> which represents a particular
 bucket (akin to a mounted disk on a computer).</li>
-<li><a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a> which represents a pointer to a
+<li><a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></code></a> which represents a pointer to a
 particular entity in Cloud Storage (akin to a file path on a remote
 machine).</li>
 </ul>
 <dl class="function">
 <dt id="gcloud.storage.__init__.get_bucket">
-<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">get_bucket</tt><big>(</big><em>bucket_name</em>, <em>project</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_bucket" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.storage.__init__.</code><code class="descname">get_bucket</code><span class="sig-paren">(</span><em>bucket_name</em>, <em>project</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Shortcut method to establish a connection to a particular bucket.</p>
 <p>You&#8217;ll generally use this as the first call to working with the API:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
@@ -213,7 +213,7 @@ This is akin to a disk name on a file system.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A bucket with a connection using the provided credentials.</p>
@@ -225,7 +225,7 @@ This is akin to a disk name on a file system.</li>
 
 <dl class="function">
 <dt id="gcloud.storage.__init__.get_connection">
-<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">get_connection</tt><big>(</big><em>project</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_connection" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.storage.__init__.</code><code class="descname">get_connection</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Shortcut method to establish a connection to Cloud Storage.</p>
 <p>Use this if you are going to access several buckets with the same
 set of credentials:</p>
@@ -241,7 +241,7 @@ set of credentials:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> (<em>string</em>) &#8211; The name of the project to connect to.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A connection defined with the proper credentials.</td>
 </tr>
@@ -251,7 +251,7 @@ set of credentials:</p>
 
 <dl class="function">
 <dt id="gcloud.storage.__init__.set_default_bucket">
-<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">set_default_bucket</tt><big>(</big><em>bucket=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_default_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_default_bucket" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.storage.__init__.</code><code class="descname">set_default_bucket</code><span class="sig-paren">(</span><em>bucket=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_default_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_default_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Set default bucket either explicitly or implicitly as fall-back.</p>
 <p>In implicit case, currently only supports enviroment variable but will
 support App Engine, Compute Engine and other environments in the future.</p>
@@ -263,7 +263,7 @@ implicit bucket name.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; Optional. The bucket to use as default.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket</strong> (<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a>) &#8211; Optional. The bucket to use as default.</td>
 </tr>
 </tbody>
 </table>
@@ -271,7 +271,7 @@ implicit bucket name.</p>
 
 <dl class="function">
 <dt id="gcloud.storage.__init__.set_default_connection">
-<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">set_default_connection</tt><big>(</big><em>project=None</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_default_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_default_connection" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.storage.__init__.</code><code class="descname">set_default_connection</code><span class="sig-paren">(</span><em>project=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_default_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_default_connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Set default connection either explicitly or implicitly as fall-back.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -279,7 +279,7 @@ implicit bucket name.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>project</strong> (<em>string</em>) &#8211; Optional. The name of the project to connect to.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a>) &#8211; A connection provided to be the default.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a>) &#8211; A connection provided to be the default.</li>
 </ul>
 </td>
 </tr>
@@ -289,7 +289,7 @@ implicit bucket name.</p>
 
 <dl class="function">
 <dt id="gcloud.storage.__init__.set_default_project">
-<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">set_default_project</tt><big>(</big><em>project=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_default_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_default_project" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.storage.__init__.</code><code class="descname">set_default_project</code><span class="sig-paren">(</span><em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_default_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_default_project" title="Permalink to this definition">#</a></dt>
 <dd><p>Set default bucket name either explicitly or implicitly as fall-back.</p>
 <p>In implicit case, currently only supports enviroment variable but will
 support App Engine, Compute Engine and other environments in the future.</p>
@@ -307,7 +307,7 @@ support App Engine, Compute Engine and other environments in the future.</p>
 
 <dl class="function">
 <dt id="gcloud.storage.__init__.set_defaults">
-<tt class="descclassname">gcloud.storage.__init__.</tt><tt class="descname">set_defaults</tt><big>(</big><em>bucket=None</em>, <em>project=None</em>, <em>connection=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_defaults" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.storage.__init__.</code><code class="descname">set_defaults</code><span class="sig-paren">(</span><em>bucket=None</em>, <em>project=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/__init__.html#set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.set_defaults" title="Permalink to this definition">#</a></dt>
 <dd><p>Set defaults either explicitly or implicitly as fall-back.</p>
 <p>Uses the arguments to call the individual default methods.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -315,9 +315,9 @@ support App Engine, Compute Engine and other environments in the future.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>bucket</strong> (<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>) &#8211; Optional. The bucket to use as default.</li>
+<li><strong>bucket</strong> (<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a>) &#8211; Optional. The bucket to use as default.</li>
 <li><strong>project</strong> (<em>string</em>) &#8211; Optional. The name of the project to connect to.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a>) &#8211; Optional. A connection provided to be the default.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a>) &#8211; Optional. A connection provided to be the default.</li>
 </ul>
 </td>
 </tr>
@@ -331,22 +331,22 @@ support App Engine, Compute Engine and other environments in the future.</p>
 <p>Create / interact with gcloud storage connections.</p>
 <dl class="class">
 <dt id="gcloud.storage.connection.Connection">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.connection.</tt><tt class="descname">Connection</tt><big>(</big><em>project</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></a></p>
+<em class="property">class </em><code class="descclassname">gcloud.storage.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>project</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></p>
 <p>A connection to Google Cloud Storage via the JSON REST API.</p>
-<p>This defines <a class="reference internal" href="#gcloud.storage.connection.Connection.api_request" title="gcloud.storage.connection.Connection.api_request"><tt class="xref py py-meth docutils literal"><span class="pre">Connection.api_request()</span></tt></a> for making a generic JSON
+<p>This defines <a class="reference internal" href="#gcloud.storage.connection.Connection.api_request" title="gcloud.storage.connection.Connection.api_request"><code class="xref py py-meth docutils literal"><span class="pre">Connection.api_request()</span></code></a> for making a generic JSON
 API request and most API requests are created elsewhere (e.g. in
-<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> and
-<a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></tt></a>).</p>
+<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a> and
+<a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></code></a>).</p>
 <p>Methods for getting, creating and deleting individual buckets as well
 as listing buckets associated with a project are defined here. This
 corresponds to the &#8220;storage.buckets&#8221; resource in the API.</p>
-<p>See <a class="reference internal" href="gcloud-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></tt></a> for a full list of
+<p>See <a class="reference internal" href="gcloud-api.html#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a> for a full list of
 parameters. This subclass differs only in needing a project
 name (which you specify when creating a project in the Cloud
 Console).</p>
 <p>A typical use of this is to operate on
-<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> objects:</p>
+<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a> objects:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket-name&#39;</span><span class="p">)</span>
@@ -362,7 +362,7 @@ Console).</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket-name&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can also iterate through all <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a>
+<p>You can also iterate through all <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a>
 objects inside the project:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">bucket</span>
@@ -379,25 +379,25 @@ objects inside the project:</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.connection.Connection.API_BASE_URL">
-<tt class="descname">API_BASE_URL</tt><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
+<code class="descname">API_BASE_URL</code><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
 <dd><p>The base of the API call URL.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.storage.connection.Connection.API_URL_TEMPLATE">
-<tt class="descname">API_URL_TEMPLATE</tt><em class="property"> = '{api_base_url}/storage/{api_version}{path}'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
+<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base_url}/storage/{api_version}{path}'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
 <dd><p>A template for the URL of a particular API call.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.storage.connection.Connection.API_VERSION">
-<tt class="descname">API_VERSION</tt><em class="property"> = 'v1'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
+<code class="descname">API_VERSION</code><em class="property"> = 'v1'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
 <dd><p>The version of the API, used in building the API call&#8217;s URL.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.api_request">
-<tt class="descname">api_request</tt><big>(</big><em>method</em>, <em>path</em>, <em>query_params=None</em>, <em>data=None</em>, <em>content_type=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em>, <em>expect_json=True</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.api_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.api_request" title="Permalink to this definition">#</a></dt>
+<code class="descname">api_request</code><span class="sig-paren">(</span><em>method</em>, <em>path</em>, <em>query_params=None</em>, <em>data=None</em>, <em>content_type=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em>, <em>expect_json=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.api_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.api_request" title="Permalink to this definition">#</a></dt>
 <dd><p>Make a request over the HTTP transport to the Cloud Storage API.</p>
 <p>You shouldn&#8217;t need to use this method, but if you plan to
 interact with the API using these primitives, this is the
@@ -407,9 +407,9 @@ correct one to use...</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>method</strong> (<em>string</em>) &#8211; The HTTP method name (ie, <tt class="docutils literal"><span class="pre">GET</span></tt>, <tt class="docutils literal"><span class="pre">POST</span></tt>, etc).
+<li><strong>method</strong> (<em>string</em>) &#8211; The HTTP method name (ie, <code class="docutils literal"><span class="pre">GET</span></code>, <code class="docutils literal"><span class="pre">POST</span></code>, etc).
 Required.</li>
-<li><strong>path</strong> (<em>string</em>) &#8211; The path to the resource (ie, <tt class="docutils literal"><span class="pre">'/b/bucket-name'</span></tt>).
+<li><strong>path</strong> (<em>string</em>) &#8211; The path to the resource (ie, <code class="docutils literal"><span class="pre">'/b/bucket-name'</span></code>).
 Required.</li>
 <li><strong>query_params</strong> (<em>dict</em>) &#8211; A dictionary of keys and values to insert into
 the query string of the URL.  Default is
@@ -441,7 +441,7 @@ that cannot be done.  Default is True.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.build_api_url">
-<tt class="descname">build_api_url</tt><big>(</big><em>path</em>, <em>query_params=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em>, <em>upload=False</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.build_api_url" title="Permalink to this definition">#</a></dt>
+<code class="descname">build_api_url</code><span class="sig-paren">(</span><em>path</em>, <em>query_params=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em>, <em>upload=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.build_api_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct an API url given a few components, some optional.</p>
 <p>Typically, you shouldn&#8217;t need to use this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -449,7 +449,7 @@ that cannot be done.  Default is True.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>string</em>) &#8211; The path to the resource (ie, <tt class="docutils literal"><span class="pre">'/b/bucket-name'</span></tt>).</li>
+<li><strong>path</strong> (<em>string</em>) &#8211; The path to the resource (ie, <code class="docutils literal"><span class="pre">'/b/bucket-name'</span></code>).</li>
 <li><strong>query_params</strong> (<em>dict</em>) &#8211; A dictionary of keys and values to insert into
 the query string of the URL.</li>
 <li><strong>api_base_url</strong> (<em>string</em>) &#8211; The base URL for the API endpoint.
@@ -473,7 +473,7 @@ use the default for the library.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.create_bucket">
-<tt class="descname">create_bucket</tt><big>(</big><em>bucket_name</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.create_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.create_bucket" title="Permalink to this definition">#</a></dt>
+<code class="descname">create_bucket</code><span class="sig-paren">(</span><em>bucket_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.create_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.create_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a new bucket.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
@@ -490,11 +490,11 @@ use the default for the library.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket_name</strong> (<em>string</em>) &#8211; The bucket name to create.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The newly created bucket.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></tt></a> if
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></code></a> if
 there is a confict (bucket already exists, invalid name, etc.)</td>
 </tr>
 </tbody>
@@ -503,7 +503,7 @@ there is a confict (bucket already exists, invalid name, etc.)</td>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.delete_bucket">
-<tt class="descname">delete_bucket</tt><big>(</big><em>bucket_name</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.delete_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.delete_bucket" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete_bucket</code><span class="sig-paren">(</span><em>bucket_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.delete_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.delete_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Delete a bucket.</p>
 <p>You can use this method to delete a bucket by name.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
@@ -512,7 +512,7 @@ there is a confict (bucket already exists, invalid name, etc.)</td>
 </pre></div>
 </div>
 <p>If the bucket doesn&#8217;t exist, this will raise a
-<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a>:</p>
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
@@ -521,7 +521,7 @@ there is a confict (bucket already exists, invalid name, etc.)</td>
 </pre></div>
 </div>
 <p>If the bucket still has objects in it, this will raise a
-<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></tt></a>:</p>
+<a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></code></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">Conflict</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>  <span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
@@ -542,7 +542,7 @@ there is a confict (bucket already exists, invalid name, etc.)</td>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.get_all_buckets">
-<tt class="descname">get_all_buckets</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.get_all_buckets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.get_all_buckets" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_all_buckets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.get_all_buckets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.get_all_buckets" title="Permalink to this definition">#</a></dt>
 <dd><p>Get all buckets in the project.</p>
 <p>This will not populate the list of blobs available in each
 bucket.</p>
@@ -559,7 +559,7 @@ operations are identical:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a> objects.</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a> objects.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">All buckets belonging to this project.</td>
 </tr>
@@ -569,10 +569,10 @@ operations are identical:</p>
 
 <dl class="method">
 <dt id="gcloud.storage.connection.Connection.get_bucket">
-<tt class="descname">get_bucket</tt><big>(</big><em>bucket_name</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.get_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.get_bucket" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_bucket</code><span class="sig-paren">(</span><em>bucket_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.get_bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.get_bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a bucket by name.</p>
 <p>If the bucket isn&#8217;t found, this will raise a
-<tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></tt>.</p>
+<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.exceptions.NotFound</span></code>.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
@@ -590,11 +590,11 @@ operations are identical:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket_name</strong> (<em>string</em>) &#8211; The name of the bucket to get.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a></td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The bucket matching the name provided.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></tt></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -607,8 +607,8 @@ operations are identical:</p>
 <span id="iterators"></span><h2>Iterators<a class="headerlink" href="#module-gcloud.storage.iterator" title="Permalink to this headline">#</a></h2>
 <p>Iterators for paging through API responses.</p>
 <p>These iterators simplify the process of paging through API responses
-where the response is a list of results with a <tt class="docutils literal"><span class="pre">nextPageToken</span></tt>.</p>
-<p>To make an iterator work, just override the <tt class="docutils literal"><span class="pre">get_items_from_response</span></tt>
+where the response is a list of results with a <code class="docutils literal"><span class="pre">nextPageToken</span></code>.</p>
+<p>To make an iterator work, just override the <code class="docutils literal"><span class="pre">get_items_from_response</span></code>
 method so that given a response (containing a page of results) it parses
 those results into an iterable of the actual objects you want:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
@@ -634,15 +634,15 @@ requests):</p>
 </div>
 <dl class="class">
 <dt id="gcloud.storage.iterator.Iterator">
-<em class="property">class </em><tt class="descclassname">gcloud.storage.iterator.</tt><tt class="descname">Iterator</tt><big>(</big><em>connection</em>, <em>path</em>, <em>extra_params=None</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">gcloud.storage.iterator.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>connection</em>, <em>path</em>, <em>extra_params=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>A generic class for iterating through Cloud Storage list responses.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><tt class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></tt></a>) &#8211; The connection to use to make requests.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a>) &#8211; The connection to use to make requests.</li>
 <li><strong>path</strong> (<em>string</em>) &#8211; The path to query for the list of items.</li>
 </ul>
 </td>
@@ -651,17 +651,17 @@ requests):</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.storage.iterator.Iterator.PAGE_TOKEN">
-<tt class="descname">PAGE_TOKEN</tt><em class="property"> = 'pageToken'</em><a class="headerlink" href="#gcloud.storage.iterator.Iterator.PAGE_TOKEN" title="Permalink to this definition">#</a></dt>
+<code class="descname">PAGE_TOKEN</code><em class="property"> = 'pageToken'</em><a class="headerlink" href="#gcloud.storage.iterator.Iterator.PAGE_TOKEN" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.storage.iterator.Iterator.RESERVED_PARAMS">
-<tt class="descname">RESERVED_PARAMS</tt><em class="property"> = frozenset(['pageToken'])</em><a class="headerlink" href="#gcloud.storage.iterator.Iterator.RESERVED_PARAMS" title="Permalink to this definition">#</a></dt>
+<code class="descname">RESERVED_PARAMS</code><em class="property"> = frozenset(['pageToken'])</em><a class="headerlink" href="#gcloud.storage.iterator.Iterator.RESERVED_PARAMS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="gcloud.storage.iterator.Iterator.get_items_from_response">
-<tt class="descname">get_items_from_response</tt><big>(</big><em>response</em><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.get_items_from_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.get_items_from_response" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_items_from_response</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.get_items_from_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.get_items_from_response" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory method called while iterating. This should be overriden.</p>
 <p>This method should be overridden by a subclass.  It should
 accept the API response of a request for the next page of items,
@@ -684,7 +684,7 @@ page of results in the response.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.iterator.Iterator.get_next_page_response">
-<tt class="descname">get_next_page_response</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.get_next_page_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.get_next_page_response" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_next_page_response</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.get_next_page_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.get_next_page_response" title="Permalink to this definition">#</a></dt>
 <dd><p>Requests the next page from the path provided.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -700,7 +700,7 @@ page of results in the response.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.iterator.Iterator.get_query_params">
-<tt class="descname">get_query_params</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.get_query_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.get_query_params" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_query_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.get_query_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.get_query_params" title="Permalink to this definition">#</a></dt>
 <dd><p>Getter for query parameters for the next request.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -716,7 +716,7 @@ page of results in the response.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.iterator.Iterator.has_next_page">
-<tt class="descname">has_next_page</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.has_next_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.has_next_page" title="Permalink to this definition">#</a></dt>
+<code class="descname">has_next_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.has_next_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.has_next_page" title="Permalink to this definition">#</a></dt>
 <dd><p>Determines whether or not this iterator has more pages.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -732,7 +732,7 @@ page of results in the response.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.iterator.Iterator.reset">
-<tt class="descname">reset</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.reset" title="Permalink to this definition">#</a></dt>
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/iterator.html#Iterator.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.iterator.Iterator.reset" title="Permalink to this definition">#</a></dt>
 <dd><p>Resets the iterator to the beginning.</p>
 </dd></dl>
 

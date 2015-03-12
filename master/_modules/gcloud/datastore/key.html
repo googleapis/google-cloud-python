@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.key &mdash; gcloud 83f92cc documentation</title>
+    <title>gcloud.datastore.key &mdash; gcloud fb35d7a documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '83f92cc',
+        VERSION:     'fb35d7a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,10 +23,10 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 83f92cc documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud fb35d7a documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
-  <body>
+  <body role="document">
     <header class="page-header fixed" role="banner">
       <h1 class="logo">
         <a href="index.html" title="back to home">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/key%0ARelease%3A%2083f92cc" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/key%0ARelease%3A%20fb35d7a" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (83f92cc)
+              Version History (fb35d7a)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -346,7 +346,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="n">key</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.is_partial"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.is_partial">[docs]</a>    <span class="k">def</span> <span class="nf">is_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Boolean indicating if the key has an ID (or name).</span>
 
 <span class="sd">        :rtype: boolean</span>
@@ -354,18 +354,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                  an ``id`` or a ``name``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_or_name</span> <span class="ow">is</span> <span class="bp">None</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.namespace"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.namespace">[docs]</a>    <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Namespace getter.</span>
 
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The namespace of the current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.path"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.path">[docs]</a>    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Path getter.</span>
 
 <span class="sd">        Returns a copy so that the key remains immutable.</span>
@@ -374,45 +374,45 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: The (key) path of the current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.flat_path"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.flat_path">[docs]</a>    <span class="k">def</span> <span class="nf">flat_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">flat_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter for the key path as a tuple.</span>
 
 <span class="sd">        :rtype: tuple of string and integer</span>
 <span class="sd">        :returns: The tuple of elements in the path.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flat_path</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.kind"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.kind">[docs]</a>    <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">kind</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Kind getter. Based on the last element of path.</span>
 
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The kind of the current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;kind&#39;</span><span class="p">]</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.id"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.id">[docs]</a>    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ID getter. Based on the last element of path.</span>
 
 <span class="sd">        :rtype: integer</span>
 <span class="sd">        :returns: The (integer) ID of the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.name"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Name getter. Based on the last element of path.</span>
 
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The (string) name of the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.id_or_name"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.id_or_name">[docs]</a>    <span class="k">def</span> <span class="nf">id_or_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">id_or_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter. Based on the last element of path.</span>
 
 <span class="sd">        :rtype: integer (if ``id``) or string (if ``name``)</span>
@@ -420,16 +420,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                  or a ``name``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.dataset_id"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.dataset_id">[docs]</a>    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Dataset ID getter.</span>
 
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The key&#39;s dataset ID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span>
-</div>
+
     <span class="k">def</span> <span class="nf">_make_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a parent key for the current path.</span>
 
@@ -450,7 +450,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                                   <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="Key.parent"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.parent">[docs]</a>    <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The parent of the current key.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.key.Key` or :class:`NoneType`</span>
@@ -462,7 +462,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_parent</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
-</div>
+
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;&lt;Key</span><span class="si">%s</span><span class="s">, dataset=</span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
 
