@@ -38,7 +38,7 @@ def setUpModule():
         bucket_name = 'new%d' % (1000 * time.time(),)
         # In the **very** rare case the bucket name is reserved, this
         # fails with a ConnectionError.
-        SHARED_BUCKETS['test_bucket'] = CONNECTION.create_bucket(bucket_name)
+        SHARED_BUCKETS['test_bucket'] = storage.create_bucket(bucket_name)
 
 
 def tearDownModule():
@@ -60,7 +60,7 @@ class TestStorageBuckets(unittest2.TestCase):
         new_bucket_name = 'a-new-bucket'
         self.assertRaises(exceptions.NotFound,
                           storage.get_bucket, new_bucket_name)
-        created = CONNECTION.create_bucket(new_bucket_name)
+        created = storage.create_bucket(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
@@ -72,7 +72,7 @@ class TestStorageBuckets(unittest2.TestCase):
         ]
         created_buckets = []
         for bucket_name in buckets_to_create:
-            bucket = CONNECTION.create_bucket(bucket_name)
+            bucket = storage.create_bucket(bucket_name)
             self.case_buckets_to_delete.append(bucket_name)
 
         # Retrieve the buckets.

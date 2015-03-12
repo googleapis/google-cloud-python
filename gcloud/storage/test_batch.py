@@ -383,9 +383,6 @@ class _Connection(object):
                     expect_json=True):  # pragma: NO COVER
         pass
 
-    def create_bucket(self, name):  # pragma: NO COVER
-        pass
-
 
 class _Response(dict):
 

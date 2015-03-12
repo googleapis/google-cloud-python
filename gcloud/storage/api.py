@@ -121,6 +121,40 @@ def get_bucket(bucket_name, connection=None):
     return Bucket(properties=response, connection=connection)
 
 
+def create_bucket(bucket_name, connection=None):
+    """Create a new bucket.
+
+    For example::
+
+      >>> from gcloud import storage
+      >>> storage.set_defaults()
+      >>> bucket = storage.create_bucket('my-bucket')
+      >>> print bucket
+      <Bucket: my-bucket>
+
+    This implements "storage.buckets.insert".
+
+    :type bucket_name: string
+    :param bucket_name: The bucket name to create.
+
+    :type connection: :class:`gcloud.storage.connection.Connection` or
+                      ``NoneType``
+    :param connection: Optional. The connection to use when sending requests.
+                       If not provided, falls back to default.
+
+    :rtype: :class:`gcloud.storage.bucket.Bucket`
+    :returns: The newly created bucket.
+    :raises: :class:`gcloud.exceptions.Conflict` if
+             there is a confict (bucket already exists, invalid name, etc.)
+    """
+    if connection is None:
+        connection = get_default_connection()
+
+    response = connection.api_request(method='POST', path='/b',
+                                      data={'name': bucket_name})
+    return Bucket(properties=response, connection=connection)
+
+
 class _BucketIterator(Iterator):
     """An iterator listing all buckets.
 

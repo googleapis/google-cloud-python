@@ -205,6 +205,49 @@ class Test_get_bucket(unittest2.TestCase):
         self._get_bucket_hit_helper(use_default=True)
 
 
+class Test_create_bucket(unittest2.TestCase):
+
+    def _callFUT(self, bucket_name, connection=None):
+        from gcloud.storage.api import create_bucket
+        return create_bucket(bucket_name, connection=connection)
+
+    def _create_bucket_success_helper(self, use_default=False):
+        from gcloud.storage._testing import _monkey_defaults
+        from gcloud.storage.connection import Connection
+        from gcloud.storage.bucket import Bucket
+        PROJECT = 'project'
+        BLOB_NAME = 'blob-name'
+        conn = Connection(PROJECT)
+        URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b?project=%s' % PROJECT,
+            ])
+        http = conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{"name": "%s"}' % BLOB_NAME,
+        )
+
+        if use_default:
+            with _monkey_defaults(connection=conn):
+                bucket = self._callFUT(BLOB_NAME)
+        else:
+            bucket = self._callFUT(BLOB_NAME, connection=conn)
+
+        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertTrue(bucket.connection is conn)
+        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(http._called_with['method'], 'POST')
+        self.assertEqual(http._called_with['uri'], URI)
+
+    def test_success(self):
+        self._create_bucket_success_helper(use_default=False)
+
+    def test_success_use_default(self):
+        self._create_bucket_success_helper(use_default=True)
+
+
 class Test__BucketIterator(unittest2.TestCase):
 
     def _getTargetClass(self):

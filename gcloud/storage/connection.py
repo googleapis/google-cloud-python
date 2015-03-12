@@ -20,14 +20,14 @@ from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
 from gcloud import connection as base_connection
 from gcloud.exceptions import make_exception
-from gcloud.storage.bucket import Bucket
 
 
 class Connection(base_connection.Connection):
     """A connection to Google Cloud Storage via the JSON REST API.
 
     This defines :meth:`Connection.api_request` for making a generic JSON
-    API request and most API requests are created elsewhere (e.g. in
+    API request and API requests are created elsewhere (e.g. in
+    :mod:`gcloud.storage.api` and
     :class:`gcloud.storage.bucket.Bucket` and
     :class:`gcloud.storage.blob.Blob`).
 
@@ -35,13 +35,6 @@ class Connection(base_connection.Connection):
     parameters. This subclass differs only in needing a project
     name (which you specify when creating a project in the Cloud
     Console).
-
-    A typical use of this is to operate on
-    :class:`gcloud.storage.bucket.Bucket` objects::
-
-      >>> from gcloud import storage
-      >>> connection = storage.get_connection(project)
-      >>> bucket = connection.create_bucket('my-bucket-name')
     """
 
     API_BASE_URL = base_connection.API_BASE_URL
@@ -245,28 +238,3 @@ class Connection(base_connection.Connection):
             return json.loads(content)
 
         return content
-
-    def create_bucket(self, bucket_name):
-        """Create a new bucket.
-
-        For example::
-
-          >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
-          >>> bucket = connection.create_bucket('my-bucket')
-          >>> print bucket
-          <Bucket: my-bucket>
-
-        This implements "storage.buckets.insert".
-
-        :type bucket_name: string
-        :param bucket_name: The bucket name to create.
-
-        :rtype: :class:`gcloud.storage.bucket.Bucket`
-        :returns: The newly created bucket.
-        :raises: :class:`gcloud.exceptions.Conflict` if
-                 there is a confict (bucket already exists, invalid name, etc.)
-        """
-        response = self.api_request(method='POST', path='/b',
-                                    data={'name': bucket_name})
-        return Bucket(properties=response, connection=self)

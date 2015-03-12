@@ -56,7 +56,7 @@ bucket.
 
 Let's create a bucket:
 
-  >>> bucket = connection.create_bucket('test')
+  >>> bucket = storage.create_bucket('test', connection=connection)
   Traceback (most recent call last):
     File "<stdin>", line 1, in <module>
     File "gcloud/storage/connection.py", line 340, in create_bucket
