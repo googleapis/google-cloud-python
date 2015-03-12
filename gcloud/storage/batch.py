@@ -26,6 +26,7 @@ import json
 import six
 
 from gcloud._localstack import _LocalStack
+from gcloud.storage import _implicit_environ
 from gcloud.storage.connection import Connection
 
 
@@ -78,7 +79,10 @@ class Batch(Connection):
     """
     _MAX_BATCH_SIZE = 1000
 
-    def __init__(self, connection):
+    def __init__(self, connection=None):
+        if connection is None:
+            connection = _implicit_environ.get_default_connection()
+
         super(Batch, self).__init__(project=connection.project)
         self._connection = connection
         self._requests = []

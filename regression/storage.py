@@ -29,8 +29,6 @@ SHARED_BUCKETS = {}
 storage._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
 storage.set_defaults()
 
-CONNECTION = storage.get_default_connection()
-
 
 def setUpModule():
     if 'test_bucket' not in SHARED_BUCKETS:
@@ -52,7 +50,7 @@ class TestStorageBuckets(unittest2.TestCase):
         self.case_buckets_to_delete = []
 
     def tearDown(self):
-        with Batch(CONNECTION) as batch:
+        with Batch() as batch:
             for bucket_name in self.case_buckets_to_delete:
                 storage.Bucket(connection=batch, name=bucket_name).delete()
 
