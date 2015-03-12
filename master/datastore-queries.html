@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Queries &mdash; gcloud 7803d1a documentation</title>
+    <title>Queries &mdash; gcloud d9e2156 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '7803d1a',
+        VERSION:     'd9e2156',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7803d1a documentation" href="index.html" />
+    <link rel="top" title="gcloud d9e2156 documentation" href="index.html" />
     <link rel="next" title="Transactions" href="datastore-transactions.html" />
     <link rel="prev" title="Keys" href="datastore-keys.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-queries%0ARelease%3A%207803d1a" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-queries%0ARelease%3A%20d9e2156" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7803d1a)
+              Version History (d9e2156)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -108,7 +108,7 @@ to iterate on the current Iterator.</p>
 
 <dl class="class">
 <dt id="gcloud.datastore.query.Query">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>kind=None</em>, <em>namespace=None</em>, <em>ancestor=None</em>, <em>filters=()</em>, <em>projection=()</em>, <em>order=()</em>, <em>group_by=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>kind=None</em>, <em>dataset_id=None</em>, <em>namespace=None</em>, <em>ancestor=None</em>, <em>filters=()</em>, <em>projection=()</em>, <em>order=()</em>, <em>group_by=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>A Query against the Cloud Datastore.</p>
 <p>This class serves as an abstraction for creating a query over data
@@ -140,7 +140,7 @@ default is set.</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'=': 5, '&gt;=': 4, '&gt;': 3, '&lt;': 1, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'&gt;': 3, '&gt;=': 4, '&lt;=': 2, '&lt;': 1, '=': 5}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -155,7 +155,8 @@ default is set.</p>
 <p>where property is a property stored on the entity in the datastore
 and operator is one of <code class="docutils literal"><span class="pre">OPERATORS</span></code>
 (ie, <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;James&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 </pre></div>
@@ -214,8 +215,8 @@ is required).</p>
 <code class="descname">fetch</code><span class="sig-paren">(</span><em>limit=None</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch" title="Permalink to this definition">#</a></dt>
 <dd><p>Execute the Query; return an iterator for the matching entities.</p>
 <p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="s">&#39;Person&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Query</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="s">&#39;Sally&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">fetch</span><span class="p">())</span>
 <span class="go">[&lt;Entity object&gt;, &lt;Entity object&gt;, ...]</span>
