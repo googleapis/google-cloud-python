@@ -20,6 +20,8 @@ rather than via Connection.
 
 from gcloud.exceptions import NotFound
 from gcloud.storage._implicit_environ import get_default_connection
+from gcloud.storage.bucket import Bucket
+from gcloud.storage.iterator import Iterator
 
 
 def lookup_bucket(bucket_name, connection=None):
@@ -55,3 +57,52 @@ def lookup_bucket(bucket_name, connection=None):
         return connection.get_bucket(bucket_name)
     except NotFound:
         return None
+
+
+def get_all_buckets(connection=None):
+    """Get all buckets in the project.
+
+    This will not populate the list of blobs available in each
+    bucket.
+
+      >>> from gcloud import storage
+      >>> for bucket in storage.get_all_buckets():
+      >>>   print bucket
+
+    This implements "storage.buckets.list".
+
+    :type connection: :class:`gcloud.storage.connection.Connection` or
+                      ``NoneType``
+    :param connection: Optional. The connection to use when sending requests.
+                       If not provided, falls back to default.
+
+    :rtype: iterable of :class:`gcloud.storage.bucket.Bucket` objects.
+    :returns: All buckets belonging to this project.
+    """
+    if connection is None:
+        connection = get_default_connection()
+    return iter(_BucketIterator(connection=connection))
+
+
+class _BucketIterator(Iterator):
+    """An iterator listing all buckets.
+
+    You shouldn't have to use this directly, but instead should use the
+    helper methods on :class:`gcloud.storage.connection.Connection`
+    objects.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: The connection to use for querying the list of buckets.
+    """
+
+    def __init__(self, connection):
+        super(_BucketIterator, self).__init__(connection=connection, path='/b')
+
+    def get_items_from_response(self, response):
+        """Factory method which yields :class:`.Bucket` items from a response.
+
+        :type response: dict
+        :param response: The JSON API response for a page of buckets.
+        """
+        for item in response.get('items', []):
+            yield Bucket(properties=item, connection=self.connection)

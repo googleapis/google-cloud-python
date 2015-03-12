@@ -186,13 +186,8 @@ If you have a full bucket, you can delete it this way::
 Listing available buckets
 -------------------------
 
-The :class:`Connection <gcloud.storage.connection.Connection>` object
-itself is iterable, so you can loop over it, or call ``list`` on it to get
-a list object::
-
-  >>> for bucket in connection.get_all_buckets():
+  >>> for bucket in storage.get_all_buckets(connection):
   ...   print bucket.name
-  >>> print list(connection)
 
 Managing access control
 -----------------------

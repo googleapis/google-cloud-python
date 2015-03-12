@@ -281,44 +281,6 @@ class TestConnection(unittest2.TestCase):
         )
         self.assertRaises(InternalServerError, conn.api_request, 'GET', '/')
 
-    def test_get_all_buckets_empty(self):
-        PROJECT = 'project'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b?project=%s' % PROJECT,
-        ])
-        http = conn._http = Http(
-            {'status': '200', 'content-type': 'application/json'},
-            '{}',
-        )
-        buckets = list(conn.get_all_buckets())
-        self.assertEqual(len(buckets), 0)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-
-    def test_get_all_buckets_non_empty(self):
-        PROJECT = 'project'
-        BUCKET_NAME = 'bucket-name'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b?project=%s' % PROJECT,
-        ])
-        http = conn._http = Http(
-            {'status': '200', 'content-type': 'application/json'},
-            '{"items": [{"name": "%s"}]}' % BUCKET_NAME,
-        )
-        buckets = list(conn.get_all_buckets())
-        self.assertEqual(len(buckets), 1)
-        self.assertEqual(buckets[0].name, BUCKET_NAME)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
-
     def test_get_bucket_miss(self):
         from gcloud.exceptions import NotFound
         PROJECT = 'project'
@@ -406,42 +368,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(_deleted_blobs, [])
         self.assertEqual(http._called_with['method'], 'DELETE')
         self.assertEqual(http._called_with['uri'], URI)
-
-
-class Test__BucketIterator(unittest2.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.storage.connection import _BucketIterator
-        return _BucketIterator
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test_ctor(self):
-        connection = object()
-        iterator = self._makeOne(connection)
-        self.assertTrue(iterator.connection is connection)
-        self.assertEqual(iterator.path, '/b')
-        self.assertEqual(iterator.page_number, 0)
-        self.assertEqual(iterator.next_page_token, None)
-
-    def test_get_items_from_response_empty(self):
-        connection = object()
-        iterator = self._makeOne(connection)
-        self.assertEqual(list(iterator.get_items_from_response({})), [])
-
-    def test_get_items_from_response_non_empty(self):
-        from gcloud.storage.bucket import Bucket
-        BLOB_NAME = 'blob-name'
-        response = {'items': [{'name': BLOB_NAME}]}
-        connection = object()
-        iterator = self._makeOne(connection)
-        buckets = list(iterator.get_items_from_response(response))
-        self.assertEqual(len(buckets), 1)
-        bucket = buckets[0]
-        self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is connection)
-        self.assertEqual(bucket.name, BLOB_NAME)
 
 
 class Http(object):

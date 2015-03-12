@@ -21,7 +21,6 @@ from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 from gcloud import connection as base_connection
 from gcloud.exceptions import make_exception
 from gcloud.storage.bucket import Bucket
-from gcloud.storage.iterator import Iterator
 
 
 class Connection(base_connection.Connection):
@@ -57,13 +56,6 @@ class Connection(base_connection.Connection):
     If you want to access an existing bucket::
 
       >>> bucket = connection.get_bucket('my-bucket-name')
-
-    You can also iterate through all :class:`gcloud.storage.bucket.Bucket`
-    objects inside the project::
-
-      >>> for bucket in connection.get_all_buckets():
-      >>>   print bucket
-      <Bucket: my-bucket-name>
     """
 
     API_BASE_URL = base_connection.API_BASE_URL
@@ -268,27 +260,6 @@ class Connection(base_connection.Connection):
 
         return content
 
-    def get_all_buckets(self):
-        """Get all buckets in the project.
-
-        This will not populate the list of blobs available in each
-        bucket.
-
-        You can also iterate over the connection object, so these two
-        operations are identical::
-
-          >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
-          >>> for bucket in connection.get_all_buckets():
-          >>>   print bucket
-
-        This implements "storage.buckets.list".
-
-        :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.
-        :returns: All buckets belonging to this project.
-        """
-        return iter(_BucketIterator(connection=self))
-
     def get_bucket(self, bucket_name):
         """Get a bucket by name.
 
@@ -377,27 +348,3 @@ class Connection(base_connection.Connection):
         """
         bucket_path = Bucket.path_helper(bucket_name)
         self.api_request(method='DELETE', path=bucket_path)
-
-
-class _BucketIterator(Iterator):
-    """An iterator listing all buckets.
-
-    You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`gcloud.storage.connection.Connection`
-    objects.
-
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: The connection to use for querying the list of buckets.
-    """
-
-    def __init__(self, connection):
-        super(_BucketIterator, self).__init__(connection=connection, path='/b')
-
-    def get_items_from_response(self, response):
-        """Factory method which yields :class:`.Bucket` items from a response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of buckets.
-        """
-        for item in response.get('items', []):
-            yield Bucket(properties=item, connection=self.connection)

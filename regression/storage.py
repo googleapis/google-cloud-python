@@ -76,7 +76,7 @@ class TestStorageBuckets(unittest2.TestCase):
             self.case_buckets_to_delete.append(bucket_name)
 
         # Retrieve the buckets.
-        all_buckets = CONNECTION.get_all_buckets()
+        all_buckets = storage.get_all_buckets()
         created_buckets = [bucket for bucket in all_buckets
                            if bucket.name in buckets_to_create]
         self.assertEqual(len(created_buckets), len(buckets_to_create))

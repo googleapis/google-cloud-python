@@ -44,6 +44,7 @@ from gcloud.storage import _implicit_environ
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
 from gcloud.storage._implicit_environ import get_default_project
+from gcloud.storage.api import get_all_buckets
 from gcloud.storage.api import lookup_bucket
 from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
