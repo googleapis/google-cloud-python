@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Storage &mdash; gcloud 3b65abd documentation</title>
+    <title>Storage &mdash; gcloud 7803d1a documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3b65abd',
+        VERSION:     '7803d1a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 3b65abd documentation" href="index.html" />
+    <link rel="top" title="gcloud 7803d1a documentation" href="index.html" />
     <link rel="next" title="Blobs / Objects" href="storage-blobs.html" />
     <link rel="prev" title="Dataset" href="datastore-dataset.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-api%0ARelease%3A%203b65abd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-api%0ARelease%3A%207803d1a" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (3b65abd)
+              Version History (7803d1a)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -138,7 +138,8 @@ and instantiating the demo connection:</p>
 </div>
 <p>Once you have the connection,
 you can create buckets and blobs:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">storage</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
 <span class="go">[&lt;Bucket: ...&gt;, ...]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s">&#39;my-new-bucket&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span>
@@ -363,13 +364,6 @@ Console).</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket-name&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can also iterate through all <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a>
-objects inside the project:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">():</span>
-<span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">bucket</span>
-<span class="go">&lt;Bucket: my-bucket-name&gt;</span>
-</pre></div>
-</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -536,33 +530,6 @@ there is a confict (bucket already exists, invalid name, etc.)</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bucket_name</strong> (<em>string</em>) &#8211; The bucket name to delete.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.connection.Connection.get_all_buckets">
-<code class="descname">get_all_buckets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection.get_all_buckets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection.get_all_buckets" title="Permalink to this definition">#</a></dt>
-<dd><p>Get all buckets in the project.</p>
-<p>This will not populate the list of blobs available in each
-bucket.</p>
-<p>You can also iterate over the connection object, so these two
-operations are identical:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_all_buckets</span><span class="p">():</span>
-<span class="gp">&gt;&gt;&gt; </span>  <span class="k">print</span> <span class="n">bucket</span>
-</pre></div>
-</div>
-<p>This implements &#8220;storage.buckets.list&#8221;.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a> objects.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">All buckets belonging to this project.</td>
 </tr>
 </tbody>
 </table>

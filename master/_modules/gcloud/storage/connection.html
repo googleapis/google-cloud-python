@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.connection &mdash; gcloud 3b65abd documentation</title>
+    <title>gcloud.storage.connection &mdash; gcloud 7803d1a documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '3b65abd',
+        VERSION:     '7803d1a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 3b65abd documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 7803d1a documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/connection%0ARelease%3A%203b65abd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/connection%0ARelease%3A%207803d1a" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (3b65abd)
+              Version History (7803d1a)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -103,7 +103,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
@@ -139,13 +138,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    If you want to access an existing bucket::</span>
 
 <span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket-name&#39;)</span>
-
-<span class="sd">    You can also iterate through all :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">    objects inside the project::</span>
-
-<span class="sd">      &gt;&gt;&gt; for bucket in connection.get_all_buckets():</span>
-<span class="sd">      &gt;&gt;&gt;   print bucket</span>
-<span class="sd">      &lt;Bucket: my-bucket-name&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="n">base_connection</span><span class="o">.</span><span class="n">API_BASE_URL</span>
@@ -350,27 +342,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">return</span> <span class="n">content</span>
 </div>
-<div class="viewcode-block" id="Connection.get_all_buckets"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_all_buckets">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_buckets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get all buckets in the project.</span>
-
-<span class="sd">        This will not populate the list of blobs available in each</span>
-<span class="sd">        bucket.</span>
-
-<span class="sd">        You can also iterate over the connection object, so these two</span>
-<span class="sd">        operations are identical::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; for bucket in connection.get_all_buckets():</span>
-<span class="sd">          &gt;&gt;&gt;   print bucket</span>
-
-<span class="sd">        This implements &quot;storage.buckets.list&quot;.</span>
-
-<span class="sd">        :rtype: list of :class:`gcloud.storage.bucket.Bucket` objects.</span>
-<span class="sd">        :returns: All buckets belonging to this project.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_BucketIterator</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
-</div>
 <div class="viewcode-block" id="Connection.get_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a bucket by name.</span>
 
@@ -458,31 +429,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :param bucket_name: The bucket name to delete.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">bucket_path</span> <span class="o">=</span> <span class="n">Bucket</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket_path</span><span class="p">)</span>
-
-</div></div>
-<span class="k">class</span> <span class="nc">_BucketIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An iterator listing all buckets.</span>
-
-<span class="sd">    You shouldn&#39;t have to use this directly, but instead should use the</span>
-<span class="sd">    helper methods on :class:`gcloud.storage.connection.Connection`</span>
-<span class="sd">    objects.</span>
-
-<span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
-<span class="sd">    :param connection: The connection to use for querying the list of buckets.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">_BucketIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory method which yields :class:`.Bucket` items from a response.</span>
-
-<span class="sd">        :type response: dict</span>
-<span class="sd">        :param response: The JSON API response for a page of buckets.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="k">yield</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket_path</span><span class="p">)</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
