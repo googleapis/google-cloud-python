@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.__init__ &mdash; gcloud fb35d7a documentation</title>
+    <title>gcloud.storage.__init__ &mdash; gcloud 19bdb13 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'fb35d7a',
+        VERSION:     '19bdb13',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud fb35d7a documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 19bdb13 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%20fb35d7a" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%2019bdb13" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (fb35d7a)
+              Version History (19bdb13)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -193,9 +193,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
 <span class="sd">    :param connection: A connection provided to be the default.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">get_default_project</span><span class="p">()</span>
-
     <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
     <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">_DEFAULTS</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
 
@@ -223,7 +220,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="n">set_default_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
+<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to Cloud Storage.</span>
 
 <span class="sd">    Use this if you are going to access several buckets with the same</span>
@@ -234,12 +231,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    &gt;&gt;&gt; bucket1 = connection.get_bucket(&#39;bucket1&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; bucket2 = connection.get_bucket(&#39;bucket2&#39;)</span>
 
-<span class="sd">    :type project: string</span>
-<span class="sd">    :param project: The name of the project to connect to.</span>
+<span class="sd">    :type project: string or ``NoneType``</span>
+<span class="sd">    :param project: Optional. The name of the project to connect to. If not</span>
+<span class="sd">                    included, falls back to default project.</span>
 
 <span class="sd">    :rtype: :class:`gcloud.storage.connection.Connection`</span>
 <span class="sd">    :returns: A connection defined with the proper credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">get_default_project</span><span class="p">()</span>
     <span class="n">implicit_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">get_credentials</span><span class="p">()</span>
     <span class="n">scoped_credentials</span> <span class="o">=</span> <span class="n">implicit_credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">SCOPE</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span>

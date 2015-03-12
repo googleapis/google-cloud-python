@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Storage &mdash; gcloud fb35d7a documentation</title>
+    <title>Storage &mdash; gcloud 19bdb13 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'fb35d7a',
+        VERSION:     '19bdb13',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud fb35d7a documentation" href="index.html" />
+    <link rel="top" title="gcloud 19bdb13 documentation" href="index.html" />
     <link rel="next" title="Blobs / Objects" href="storage-blobs.html" />
     <link rel="prev" title="Batches" href="datastore-batches.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-api%0ARelease%3A%20fb35d7a" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-api%0ARelease%3A%2019bdb13" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (fb35d7a)
+              Version History (19bdb13)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -225,7 +225,7 @@ This is akin to a disk name on a file system.</li>
 
 <dl class="function">
 <dt id="gcloud.storage.__init__.get_connection">
-<code class="descclassname">gcloud.storage.__init__.</code><code class="descname">get_connection</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_connection" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.storage.__init__.</code><code class="descname">get_connection</code><span class="sig-paren">(</span><em>project=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.__init__.get_connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Shortcut method to establish a connection to Cloud Storage.</p>
 <p>Use this if you are going to access several buckets with the same
 set of credentials:</p>
@@ -239,7 +239,8 @@ set of credentials:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> (<em>string</em>) &#8211; The name of the project to connect to.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The name of the project to connect to. If not
+included, falls back to default project.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a></td>
 </tr>
