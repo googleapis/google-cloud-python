@@ -70,8 +70,8 @@ class Query(object):
     """Mapping of operator strings and their protobuf equivalents."""
 
     def __init__(self,
-                 dataset_id=None,
                  kind=None,
+                 dataset_id=None,
                  namespace=None,
                  ancestor=None,
                  filters=(),
@@ -191,7 +191,8 @@ class Query(object):
         and operator is one of ``OPERATORS``
         (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``)::
 
-          >>> query = Query('Person')
+          >>> from gcloud import datastore
+          >>> query = datastore.Query('Person')
           >>> query.add_filter('name', '=', 'James')
           >>> query.add_filter('age', '>', 50)
 
@@ -297,8 +298,8 @@ class Query(object):
 
         For example::
 
-          >>> from gcloud.datastore.query import Query
-          >>> query = Query('dataset-id', 'Person')
+          >>> from gcloud import datastore
+          >>> query = datastore.Query('Person')
           >>> query.add_filter('name', '=', 'Sally')
           >>> list(query.fetch())
           [<Entity object>, <Entity object>, ...]
