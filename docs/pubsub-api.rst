@@ -125,7 +125,7 @@ Publish a set of messages to a topic (as a single request):
 Manage subscriptions to topics
 ------------------------------
 
-Create a new "pull" subscription for a topic:
+Create a new pull subscription for a topic:
 
 .. doctest::
 
@@ -133,7 +133,7 @@ Create a new "pull" subscription for a topic:
    >>> topic = pubsub.get_topic('topic_name')
    >>> subscription = topic.create_subscription('subscription_name')
 
-Create a new "pull" subscription for a topic with a non-default ACK deadline:
+Create a new pull subscription for a topic with a non-default ACK deadline:
 
 .. doctest::
 
@@ -142,7 +142,7 @@ Create a new "pull" subscription for a topic with a non-default ACK deadline:
    >>> subscription = topic.create_subscription('subscription_name',
    ...                                          ack_deadline=90)
 
-Create a new "push" subscription for a topic:
+Create a new push subscription for a topic:
 
 .. doctest::
 
@@ -180,7 +180,7 @@ Update the ACK deadline for a subscription:
    >>> subscription = topic.get_subscription('subscription_name')
    >>> subscription.modify_ack_deadline(90)
 
-Convert a "pull" subscription to "push":
+Convert a pull subscription to push:
 
 .. doctest::
 
@@ -190,7 +190,7 @@ Convert a "pull" subscription to "push":
    >>> subscription = topic.get_subscription('subscription_name')
    >>> subscription.modify_push_configuration(push_endpoint=ENDPOINT)
 
-Convert a "push" subscription to "pull":
+Convert a push subscription to pull:
 
 .. doctest::
 
@@ -223,7 +223,7 @@ Delete a subscription:
 Pull messages from a subscription
 ---------------------------------
 
-Fetch pending messages for a "pull" subscription (the messages will have
+Fetch pending messages for a pull subscription (the messages will have
 been ACKed already):
 
 .. doctest::
@@ -234,7 +234,7 @@ been ACKed already):
    >>> [message.id for message in subscription.pull()]
    [<message_id1>, <message_id2>, ...]
 
-Fetch a limited number of pending messages for a "pull" subscription:
+Fetch a limited number of pending messages for a pull subscription:
 
 .. doctest::
 
@@ -244,7 +244,7 @@ Fetch a limited number of pending messages for a "pull" subscription:
    >>> [message.id for message in subscription.pull(max_messages=2)]
    [<message_id1>, <message_id2>]
 
-Fetch messages for a "pull" subscription without blocking (none pending):
+Fetch messages for a pull subscription without blocking (none pending):
 
 .. doctest::
 
