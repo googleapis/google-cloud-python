@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Batches &mdash; gcloud ef2920c documentation</title>
+    <title>Batches &mdash; gcloud 3b65abd documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'ef2920c',
+        VERSION:     '3b65abd',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud ef2920c documentation" href="index.html" />
+    <link rel="top" title="gcloud 3b65abd documentation" href="index.html" />
     <link rel="next" title="Dataset" href="datastore-dataset.html" />
     <link rel="prev" title="Transactions" href="datastore-transactions.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-batches%0ARelease%3A%20ef2920c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-batches%0ARelease%3A%203b65abd" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ef2920c)
+              Version History (3b65abd)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -110,9 +110,7 @@ raising an exception:</p>
 </pre></div>
 </div>
 <p>By default, no updates will be sent if the block exits with an error:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
 <span class="gp">... </span>  <span class="n">do_some_work</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 <span class="gp">... </span>  <span class="k">raise</span> <span class="ne">Exception</span><span class="p">()</span> <span class="c"># rolls back</span>
 </pre></div>
