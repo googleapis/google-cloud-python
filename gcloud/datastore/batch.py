@@ -51,8 +51,6 @@ class Batch(object):
 
     By default, no updates will be sent if the block exits with an error::
 
-      >>> from gcloud import datastore
-      >>> dataset = datastore.get_dataset('dataset-id')
       >>> with Batch() as batch:
       ...   do_some_work(batch)
       ...   raise Exception() # rolls back
