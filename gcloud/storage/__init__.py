@@ -111,9 +111,6 @@ def set_default_connection(project=None, connection=None):
     :type connection: :class:`gcloud.storage.connection.Connection`
     :param connection: A connection provided to be the default.
     """
-    if project is None:
-        project = get_default_project()
-
     connection = connection or get_connection(project)
     _implicit_environ._DEFAULTS.connection = connection
 
@@ -141,7 +138,7 @@ def set_defaults(bucket=None, project=None, connection=None):
     set_default_bucket(bucket=bucket)
 
 
-def get_connection(project):
+def get_connection(project=None):
     """Shortcut method to establish a connection to Cloud Storage.
 
     Use this if you are going to access several buckets with the same
@@ -152,12 +149,15 @@ def get_connection(project):
     >>> bucket1 = connection.get_bucket('bucket1')
     >>> bucket2 = connection.get_bucket('bucket2')
 
-    :type project: string
-    :param project: The name of the project to connect to.
+    :type project: string or ``NoneType``
+    :param project: Optional. The name of the project to connect to. If not
+                    included, falls back to default project.
 
     :rtype: :class:`gcloud.storage.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
+    if project is None:
+        project = get_default_project()
     implicit_credentials = credentials.get_credentials()
     scoped_credentials = implicit_credentials.create_scoped(SCOPE)
     return Connection(project=project, credentials=scoped_credentials)

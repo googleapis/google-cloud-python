@@ -35,6 +35,24 @@ class Test_get_connection(unittest2.TestCase):
         self.assertTrue(found._credentials is client._signed)
         self.assertTrue(client._get_app_default_called)
 
+    def test_default_project(self):
+        from gcloud import credentials
+        from gcloud.storage._testing import _monkey_defaults
+        from gcloud.storage.connection import Connection
+        from gcloud.test_credentials import _Client
+        from gcloud._testing import _Monkey
+
+        PROJECT = 'project'
+        client = _Client()
+        with _Monkey(credentials, client=client):
+            with _monkey_defaults(project=PROJECT):
+                found = self._callFUT()
+
+        self.assertTrue(isinstance(found, Connection))
+        self.assertEqual(found.project, PROJECT)
+        self.assertTrue(found._credentials is client._signed)
+        self.assertTrue(client._get_app_default_called)
+
 
 class Test_get_bucket(unittest2.TestCase):
 
@@ -309,7 +327,7 @@ class Test_set_default_connection(unittest2.TestCase):
 
                 self.assertEqual(_implicit_environ.get_default_connection(),
                                  fake_cnxn)
-                self.assertEqual(_called_args, [(PROJECT,)])
+                self.assertEqual(_called_args, [(None,)])
                 self.assertEqual(_called_kwargs, [{}])
 
     def test_set_implicit_with_explicit_project(self):
