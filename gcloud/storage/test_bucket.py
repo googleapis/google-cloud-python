@@ -159,14 +159,22 @@ class Test_Bucket(unittest2.TestCase):
             _called_with = []
 
             @classmethod
-            def get_bucket(cls, bucket_name):
-                cls._called_with.append(bucket_name)
-                raise NotFound(bucket_name)
+            def api_request(cls, *args, **kwargs):
+                cls._called_with.append((args, kwargs))
+                raise NotFound(args)
 
-        NAME = 'name'
-        bucket = self._makeOne(connection=_FakeConnection, name=NAME)
+        BUCKET_NAME = 'bucket-name'
+        bucket = self._makeOne(connection=_FakeConnection, name=BUCKET_NAME)
         self.assertFalse(bucket.exists())
-        self.assertEqual(_FakeConnection._called_with, [NAME])
+        expected_called_kwargs = {
+            'method': 'GET',
+            'path': bucket.path,
+            'query_params': {
+                'fields': 'name',
+            },
+        }
+        expected_cw = [((), expected_called_kwargs)]
+        self.assertEqual(_FakeConnection._called_with, expected_cw)
 
     def test_exists_hit(self):
         class _FakeConnection(object):
@@ -174,15 +182,23 @@ class Test_Bucket(unittest2.TestCase):
             _called_with = []
 
             @classmethod
-            def get_bucket(cls, bucket_name):
-                cls._called_with.append(bucket_name)
+            def api_request(cls, *args, **kwargs):
+                cls._called_with.append((args, kwargs))
                 # exists() does not use the return value
                 return object()
 
-        NAME = 'name'
-        bucket = self._makeOne(connection=_FakeConnection, name=NAME)
+        BUCKET_NAME = 'bucket-name'
+        bucket = self._makeOne(connection=_FakeConnection, name=BUCKET_NAME)
         self.assertTrue(bucket.exists())
-        self.assertEqual(_FakeConnection._called_with, [NAME])
+        expected_called_kwargs = {
+            'method': 'GET',
+            'path': bucket.path,
+            'query_params': {
+                'fields': 'name',
+            },
+        }
+        expected_cw = [((), expected_called_kwargs)]
+        self.assertEqual(_FakeConnection._called_with, expected_cw)
 
     def test_acl_property(self):
         from gcloud.storage.acl import BucketACL
