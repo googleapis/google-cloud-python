@@ -9,6 +9,7 @@
   datastore-queries
   datastore-transactions
   datastore-batches
+  datastore-dataset
   storage-api
   storage-blobs
   storage-buckets
