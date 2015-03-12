@@ -61,8 +61,8 @@ class TestQuery(unittest2.TestCase):
         ORDER = ['foo', 'bar']
         GROUP_BY = ['foo']
         query = self._makeOne(
-            dataset_id=_DATASET,
             kind=_KIND,
+            dataset_id=_DATASET,
             namespace=_NAMESPACE,
             ancestor=ancestor,
             filters=FILTERS,
@@ -81,7 +81,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_namespace_setter_w_non_string(self):
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
 
         def _assign(val):
             query.namespace = val
@@ -91,14 +91,14 @@ class TestQuery(unittest2.TestCase):
     def test_namespace_setter(self):
         _DATASET = 'DATASET'
         _NAMESPACE = 'NAMESPACE'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         query.namespace = _NAMESPACE
         self.assertEqual(query.dataset_id, _DATASET)
         self.assertEqual(query.namespace, _NAMESPACE)
 
     def test_kind_setter_w_non_string(self):
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
 
         def _assign(val):
             query.kind = val
@@ -108,7 +108,7 @@ class TestQuery(unittest2.TestCase):
     def test_kind_setter_wo_existing(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         query.kind = _KIND
         self.assertEqual(query.dataset_id, _DATASET)
         self.assertEqual(query.kind, _KIND)
@@ -117,7 +117,7 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND_BEFORE = 'KIND_BEFORE'
         _KIND_AFTER = 'KIND_AFTER'
-        query = self._makeOne(_DATASET, _KIND_BEFORE)
+        query = self._makeOne(_KIND_BEFORE, _DATASET)
         self.assertEqual(query.kind, _KIND_BEFORE)
         query.kind = _KIND_AFTER
         self.assertEqual(query.dataset_id, _DATASET)
@@ -125,7 +125,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_ancestor_setter_w_non_key(self):
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
 
         def _assign(val):
             query.ancestor = val
@@ -138,7 +138,7 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _NAME = u'NAME'
         key = Key('KIND', 123, dataset_id='DATASET')
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         query.add_filter('name', '=', _NAME)
         query.ancestor = key
         self.assertEqual(query.ancestor.path, key.path)
@@ -147,25 +147,25 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore.key import Key
         _DATASET = 'DATASET'
         key = Key('KIND', 123, dataset_id='DATASET')
-        query = self._makeOne(_DATASET, ancestor=key)
+        query = self._makeOne(dataset_id=_DATASET, ancestor=key)
         del query.ancestor
         self.assertTrue(query.ancestor is None)
 
     def test_add_filter_setter_w_unknown_operator(self):
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         self.assertRaises(ValueError, query.add_filter,
                           'firstname', '~~', 'John')
 
     def test_add_filter_w_known_operator(self):
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         query.add_filter('firstname', '=', u'John')
         self.assertEqual(query.filters, [('firstname', '=', u'John')])
 
     def test_add_filter_w_all_operators(self):
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         query.add_filter('leq_prop', '<=', u'val1')
         query.add_filter('geq_prop', '>=', u'val2')
         query.add_filter('lt_prop', '<', u'val3')
@@ -181,7 +181,7 @@ class TestQuery(unittest2.TestCase):
     def test_add_filter_w_known_operator_and_entity(self):
         from gcloud.datastore.entity import Entity
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         other = Entity()
         other['firstname'] = u'John'
         other['lastname'] = u'Smith'
@@ -190,7 +190,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_add_filter_w_whitespace_property_name(self):
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         PROPERTY_NAME = '  property with lots of space '
         query.add_filter(PROPERTY_NAME, '=', u'John')
         self.assertEqual(query.filters, [(PROPERTY_NAME, '=', u'John')])
@@ -198,7 +198,7 @@ class TestQuery(unittest2.TestCase):
     def test_add_filter___key__valid_key(self):
         from gcloud.datastore.key import Key
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         key = Key('Foo', dataset_id='DATASET')
         query.add_filter('__key__', '=', key)
         self.assertEqual(query.filters, [('__key__', '=', key)])
@@ -207,32 +207,32 @@ class TestQuery(unittest2.TestCase):
         from gcloud.datastore.key import Key
         _DATASET = 'DATASET'
         key = Key('Foo', dataset_id='DATASET')
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         self.assertRaises(ValueError, query.add_filter, '__key__', '<', key)
 
     def test_filter___key__invalid_value(self):
         _DATASET = 'DATASET'
-        query = self._makeOne(_DATASET)
+        query = self._makeOne(dataset_id=_DATASET)
         self.assertRaises(ValueError, query.add_filter, '__key__', '=', None)
 
     def test_projection_setter_empty(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.projection = []
         self.assertEqual(query.projection, [])
 
     def test_projection_setter_string(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.projection = 'field1'
         self.assertEqual(query.projection, ['field1'])
 
     def test_projection_setter_non_empty(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.projection = ['field1', 'field2']
         self.assertEqual(query.projection, ['field1', 'field2'])
 
@@ -241,7 +241,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         _PROJECTION1 = ['field1', 'field2']
         _PROJECTION2 = ['field3']
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.projection = _PROJECTION1
         self.assertEqual(query.projection, _PROJECTION1)
         query.projection = _PROJECTION2
@@ -250,56 +250,56 @@ class TestQuery(unittest2.TestCase):
     def test_keys_only(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.keys_only()
         self.assertEqual(query.projection, ['__key__'])
 
     def test_order_setter_empty(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND, order=['foo', '-bar'])
+        query = self._makeOne(_KIND, _DATASET, order=['foo', '-bar'])
         query.order = []
         self.assertEqual(query.order, [])
 
     def test_order_setter_string(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.order = 'field'
         self.assertEqual(query.order, ['field'])
 
     def test_order_setter_single_item_list_desc(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.order = ['-field']
         self.assertEqual(query.order, ['-field'])
 
     def test_order_setter_multiple(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.order = ['foo', '-bar']
         self.assertEqual(query.order, ['foo', '-bar'])
 
     def test_group_by_setter_empty(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND, group_by=['foo', 'bar'])
+        query = self._makeOne(_KIND, _DATASET, group_by=['foo', 'bar'])
         query.group_by = []
         self.assertEqual(query.group_by, [])
 
     def test_group_by_setter_string(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.group_by = 'field1'
         self.assertEqual(query.group_by, ['field1'])
 
     def test_group_by_setter_non_empty(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.group_by = ['field1', 'field2']
         self.assertEqual(query.group_by, ['field1', 'field2'])
 
@@ -308,7 +308,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         _GROUP_BY1 = ['field1', 'field2']
         _GROUP_BY2 = ['field3']
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         query.group_by = _GROUP_BY1
         self.assertEqual(query.group_by, _GROUP_BY1)
         query.group_by = _GROUP_BY2
@@ -317,7 +317,7 @@ class TestQuery(unittest2.TestCase):
     def test_fetch_defaults_wo_implicit_connection(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         self.assertRaises(ValueError, query.fetch)
 
     def test_fetch_defaults_w_implicit_connection(self):
@@ -326,7 +326,7 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         connection = _Connection()
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
 
         with _monkey_defaults(connection=connection):
             iterator = query.fetch()
@@ -338,7 +338,7 @@ class TestQuery(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         connection = _Connection()
-        query = self._makeOne(_DATASET, _KIND)
+        query = self._makeOne(_KIND, _DATASET)
         iterator = query.fetch(limit=7, offset=8, connection=connection)
         self.assertTrue(iterator._query is query)
         self.assertEqual(iterator._limit, 7)
