@@ -303,29 +303,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
 
-    def test_delete_bucket_defaults_miss(self):
-        _deleted_blobs = []
-
-        PROJECT = 'project'
-        BLOB_NAME = 'blob-name'
-        conn = self._makeOne(PROJECT)
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b',
-            '%s?project=%s' % (BLOB_NAME, PROJECT),
-        ])
-        http = conn._http = Http(
-            {'status': '200', 'content-type': 'application/json'},
-            '{}',
-        )
-
-        self.assertEqual(conn.delete_bucket(BLOB_NAME), None)
-        self.assertEqual(_deleted_blobs, [])
-        self.assertEqual(http._called_with['method'], 'DELETE')
-        self.assertEqual(http._called_with['uri'], URI)
-
 
 class Http(object):
 

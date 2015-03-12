@@ -31,10 +31,6 @@ class Connection(base_connection.Connection):
     :class:`gcloud.storage.bucket.Bucket` and
     :class:`gcloud.storage.blob.Blob`).
 
-    Methods for getting, creating and deleting individual buckets as well
-    as listing buckets associated with a project are defined here. This
-    corresponds to the "storage.buckets" resource in the API.
-
     See :class:`gcloud.connection.Connection` for a full list of
     parameters. This subclass differs only in needing a project
     name (which you specify when creating a project in the Cloud
@@ -46,12 +42,6 @@ class Connection(base_connection.Connection):
       >>> from gcloud import storage
       >>> connection = storage.get_connection(project)
       >>> bucket = connection.create_bucket('my-bucket-name')
-
-    You can then delete this bucket::
-
-      >>> bucket.delete()
-      >>> # or
-      >>> connection.delete_bucket(bucket.name)
     """
 
     API_BASE_URL = base_connection.API_BASE_URL
@@ -280,38 +270,3 @@ class Connection(base_connection.Connection):
         response = self.api_request(method='POST', path='/b',
                                     data={'name': bucket_name})
         return Bucket(properties=response, connection=self)
-
-    def delete_bucket(self, bucket_name):
-        """Delete a bucket.
-
-        You can use this method to delete a bucket by name.
-
-          >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
-          >>> connection.delete_bucket('my-bucket')
-
-        If the bucket doesn't exist, this will raise a
-        :class:`gcloud.exceptions.NotFound`::
-
-          >>> from gcloud.exceptions import NotFound
-          >>> try:
-          >>>   connection.delete_bucket('my-bucket')
-          >>> except NotFound:
-          >>>   print 'That bucket does not exist!'
-
-        If the bucket still has objects in it, this will raise a
-        :class:`gcloud.exceptions.Conflict`::
-
-          >>> from gcloud.exceptions import Conflict
-          >>> try:
-          >>>   connection.delete_bucket('my-bucket')
-          >>> except Conflict:
-          >>>   print 'That bucket is not empty!'
-
-        This implements "storage.buckets.delete".
-
-        :type bucket_name: string
-        :param bucket_name: The bucket name to delete.
-        """
-        bucket_path = Bucket.path_helper(bucket_name)
-        self.api_request(method='DELETE', path=bucket_path)

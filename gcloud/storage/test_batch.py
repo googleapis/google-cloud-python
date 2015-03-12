@@ -386,9 +386,6 @@ class _Connection(object):
     def create_bucket(self, name):  # pragma: NO COVER
         pass
 
-    def delete_bucket(self, name):  # pragma: NO COVER
-        pass
-
 
 class _Response(dict):
 

@@ -331,16 +331,18 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection()
         bucket = self._makeOne(connection, NAME)
         self.assertRaises(NotFound, bucket.delete)
-        self.assertEqual(connection._deleted, [NAME])
+        expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
+        self.assertEqual(connection._deleted_buckets, expected_cw)
 
     def test_delete_explicit_hit(self):
         NAME = 'name'
         GET_BLOBS_RESP = {'items': []}
         connection = _Connection(GET_BLOBS_RESP)
-        connection._delete_ok = True
+        connection._delete_bucket = True
         bucket = self._makeOne(connection, NAME)
         self.assertEqual(bucket.delete(force=True), None)
-        self.assertEqual(connection._deleted, [NAME])
+        expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
+        self.assertEqual(connection._deleted_buckets, expected_cw)
 
     def test_delete_explicit_force_delete_blobs(self):
         NAME = 'name'
@@ -355,10 +357,11 @@ class Test_Bucket(unittest2.TestCase):
         DELETE_BLOB1_RESP = DELETE_BLOB2_RESP = {}
         connection = _Connection(GET_BLOBS_RESP, DELETE_BLOB1_RESP,
                                  DELETE_BLOB2_RESP)
-        connection._delete_ok = True
+        connection._delete_bucket = True
         bucket = self._makeOne(connection, NAME)
         self.assertEqual(bucket.delete(force=True), None)
-        self.assertEqual(connection._deleted, [NAME])
+        expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
+        self.assertEqual(connection._deleted_buckets, expected_cw)
 
     def test_delete_explicit_force_miss_blobs(self):
         NAME = 'name'
@@ -366,10 +369,11 @@ class Test_Bucket(unittest2.TestCase):
         GET_BLOBS_RESP = {'items': [{'name': BLOB_NAME}]}
         # Note the connection does not have a response for the blob.
         connection = _Connection(GET_BLOBS_RESP)
-        connection._delete_ok = True
+        connection._delete_bucket = True
         bucket = self._makeOne(connection, NAME)
         self.assertEqual(bucket.delete(force=True), None)
-        self.assertEqual(connection._deleted, [NAME])
+        expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
+        self.assertEqual(connection._deleted_buckets, expected_cw)
 
     def test_delete_explicit_too_many(self):
         NAME = 'name'
@@ -382,12 +386,13 @@ class Test_Bucket(unittest2.TestCase):
             ],
         }
         connection = _Connection(GET_BLOBS_RESP)
-        connection._delete_ok = True
+        connection._delete_bucket = True
         bucket = self._makeOne(connection, NAME)
 
         # Make the Bucket refuse to delete with 2 objects.
         bucket._MAX_OBJECTS_FOR_BUCKET_DELETE = 1
         self.assertRaises(ValueError, bucket.delete, force=True)
+        self.assertEqual(connection._deleted_buckets, [])
 
     def test_delete_blob_miss(self):
         from gcloud.exceptions import NotFound
@@ -1079,16 +1084,32 @@ class Test_Bucket(unittest2.TestCase):
 
 
 class _Connection(object):
-    _delete_ok = False
+    _delete_bucket = False
 
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
-        self._deleted = []
+        self._deleted_buckets = []
+
+    @staticmethod
+    def _is_bucket_path(path):
+        if not path.startswith('/b/'):  # pragma: NO COVER
+            return False
+        # Now just ensure the path only has /b/ and one more segment.
+        return path.count('/') == 2
 
     def api_request(self, **kw):
         from gcloud.exceptions import NotFound
         self._requested.append(kw)
+
+        method = kw.get('method')
+        path = kw.get('path', '')
+        if method == 'DELETE' and self._is_bucket_path(path):
+            self._deleted_buckets.append(kw)
+            if self._delete_bucket:
+                return
+            else:
+                raise NotFound('miss')
 
         try:
             response, self._responses = self._responses[0], self._responses[1:]
@@ -1096,13 +1117,6 @@ class _Connection(object):
             raise NotFound('miss')
         else:
             return response
-
-    def delete_bucket(self, bucket):
-        from gcloud.exceptions import NotFound
-        self._deleted.append(bucket)
-        if not self._delete_ok:
-            raise NotFound('miss')
-        return True
 
 
 class _Bucket(object):

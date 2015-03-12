@@ -171,17 +171,17 @@ bucket itself as an iterator::
 Deleting a bucket
 -----------------
 
-You can delete a bucket using the :func:`delete_bucket
-<gcloud.storage.connection.Connection.delete_bucket>` method::
+You can delete a bucket using the
+:meth:`delete <gcloud.storage.bucket.Bucket.delete>` method::
 
-  >>> connection.delete_bucket('my-bucket')
+  >>> bucket.delete()
 
 Remember, the bucket you're deleting needs to be empty, otherwise you'll
-get an error.
+get an error (409 conflict).
 
 If you have a full bucket, you can delete it this way::
 
-  >>> bucket = connection.delete_bucket('my-bucket', force=True)
+  >>> bucket.delete(force=True)
 
 Listing available buckets
 -------------------------

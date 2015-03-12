@@ -322,7 +322,7 @@ class Bucket(_PropertyMixin):
             # Ignore 404 errors on delete.
             self.delete_blobs(blobs, on_error=lambda blob: None)
 
-        self.connection.delete_bucket(self.name)
+        self.connection.api_request(method='DELETE', path=self.path)
 
     def delete_blob(self, blob):
         """Deletes a blob from the current bucket.
