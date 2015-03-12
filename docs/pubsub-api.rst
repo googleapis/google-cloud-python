@@ -30,7 +30,7 @@ Create a new topic for an explicit project:
 .. doctest::
 
    >>> from gcloud import pubsub
-   >>> topic = pubsub.create_topic("topic_name", project_id='my.project')
+   >>> topic = pubsub.create_topic("topic_name", project_id="my.project")
    >>> topic.name
    'topic_name'
 
@@ -48,7 +48,7 @@ Fetch an extant topic for the default project:
 .. doctest::
 
    >>> from gcloud import pubsub
-   >>> topic = pubsub.get_topic('topic_name', project_id='my.project')
+   >>> topic = pubsub.get_topic('topic_name', project_id="my.project")
    >>> topic.name
    'topic_name'
 
@@ -75,7 +75,7 @@ List extant topics for an explicit project:
 .. doctest::
 
    >>> from gcloud import pubsub
-   >>> [topic.name for topic in pubsub.list_topics(project_id='my.project')]
+   >>> [topic.name for topic in pubsub.list_topics(project_id="my.project")]
    ['topic_name']
 
 Delete a topic:
