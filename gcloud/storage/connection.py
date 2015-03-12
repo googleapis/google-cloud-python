@@ -52,10 +52,6 @@ class Connection(base_connection.Connection):
       >>> bucket.delete()
       >>> # or
       >>> connection.delete_bucket(bucket.name)
-
-    If you want to access an existing bucket::
-
-      >>> bucket = connection.get_bucket('my-bucket-name')
     """
 
     API_BASE_URL = base_connection.API_BASE_URL
@@ -259,35 +255,6 @@ class Connection(base_connection.Connection):
             return json.loads(content)
 
         return content
-
-    def get_bucket(self, bucket_name):
-        """Get a bucket by name.
-
-        If the bucket isn't found, this will raise a
-        :class:`gcloud.storage.exceptions.NotFound`.
-
-        For example::
-
-          >>> from gcloud import storage
-          >>> from gcloud.exceptions import NotFound
-          >>> connection = storage.get_connection(project)
-          >>> try:
-          >>>   bucket = connection.get_bucket('my-bucket')
-          >>> except NotFound:
-          >>>   print 'Sorry, that bucket does not exist!'
-
-        This implements "storage.buckets.get".
-
-        :type bucket_name: string
-        :param bucket_name: The name of the bucket to get.
-
-        :rtype: :class:`gcloud.storage.bucket.Bucket`
-        :returns: The bucket matching the name provided.
-        :raises: :class:`gcloud.exceptions.NotFound`
-        """
-        bucket = Bucket(connection=self, name=bucket_name)
-        response = self.api_request(method='GET', path=bucket.path)
-        return Bucket(properties=response, connection=self)
 
     def create_bucket(self, bucket_name):
         """Create a new bucket.

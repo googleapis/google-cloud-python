@@ -151,11 +151,11 @@ in Python::
 Accessing a bucket
 ------------------
 
-If you already have a bucket, use :func:`get_bucket
-<gcloud.storage.connection.Connection.get_bucket>` to retrieve the bucket
-object::
+If you already have a bucket, use
+:func:`get_bucket <gcloud.storage.api.get_bucket>` to retrieve the
+bucket object::
 
-  >>> bucket = connection.get_bucket('my-bucket')
+  >>> bucket = storage.get_bucket('my-bucket', connection=connection)
 
 If you want to get all the blobs in the bucket, you can use
 :func:`get_all_blobs <gcloud.storage.bucket.Bucket.get_all_blobs>`::

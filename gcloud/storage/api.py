@@ -54,7 +54,7 @@ def lookup_bucket(bucket_name, connection=None):
         connection = get_default_connection()
 
     try:
-        return connection.get_bucket(bucket_name)
+        return get_bucket(bucket_name, connection=connection)
     except NotFound:
         return None
 
@@ -82,6 +82,43 @@ def get_all_buckets(connection=None):
     if connection is None:
         connection = get_default_connection()
     return iter(_BucketIterator(connection=connection))
+
+
+def get_bucket(bucket_name, connection=None):
+    """Get a bucket by name.
+
+    If the bucket isn't found, this will raise a
+    :class:`gcloud.storage.exceptions.NotFound`.
+
+    For example::
+
+      >>> from gcloud import storage
+      >>> from gcloud.exceptions import NotFound
+      >>> try:
+      >>>   bucket = storage.get_bucket('my-bucket')
+      >>> except NotFound:
+      >>>   print 'Sorry, that bucket does not exist!'
+
+    This implements "storage.buckets.get".
+
+    :type bucket_name: string
+    :param bucket_name: The name of the bucket to get.
+
+    :type connection: :class:`gcloud.storage.connection.Connection` or
+                      ``NoneType``
+    :param connection: Optional. The connection to use when sending requests.
+                       If not provided, falls back to default.
+
+    :rtype: :class:`gcloud.storage.bucket.Bucket`
+    :returns: The bucket matching the name provided.
+    :raises: :class:`gcloud.exceptions.NotFound`
+    """
+    if connection is None:
+        connection = get_default_connection()
+
+    bucket_path = Bucket.path_helper(bucket_name)
+    response = connection.api_request(method='GET', path=bucket_path)
+    return Bucket(properties=response, connection=connection)
 
 
 class _BucketIterator(Iterator):

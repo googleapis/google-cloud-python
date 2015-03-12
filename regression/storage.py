@@ -59,7 +59,7 @@ class TestStorageBuckets(unittest2.TestCase):
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'
         self.assertRaises(exceptions.NotFound,
-                          CONNECTION.get_bucket, new_bucket_name)
+                          storage.get_bucket, new_bucket_name)
         created = CONNECTION.create_bucket(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
