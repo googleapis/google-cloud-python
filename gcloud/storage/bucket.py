@@ -163,7 +163,7 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob):
+    def get_blob(self, blob_name):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist::
@@ -176,15 +176,13 @@ class Bucket(_PropertyMixin):
           >>> print bucket.get_blob('/does-not-exist.txt')
           None
 
-        :type blob: string or :class:`gcloud.storage.blob.Blob`
-        :param blob: The name of the blob to retrieve.
+        :type blob_name: string
+        :param blob_name: The name of the blob to retrieve.
 
         :rtype: :class:`gcloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
-        # Coerce this -- either from a Blob or a string.
-        blob = self.new_blob(blob)
-
+        blob = Blob(bucket=self, name=blob_name)
         try:
             response = self.connection.api_request(method='GET',
                                                    path=blob.path)
@@ -303,10 +301,10 @@ class Bucket(_PropertyMixin):
 
         self.connection.api_request(method='DELETE', path=self.path)
 
-    def delete_blob(self, blob):
+    def delete_blob(self, blob_name):
         """Deletes a blob from the current bucket.
 
-        If the blob isn't found, raise a
+        If the blob isn't found (backend 404), raises a
         :class:`gcloud.exceptions.NotFound`.
 
         For example::
@@ -323,21 +321,17 @@ class Bucket(_PropertyMixin):
           ... except NotFound:
           ...   pass
 
+        :type blob_name: string
+        :param blob_name: A blob name to delete.
 
-        :type blob: string or :class:`gcloud.storage.blob.Blob`
-        :param blob: A blob name or Blob object to delete.
-
-        :rtype: :class:`gcloud.storage.blob.Blob`
-        :returns: The blob that was just deleted.
         :raises: :class:`gcloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.::
 
                  >>> bucket.delete_blobs([blob], on_error=lambda blob: None)
         """
-        blob = self.new_blob(blob)
-        self.connection.api_request(method='DELETE', path=blob.path)
-        return blob
+        blob_path = Blob.path_helper(self.path, blob_name)
+        self.connection.api_request(method='DELETE', path=blob_path)
 
     def delete_blobs(self, blobs, on_error=None):
         """Deletes a list of blobs from the current bucket.
@@ -357,7 +351,10 @@ class Bucket(_PropertyMixin):
         """
         for blob in blobs:
             try:
-                self.delete_blob(blob)
+                blob_name = blob
+                if not isinstance(blob_name, six.string_types):
+                    blob_name = blob.name
+                self.delete_blob(blob_name)
             except NotFound:
                 if on_error is not None:
                     on_error(blob)

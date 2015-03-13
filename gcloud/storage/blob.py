@@ -74,6 +74,21 @@ class Blob(_PropertyMixin):
 
         self.bucket = bucket
 
+    @staticmethod
+    def path_helper(bucket_path, blob_name):
+        """Relative URL path for a blob.
+
+        :type bucket_path: string
+        :param bucket_path: The URL path for a bucket.
+
+        :type blob_name: string
+        :param blob_name: The name of the blob.
+
+        :rtype: string
+        :returns: The relative URL path for ``blob_name``.
+        """
+        return bucket_path + '/o/' + quote(blob_name, safe='')
+
     @property
     def acl(self):
         """Create our ACL on demand."""
@@ -109,7 +124,7 @@ class Blob(_PropertyMixin):
         if not self.name:
             raise ValueError('Cannot determine path without a blob name.')
 
-        return self.bucket.path + '/o/' + quote(self.name, safe='')
+        return self.path_helper(self.bucket.path, self.name)
 
     @property
     def public_url(self):
@@ -179,7 +194,7 @@ class Blob(_PropertyMixin):
         :returns: The newly-copied blob.
         """
         new_blob = self.bucket.copy_blob(self, self.bucket, new_name)
-        self.bucket.delete_blob(self)
+        self.delete()
         return new_blob
 
     def delete(self):
@@ -191,7 +206,7 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`gcloud.storage.bucket.Bucket.delete_blob`).
         """
-        return self.bucket.delete_blob(self)
+        return self.bucket.delete_blob(self.name)
 
     def download_to_file(self, file_obj):
         """Download the contents of this blob into a file-like object.
