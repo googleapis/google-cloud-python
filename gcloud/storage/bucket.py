@@ -94,7 +94,6 @@ class Bucket(_PropertyMixin):
             name = properties.get('name')
         super(Bucket, self).__init__(name=name, properties=properties)
         self._connection = connection
-        self._changes = set()
 
     def __repr__(self):
         return '<Bucket: %s>' % self.name
@@ -765,40 +764,3 @@ class Bucket(_PropertyMixin):
             for blob in self:
                 blob.acl.all().grant_read()
                 blob.save_acl()
-
-    def _patch_properties(self, properties):
-        """Update particular fields of this object's properties.
-
-        This method will only update the fields provided and will not
-        touch the other fields.
-
-        It **will not** reload the properties from the server as is done
-        in :meth:`_PropertyMixin._patch_properties`. The behavior is
-        local only and syncing occurs via :meth:`patch`.
-
-        :type properties: dict
-        :param properties: The dictionary of values to update.
-
-        :rtype: :class:`Bucket`
-        :returns: The current bucket.
-        """
-        self._changes.update(properties.keys())
-        self._properties.update(properties)
-        return self
-
-    def patch(self):
-        """Sends all changed properties in a PATCH request.
-
-        Updates the ``properties`` with the response from the backend.
-
-        :rtype: :class:`Bucket`
-        :returns: The current bucket.
-        """
-        # Pass '?projection=full' here because 'PATCH' documented not
-        # to work properly w/ 'noAcl'.
-        update_properties = dict((key, self._properties[key])
-                                 for key in self._changes)
-        self._properties = self.connection.api_request(
-            method='PATCH', path=self.path, data=update_properties,
-            query_params={'projection': 'full'})
-        return self
