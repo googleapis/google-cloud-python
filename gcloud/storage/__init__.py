@@ -16,8 +16,9 @@
 
 You'll typically use these to get started with the API:
 
->>> import gcloud.storage
->>> bucket = gcloud.storage.get_bucket('bucket-id-here', 'project-id')
+>>> from gcloud import storage
+>>> storage.set_defaults()
+>>> bucket = storage.get_bucket('bucket-id-here')
 >>> # Then do other things...
 >>> blob = bucket.get_blob('/remote/path/to/file.txt')
 >>> print blob.download_as_string()
@@ -44,7 +45,9 @@ from gcloud.storage import _implicit_environ
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
 from gcloud.storage._implicit_environ import get_default_project
+from gcloud.storage.api import create_bucket
 from gcloud.storage.api import get_all_buckets
+from gcloud.storage.api import get_bucket
 from gcloud.storage.api import lookup_bucket
 from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
@@ -148,8 +151,8 @@ def get_connection(project=None):
 
     >>> from gcloud import storage
     >>> connection = storage.get_connection(project)
-    >>> bucket1 = connection.get_bucket('bucket1')
-    >>> bucket2 = connection.get_bucket('bucket2')
+    >>> bucket1 = storage.get_bucket('bucket1', connection=connection)
+    >>> bucket2 = storage.get_bucket('bucket2', connection=connection)
 
     :type project: string or ``NoneType``
     :param project: Optional. The name of the project to connect to. If not
@@ -163,28 +166,3 @@ def get_connection(project=None):
     implicit_credentials = credentials.get_credentials()
     scoped_credentials = implicit_credentials.create_scoped(SCOPE)
     return Connection(project=project, credentials=scoped_credentials)
-
-
-def get_bucket(bucket_name, project):
-    """Shortcut method to establish a connection to a particular bucket.
-
-    You'll generally use this as the first call to working with the API:
-
-    >>> from gcloud import storage
-    >>> bucket = storage.get_bucket(project, bucket_name)
-    >>> # Now you can do things with the bucket.
-    >>> bucket.exists('/path/to/file.txt')
-    False
-
-    :type bucket_name: string
-    :param bucket_name: The id of the bucket you want to use.
-                      This is akin to a disk name on a file system.
-
-    :type project: string
-    :param project: The name of the project to connect to.
-
-    :rtype: :class:`gcloud.storage.bucket.Bucket`
-    :returns: A bucket with a connection using the provided credentials.
-    """
-    connection = get_connection(project)
-    return connection.get_bucket(bucket_name)

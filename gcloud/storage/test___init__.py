@@ -54,41 +54,6 @@ class Test_get_connection(unittest2.TestCase):
         self.assertTrue(client._get_app_default_called)
 
 
-class Test_get_bucket(unittest2.TestCase):
-
-    def _callFUT(self, *args, **kw):
-        from gcloud.storage import get_bucket
-        return get_bucket(*args, **kw)
-
-    def test_it(self):
-        from gcloud import storage
-        from gcloud._testing import _Monkey
-
-        bucket = object()
-
-        class _Connection(object):
-
-            def get_bucket(self, bucket_name):
-                self._called_with = bucket_name
-                return bucket
-
-        connection = _Connection()
-        _called_with = []
-
-        def get_connection(*args, **kw):
-            _called_with.append((args, kw))
-            return connection
-
-        BUCKET = 'bucket'
-        PROJECT = 'project'
-        with _Monkey(storage, get_connection=get_connection):
-            found = self._callFUT(BUCKET, PROJECT)
-
-        self.assertTrue(found is bucket)
-        self.assertEqual(_called_with, [((PROJECT,), {})])
-        self.assertEqual(connection._called_with, BUCKET)
-
-
 class Test_set_default_bucket(unittest2.TestCase):
 
     def setUp(self):

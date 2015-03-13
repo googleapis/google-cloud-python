@@ -20,7 +20,7 @@ an ACL object under the hood, and you can interact with that using
 
   >>> from gcloud import storage
   >>> connection = storage.get_connection(project)
-  >>> bucket = connection.get_bucket(bucket_name)
+  >>> bucket = storage.get_bucket(bucket_name, connection=connection)
   >>> acl = bucket.acl
 
 Adding and removing permissions can be done with the following methods
@@ -427,8 +427,8 @@ class BucketACL(ACL):
         You can use this to set access controls to be consistent from
         one bucket to another::
 
-          >>> bucket1 = connection.get_bucket(bucket1_name)
-          >>> bucket2 = connection.get_bucket(bucket2_name)
+          >>> bucket1 = storage.get_bucket(bucket1_name, connection=connection)
+          >>> bucket2 = storage.get_bucket(bucket2_name, connection=connection)
           >>> bucket2.acl.save(bucket1.acl)
 
         :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.

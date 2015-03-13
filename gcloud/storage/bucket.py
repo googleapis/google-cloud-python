@@ -171,7 +171,7 @@ class Bucket(_PropertyMixin):
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
-          >>> bucket = connection.get_bucket('my-bucket')
+          >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> print bucket.get_blob('/path/to/blob.txt')
           <Blob: my-bucket, /path/to/blob.txt>
           >>> print bucket.get_blob('/does-not-exist.txt')
@@ -302,7 +302,7 @@ class Bucket(_PropertyMixin):
             # Ignore 404 errors on delete.
             self.delete_blobs(blobs, on_error=lambda blob: None)
 
-        self.connection.delete_bucket(self.name)
+        self.connection.api_request(method='DELETE', path=self.path)
 
     def delete_blob(self, blob):
         """Deletes a blob from the current bucket.
@@ -315,7 +315,7 @@ class Bucket(_PropertyMixin):
           >>> from gcloud.exceptions import NotFound
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
-          >>> bucket = connection.get_bucket('my-bucket')
+          >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> print bucket.get_all_blobs()
           [<Blob: my-bucket, my-file.txt>]
           >>> bucket.delete_blob('my-file.txt')
@@ -397,7 +397,7 @@ class Bucket(_PropertyMixin):
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
-          >>> bucket = connection.get_bucket('my-bucket')
+          >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file('~/my-file.txt', 'remote-text-file.txt')
           >>> print bucket.get_all_blobs()
           [<Blob: my-bucket, remote-text-file.txt>]
@@ -408,7 +408,7 @@ class Bucket(_PropertyMixin):
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
-          >>> bucket = connection.get_bucket('my-bucket')
+          >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file('~/my-file.txt')
           >>> print bucket.get_all_blobs()
           [<Blob: my-bucket, my-file.txt>]
@@ -440,7 +440,7 @@ class Bucket(_PropertyMixin):
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
-          >>> bucket = connection.get_bucket('my-bucket')
+          >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file(open('~/my-file.txt'), 'remote-text-file.txt')
           >>> print bucket.get_all_blobs()
           [<Blob: my-bucket, remote-text-file.txt>]
@@ -451,7 +451,7 @@ class Bucket(_PropertyMixin):
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
-          >>> bucket = connection.get_bucket('my-bucket')
+          >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file(open('~/my-file.txt'))
           >>> print bucket.get_all_blobs()
           [<Blob: my-bucket, my-file.txt>]
@@ -706,7 +706,7 @@ class Bucket(_PropertyMixin):
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
-          >>> bucket = connection.get_bucket(bucket_name)
+          >>> bucket = storage.get_bucket(bucket_name, connection=connection)
           >>> bucket.configure_website('index.html', '404.html')
 
         You probably should also make the whole bucket public::

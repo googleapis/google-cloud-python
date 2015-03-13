@@ -56,7 +56,7 @@ bucket.
 
 Let's create a bucket:
 
-  >>> bucket = connection.create_bucket('test')
+  >>> bucket = storage.create_bucket('test', connection=connection)
   Traceback (most recent call last):
     File "<stdin>", line 1, in <module>
     File "gcloud/storage/connection.py", line 340, in create_bucket
@@ -151,11 +151,11 @@ in Python::
 Accessing a bucket
 ------------------
 
-If you already have a bucket, use :func:`get_bucket
-<gcloud.storage.connection.Connection.get_bucket>` to retrieve the bucket
-object::
+If you already have a bucket, use
+:func:`get_bucket <gcloud.storage.api.get_bucket>` to retrieve the
+bucket object::
 
-  >>> bucket = connection.get_bucket('my-bucket')
+  >>> bucket = storage.get_bucket('my-bucket', connection=connection)
 
 If you want to get all the blobs in the bucket, you can use
 :func:`get_all_blobs <gcloud.storage.bucket.Bucket.get_all_blobs>`::
@@ -171,17 +171,17 @@ bucket itself as an iterator::
 Deleting a bucket
 -----------------
 
-You can delete a bucket using the :func:`delete_bucket
-<gcloud.storage.connection.Connection.delete_bucket>` method::
+You can delete a bucket using the
+:meth:`delete <gcloud.storage.bucket.Bucket.delete>` method::
 
-  >>> connection.delete_bucket('my-bucket')
+  >>> bucket.delete()
 
 Remember, the bucket you're deleting needs to be empty, otherwise you'll
-get an error.
+get an error (409 conflict).
 
 If you have a full bucket, you can delete it this way::
 
-  >>> bucket = connection.delete_bucket('my-bucket', force=True)
+  >>> bucket.delete(force=True)
 
 Listing available buckets
 -------------------------
