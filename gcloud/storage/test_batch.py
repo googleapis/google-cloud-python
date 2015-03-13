@@ -68,6 +68,14 @@ class TestMIMEApplicationHTTP(unittest2.TestCase):
 
 class TestBatch(unittest2.TestCase):
 
+    def setUp(self):
+        from gcloud.storage._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.storage._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
     def _getTargetClass(self):
         from gcloud.storage.batch import Batch
         return Batch
@@ -79,6 +87,19 @@ class TestBatch(unittest2.TestCase):
         http = _HTTP()
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
+        self.assertTrue(batch._connection is connection)
+        self.assertEqual(batch.project, connection.project)
+        self.assertEqual(len(batch._requests), 0)
+        self.assertEqual(len(batch._responses), 0)
+
+    def test_ctor_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
+
+        http = _HTTP()
+        connection = _Connection(http=http)
+        with _monkey_defaults(connection=connection):
+            batch = self._makeOne()
+
         self.assertTrue(batch._connection is connection)
         self.assertEqual(batch.project, connection.project)
         self.assertEqual(len(batch._requests), 0)
