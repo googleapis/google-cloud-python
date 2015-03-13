@@ -49,5 +49,5 @@ Cloud Storage
   from gcloud import storage
   storage.set_defaults()
   bucket = storage.get_bucket('<your-bucket-name>')
-  blob = bucket.new_blob('my-test-file.txt')
+  blob = storage.Blob('my-test-file.txt', bucket=bucket)
   blob = blob.upload_contents_from_string('this is test content!')

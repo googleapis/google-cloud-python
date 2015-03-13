@@ -241,27 +241,6 @@ class Bucket(_PropertyMixin):
 
         return self._iterator_class(self, extra_params=extra_params)
 
-    def new_blob(self, blob):
-        """Given path name (or Blob), return a :class:`Blob` object.
-
-        This is really useful when you're not sure if you have a ``Blob``
-        instance or a string path name.  Given either of those types, this
-        returns the corresponding ``Blob``.
-
-        :type blob: string or :class:`gcloud.storage.blob.Blob`
-        :param blob: A path name or actual blob object.
-
-        :rtype: :class:`gcloud.storage.blob.Blob`
-        :returns: A Blob object with the path provided.
-        """
-        if isinstance(blob, Blob):
-            return blob
-
-        if isinstance(blob, six.string_types):
-            return Blob(bucket=self, name=blob)
-
-        raise TypeError('Invalid blob: %s' % blob)
-
     def delete(self, force=False):
         """Delete this bucket.
 
@@ -379,12 +358,12 @@ class Bucket(_PropertyMixin):
         """
         if new_name is None:
             new_name = blob.name
-        new_blob = destination_bucket.new_blob(new_name)
+        new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
         self.connection.api_request(method='POST', path=api_path)
         return new_blob
 
-    def upload_file(self, filename, blob=None):
+    def upload_file(self, filename, blob_name=None):
         """Shortcut method to upload a file into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -398,9 +377,8 @@ class Bucket(_PropertyMixin):
           >>> print bucket.get_all_blobs()
           [<Blob: my-bucket, remote-text-file.txt>]
 
-        If you don't provide a blob value, we will try to upload the file
-        using the local filename as the blob (**not** the complete
-        path)::
+        If you don't provide a blob name, we will try to upload the file
+        using the local filename (**not** the complete path)::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
@@ -412,22 +390,22 @@ class Bucket(_PropertyMixin):
         :type filename: string
         :param filename: Local path to the file you want to upload.
 
-        :type blob: string or :class:`gcloud.storage.blob.Blob`
-        :param blob: The blob (either an object or a remote path) of where
-                     to put the file.  If this is blank, we will try to
-                     upload the file to the root of the bucket with the
-                     same name as on your local file system.
+        :type blob_name: string
+        :param blob_name: The name of the blob to upload the file to. If this
+                          is blank, we will try to upload the file to the root
+                          of the bucket with the same name as on your local
+                          file system.
 
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
         """
-        if blob is None:
-            blob = os.path.basename(filename)
-        blob = self.new_blob(blob)
+        if blob_name is None:
+            blob_name = os.path.basename(filename)
+        blob = Blob(bucket=self, name=blob_name)
         blob.upload_from_filename(filename)
         return blob
 
-    def upload_file_object(self, file_obj, blob=None):
+    def upload_file_object(self, file_obj, blob_name=None):
         """Shortcut method to upload a file object into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -441,9 +419,8 @@ class Bucket(_PropertyMixin):
           >>> print bucket.get_all_blobs()
           [<Blob: my-bucket, remote-text-file.txt>]
 
-        If you don't provide a blob value, we will try to upload the file
-        using the local filename as the blob (**not** the complete
-        path)::
+        If you don't provide a blob name, we will try to upload the file
+        using the local filename (**not** the complete path)::
 
           >>> from gcloud import storage
           >>> connection = storage.get_connection(project)
@@ -455,19 +432,18 @@ class Bucket(_PropertyMixin):
         :type file_obj: file
         :param file_obj: A file handle open for reading.
 
-        :type blob: string or :class:`gcloud.storage.blob.Blob`
-        :param blob: The blob (either an object or a remote path) of where
-                     to put the file.  If this is blank, we will try to
-                     upload the file to the root of the bucket with the
-                     same name as on your local file system.
+        :type blob_name: string
+        :param blob_name: The name of the blob to upload the file to. If this
+                          is blank, we will try to upload the file to the root
+                          of the bucket with the same name as on your local
+                          file system.
 
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
         """
-        if blob:
-            blob = self.new_blob(blob)
-        else:
-            blob = self.new_blob(os.path.basename(file_obj.name))
+        if blob_name is None:
+            blob_name = os.path.basename(file_obj.name)
+        blob = Blob(bucket=self, name=blob_name)
         blob.upload_from_file(file_obj)
         return blob
 

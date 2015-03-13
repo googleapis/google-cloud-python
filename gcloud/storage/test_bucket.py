@@ -306,19 +306,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], EXPECTED)
 
-    def test_new_blob_str(self):
-        from gcloud.storage.blob import Blob
-        BLOB_NAME = 'blob-name'
-        bucket = self._makeOne()
-        blob = bucket.new_blob(BLOB_NAME)
-        self.assertTrue(isinstance(blob, Blob))
-        self.assertTrue(blob.bucket is bucket)
-        self.assertEqual(blob.name, BLOB_NAME)
-
-    def test_new_blob_invalid(self):
-        bucket = self._makeOne()
-        self.assertRaises(TypeError, bucket.new_blob, object())
-
     def test_delete_default_miss(self):
         from gcloud.exceptions import NotFound
         NAME = 'name'
