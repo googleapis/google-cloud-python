@@ -132,7 +132,11 @@ class Bucket(_PropertyMixin):
         :returns: True if the bucket exists in Cloud Storage.
         """
         try:
-            self.connection.get_bucket(self.name)
+            # We only need the status code (200 or not) so we seek to
+            # minimize the returned payload.
+            query_params = {'fields': 'name'}
+            self.connection.api_request(method='GET', path=self.path,
+                                        query_params=query_params)
             return True
         except NotFound:
             return False
