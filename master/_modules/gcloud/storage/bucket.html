@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud ab642a3 documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud 982dd56 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'ab642a3',
+        VERSION:     '982dd56',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud ab642a3 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 982dd56 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20ab642a3" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20982dd56" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ab642a3)
+              Version History (982dd56)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -167,26 +167,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
     <span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span> <span class="o">=</span> <span class="mi">256</span>
     <span class="sd">&quot;&quot;&quot;Maximum number of existing objects allowed in Bucket.delete().&quot;&quot;&quot;</span>
-
-    <span class="n">CUSTOM_PROPERTY_ACCESSORS</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="s">&#39;acl&#39;</span><span class="p">,</span>
-        <span class="s">&#39;cors&#39;</span><span class="p">:</span> <span class="s">&#39;get_cors()&#39;</span><span class="p">,</span>
-        <span class="s">&#39;defaultObjectAcl&#39;</span><span class="p">:</span> <span class="s">&#39;get_default_object_acl()&#39;</span><span class="p">,</span>
-        <span class="s">&#39;etag&#39;</span><span class="p">:</span> <span class="s">&#39;etag&#39;</span><span class="p">,</span>
-        <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="s">&#39;id&#39;</span><span class="p">,</span>
-        <span class="s">&#39;lifecycle&#39;</span><span class="p">:</span> <span class="s">&#39;get_lifecycle()&#39;</span><span class="p">,</span>
-        <span class="s">&#39;location&#39;</span><span class="p">:</span> <span class="s">&#39;location&#39;</span><span class="p">,</span>
-        <span class="s">&#39;logging&#39;</span><span class="p">:</span> <span class="s">&#39;get_logging()&#39;</span><span class="p">,</span>
-        <span class="s">&#39;metageneration&#39;</span><span class="p">:</span> <span class="s">&#39;metageneration&#39;</span><span class="p">,</span>
-        <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="s">&#39;name&#39;</span><span class="p">,</span>
-        <span class="s">&#39;owner&#39;</span><span class="p">:</span> <span class="s">&#39;owner&#39;</span><span class="p">,</span>
-        <span class="s">&#39;projectNumber&#39;</span><span class="p">:</span> <span class="s">&#39;project_number&#39;</span><span class="p">,</span>
-        <span class="s">&#39;selfLink&#39;</span><span class="p">:</span> <span class="s">&#39;self_link&#39;</span><span class="p">,</span>
-        <span class="s">&#39;storageClass&#39;</span><span class="p">:</span> <span class="s">&#39;storage_class&#39;</span><span class="p">,</span>
-        <span class="s">&#39;timeCreated&#39;</span><span class="p">:</span> <span class="s">&#39;time_created&#39;</span><span class="p">,</span>
-        <span class="s">&#39;versioning&#39;</span><span class="p">:</span> <span class="s">&#39;versioning_enabled&#39;</span><span class="p">,</span>
-    <span class="p">}</span>
-    <span class="sd">&quot;&quot;&quot;Map field name -&gt; accessor for fields w/ custom accessors.&quot;&quot;&quot;</span>
 
     <span class="c"># ACL rules are lazily retrieved.</span>
     <span class="n">_acl</span> <span class="o">=</span> <span class="n">_default_object_acl</span> <span class="o">=</span> <span class="bp">None</span>
@@ -676,6 +656,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``</span>
 <span class="sd">                  (if logging is enabled), or None (if not).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reload_properties</span><span class="p">()</span>
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;logging&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">info</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
