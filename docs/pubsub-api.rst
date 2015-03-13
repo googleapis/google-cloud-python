@@ -211,8 +211,17 @@ Fetch pending messages for a pull subscription
    >>> from gcloud.pubsub.subscription import Subscription
    >>> topic = Topic('topic_name')
    >>> subscription = Subscription('subscription_name', topic)
-   >>> [message.id for message in subscription.pull()]
-   [<message_id1>, <message_id2>, ...]
+   >>> with topic:
+   ...     topic.publish('this is the first message_payload')
+   ...     topic.publish('this is the second message_payload',
+   ...                   attr1='value1', attr2='value2')
+   >>> messages = subscription.pull()  # API request
+   >>> [message.id for message in messages]
+   [<message_id1>, <message_id2>]
+   >>> [message.data for message in messages]
+   ['this is the first message_payload', 'this is the second message_payload']
+   >>> [message.attrs for message in messages]
+   [{}, {'attr1': 'value1', 'attr2': 'value2'}]
 
 Fetch a limited number of pending messages for a pull subscription:
 
@@ -222,8 +231,12 @@ Fetch a limited number of pending messages for a pull subscription:
    >>> from gcloud.pubsub.subscription import Subscription
    >>> topic = Topic('topic_name')
    >>> subscription = Subscription('subscription_name', topic)
-   >>> [message.id for message in subscription.pull(max_messages=2)]
-   [<message_id1>, <message_id2>]
+   >>> with topic:
+   ...     topic.publish('this is the first message_payload')
+   ...     topic.publish('this is the second message_payload',
+   ...                   attr1='value1', attr2='value2')
+   >>> [message.id for message in subscription.pull(max_messages=1)]
+   [<message_id1>]
 
 Fetch messages for a pull subscription without blocking (none pending):
 
