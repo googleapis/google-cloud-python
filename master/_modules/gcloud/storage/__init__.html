@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.__init__ &mdash; gcloud 982dd56 documentation</title>
+    <title>gcloud.storage.__init__ &mdash; gcloud 447bba1 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '982dd56',
+        VERSION:     '447bba1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 982dd56 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 447bba1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%20982dd56" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%20447bba1" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (982dd56)
+              Version History (447bba1)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -98,8 +98,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">You&#39;ll typically use these to get started with the API:</span>
 
-<span class="sd">&gt;&gt;&gt; import gcloud.storage</span>
-<span class="sd">&gt;&gt;&gt; bucket = gcloud.storage.get_bucket(&#39;bucket-id-here&#39;, &#39;project-id&#39;)</span>
+<span class="sd">&gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">&gt;&gt;&gt; storage.set_defaults()</span>
+<span class="sd">&gt;&gt;&gt; bucket = storage.get_bucket(&#39;bucket-id-here&#39;)</span>
 <span class="sd">&gt;&gt;&gt; # Then do other things...</span>
 <span class="sd">&gt;&gt;&gt; blob = bucket.get_blob(&#39;/remote/path/to/file.txt&#39;)</span>
 <span class="sd">&gt;&gt;&gt; print blob.download_as_string()</span>
@@ -126,7 +127,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_project</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.api</span> <span class="kn">import</span> <span class="n">create_bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.api</span> <span class="kn">import</span> <span class="n">get_all_buckets</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.api</span> <span class="kn">import</span> <span class="n">get_bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.api</span> <span class="kn">import</span> <span class="n">lookup_bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.blob</span> <span class="kn">import</span> <span class="n">Blob</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
@@ -230,8 +233,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">    &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">    &gt;&gt;&gt; bucket1 = connection.get_bucket(&#39;bucket1&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; bucket2 = connection.get_bucket(&#39;bucket2&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; bucket1 = storage.get_bucket(&#39;bucket1&#39;, connection=connection)</span>
+<span class="sd">    &gt;&gt;&gt; bucket2 = storage.get_bucket(&#39;bucket2&#39;, connection=connection)</span>
 
 <span class="sd">    :type project: string or ``NoneType``</span>
 <span class="sd">    :param project: Optional. The name of the project to connect to. If not</span>
@@ -244,32 +247,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">project</span> <span class="o">=</span> <span class="n">get_default_project</span><span class="p">()</span>
     <span class="n">implicit_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">get_credentials</span><span class="p">()</span>
     <span class="n">scoped_credentials</span> <span class="o">=</span> <span class="n">implicit_credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">SCOPE</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="get_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_bucket">[docs]</a><span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to a particular bucket.</span>
-
-<span class="sd">    You&#39;ll generally use this as the first call to working with the API:</span>
-
-<span class="sd">    &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">    &gt;&gt;&gt; bucket = storage.get_bucket(project, bucket_name)</span>
-<span class="sd">    &gt;&gt;&gt; # Now you can do things with the bucket.</span>
-<span class="sd">    &gt;&gt;&gt; bucket.exists(&#39;/path/to/file.txt&#39;)</span>
-<span class="sd">    False</span>
-
-<span class="sd">    :type bucket_name: string</span>
-<span class="sd">    :param bucket_name: The id of the bucket you want to use.</span>
-<span class="sd">                      This is akin to a disk name on a file system.</span>
-
-<span class="sd">    :type project: string</span>
-<span class="sd">    :param project: The name of the project to connect to.</span>
-
-<span class="sd">    :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">    :returns: A bucket with a connection using the provided credentials.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span></div>
 </pre></div>
 
       </section><!-- end of .content -->

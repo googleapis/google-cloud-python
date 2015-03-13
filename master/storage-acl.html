@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ACL &mdash; gcloud 982dd56 documentation</title>
+    <title>ACL &mdash; gcloud 447bba1 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '982dd56',
+        VERSION:     '447bba1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 982dd56 documentation" href="index.html" />
+    <link rel="top" title="gcloud 447bba1 documentation" href="index.html" />
     <link rel="prev" title="Buckets" href="storage-buckets.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-acl%0ARelease%3A%20982dd56" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-acl%0ARelease%3A%20447bba1" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (982dd56)
+              Version History (447bba1)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -87,7 +87,7 @@ an ACL object under the hood, and you can interact with that using
 <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket.acl" title="gcloud.storage.bucket.Bucket.acl"><code class="xref py py-func docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.acl()</span></code></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">acl</span>
 </pre></div>
 </div>
@@ -490,8 +490,8 @@ currently set on the Bucket object:</p>
 </div>
 <p>You can use this to set access controls to be consistent from
 one bucket to another:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket1</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket1_name</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket2_name</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bucket1</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket1_name</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="n">bucket2_name</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket2</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">bucket1</span><span class="o">.</span><span class="n">acl</span><span class="p">)</span>
 </pre></div>
 </div>

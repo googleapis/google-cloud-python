@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud 982dd56 documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud 447bba1 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '982dd56',
+        VERSION:     '447bba1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 982dd56 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 447bba1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20982dd56" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20447bba1" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (982dd56)
+              Version History (447bba1)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -253,7 +253,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_blob(&#39;/path/to/blob.txt&#39;)</span>
 <span class="sd">          &lt;Blob: my-bucket, /path/to/blob.txt&gt;</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_blob(&#39;/does-not-exist.txt&#39;)</span>
@@ -384,7 +384,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="c"># Ignore 404 errors on delete.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from the current bucket.</span>
@@ -397,7 +397,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; from gcloud.exceptions import NotFound</span>
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
 <span class="sd">          &gt;&gt;&gt; bucket.delete_blob(&#39;my-file.txt&#39;)</span>
@@ -479,7 +479,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;, &#39;remote-text-file.txt&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
@@ -490,7 +490,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
@@ -522,7 +522,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(open(&#39;~/my-file.txt&#39;), &#39;remote-text-file.txt&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
@@ -533,7 +533,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(open(&#39;~/my-file.txt&#39;))</span>
 <span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
@@ -788,7 +788,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.get_bucket(bucket_name)</span>
+<span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(bucket_name, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.configure_website(&#39;index.html&#39;, &#39;404.html&#39;)</span>
 
 <span class="sd">        You probably should also make the whole bucket public::</span>

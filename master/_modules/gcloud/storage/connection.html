@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.connection &mdash; gcloud 982dd56 documentation</title>
+    <title>gcloud.storage.connection &mdash; gcloud 447bba1 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '982dd56',
+        VERSION:     '447bba1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 982dd56 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 447bba1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/connection%0ARelease%3A%20982dd56" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/connection%0ARelease%3A%20447bba1" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (982dd56)
+              Version History (447bba1)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -102,42 +102,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Storage via the JSON REST API.</span>
 
 <span class="sd">    This defines :meth:`Connection.api_request` for making a generic JSON</span>
-<span class="sd">    API request and most API requests are created elsewhere (e.g. in</span>
+<span class="sd">    API request and API requests are created elsewhere (e.g. in</span>
+<span class="sd">    :mod:`gcloud.storage.api` and</span>
 <span class="sd">    :class:`gcloud.storage.bucket.Bucket` and</span>
 <span class="sd">    :class:`gcloud.storage.blob.Blob`).</span>
-
-<span class="sd">    Methods for getting, creating and deleting individual buckets as well</span>
-<span class="sd">    as listing buckets associated with a project are defined here. This</span>
-<span class="sd">    corresponds to the &quot;storage.buckets&quot; resource in the API.</span>
 
 <span class="sd">    See :class:`gcloud.connection.Connection` for a full list of</span>
 <span class="sd">    parameters. This subclass differs only in needing a project</span>
 <span class="sd">    name (which you specify when creating a project in the Cloud</span>
 <span class="sd">    Console).</span>
-
-<span class="sd">    A typical use of this is to operate on</span>
-<span class="sd">    :class:`gcloud.storage.bucket.Bucket` objects::</span>
-
-<span class="sd">      &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">      &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">      &gt;&gt;&gt; bucket = connection.create_bucket(&#39;my-bucket-name&#39;)</span>
-
-<span class="sd">    You can then delete this bucket::</span>
-
-<span class="sd">      &gt;&gt;&gt; bucket.delete()</span>
-<span class="sd">      &gt;&gt;&gt; # or</span>
-<span class="sd">      &gt;&gt;&gt; connection.delete_bucket(bucket.name)</span>
-
-<span class="sd">    If you want to access an existing bucket::</span>
-
-<span class="sd">      &gt;&gt;&gt; bucket = connection.get_bucket(&#39;my-bucket-name&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="n">base_connection</span><span class="o">.</span><span class="n">API_BASE_URL</span>
@@ -340,96 +319,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Expected JSON, got </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">content_type</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">content</span>
-</div>
-<div class="viewcode-block" id="Connection.get_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.get_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">get_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get a bucket by name.</span>
-
-<span class="sd">        If the bucket isn&#39;t found, this will raise a</span>
-<span class="sd">        :class:`gcloud.storage.exceptions.NotFound`.</span>
-
-<span class="sd">        For example::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; from gcloud.exceptions import NotFound</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; try:</span>
-<span class="sd">          &gt;&gt;&gt;   bucket = connection.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; except NotFound:</span>
-<span class="sd">          &gt;&gt;&gt;   print &#39;Sorry, that bucket does not exist!&#39;</span>
-
-<span class="sd">        This implements &quot;storage.buckets.get&quot;.</span>
-
-<span class="sd">        :type bucket_name: string</span>
-<span class="sd">        :param bucket_name: The name of the bucket to get.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">        :returns: The bucket matching the name provided.</span>
-<span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">bucket</span> <span class="o">=</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">bucket_name</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.create_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.create_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">create_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create a new bucket.</span>
-
-<span class="sd">        For example::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; bucket = connection.create_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket</span>
-<span class="sd">          &lt;Bucket: my-bucket&gt;</span>
-
-<span class="sd">        This implements &quot;storage.buckets.insert&quot;.</span>
-
-<span class="sd">        :type bucket_name: string</span>
-<span class="sd">        :param bucket_name: The bucket name to create.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">        :returns: The newly created bucket.</span>
-<span class="sd">        :raises: :class:`gcloud.exceptions.Conflict` if</span>
-<span class="sd">                 there is a confict (bucket already exists, invalid name, etc.)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span>
-                                    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">bucket_name</span><span class="p">})</span>
-        <span class="k">return</span> <span class="n">Bucket</span><span class="p">(</span><span class="n">properties</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Connection.delete_bucket"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.delete_bucket">[docs]</a>    <span class="k">def</span> <span class="nf">delete_bucket</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Delete a bucket.</span>
-
-<span class="sd">        You can use this method to delete a bucket by name.</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; connection = storage.get_connection(project)</span>
-<span class="sd">          &gt;&gt;&gt; connection.delete_bucket(&#39;my-bucket&#39;)</span>
-
-<span class="sd">        If the bucket doesn&#39;t exist, this will raise a</span>
-<span class="sd">        :class:`gcloud.exceptions.NotFound`::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud.exceptions import NotFound</span>
-<span class="sd">          &gt;&gt;&gt; try:</span>
-<span class="sd">          &gt;&gt;&gt;   connection.delete_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; except NotFound:</span>
-<span class="sd">          &gt;&gt;&gt;   print &#39;That bucket does not exist!&#39;</span>
-
-<span class="sd">        If the bucket still has objects in it, this will raise a</span>
-<span class="sd">        :class:`gcloud.exceptions.Conflict`::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud.exceptions import Conflict</span>
-<span class="sd">          &gt;&gt;&gt; try:</span>
-<span class="sd">          &gt;&gt;&gt;   connection.delete_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; except Conflict:</span>
-<span class="sd">          &gt;&gt;&gt;   print &#39;That bucket is not empty!&#39;</span>
-
-<span class="sd">        This implements &quot;storage.buckets.delete&quot;.</span>
-
-<span class="sd">        :type bucket_name: string</span>
-<span class="sd">        :param bucket_name: The bucket name to delete.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">bucket_path</span> <span class="o">=</span> <span class="n">Bucket</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket_path</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">content</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
