@@ -41,3 +41,55 @@ class Test__LocalStack(unittest2.TestCase):
         popped = batches.pop()
         self.assertTrue(batches.top is None)
         self.assertEqual(list(batches), [])
+
+
+class Test__LazyProperty(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud._helpers import _LazyProperty
+        return _LazyProperty
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_prop_on_class(self):
+        # Don't actually need a callable for ``method`` since
+        # __get__ will just return ``self`` in this test.
+        data_prop = self._makeOne('dataset_id', None)
+
+        class FakeEnv(object):
+            dataset_id = data_prop
+
+        self.assertTrue(FakeEnv.dataset_id is data_prop)
+
+    def test_prop_on_instance(self):
+        RESULT = object()
+        data_prop = self._makeOne('dataset_id', lambda: RESULT)
+
+        class FakeEnv(object):
+            dataset_id = data_prop
+
+        self.assertTrue(FakeEnv().dataset_id is RESULT)
+
+
+class Test__lazy_property_deco(unittest2.TestCase):
+
+    def _callFUT(self, deferred_callable):
+        from gcloud._helpers import _lazy_property_deco
+        return _lazy_property_deco(deferred_callable)
+
+    def test_on_function(self):
+        def test_func():
+            pass  # pragma: NO COVER never gets called
+
+        lazy_prop = self._callFUT(test_func)
+        self.assertTrue(lazy_prop._deferred_callable is test_func)
+        self.assertEqual(lazy_prop._name, 'test_func')
+
+    def test_on_staticmethod(self):
+        def test_func():
+            pass  # pragma: NO COVER never gets called
+
+        lazy_prop = self._callFUT(staticmethod(test_func))
+        self.assertTrue(lazy_prop._deferred_callable is test_func)
+        self.assertEqual(lazy_prop._name, 'test_func')
