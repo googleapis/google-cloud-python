@@ -82,7 +82,7 @@ def set_default_bucket(bucket=None):
         connection = get_default_connection()
 
         if bucket_name is not None and connection is not None:
-            bucket = Bucket(connection=connection, name=bucket_name)
+            bucket = Bucket(bucket_name, connection=connection)
 
     if bucket is not None:
         _implicit_environ._DEFAULTS.bucket = bucket
