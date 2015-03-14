@@ -25,7 +25,7 @@ import json
 
 import six
 
-from gcloud._localstack import _LocalStack
+from gcloud._helpers import _LocalStack
 from gcloud.storage import _implicit_environ
 from gcloud.storage.connection import Connection
 

@@ -18,7 +18,7 @@ import unittest2
 class Test__LocalStack(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._localstack import _LocalStack
+        from gcloud._helpers import _LocalStack
 
         return _LocalStack
 
