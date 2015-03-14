@@ -20,13 +20,14 @@ import unittest2
 from gcloud import exceptions
 from gcloud import storage
 from gcloud.storage._helpers import _base64_md5hash
+from gcloud.storage import _implicit_environ
 from gcloud.storage.batch import Batch
 
 
 HTTP = httplib2.Http()
 SHARED_BUCKETS = {}
 
-storage._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
+_implicit_environ._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
 storage.set_defaults()
 
 
