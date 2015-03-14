@@ -28,6 +28,7 @@ from _gcloud_vendor.apitools.base.py import http_wrapper
 from _gcloud_vendor.apitools.base.py import transfer
 
 from gcloud.credentials import generate_signed_url
+from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage import _implicit_environ
@@ -174,7 +175,15 @@ class Blob(_PropertyMixin):
         :rtype: boolean
         :returns: True if the blob exists in Cloud Storage.
         """
-        return self.bucket.get_blob(self.name) is not None
+        try:
+            # We only need the status code (200 or not) so we seek to
+            # minimize the returned payload.
+            query_params = {'fields': 'name'}
+            self.connection.api_request(method='GET', path=self.path,
+                                        query_params=query_params)
+            return True
+        except NotFound:
+            return False
 
     def rename(self, new_name):
         """Renames this blob using copy and delete operations.
