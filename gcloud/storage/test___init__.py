@@ -26,30 +26,10 @@ class Test_get_connection(unittest2.TestCase):
         from gcloud.storage.connection import Connection
         from gcloud.test_credentials import _Client
         from gcloud._testing import _Monkey
-        PROJECT = 'project'
         client = _Client()
         with _Monkey(credentials, client=client):
-            found = self._callFUT(PROJECT)
+            found = self._callFUT()
         self.assertTrue(isinstance(found, Connection))
-        self.assertEqual(found.project, PROJECT)
-        self.assertTrue(found._credentials is client._signed)
-        self.assertTrue(client._get_app_default_called)
-
-    def test_default_project(self):
-        from gcloud import credentials
-        from gcloud.storage._testing import _monkey_defaults
-        from gcloud.storage.connection import Connection
-        from gcloud.test_credentials import _Client
-        from gcloud._testing import _Monkey
-
-        PROJECT = 'project'
-        client = _Client()
-        with _Monkey(credentials, client=client):
-            with _monkey_defaults(project=PROJECT):
-                found = self._callFUT()
-
-        self.assertTrue(isinstance(found, Connection))
-        self.assertEqual(found.project, PROJECT)
         self.assertTrue(found._credentials is client._signed)
         self.assertTrue(client._get_app_default_called)
 
@@ -232,9 +212,9 @@ class Test_set_default_connection(unittest2.TestCase):
         from gcloud.storage._testing import _tear_down_defaults
         _tear_down_defaults(self)
 
-    def _callFUT(self, project=None, connection=None):
+    def _callFUT(self, connection=None):
         from gcloud.storage import set_default_connection
-        return set_default_connection(project=project, connection=connection)
+        return set_default_connection(connection=connection)
 
     def test_set_explicit(self):
         from gcloud.storage import _implicit_environ
@@ -244,7 +224,7 @@ class Test_set_default_connection(unittest2.TestCase):
         self._callFUT(connection=fake_cnxn)
         self.assertEqual(_implicit_environ.get_default_connection(), fake_cnxn)
 
-    def test_set_implicit_no_project(self):
+    def test_set_implicit(self):
         from gcloud._testing import _Monkey
         from gcloud import storage
         from gcloud.storage import _implicit_environ
@@ -264,60 +244,7 @@ class Test_set_default_connection(unittest2.TestCase):
             self._callFUT()
 
         self.assertEqual(_implicit_environ.get_default_connection(), fake_cnxn)
-        self.assertEqual(_called_args, [(None,)])
-        self.assertEqual(_called_kwargs, [{}])
-
-    def test_set_implicit_with_implicit_project(self):
-        from gcloud._testing import _Monkey
-        from gcloud.storage._testing import _monkey_defaults
-        from gcloud import storage
-        from gcloud.storage import _implicit_environ
-
-        self.assertEqual(_implicit_environ.get_default_connection(), None)
-
-        fake_cnxn = object()
-        _called_args = []
-        _called_kwargs = []
-
-        def mock_get_connection(*args, **kwargs):
-            _called_args.append(args)
-            _called_kwargs.append(kwargs)
-            return fake_cnxn
-
-        PROJECT = 'project'
-
-        with _monkey_defaults(project=PROJECT):
-            with _Monkey(storage, get_connection=mock_get_connection):
-                self._callFUT()
-
-                self.assertEqual(_implicit_environ.get_default_connection(),
-                                 fake_cnxn)
-                self.assertEqual(_called_args, [(None,)])
-                self.assertEqual(_called_kwargs, [{}])
-
-    def test_set_implicit_with_explicit_project(self):
-        from gcloud._testing import _Monkey
-        from gcloud import storage
-        from gcloud.storage import _implicit_environ
-
-        self.assertEqual(_implicit_environ.get_default_connection(), None)
-
-        fake_cnxn = object()
-        _called_args = []
-        _called_kwargs = []
-
-        def mock_get_connection(*args, **kwargs):
-            _called_args.append(args)
-            _called_kwargs.append(kwargs)
-            return fake_cnxn
-
-        PROJECT = 'project'
-
-        with _Monkey(storage, get_connection=mock_get_connection):
-            self._callFUT(PROJECT)
-
-        self.assertEqual(_implicit_environ.get_default_connection(), fake_cnxn)
-        self.assertEqual(_called_args, [(PROJECT,)])
+        self.assertEqual(_called_args, [()])
         self.assertEqual(_called_kwargs, [{}])
 
 
@@ -348,8 +275,8 @@ class Test_set_defaults(unittest2.TestCase):
 
         SET_CONNECTION_CALLED = []
 
-        def call_set_connection(project=None, connection=None):
-            SET_CONNECTION_CALLED.append((project, connection))
+        def call_set_connection(connection=None):
+            SET_CONNECTION_CALLED.append(connection)
 
         with _Monkey(storage, set_default_bucket=call_set_bucket,
                      set_default_connection=call_set_connection,
@@ -358,5 +285,5 @@ class Test_set_defaults(unittest2.TestCase):
                           connection=CONNECTION)
 
         self.assertEqual(SET_PROJECT_CALLED, [PROJECT])
-        self.assertEqual(SET_CONNECTION_CALLED, [(PROJECT, CONNECTION)])
+        self.assertEqual(SET_CONNECTION_CALLED, [CONNECTION])
         self.assertEqual(SET_BUCKET_CALLED, [BUCKET])

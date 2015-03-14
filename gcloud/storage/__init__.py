@@ -107,16 +107,13 @@ def set_default_project(project=None):
         _implicit_environ._DEFAULTS.project = project
 
 
-def set_default_connection(project=None, connection=None):
+def set_default_connection(connection=None):
     """Set default connection either explicitly or implicitly as fall-back.
-
-    :type project: string
-    :param project: Optional. The name of the project to connect to.
 
     :type connection: :class:`gcloud.storage.connection.Connection`
     :param connection: A connection provided to be the default.
     """
-    connection = connection or get_connection(project)
+    connection = connection or get_connection()
     _implicit_environ._DEFAULTS.connection = connection
 
 
@@ -134,35 +131,27 @@ def set_defaults(bucket=None, project=None, connection=None):
     :type connection: :class:`gcloud.storage.connection.Connection`
     :param connection: Optional. A connection provided to be the default.
     """
-    # NOTE: `set_default_project` is called before `set_default_connection`
-    #       since `set_default_connection` falls back to implicit project.
     set_default_project(project=project)
-    set_default_connection(project=project, connection=connection)
+    set_default_connection(connection=connection)
     # NOTE: `set_default_bucket` is called after `set_default_connection`
     #       since `set_default_bucket` falls back to implicit connection.
     set_default_bucket(bucket=bucket)
 
 
-def get_connection(project=None):
+def get_connection():
     """Shortcut method to establish a connection to Cloud Storage.
 
     Use this if you are going to access several buckets with the same
     set of credentials:
 
     >>> from gcloud import storage
-    >>> connection = storage.get_connection(project)
+    >>> connection = storage.get_connection()
     >>> bucket1 = storage.get_bucket('bucket1', connection=connection)
     >>> bucket2 = storage.get_bucket('bucket2', connection=connection)
-
-    :type project: string or ``NoneType``
-    :param project: Optional. The name of the project to connect to. If not
-                    included, falls back to default project.
 
     :rtype: :class:`gcloud.storage.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    if project is None:
-        project = get_default_project()
     implicit_credentials = credentials.get_credentials()
     scoped_credentials = implicit_credentials.create_scoped(SCOPE)
-    return Connection(project=project, credentials=scoped_credentials)
+    return Connection(credentials=scoped_credentials)

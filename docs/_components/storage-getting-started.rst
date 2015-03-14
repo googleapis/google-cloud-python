@@ -38,7 +38,7 @@ The first step in accessing Cloud Storage is to create a connection to the
 service::
 
   >>> from gcloud import storage
-  >>> connection = storage.get_connection(project_name)
+  >>> connection = storage.get_connection()
 
 We're going to use this :class:`connection
 <gcloud.storage.connection.Connection>` object for the rest of this guide.
@@ -56,7 +56,7 @@ bucket.
 
 Let's create a bucket:
 
-  >>> bucket = storage.create_bucket('test', connection=connection)
+  >>> bucket = storage.create_bucket('test', project_name, connection=connection)
   Traceback (most recent call last):
     File "<stdin>", line 1, in <module>
     File "gcloud/storage/connection.py", line 340, in create_bucket

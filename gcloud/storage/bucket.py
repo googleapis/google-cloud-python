@@ -169,7 +169,7 @@ class Bucket(_PropertyMixin):
         This will return None if the blob doesn't exist::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
+          >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> print bucket.get_blob('/path/to/blob.txt')
           <Blob: my-bucket, /path/to/blob.txt>
@@ -290,7 +290,7 @@ class Bucket(_PropertyMixin):
 
           >>> from gcloud.exceptions import NotFound
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
+          >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> print bucket.get_all_blobs()
           [<Blob: my-bucket, my-file.txt>]
@@ -371,7 +371,7 @@ class Bucket(_PropertyMixin):
         For example::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
+          >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file('~/my-file.txt', 'remote-text-file.txt')
           >>> print bucket.get_all_blobs()
@@ -381,7 +381,7 @@ class Bucket(_PropertyMixin):
         using the local filename (**not** the complete path)::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
+          >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file('~/my-file.txt')
           >>> print bucket.get_all_blobs()
@@ -413,7 +413,7 @@ class Bucket(_PropertyMixin):
         For example::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
+          >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file(open('~/my-file.txt'), 'remote-text-file.txt')
           >>> print bucket.get_all_blobs()
@@ -423,7 +423,7 @@ class Bucket(_PropertyMixin):
         using the local filename (**not** the complete path)::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
+          >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file(open('~/my-file.txt'))
           >>> print bucket.get_all_blobs()
@@ -677,7 +677,7 @@ class Bucket(_PropertyMixin):
         of an index page and a page to use when a blob isn't found::
 
           >>> from gcloud import storage
-          >>> connection = storage.get_connection(project)
+          >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket(bucket_name, connection=connection)
           >>> bucket.configure_website('index.html', '404.html')
 

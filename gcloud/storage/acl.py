@@ -19,7 +19,7 @@ an ACL object under the hood, and you can interact with that using
 :func:`gcloud.storage.bucket.Bucket.acl`::
 
   >>> from gcloud import storage
-  >>> connection = storage.get_connection(project)
+  >>> connection = storage.get_connection()
   >>> bucket = storage.get_bucket(bucket_name, connection=connection)
   >>> acl = bucket.acl
 
