@@ -172,19 +172,18 @@ def make_exception(response, content, use_json=True):
     :rtype: instance of :class:`GCloudError`, or a concrete subclass.
     :returns: Exception specific to the error response.
     """
-    message = content
-    errors = ()
-
     if isinstance(content, six.binary_type):
-        message = content.decode('utf-8')
+        content_decoded = content.decode('utf-8')
         if use_json:
-            payload = json.loads(message)
+            payload = json.loads(content_decoded)
         else:
-            payload = {}
+            payload = {
+                'message': content_decoded
+            }
     else:
         payload = content
 
-    message = payload.get('message', message)
+    message = payload.get('message', '')
     errors = payload.get('error', {}).get('errors', ())
 
     try:
