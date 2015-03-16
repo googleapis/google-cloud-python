@@ -58,7 +58,7 @@ class Test_lookup_bucket(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{{"name": "{0}"}}'.format(BLOB_NAME).encode(),
+            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
 
         if use_default:
@@ -119,7 +119,7 @@ class Test_get_all_buckets(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME).encode(),
+            '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME).encode('utf-8'),
         )
 
         if use_default:
