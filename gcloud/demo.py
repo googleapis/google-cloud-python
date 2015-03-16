@@ -26,7 +26,7 @@ class DemoRunner(object):
 
     KEYPRESS_DELAY = 0.02
     GLOBALS, LOCALS = globals(), locals()
-    CODE, COMMENT = 'code', 'comment'
+    CODE, COMMENT, COPYRIGHT = 'code', 'comment', 'copright'
 
     def __init__(self, fp):
         self.lines = [line.rstrip() for line in fp.readlines()]
@@ -55,10 +55,11 @@ class DemoRunner(object):
 
     @classmethod
     def get_line_type(cls, line):
+        if line.startswith('##'):
+            return cls.COPYRIGHT
         if line.startswith('#'):
             return cls.COMMENT
-        else:
-            return cls.CODE
+        return cls.CODE
 
     def get_indent_level(self, line):
         if not line.strip():
