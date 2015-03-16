@@ -119,7 +119,8 @@ class Test_get_all_buckets(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME).encode('utf-8'),
+            '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME)
+            .encode('utf-8'),
         )
 
         if use_default:
@@ -161,7 +162,7 @@ class Test_get_bucket(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '404', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         self.assertRaises(NotFound, self._callFUT, NONESUCH, connection=conn)
         self.assertEqual(http._called_with['method'], 'GET')
@@ -183,7 +184,7 @@ class Test_get_bucket(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % BLOB_NAME,
+            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
 
         if use_default:
@@ -226,7 +227,7 @@ class Test_create_bucket(unittest2.TestCase):
             ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % BLOB_NAME,
+            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
 
         if use_default:
