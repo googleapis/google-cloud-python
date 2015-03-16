@@ -281,6 +281,15 @@ class TestConnection(unittest2.TestCase):
         )
         self.assertRaises(InternalServerError, conn.api_request, 'GET', '/')
 
+    def test_api_request_non_binary_response(self):
+        PROJECT = 'project'
+        conn = self._makeOne(PROJECT)
+        conn._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            u'CONTENT',
+        )
+        self.assertRaises(TypeError, conn.api_request, 'GET', '/')
+
 
 class Http(object):
 

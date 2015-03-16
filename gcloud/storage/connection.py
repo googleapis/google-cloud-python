@@ -16,6 +16,7 @@
 
 import json
 
+import six
 from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
 from gcloud import connection as base_connection
@@ -230,6 +231,9 @@ class Connection(base_connection.Connection):
 
         if not 200 <= response.status < 300:
             raise make_exception(response, content)
+
+        if not isinstance(content, six.binary_type):
+            raise TypeError('Expected binary type, got %s' % type(content))
 
         if content and expect_json:
             content_type = response.get('content-type', '')
