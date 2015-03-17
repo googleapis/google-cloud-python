@@ -541,7 +541,7 @@ class Test_BucketACL(unittest2.TestCase):
         NAME = 'name'
         ROLE = 'role'
         connection = _Connection({})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
         acl.entity('allUsers', ROLE)
@@ -556,7 +556,7 @@ class Test_BucketACL(unittest2.TestCase):
         NAME = 'name'
         ROLE = 'role'
         connection = _Connection({'items': []})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
         acl.entity('allUsers', ROLE)
@@ -572,7 +572,7 @@ class Test_BucketACL(unittest2.TestCase):
         ROLE = 'role'
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
         self.assertTrue(acl.reload() is acl)
@@ -587,7 +587,7 @@ class Test_BucketACL(unittest2.TestCase):
         ROLE = 'role'
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         self.assertTrue(acl.reload() is acl)
         self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
@@ -599,7 +599,7 @@ class Test_BucketACL(unittest2.TestCase):
     def test_save_none_set_none_passed(self):
         NAME = 'name'
         connection = _Connection()
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         self.assertTrue(acl.save() is acl)
         kw = connection._requested
@@ -608,7 +608,7 @@ class Test_BucketACL(unittest2.TestCase):
     def test_save_existing_missing_none_passed(self):
         NAME = 'name'
         connection = _Connection({})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
         self.assertTrue(acl.save() is acl)
@@ -625,7 +625,7 @@ class Test_BucketACL(unittest2.TestCase):
         ROLE = 'role'
         AFTER = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'acl': AFTER})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
         acl.entity('allUsers').grant(ROLE)
@@ -645,7 +645,7 @@ class Test_BucketACL(unittest2.TestCase):
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
         new_acl = [{'entity': 'allUsers', 'role': ROLE1}]
         connection = _Connection({'acl': [STICKY] + new_acl})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
         self.assertTrue(acl.save(new_acl) is acl)
@@ -666,7 +666,7 @@ class Test_BucketACL(unittest2.TestCase):
         ROLE2 = 'role2'
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
         connection = _Connection({'acl': [STICKY]})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
         acl.entity('allUsers', ROLE1)
@@ -703,7 +703,7 @@ class Test_ObjectACL(unittest2.TestCase):
         ROLE = 'role'
         after = {}
         connection = _Connection(after)
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
@@ -717,7 +717,7 @@ class Test_ObjectACL(unittest2.TestCase):
         ROLE = 'role'
         after = {'items': []}
         connection = _Connection(after)
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
@@ -731,7 +731,7 @@ class Test_ObjectACL(unittest2.TestCase):
         ROLE = 'role'
         after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
         connection = _Connection(after)
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
@@ -748,7 +748,7 @@ class Test_ObjectACL(unittest2.TestCase):
         ROLE = 'role'
         after = {'items': [{'entity': 'allUsers', 'role': ROLE}]}
         connection = _Connection(after)
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         self.assertTrue(acl.reload() is acl)
@@ -763,7 +763,7 @@ class Test_ObjectACL(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection()
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         self.assertTrue(acl.save() is acl)
@@ -775,7 +775,7 @@ class Test_ObjectACL(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({'foo': 'Foo'})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
@@ -791,7 +791,7 @@ class Test_ObjectACL(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({'foo': 'Foo', 'acl': []})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
@@ -809,7 +809,7 @@ class Test_ObjectACL(unittest2.TestCase):
         ROLE = 'role'
         new_acl = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'foo': 'Foo', 'acl': new_acl})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
@@ -828,7 +828,7 @@ class Test_ObjectACL(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         ROLE = 'role'
         connection = _Connection({'foo': 'Foo', 'acl': []})
-        bucket = _Bucket(connection, NAME)
+        bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
@@ -860,9 +860,9 @@ class _Blob(object):
 
 class _Bucket(object):
 
-    def __init__(self, connection, name):
-        self.connection = connection
+    def __init__(self, name, connection):
         self.name = name
+        self.connection = connection
 
     @property
     def path(self):

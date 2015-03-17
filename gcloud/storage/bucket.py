@@ -75,11 +75,14 @@ class _BlobIterator(Iterator):
 class Bucket(_PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 
+    :type name: string
+    :param name: The name of the bucket.
+
     :type connection: :class:`gcloud.storage.connection.Connection`
     :param connection: The connection to use when sending requests.
 
-    :type name: string
-    :param name: The name of the bucket.
+    :type properties: dictionary or ``NoneType``
+    :param properties: The properties associated with the bucket.
     """
     _iterator_class = _BlobIterator
 
@@ -89,7 +92,7 @@ class Bucket(_PropertyMixin):
     # ACL rules are lazily retrieved.
     _acl = _default_object_acl = None
 
-    def __init__(self, connection=None, name=None, properties=None):
+    def __init__(self, name=None, connection=None, properties=None):
         if name is None and properties is not None:
             name = properties.get('name')
         super(Bucket, self).__init__(name=name, properties=properties)
