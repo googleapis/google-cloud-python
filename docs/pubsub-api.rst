@@ -95,11 +95,11 @@ Publish a set of messages to a topic (as a single request):
 
    >>> from gcloud.pubsub.topic import Topic
    >>> topic = Topic('topic_name')
-   >>> with topic as batch:
-   ...     topic.publish('this is the first message_payload')
-   ...     topic.publish('this is the second message_payload',
+   >>> with topic.batch() as batch:
+   ...     batch.publish('this is the first message_payload')
+   ...     batch.publish('this is the second message_payload',
    ...                   attr1='value1', attr2='value2')
-   >>> batch
+   >>> list(batch)
    [<message_id1>, <message_id2>]
 
 .. note::
