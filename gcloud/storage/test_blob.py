@@ -216,15 +216,19 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_exists_miss(self):
+        from six.moves.http_client import NOT_FOUND
         NONESUCH = 'nonesuch'
-        connection = _Connection()
+        not_found_response = {'status': NOT_FOUND}
+        connection = _Connection(not_found_response)
         bucket = _Bucket(connection)
         blob = self._makeOne(NONESUCH, bucket=bucket)
         self.assertFalse(blob.exists())
 
     def test_exists_hit(self):
+        from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
+        found_response = {'status': OK}
+        connection = _Connection(found_response)
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
@@ -245,8 +249,10 @@ class Test_Blob(unittest2.TestCase):
         self.assertTrue(NEW_NAME in bucket._blobs)
 
     def test_delete(self):
+        from six.moves.http_client import NOT_FOUND
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
+        not_found_response = {'status': NOT_FOUND}
+        connection = _Connection(not_found_response)
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
@@ -1000,7 +1006,12 @@ class _Connection(_Responder):
         self.http = _HTTP(*responses)
 
     def api_request(self, **kw):
-        return self._respond(**kw)
+        from six.moves.http_client import NOT_FOUND
+        from gcloud.exceptions import NotFound
+        result = self._respond(**kw)
+        if result.get('status') == NOT_FOUND:
+            raise NotFound(result)
+        return result
 
     def build_api_url(self, path, query_params=None,
                       api_base_url=API_BASE_URL, upload=False):
@@ -1030,9 +1041,6 @@ class _Bucket(object):
         self.connection = connection
         self._blobs = {}
         self._deleted = []
-
-    def get_blob(self, blob_name):
-        return self._blobs.get(blob_name)
 
     def copy_blob(self, blob, destination_bucket, new_name):
         destination_bucket._blobs[new_name] = self._blobs[blob.name]
