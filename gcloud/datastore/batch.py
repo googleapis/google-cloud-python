@@ -14,7 +14,7 @@
 
 """Create / interact with a batch of updates / deletes."""
 
-from gcloud._localstack import _LocalStack
+from gcloud._helpers import _LocalStack
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import helpers
 from gcloud.datastore.key import _dataset_ids_equal

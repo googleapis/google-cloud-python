@@ -315,29 +315,6 @@ class Test_set_default_dataset_id(unittest2.TestCase):
         self.assertEqual(_called_dataset_id, [None])
 
 
-class Test__lazy_property_deco(unittest2.TestCase):
-
-    def _callFUT(self, deferred_callable):
-        from gcloud.datastore._implicit_environ import _lazy_property_deco
-        return _lazy_property_deco(deferred_callable)
-
-    def test_on_function(self):
-        def test_func():
-            pass  # pragma: NO COVER never gets called
-
-        lazy_prop = self._callFUT(test_func)
-        self.assertTrue(lazy_prop._deferred_callable is test_func)
-        self.assertEqual(lazy_prop._name, 'test_func')
-
-    def test_on_staticmethod(self):
-        def test_func():
-            pass  # pragma: NO COVER never gets called
-
-        lazy_prop = self._callFUT(staticmethod(test_func))
-        self.assertTrue(lazy_prop._deferred_callable is test_func)
-        self.assertEqual(lazy_prop._name, 'test_func')
-
-
 class Test_lazy_loading(unittest2.TestCase):
 
     def setUp(self):
@@ -347,19 +324,6 @@ class Test_lazy_loading(unittest2.TestCase):
     def tearDown(self):
         from gcloud.datastore._testing import _tear_down_defaults
         _tear_down_defaults(self)
-
-    def test_prop_on_wrong_class(self):
-        from gcloud.datastore._implicit_environ import _LazyProperty
-
-        # Don't actually need a callable for ``method`` since
-        # __get__ will just return ``self`` in this test.
-        data_prop = _LazyProperty('dataset_id', None)
-
-        class FakeEnv(object):
-            dataset_id = data_prop
-
-        self.assertTrue(FakeEnv.dataset_id is data_prop)
-        self.assertTrue(FakeEnv().dataset_id is data_prop)
 
     def test_descriptor_for_dataset_id(self):
         from gcloud._testing import _Monkey

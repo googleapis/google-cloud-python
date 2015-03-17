@@ -28,6 +28,7 @@ try:
 except ImportError:
     app_identity = None
 
+from gcloud._helpers import _lazy_property_deco
 from gcloud import credentials
 from gcloud.datastore.connection import Connection
 
@@ -199,49 +200,6 @@ def get_default_connection():
     :returns: The default connection if one has been set.
     """
     return _DEFAULTS.connection
-
-
-class _LazyProperty(object):
-    """Descriptor for lazy loaded property.
-
-    This follows the reify pattern: lazy evaluation and then replacement
-    after evaluation.
-
-    :type name: string
-    :param name: The name of the attribute / property being evaluated.
-
-    :type deferred_callable: callable that takes no arguments
-    :param deferred_callable: The function / method used to evaluate the
-                              property.
-    """
-
-    def __init__(self, name, deferred_callable):
-        self._name = name
-        self._deferred_callable = deferred_callable
-
-    def __get__(self, obj, objtype):
-        if obj is None or objtype is not _DefaultsContainer:
-            return self
-
-        setattr(obj, self._name, self._deferred_callable())
-        return getattr(obj, self._name)
-
-
-def _lazy_property_deco(deferred_callable):
-    """Decorator a method to create a :class:`_LazyProperty`.
-
-    :type deferred_callable: callable that takes no arguments
-    :param deferred_callable: The function / method used to evaluate the
-                              property.
-
-    :rtype: :class:`_LazyProperty`.
-    :returns: A lazy property which defers the deferred_callable.
-    """
-    if isinstance(deferred_callable, staticmethod):
-        # H/T: http://stackoverflow.com/a/9527450/1068170
-        #      For Python2.7+ deferred_callable.__func__ would suffice.
-        deferred_callable = deferred_callable.__get__(True)
-    return _LazyProperty(deferred_callable.__name__, deferred_callable)
 
 
 class _DefaultsContainer(object):

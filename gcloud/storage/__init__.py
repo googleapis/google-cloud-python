@@ -45,6 +45,7 @@ from gcloud.storage import _implicit_environ
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
 from gcloud.storage._implicit_environ import get_default_project
+from gcloud.storage._implicit_environ import set_default_project
 from gcloud.storage.api import create_bucket
 from gcloud.storage.api import get_all_buckets
 from gcloud.storage.api import get_bucket
@@ -59,7 +60,6 @@ SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
          'https://www.googleapis.com/auth/devstorage.read_write')
 
 _BUCKET_ENV_VAR_NAME = 'GCLOUD_BUCKET_NAME'
-_PROJECT_ENV_VAR_NAME = 'GCLOUD_PROJECT'
 
 
 def set_default_bucket(bucket=None):
@@ -86,25 +86,6 @@ def set_default_bucket(bucket=None):
 
     if bucket is not None:
         _implicit_environ._DEFAULTS.bucket = bucket
-
-
-def set_default_project(project=None):
-    """Set default bucket name either explicitly or implicitly as fall-back.
-
-    In implicit case, currently only supports enviroment variable but will
-    support App Engine, Compute Engine and other environments in the future.
-
-    Local environment variable used is:
-    - GCLOUD_PROJECT
-
-    :type project: string
-    :param project: Optional. The project name to use as default.
-    """
-    if project is None:
-        project = os.getenv(_PROJECT_ENV_VAR_NAME)
-
-    if project is not None:
-        _implicit_environ._DEFAULTS.project = project
 
 
 def set_default_connection(connection=None):
