@@ -101,8 +101,9 @@ class Bucket(_PropertyMixin):
     def __iter__(self):
         return iter(self._iterator_class(bucket=self))
 
-    def __contains__(self, blob):
-        return self.get_blob(blob) is not None
+    def __contains__(self, blob_name):
+        blob = Blob(blob_name, bucket=self)
+        return blob.exists()
 
     def exists(self):
         """Determines whether or not this bucket exists.
