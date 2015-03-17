@@ -83,7 +83,7 @@ class Batch(Connection):
         if connection is None:
             connection = _implicit_environ.get_default_connection()
 
-        super(Batch, self).__init__(project=connection.project)
+        super(Batch, self).__init__()
         self._connection = connection
         self._requests = []
         self._responses = []

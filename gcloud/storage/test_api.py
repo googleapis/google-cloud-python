@@ -23,15 +23,14 @@ class Test_lookup_bucket(unittest2.TestCase):
 
     def test_miss(self):
         from gcloud.storage.connection import Connection
-        PROJECT = 'project'
         NONESUCH = 'nonesuch'
-        conn = Connection(PROJECT)
+        conn = Connection()
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
             'b',
-            'nonesuch?project=%s' % PROJECT,
+            'nonesuch',
         ])
         http = conn._http = Http(
             {'status': '404', 'content-type': 'application/json'},
@@ -46,15 +45,14 @@ class Test_lookup_bucket(unittest2.TestCase):
         from gcloud.storage._testing import _monkey_defaults
         from gcloud.storage.bucket import Bucket
         from gcloud.storage.connection import Connection
-        PROJECT = 'project'
         BLOB_NAME = 'blob-name'
-        conn = Connection(PROJECT)
+        conn = Connection()
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
             'b',
-            '%s?project=%s' % (BLOB_NAME, PROJECT),
+            '%s' % (BLOB_NAME,),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -82,14 +80,14 @@ class Test_lookup_bucket(unittest2.TestCase):
 
 class Test_get_all_buckets(unittest2.TestCase):
 
-    def _callFUT(self, connection=None):
+    def _callFUT(self, project=None, connection=None):
         from gcloud.storage.api import get_all_buckets
-        return get_all_buckets(connection=connection)
+        return get_all_buckets(project=project, connection=connection)
 
     def test_empty(self):
         from gcloud.storage.connection import Connection
         PROJECT = 'project'
-        conn = Connection(PROJECT)
+        conn = Connection()
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
@@ -100,22 +98,21 @@ class Test_get_all_buckets(unittest2.TestCase):
             {'status': '200', 'content-type': 'application/json'},
             '{}',
         )
-        buckets = list(self._callFUT(conn))
+        buckets = list(self._callFUT(PROJECT, conn))
         self.assertEqual(len(buckets), 0)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
-    def _get_all_buckets_non_empty_helper(self, use_default=False):
+    def _get_all_buckets_non_empty_helper(self, project, use_default=False):
         from gcloud.storage._testing import _monkey_defaults
         from gcloud.storage.connection import Connection
-        PROJECT = 'project'
         BUCKET_NAME = 'bucket-name'
-        conn = Connection(PROJECT)
+        conn = Connection()
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
-            'b?project=%s' % PROJECT,
+            'b?project=%s' % project,
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -123,10 +120,10 @@ class Test_get_all_buckets(unittest2.TestCase):
         )
 
         if use_default:
-            with _monkey_defaults(connection=conn):
+            with _monkey_defaults(project=project, connection=conn):
                 buckets = list(self._callFUT())
         else:
-            buckets = list(self._callFUT(conn))
+            buckets = list(self._callFUT(project, conn))
 
         self.assertEqual(len(buckets), 1)
         self.assertEqual(buckets[0].name, BUCKET_NAME)
@@ -134,10 +131,10 @@ class Test_get_all_buckets(unittest2.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_non_empty(self):
-        self._get_all_buckets_non_empty_helper(use_default=False)
+        self._get_all_buckets_non_empty_helper('PROJECT', use_default=False)
 
     def test_non_use_default(self):
-        self._get_all_buckets_non_empty_helper(use_default=True)
+        self._get_all_buckets_non_empty_helper('PROJECT', use_default=True)
 
 
 class Test_get_bucket(unittest2.TestCase):
@@ -149,15 +146,14 @@ class Test_get_bucket(unittest2.TestCase):
     def test_miss(self):
         from gcloud.exceptions import NotFound
         from gcloud.storage.connection import Connection
-        PROJECT = 'project'
         NONESUCH = 'nonesuch'
-        conn = Connection(PROJECT)
+        conn = Connection()
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
             'b',
-            'nonesuch?project=%s' % PROJECT,
+            'nonesuch',
         ])
         http = conn._http = Http(
             {'status': '404', 'content-type': 'application/json'},
@@ -171,15 +167,14 @@ class Test_get_bucket(unittest2.TestCase):
         from gcloud.storage._testing import _monkey_defaults
         from gcloud.storage.bucket import Bucket
         from gcloud.storage.connection import Connection
-        PROJECT = 'project'
         BLOB_NAME = 'blob-name'
-        conn = Connection(PROJECT)
+        conn = Connection()
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
             'b',
-            '%s?project=%s' % (BLOB_NAME, PROJECT),
+            '%s' % (BLOB_NAME,),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -207,22 +202,22 @@ class Test_get_bucket(unittest2.TestCase):
 
 class Test_create_bucket(unittest2.TestCase):
 
-    def _callFUT(self, bucket_name, connection=None):
+    def _callFUT(self, bucket_name, project=None, connection=None):
         from gcloud.storage.api import create_bucket
-        return create_bucket(bucket_name, connection=connection)
+        return create_bucket(bucket_name, project=project,
+                             connection=connection)
 
-    def _create_bucket_success_helper(self, use_default=False):
+    def _create_bucket_success_helper(self, project, use_default=False):
         from gcloud.storage._testing import _monkey_defaults
         from gcloud.storage.connection import Connection
         from gcloud.storage.bucket import Bucket
-        PROJECT = 'project'
         BLOB_NAME = 'blob-name'
-        conn = Connection(PROJECT)
+        conn = Connection()
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
-            'b?project=%s' % PROJECT,
+            'b?project=%s' % project,
             ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -230,10 +225,10 @@ class Test_create_bucket(unittest2.TestCase):
         )
 
         if use_default:
-            with _monkey_defaults(connection=conn):
+            with _monkey_defaults(project=project, connection=conn):
                 bucket = self._callFUT(BLOB_NAME)
         else:
-            bucket = self._callFUT(BLOB_NAME, connection=conn)
+            bucket = self._callFUT(BLOB_NAME, project=project, connection=conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
         self.assertTrue(bucket.connection is conn)
@@ -242,10 +237,10 @@ class Test_create_bucket(unittest2.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_success(self):
-        self._create_bucket_success_helper(use_default=False)
+        self._create_bucket_success_helper('PROJECT', use_default=False)
 
     def test_success_use_default(self):
-        self._create_bucket_success_helper(use_default=True)
+        self._create_bucket_success_helper('PROJECT', use_default=True)
 
 
 class Test__BucketIterator(unittest2.TestCase):

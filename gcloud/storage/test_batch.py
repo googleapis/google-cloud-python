@@ -88,7 +88,6 @@ class TestBatch(unittest2.TestCase):
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         self.assertTrue(batch._connection is connection)
-        self.assertEqual(batch.project, connection.project)
         self.assertEqual(len(batch._requests), 0)
         self.assertEqual(len(batch._responses), 0)
 
@@ -101,7 +100,6 @@ class TestBatch(unittest2.TestCase):
             batch = self._makeOne()
 
         self.assertTrue(batch._connection is connection)
-        self.assertEqual(batch.project, connection.project)
         self.assertEqual(len(batch._requests), 0)
         self.assertEqual(len(batch._responses), 0)
 

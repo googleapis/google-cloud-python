@@ -20,6 +20,7 @@ rather than via Connection.
 
 from gcloud.exceptions import NotFound
 from gcloud.storage._implicit_environ import get_default_connection
+from gcloud.storage._implicit_environ import get_default_project
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
 
@@ -59,7 +60,7 @@ def lookup_bucket(bucket_name, connection=None):
         return None
 
 
-def get_all_buckets(connection=None):
+def get_all_buckets(project=None, connection=None):
     """Get all buckets in the project.
 
     This will not populate the list of blobs available in each
@@ -71,6 +72,10 @@ def get_all_buckets(connection=None):
 
     This implements "storage.buckets.list".
 
+    :type project: string
+    :param project: Optional. The project to use when listing all buckets.
+                    If not provided, falls back to default.
+
     :type connection: :class:`gcloud.storage.connection.Connection` or
                       ``NoneType``
     :param connection: Optional. The connection to use when sending requests.
@@ -81,7 +86,11 @@ def get_all_buckets(connection=None):
     """
     if connection is None:
         connection = get_default_connection()
-    return iter(_BucketIterator(connection=connection))
+    if project is None:
+        project = get_default_project()
+    extra_params = {'project': project}
+    return iter(_BucketIterator(connection=connection,
+                                extra_params=extra_params))
 
 
 def get_bucket(bucket_name, connection=None):
@@ -121,7 +130,7 @@ def get_bucket(bucket_name, connection=None):
     return Bucket(properties=response, connection=connection)
 
 
-def create_bucket(bucket_name, connection=None):
+def create_bucket(bucket_name, project=None, connection=None):
     """Create a new bucket.
 
     For example::
@@ -133,6 +142,10 @@ def create_bucket(bucket_name, connection=None):
       <Bucket: my-bucket>
 
     This implements "storage.buckets.insert".
+
+    :type project: string
+    :param project: Optional. The project to use when creating bucket.
+                    If not provided, falls back to default.
 
     :type bucket_name: string
     :param bucket_name: The bucket name to create.
@@ -149,8 +162,12 @@ def create_bucket(bucket_name, connection=None):
     """
     if connection is None:
         connection = get_default_connection()
+    if project is None:
+        project = get_default_project()
 
+    query_params = {'project': project}
     response = connection.api_request(method='POST', path='/b',
+                                      query_params=query_params,
                                       data={'name': bucket_name})
     return Bucket(properties=response, connection=connection)
 
@@ -166,8 +183,9 @@ class _BucketIterator(Iterator):
     :param connection: The connection to use for querying the list of buckets.
     """
 
-    def __init__(self, connection):
-        super(_BucketIterator, self).__init__(connection=connection, path='/b')
+    def __init__(self, connection, extra_params=None):
+        super(_BucketIterator, self).__init__(connection=connection, path='/b',
+                                              extra_params=extra_params)
 
     def get_items_from_response(self, response):
         """Factory method which yields :class:`.Bucket` items from a response.

@@ -30,11 +30,6 @@ class Connection(base_connection.Connection):
     :mod:`gcloud.storage.api` and
     :class:`gcloud.storage.bucket.Bucket` and
     :class:`gcloud.storage.blob.Blob`).
-
-    See :class:`gcloud.connection.Connection` for a full list of
-    parameters. This subclass differs only in needing a project
-    name (which you specify when creating a project in the Cloud
-    Console).
     """
 
     API_BASE_URL = base_connection.API_BASE_URL
@@ -46,15 +41,8 @@ class Connection(base_connection.Connection):
     API_URL_TEMPLATE = '{api_base_url}/storage/{api_version}{path}'
     """A template for the URL of a particular API call."""
 
-    def __init__(self, project, *args, **kwargs):
-        """:type project: string
-
-        :param project: The project name to connect to.
-        """
-        super(Connection, self).__init__(*args, **kwargs)
-        self.project = project
-
-    def build_api_url(self, path, query_params=None, api_base_url=None,
+    @classmethod
+    def build_api_url(cls, path, query_params=None, api_base_url=None,
                       api_version=None, upload=False):
         """Construct an API url given a few components, some optional.
 
@@ -82,18 +70,18 @@ class Connection(base_connection.Connection):
         :rtype: string
         :returns: The URL assembled from the pieces provided.
         """
-        api_base_url = api_base_url or self.API_BASE_URL
+        api_base_url = api_base_url or cls.API_BASE_URL
         if upload:
             api_base_url += '/upload'
 
-        url = self.API_URL_TEMPLATE.format(
-            api_base_url=(api_base_url or self.API_BASE_URL),
-            api_version=(api_version or self.API_VERSION),
+        url = cls.API_URL_TEMPLATE.format(
+            api_base_url=(api_base_url or cls.API_BASE_URL),
+            api_version=(api_version or cls.API_VERSION),
             path=path)
 
         query_params = query_params or {}
-        query_params.update({'project': self.project})
-        url += '?' + urlencode(query_params)
+        if query_params:
+            url += '?' + urlencode(query_params)
 
         return url
 
