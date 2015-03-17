@@ -1031,17 +1031,17 @@ class _Bucket(object):
         self._blobs = {}
         self._deleted = []
 
-    def get_blob(self, blob):
-        return self._blobs.get(blob)
+    def get_blob(self, blob_name):
+        return self._blobs.get(blob_name)
 
     def copy_blob(self, blob, destination_bucket, new_name):
         destination_bucket._blobs[new_name] = self._blobs[blob.name]
         return blob.__class__(None, bucket=destination_bucket,
                               properties={'name': new_name})
 
-    def delete_blob(self, blob):
-        del self._blobs[blob.name]
-        self._deleted.append(blob.name)
+    def delete_blob(self, blob_name):
+        del self._blobs[blob_name]
+        self._deleted.append(blob_name)
 
 
 class _Signer(object):

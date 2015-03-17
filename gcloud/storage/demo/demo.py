@@ -24,7 +24,7 @@ print(bucket)
 print(list(storage.get_all_buckets(connection)))
 
 # How about we create a new blob inside this bucket.
-blob = bucket.new_blob("my-new-file.txt")
+blob = storage.Blob("my-new-file.txt", bucket=bucket)
 
 # Now let's put some data in there.
 blob.upload_from_string("this is some data!")

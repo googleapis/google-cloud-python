@@ -61,7 +61,7 @@ you can create buckets and blobs::
   >>> bucket = storage.create_bucket('my-new-bucket', connection=connection)
   >>> print bucket
   <Bucket: my-new-bucket>
-  >>> blob = bucket.new_blob('my-test-file.txt')
+  >>> blob = storage.Blob('my-test-file.txt', bucket=bucket)
   >>> print blob
   <Blob: my-new-bucket, my-test-file.txt>
   >>> blob = blob.upload_from_string('this is test content!')

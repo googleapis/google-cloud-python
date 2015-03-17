@@ -91,11 +91,10 @@ Python built-in ``object``.
 If you want to set some data, you just create a ``Blob`` inside your bucket
 and store your data inside the blob::
 
-  >>> blob = bucket.new_blob('greeting.txt')
+  >>> blob = storage.Blob('greeting.txt', bucket=bucket)
   >>> blob.upload_from_string('Hello world!')
 
-:func:`new_blob <gcloud.storage.bucket.Bucket.new_blob>` creates a
-:class:`Blob <gcloud.storage.blob.Blob>` object locally and
+This creates a :class:`Blob <gcloud.storage.blob.Blob>` object locally and
 :func:`upload_from_string <gcloud.storage.blob.Blob.upload_from_string>`
 allows you to put a string into the blob.
 
@@ -117,8 +116,7 @@ Then you can look at the file in a terminal::
 And what about when you're not dealing with text?
 That's pretty simple too::
 
-  >>> blob = bucket.new_blob('kitten.jpg')
-  >>> blob.upload_from_filename('kitten.jpg')
+  >>> blob = bucket.upload_file('kitten.jpg')
 
 And to test whether it worked?
 
@@ -136,9 +134,9 @@ remotely.  If the blob doesn't exist, it will return ``None``.
 .. note:: ``get_blob`` is **not** retrieving the entire object's data.
 
 If you want to "get-or-create" the blob (that is, overwrite it if it
-already exists), you can use :func:`new_blob
-<gcloud.storage.bucket.Bucket.new_blob>`.  However, keep in mind, the blob
-is not created until you store some data inside of it.
+already exists), you can just construct a :class:`gcloud.storage.blob.Blob`
+locally and update it.  However, keep in mind, the blob is not created
+remotely until you store some data inside of it.
 
 If you want to check whether a blob exists, you can use the ``in`` operator
 in Python::
