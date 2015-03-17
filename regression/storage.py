@@ -119,7 +119,7 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         file_data = self.FILES['big']
         with open(file_data['path'], 'rb') as file_obj:
-            self.bucket.upload_file_object(file_obj, blob=blob)
+            self.bucket.upload_file_object(file_obj, blob_name=blob.name)
             self.case_blobs_to_delete.append(blob)
 
         blob._reload_properties()  # force a reload
@@ -165,7 +165,7 @@ class TestStorageWriteFiles(TestStorageFiles):
 
     def test_copy_existing_file(self):
         blob = self.bucket.upload_file(self.FILES['logo']['path'],
-                                       blob='CloudLogo')
+                                       blob_name='CloudLogo')
         self.case_blobs_to_delete.append(blob)
 
         new_blob = self.bucket.copy_blob(blob, self.bucket, 'CloudLogoCopy')
@@ -190,7 +190,7 @@ class TestStorageListFiles(TestStorageFiles):
             blob.delete()
 
         logo_path = cls.FILES['logo']['path']
-        blob = cls.bucket.upload_file(logo_path, blob=cls.FILENAMES[0])
+        blob = cls.bucket.upload_file(logo_path, blob_name=cls.FILENAMES[0])
         cls.suite_blobs_to_delete = [blob]
 
         # Copy main blob onto remaining in FILENAMES.
@@ -241,7 +241,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
             blob.delete()
 
         simple_path = cls.FILES['simple']['path']
-        blob = cls.bucket.upload_file(simple_path, blob=cls.FILENAMES[0])
+        blob = cls.bucket.upload_file(simple_path, blob_name=cls.FILENAMES[0])
         cls.suite_blobs_to_delete = [blob]
         for filename in cls.FILENAMES[1:]:
             new_blob = cls.bucket.copy_blob(blob, cls.bucket, filename)
@@ -336,4 +336,4 @@ class TestStorageSignURLs(TestStorageFiles):
         self.assertEqual(content, '')
 
         # Check that the blob has actually been deleted.
-        self.assertFalse(blob in self.bucket)
+        self.assertFalse(blob.name in self.bucket)
