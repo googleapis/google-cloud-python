@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.connection &mdash; gcloud 2e20f26 documentation</title>
+    <title>gcloud.storage.connection &mdash; gcloud 8178991 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2e20f26',
+        VERSION:     '8178991',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 2e20f26 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 8178991 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/connection%0ARelease%3A%202e20f26" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/connection%0ARelease%3A%208178991" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (2e20f26)
+              Version History (8178991)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -112,11 +112,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :mod:`gcloud.storage.api` and</span>
 <span class="sd">    :class:`gcloud.storage.bucket.Bucket` and</span>
 <span class="sd">    :class:`gcloud.storage.blob.Blob`).</span>
-
-<span class="sd">    See :class:`gcloud.connection.Connection` for a full list of</span>
-<span class="sd">    parameters. This subclass differs only in needing a project</span>
-<span class="sd">    name (which you specify when creating a project in the Cloud</span>
-<span class="sd">    Console).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="n">base_connection</span><span class="o">.</span><span class="n">API_BASE_URL</span>
@@ -128,15 +123,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/storage/{api_version}{path}&#39;</span>
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;:type project: string</span>
-
-<span class="sd">        :param project: The project name to connect to.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
-
-<div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                       <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct an API url given a few components, some optional.</span>
 
@@ -164,18 +152,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The URL assembled from the pieces provided.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">api_base_url</span> <span class="o">=</span> <span class="n">api_base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_BASE_URL</span>
+        <span class="n">api_base_url</span> <span class="o">=</span> <span class="n">api_base_url</span> <span class="ow">or</span> <span class="n">cls</span><span class="o">.</span><span class="n">API_BASE_URL</span>
         <span class="k">if</span> <span class="n">upload</span><span class="p">:</span>
             <span class="n">api_base_url</span> <span class="o">+=</span> <span class="s">&#39;/upload&#39;</span>
 
-        <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">api_base_url</span><span class="o">=</span><span class="p">(</span><span class="n">api_base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_BASE_URL</span><span class="p">),</span>
-            <span class="n">api_version</span><span class="o">=</span><span class="p">(</span><span class="n">api_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">),</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">api_base_url</span><span class="o">=</span><span class="p">(</span><span class="n">api_base_url</span> <span class="ow">or</span> <span class="n">cls</span><span class="o">.</span><span class="n">API_BASE_URL</span><span class="p">),</span>
+            <span class="n">api_version</span><span class="o">=</span><span class="p">(</span><span class="n">api_version</span> <span class="ow">or</span> <span class="n">cls</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">),</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
 
         <span class="n">query_params</span> <span class="o">=</span> <span class="n">query_params</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">query_params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;project&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">})</span>
-        <span class="n">url</span> <span class="o">+=</span> <span class="s">&#39;?&#39;</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">query_params</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="s">&#39;?&#39;</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">query_params</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">url</span>
 </div>

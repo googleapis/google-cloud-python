@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.__init__ &mdash; gcloud 2e20f26 documentation</title>
+    <title>gcloud.storage.__init__ &mdash; gcloud 8178991 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2e20f26',
+        VERSION:     '8178991',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 2e20f26 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 8178991 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%202e20f26" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%208178991" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (2e20f26)
+              Version History (8178991)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -189,16 +189,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">_DEFAULTS</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
 
 </div>
-<div class="viewcode-block" id="set_default_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.set_default_connection">[docs]</a><span class="k">def</span> <span class="nf">set_default_connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="set_default_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.set_default_connection">[docs]</a><span class="k">def</span> <span class="nf">set_default_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set default connection either explicitly or implicitly as fall-back.</span>
-
-<span class="sd">    :type project: string</span>
-<span class="sd">    :param project: Optional. The name of the project to connect to.</span>
 
 <span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
 <span class="sd">    :param connection: A connection provided to be the default.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">get_connection</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">get_connection</span><span class="p">()</span>
     <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">_DEFAULTS</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
 
 </div>
@@ -216,38 +213,30 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
 <span class="sd">    :param connection: Optional. A connection provided to be the default.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c"># NOTE: `set_default_project` is called before `set_default_connection`</span>
-    <span class="c">#       since `set_default_connection` falls back to implicit project.</span>
     <span class="n">set_default_project</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
-    <span class="n">set_default_connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+    <span class="n">set_default_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
     <span class="c"># NOTE: `set_default_bucket` is called after `set_default_connection`</span>
     <span class="c">#       since `set_default_bucket` falls back to implicit connection.</span>
     <span class="n">set_default_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to Cloud Storage.</span>
 
 <span class="sd">    Use this if you are going to access several buckets with the same</span>
 <span class="sd">    set of credentials:</span>
 
 <span class="sd">    &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">    &gt;&gt;&gt; connection = storage.get_connection(project)</span>
+<span class="sd">    &gt;&gt;&gt; connection = storage.get_connection()</span>
 <span class="sd">    &gt;&gt;&gt; bucket1 = storage.get_bucket(&#39;bucket1&#39;, connection=connection)</span>
 <span class="sd">    &gt;&gt;&gt; bucket2 = storage.get_bucket(&#39;bucket2&#39;, connection=connection)</span>
-
-<span class="sd">    :type project: string or ``NoneType``</span>
-<span class="sd">    :param project: Optional. The name of the project to connect to. If not</span>
-<span class="sd">                    included, falls back to default project.</span>
 
 <span class="sd">    :rtype: :class:`gcloud.storage.connection.Connection`</span>
 <span class="sd">    :returns: A connection defined with the proper credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">get_default_project</span><span class="p">()</span>
     <span class="n">implicit_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">get_credentials</span><span class="p">()</span>
     <span class="n">scoped_credentials</span> <span class="o">=</span> <span class="n">implicit_credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">SCOPE</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
