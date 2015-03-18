@@ -28,7 +28,7 @@ class Test_list_topics(unittest2.TestCase):
         returned = {'topics': [{'name': TOPIC_NAME}],
                     'nextPageToken': TOKEN}
         conn = _Connection(returned)
-        response = self._callFUT(PROJECT, conn)
+        response = self._callFUT(project=PROJECT, connection=conn)
         topics = response['topics']
         self.assertEqual(len(topics), 1)
         self.assertEqual(topics[0], {'name': TOPIC_NAME})
@@ -48,7 +48,7 @@ class Test_list_topics(unittest2.TestCase):
         returned = {'topics': [{'name': TOPIC_NAME}],
                     'nextPageToken': TOKEN2}
         conn = _Connection(returned)
-        response = self._callFUT(PROJECT, conn, SIZE, TOKEN1)
+        response = self._callFUT(SIZE, TOKEN1, PROJECT, conn)
         topics = response['topics']
         self.assertEqual(len(topics), 1)
         self.assertEqual(topics[0], {'name': TOPIC_NAME})

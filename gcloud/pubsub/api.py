@@ -15,9 +15,17 @@
 """ Define API functions (not bound to classes)."""
 
 
-def list_topics(project=None, connection=None,
-                page_size=None, page_token=None):
+def list_topics(page_size=None, page_token=None,
+                project=None, connection=None):
     """List topics for a given project.
+
+    :type page_size: int
+    :param page_size: maximum number of topics to return, If not passed,
+                      defaults to a value set by the API.
+
+    :type page_token: string
+    :param page_token: opaque marker for the next "page" of topics. If not
+                       passed, the API will return the first page of topics.
 
     :type project: string
     :param project: project ID to query.  If not passed, defaults to the
@@ -27,14 +35,6 @@ def list_topics(project=None, connection=None,
     :param connection: connection to use for the query.  If not passed,
                        defaults to the connection inferred from the
                        environment.
-
-    :type page_size: int
-    :param page_size: maximum number of topics to return, If not passed,
-                      defaults to a value set by the API.
-
-    :type page_token: string
-    :param page_token: opaque marker for the next "page" of topics. If not
-                       passed, the API will return the first page of topics.
 
     :rtype: dict
     :returns: keys include ``topics`` (a list of topic mappings) and
