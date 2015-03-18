@@ -145,5 +145,6 @@ class _Batch(object):
         conn = self.topic.connection
         response = conn.api_request(method='POST',
                                     path='%s:publish' % self.topic.path,
-                                    data={'messages': self.messages})
+                                    data={'messages': self.messages[:]})
         self.message_ids.extend(response['messageIds'])
+        del self.messages[:]

@@ -149,6 +149,7 @@ class TestTopic(unittest2.TestCase):
             batch.publish(PAYLOAD1)
             batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
         self.assertEqual(list(batch), [MSGID1, MSGID2])
+        self.assertEqual(list(batch.messages), [])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
