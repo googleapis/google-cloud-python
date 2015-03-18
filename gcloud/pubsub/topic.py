@@ -76,7 +76,7 @@ class Topic(object):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/publish
 
-        :type message: string
+        :type message: bytes
         :param message: the message payload
 
         :type attrs: dict (string -> string)
@@ -131,7 +131,7 @@ class _Batch(object):
     def publish(self, message, **attrs):
         """Emulate publishing a message, but save it.
 
-        :type message: string
+        :type message: bytes
         :param message: the message payload
 
         :type attrs: dict (string -> string)
