@@ -1,3 +1,7 @@
+# Welcome to the gCloud Datastore Demo! (hit enter)
+# We're going to walk through some of the basics...
+# Don't worry though. You don't need to do anything, just keep hitting enter...
+
 # Copyright 2014 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,9 +15,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# Welcome to the gCloud Datastore Demo! (hit enter)
-# We're going to walk through some of the basics...
-# Don't worry though. You don't need to do anything, just keep hitting enter...
 
 # Let's start by importing the demo module and initializing our connection.
 from gcloud import datastore

@@ -41,9 +41,11 @@ class DemoRunner(object):
     def run(self):
         line_groups = itertools.groupby(self.lines, self.get_line_type)
 
+        newline = False  # Don't use newline on the first statement.
         for group_type, lines in line_groups:
             if group_type == self.COMMENT:
-                self.write(lines)
+                self.write(lines, newline=newline)
+                newline = True
 
             elif group_type == self.CODE:
                 self.code(lines)
@@ -70,8 +72,8 @@ class DemoRunner(object):
         if newline:
             sys.stdout.write('\n')
 
-    def write(self, lines):
-        self._print()
+    def write(self, lines, newline=True):
+        self._print(newline=newline)
         self._print('\n'.join(lines), False)
         self.wait()
 
