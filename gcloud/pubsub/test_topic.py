@@ -92,15 +92,15 @@ class TestTopic(unittest2.TestCase):
         import base64
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
-        TEXT = 'This is the message text'
-        B64 = base64.b64encode(TEXT)
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD)
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64,
                    'attributes': {}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
-        msgid = topic.publish(TEXT)
+        msgid = topic.publish(PAYLOAD)
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -112,15 +112,15 @@ class TestTopic(unittest2.TestCase):
         import base64
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
-        TEXT = 'This is the message text'
-        B64 = base64.b64encode(TEXT)
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD)
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64,
                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
-        msgid = topic.publish(TEXT, attr1='value1', attr2='value2')
+        msgid = topic.publish(PAYLOAD, attr1='value1', attr2='value2')
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -132,10 +132,10 @@ class TestTopic(unittest2.TestCase):
         import base64
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
-        TEXT1 = 'This is the first message text'
-        TEXT2 = 'This is the second message text'
-        B64_1 = base64.b64encode(TEXT1)
-        B64_2 = base64.b64encode(TEXT2)
+        PAYLOAD1 = b'This is the first message text'
+        PAYLOAD2 = b'This is the second message text'
+        B64_1 = base64.b64encode(PAYLOAD1)
+        B64_2 = base64.b64encode(PAYLOAD2)
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
         MESSAGE1 = {'data': B64_1,
@@ -146,8 +146,8 @@ class TestTopic(unittest2.TestCase):
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
         with topic.batch() as batch:
-            batch.publish(TEXT1)
-            batch.publish(TEXT2, attr1='value1', attr2='value2')
+            batch.publish(PAYLOAD1)
+            batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
         self.assertEqual(list(batch), [MSGID1, MSGID2])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -161,16 +161,16 @@ class TestTopic(unittest2.TestCase):
 
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
-        TEXT1 = 'This is the first message text'
-        TEXT2 = 'This is the second message text'
+        PAYLOAD1 = b'This is the first message text'
+        PAYLOAD2 = b'This is the second message text'
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
         try:
             with topic.batch() as batch:
-                batch.publish(TEXT1)
-                batch.publish(TEXT2, attr1='value1', attr2='value2')
+                batch.publish(PAYLOAD1)
+                batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
                 raise Bugout()
         except Bugout:
             pass
