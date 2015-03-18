@@ -37,7 +37,7 @@ class Test_list_topics(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
-        self.assertEqual(req.get('query_params'), None)
+        self.assertEqual(req['query_params'], {})
 
     def test_w_explicit_connection_w_paging(self):
         TOPIC_NAME = 'topic_name'

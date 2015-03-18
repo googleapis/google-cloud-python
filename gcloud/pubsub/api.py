@@ -51,7 +51,4 @@ def list_topics(page_size=None, page_token=None,
         params['pageToken'] = page_token
 
     path = '/projects/%s/topics' % project
-    if params:
-        return connection.api_request(method='GET', path=path,
-                                      query_params=params)
-    return connection.api_request(method='GET', path=path)
+    return connection.api_request(method='GET', path=path, query_params=params)
