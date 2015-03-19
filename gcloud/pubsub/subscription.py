@@ -31,7 +31,7 @@ class Subscription(object):
 
     :type ack_deadline: int
     :param ack_deadline: the deadline (in seconds) by which messages pulled
-                         from the back-end must be ACKed.
+                         from the back-end must be acknowledged.
 
     :type push_endpoint: string
     :param push_endpoint: URL to which messages will be pushed by the back-end.
