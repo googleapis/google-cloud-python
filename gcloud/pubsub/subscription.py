@@ -159,7 +159,7 @@ class Subscription(object):
                          data=data)
 
     def modify_ack_deadline(self, ack_id, ack_deadline):
-        """API call:  update acknowledgement deadline for a retrieved messages.
+        """API call:  update acknowledgement deadline for a retrieved message.
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge
@@ -177,7 +177,7 @@ class Subscription(object):
                          data=data)
 
     def delete(self):
-        """API call:  delete the subscription via a DELETE request
+        """API call:  delete the subscription via a DELETE request.
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/delete
