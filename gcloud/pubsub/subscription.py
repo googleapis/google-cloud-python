@@ -67,7 +67,7 @@ class Subscription(object):
         conn.api_request(method='PUT', path=self.path, data=data)
 
     def exists(self):
-        """API call:  test existence of the subsription via a GET request
+        """API call:  test existence of the subscription via a GET request
 
         See
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get
@@ -83,7 +83,7 @@ class Subscription(object):
             return True
 
     def reload(self):
-        """API call:  test existence of the subsription via a GET request
+        """API call:  sync local subscription configuration via a GET request
 
         See
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get
