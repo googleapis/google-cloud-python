@@ -14,12 +14,7 @@
 
 """Create / interact with gcloud storage connections."""
 
-import json
-
-from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
-
 from gcloud import connection as base_connection
-from gcloud.exceptions import make_exception
 
 
 class Connection(base_connection.JSONConnection):
