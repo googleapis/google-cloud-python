@@ -1014,13 +1014,11 @@ class _Connection(_Responder):
         return result
 
     def build_api_url(self, path, query_params=None,
-                      api_base_url=API_BASE_URL, upload=False):
+                      api_base_url=API_BASE_URL):
         from six.moves.urllib.parse import urlencode
         from six.moves.urllib.parse import urlsplit
         from six.moves.urllib.parse import urlunsplit
-        # mimic the build_api_url interface, but avoid unused param and
-        # missed coverage errors
-        upload = not upload  # pragma NO COVER
+        # Mimic the build_api_url interface.
         qs = urlencode(query_params or {})
         scheme, netloc, _, _, _ = urlsplit(api_base_url)
         return urlunsplit((scheme, netloc, path, qs, ''))

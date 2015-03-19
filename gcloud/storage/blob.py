@@ -334,17 +334,19 @@ class Blob(_PropertyMixin):
         upload_config = _UploadConfig()
 
         # Temporary URL, until we know simple vs. resumable.
-        upload_url = conn.build_api_url(
-            path=self.bucket.path + '/o', upload=True)
+        base_url = conn.API_BASE_URL + '/upload'
+        upload_url = conn.build_api_url(api_base_url=base_url,
+                                        path=self.bucket.path + '/o')
 
         # Use apitools 'Upload' facility.
         request = http_wrapper.Request(upload_url, 'POST', headers)
 
         upload.ConfigureRequest(upload_config, request, url_builder)
         query_params = url_builder.query_params
-        request.url = conn.build_api_url(path=self.bucket.path + '/o',
-                                         query_params=query_params,
-                                         upload=True)
+        base_url = conn.API_BASE_URL + '/upload'
+        request.url = conn.build_api_url(api_base_url=base_url,
+                                         path=self.bucket.path + '/o',
+                                         query_params=query_params)
         upload.InitializeUpload(request, conn.http)
 
         # Should we be passing callbacks through from caller?  We can't

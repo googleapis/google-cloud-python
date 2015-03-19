@@ -78,17 +78,6 @@ class TestConnection(unittest2.TestCase):
         parms = dict(parse_qsl(qs))
         self.assertEqual(parms['bar'], 'baz')
 
-    def test_build_api_url_w_upload(self):
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'upload',
-            'storage',
-            conn.API_VERSION,
-            'foo',
-        ])
-        self.assertEqual(conn.build_api_url('/foo', upload=True), URI)
-
     def test__make_request_no_data_no_content_type_no_headers(self):
         conn = self._makeOne()
         URI = 'http://example.com/test'

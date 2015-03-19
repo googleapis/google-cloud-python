@@ -119,8 +119,8 @@ class JSONConnection(Connection):
     """A template for the URL of a particular API call."""
 
     @classmethod
-    def build_api_url(cls, path, query_params=None, api_base_url=None,
-                      api_version=None, upload=False):
+    def build_api_url(cls, path, query_params=None,
+                      api_base_url=None, api_version=None):
         """Construct an API url given a few components, some optional.
 
         Typically, you shouldn't need to use this method.
@@ -141,15 +141,10 @@ class JSONConnection(Connection):
                             Typically you shouldn't provide this and instead
                             use the default for the library.
 
-        :type upload: boolean
-        :param upload: True if the URL is for uploading purposes.
-
         :rtype: string
         :returns: The URL assembled from the pieces provided.
         """
         api_base_url = api_base_url or cls.API_BASE_URL
-        if upload:
-            api_base_url += '/upload'
 
         url = cls.API_URL_TEMPLATE.format(
             api_base_url=(api_base_url or cls.API_BASE_URL),
