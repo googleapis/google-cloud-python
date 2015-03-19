@@ -88,6 +88,12 @@ class TestJSONConnection(unittest2.TestCase):
             API_VERSION = 'vMOCK'
         return MockConnection(*args, **kw)
 
+    def test_class_defaults(self):
+        klass = self._getTargetClass()
+        self.assertIsNone(klass.API_URL_TEMPLATE)
+        self.assertIsNone(klass.API_BASE_URL)
+        self.assertIsNone(klass.API_VERSION)
+
     def test_ctor_defaults(self):
         conn = self._makeOne()
         self.assertEqual(conn.credentials, None)
