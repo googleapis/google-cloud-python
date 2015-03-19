@@ -19,6 +19,9 @@ def list_topics(page_size=None, page_token=None,
                 project=None, connection=None):
     """List topics for a given project.
 
+    See:
+    https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list
+
     :type page_size: int
     :param page_size: maximum number of topics to return, If not passed,
                       defaults to a value set by the API.
@@ -57,6 +60,12 @@ def list_topics(page_size=None, page_token=None,
 def list_subscriptions(page_size=None, page_token=None, topic_name=None,
                        project=None, connection=None):
     """List subscriptions for a given project.
+
+    See:
+    https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list
+
+    and (where ``topic_name`` is passed):
+    https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/subscriptions/list
 
     :type page_size: int
     :param page_size: maximum number of topics to return, If not passed,
