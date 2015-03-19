@@ -14,9 +14,13 @@
 
 """ Shared implementation of connections to API servers."""
 
+import json
 from pkg_resources import get_distribution
+from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
 import httplib2
+
+from gcloud.exceptions import make_exception
 
 
 API_BASE_URL = 'https://www.googleapis.com'
@@ -87,3 +91,214 @@ class Connection(object):
             if self._credentials:
                 self._http = self._credentials.authorize(self._http)
         return self._http
+
+
+class JSONConnection(Connection):
+    """A connection to a Google JSON-based API.
+
+    These APIs are discovery based. For reference:
+        https://developers.google.com/discovery/
+
+    This defines :meth:`Connection.api_request` for making a generic JSON
+    API request and API requests are created elsewhere.
+
+    The class constants
+    * ``API_BASE_URL``
+    * ``API_VERSION``
+    * ``API_URL_TEMPLATE``
+    must be updated by subclasses.
+    """
+
+    API_BASE_URL = None
+    """The base of the API call URL."""
+
+    API_VERSION = None
+    """The version of the API, used in building the API call's URL."""
+
+    API_URL_TEMPLATE = None
+    """A template for the URL of a particular API call."""
+
+    @classmethod
+    def build_api_url(cls, path, query_params=None, api_base_url=None,
+                      api_version=None, upload=False):
+        """Construct an API url given a few components, some optional.
+
+        Typically, you shouldn't need to use this method.
+
+        :type path: string
+        :param path: The path to the resource (ie, ``'/b/bucket-name'``).
+
+        :type query_params: dict
+        :param query_params: A dictionary of keys and values to insert into
+                             the query string of the URL.
+
+        :type api_base_url: string
+        :param api_base_url: The base URL for the API endpoint.
+                             Typically you won't have to provide this.
+
+        :type api_version: string
+        :param api_version: The version of the API to call.
+                            Typically you shouldn't provide this and instead
+                            use the default for the library.
+
+        :type upload: boolean
+        :param upload: True if the URL is for uploading purposes.
+
+        :rtype: string
+        :returns: The URL assembled from the pieces provided.
+        """
+        api_base_url = api_base_url or cls.API_BASE_URL
+        if upload:
+            api_base_url += '/upload'
+
+        url = cls.API_URL_TEMPLATE.format(
+            api_base_url=(api_base_url or cls.API_BASE_URL),
+            api_version=(api_version or cls.API_VERSION),
+            path=path)
+
+        query_params = query_params or {}
+        if query_params:
+            url += '?' + urlencode(query_params)
+
+        return url
+
+    def _make_request(self, method, url, data=None, content_type=None,
+                      headers=None):
+        """A low level method to send a request to the API.
+
+        Typically, you shouldn't need to use this method.
+
+        :type method: string
+        :param method: The HTTP method to use in the request.
+
+        :type url: string
+        :param url: The URL to send the request to.
+
+        :type data: string
+        :param data: The data to send as the body of the request.
+
+        :type content_type: string
+        :param content_type: The proper MIME type of the data provided.
+
+        :type headers: dict
+        :param headers: A dictionary of HTTP headers to send with the request.
+
+        :rtype: tuple of ``response`` (a dictionary of sorts)
+                and ``content`` (a string).
+        :returns: The HTTP response object and the content of the response,
+                  returned by :meth:`_do_request`.
+        """
+        headers = headers or {}
+        headers['Accept-Encoding'] = 'gzip'
+
+        if data:
+            content_length = len(str(data))
+        else:
+            content_length = 0
+
+        headers['Content-Length'] = content_length
+
+        if content_type:
+            headers['Content-Type'] = content_type
+
+        headers['User-Agent'] = self.USER_AGENT
+
+        return self._do_request(method, url, headers, data)
+
+    def _do_request(self, method, url, headers, data):
+        """Low-level helper:  perform the actual API request over HTTP.
+
+        Allows batch context managers to override and defer a request.
+
+        :type method: string
+        :param method: The HTTP method to use in the request.
+
+        :type url: string
+        :param url: The URL to send the request to.
+
+        :type headers: dict
+        :param headers: A dictionary of HTTP headers to send with the request.
+
+        :type data: string
+        :param data: The data to send as the body of the request.
+
+        :rtype: tuple of ``response`` (a dictionary of sorts)
+                and ``content`` (a string).
+        :returns: The HTTP response object and the content of the response.
+        """
+        return self.http.request(uri=url, method=method, headers=headers,
+                                 body=data)
+
+    def api_request(self, method, path, query_params=None,
+                    data=None, content_type=None,
+                    api_base_url=None, api_version=None,
+                    expect_json=True):
+        """Make a request over the HTTP transport to the API.
+
+        You shouldn't need to use this method, but if you plan to
+        interact with the API using these primitives, this is the
+        correct one to use.
+
+        :type method: string
+        :param method: The HTTP method name (ie, ``GET``, ``POST``, etc).
+                       Required.
+
+        :type path: string
+        :param path: The path to the resource (ie, ``'/b/bucket-name'``).
+                     Required.
+
+        :type query_params: dict
+        :param query_params: A dictionary of keys and values to insert into
+                             the query string of the URL.  Default is
+                             empty dict.
+
+        :type data: string
+        :param data: The data to send as the body of the request. Default is
+                     the empty string.
+
+        :type content_type: string
+        :param content_type: The proper MIME type of the data provided. Default
+                             is None.
+
+        :type api_base_url: string
+        :param api_base_url: The base URL for the API endpoint.
+                             Typically you won't have to provide this.
+                             Default is the standard API base URL.
+
+        :type api_version: string
+        :param api_version: The version of the API to call.  Typically
+                            you shouldn't provide this and instead use
+                            the default for the library.  Default is the
+                            latest API version supported by
+                            gcloud-python.
+
+        :type expect_json: boolean
+        :param expect_json: If True, this method will try to parse the
+                            response as JSON and raise an exception if
+                            that cannot be done.  Default is True.
+
+        :raises: Exception if the response code is not 200 OK.
+        """
+        url = self.build_api_url(path=path, query_params=query_params,
+                                 api_base_url=api_base_url,
+                                 api_version=api_version)
+
+        # Making the executive decision that any dictionary
+        # data will be sent properly as JSON.
+        if data and isinstance(data, dict):
+            data = json.dumps(data)
+            content_type = 'application/json'
+
+        response, content = self._make_request(
+            method=method, url=url, data=data, content_type=content_type)
+
+        if not 200 <= response.status < 300:
+            raise make_exception(response, content)
+
+        if content and expect_json:
+            content_type = response.get('content-type', '')
+            if not content_type.startswith('application/json'):
+                raise TypeError('Expected JSON, got %s' % content_type)
+            return json.loads(content)
+
+        return content
