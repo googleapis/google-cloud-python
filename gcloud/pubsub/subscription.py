@@ -99,6 +99,11 @@ class Subscription(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/modifyPushConfig
+
+        :type push_endpoint: string
+        :param push_endpoint: URL to which messages will be pushed by the
+                              back-end.  If None, the application must pull
+                              messages.
         """
         data = {}
         config = data['pushConfig'] = {}
