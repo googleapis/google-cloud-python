@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 85dc64b documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud 8948a49 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '85dc64b',
+        VERSION:     '8948a49',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 85dc64b documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 8948a49 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%2085dc64b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%208948a49" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (85dc64b)
+              Version History (8948a49)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -416,17 +416,19 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">upload_config</span> <span class="o">=</span> <span class="n">_UploadConfig</span><span class="p">()</span>
 
         <span class="c"># Temporary URL, until we know simple vs. resumable.</span>
-        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span> <span class="n">upload</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s">&#39;/upload&#39;</span>
+        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
+                                        <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">)</span>
 
         <span class="c"># Use apitools &#39;Upload&#39; facility.</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">http_wrapper</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
         <span class="n">upload</span><span class="o">.</span><span class="n">ConfigureRequest</span><span class="p">(</span><span class="n">upload_config</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_builder</span><span class="p">)</span>
         <span class="n">query_params</span> <span class="o">=</span> <span class="n">url_builder</span><span class="o">.</span><span class="n">query_params</span>
-        <span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span>
-                                         <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-                                         <span class="n">upload</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s">&#39;/upload&#39;</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
+                                         <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span>
+                                         <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
         <span class="n">upload</span><span class="o">.</span><span class="n">InitializeUpload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">conn</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
 
         <span class="c"># Should we be passing callbacks through from caller?  We can&#39;t</span>
