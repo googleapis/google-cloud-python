@@ -41,11 +41,11 @@ The main concepts with this API are:
 import os
 
 from gcloud import credentials
+from gcloud._helpers import get_default_project
+from gcloud._helpers import set_default_project
 from gcloud.storage import _implicit_environ
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
-from gcloud.storage._implicit_environ import get_default_project
-from gcloud.storage._implicit_environ import set_default_project
 from gcloud.storage.api import create_bucket
 from gcloud.storage.api import get_all_buckets
 from gcloud.storage.api import get_bucket
