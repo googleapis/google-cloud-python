@@ -15,12 +15,20 @@
 
 This module is not part of the public API surface of `gcloud`.
 """
+import socket
 
 try:
     from threading import local as Local
 except ImportError:     # pragma: NO COVER (who doesn't have it?)
     class Local(object):
         """Placeholder for non-threaded applications."""
+
+from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
+
+try:
+    from google.appengine.api import app_identity
+except ImportError:
+    app_identity = None
 
 
 class _LocalStack(Local):
@@ -102,3 +110,49 @@ def _lazy_property_deco(deferred_callable):
         #      For Python2.7+ deferred_callable.__func__ would suffice.
         deferred_callable = deferred_callable.__get__(True)
     return _LazyProperty(deferred_callable.__name__, deferred_callable)
+
+
+def app_engine_id():
+    """Gets the App Engine application ID if it can be inferred.
+
+    :rtype: string or ``NoneType``
+    :returns: App Engine application ID if running in App Engine,
+              else ``None``.
+    """
+    if app_identity is None:
+        return None
+
+    return app_identity.get_application_id()
+
+
+def compute_engine_id():
+    """Gets the Compute Engine project ID if it can be inferred.
+
+    Uses 169.254.169.254 for the metadata server to avoid request
+    latency from DNS lookup.
+
+    See https://cloud.google.com/compute/docs/metadata#metadataserver
+    for information about this IP address. (This IP is also used for
+    Amazon EC2 instances, so the metadata flavor is crucial.)
+
+    See https://github.com/google/oauth2client/issues/93 for context about
+    DNS latency.
+
+    :rtype: string or ``NoneType``
+    :returns: Compute Engine project ID if the metadata service is available,
+              else ``None``.
+    """
+    host = '169.254.169.254'
+    uri_path = '/computeMetadata/v1/project/project-id'
+    headers = {'Metadata-Flavor': 'Google'}
+    connection = HTTPConnection(host, timeout=0.1)
+
+    try:
+        connection.request('GET', uri_path, headers=headers)
+        response = connection.getresponse()
+        if response.status == 200:
+            return response.read()
+    except socket.error:  # socket.timeout or socket.error(64, 'Host is down')
+        pass
+    finally:
+        connection.close()

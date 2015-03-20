@@ -23,11 +23,8 @@ import socket
 
 from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
 
-try:
-    from google.appengine.api import app_identity
-except ImportError:
-    app_identity = None
-
+from gcloud._helpers import app_engine_id
+from gcloud._helpers import compute_engine_id
 from gcloud._helpers import _lazy_property_deco
 from gcloud import credentials
 from gcloud.datastore.connection import Connection
@@ -39,52 +36,6 @@ SCOPE = ('https://www.googleapis.com/auth/datastore',
 
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 _GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
-
-
-def app_engine_id():
-    """Gets the App Engine application ID if it can be inferred.
-
-    :rtype: string or ``NoneType``
-    :returns: App Engine application ID if running in App Engine,
-              else ``None``.
-    """
-    if app_identity is None:
-        return None
-
-    return app_identity.get_application_id()
-
-
-def compute_engine_id():
-    """Gets the Compute Engine project ID if it can be inferred.
-
-    Uses 169.254.169.254 for the metadata server to avoid request
-    latency from DNS lookup.
-
-    See https://cloud.google.com/compute/docs/metadata#metadataserver
-    for information about this IP address. (This IP is also used for
-    Amazon EC2 instances, so the metadata flavor is crucial.)
-
-    See https://github.com/google/oauth2client/issues/93 for context about
-    DNS latency.
-
-    :rtype: string or ``NoneType``
-    :returns: Compute Engine project ID if the metadata service is available,
-              else ``None``.
-    """
-    host = '169.254.169.254'
-    uri_path = '/computeMetadata/v1/project/project-id'
-    headers = {'Metadata-Flavor': 'Google'}
-    connection = HTTPConnection(host, timeout=0.1)
-
-    try:
-        connection.request('GET', uri_path, headers=headers)
-        response = connection.getresponse()
-        if response.status == 200:
-            return response.read()
-    except socket.error:  # socket.timeout or socket.error(64, 'Host is down')
-        pass
-    finally:
-        connection.close()
 
 
 def _get_production_dataset_id():
