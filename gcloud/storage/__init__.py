@@ -41,9 +41,9 @@ The main concepts with this API are:
 import os
 
 from gcloud import credentials
-from gcloud._helpers import get_scoped_connection
 from gcloud._helpers import get_default_project
 from gcloud._helpers import set_default_project
+from gcloud.connection import get_scoped_connection
 from gcloud.storage import _implicit_environ
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection

@@ -23,7 +23,7 @@ import os
 from gcloud._helpers import _app_engine_id
 from gcloud._helpers import _compute_engine_id
 from gcloud._helpers import _lazy_property_deco
-from gcloud._helpers import get_scoped_connection
+from gcloud.connection import get_scoped_connection
 from gcloud.datastore.connection import Connection
 
 
