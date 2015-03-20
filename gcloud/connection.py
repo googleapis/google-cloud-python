@@ -303,7 +303,7 @@ class JSONConnection(Connection):
 def get_scoped_connection(klass, scopes):
     """Create a scoped connection to GCloud.
 
-    :type klass: type
+    :type klass: subclass of :class:`gcloud.connection.Connection`
     :param klass: the specific ``Connection`` class to instantiate.
 
     :type scopes: list of URLs
