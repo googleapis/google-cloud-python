@@ -112,7 +112,7 @@ def _lazy_property_deco(deferred_callable):
     return _LazyProperty(deferred_callable.__name__, deferred_callable)
 
 
-def app_engine_id():
+def _app_engine_id():
     """Gets the App Engine application ID if it can be inferred.
 
     :rtype: string or ``NoneType``
@@ -125,7 +125,7 @@ def app_engine_id():
     return app_identity.get_application_id()
 
 
-def compute_engine_id():
+def _compute_engine_id():
     """Gets the Compute Engine project ID if it can be inferred.
 
     Uses 169.254.169.254 for the metadata server to avoid request

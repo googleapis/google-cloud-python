@@ -154,8 +154,8 @@ class Test__determine_default_dataset_id(unittest2.TestCase):
         patched_methods = {
             '_get_production_dataset_id': prod_mock,
             '_get_gcd_dataset_id': gcd_mock,
-            'app_engine_id': gae_mock,
-            'compute_engine_id': gce_mock,
+            '_app_engine_id': gae_mock,
+            '_compute_engine_id': gce_mock,
         }
 
         with _Monkey(_implicit_environ, **patched_methods):

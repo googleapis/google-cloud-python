@@ -19,12 +19,9 @@ connection from the enviroment.
 """
 
 import os
-import socket
 
-from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
-
-from gcloud._helpers import app_engine_id
-from gcloud._helpers import compute_engine_id
+from gcloud._helpers import _app_engine_id
+from gcloud._helpers import _compute_engine_id
 from gcloud._helpers import _lazy_property_deco
 from gcloud import credentials
 from gcloud.datastore.connection import Connection
@@ -72,10 +69,10 @@ def _determine_default_dataset_id(dataset_id=None):
         dataset_id = _get_gcd_dataset_id()
 
     if dataset_id is None:
-        dataset_id = app_engine_id()
+        dataset_id = _app_engine_id()
 
     if dataset_id is None:
-        dataset_id = compute_engine_id()
+        dataset_id = _compute_engine_id()
 
     return dataset_id
 

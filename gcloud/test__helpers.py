@@ -95,11 +95,11 @@ class Test__lazy_property_deco(unittest2.TestCase):
         self.assertEqual(lazy_prop._name, 'test_func')
 
 
-class Test_app_engine_id(unittest2.TestCase):
+class Test__app_engine_id(unittest2.TestCase):
 
     def _callFUT(self):
-        from gcloud._helpers import app_engine_id
-        return app_engine_id()
+        from gcloud._helpers import _app_engine_id
+        return _app_engine_id()
 
     def test_no_value(self):
         from gcloud._testing import _Monkey
@@ -120,11 +120,11 @@ class Test_app_engine_id(unittest2.TestCase):
             self.assertEqual(dataset_id, APP_ENGINE_ID)
 
 
-class Test_compute_engine_id(unittest2.TestCase):
+class Test__compute_engine_id(unittest2.TestCase):
 
     def _callFUT(self):
-        from gcloud._helpers import compute_engine_id
-        return compute_engine_id()
+        from gcloud._helpers import _compute_engine_id
+        return _compute_engine_id()
 
     def _monkeyConnection(self, connection):
         from gcloud._testing import _Monkey
