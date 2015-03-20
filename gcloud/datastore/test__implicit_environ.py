@@ -305,6 +305,7 @@ class Test_get_connection(unittest2.TestCase):
 
     def test_it(self):
         from gcloud import credentials
+        from gcloud.datastore._implicit_environ import SCOPE
         from gcloud.datastore.connection import Connection
         from gcloud.test_credentials import _Client
         from gcloud._testing import _Monkey
@@ -314,6 +315,7 @@ class Test_get_connection(unittest2.TestCase):
             found = self._callFUT()
         self.assertTrue(isinstance(found, Connection))
         self.assertTrue(found._credentials is client._signed)
+        self.assertEqual(found._credentials._scopes, SCOPE)
         self.assertTrue(client._get_app_default_called)
 
 

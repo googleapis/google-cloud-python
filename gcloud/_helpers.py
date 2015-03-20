@@ -31,6 +31,8 @@ try:
 except ImportError:
     app_identity = None
 
+from gcloud import credentials
+
 
 class _LocalStack(Local):
     """Manage a thread-local LIFO stack of resources.
@@ -236,3 +238,20 @@ class _DefaultsContainer(object):
 
 
 _DEFAULTS = _DefaultsContainer(implicit=True)
+
+
+def get_scoped_connection(klass, scopes):
+    """Create a scoped connection to GCloud.
+
+    :type klass: type
+    :param klass: the specific ``Connection`` class to instantiate.
+
+    :type scopes: list of URLs
+    :param scopes: the effective service auth scopes for the connection.
+
+    :rtype: instance of ``klass``
+    :returns: A connection defined with the proper credentials.
+    """
+    implicit_credentials = credentials.get_credentials()
+    scoped_credentials = implicit_credentials.create_scoped(scopes)
+    return klass(credentials=scoped_credentials)
