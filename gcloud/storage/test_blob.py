@@ -348,7 +348,7 @@ class Test_Blob(unittest2.TestCase):
         DATA = b'ABCDEF'
         response = {'status': OK}
         connection = _Connection(
-            (response, b''),
+            (response, b'{}'),
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -412,10 +412,11 @@ class Test_Blob(unittest2.TestCase):
         chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
                            'range': 'bytes 0-4'}
         chunk2_response = {'status': OK}
+        # Need valid JSON on last response, since resumable.
         connection = _Connection(
             (loc_response, b''),
             (chunk1_response, b''),
-            (chunk2_response, b''),
+            (chunk2_response, b'{}'),
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
@@ -470,7 +471,7 @@ class Test_Blob(unittest2.TestCase):
                            'range': 'bytes 0-4'}
         chunk2_response = {'status': OK}
         connection = _Connection(
-            (loc_response, ''),
+            (loc_response, '{}'),
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
@@ -512,7 +513,7 @@ class Test_Blob(unittest2.TestCase):
                            'range': 'bytes 0-4'}
         chunk2_response = {'status': OK}
         connection = _Connection(
-            (loc_response, ''),
+            (loc_response, '{}'),
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
@@ -576,7 +577,7 @@ class Test_Blob(unittest2.TestCase):
                            'range': 'bytes 0-4'}
         chunk2_response = {'status': OK}
         connection = _Connection(
-            (loc_response, ''),
+            (loc_response, '{}'),
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
@@ -614,7 +615,7 @@ class Test_Blob(unittest2.TestCase):
                            'range': 'bytes 0-4'}
         chunk2_response = {'status': OK}
         connection = _Connection(
-            (loc_response, ''),
+            (loc_response, '{}'),
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
