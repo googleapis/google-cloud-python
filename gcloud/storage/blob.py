@@ -15,6 +15,7 @@
 """Create / interact with Google Cloud Storage blobs."""
 
 import copy
+import json
 import mimetypes
 import os
 import time
@@ -353,10 +354,13 @@ class Blob(_PropertyMixin):
         # pass them as None, because apitools wants to print to the console
         # by default.
         if upload.strategy == transfer._RESUMABLE_UPLOAD:
-            upload.StreamInChunks(callback=lambda *args: None,
-                                  finish_callback=lambda *args: None)
+            http_response = upload.StreamInChunks(
+                callback=lambda *args: None,
+                finish_callback=lambda *args: None)
         else:
-            http_wrapper.MakeRequest(conn.http, request, retries=num_retries)
+            http_response = http_wrapper.MakeRequest(conn.http, request,
+                                                     retries=num_retries)
+        self._properties = json.loads(http_response.content)
 
     def upload_from_filename(self, filename, content_type=None):
         """Upload this blob's contents from the content of a named file.

@@ -88,7 +88,7 @@ class TestStorageFiles(unittest2.TestCase):
             'path': 'regression/data/CloudPlatform_128px_Retina.png',
         },
         'big': {
-            'path': 'regression/data/five-mb-file.zip',
+            'path': 'regression/data/five-point-one-mb-file.zip',
         },
         'simple': {
             'path': 'regression/data/simple.txt',
@@ -119,21 +119,19 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         file_data = self.FILES['big']
         with open(file_data['path'], 'rb') as file_obj:
-            self.bucket.upload_file_object(file_obj, blob_name=blob.name)
+            blob.upload_from_file(file_obj)
             self.case_blobs_to_delete.append(blob)
 
-        blob._reload_properties()  # force a reload
         self.assertEqual(blob.md5_hash, file_data['hash'])
 
     def test_small_file_write_from_filename(self):
-        blob = storage.Blob(bucket=self.bucket, name='LargeFile')
+        blob = storage.Blob(bucket=self.bucket, name='SmallFile')
         self.assertEqual(blob._properties, {})
 
         file_data = self.FILES['simple']
         blob.upload_from_filename(file_data['path'])
         self.case_blobs_to_delete.append(blob)
 
-        blob._reload_properties()  # force a reload
         self.assertEqual(blob.md5_hash, file_data['hash'])
 
     def test_write_metadata(self):
@@ -143,7 +141,6 @@ class TestStorageWriteFiles(TestStorageFiles):
         # NOTE: This should not be necessary. We should be able to pass
         #       it in to upload_file and also to upload_from_string.
         blob.content_type = 'image/png'
-        blob._reload_properties()  # force a reload
         self.assertEqual(blob.content_type, 'image/png')
 
     def test_direct_write_and_read_into_file(self):
@@ -153,7 +150,7 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.case_blobs_to_delete.append(blob)
 
         same_blob = storage.Blob(bucket=self.bucket, name='MyBuffer')
-        same_blob._reload_properties()  # force a reload
+        same_blob._reload_properties()  # Initialize properties.
         temp_filename = tempfile.mktemp()
         with open(temp_filename, 'w') as file_obj:
             same_blob.download_to_file(file_obj)
@@ -171,9 +168,7 @@ class TestStorageWriteFiles(TestStorageFiles):
         new_blob = self.bucket.copy_blob(blob, self.bucket, 'CloudLogoCopy')
         self.case_blobs_to_delete.append(new_blob)
 
-        blob._reload_properties()  # force a reload
         base_contents = blob.download_as_string()
-        new_blob._reload_properties()  # force a reload
         copied_contents = new_blob.download_as_string()
         self.assertEqual(base_contents, copied_contents)
 
