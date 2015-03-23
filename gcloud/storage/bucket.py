@@ -364,7 +364,8 @@ class Bucket(_PropertyMixin):
             new_name = blob.name
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
-        self.connection.api_request(method='POST', path=api_path)
+        copy_result = self.connection.api_request(method='POST', path=api_path)
+        new_blob._properties = copy_result
         return new_blob
 
     def upload_file(self, filename, blob_name=None):
