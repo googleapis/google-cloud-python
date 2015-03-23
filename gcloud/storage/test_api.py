@@ -104,6 +104,7 @@ class Test_get_all_buckets(unittest2.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def _get_all_buckets_non_empty_helper(self, project, use_default=False):
+        from gcloud._testing import _monkey_defaults as _base_monkey_defaults
         from gcloud.storage._testing import _monkey_defaults
         from gcloud.storage.connection import Connection
         BUCKET_NAME = 'bucket-name'
@@ -120,8 +121,9 @@ class Test_get_all_buckets(unittest2.TestCase):
         )
 
         if use_default:
-            with _monkey_defaults(project=project, connection=conn):
-                buckets = list(self._callFUT())
+            with _base_monkey_defaults(project=project):
+                with _monkey_defaults(connection=conn):
+                    buckets = list(self._callFUT())
         else:
             buckets = list(self._callFUT(project, conn))
 
@@ -208,6 +210,7 @@ class Test_create_bucket(unittest2.TestCase):
                              connection=connection)
 
     def _create_bucket_success_helper(self, project, use_default=False):
+        from gcloud._testing import _monkey_defaults as _base_monkey_defaults
         from gcloud.storage._testing import _monkey_defaults
         from gcloud.storage.connection import Connection
         from gcloud.storage.bucket import Bucket
@@ -225,8 +228,9 @@ class Test_create_bucket(unittest2.TestCase):
         )
 
         if use_default:
-            with _monkey_defaults(project=project, connection=conn):
-                bucket = self._callFUT(BLOB_NAME)
+            with _base_monkey_defaults(project=project):
+                with _monkey_defaults(connection=conn):
+                    bucket = self._callFUT(BLOB_NAME)
         else:
             bucket = self._callFUT(BLOB_NAME, project=project, connection=conn)
 

@@ -15,6 +15,7 @@
 
 This module is not part of the public API surface of `gcloud`.
 """
+import os
 import socket
 
 try:
@@ -156,3 +157,82 @@ def _compute_engine_id():
         pass
     finally:
         connection.close()
+
+
+_PROJECT_ENV_VAR_NAME = 'GCLOUD_PROJECT'
+
+
+def _get_production_project():
+    """Gets the production project if it can be inferred."""
+    return os.getenv(_PROJECT_ENV_VAR_NAME)
+
+
+def _determine_default_project(project=None):
+    """Determine default project ID explicitly or implicitly as fall-back.
+
+    In implicit case, currently only supports enviroment variable but will
+    support App Engine, Compute Engine and other environments in the future.
+
+    Local environment variable used is:
+    - GCLOUD_PROJECT
+
+    :type project: string
+    :param project: Optional. The project name to use as default.
+
+    :rtype: string or ``NoneType``
+    :returns: Default project if it can be determined.
+    """
+    if project is None:
+        project = _get_production_project()
+
+    return project
+
+
+def set_default_project(project=None):
+    """Set default project either explicitly or implicitly as fall-back.
+
+    :type project: string
+    :param project: Optional. The project name to use as default.
+
+    :raises: :class:`EnvironmentError` if no project was found.
+    """
+    project = _determine_default_project(project=project)
+    if project is not None:
+        _DEFAULTS.project = project
+    else:
+        raise EnvironmentError('No project could be inferred.')
+
+
+def get_default_project():
+    """Get default project.
+
+    :rtype: string or ``NoneType``
+    :returns: The default project if one has been set.
+    """
+    return _DEFAULTS.project
+
+
+class _DefaultsContainer(object):
+    """Container for defaults.
+
+    :type project: string
+    :param project: Persistent implied project from environment.
+
+    :type implicit: boolean
+    :param implicit: if False, assign the instance's ``project`` attribute
+                     unconditionally;  otherwise, assign it only if the
+                     value is not None.
+    """
+
+    @_lazy_property_deco
+    @staticmethod
+    def project():
+        """Return the implicit default project."""
+        return _determine_default_project()
+
+    def __init__(self, project=None, implicit=False):
+        if project is not None or not implicit:
+            self.project = project
+
+
+_DEFAULTS = _DefaultsContainer(implicit=True)
