@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import httplib2
+import six
 import tempfile
 import time
 import unittest2
@@ -122,7 +123,10 @@ class TestStorageWriteFiles(TestStorageFiles):
             blob.upload_from_file(file_obj)
             self.case_blobs_to_delete.append(blob)
 
-        self.assertEqual(blob.md5_hash, file_data['hash'])
+        md5_hash = blob.md5_hash
+        if not isinstance(md5_hash, six.binary_type):
+            md5_hash = md5_hash.encode('utf-8')
+        self.assertEqual(md5_hash, file_data['hash'])
 
     def test_small_file_write_from_filename(self):
         blob = storage.Blob(bucket=self.bucket, name='SmallFile')
@@ -132,7 +136,10 @@ class TestStorageWriteFiles(TestStorageFiles):
         blob.upload_from_filename(file_data['path'])
         self.case_blobs_to_delete.append(blob)
 
-        self.assertEqual(blob.md5_hash, file_data['hash'])
+        md5_hash = blob.md5_hash
+        if not isinstance(md5_hash, six.binary_type):
+            md5_hash = md5_hash.encode('utf-8')
+        self.assertEqual(md5_hash, file_data['hash'])
 
     def test_write_metadata(self):
         blob = self.bucket.upload_file(self.FILES['logo']['path'])
@@ -145,14 +152,14 @@ class TestStorageWriteFiles(TestStorageFiles):
 
     def test_direct_write_and_read_into_file(self):
         blob = storage.Blob(bucket=self.bucket, name='MyBuffer')
-        file_contents = 'Hello World'
+        file_contents = b'Hello World'
         blob.upload_from_string(file_contents)
         self.case_blobs_to_delete.append(blob)
 
         same_blob = storage.Blob(bucket=self.bucket, name='MyBuffer')
         same_blob._reload_properties()  # Initialize properties.
         temp_filename = tempfile.mktemp()
-        with open(temp_filename, 'w') as file_obj:
+        with open(temp_filename, 'wb') as file_obj:
             same_blob.download_to_file(file_obj)
 
         with open(temp_filename, 'rb') as file_obj:
@@ -299,7 +306,7 @@ class TestStorageSignURLs(TestStorageFiles):
         super(TestStorageSignURLs, self).setUp()
 
         logo_path = self.FILES['logo']['path']
-        with open(logo_path, 'r') as file_obj:
+        with open(logo_path, 'rb') as file_obj:
             self.LOCAL_FILE = file_obj.read()
 
         blob = storage.Blob(bucket=self.bucket, name='LogoToSign.jpg')
@@ -328,7 +335,7 @@ class TestStorageSignURLs(TestStorageFiles):
 
         response, content = HTTP.request(signed_delete_url, method='DELETE')
         self.assertEqual(response.status, 204)
-        self.assertEqual(content, '')
+        self.assertEqual(content, b'')
 
         # Check that the blob has actually been deleted.
         self.assertFalse(blob.name in self.bucket)

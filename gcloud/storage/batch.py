@@ -170,8 +170,14 @@ class Batch(Connection):
 def _unpack_batch_response(response, content):
     """Convert response, content -> [(status, reason, payload)]."""
     parser = Parser()
-    faux_message = ('Content-Type: %s\nMIME-Version: 1.0\n\n%s' %
-                    (response['content-type'], content))
+    if isinstance(content, six.binary_type):
+        content = content.decode('utf-8')
+    faux_message = ''.join([
+        'Content-Type: ',
+        response['content-type'],
+        '\nMIME-Version: 1.0\n\n',
+        content,
+    ])
 
     message = parser.parsestr(faux_message)
 
