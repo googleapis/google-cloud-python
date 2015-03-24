@@ -347,6 +347,34 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(len(batch._responses), 0)
 
 
+class Test__unpack_batch_response(unittest2.TestCase):
+
+    def _callFUT(self, response, content):
+        from gcloud.storage.batch import _unpack_batch_response
+        return _unpack_batch_response(response, content)
+
+    def test_bytes(self):
+        RESPONSE = {'content-type': b'multipart/mixed; boundary="DEADBEEF="'}
+        CONTENT = _THREE_PART_MIME_RESPONSE.encode('utf-8')
+        result = list(self._callFUT(RESPONSE, CONTENT))
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0], ('200', 'OK', {u'bar': 2, u'foo': 1}))
+        self.assertEqual(result[1], ('200', 'OK', {u'foo': 1, u'bar': 3}))
+        self.assertEqual(result[2], ('204', 'No Content', ''))
+
+    def test_unicode(self):
+        import six
+        RESPONSE = {'content-type': u'multipart/mixed; boundary="DEADBEEF="'}
+        CONTENT = _THREE_PART_MIME_RESPONSE
+        if isinstance(CONTENT, six.binary_type):  # pragma: NO COVER  Python3
+            CONTENT = CONTENT.decode('utf-8')
+        result = list(self._callFUT(RESPONSE, CONTENT))
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0], ('200', 'OK', {u'bar': 2, u'foo': 1}))
+        self.assertEqual(result[1], ('200', 'OK', {u'foo': 1, u'bar': 3}))
+        self.assertEqual(result[2], ('204', 'No Content', ''))
+
+
 _THREE_PART_MIME_RESPONSE = """\
 --DEADBEEF=
 Content-Type: application/http
