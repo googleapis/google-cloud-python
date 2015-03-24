@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.__init__ &mdash; gcloud d51f29f documentation</title>
+    <title>gcloud.storage.__init__ &mdash; gcloud 3b04fdb documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'd51f29f',
+        VERSION:     '3b04fdb',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud d51f29f documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 3b04fdb documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%20d51f29f" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%203b04fdb" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (d51f29f)
+              Version History (3b04fdb)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -125,6 +125,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">get_default_project</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">set_default_project</span>
+<span class="kn">from</span> <span class="nn">gcloud.connection</span> <span class="kn">import</span> <span class="n">get_scoped_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
@@ -215,9 +216,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :rtype: :class:`gcloud.storage.connection.Connection`</span>
 <span class="sd">    :returns: A connection defined with the proper credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">implicit_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">get_credentials</span><span class="p">()</span>
-    <span class="n">scoped_credentials</span> <span class="o">=</span> <span class="n">implicit_credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">SCOPE</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">scoped_credentials</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">get_scoped_connection</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="n">SCOPE</span><span class="p">)</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
