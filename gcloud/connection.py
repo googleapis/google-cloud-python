@@ -20,6 +20,7 @@ from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
 import httplib2
 
+from gcloud.credentials import get_credentials
 from gcloud.exceptions import make_exception
 
 
@@ -297,3 +298,20 @@ class JSONConnection(Connection):
             return json.loads(content)
 
         return content
+
+
+def get_scoped_connection(klass, scopes):
+    """Create a scoped connection to GCloud.
+
+    :type klass: subclass of :class:`gcloud.connection.Connection`
+    :param klass: the specific ``Connection`` class to instantiate.
+
+    :type scopes: list of URLs
+    :param scopes: the effective service auth scopes for the connection.
+
+    :rtype: instance of ``klass``
+    :returns: A connection defined with the proper credentials.
+    """
+    implicit_credentials = get_credentials()
+    scoped_credentials = implicit_credentials.create_scoped(scopes)
+    return klass(credentials=scoped_credentials)

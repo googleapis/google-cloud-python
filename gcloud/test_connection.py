@@ -347,3 +347,31 @@ class _Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
+
+
+class Test_get_scoped_connection(unittest2.TestCase):
+
+    def _callFUT(self, klass, scopes):
+        from gcloud.connection import get_scoped_connection
+        return get_scoped_connection(klass, scopes)
+
+    def test_it(self):
+        from gcloud import credentials
+        from gcloud.test_credentials import _Client
+        from gcloud._testing import _Monkey
+
+        class _Connection(object):
+            def __init__(self, credentials):
+                self._credentials = credentials
+
+        SCOPES = ('https://www.googleapis.com/auth/example',
+                  'https://www.googleapis.com/auth/userinfo.email')
+
+        client = _Client()
+        with _Monkey(credentials, client=client):
+            found = self._callFUT(_Connection, SCOPES)
+
+        self.assertTrue(isinstance(found, _Connection))
+        self.assertTrue(found._credentials is client._signed)
+        self.assertEqual(found._credentials._scopes, SCOPES)
+        self.assertTrue(client._get_app_default_called)

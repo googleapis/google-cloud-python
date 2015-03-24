@@ -43,6 +43,7 @@ import os
 from gcloud import credentials
 from gcloud._helpers import get_default_project
 from gcloud._helpers import set_default_project
+from gcloud.connection import get_scoped_connection
 from gcloud.storage import _implicit_environ
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
@@ -133,6 +134,4 @@ def get_connection():
     :rtype: :class:`gcloud.storage.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    implicit_credentials = credentials.get_credentials()
-    scoped_credentials = implicit_credentials.create_scoped(SCOPE)
-    return Connection(credentials=scoped_credentials)
+    return get_scoped_connection(Connection, SCOPE)

@@ -23,7 +23,7 @@ import os
 from gcloud._helpers import _app_engine_id
 from gcloud._helpers import _compute_engine_id
 from gcloud._helpers import _lazy_property_deco
-from gcloud import credentials
+from gcloud.connection import get_scoped_connection
 from gcloud.datastore.connection import Connection
 
 
@@ -126,9 +126,7 @@ def get_connection():
     :rtype: :class:`gcloud.datastore.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    implicit_credentials = credentials.get_credentials()
-    scoped_credentials = implicit_credentials.create_scoped(SCOPE)
-    return Connection(credentials=scoped_credentials)
+    return get_scoped_connection(Connection, SCOPE)
 
 
 def set_default_connection(connection=None):
