@@ -76,13 +76,12 @@ def get_all_buckets(project=None, connection=None):
     :type connection: :class:`gcloud.storage.connection.Connection` or
                       ``NoneType``
     :param connection: Optional. The connection to use when sending requests.
-                       If not provided, falls back to default.
+                       If not provided, _BucketIterator() will fall back to
+                       default.
 
     :rtype: iterable of :class:`gcloud.storage.bucket.Bucket` objects.
     :returns: All buckets belonging to this project.
     """
-    if connection is None:
-        connection = get_default_connection()
     if project is None:
         project = get_default_project()
     extra_params = {'project': project}
@@ -171,6 +170,11 @@ class _BucketIterator(Iterator):
     """
 
     def __init__(self, connection, extra_params=None):
+        # If an implicit connection was intended, we pass along `None` to the
+        # Bucket() constructor as well.
+        self._ctor_connection = connection
+        if connection is None:
+            connection = get_default_connection()
         super(_BucketIterator, self).__init__(connection=connection, path='/b',
                                               extra_params=extra_params)
 
@@ -182,6 +186,6 @@ class _BucketIterator(Iterator):
         """
         for item in response.get('items', []):
             name = item.get('name')
-            bucket = Bucket(name, connection=self.connection)
+            bucket = Bucket(name, connection=self._ctor_connection)
             bucket._properties = item
             yield bucket
