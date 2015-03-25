@@ -39,9 +39,11 @@ import six
 from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
+from gcloud.storage import _implicit_environ
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
+from gcloud.storage.batch import Batch
 from gcloud.storage.blob import Blob
 
 
@@ -146,7 +148,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`gcloud.storage.connection.Connection`
         :returns: The connection to use.
         """
-        return self._connection
+        return _require_connection(self._connection)
 
     @staticmethod
     def path_helper(bucket_name):
@@ -746,3 +748,27 @@ class Bucket(_PropertyMixin):
             for blob in self:
                 blob.acl.all().grant_read()
                 blob.save_acl()
+
+
+def _require_connection(connection=None):
+    """Infer a connection from the environment, if not passed explicitly.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: Optional.
+
+    :rtype: :class:`gcloud.storage.connection.Connection`
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
+             cannot be inferred from the environment.
+    """
+    # NOTE: We use current Batch directly since it inherits from Connection.
+    if connection is None:
+        connection = Batch.current()
+
+    if connection is None:
+        connection = _implicit_environ.get_default_connection()
+
+    if connection is None:
+        raise EnvironmentError('Connection could not be inferred.')
+
+    return connection
