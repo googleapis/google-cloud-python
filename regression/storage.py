@@ -51,9 +51,9 @@ class TestStorageBuckets(unittest2.TestCase):
         self.case_buckets_to_delete = []
 
     def tearDown(self):
-        with storage.Batch() as batch:
+        with storage.Batch():
             for bucket_name in self.case_buckets_to_delete:
-                storage.Bucket(bucket_name, connection=batch).delete()
+                storage.Bucket(bucket_name).delete()
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'

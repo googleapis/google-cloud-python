@@ -36,6 +36,7 @@ You can also use the bucket as an iterator::
 import os
 import six
 
+from gcloud._helpers import get_default_project
 from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
@@ -126,6 +127,34 @@ class Bucket(_PropertyMixin):
             return True
         except NotFound:
             return False
+
+    def create(self, project=None):
+        """Creates current bucket.
+
+        If the bucket already exists, will raise
+        :class:`gcloud.exceptions.Conflict`.
+
+        This implements "storage.buckets.insert".
+
+        :type project: string
+        :param project: Optional. The project to use when creating bucket.
+                        If not provided, falls back to default.
+
+        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :returns: The newly created bucket.
+        :raises: :class:`EnvironmentError` if the project is not given and
+                 can't be inferred.
+        """
+        if project is None:
+            project = get_default_project()
+        if project is None:
+            raise EnvironmentError('Project could not be inferred '
+                                   'from environment.')
+
+        query_params = {'project': project}
+        self._properties = self.connection.api_request(
+            method='POST', path='/b', query_params=query_params,
+            data={'name': self.name})
 
     @property
     def acl(self):

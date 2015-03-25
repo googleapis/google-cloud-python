@@ -182,6 +182,43 @@ class Test_Bucket(unittest2.TestCase):
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
+    def test_create_no_project(self):
+        from gcloud._testing import _monkey_defaults
+        BUCKET_NAME = 'bucket-name'
+        bucket = self._makeOne(BUCKET_NAME)
+        with _monkey_defaults(project=None):
+            self.assertRaises(EnvironmentError, bucket.create)
+
+    def test_create_hit_explicit_project(self):
+        BUCKET_NAME = 'bucket-name'
+        DATA = {'name': BUCKET_NAME}
+        connection = _Connection(DATA)
+        PROJECT = 'PROJECT'
+        bucket = self._makeOne(BUCKET_NAME, connection=connection)
+        bucket.create(PROJECT)
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b')
+        self.assertEqual(kw['query_params'], {'project': PROJECT})
+        self.assertEqual(kw['data'], DATA)
+
+    def test_create_hit_implicit_project(self):
+        from gcloud._testing import _monkey_defaults
+        BUCKET_NAME = 'bucket-name'
+        DATA = {'name': BUCKET_NAME}
+        connection = _Connection(DATA)
+        PROJECT = 'PROJECT'
+        bucket = self._makeOne(BUCKET_NAME, connection=connection)
+        with _monkey_defaults(project=PROJECT):
+            bucket.create()
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b')
+        self.assertEqual(kw['query_params'], {'project': PROJECT})
+        self.assertEqual(kw['data'], DATA)
+
     def test_acl_property(self):
         from gcloud.storage.acl import BucketACL
         bucket = self._makeOne()

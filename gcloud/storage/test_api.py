@@ -62,11 +62,15 @@ class Test_lookup_bucket(unittest2.TestCase):
         if use_default:
             with _monkey_defaults(connection=conn):
                 bucket = self._callFUT(BLOB_NAME)
+            # In the default case, the bucket never has a connection
+            # bound to it.
+            self.assertTrue(bucket._connection is None)
         else:
             bucket = self._callFUT(BLOB_NAME, connection=conn)
+            # In the explicit case, the bucket has a connection bound to it.
+            self.assertTrue(bucket._connection is conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -187,11 +191,15 @@ class Test_get_bucket(unittest2.TestCase):
         if use_default:
             with _monkey_defaults(connection=conn):
                 bucket = self._callFUT(BLOB_NAME)
+            # In the default case, the bucket never has a connection
+            # bound to it.
+            self.assertTrue(bucket._connection is None)
         else:
             bucket = self._callFUT(BLOB_NAME, connection=conn)
+            # In the explicit case, the bucket has a connection bound to it.
+            self.assertTrue(bucket._connection is conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -232,11 +240,15 @@ class Test_create_bucket(unittest2.TestCase):
             with _base_monkey_defaults(project=project):
                 with _monkey_defaults(connection=conn):
                     bucket = self._callFUT(BLOB_NAME)
+            # In the default case, the bucket never has a connection
+            # bound to it.
+            self.assertTrue(bucket._connection is None)
         else:
             bucket = self._callFUT(BLOB_NAME, project=project, connection=conn)
+            # In the explicit case, the bucket has a connection bound to it.
+            self.assertTrue(bucket._connection is conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
