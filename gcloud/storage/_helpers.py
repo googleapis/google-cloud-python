@@ -127,13 +127,11 @@ class _PropertyMixin(object):
         :rtype: :class:`Bucket`
         :returns: The current bucket.
         """
-        # Pass '?projection=full' here because 'PATCH' documented not
-        # to work properly w/ 'noAcl'.
         update_properties = dict((key, self._properties[key])
                                  for key in self._changes)
         self._properties = self.connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
-            query_params={'projection': 'full'})
+            query_params={'projection': 'noAcl'})
         return self
 
 

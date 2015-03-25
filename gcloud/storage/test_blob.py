@@ -681,7 +681,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'], {'cacheControl': CACHE_CONTROL})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_component_count(self):
         BLOB_NAME = 'blob-name'
@@ -717,7 +717,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'],
                          {'contentDisposition': CONTENT_DISPOSITION})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_content_encoding_getter(self):
         BLOB_NAME = 'blob-name'
@@ -744,7 +744,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'],
                          {'contentEncoding': CONTENT_ENCODING})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_content_language_getter(self):
         BLOB_NAME = 'blob-name'
@@ -771,7 +771,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'],
                          {'contentLanguage': CONTENT_LANGUAGE})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_content_type_getter(self):
         BLOB_NAME = 'blob-name'
@@ -798,7 +798,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'],
                          {'contentType': CONTENT_TYPE})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_crc32c_getter(self):
         BLOB_NAME = 'blob-name'
@@ -825,7 +825,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'],
                          {'crc32c': CRC32C})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_etag(self):
         BLOB_NAME = 'blob-name'
@@ -879,7 +879,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'],
                          {'md5Hash': MD5_HASH})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_media_link(self):
         BLOB_NAME = 'blob-name'
@@ -915,7 +915,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
         self.assertEqual(kw[0]['data'],
                          {'metadata': METADATA})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_metageneration(self):
         BLOB_NAME = 'blob-name'
