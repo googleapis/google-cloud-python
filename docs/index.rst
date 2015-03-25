@@ -23,6 +23,7 @@
   :hidden:
   :caption: Storage
 
+  storage-surface
   Client <storage-client>
   storage-blobs
   storage-buckets
