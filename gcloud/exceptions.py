@@ -179,11 +179,11 @@ def make_exception(response, content, use_json=True):
         if use_json:
             payload = json.loads(content)
         else:
-            payload = {'message': content}
+            payload = {'error': {'message': content}}
     else:
         payload = content
 
-    message = payload.get('message', '')
+    message = payload.get('error', {}).get('message', '')
     errors = payload.get('error', {}).get('errors', ())
 
     try:
