@@ -19,7 +19,10 @@ class Test_Blob(unittest2.TestCase):
 
     def _makeOne(self, *args, **kw):
         from gcloud.storage.blob import Blob
-        return Blob(*args, **kw)
+        properties = kw.pop('properties', None)
+        blob = Blob(*args, **kw)
+        blob._properties = properties or {}
+        return blob
 
     def test_ctor_no_bucket(self):
         self.assertRaises(ValueError, self._makeOne, None)
@@ -57,29 +60,6 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         properties = {'key': 'value'}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
-        self.assertTrue(blob.bucket is bucket)
-        self.assertTrue(blob.connection is connection)
-        self.assertEqual(blob.name, BLOB_NAME)
-        self.assertEqual(blob.properties, properties)
-        self.assertTrue(blob._acl is None)
-
-    def test_ctor_no_name_defaults(self):
-        BLOB_NAME = 'blob-name'
-        properties = {'key': 'value', 'name': BLOB_NAME}
-        FAKE_BUCKET = _Bucket(None)
-        blob = self._makeOne(None, bucket=FAKE_BUCKET, properties=properties)
-        self.assertEqual(blob.bucket, FAKE_BUCKET)
-        self.assertEqual(blob.connection, None)
-        self.assertEqual(blob.name, BLOB_NAME)
-        self.assertEqual(blob.properties, properties)
-        self.assertTrue(blob._acl is None)
-
-    def test_ctor_no_name_explicit(self):
-        BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
-        properties = {'key': 'value', 'name': BLOB_NAME}
-        blob = self._makeOne(None, properties=properties, bucket=bucket)
         self.assertTrue(blob.bucket is bucket)
         self.assertTrue(blob.connection is connection)
         self.assertEqual(blob.name, BLOB_NAME)
@@ -1043,8 +1023,7 @@ class _Bucket(object):
 
     def copy_blob(self, blob, destination_bucket, new_name):
         destination_bucket._blobs[new_name] = self._blobs[blob.name]
-        return blob.__class__(None, bucket=destination_bucket,
-                              properties={'name': new_name})
+        return blob.__class__(new_name, bucket=destination_bucket)
 
     def delete_blob(self, blob_name):
         del self._blobs[blob_name]

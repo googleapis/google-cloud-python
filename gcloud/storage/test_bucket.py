@@ -64,9 +64,9 @@ class Test_Bucket(unittest2.TestCase):
 
     def _makeOne(self, *args, **kw):
         from gcloud.storage.bucket import Bucket
-        properties = kw.pop('properties', {})
+        properties = kw.pop('properties', None)
         bucket = Bucket(*args, **kw)
-        bucket._properties = properties
+        bucket._properties = properties or {}
         return bucket
 
     def test_ctor_defaults(self):

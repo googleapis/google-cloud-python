@@ -62,17 +62,14 @@ class Blob(_PropertyMixin):
     # ACL rules are lazily retrieved.
     _acl = None
 
-    def __init__(self, name, bucket=None, properties=None):
-        if name is None and properties is not None:
-            name = properties.get('name')
-
+    def __init__(self, name, bucket=None):
         if bucket is None:
             bucket = _implicit_environ.get_default_bucket()
 
         if bucket is None:
             raise ValueError('A Blob must have a bucket set.')
 
-        super(Blob, self).__init__(name=name, properties=properties)
+        super(Blob, self).__init__(name=name)
 
         self.bucket = bucket
 
