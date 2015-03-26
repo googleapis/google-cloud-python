@@ -25,11 +25,17 @@ class TestTopic(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_wo_inferred_project_or_connection(self):
+        from gcloud._testing import _monkey_defaults as _monkey_base_defaults
+        from gcloud.pubsub._testing import _monkey_defaults
         TOPIC_NAME = 'topic_name'
-        topic = self._makeOne(TOPIC_NAME)
+        PROJECT = 'PROJECT'
+        conn = _Connection()
+        with _monkey_base_defaults(project=PROJECT):
+            with _monkey_defaults(connection=conn):
+                topic = self._makeOne(TOPIC_NAME)
         self.assertEqual(topic.name, TOPIC_NAME)
-        self.assertEqual(topic.project, None)
-        self.assertEqual(topic.connection, None)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertTrue(topic.connection is conn)
 
     def test_ctor_w_explicit_project_and_connection(self):
         TOPIC_NAME = 'topic_name'

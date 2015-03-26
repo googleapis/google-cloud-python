@@ -16,7 +16,9 @@
 
 import base64
 
+from gcloud._helpers import get_default_project
 from gcloud.exceptions import NotFound
+from gcloud.pubsub._implicit_environ import get_default_connection
 
 
 class Topic(object):
@@ -40,6 +42,10 @@ class Topic(object):
                         environment.
     """
     def __init__(self, name, project=None, connection=None):
+        if project is None:
+            project = get_default_project()
+        if connection is None:
+            connection = get_default_connection()
         self.name = name
         self.project = project
         self.connection = connection
