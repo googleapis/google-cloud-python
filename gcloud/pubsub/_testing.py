@@ -19,6 +19,11 @@ from gcloud.pubsub import _implicit_environ
 from gcloud.pubsub._implicit_environ import _DefaultsContainer
 
 
+def _monkey_defaults(*args, **kwargs):
+    mock_defaults = _DefaultsContainer(*args, **kwargs)
+    return _Monkey(_implicit_environ, _DEFAULTS=mock_defaults)
+
+
 def _setup_defaults(test_case, *args, **kwargs):
     test_case._replaced_defaults = _implicit_environ._DEFAULTS
     _implicit_environ._DEFAULTS = _DefaultsContainer(*args, **kwargs)
