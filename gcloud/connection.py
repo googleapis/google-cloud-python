@@ -119,6 +119,9 @@ class JSONConnection(Connection):
     API_URL_TEMPLATE = None
     """A template for the URL of a particular API call."""
 
+    JSON_ERRORS = True
+    """Overridable for services which do not return JSON errors."""
+
     @classmethod
     def build_api_url(cls, path, query_params=None,
                       api_base_url=None, api_version=None):
@@ -289,7 +292,7 @@ class JSONConnection(Connection):
             method=method, url=url, data=data, content_type=content_type)
 
         if not 200 <= response.status < 300:
-            raise make_exception(response, content)
+            raise make_exception(response, content, use_json=self.JSON_ERRORS)
 
         if content and expect_json:
             content_type = response.get('content-type', '')

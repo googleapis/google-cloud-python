@@ -325,6 +325,16 @@ class TestJSONConnection(unittest2.TestCase):
         )
         self.assertRaises(NotFound, conn.api_request, 'GET', '/')
 
+    def test_api_request_w_404_no_JSON_in_payload(self):
+        from gcloud.exceptions import NotFound
+        conn = self._makeMockOne()
+        conn.JSON_ERRORS = False
+        conn._http = _Http(
+            {'status': '404', 'content-type': 'text/plain'},
+            'Not Found'
+        )
+        self.assertRaises(NotFound, conn.api_request, 'GET', '/')
+
     def test_api_request_w_500(self):
         from gcloud.exceptions import InternalServerError
         conn = self._makeMockOne()

@@ -28,3 +28,6 @@ class Connection(base_connection.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/pubsub/{api_version}{path}'
     """A template for the URL of a particular API call."""
+
+    JSON_ERRORS = False
+    """Pubsub API does not return JSON payloads for errors ?!?."""
