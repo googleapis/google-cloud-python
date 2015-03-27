@@ -181,6 +181,8 @@ def _get_signed_query_params(credentials, expiration, signature_string):
     pem_key = _get_pem_key(credentials)
     # Sign the string with the RSA key.
     signer = PKCS1_v1_5.new(pem_key)
+    if not isinstance(signature_string, six.binary_type):
+        signature_string = signature_string.encode('utf-8')
     signature_hash = SHA256.new(signature_string)
     signature_bytes = signer.sign(signature_hash)
     signature = base64.b64encode(signature_bytes)

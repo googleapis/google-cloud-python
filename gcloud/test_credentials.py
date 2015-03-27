@@ -176,11 +176,13 @@ class Test__get_signed_query_params(unittest2.TestCase):
         SIGNATURE_STRING = 'dummy_signature'
         with _Monkey(MUT, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
                      SHA256=sha256, _get_pem_key=_get_pem_key):
-            self.assertRaises(NameError, self._callFUT,
+            self.assertRaises(UnboundLocalError, self._callFUT,
                               BAD_CREDENTIALS, EXPIRATION, SIGNATURE_STRING)
 
-    def _run_test_with_credentials(self, credentials, account_name):
+    def _run_test_with_credentials(self, credentials, account_name,
+                                   signature_string=None):
         import base64
+        import six
         from gcloud._testing import _Monkey
         from gcloud import credentials as MUT
 
@@ -190,7 +192,7 @@ class Test__get_signed_query_params(unittest2.TestCase):
         sha256 = _SHA256()
 
         EXPIRATION = '100'
-        SIGNATURE_STRING = b'dummy_signature'
+        SIGNATURE_STRING = signature_string or b'dummy_signature'
         with _Monkey(MUT, crypt=crypt, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
                      SHA256=sha256):
             result = self._callFUT(credentials, EXPIRATION, SIGNATURE_STRING)
@@ -199,7 +201,12 @@ class Test__get_signed_query_params(unittest2.TestCase):
             self.assertEqual(crypt._private_key_text,
                              base64.b64encode(b'dummy_private_key_text'))
             self.assertEqual(crypt._private_key_password, 'notasecret')
-        self.assertEqual(sha256._signature_string, SIGNATURE_STRING)
+        # sha256._signature_string is always bytes.
+        if isinstance(SIGNATURE_STRING, six.binary_type):
+            self.assertEqual(sha256._signature_string, SIGNATURE_STRING)
+        else:
+            self.assertEqual(sha256._signature_string,
+                             SIGNATURE_STRING.encode('utf-8'))
         SIGNED = base64.b64encode(b'DEADBEEF')
         expected_query = {
             'Expires': EXPIRATION,
@@ -216,6 +223,17 @@ class Test__get_signed_query_params(unittest2.TestCase):
         credentials = client.SignedJwtAssertionCredentials(
             ACCOUNT_NAME, b'dummy_private_key_text', scopes)
         self._run_test_with_credentials(credentials, ACCOUNT_NAME)
+
+    def test_signature_non_bytes(self):
+        from oauth2client import client
+
+        scopes = []
+        ACCOUNT_NAME = 'dummy_service_account_name'
+        SIGNATURE_STRING = u'dummy_signature'
+        credentials = client.SignedJwtAssertionCredentials(
+            ACCOUNT_NAME, b'dummy_private_key_text', scopes)
+        self._run_test_with_credentials(credentials, ACCOUNT_NAME,
+                                        signature_string=SIGNATURE_STRING)
 
     def test_service_account_via_json_key(self):
         from oauth2client import service_account

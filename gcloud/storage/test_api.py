@@ -34,7 +34,7 @@ class Test_lookup_bucket(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '404', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         bucket = self._callFUT(NONESUCH, connection=conn)
         self.assertEqual(bucket, None)
@@ -56,7 +56,7 @@ class Test_lookup_bucket(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % BLOB_NAME,
+            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
 
         if use_default:
@@ -96,7 +96,7 @@ class Test_get_all_buckets(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         buckets = list(self._callFUT(PROJECT, conn))
         self.assertEqual(len(buckets), 0)
@@ -117,7 +117,8 @@ class Test_get_all_buckets(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"items": [{"name": "%s"}]}' % BUCKET_NAME,
+            '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME)
+            .encode('utf-8'),
         )
 
         if use_default:
@@ -159,7 +160,7 @@ class Test_get_bucket(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '404', 'content-type': 'application/json'},
-            '{}',
+            b'{}',
         )
         self.assertRaises(NotFound, self._callFUT, NONESUCH, connection=conn)
         self.assertEqual(http._called_with['method'], 'GET')
@@ -180,7 +181,7 @@ class Test_get_bucket(unittest2.TestCase):
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % BLOB_NAME,
+            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
 
         if use_default:
@@ -224,7 +225,7 @@ class Test_create_bucket(unittest2.TestCase):
             ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
-            '{"name": "%s"}' % BLOB_NAME,
+            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
         )
 
         if use_default:

@@ -16,6 +16,7 @@
 
 import json
 from pkg_resources import get_distribution
+import six
 from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
 import httplib2
@@ -295,6 +296,8 @@ class JSONConnection(Connection):
             content_type = response.get('content-type', '')
             if not content_type.startswith('application/json'):
                 raise TypeError('Expected JSON, got %s' % content_type)
+            if isinstance(content, six.binary_type):
+                content = content.decode('utf-8')
             return json.loads(content)
 
         return content
