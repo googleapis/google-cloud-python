@@ -39,7 +39,29 @@ class Test_list_topics(unittest2.TestCase):
         self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
         self.assertEqual(req['query_params'], {})
 
-    def test_w_explicit_connection_w_paging(self):
+    def test_w_implicit_connection_and_project_wo_paging(self):
+        from gcloud._testing import _monkey_defaults as _monkey_base_defaults
+        from gcloud.pubsub._testing import _monkey_defaults
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOKEN = 'TOKEN'
+        returned = {'topics': [{'name': TOPIC_NAME}],
+                    'nextPageToken': TOKEN}
+        conn = _Connection(returned)
+        with _monkey_base_defaults(project=PROJECT):
+            with _monkey_defaults(connection=conn):
+                response = self._callFUT()
+        topics = response['topics']
+        self.assertEqual(len(topics), 1)
+        self.assertEqual(topics[0], {'name': TOPIC_NAME})
+        self.assertEqual(response['nextPageToken'], TOKEN)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
+        self.assertEqual(req['query_params'], {})
+
+    def test_w_explicit_connection_and_project_w_paging(self):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         TOKEN1 = 'TOKEN1'
@@ -67,7 +89,9 @@ class Test_list_subscriptions(unittest2.TestCase):
         from gcloud.pubsub.api import list_subscriptions
         return list_subscriptions(*args, **kw)
 
-    def test_w_explicit_connection_no_paging(self):
+    def test_w_implicit_connection_wo_paging(self):
+        from gcloud._testing import _monkey_defaults as _monkey_base_defaults
+        from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
         SUB_NAME = 'topic_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -77,7 +101,9 @@ class Test_list_subscriptions(unittest2.TestCase):
         returned = {'subscriptions': [{'name': SUB_PATH, 'topic': TOPIC_PATH}],
                     'nextPageToken': TOKEN}
         conn = _Connection(returned)
-        response = self._callFUT(project=PROJECT, connection=conn)
+        with _monkey_base_defaults(project=PROJECT):
+            with _monkey_defaults(connection=conn):
+                response = self._callFUT()
         subscriptions = response['subscriptions']
         self.assertEqual(len(subscriptions), 1)
         self.assertEqual(subscriptions[0],
@@ -89,7 +115,7 @@ class Test_list_subscriptions(unittest2.TestCase):
         self.assertEqual(req['path'], '/projects/%s/subscriptions' % PROJECT)
         self.assertEqual(req['query_params'], {})
 
-    def test_w_explicit_connection_w_paging(self):
+    def test_w_explicit_connection_and_project_w_paging(self):
         PROJECT = 'PROJECT'
         SUB_NAME = 'topic_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)

@@ -14,6 +14,9 @@
 
 """ Define API functions (not bound to classes)."""
 
+from gcloud._helpers import get_default_project
+from gcloud.pubsub._implicit_environ import get_default_connection
+
 
 def list_topics(page_size=None, page_token=None,
                 project=None, connection=None):
@@ -45,6 +48,12 @@ def list_topics(page_size=None, page_token=None,
               more topics can be retrieved with another call (pass that
               value as ``page_token``).
     """
+    if project is None:
+        project = get_default_project()
+
+    if connection is None:
+        connection = get_default_connection()
+
     params = {}
 
     if page_size is not None:
@@ -93,6 +102,12 @@ def list_subscriptions(page_size=None, page_token=None, topic_name=None,
               more topics can be retrieved with another call (pass that
               value as ``page_token``).
     """
+    if project is None:
+        project = get_default_project()
+
+    if connection is None:
+        connection = get_default_connection()
+
     params = {}
 
     if page_size is not None:
