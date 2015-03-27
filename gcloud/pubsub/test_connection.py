@@ -28,7 +28,6 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.API_BASE_URL,
-            'pubsub',
             conn.API_VERSION,
             'foo',
         ])
@@ -42,6 +41,6 @@ class TestConnection(unittest2.TestCase):
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual('%s://%s' % (scheme, netloc), conn.API_BASE_URL)
         self.assertEqual(path,
-                         '/'.join(['', 'pubsub', conn.API_VERSION, 'foo']))
+                         '/'.join(['', conn.API_VERSION, 'foo']))
         parms = dict(parse_qsl(qs))
         self.assertEqual(parms['bar'], 'baz')

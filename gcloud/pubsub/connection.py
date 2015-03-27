@@ -20,11 +20,11 @@ from gcloud import connection as base_connection
 class Connection(base_connection.JSONConnection):
     """A connection to Google Cloud Pubsub via the JSON REST API."""
 
-    API_BASE_URL = base_connection.API_BASE_URL
+    API_BASE_URL = 'https://pubsub.googleapis.com'
     """The base of the API call URL."""
 
     API_VERSION = 'v1beta2'
     """The version of the API, used in building the API call's URL."""
 
-    API_URL_TEMPLATE = '{api_base_url}/pubsub/{api_version}{path}'
+    API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
     """A template for the URL of a particular API call."""
