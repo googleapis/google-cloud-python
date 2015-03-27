@@ -37,3 +37,4 @@ fi
 # Run the regression tests for each tested package.
 python regression/run_regression.py --package datastore
 python regression/run_regression.py --package storage
+python regression/run_regression.py --package pubsub
