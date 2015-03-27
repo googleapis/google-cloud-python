@@ -170,6 +170,9 @@ class Batch(Connection):
 def _unpack_batch_response(response, content):
     """Convert response, content -> [(status, reason, payload)]."""
     parser = Parser()
+    # We coerce to bytes to get consitent concat across
+    # Py2 and Py3. Percent formatting is insufficient since
+    # it includes the b in Py3.
     if not isinstance(content, six.binary_type):
         content = content.encode('utf-8')
     content_type = response['content-type']
