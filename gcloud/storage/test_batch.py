@@ -347,7 +347,32 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(len(batch._responses), 0)
 
 
-_THREE_PART_MIME_RESPONSE = """\
+class Test__unpack_batch_response(unittest2.TestCase):
+
+    def _callFUT(self, response, content):
+        from gcloud.storage.batch import _unpack_batch_response
+        return _unpack_batch_response(response, content)
+
+    def test_bytes(self):
+        RESPONSE = {'content-type': b'multipart/mixed; boundary="DEADBEEF="'}
+        CONTENT = _THREE_PART_MIME_RESPONSE
+        result = list(self._callFUT(RESPONSE, CONTENT))
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0], ('200', 'OK', {u'bar': 2, u'foo': 1}))
+        self.assertEqual(result[1], ('200', 'OK', {u'foo': 1, u'bar': 3}))
+        self.assertEqual(result[2], ('204', 'No Content', ''))
+
+    def test_unicode(self):
+        RESPONSE = {'content-type': u'multipart/mixed; boundary="DEADBEEF="'}
+        CONTENT = _THREE_PART_MIME_RESPONSE.decode('utf-8')
+        result = list(self._callFUT(RESPONSE, CONTENT))
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result[0], ('200', 'OK', {u'bar': 2, u'foo': 1}))
+        self.assertEqual(result[1], ('200', 'OK', {u'foo': 1, u'bar': 3}))
+        self.assertEqual(result[2], ('204', 'No Content', ''))
+
+
+_THREE_PART_MIME_RESPONSE = b"""\
 --DEADBEEF=
 Content-Type: application/http
 Content-ID: <response-8a09ca85-8d1d-4f45-9eb0-da8e8b07ec83+1>

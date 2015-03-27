@@ -170,16 +170,22 @@ class Batch(Connection):
 def _unpack_batch_response(response, content):
     """Convert response, content -> [(status, reason, payload)]."""
     parser = Parser()
-    if isinstance(content, six.binary_type):
-        content = content.decode('utf-8')
-    faux_message = ''.join([
-        'Content-Type: ',
-        response['content-type'],
-        '\nMIME-Version: 1.0\n\n',
+    if not isinstance(content, six.binary_type):
+        content = content.encode('utf-8')
+    content_type = response['content-type']
+    if not isinstance(content_type, six.binary_type):
+        content_type = content_type.encode('utf-8')
+    faux_message = b''.join([
+        b'Content-Type: ',
+        content_type,
+        b'\nMIME-Version: 1.0\n\n',
         content,
     ])
 
-    message = parser.parsestr(faux_message)
+    if six.PY2:
+        message = parser.parsestr(faux_message)
+    else:  # pragma: NO COVER  Python3
+        message = parser.parsestr(faux_message.decode('utf-8'))
 
     if not isinstance(message._payload, list):
         raise ValueError('Bad response:  not multi-part')
