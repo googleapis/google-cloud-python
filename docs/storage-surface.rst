@@ -60,16 +60,22 @@ Create a new bucket
    >>> from gcloud import storage
    >>> new_bucket = storage.create_bucket(bucket_name)
 
-if you desire to be declarative, you may pass in a connection to
-override the default
+.. warning::
+  If the bucket already exists, this method will throw an exception
+  corresponding to the `409 conflict`_ status code in the response.
+
+If you desire to be declarative, you may pass in a connection and a project
+to override the defaults
 
 .. code-block:: python
 
-   >>> new_bucket = storage.create_bucket(bucket_name, connection=connection)
+   >>> new_bucket = storage.create_bucket(bucket_name, connection=connection,
+   ...                                    project=project)
 
 .. note::
   All methods in the ``storage`` package accept ``connection`` as an optional
-  parameter.
+  parameter. (Only ``create_bucket`` and ``list_buckets`` accept ``project``
+  to override the default.)
 
 Retrieve an existing bucket
 
@@ -177,7 +183,7 @@ this can be addressed by using the ``force`` keyword
    >>> storage.delete_bucket(bucket_name, force=True)
 
 Even using ``force=True`` will fail if the bucket contains more than 256
-blobs. In this case, the blobs should be deleted manually first.
+blobs. In this case, delete the blobs manually before deleting the bucket.
 
 .. _409 conflict: http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_Error
 
@@ -649,11 +655,26 @@ uploading:
    >>> blob.content_type = 'application/zip'
    >>> blob.upload_from_string('foo')
 
-To upload instead from a file
+To upload instead from a file-like object
+
+  .. code-block:: python
+
+   >>> blob.upload_from_stream(file_object)
+
+To upload directly from a file
 
   .. code-block:: python
 
    >>> blob.upload_from_filename('/path/on/local/machine.file')
+
+This is roughly equivalent to
+
+  .. code-block:: python
+
+   >>> with open('/path/on/local/machine.file', 'w') as file_object:
+   ...     blob.upload_from_stream(file_object)
+
+with some extra behavior to set local file properties.
 
 To download blob data into a string
 
@@ -661,7 +682,13 @@ To download blob data into a string
 
    >>> blob_contents = blob.download_as_string()
 
-To download instead to a file
+To download instead to a file-like object
+
+  .. code-block:: python
+
+   >>> blob.download_to_stream(file_object)
+
+To download directly to a file
 
   .. code-block:: python
 
