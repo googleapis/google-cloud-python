@@ -33,6 +33,7 @@ You can also use the bucket as an iterator::
   ...   print blob
 """
 
+import copy
 import os
 import six
 
@@ -513,8 +514,9 @@ class Bucket(_PropertyMixin):
         """
         return self.properties['id']
 
-    def get_lifecycle(self):
-        """Retrieve lifecycle rules configured for this bucket.
+    @property
+    def lifecycle_rules(self):
+        """Lifecycle rules configured for this bucket.
 
         See: https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -522,20 +524,20 @@ class Bucket(_PropertyMixin):
         :rtype: list(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
         """
-        info = self.properties.get('lifecycle', {})
-        return [rule.copy() for rule in info.get('rule', ())]
+        info = self._properties.get('lifecycle', {})
+        return [copy.deepcopy(rule) for rule in info.get('rule', ())]
 
-    def update_lifecycle(self, rules):
-        """Update CORS policies configured for this bucket.
+    @lifecycle_rules.setter
+    def lifecycle_rules(self, rules):
+        """Update the lifecycle rules configured for this bucket.
 
         See: https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :type rules: list(dict)
-        :param rules: A sequence of mappings describing each lifecycle rule.
+        :rtype: list(dict)
+        :returns: A sequence of mappings describing each lifecycle rule.
         """
         self._patch_properties({'lifecycle': {'rule': rules}})
-        self.patch()
 
     location = _scalar_property('location')
     """Retrieve location configured for this bucket.
