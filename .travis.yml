@@ -15,6 +15,7 @@ script:
   - tox -e py34
   - tox -e lint
   - tox -e regression
+  - tox -e regression3
   - scripts/merge.sh
 
 after_success:
