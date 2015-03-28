@@ -74,8 +74,10 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(bucket.connection, None)
         self.assertEqual(bucket.name, None)
         self.assertEqual(bucket._properties, {})
-        self.assertTrue(bucket._acl is None)
-        self.assertTrue(bucket._default_object_acl is None)
+        self.assertFalse(bucket._acl.loaded)
+        self.assertTrue(bucket._acl.bucket is bucket)
+        self.assertFalse(bucket._default_object_acl.loaded)
+        self.assertTrue(bucket._default_object_acl.bucket is bucket)
 
     def test_ctor_explicit(self):
         NAME = 'name'
@@ -85,8 +87,10 @@ class Test_Bucket(unittest2.TestCase):
         self.assertTrue(bucket.connection is connection)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, properties)
-        self.assertTrue(bucket._acl is None)
-        self.assertTrue(bucket._default_object_acl is None)
+        self.assertFalse(bucket._acl.loaded)
+        self.assertTrue(bucket._acl.bucket is bucket)
+        self.assertFalse(bucket._default_object_acl.loaded)
+        self.assertTrue(bucket._default_object_acl.bucket is bucket)
 
     def test___iter___empty(self):
         NAME = 'name'
