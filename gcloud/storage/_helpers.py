@@ -39,20 +39,15 @@ class _PropertyMixin(object):
         """Abstract getter for the object path."""
         raise NotImplementedError
 
-    def __init__(self, name=None, properties=None):
+    def __init__(self, name=None):
         """_PropertyMixin constructor.
 
         :type name: string
         :param name: The name of the object.
-
-        :type properties: dict
-        :param properties: All the other data provided by Cloud Storage.
         """
         self.name = name
         self._properties = {}
         self._changes = set()
-        if properties is not None:
-            self._properties.update(properties)
 
     @property
     def properties(self):

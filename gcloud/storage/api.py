@@ -125,9 +125,9 @@ def get_bucket(bucket_name, connection=None):
     if connection is None:
         connection = get_default_connection()
 
-    bucket_path = Bucket.path_helper(bucket_name)
-    response = connection.api_request(method='GET', path=bucket_path)
-    return Bucket(properties=response, connection=connection)
+    bucket = Bucket(bucket_name, connection=connection)
+    bucket._reload_properties()
+    return bucket
 
 
 def create_bucket(bucket_name, project=None, connection=None):
@@ -169,7 +169,10 @@ def create_bucket(bucket_name, project=None, connection=None):
     response = connection.api_request(method='POST', path='/b',
                                       query_params=query_params,
                                       data={'name': bucket_name})
-    return Bucket(properties=response, connection=connection)
+    name = response.get('name')
+    bucket = Bucket(name, connection=connection)
+    bucket._properties = response
+    return bucket
 
 
 class _BucketIterator(Iterator):
@@ -194,4 +197,7 @@ class _BucketIterator(Iterator):
         :param response: The JSON API response for a page of buckets.
         """
         for item in response.get('items', []):
-            yield Bucket(properties=item, connection=self.connection)
+            name = item.get('name')
+            bucket = Bucket(name, connection=self.connection)
+            bucket._properties = item
+            yield bucket

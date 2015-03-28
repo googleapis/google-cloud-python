@@ -30,7 +30,7 @@ class Test_lookup_bucket(unittest2.TestCase):
             'storage',
             conn.API_VERSION,
             'b',
-            'nonesuch',
+            'nonesuch?projection=noAcl',
         ])
         http = conn._http = Http(
             {'status': '404', 'content-type': 'application/json'},
@@ -52,7 +52,7 @@ class Test_lookup_bucket(unittest2.TestCase):
             'storage',
             conn.API_VERSION,
             'b',
-            '%s' % (BLOB_NAME,),
+            '%s?projection=noAcl' % (BLOB_NAME,),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -156,7 +156,7 @@ class Test_get_bucket(unittest2.TestCase):
             'storage',
             conn.API_VERSION,
             'b',
-            'nonesuch',
+            'nonesuch?projection=noAcl',
         ])
         http = conn._http = Http(
             {'status': '404', 'content-type': 'application/json'},
@@ -177,7 +177,7 @@ class Test_get_bucket(unittest2.TestCase):
             'storage',
             conn.API_VERSION,
             'b',
-            '%s' % (BLOB_NAME,),
+            '%s?projection=noAcl' % (BLOB_NAME,),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
