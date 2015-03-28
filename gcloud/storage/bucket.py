@@ -92,10 +92,8 @@ class Bucket(_PropertyMixin):
     # ACL rules are lazily retrieved.
     _acl = _default_object_acl = None
 
-    def __init__(self, name=None, connection=None, properties=None):
-        if name is None and properties is not None:
-            name = properties.get('name')
-        super(Bucket, self).__init__(name=name, properties=properties)
+    def __init__(self, name=None, connection=None):
+        super(Bucket, self).__init__(name=name)
         self._connection = connection
 
     def __repr__(self):

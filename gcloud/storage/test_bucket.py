@@ -64,7 +64,10 @@ class Test_Bucket(unittest2.TestCase):
 
     def _makeOne(self, *args, **kw):
         from gcloud.storage.bucket import Bucket
-        return Bucket(*args, **kw)
+        properties = kw.pop('properties', {})
+        bucket = Bucket(*args, **kw)
+        bucket._properties = properties
+        return bucket
 
     def test_ctor_defaults(self):
         bucket = self._makeOne()
@@ -78,31 +81,10 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         connection = _Connection()
         properties = {'key': 'value'}
-        bucket = self._makeOne(NAME, connection, properties)
+        bucket = self._makeOne(NAME, connection, properties=properties)
         self.assertTrue(bucket.connection is connection)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, properties)
-        self.assertTrue(bucket._acl is None)
-        self.assertTrue(bucket._default_object_acl is None)
-
-    def test_ctor_no_name_defaults(self):
-        NAME = 'name'
-        properties = {'key': 'value', 'name': NAME}
-        bucket = self._makeOne(properties=properties)
-        self.assertEqual(bucket.connection, None)
-        self.assertEqual(bucket.name, NAME)
-        self.assertEqual(bucket.properties, properties)
-        self.assertTrue(bucket._acl is None)
-        self.assertTrue(bucket._default_object_acl is None)
-
-    def test_ctor_no_name_explicit(self):
-        NAME = 'name'
-        connection = _Connection()
-        properties = {'key': 'value', 'name': NAME}
-        bucket = self._makeOne(connection=connection, properties=properties)
-        self.assertTrue(bucket.connection is connection)
-        self.assertEqual(bucket.name, NAME)
-        self.assertEqual(bucket.properties, properties)
         self.assertTrue(bucket._acl is None)
         self.assertTrue(bucket._default_object_acl is None)
 
@@ -164,7 +146,7 @@ class Test_Bucket(unittest2.TestCase):
                 raise NotFound(args)
 
         BUCKET_NAME = 'bucket-name'
-        bucket = self._makeOne(connection=_FakeConnection, name=BUCKET_NAME)
+        bucket = self._makeOne(BUCKET_NAME, connection=_FakeConnection)
         self.assertFalse(bucket.exists())
         expected_called_kwargs = {
             'method': 'GET',
@@ -188,7 +170,7 @@ class Test_Bucket(unittest2.TestCase):
                 return object()
 
         BUCKET_NAME = 'bucket-name'
-        bucket = self._makeOne(connection=_FakeConnection, name=BUCKET_NAME)
+        bucket = self._makeOne(BUCKET_NAME, connection=_FakeConnection)
         self.assertTrue(bucket.exists())
         expected_called_kwargs = {
             'method': 'GET',
@@ -592,7 +574,7 @@ class Test_Bucket(unittest2.TestCase):
             }
         before = {'cors': [CORS_ENTRY, {}]}
         connection = _Connection()
-        bucket = self._makeOne(NAME, connection, before)
+        bucket = self._makeOne(NAME, connection, properties=before)
         entries = bucket.get_cors()
         self.assertEqual(len(entries), 2)
         self.assertEqual(entries[0]['maxAgeSeconds'],
@@ -697,7 +679,7 @@ class Test_Bucket(unittest2.TestCase):
         LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
         before = {'lifecycle': {'rule': [LC_RULE]}}
         connection = _Connection()
-        bucket = self._makeOne(NAME, connection, before)
+        bucket = self._makeOne(NAME, connection, properties=before)
         entries = bucket.get_lifecycle()
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]['action']['type'], 'Delete')
@@ -744,7 +726,7 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         connection = _Connection()
         before = {'location': 'AS'}
-        bucket = self._makeOne(NAME, connection, before)
+        bucket = self._makeOne(NAME, connection, properties=before)
         self.assertEqual(bucket.location, 'AS')
         kw = connection._requested
         self.assertEqual(len(kw), 0)
@@ -795,7 +777,7 @@ class Test_Bucket(unittest2.TestCase):
         }
         connection = _Connection(resp_to_reload, resp_to_enable_logging,
                                  resp_to_enable_logging)
-        bucket = self._makeOne(NAME, connection, before)
+        bucket = self._makeOne(NAME, connection, properties=before)
         self.assertTrue(bucket.get_logging() is None)
         bucket.enable_logging(LOG_BUCKET)
         info = bucket.get_logging()
@@ -826,7 +808,7 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(resp_to_reload,
                                  resp_to_enable_logging,
                                  resp_to_enable_logging)
-        bucket = self._makeOne(NAME, connection, before)
+        bucket = self._makeOne(NAME, connection, properties=before)
         self.assertTrue(bucket.get_logging() is None)
         bucket.enable_logging(LOG_BUCKET, LOG_PFX)
         info = bucket.get_logging()
@@ -852,7 +834,7 @@ class Test_Bucket(unittest2.TestCase):
         resp_to_disable_logging = {'logging': None}
         connection = _Connection(resp_to_reload, resp_to_disable_logging,
                                  resp_to_disable_logging)
-        bucket = self._makeOne(NAME, connection, before)
+        bucket = self._makeOne(NAME, connection, properties=before)
         self.assertTrue(bucket.get_logging() is not None)
         bucket.disable_logging()
         self.assertTrue(bucket.get_logging() is None)
@@ -923,7 +905,7 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         before = {'versioning': {'enabled': True}}
         connection = _Connection()
-        bucket = self._makeOne(NAME, connection, before)
+        bucket = self._makeOne(NAME, connection, properties=before)
         self.assertEqual(bucket.versioning_enabled, True)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
@@ -933,7 +915,7 @@ class Test_Bucket(unittest2.TestCase):
         before = {'versioning': {'enabled': False}}
         after = {'versioning': {'enabled': True}}
         connection = _Connection(after)
-        bucket = self._makeOne(NAME, connection, before)
+        bucket = self._makeOne(NAME, connection, properties=before)
         self.assertFalse(bucket.versioning_enabled)
         bucket.versioning_enabled = True
         bucket.patch()
