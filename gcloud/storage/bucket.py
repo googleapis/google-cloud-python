@@ -463,7 +463,7 @@ class Bucket(_PropertyMixin):
         :returns: A sequence of mappings describing each CORS policy.
         """
         return [copy.deepcopy(policy)
-                for policy in self.properties.get('cors', ())]
+                for policy in self._properties.get('cors', ())]
 
     @cors.setter
     def cors(self, entries):
@@ -499,7 +499,7 @@ class Bucket(_PropertyMixin):
 
         :rtype: string
         """
-        return self.properties['etag']
+        return self._properties['etag']
 
     @property
     def id(self):
@@ -509,7 +509,7 @@ class Bucket(_PropertyMixin):
 
         :rtype: string
         """
-        return self.properties['id']
+        return self._properties['id']
 
     @property
     def lifecycle_rules(self):
@@ -555,7 +555,7 @@ class Bucket(_PropertyMixin):
                   (if logging is enabled), or None (if not).
         """
         self.reload()
-        info = self.properties.get('logging')
+        info = self._properties.get('logging')
         if info is not None:
             return info.copy()
 
@@ -590,7 +590,7 @@ class Bucket(_PropertyMixin):
 
         :rtype: integer
         """
-        return self.properties['metageneration']
+        return self._properties['metageneration']
 
     @property
     def owner(self):
@@ -601,7 +601,7 @@ class Bucket(_PropertyMixin):
         :rtype: dict
         :returns: mapping of owner's role/ID.
         """
-        return self.properties['owner'].copy()
+        return self._properties['owner'].copy()
 
     @property
     def project_number(self):
@@ -611,7 +611,7 @@ class Bucket(_PropertyMixin):
 
         :rtype: integer
         """
-        return self.properties['projectNumber']
+        return self._properties['projectNumber']
 
     @property
     def self_link(self):
@@ -621,7 +621,7 @@ class Bucket(_PropertyMixin):
 
         :rtype: string
         """
-        return self.properties['selfLink']
+        return self._properties['selfLink']
 
     @property
     def storage_class(self):
@@ -633,7 +633,7 @@ class Bucket(_PropertyMixin):
         :rtype: string
         :returns: Currently one of "STANDARD", "DURABLE_REDUCED_AVAILABILITY"
         """
-        return self.properties['storageClass']
+        return self._properties['storageClass']
 
     @property
     def time_created(self):
@@ -644,7 +644,7 @@ class Bucket(_PropertyMixin):
         :rtype: string
         :returns: timestamp in RFC 3339 format.
         """
-        return self.properties['timeCreated']
+        return self._properties['timeCreated']
 
     @property
     def versioning_enabled(self):
@@ -656,7 +656,7 @@ class Bucket(_PropertyMixin):
         :rtype: boolean
         :returns: True if enabled, else False.
         """
-        versioning = self.properties.get('versioning', {})
+        versioning = self._properties.get('versioning', {})
         return versioning.get('enabled', False)
 
     @versioning_enabled.setter

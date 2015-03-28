@@ -887,7 +887,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(NAME, connection)
         bucket.configure_website()
         bucket.patch()
-        self.assertEqual(bucket.properties, patched)
+        self.assertEqual(bucket._properties, patched)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -903,7 +903,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(NAME, connection)
         bucket.configure_website('html', '404.html')
         bucket.patch()
-        self.assertEqual(bucket.properties, patched)
+        self.assertEqual(bucket._properties, patched)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -919,7 +919,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(NAME, connection)
         bucket.disable_website()
         bucket.patch()
-        self.assertEqual(bucket.properties, patched)
+        self.assertEqual(bucket._properties, patched)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')

@@ -60,18 +60,6 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'foo': 'Qux', 'bar': 'Baz'})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_properties_no_fetch(self):
-        connection = _Connection({'foo': 'Foo'})
-        derived = self._derivedClass(connection, '/path')()
-        self.assertEqual(derived.properties, {})
-        derived.reload()
-        self.assertEqual(derived.properties, {'foo': 'Foo'})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-
     def test_reload(self):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
@@ -175,7 +163,7 @@ class Test__scalar_property(unittest2.TestCase):
 
         class Test(object):
             def __init__(self, **kw):
-                self.properties = kw.copy()
+                self._properties = kw.copy()
             do_re_mi = self._callFUT('solfege')
 
         test = Test(solfege='Latido')

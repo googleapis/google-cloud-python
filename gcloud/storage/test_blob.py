@@ -65,7 +65,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertTrue(blob.bucket is bucket)
         self.assertTrue(blob.connection is connection)
         self.assertEqual(blob.name, BLOB_NAME)
-        self.assertEqual(blob.properties, properties)
+        self.assertEqual(blob._properties, properties)
         self.assertFalse(blob._acl.loaded)
         self.assertTrue(blob._acl.blob is blob)
 
@@ -294,7 +294,7 @@ class Test_Blob(unittest2.TestCase):
                 mtime = os.path.getmtime(f.name)
                 updatedTime = time.mktime(
                     datetime.datetime.strptime(
-                        blob.properties['updated'],
+                        blob._properties['updated'],
                         '%Y-%m-%dT%H:%M:%S.%fz').timetuple()
                 )
         self.assertEqual(wrote, b'abcdef')

@@ -250,7 +250,7 @@ class Blob(_PropertyMixin):
 
         mtime = time.mktime(
             datetime.datetime.strptime(
-                self.properties['updated'],
+                self._properties['updated'],
                 '%Y-%m-%dT%H:%M:%S.%fz').timetuple()
         )
         os.utime(file_obj.name, (mtime, mtime))
@@ -489,7 +489,7 @@ class Blob(_PropertyMixin):
 
         :rtype: integer
         """
-        return self.properties['componentCount']
+        return self._properties['componentCount']
 
     @property
     def etag(self):
@@ -500,7 +500,7 @@ class Blob(_PropertyMixin):
 
         :rtype: string
         """
-        return self.properties['etag']
+        return self._properties['etag']
 
     @property
     def generation(self):
@@ -510,7 +510,7 @@ class Blob(_PropertyMixin):
 
         :rtype: integer
         """
-        return self.properties['generation']
+        return self._properties['generation']
 
     @property
     def id(self):
@@ -520,7 +520,7 @@ class Blob(_PropertyMixin):
 
         :rtype: string
         """
-        return self.properties['id']
+        return self._properties['id']
 
     md5_hash = _scalar_property('md5Hash')
     """MD5 hash for this object.
@@ -539,7 +539,7 @@ class Blob(_PropertyMixin):
 
         :rtype: string
         """
-        return self.properties['mediaLink']
+        return self._properties['mediaLink']
 
     @property
     def metadata(self):
@@ -549,7 +549,7 @@ class Blob(_PropertyMixin):
 
         :rtype: dict
         """
-        return copy.deepcopy(self.properties['metadata'])
+        return copy.deepcopy(self._properties['metadata'])
 
     @metadata.setter
     def metadata(self, value):
@@ -569,7 +569,7 @@ class Blob(_PropertyMixin):
 
         :rtype: integer
         """
-        return self.properties['metageneration']
+        return self._properties['metageneration']
 
     @property
     def owner(self):
@@ -580,7 +580,7 @@ class Blob(_PropertyMixin):
         :rtype: dict
         :returns: mapping of owner's role/ID.
         """
-        return self.properties['owner'].copy()
+        return self._properties['owner'].copy()
 
     @property
     def self_link(self):
@@ -590,7 +590,7 @@ class Blob(_PropertyMixin):
 
         :rtype: string
         """
-        return self.properties['selfLink']
+        return self._properties['selfLink']
 
     @property
     def size(self):
@@ -600,7 +600,7 @@ class Blob(_PropertyMixin):
 
         :rtype: integer
         """
-        return self.properties['size']
+        return self._properties['size']
 
     @property
     def storage_class(self):
@@ -612,7 +612,7 @@ class Blob(_PropertyMixin):
         :rtype: string
         :returns: Currently one of "STANDARD", "DURABLE_REDUCED_AVAILABILITY"
         """
-        return self.properties['storageClass']
+        return self._properties['storageClass']
 
     @property
     def time_deleted(self):
@@ -624,7 +624,7 @@ class Blob(_PropertyMixin):
         :returns: timestamp in RFC 3339 format, or None if the object
                   has a "live" version.
         """
-        return self.properties.get('timeDeleted')
+        return self._properties.get('timeDeleted')
 
     @property
     def updated(self):
@@ -635,7 +635,7 @@ class Blob(_PropertyMixin):
         :rtype: string
         :returns: timestamp in RFC 3339 format.
         """
-        return self.properties['updated']
+        return self._properties['updated']
 
 
 class _UploadConfig(object):

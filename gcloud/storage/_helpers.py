@@ -50,15 +50,6 @@ class _PropertyMixin(object):
         self._changes = set()
 
     @property
-    def properties(self):
-        """Return a copy of properties.
-
-        :rtype: dict
-        :returns: Copy of properties.
-        """
-        return self._properties.copy()
-
-    @property
     def batch(self):
         """Return a context manager which defers/batches updates.
 
@@ -155,7 +146,7 @@ def _scalar_property(fieldname):
     """
     def _getter(self):
         """Scalar property getter."""
-        return self.properties[fieldname]
+        return self._properties[fieldname]
 
     def _setter(self, value):
         """Scalar property setter."""
