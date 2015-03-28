@@ -932,7 +932,8 @@ class Test_Bucket(unittest2.TestCase):
                                'notFoundPage': None}}
         connection = _Connection(patched)
         bucket = self._makeOne(NAME, connection)
-        self.assertTrue(bucket.configure_website() is bucket)
+        bucket.configure_website()
+        bucket.patch()
         self.assertEqual(bucket.properties, patched)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -947,7 +948,8 @@ class Test_Bucket(unittest2.TestCase):
                                'notFoundPage': '404.html'}}
         connection = _Connection(patched)
         bucket = self._makeOne(NAME, connection)
-        self.assertTrue(bucket.configure_website('html', '404.html') is bucket)
+        bucket.configure_website('html', '404.html')
+        bucket.patch()
         self.assertEqual(bucket.properties, patched)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -962,7 +964,8 @@ class Test_Bucket(unittest2.TestCase):
                                'notFoundPage': None}}
         connection = _Connection(patched)
         bucket = self._makeOne(NAME, connection)
-        self.assertTrue(bucket.disable_website() is bucket)
+        bucket.disable_website()
+        bucket.patch()
         self.assertEqual(bucket.properties, patched)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
