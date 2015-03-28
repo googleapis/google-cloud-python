@@ -477,19 +477,6 @@ class Bucket(_PropertyMixin):
         """
         self._patch_properties({'cors': entries})
 
-    def get_default_object_acl(self):
-        """Get the current Default Object ACL rules.
-
-        If the acl isn't available locally, this method will reload it from
-        Cloud Storage.
-
-        :rtype: :class:`gcloud.storage.acl.DefaultObjectACL`
-        :returns: A DefaultObjectACL object for this bucket.
-        """
-        if not self.default_object_acl.loaded:
-            self.default_object_acl.reload()
-        return self.default_object_acl
-
     @property
     def etag(self):
         """Retrieve the ETag for the bucket.
@@ -737,7 +724,9 @@ class Bucket(_PropertyMixin):
         self.acl.save()
 
         if future:
-            doa = self.get_default_object_acl()
+            doa = self.default_object_acl
+            if not doa.loaded:
+                doa.reload()
             doa.all().grant_read()
             doa.save()
 

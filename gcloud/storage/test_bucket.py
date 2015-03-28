@@ -568,30 +568,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(found._name, BLOB_NAME)
         self.assertTrue(found._bucket is bucket)
 
-    def test_get_default_object_acl_lazy(self):
-        from gcloud.storage.acl import BucketACL
-        NAME = 'name'
-        connection = _Connection({'items': []})
-        bucket = self._makeOne(NAME, connection)
-        acl = bucket.get_default_object_acl()
-        self.assertTrue(acl is bucket.default_object_acl)
-        self.assertTrue(isinstance(acl, BucketACL))
-        self.assertEqual(list(bucket.default_object_acl), [])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s/defaultObjectAcl' % NAME)
-
-    def test_get_default_object_acl_eager(self):
-        connection = _Connection()
-        bucket = self._makeOne()
-        preset = bucket.default_object_acl  # ensure it is assigned
-        preset.loaded = True
-        acl = bucket.get_default_object_acl()
-        self.assertTrue(acl is preset)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
     def test_etag(self):
         ETAG = 'ETAG'
         properties = {'etag': ETAG}
@@ -943,29 +919,46 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': after['acl']})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_make_public_w_future(self):
+    def _make_public_w_future_helper(self, default_object_acl_loaded=True):
         from gcloud.storage.acl import _ACLEntity
         NAME = 'name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after1 = {'acl': permissive, 'defaultObjectAcl': []}
         after2 = {'acl': permissive, 'defaultObjectAcl': permissive}
-        connection = _Connection(after1, after2)
+        if default_object_acl_loaded:
+            num_requests = 2
+            connection = _Connection(after1, after2)
+        else:
+            num_requests = 3
+            # We return the same value for default_object_acl.reload()
+            # to consume.
+            connection = _Connection(after1, after1, after2)
         bucket = self._makeOne(NAME, connection)
         bucket.acl.loaded = True
-        bucket.default_object_acl.loaded = True
+        bucket.default_object_acl.loaded = default_object_acl_loaded
         bucket.make_public(future=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), permissive)
         kw = connection._requested
-        self.assertEqual(len(kw), 2)
+        self.assertEqual(len(kw), num_requests)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], {'acl': permissive})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-        self.assertEqual(kw[1]['method'], 'PATCH')
-        self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[1]['data'], {'defaultObjectAcl': permissive})
-        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
+        if not default_object_acl_loaded:
+            self.assertEqual(kw[1]['method'], 'GET')
+            self.assertEqual(kw[1]['path'], '/b/%s/defaultObjectAcl' % NAME)
+        # Last could be 1 or 2 depending on `default_object_acl_loaded`.
+        self.assertEqual(kw[-1]['method'], 'PATCH')
+        self.assertEqual(kw[-1]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[-1]['data'], {'defaultObjectAcl': permissive})
+        self.assertEqual(kw[-1]['query_params'], {'projection': 'full'})
+
+    def test_make_public_w_future(self):
+        self._make_public_w_future_helper(default_object_acl_loaded=True)
+
+    def test_make_public_w_future_reload_default(self):
+        self._make_public_w_future_helper(default_object_acl_loaded=False)
 
     def test_make_public_recursive(self):
         from gcloud.storage.acl import _ACLEntity
