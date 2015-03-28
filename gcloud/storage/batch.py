@@ -167,9 +167,11 @@ class Batch(Connection):
             _BATCHES.pop()
 
 
-def _unpack_batch_response(response, content):
-    """Convert response, content -> [(status, reason, payload)]."""
-    parser = Parser()
+def _generate_faux_mime_message(parser, response, content):
+    """Convert response, content -> (multipart) email.message.
+
+    Helper for _unpack_batch_response.
+    """
     # We coerce to bytes to get consitent concat across
     # Py2 and Py3. Percent formatting is insufficient since
     # it includes the b in Py3.
@@ -186,9 +188,15 @@ def _unpack_batch_response(response, content):
     ])
 
     if six.PY2:
-        message = parser.parsestr(faux_message)
+        return parser.parsestr(faux_message)
     else:  # pragma: NO COVER  Python3
-        message = parser.parsestr(faux_message.decode('utf-8'))
+        return parser.parsestr(faux_message.decode('utf-8'))
+
+
+def _unpack_batch_response(response, content):
+    """Convert response, content -> [(status, reason, payload)]."""
+    parser = Parser()
+    message = _generate_faux_mime_message(parser, response, content)
 
     if not isinstance(message._payload, list):
         raise ValueError('Bad response:  not multi-part')
