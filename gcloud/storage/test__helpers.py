@@ -64,7 +64,7 @@ class Test_PropertyMixin(unittest2.TestCase):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
         self.assertEqual(derived.properties, {})
-        derived._reload_properties()
+        derived.reload()
         self.assertEqual(derived.properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -72,10 +72,10 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test__reload_properties(self):
+    def test_reload(self):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
-        derived._reload_properties()
+        derived.reload()
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)

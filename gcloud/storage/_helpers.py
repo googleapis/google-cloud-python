@@ -82,7 +82,7 @@ class _PropertyMixin(object):
         """
         return _PropertyBatch(self)
 
-    def _reload_properties(self):
+    def reload(self):
         """Reload properties from Cloud Storage.
 
         :rtype: :class:`_PropertyMixin`

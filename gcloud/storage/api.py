@@ -126,7 +126,7 @@ def get_bucket(bucket_name, connection=None):
         connection = get_default_connection()
 
     bucket = Bucket(bucket_name, connection=connection)
-    bucket._reload_properties()
+    bucket.reload()
     return bucket
 
 

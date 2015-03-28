@@ -846,7 +846,7 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         connection = _Connection({})
         bucket = self._makeOne(NAME, connection)
-        bucket._reload_properties()
+        bucket.reload()
         self.assertEqual(bucket.versioning_enabled, False)
         kw = connection._requested
         self.assertEqual(len(kw), 1)

@@ -554,7 +554,7 @@ class Bucket(_PropertyMixin):
         :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``
                   (if logging is enabled), or None (if not).
         """
-        self._reload_properties()
+        self.reload()
         info = self.properties.get('logging')
         if info is not None:
             return info.copy()

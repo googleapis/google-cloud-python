@@ -157,7 +157,7 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.case_blobs_to_delete.append(blob)
 
         same_blob = storage.Blob(bucket=self.bucket, name='MyBuffer')
-        same_blob._reload_properties()  # Initialize properties.
+        same_blob.reload()  # Initialize properties.
         temp_filename = tempfile.mktemp()
         with open(temp_filename, 'wb') as file_obj:
             same_blob.download_to_file(file_obj)
