@@ -678,9 +678,10 @@ class Bucket(_PropertyMixin):
         See: https://developers.google.com/storage/docs/website-configuration
 
         .. note::
-          This (apparently) only works
-          if your bucket name is a domain name
-          (and to do that, you need to get approved somehow...).
+          This only works if your bucket name is a domain name
+          (and to do that, you need to get approved). See
+          https://cloud.google.com/storage/docs/bucket-naming#verification
+          to learn more about the process.
 
         If you want this bucket to host a website, just provide the name
         of an index page and a page to use when a blob isn't found::

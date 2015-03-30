@@ -634,7 +634,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], after)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
         entries = bucket.get_cors()
         self.assertEqual(entries, [CORS_ENTRY, {}])
 
@@ -716,7 +716,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], after)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
         entries = bucket.get_lifecycle()
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]['action']['type'], 'Delete')
@@ -743,7 +743,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], {'location': 'AS'})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_get_logging_w_prefix(self):
         NAME = 'name'
@@ -791,7 +791,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'PATCH')
         self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[1]['data'], resp_to_enable_logging)
-        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[1]['query_params'], {'projection': 'noAcl'})
         self.assertEqual(kw[2]['method'], 'GET')
         self.assertEqual(kw[2]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[2]['query_params'], {'projection': 'noAcl'})
@@ -822,7 +822,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'PATCH')
         self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[1]['data'], resp_to_enable_logging)
-        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[1]['query_params'], {'projection': 'noAcl'})
         self.assertEqual(kw[2]['method'], 'GET')
         self.assertEqual(kw[2]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[2]['query_params'], {'projection': 'noAcl'})
@@ -846,7 +846,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['method'], 'PATCH')
         self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[1]['data'], {'logging': None})
-        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[1]['query_params'], {'projection': 'noAcl'})
         self.assertEqual(kw[2]['method'], 'GET')
         self.assertEqual(kw[2]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[2]['query_params'], {'projection': 'noAcl'})
@@ -924,7 +924,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['data'], {'versioning': {'enabled': True}})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_configure_website_defaults(self):
         NAME = 'name'
@@ -939,7 +939,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], patched)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_configure_website_explicit(self):
         NAME = 'name'
@@ -954,7 +954,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], patched)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_disable_website(self):
         NAME = 'name'
@@ -969,7 +969,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], patched)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_make_public_defaults(self):
         from gcloud.storage.acl import _ACLEntity

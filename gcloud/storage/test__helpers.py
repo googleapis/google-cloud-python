@@ -58,7 +58,7 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['data'], {'foo': 'Qux', 'bar': 'Baz'})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
     def test_properties_no_fetch(self):
         connection = _Connection({'foo': 'Foo'})
@@ -93,7 +93,7 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['data'], {'foo': 'Foo'})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
 
 class Test_PropertyBatch(unittest2.TestCase):
@@ -162,7 +162,7 @@ class Test_PropertyBatch(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['data'], {'foo': 'Qux', 'bar': 'Baz'})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
 
 class Test__scalar_property(unittest2.TestCase):
