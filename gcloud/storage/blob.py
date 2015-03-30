@@ -59,8 +59,6 @@ class Blob(_PropertyMixin):
 
     This must be a multiple of 256 KB per the API specification.
     """
-    # ACL rules are lazily retrieved.
-    _acl = None
 
     def __init__(self, name, bucket=None):
         if bucket is None:
@@ -72,6 +70,7 @@ class Blob(_PropertyMixin):
         super(Blob, self).__init__(name=name)
 
         self.bucket = bucket
+        self._acl = ObjectACL(self)
 
     @staticmethod
     def path_helper(bucket_path, blob_name):
@@ -91,8 +90,6 @@ class Blob(_PropertyMixin):
     @property
     def acl(self):
         """Create our ACL on demand."""
-        if self._acl is None:
-            self._acl = ObjectACL(self)
         return self._acl
 
     def __repr__(self):

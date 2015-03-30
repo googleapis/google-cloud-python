@@ -43,7 +43,8 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(blob.connection, None)
         self.assertEqual(blob.name, None)
         self.assertEqual(blob._properties, {})
-        self.assertTrue(blob._acl is None)
+        self.assertFalse(blob._acl.loaded)
+        self.assertTrue(blob._acl.blob is blob)
 
     def test_ctor_defaults(self):
         FAKE_BUCKET = _Bucket(None)
@@ -52,7 +53,8 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(blob.connection, None)
         self.assertEqual(blob.name, None)
         self.assertEqual(blob._properties, {})
-        self.assertTrue(blob._acl is None)
+        self.assertFalse(blob._acl.loaded)
+        self.assertTrue(blob._acl.blob is blob)
 
     def test_ctor_explicit(self):
         BLOB_NAME = 'blob-name'
@@ -64,7 +66,8 @@ class Test_Blob(unittest2.TestCase):
         self.assertTrue(blob.connection is connection)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob.properties, properties)
-        self.assertTrue(blob._acl is None)
+        self.assertFalse(blob._acl.loaded)
+        self.assertTrue(blob._acl.blob is blob)
 
     def test_acl_property(self):
         from gcloud.storage.acl import ObjectACL
