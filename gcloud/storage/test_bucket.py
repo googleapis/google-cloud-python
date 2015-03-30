@@ -564,80 +564,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(found._name, BLOB_NAME)
         self.assertTrue(found._bucket is bucket)
 
-    def test_get_cors_eager(self):
-        NAME = 'name'
-        CORS_ENTRY = {
-            'maxAgeSeconds': 1234,
-            'method': ['OPTIONS', 'GET'],
-            'origin': ['127.0.0.1'],
-            'responseHeader': ['Content-Type'],
-            }
-        before = {'cors': [CORS_ENTRY, {}]}
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection, properties=before)
-        entries = bucket.get_cors()
-        self.assertEqual(len(entries), 2)
-        self.assertEqual(entries[0]['maxAgeSeconds'],
-                         CORS_ENTRY['maxAgeSeconds'])
-        self.assertEqual(entries[0]['method'],
-                         CORS_ENTRY['method'])
-        self.assertEqual(entries[0]['origin'],
-                         CORS_ENTRY['origin'])
-        self.assertEqual(entries[0]['responseHeader'],
-                         CORS_ENTRY['responseHeader'])
-        self.assertEqual(entries[1], {})
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
-
-    def test_get_cors_lazy(self):
-        NAME = 'name'
-        CORS_ENTRY = {
-            'maxAgeSeconds': 1234,
-            'method': ['OPTIONS', 'GET'],
-            'origin': ['127.0.0.1'],
-            'responseHeader': ['Content-Type'],
-            }
-        after = {'cors': [CORS_ENTRY]}
-        connection = _Connection(after)
-        bucket = self._makeOne(NAME, connection)
-        bucket._reload_properties()
-        entries = bucket.get_cors()
-        self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0]['maxAgeSeconds'],
-                         CORS_ENTRY['maxAgeSeconds'])
-        self.assertEqual(entries[0]['method'],
-                         CORS_ENTRY['method'])
-        self.assertEqual(entries[0]['origin'],
-                         CORS_ENTRY['origin'])
-        self.assertEqual(entries[0]['responseHeader'],
-                         CORS_ENTRY['responseHeader'])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-
-    def test_update_cors(self):
-        NAME = 'name'
-        CORS_ENTRY = {
-            'maxAgeSeconds': 1234,
-            'method': ['OPTIONS', 'GET'],
-            'origin': ['127.0.0.1'],
-            'responseHeader': ['Content-Type'],
-            }
-        after = {'cors': [CORS_ENTRY, {}]}
-        connection = _Connection(after)
-        bucket = self._makeOne(NAME, connection)
-        bucket.update_cors([CORS_ENTRY, {}])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[0]['data'], after)
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-        entries = bucket.get_cors()
-        self.assertEqual(entries, [CORS_ENTRY, {}])
-
     def test_get_default_object_acl_lazy(self):
         from gcloud.storage.acl import BucketACL
         NAME = 'name'
@@ -725,6 +651,47 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'PATCH')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['data'], after)
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_cors_getter(self):
+        NAME = 'name'
+        CORS_ENTRY = {
+            'maxAgeSeconds': 1234,
+            'method': ['OPTIONS', 'GET'],
+            'origin': ['127.0.0.1'],
+            'responseHeader': ['Content-Type'],
+        }
+        properties = {'cors': [CORS_ENTRY, {}]}
+        bucket = self._makeOne(NAME, properties=properties)
+        entries = bucket.cors
+        self.assertEqual(len(entries), 2)
+        self.assertEqual(entries[0], CORS_ENTRY)
+        self.assertEqual(entries[1], {})
+        # Make sure it was a copy, not the same object.
+        self.assertFalse(entries[0] is CORS_ENTRY)
+
+    def test_cors_setter(self):
+        NAME = 'name'
+        CORS_ENTRY = {
+            'maxAgeSeconds': 1234,
+            'method': ['OPTIONS', 'GET'],
+            'origin': ['127.0.0.1'],
+            'responseHeader': ['Content-Type'],
+        }
+        DATA = {'cors': [CORS_ENTRY]}
+        connection = _Connection(DATA)
+        bucket = self._makeOne(NAME, connection)
+
+        self.assertEqual(bucket.cors, [])
+
+        bucket.cors = [CORS_ENTRY]
+        bucket.patch()
+        self.assertEqual(bucket.cors, [CORS_ENTRY])
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
+        self.assertEqual(kw[0]['data'], DATA)
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_get_logging_w_prefix(self):
