@@ -37,12 +37,15 @@ import copy
 import os
 import six
 
+from gcloud._helpers import get_default_project
 from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
+from gcloud.storage import _implicit_environ
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
+from gcloud.storage.batch import Batch
 from gcloud.storage.blob import Blob
 
 
@@ -125,6 +128,34 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
+    def create(self, project=None):
+        """Creates current bucket.
+
+        If the bucket already exists, will raise
+        :class:`gcloud.exceptions.Conflict`.
+
+        This implements "storage.buckets.insert".
+
+        :type project: string
+        :param project: Optional. The project to use when creating bucket.
+                        If not provided, falls back to default.
+
+        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :returns: The newly created bucket.
+        :raises: :class:`EnvironmentError` if the project is not given and
+                 can't be inferred.
+        """
+        if project is None:
+            project = get_default_project()
+        if project is None:
+            raise EnvironmentError('Project could not be inferred '
+                                   'from environment.')
+
+        query_params = {'project': project}
+        self._properties = self.connection.api_request(
+            method='POST', path='/b', query_params=query_params,
+            data={'name': self.name})
+
     @property
     def acl(self):
         """Create our ACL on demand."""
@@ -142,7 +173,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`gcloud.storage.connection.Connection`
         :returns: The connection to use.
         """
-        return self._connection
+        return _require_connection(self._connection)
 
     @staticmethod
     def path_helper(bucket_name):
@@ -733,3 +764,27 @@ class Bucket(_PropertyMixin):
             for blob in self:
                 blob.acl.all().grant_read()
                 blob.save_acl()
+
+
+def _require_connection(connection=None):
+    """Infer a connection from the environment, if not passed explicitly.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: Optional.
+
+    :rtype: :class:`gcloud.storage.connection.Connection`
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
+             cannot be inferred from the environment.
+    """
+    # NOTE: We use current Batch directly since it inherits from Connection.
+    if connection is None:
+        connection = Batch.current()
+
+    if connection is None:
+        connection = _implicit_environ.get_default_connection()
+
+    if connection is None:
+        raise EnvironmentError('Connection could not be inferred.')
+
+    return connection

@@ -71,7 +71,7 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_ctor_defaults(self):
         bucket = self._makeOne()
-        self.assertEqual(bucket.connection, None)
+        self.assertEqual(bucket._connection, None)
         self.assertEqual(bucket.name, None)
         self.assertEqual(bucket._properties, {})
         self.assertFalse(bucket._acl.loaded)
@@ -185,6 +185,43 @@ class Test_Bucket(unittest2.TestCase):
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
+
+    def test_create_no_project(self):
+        from gcloud._testing import _monkey_defaults
+        BUCKET_NAME = 'bucket-name'
+        bucket = self._makeOne(BUCKET_NAME)
+        with _monkey_defaults(project=None):
+            self.assertRaises(EnvironmentError, bucket.create)
+
+    def test_create_hit_explicit_project(self):
+        BUCKET_NAME = 'bucket-name'
+        DATA = {'name': BUCKET_NAME}
+        connection = _Connection(DATA)
+        PROJECT = 'PROJECT'
+        bucket = self._makeOne(BUCKET_NAME, connection=connection)
+        bucket.create(PROJECT)
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b')
+        self.assertEqual(kw['query_params'], {'project': PROJECT})
+        self.assertEqual(kw['data'], DATA)
+
+    def test_create_hit_implicit_project(self):
+        from gcloud._testing import _monkey_defaults
+        BUCKET_NAME = 'bucket-name'
+        DATA = {'name': BUCKET_NAME}
+        connection = _Connection(DATA)
+        PROJECT = 'PROJECT'
+        bucket = self._makeOne(BUCKET_NAME, connection=connection)
+        with _monkey_defaults(project=PROJECT):
+            bucket.create()
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b')
+        self.assertEqual(kw['query_params'], {'project': PROJECT})
+        self.assertEqual(kw['data'], DATA)
 
     def test_acl_property(self):
         from gcloud.storage.acl import BucketACL
@@ -1017,6 +1054,44 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['query_params'], {})
 
 
+class Test__require_connection(unittest2.TestCase):
+
+    def _callFUT(self, connection=None):
+        from gcloud.storage.bucket import _require_connection
+        return _require_connection(connection=connection)
+
+    def _monkey(self, connection):
+        from gcloud.storage._testing import _monkey_defaults
+        return _monkey_defaults(connection=connection)
+
+    def test_implicit_unset(self):
+        with self._monkey(None):
+            with self.assertRaises(EnvironmentError):
+                self._callFUT()
+
+    def test_implicit_unset_w_existing_batch(self):
+        CONNECTION = object()
+        with self._monkey(None):
+            with _NoCommitBatch(connection=CONNECTION):
+                self.assertEqual(self._callFUT(), CONNECTION)
+
+    def test_implicit_unset_passed_explicitly(self):
+        CONNECTION = object()
+        with self._monkey(None):
+            self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
+
+    def test_implicit_set(self):
+        IMPLICIT_CONNECTION = object()
+        with self._monkey(IMPLICIT_CONNECTION):
+            self.assertTrue(self._callFUT() is IMPLICIT_CONNECTION)
+
+    def test_implicit_set_passed_explicitly(self):
+        IMPLICIT_CONNECTION = object()
+        CONNECTION = object()
+        with self._monkey(IMPLICIT_CONNECTION):
+            self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
+
+
 class _Connection(object):
     _delete_bucket = False
 
@@ -1067,3 +1142,18 @@ class MockFile(io.StringIO):
     def __init__(self, name, buffer_=None):
         super(MockFile, self).__init__(buffer_)
         self.name = name
+
+
+class _NoCommitBatch(object):
+
+    def __init__(self, connection):
+        self._connection = connection
+
+    def __enter__(self):
+        from gcloud.storage.batch import _BATCHES
+        _BATCHES.push(self._connection)
+        return self._connection
+
+    def __exit__(self, *args):
+        from gcloud.storage.batch import _BATCHES
+        _BATCHES.pop()

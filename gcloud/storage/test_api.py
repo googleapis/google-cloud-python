@@ -62,11 +62,15 @@ class Test_lookup_bucket(unittest2.TestCase):
         if use_default:
             with _monkey_defaults(connection=conn):
                 bucket = self._callFUT(BLOB_NAME)
+            # In the default case, the bucket never has a connection
+            # bound to it.
+            self.assertTrue(bucket._connection is None)
         else:
             bucket = self._callFUT(BLOB_NAME, connection=conn)
+            # In the explicit case, the bucket has a connection bound to it.
+            self.assertTrue(bucket._connection is conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -187,11 +191,15 @@ class Test_get_bucket(unittest2.TestCase):
         if use_default:
             with _monkey_defaults(connection=conn):
                 bucket = self._callFUT(BLOB_NAME)
+            # In the default case, the bucket never has a connection
+            # bound to it.
+            self.assertTrue(bucket._connection is None)
         else:
             bucket = self._callFUT(BLOB_NAME, connection=conn)
+            # In the explicit case, the bucket has a connection bound to it.
+            self.assertTrue(bucket._connection is conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -232,11 +240,15 @@ class Test_create_bucket(unittest2.TestCase):
             with _base_monkey_defaults(project=project):
                 with _monkey_defaults(connection=conn):
                     bucket = self._callFUT(BLOB_NAME)
+            # In the default case, the bucket never has a connection
+            # bound to it.
+            self.assertTrue(bucket._connection is None)
         else:
             bucket = self._callFUT(BLOB_NAME, project=project, connection=conn)
+            # In the explicit case, the bucket has a connection bound to it.
+            self.assertTrue(bucket._connection is conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
@@ -270,18 +282,25 @@ class Test__BucketIterator(unittest2.TestCase):
         iterator = self._makeOne(connection)
         self.assertEqual(list(iterator.get_items_from_response({})), [])
 
-    def test_get_items_from_response_non_empty(self):
+    def _get_items_helper(self, connection):
         from gcloud.storage.bucket import Bucket
         BLOB_NAME = 'blob-name'
         response = {'items': [{'name': BLOB_NAME}]}
-        connection = object()
         iterator = self._makeOne(connection)
         buckets = list(iterator.get_items_from_response(response))
         self.assertEqual(len(buckets), 1)
         bucket = buckets[0]
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is connection)
+        self.assertTrue(bucket._connection is connection)
         self.assertEqual(bucket.name, BLOB_NAME)
+
+    def test_get_items_from_response_non_empty(self):
+        connection = object()
+        self._get_items_helper(connection)
+
+    def test_get_items_from_response_implicit_connection(self):
+        connection = None
+        self._get_items_helper(connection)
 
 
 class Http(object):

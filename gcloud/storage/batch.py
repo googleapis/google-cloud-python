@@ -155,6 +155,11 @@ class Batch(Connection):
         self._responses = list(_unpack_batch_response(response, content))
         return self._responses
 
+    @staticmethod
+    def current():
+        """Return the topmost batch, or None."""
+        return _BATCHES.top
+
     def __enter__(self):
         _BATCHES.push(self)
         return self

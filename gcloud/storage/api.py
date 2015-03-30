@@ -46,14 +46,11 @@ def lookup_bucket(bucket_name, connection=None):
     :type connection: :class:`gcloud.storage.connection.Connection` or
                       ``NoneType``
     :param connection: Optional. The connection to use when sending requests.
-                       If not provided, falls back to default.
+                       If not provided, Bucket() will fall back to default.
 
     :rtype: :class:`gcloud.storage.bucket.Bucket`
     :returns: The bucket matching the name provided or None if not found.
     """
-    if connection is None:
-        connection = get_default_connection()
-
     try:
         return get_bucket(bucket_name, connection=connection)
     except NotFound:
@@ -79,13 +76,12 @@ def get_all_buckets(project=None, connection=None):
     :type connection: :class:`gcloud.storage.connection.Connection` or
                       ``NoneType``
     :param connection: Optional. The connection to use when sending requests.
-                       If not provided, falls back to default.
+                       If not provided, _BucketIterator() will fall back to
+                       default.
 
     :rtype: iterable of :class:`gcloud.storage.bucket.Bucket` objects.
     :returns: All buckets belonging to this project.
     """
-    if connection is None:
-        connection = get_default_connection()
     if project is None:
         project = get_default_project()
     extra_params = {'project': project}
@@ -116,15 +112,11 @@ def get_bucket(bucket_name, connection=None):
     :type connection: :class:`gcloud.storage.connection.Connection` or
                       ``NoneType``
     :param connection: Optional. The connection to use when sending requests.
-                       If not provided, falls back to default.
+                       If not provided, Bucket() will fall back to default.
 
     :rtype: :class:`gcloud.storage.bucket.Bucket`
     :returns: The bucket matching the name provided.
-    :raises: :class:`gcloud.exceptions.NotFound`
     """
-    if connection is None:
-        connection = get_default_connection()
-
     bucket = Bucket(bucket_name, connection=connection)
     bucket.reload()
     return bucket
@@ -143,6 +135,9 @@ def create_bucket(bucket_name, project=None, connection=None):
 
     This implements "storage.buckets.insert".
 
+    If the bucket already exists, will raise
+    :class:`gcloud.exceptions.Conflict`.
+
     :type project: string
     :param project: Optional. The project to use when creating bucket.
                     If not provided, falls back to default.
@@ -153,25 +148,13 @@ def create_bucket(bucket_name, project=None, connection=None):
     :type connection: :class:`gcloud.storage.connection.Connection` or
                       ``NoneType``
     :param connection: Optional. The connection to use when sending requests.
-                       If not provided, falls back to default.
+                       If not provided, Bucket() will fall back to default.
 
     :rtype: :class:`gcloud.storage.bucket.Bucket`
     :returns: The newly created bucket.
-    :raises: :class:`gcloud.exceptions.Conflict` if
-             there is a confict (bucket already exists, invalid name, etc.)
     """
-    if connection is None:
-        connection = get_default_connection()
-    if project is None:
-        project = get_default_project()
-
-    query_params = {'project': project}
-    response = connection.api_request(method='POST', path='/b',
-                                      query_params=query_params,
-                                      data={'name': bucket_name})
-    name = response.get('name')
-    bucket = Bucket(name, connection=connection)
-    bucket._properties = response
+    bucket = Bucket(bucket_name, connection=connection)
+    bucket.create(project)
     return bucket
 
 
@@ -187,6 +170,11 @@ class _BucketIterator(Iterator):
     """
 
     def __init__(self, connection, extra_params=None):
+        # If an implicit connection was intended, we pass along `None` to the
+        # Bucket() constructor as well.
+        self._ctor_connection = connection
+        if connection is None:
+            connection = get_default_connection()
         super(_BucketIterator, self).__init__(connection=connection, path='/b',
                                               extra_params=extra_params)
 
@@ -198,6 +186,6 @@ class _BucketIterator(Iterator):
         """
         for item in response.get('items', []):
             name = item.get('name')
-            bucket = Bucket(name, connection=self.connection)
+            bucket = Bucket(name, connection=self._ctor_connection)
             bucket._properties = item
             yield bucket
