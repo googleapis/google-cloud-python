@@ -51,6 +51,7 @@ from gcloud.storage.api import create_bucket
 from gcloud.storage.api import get_all_buckets
 from gcloud.storage.api import get_bucket
 from gcloud.storage.api import lookup_bucket
+from gcloud.storage.batch import Batch
 from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.connection import Connection

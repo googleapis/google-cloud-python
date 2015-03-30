@@ -21,6 +21,7 @@ rather than via Connection.
 from gcloud.exceptions import NotFound
 from gcloud._helpers import get_default_project
 from gcloud.storage._implicit_environ import get_default_connection
+from gcloud.storage.batch import Batch
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
 
@@ -51,9 +52,7 @@ def lookup_bucket(bucket_name, connection=None):
     :rtype: :class:`gcloud.storage.bucket.Bucket`
     :returns: The bucket matching the name provided or None if not found.
     """
-    if connection is None:
-        connection = get_default_connection()
-
+    connection = _require_connection(connection)
     try:
         return get_bucket(bucket_name, connection=connection)
     except NotFound:
@@ -84,8 +83,7 @@ def get_all_buckets(project=None, connection=None):
     :rtype: iterable of :class:`gcloud.storage.bucket.Bucket` objects.
     :returns: All buckets belonging to this project.
     """
-    if connection is None:
-        connection = get_default_connection()
+    connection = _require_connection(connection)
     if project is None:
         project = get_default_project()
     extra_params = {'project': project}
@@ -122,9 +120,7 @@ def get_bucket(bucket_name, connection=None):
     :returns: The bucket matching the name provided.
     :raises: :class:`gcloud.exceptions.NotFound`
     """
-    if connection is None:
-        connection = get_default_connection()
-
+    connection = _require_connection(connection)
     bucket = Bucket(bucket_name, connection=connection)
     bucket.reload()
     return bucket
@@ -160,8 +156,7 @@ def create_bucket(bucket_name, project=None, connection=None):
     :raises: :class:`gcloud.exceptions.Conflict` if
              there is a confict (bucket already exists, invalid name, etc.)
     """
-    if connection is None:
-        connection = get_default_connection()
+    connection = _require_connection(connection)
     if project is None:
         project = get_default_project()
 
@@ -201,3 +196,27 @@ class _BucketIterator(Iterator):
             bucket = Bucket(name, connection=self.connection)
             bucket._properties = item
             yield bucket
+
+
+def _require_connection(connection=None):
+    """Infer a connection from the environment, if not passed explicitly.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: Optional.
+
+    :rtype: :class:`gcloud.storage.connection.Connection`
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
+             cannot be inferred from the environment.
+    """
+    # NOTE: We use current Batch directly since it inherits from Connection.
+    if connection is None:
+        connection = Batch.current()
+
+    if connection is None:
+        connection = get_default_connection()
+
+    if connection is None:
+        raise EnvironmentError('Connection could not be inferred.')
+
+    return connection

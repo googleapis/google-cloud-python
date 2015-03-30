@@ -22,7 +22,6 @@ from gcloud import exceptions
 from gcloud import storage
 from gcloud import _helpers
 from gcloud.storage._helpers import _base64_md5hash
-from gcloud.storage.batch import Batch
 
 
 HTTP = httplib2.Http()
@@ -52,7 +51,7 @@ class TestStorageBuckets(unittest2.TestCase):
         self.case_buckets_to_delete = []
 
     def tearDown(self):
-        with Batch() as batch:
+        with storage.Batch() as batch:
             for bucket_name in self.case_buckets_to_delete:
                 storage.Bucket(bucket_name, connection=batch).delete()
 
