@@ -712,7 +712,6 @@ class Bucket(_PropertyMixin):
             },
         }
         self._patch_properties(data)
-        return self.patch()
 
     def disable_website(self):
         """Disable the website configuration for this bucket.
