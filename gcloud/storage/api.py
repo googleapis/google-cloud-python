@@ -139,6 +139,9 @@ def create_bucket(bucket_name, project=None, connection=None):
 
     This implements "storage.buckets.insert".
 
+    If the bucket already exists, will raise
+    :class:`gcloud.exceptions.Conflict`.
+
     :type project: string
     :param project: Optional. The project to use when creating bucket.
                     If not provided, falls back to default.
@@ -153,20 +156,10 @@ def create_bucket(bucket_name, project=None, connection=None):
 
     :rtype: :class:`gcloud.storage.bucket.Bucket`
     :returns: The newly created bucket.
-    :raises: :class:`gcloud.exceptions.Conflict` if
-             there is a confict (bucket already exists, invalid name, etc.)
     """
     connection = _require_connection(connection)
-    if project is None:
-        project = get_default_project()
-
-    query_params = {'project': project}
-    response = connection.api_request(method='POST', path='/b',
-                                      query_params=query_params,
-                                      data={'name': bucket_name})
-    name = response.get('name')
-    bucket = Bucket(name, connection=connection)
-    bucket._properties = response
+    bucket = Bucket(bucket_name, connection=connection)
+    bucket.create(project)
     return bucket
 
 
