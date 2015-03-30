@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud 37fb0ec documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud 65341ae documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '37fb0ec',
+        VERSION:     '65341ae',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 37fb0ec documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 65341ae documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%2037fb0ec" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%2065341ae" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (37fb0ec)
+              Version History (65341ae)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -119,6 +119,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">get_default_project</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
@@ -206,6 +207,34 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="k">return</span> <span class="bp">True</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates current bucket.</span>
+
+<span class="sd">        If the bucket already exists, will raise</span>
+<span class="sd">        :class:`gcloud.exceptions.Conflict`.</span>
+
+<span class="sd">        This implements &quot;storage.buckets.insert&quot;.</span>
+
+<span class="sd">        :type project: string</span>
+<span class="sd">        :param project: Optional. The project to use when creating bucket.</span>
+<span class="sd">                        If not provided, falls back to default.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">        :returns: The newly created bucket.</span>
+<span class="sd">        :raises: :class:`EnvironmentError` if the project is not given and</span>
+<span class="sd">                 can&#39;t be inferred.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">project</span> <span class="o">=</span> <span class="n">get_default_project</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Project could not be inferred &#39;</span>
+                                   <span class="s">&#39;from environment.&#39;</span><span class="p">)</span>
+
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
