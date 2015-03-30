@@ -114,9 +114,13 @@ This is equivalent to
 .. code-block:: python
 
    >>> with storage.Batch():
-   ...     bucket1 = storage.get_bucket('bucket-name1')
-   ...     bucket2 = storage.get_bucket('bucket-name2')
-   ...     bucket3 = storage.get_bucket('bucket-name3')
+   ...     bucket_future1 = storage.get_bucket('bucket-name1')
+   ...     bucket_future2 = storage.get_bucket('bucket-name2')
+   ...     bucket_future3 = storage.get_bucket('bucket-name3')
+   ...
+   >>> bucket1 = bucket_future1.get()
+   >>> bucket2 = bucket_future2.get()
+   >>> bucket3 = bucket_future3.get()
 
 To list all buckets associated to the default project
 
@@ -201,17 +205,16 @@ To create a bucket object directly
    >>> bucket.exists()
    True
 
-You can also use an explicit connection
+You can also use an explicit connection when calling
+:class:`Bucket <gcloud.storage.bucket.Bucket>` methods which make HTTP
+requests
 
 .. code-block:: python
 
-   >>> bucket = storage.Bucket('bucket-name', connection=connection)
-
-.. note::
-  An explicitly passed connection will be bound to the ``bucket`` and
-  all objects associated with the bucket. This means that within a batch of
-  updates, the ``connection`` will be used to make the request instead of
-  the batch.
+   >>> bucket = storage.Bucket('bucket-name')
+   >>> bucket.exists(connection=connection)
+   False
+   >>> bucket.create(connection=connection)
 
 By default, just constructing a :class:`Bucket <gcloud.storage.bucket.Bucket>`
 does not load any of the associated bucket metadata. To load all bucket
@@ -222,29 +225,17 @@ properties
    >>> bucket = storage.Bucket('bucket-name')
    >>> print bucket.last_sync
    None
-   >>> bucket.properties
-   {}
+   >>> print bucket.self_link
+   None
    >>> bucket.reload()
+   >>> # May be necessary to include projection and fields for last sync
    >>> bucket.last_sync
    datetime.datetime(2015, 1, 1, 12, 0)
-   >>> bucket.properties
-   {u'etag': u'CAE=',
-    u'id': u'bucket-name',
-    ...}
-   >>> bucket.acl.loaded
-   False
-   >>> bucket.acl.reload()
-   >>> bucket.acl.loaded
-   True
-   >>> bucket.acl.entities
-   {'project-editors-111111': <ACL Entity: project-editors-111111 (OWNER)>,
-    'project-owners-111111': <ACL Entity: project-owners-111111 (OWNER)>,
-    'project-viewers-111111': <ACL Entity: project-viewers-111111 (READER)>,
-    'user-01234': <ACL Entity: user-01234 (OWNER)>}
+   >>> bucket.self_link
+   u'https://www.googleapis.com/storage/v1/b/bucket-name'
 
 Instead of calling
-:meth:`Bucket.reload() <gcloud.storage.bucket.Bucket.reload>` and
-:meth:`BucketACL.reload() <gcloud.storage.acl.BucketACL.reload>`, you
+:meth:`Bucket.reload() <gcloud.storage.bucket.Bucket.reload>`, you
 can load the properties when the object is instantiated by using the
 ``eager`` keyword
 
@@ -253,8 +244,9 @@ can load the properties when the object is instantiated by using the
    >>> bucket = storage.Bucket('bucket-name', eager=True)
    >>> bucket.last_sync
    datetime.datetime(2015, 1, 1, 12, 0)
-   >>> bucket.acl.loaded
-   True
+
+As with using :class:`Bucket <gcloud.storage.bucket.Bucket>` methods,
+you can also pass an explicit ``connection`` in when using ``eager=True``.
 
 To delete a bucket
 
@@ -291,6 +283,12 @@ In total, the properties that can be updated are
 
 .. code-block:: python
 
+   >>> bucket.acl = [
+   ...     ACLEntity('project-editors-111111', 'OWNER'),
+   ...     ACLEntity('project-owners-111111', 'OWNER'),
+   ...     ACLEntity('project-viewers-111111, 'READER'),
+   ...     ACLEntity('user-01234, 'OWNER'),
+   ... ]
    >>> bucket.cors = [
    ...     {
    ...       'origin': ['http://example.appspot.com'],
@@ -298,6 +296,10 @@ In total, the properties that can be updated are
    ...       'method': ['GET', 'HEAD', 'DELETE'],
    ...       'maxAgeSeconds': 3600,
    ...     }
+   ... ]
+   >>> bucket.default_object_acl = [
+   ...     ACLEntity('project-owners-111111', 'OWNER'),
+   ...     ACLEntity('user-01234, 'OWNER'),
    ... ]
    >>> bucket.lifecycle = [
    ...     {
@@ -333,21 +335,21 @@ In addition, a bucket has several read-only properties
    >>> bucket.name
    u'bucket-name'
    >>> bucket.owner
-   {u'entity': u'project-owners-111111'}
+   <ACL Entity: project-owners-111111 (OWNER)>
    >>> bucket.project_number
-   u'111111'
+   111111L
    >>> bucket.self_link
    u'https://www.googleapis.com/storage/v1/b/bucket-name'
    >>> bucket.time_created
-   u'2015-01-01T12:00:00.000Z'
+   datetime.datetime(2015, 1, 1, 12, 0)
 
-See `buckets`_ specification for more details.
-
-Other data -- namely `access control`_ data -- is associated with buckets,
-but is handled through ``Bucket.acl``.
+See `buckets`_ specification for more details. `Access control`_ data is
+complex enough to be a topic of its own. We provide the
+:class:`ACLEntity <gcloud.storage.acl.ACLEntity>` class to represent these
+objects and will discuss more further on.
 
 .. _buckets: https://cloud.google.com/storage/docs/json_api/v1/buckets
-.. _access control: https://cloud.google.com/storage/docs/access-control
+.. _Access control: https://cloud.google.com/storage/docs/access-control
 
 .. note::
   **BREAKING THE FOURTH WALL**: Note that ``storage.buckets.update`` is
@@ -397,13 +399,13 @@ This is equivalent to
 .. code-block:: python
 
    >>> with storage.Batch():
-   ...     blob1 = bucket.get_blob('blob-name1')
-   ...     blob2 = bucket.get_blob('blob-name2')
-   ...     blob3 = bucket.get_blob('blob-name3')
-
-however, recall that if ``bucket`` has a ``connection`` explicitly bound
-to it, the ``bucket.get_blob`` requests will be executed individually
-rather than as part of the batch.
+   ...     blob_future1 = bucket.get_blob('blob-name1')
+   ...     blob_future2 = bucket.get_blob('blob-name2')
+   ...     blob_future3 = bucket.get_blob('blob-name3')
+   ...
+   >>> blob1 = blob_future1.get()
+   >>> blob2 = blob_future2.get()
+   >>> blob3 = blob_future3.get()
 
 To list all blobs in a bucket
 
@@ -466,6 +468,7 @@ a new bucket
 
 .. code-block:: python
 
+   >>> new_bucket = storage.Bucket('new-bucket')
    >>> new_blob = bucket.copy_blob(blob, new_bucket, new_name='new-blob-name')
 
 To compose multiple blobs together
@@ -494,6 +497,17 @@ To create a blob object directly
    >>> blob
    <Blob: bucket-name, blob-name>
 
+You can pass the arguments ``if_generation_match`` or
+``if_generation_not_match`` (mutually exclusive) and ``if_metageneration_match``
+or ``if_metageneration_not_match`` (also mutually exclusive). See documentation
+for `objects.insert`_ for more details.
+
+.. _objects.insert: https://cloud.google.com/storage/docs/json_api/v1/objects/insert
+
+As with :class:`Bucket <gcloud.storage.bucket.Bucket>`, a
+:class:`Connection <gcloud.storage.connection.Connection>` can be passed to
+methods which make HTTP requests.
+
 If no ``bucket`` is provided, the default bucket will be used
 
 .. code-block:: python
@@ -510,53 +524,30 @@ properties
    >>> blob = storage.Blob('blob-name')
    >>> print blob.last_sync
    None
-   >>> blob.properties
-   {}
+   >>> print blob.content_type
+   None
    >>> blob.reload()
    >>> blob.last_sync
    datetime.datetime(2015, 1, 1, 12, 0)
-   >>> blob.properties
-   {u'bucket': u'default-bucket-name',
-    u'contentType': u'text/plain',
-    ...}
-   >>> blob.acl.loaded
-   False
-   >>> blob.acl.reload()
-   >>> blob.acl.loaded
-   True
-   >>> blob.acl.entities
-   {'project-editors-111111': <ACL Entity: project-editors-111111 (OWNER)>,
-    'project-owners-111111': <ACL Entity: project-owners-111111 (OWNER)>,
-    'project-viewers-111111': <ACL Entity: project-viewers-111111 (READER)>,
-    'user-01234': <ACL Entity: user-01234 (OWNER)>}
+   >>> print blob.content_type
+   u'text/plain'
 
 Instead of calling
-:meth:`Blob.reload() <gcloud.storage.blob.Blob.reload>` and
-:meth:`ObjectACL.reload() <gcloud.storage.acl.ObjectACL.reload>`, you
+:meth:`Blob.reload() <gcloud.storage.blob.Blob.reload>`, you
 can load the properties when the object is instantiated by using the
 ``eager`` keyword
 
 .. code-block:: python
 
-   >>> blob = storage.Blob('blob-name')
+   >>> blob = storage.Blob('blob-name', eager=True)
    >>> blob.last_sync
    datetime.datetime(2015, 1, 1, 12, 0)
-   >>> blob.acl.loaded
-   True
 
 To delete a blob
 
 .. code-block:: python
 
    >>> blob.delete()
-
-To generate a signed URL for temporary privileged access to the
-contents of a blob
-
-.. code-block:: python
-
-   >>> expiration_seconds = 600
-   >>> signed_url = blob.generate_signed_url(expiration_seconds)
 
 To make updates to the blob use
 :meth:`Blob.patch() <gcloud.storage.blob.Blob.patch>`
@@ -579,6 +570,10 @@ In total, the properties that can be updated are
 
 .. code-block:: python
 
+   >>> blob.acl = [
+   ...     ACLEntity('project-owners-111111', 'OWNER'),
+   ...     ACLEntity('user-01234, 'OWNER'),
+   ... ]
    >>> blob.cache_control = 'private, max-age=0, no-cache'
    >>> blob.content_disposition = 'Attachment; filename=example.html'
    >>> blob.content_encoding = 'gzip'
@@ -615,8 +610,7 @@ In addition, a blob has several read-only properties
    >>> blob.name
    'blob-name'
    >>> blob.owner
-   {u'entity': u'user-01234',
-    u'entityId': u'01234'}
+   <ACL Entity: user-01234 (OWNER)>
    >>> blob.self_link
    u'https://www.googleapis.com/storage/v1/b/bucket-name/o/blob-name'
    >>> blob.size
@@ -626,12 +620,12 @@ In addition, a blob has several read-only properties
    >>> print blob.time_deleted
    None
    >>> blob.updated
-   u'2015-01-01T12:00:00.000Z'
+   datetime.datetime(2015, 1, 1, 12, 0)
 
-See `objects`_ specification for more details.
-
-Other data -- namely `access control`_ data -- is associated with blobs,
-but is handled through ``Blob.acl``.
+See `objects`_ specification for more details. `Access control`_ data is
+complex enough to be a topic of its own. We provide the
+:class:`ACLEntity <gcloud.storage.acl.ACLEntity>` class to represent these
+objects and will discuss more further on.
 
 .. _objects: https://cloud.google.com/storage/docs/json_api/v1/objects
 
@@ -676,6 +670,10 @@ This is roughly equivalent to
 
 with some extra behavior to set local file properties.
 
+.. note::
+  If you ``upload`` a blob which didn't already exist, it will also be
+  created with all the properties you have set locally.
+
 To download blob data into a string
 
   .. code-block:: python
@@ -694,7 +692,225 @@ To download directly to a file
 
    >>> blob.download_to_filename('/path/on/local/machine.file')
 
-Dealing with ACLs
------------------
+Dealing with Sharing and ACLs
+-----------------------------
 
-To do
+To generate a signed URL for temporary privileged access to the
+contents of a blob
+
+.. code-block:: python
+
+   >>> expiration_seconds = 600
+   >>> signed_url = blob.generate_signed_url(expiration_seconds)
+
+A :class:`Bucket <gcloud.storage.bucket.Bucket>` has both its own ACLs
+and a set of default ACLs to be used for newly created blobs.
+
+.. code-block:: python
+
+   >>> bucket.acl
+   [<ACL Entity: project-editors-111111 (OWNER)>,
+    <ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: project-viewers-111111 (READER)>,
+    <ACL Entity: user-01234 (OWNER)>]
+   >>> bucket.default_object_acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: user-01234 (OWNER)>]
+
+This will be updated when calling ``bucket.reload()``, since by
+default ``projection=full`` is used to get the bucket properties.
+
+To update these directly
+
+.. code-block:: python
+
+   >>> bucket.update_acl()
+   >>> bucket.acl
+   [<ACL Entity: project-editors-111111 (OWNER)>,
+    <ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: project-viewers-111111 (READER)>,
+    <ACL Entity: domain-foo.com (OWNER)>,
+    <ACL Entity: group-foo@googlegroups.com (OWNER)>]
+   >>> bucket.update_default_object_acl()
+   >>> bucket.default_object_acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: domain-foo.com (OWNER)>,
+    <ACL Entity: user-01234 (READER)>]
+
+These methods call `bucketAccessControls.list`_ and
+`defaultObjectAccessControls.list`_ instead of updating
+every single property associated with the bucket.
+
+.. _bucketAccessControls.list: https://cloud.google.com/storage/docs/json_api/v1/bucketAccessControls/list
+.. _defaultObjectAccessControls.list: https://cloud.google.com/storage/docs/json_api/v1/defaultObjectAccessControls/list
+
+You can limit the results of
+:meth:`Bucket.update_default_object_acl() <gcloud.storage.bucket.Bucket.update_default_object_acl>`
+by using
+
+.. code-block:: python
+
+   >>> bucket.update_default_object_acl(if_metageneration_match=1)
+
+or
+
+.. code-block:: python
+
+   >>> bucket.update_default_object_acl(if_metageneration_not_match=1)
+
+Similarly, a :class:`Blob <gcloud.storage.blob.Blob>` has its own ACLs
+
+.. code-block:: python
+
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: user-01234 (OWNER)>]
+
+This will be updated when calling ``blob.reload()``, since by
+default ``projection=full`` is used to get the blob properties.
+
+To update these directly
+
+.. code-block:: python
+
+   >>> blob.update_acl()
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: domain-foo.com (OWNER)>,
+    <ACL Entity: user-01234 (READER)>]
+
+When sending the `objectAccessControls.list`_ request, the blob's current
+generation is sent.
+
+.. _objectAccessControls.list: https://cloud.google.com/storage/docs/json_api/v1/objectAccessControls/list
+
+Individual :class:`ACLEntity <gcloud.storage.acl.ACLEntity>` objects can be
+edited and updated directly
+
+.. code-block:: python
+
+   >>> entity = bucket.acl[1]
+   >>> entity
+   <ACL Entity: user-01234 (READER)>
+   >>> entity.role = storage.ROLES.WRITER
+   <ACL Entity: user-01234 (WRITER)>
+   >>> entity.patch()
+
+A :class:`ACLEntity <gcloud.storage.acl.ACLEntity>` objects has two
+properties that can be updated
+
+.. code-block:: python
+
+   >>> entity.entity = 'user-01234'
+   >>> entity.role = 'WRITER'
+
+and several read-only properties
+
+.. code-block:: python
+
+   >>> entity.bucket
+   u'bucket-name'
+   >>> entity.domain
+   u'foo.com'
+   >>> entity.email
+   u'foo@gmail.com'
+   >>> entity.entityId
+   u'00b4903a9708670FAKEDATA3109ed94bFAKEDATA3e3090f8c566691bFAKEDATA'
+   >>> entity.etag
+   u'CAI='
+   >>> entity.generation
+   1L
+   >>> entity.id
+   u'bucket-name/project-owners-111111'
+   >>> entity.project_team
+   {u'projectNumber': u'111111', u'team': u'owners'}
+   >>> entity.self_link
+   u'https://www.googleapis.com/storage/v1/b/bucket-name/acl/project-owners-111111'
+
+To update the values in an ACL, you can either update the entire parent
+
+.. code-block:: python
+
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: user-01234 (OWNER)>]
+   >>> blob.reload()
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: user-01234 (READER)>]
+
+or just reload the individual ACL
+
+.. code-block:: python
+
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: user-01234 (OWNER)>]
+   >>> blob.acl[1].reload()
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: user-01234 (READER)>]
+
+To add an ACL to an existing object
+
+.. code-block:: python
+
+   >>> bucket.add_acl_entity('group-foo@googlegroups.com', 'WRITER')
+   >>> bucket.add_default_object_acl_entity('domain-foo.com', 'OWNER')
+   >>> blob.add_acl_entity('user-01234', 'READER')
+
+To remove an ACL, you can either reduce the list and update
+
+.. code-block:: python
+
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: domain-foo.com (OWNER)>,
+    <ACL Entity: user-01234 (READER)>]
+   >>> blob.acl.remove(blob.acl[1])
+   >>> blob.patch()
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: user-01234 (READER)>]
+
+or delete the ACL directly
+
+.. code-block:: python
+
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: domain-foo.com (OWNER)>,
+    <ACL Entity: user-01234 (READER)>]
+   >>> blob.acl[1].delete()
+   >>> blob.acl
+   [<ACL Entity: project-owners-111111 (OWNER)>,
+    <ACL Entity: user-01234 (READER)>]
+
+.. note::
+  **BREAKING THE FOURTH WALL**: Note that ``storage.*AccessControls.insert``
+  and ``storage.*AccessControls.update`` are absent. This is done
+  intentionally, with the philosophy that an
+  :class:`ACLEntity <gcloud.storage.acl.ACLEntity>` must be attached to either
+  a :class:`Bucket <gcloud.storage.bucket.Bucket>` or
+  :class:`Blob <gcloud.storage.blob.Blob>`
+
+Predefined ACLs
+---------------
+
+When creating a new bucket, you can set predefined ACLs
+
+.. code-block:: python
+
+   >>> bucket.create(predefined_acl=storage.ACLS.PROJECT_PRIVATE,
+   ...               predefined_default_object_acl=storage.ACLS.PRIVATE)
+
+The enum variable ``storage.ACLS`` contains all acceptable values. See
+documentation for `buckets.insert`_ for more details.
+
+.. _buckets.insert: https://cloud.google.com/storage/docs/json_api/v1/buckets/insert
+
+When creating a new blob, you can set a predefined ACL
+
+.. code-block:: python
+
+   >>> blob.create(predefined_acl=storage.ACLS.AUTHENTICATED_READ)
