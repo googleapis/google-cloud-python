@@ -687,6 +687,7 @@ class Test_Bucket(unittest2.TestCase):
         resp_to_reload = before
         connection = _Connection(resp_to_reload)
         bucket = self._makeOne(NAME, connection)
+        bucket.reload()
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
         self.assertEqual(info['logObjectPrefix'], LOG_PREFIX)
@@ -707,13 +708,15 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(resp_to_reload, resp_to_enable_logging,
                                  resp_to_enable_logging)
         bucket = self._makeOne(NAME, connection, properties=before)
+        bucket.reload()
         self.assertTrue(bucket.get_logging() is None)
         bucket.enable_logging(LOG_BUCKET)
         info = bucket.get_logging()
+        bucket.patch()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
         self.assertEqual(info['logObjectPrefix'], '')
         kw = connection._requested
-        self.assertEqual(len(kw), 3)
+        self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
@@ -721,9 +724,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[1]['data'], resp_to_enable_logging)
         self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
-        self.assertEqual(kw[2]['method'], 'GET')
-        self.assertEqual(kw[2]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[2]['query_params'], {'projection': 'noAcl'})
 
     def test_enable_logging_explicit(self):
         NAME = 'name'
@@ -738,13 +738,15 @@ class Test_Bucket(unittest2.TestCase):
                                  resp_to_enable_logging,
                                  resp_to_enable_logging)
         bucket = self._makeOne(NAME, connection, properties=before)
+        bucket.reload()
         self.assertTrue(bucket.get_logging() is None)
         bucket.enable_logging(LOG_BUCKET, LOG_PFX)
+        bucket.patch()
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
         self.assertEqual(info['logObjectPrefix'], LOG_PFX)
         kw = connection._requested
-        self.assertEqual(len(kw), 3)
+        self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
@@ -752,9 +754,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[1]['data'], resp_to_enable_logging)
         self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
-        self.assertEqual(kw[2]['method'], 'GET')
-        self.assertEqual(kw[2]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[2]['query_params'], {'projection': 'noAcl'})
 
     def test_disable_logging(self):
         NAME = 'name'
@@ -764,11 +763,13 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(resp_to_reload, resp_to_disable_logging,
                                  resp_to_disable_logging)
         bucket = self._makeOne(NAME, connection, properties=before)
+        bucket.reload()
         self.assertTrue(bucket.get_logging() is not None)
         bucket.disable_logging()
+        bucket.patch()
         self.assertTrue(bucket.get_logging() is None)
         kw = connection._requested
-        self.assertEqual(len(kw), 3)
+        self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
@@ -776,9 +777,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[1]['path'], '/b/%s' % NAME)
         self.assertEqual(kw[1]['data'], {'logging': None})
         self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
-        self.assertEqual(kw[2]['method'], 'GET')
-        self.assertEqual(kw[2]['path'], '/b/%s' % NAME)
-        self.assertEqual(kw[2]['query_params'], {'projection': 'noAcl'})
 
     def test_metageneration(self):
         METAGENERATION = 42

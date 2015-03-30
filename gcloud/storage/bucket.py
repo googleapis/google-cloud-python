@@ -541,7 +541,6 @@ class Bucket(_PropertyMixin):
         :returns: a dict w/ keys, ``logBucket`` and ``logObjectPrefix``
                   (if logging is enabled), or None (if not).
         """
-        self.reload()
         info = self._properties.get('logging')
         if info is not None:
             return info.copy()
@@ -559,7 +558,6 @@ class Bucket(_PropertyMixin):
         """
         info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
         self._patch_properties({'logging': info})
-        self.patch()
 
     def disable_logging(self):
         """Disable access logging for this bucket.
@@ -567,7 +565,6 @@ class Bucket(_PropertyMixin):
         See: https://cloud.google.com/storage/docs/accesslogs#disabling
         """
         self._patch_properties({'logging': None})
-        self.patch()
 
     @property
     def metageneration(self):
