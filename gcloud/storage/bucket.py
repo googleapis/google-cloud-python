@@ -452,28 +452,30 @@ class Bucket(_PropertyMixin):
         blob.upload_from_file(file_obj)
         return blob
 
-    def get_cors(self):
+    @property
+    def cors(self):
         """Retrieve CORS policies configured for this bucket.
 
         See: http://www.w3.org/TR/cors/ and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: list(dict)
+        :rtype: list of dictionaries
         :returns: A sequence of mappings describing each CORS policy.
         """
-        return [policy.copy() for policy in self.properties.get('cors', ())]
+        return [copy.deepcopy(policy)
+                for policy in self.properties.get('cors', ())]
 
-    def update_cors(self, entries):
-        """Update CORS policies configured for this bucket.
+    @cors.setter
+    def cors(self, entries):
+        """Set CORS policies configured for this bucket.
 
         See: http://www.w3.org/TR/cors/ and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :type entries: list(dict)
+        :type entries: list of dictionaries
         :param entries: A sequence of mappings describing each CORS policy.
         """
         self._patch_properties({'cors': entries})
-        self.patch()
 
     def get_default_object_acl(self):
         """Get the current Default Object ACL rules.
