@@ -555,7 +555,7 @@ class Blob(_PropertyMixin):
 
         :type value: dict
         """
-        self._patch_properties({'metadata': value})
+        self._patch_property('metadata', value)
 
     @property
     def metageneration(self):

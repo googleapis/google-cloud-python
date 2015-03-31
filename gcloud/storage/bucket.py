@@ -504,7 +504,7 @@ class Bucket(_PropertyMixin):
         :type entries: list of dictionaries
         :param entries: A sequence of mappings describing each CORS policy.
         """
-        self._patch_properties({'cors': entries})
+        self._patch_property('cors', entries)
 
     @property
     def etag(self):
@@ -550,7 +550,7 @@ class Bucket(_PropertyMixin):
         :rtype: list(dict)
         :returns: A sequence of mappings describing each lifecycle rule.
         """
-        self._patch_properties({'lifecycle': {'rule': rules}})
+        self._patch_property('lifecycle', {'rule': rules})
 
     location = _scalar_property('location')
     """Retrieve location configured for this bucket.
@@ -586,14 +586,14 @@ class Bucket(_PropertyMixin):
         :param object_prefix: prefix for access log filenames
         """
         info = {'logBucket': bucket_name, 'logObjectPrefix': object_prefix}
-        self._patch_properties({'logging': info})
+        self._patch_property('logging', info)
 
     def disable_logging(self):
         """Disable access logging for this bucket.
 
         See: https://cloud.google.com/storage/docs/accesslogs#disabling
         """
-        self._patch_properties({'logging': None})
+        self._patch_property('logging', None)
 
     @property
     def metageneration(self):
@@ -682,7 +682,7 @@ class Bucket(_PropertyMixin):
         :type value: convertible to boolean
         :param value: should versioning be anabled for the bucket?
         """
-        self._patch_properties({'versioning': {'enabled': bool(value)}})
+        self._patch_property('versioning', {'enabled': bool(value)})
 
     def configure_website(self, main_page_suffix=None, not_found_page=None):
         """Configure website-related properties.
@@ -719,12 +719,10 @@ class Bucket(_PropertyMixin):
         :param not_found_page: The file to use when a page isn't found.
         """
         data = {
-            'website': {
-                'mainPageSuffix': main_page_suffix,
-                'notFoundPage': not_found_page,
-            },
+            'mainPageSuffix': main_page_suffix,
+            'notFoundPage': not_found_page,
         }
-        self._patch_properties(data)
+        self._patch_property('website', data)
 
     def disable_website(self):
         """Disable the website configuration for this bucket.
