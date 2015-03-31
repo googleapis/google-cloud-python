@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Transactions &mdash; gcloud daa0027 documentation</title>
+    <title>Transactions &mdash; gcloud 24ba02b documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'daa0027',
+        VERSION:     '24ba02b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud daa0027 documentation" href="index.html" />
+    <link rel="top" title="gcloud 24ba02b documentation" href="index.html" />
     <link rel="next" title="Batches" href="datastore-batches.html" />
     <link rel="prev" title="Queries" href="datastore-queries.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-transactions%0ARelease%3A%20daa0027" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-transactions%0ARelease%3A%2024ba02b" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (daa0027)
+              Version History (24ba02b)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -129,29 +129,12 @@ try:</p>
 committed.</p>
 <p>Once you exit the transaction (or call <code class="docutils literal"><span class="pre">commit()</span></code>), the
 automatically generated ID will be assigned to the entity:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Transaction</span><span class="p">():</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity</span><span class="p">])</span>
 <span class="gp">... </span>    <span class="k">assert</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There is no ID on this key.</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There *is* an ID.</span>
-</pre></div>
-</div>
-<p>After completion, you can determine if a commit succeeded or failed.
-For example, trying to delete a key that doesn&#8217;t exist:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">xact</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">xact</span><span class="o">.</span><span class="n">succeeded</span>
-<span class="go">False</span>
-</pre></div>
-</div>
-<p>or successfully storing two entities:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Transaction</span><span class="p">()</span> <span class="k">as</span> <span class="n">xact</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity1</span><span class="p">,</span> <span class="n">entity2</span><span class="p">])</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">xact</span><span class="o">.</span><span class="n">succeeded</span>
-<span class="go">True</span>
 </pre></div>
 </div>
 </div>
