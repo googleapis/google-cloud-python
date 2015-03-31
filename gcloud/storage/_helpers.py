@@ -57,20 +57,23 @@ class _PropertyMixin(object):
         self._properties = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)
 
-    def _patch_properties(self, properties):
-        """Update particular fields of this object's properties.
+    def _patch_property(self, name, value):
+        """Update field of this object's properties.
 
-        This method will only update the fields provided and will not
+        This method will only update the field provided and will not
         touch the other fields.
 
         It **will not** reload the properties from the server. The behavior is
         local only and syncing occurs via :meth:`patch`.
 
-        :type properties: dict
-        :param properties: The dictionary of values to update.
+        :type name: string
+        :param name: The field name to update.
+
+        :type value: object
+        :param value: The value being updated.
         """
-        self._changes.update(properties.keys())
-        self._properties.update(properties)
+        self._changes.add(name)
+        self._properties[name] = value
 
     def patch(self):
         """Sends all changed properties in a PATCH request.
@@ -95,7 +98,7 @@ def _scalar_property(fieldname):
 
     def _setter(self, value):
         """Scalar property setter."""
-        self._patch_properties({fieldname: value})
+        self._patch_property(fieldname, value)
 
     return property(_getter, _setter)
 

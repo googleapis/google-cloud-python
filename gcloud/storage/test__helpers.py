@@ -57,10 +57,10 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/path')
         self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
 
-    def test__patch_properties(self):
+    def test__patch_property(self):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
-        derived._patch_properties({'foo': 'Foo'})
+        derived._patch_property('foo', 'Foo')
         derived.patch()
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -89,13 +89,13 @@ class Test__scalar_property(unittest2.TestCase):
     def test_setter(self):
 
         class Test(object):
-            def _patch_properties(self, mapping):
-                self._patched = mapping.copy()
+            def _patch_property(self, name, value):
+                self._patched = (name, value)
             do_re_mi = self._callFUT('solfege')
 
         test = Test()
         test.do_re_mi = 'Latido'
-        self.assertEqual(test._patched, {'solfege': 'Latido'})
+        self.assertEqual(test._patched, ('solfege', 'Latido'))
 
 
 class Test__base64_md5hash(unittest2.TestCase):
