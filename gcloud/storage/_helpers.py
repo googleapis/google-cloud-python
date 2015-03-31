@@ -56,6 +56,8 @@ class _PropertyMixin(object):
         query_params = {'projection': 'noAcl'}
         self._properties = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)
+        # If the api_request succeeded, we reset changes.
+        self._changes = set()
 
     def _patch_property(self, name, value):
         """Update field of this object's properties.
@@ -87,6 +89,8 @@ class _PropertyMixin(object):
         self._properties = self.connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'})
+        # If the api_request succeeded, we reset changes.
+        self._changes = set()
 
 
 def _scalar_property(fieldname):
