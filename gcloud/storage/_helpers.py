@@ -49,30 +49,6 @@ class _PropertyMixin(object):
         self._properties = {}
         self._changes = set()
 
-    @property
-    def batch(self):
-        """Return a context manager which defers/batches updates.
-
-        E.g., to batch multiple updates to a bucket::
-
-            >>> with bucket.batch:
-            ...     bucket.enable_versioning()
-            ...     bucket.disable_website()
-
-        or for a blob::
-
-            >>> with blob.batch:
-            ...     blob.content_type = 'image/jpeg'
-            ...     blob.content_encoding = 'gzip'
-
-        Updates will be aggregated and sent as a single call to
-        :meth:`_patch_properties` IFF the ``with`` block exits without
-        an exception.
-
-        :rtype: :class:`_PropertyBatch`
-        """
-        return _PropertyBatch(self)
-
     def reload(self):
         """Reload properties from Cloud Storage.
 
@@ -121,24 +97,6 @@ class _PropertyMixin(object):
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'})
         return self
-
-
-class _PropertyBatch(object):
-    """Context manager: Batch updates to object.
-
-    :type wrapped: class derived from :class:`_PropertyMixin`.
-    :param wrapped:  the instance whose property updates to batch.
-    """
-    def __init__(self, wrapped):
-        self._wrapped = wrapped
-
-    def __enter__(self):
-        """Do nothing method. Needed to be a context manager."""
-
-    def __exit__(self, exc_type, value, traceback):
-        """Patch deferred property updates if no error."""
-        if exc_type is None:
-            self._wrapped.patch()
 
 
 def _scalar_property(fieldname):
