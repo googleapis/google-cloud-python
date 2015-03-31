@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.__init__ &mdash; gcloud 3af46b1 documentation</title>
+    <title>gcloud.pubsub.connection &mdash; gcloud 3af46b1 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/__init__%0ARelease%3A%203af46b1" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/connection%0ARelease%3A%203af46b1" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -79,8 +79,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
       <section class="content">
         
-  <h1>Source code for gcloud.datastore.__init__</h1><div class="highlight"><pre>
-<span class="c"># Copyright 2014 Google Inc. All rights reserved.</span>
+  <h1>Source code for gcloud.pubsub.connection</h1><div class="highlight"><pre>
+<span class="c"># Copyright 2015 Google Inc. All rights reserved.</span>
 <span class="c">#</span>
 <span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c"># you may not use this file except in compliance with the License.</span>
@@ -94,79 +94,22 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="c"># See the License for the specific language governing permissions and</span>
 <span class="c"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Shortcut methods for getting set up with Google Cloud Datastore.</span>
+<span class="sd">&quot;&quot;&quot;Create / interact with gcloud pubsub connections.&quot;&quot;&quot;</span>
 
-<span class="sd">You&#39;ll typically use these to get started with the API:</span>
-
-<span class="sd">&gt;&gt;&gt; from gcloud import datastore</span>
-
-<span class="sd">&gt;&gt;&gt; key = datastore.Key(&#39;EntityKind&#39;, 1234)</span>
-<span class="sd">&gt;&gt;&gt; entity = datastore.Entity(key)</span>
-<span class="sd">&gt;&gt;&gt; query = datastore.Query(kind=&#39;EntityKind&#39;)</span>
-
-<span class="sd">The main concepts with this API are:</span>
-
-<span class="sd">- :class:`gcloud.datastore.connection.Connection`</span>
-<span class="sd">  which represents a connection between your machine and the Cloud Datastore</span>
-<span class="sd">  API.</span>
-
-<span class="sd">- :class:`gcloud.datastore.dataset.Dataset`</span>
-<span class="sd">  which represents a dataset ID (string) bundled with a connection and has</span>
-<span class="sd">  convenience methods for constructing objects with that dataset ID.</span>
-
-<span class="sd">- :class:`gcloud.datastore.entity.Entity`</span>
-<span class="sd">  which represents a single entity in the datastore</span>
-<span class="sd">  (akin to a row in relational database world).</span>
-
-<span class="sd">- :class:`gcloud.datastore.key.Key`</span>
-<span class="sd">  which represents a pointer to a particular entity in the datastore</span>
-<span class="sd">  (akin to a unique identifier in relational database world).</span>
-
-<span class="sd">- :class:`gcloud.datastore.query.Query`</span>
-<span class="sd">  which represents a lookup or search over the rows in the datastore.</span>
-
-<span class="sd">- :class:`gcloud.datastore.transaction.Transaction`</span>
-<span class="sd">  which represents an all-or-none transaction and enables consistency</span>
-<span class="sd">  when race conditions may occur.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">SCOPE</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">get_connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_dataset_id</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">set_default_connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">set_default_dataset_id</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">allocate_ids</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">delete</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">get</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">put</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 
 
-<div class="viewcode-block" id="set_defaults"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.set_defaults">[docs]</a><span class="k">def</span> <span class="nf">set_defaults</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set defaults either explicitly or implicitly as fall-back.</span>
+<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Pubsub via the JSON REST API.&quot;&quot;&quot;</span>
 
-<span class="sd">    Uses the arguments to call the individual default methods</span>
-<span class="sd">    - set_default_dataset_id</span>
-<span class="sd">    - set_default_connection</span>
+    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s">&#39;https://pubsub.googleapis.com&#39;</span>
+    <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
 
-<span class="sd">    In the future we will likely enable methods like</span>
-<span class="sd">    - set_default_namespace</span>
+    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1beta2&#39;</span>
+    <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
 
-<span class="sd">    :type dataset_id: string</span>
-<span class="sd">    :param dataset_id: Optional. The dataset ID to use as default.</span>
-
-<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
-<span class="sd">    :param connection: A connection provided to be the default.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">set_default_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">)</span>
-    <span class="n">set_default_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span></div>
+    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/{api_version}{path}&#39;</span>
+    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
