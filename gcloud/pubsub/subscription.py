@@ -55,7 +55,7 @@ class Subscription(object):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/create
         """
-        data = {'topic': self.topic.path}
+        data = {'topic': self.topic.full_name}
 
         if self.ack_deadline is not None:
             data['ackDeadline'] = self.ack_deadline

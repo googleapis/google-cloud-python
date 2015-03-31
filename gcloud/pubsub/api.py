@@ -16,6 +16,7 @@
 
 from gcloud._helpers import get_default_project
 from gcloud.pubsub._implicit_environ import get_default_connection
+from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
 
@@ -65,10 +66,8 @@ def list_topics(page_size=None, page_token=None,
 
     path = '/projects/%s/topics' % project
     resp = connection.api_request(method='GET', path=path, query_params=params)
-    topics = []
-    for full_name in [topic['name'] for topic in resp['topics']]:
-        _, t_project, _, name = full_name.split('/')
-        topics.append(Topic(name, t_project, connection))
+    topics = [_topic_from_resource(resource, connection)
+              for resource in resp['topics']]
     return topics, resp.get('nextPageToken')
 
 
@@ -102,9 +101,9 @@ def list_subscriptions(page_size=None, page_token=None, topic_name=None,
                        defaults to the connection inferred from the
                        environment.
 
-    :rtype: dict
-    :returns: keys include ``subscriptions`` (a list of subscription mappings)
-              and ``nextPageToken`` (a string:  if non-empty, indicates that
+    :rtype: tuple, (list, str)
+    :returns: list of :class:`gcloud.pubsub.subscription.Subscription`, plus a
+              "next page token" string:  if not None, indicates that
               more topics can be retrieved with another call (pass that
               value as ``page_token``).
     """
@@ -127,4 +126,49 @@ def list_subscriptions(page_size=None, page_token=None, topic_name=None,
     else:
         path = '/projects/%s/topics/%s/subscriptions' % (project, topic_name)
 
-    return connection.api_request(method='GET', path=path, query_params=params)
+    resp = connection.api_request(method='GET', path=path, query_params=params)
+    topics = {}
+    subscriptions = [_subscription_from_resource(resource, topics, connection)
+                     for resource in resp['subscriptions']]
+    return subscriptions, resp.get('nextPageToken')
+
+
+def _topic_from_resource(resource, connection):
+    """Construct a topic given its full path-like name.
+
+    :type resource: dict
+    :param resource: topic resource representation returned from the API
+
+    :type connection: :class:`gcloud.pubsub.connection.Connection`
+    :param connection: connection to use for the topic.
+
+    :rtype: :class:`gcloud.pubsub.topic.Topic`
+    """
+    _, project, _, name = resource['name'].split('/')
+    return Topic(name, project, connection)
+
+
+def _subscription_from_resource(resource, topics, connection):
+    """Construct a topic given its full path-like name.
+
+    :type resource: string
+    :param resource: subscription resource representation returned from the API
+
+    :type topics: dict, full_name -> :class:`gcloud.pubsub.topic.Topic`
+    :param topics: the topics to which subscriptions have been bound
+
+    :type connection: :class:`gcloud.pubsub.connection.Connection`
+    :param connection: connection to use for the topic.
+
+    :rtype: :class:`gcloud.pubsub.subscription.Subscription`
+    """
+    t_name = resource['topic']
+    topic = topics.get(t_name)
+    if topic is None:
+        topic = topics[t_name] = _topic_from_resource({'name': t_name},
+                                                      connection)
+    _, _, _, name = resource['name'].split('/')
+    ack_deadline = resource.get('ackDeadlineSeconds')
+    push_config = resource.get('pushConfig', {})
+    push_endpoint = push_config.get('pushEndpoint')
+    return Subscription(name, topic, ack_deadline, push_endpoint)
