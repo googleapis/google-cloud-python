@@ -16,6 +16,7 @@
 
 from gcloud._helpers import get_default_project
 from gcloud.pubsub._implicit_environ import get_default_connection
+from gcloud.pubsub.topic import Topic
 
 
 def list_topics(page_size=None, page_token=None,
@@ -42,9 +43,9 @@ def list_topics(page_size=None, page_token=None,
                        defaults to the connection inferred from the
                        environment.
 
-    :rtype: dict
-    :returns: keys include ``topics`` (a list of topic mappings) and
-              ``nextPageToken`` (a string:  if non-empty, indicates that
+    :rtype: tuple, (list, str)
+    :returns: list of :class:`gcloud.pubsub.topic.Topic`, plus a
+              "next page token" string:  if not None, indicates that
               more topics can be retrieved with another call (pass that
               value as ``page_token``).
     """
@@ -63,7 +64,12 @@ def list_topics(page_size=None, page_token=None,
         params['pageToken'] = page_token
 
     path = '/projects/%s/topics' % project
-    return connection.api_request(method='GET', path=path, query_params=params)
+    resp = connection.api_request(method='GET', path=path, query_params=params)
+    topics = []
+    for full_name in [topic['name'] for topic in resp['topics']]:
+        _, t_project, _, name = full_name.split('/')
+        topics.append(Topic(name, t_project, connection))
+    return topics, resp.get('nextPageToken')
 
 
 def list_subscriptions(page_size=None, page_token=None, topic_name=None,

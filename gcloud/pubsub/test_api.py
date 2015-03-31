@@ -22,17 +22,18 @@ class Test_list_topics(unittest2.TestCase):
         return list_topics(*args, **kw)
 
     def test_w_explicit_connection_no_paging(self):
+        from gcloud.pubsub.topic import Topic
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
-        TOKEN = 'TOKEN'
-        returned = {'topics': [{'name': TOPIC_NAME}],
-                    'nextPageToken': TOKEN}
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        returned = {'topics': [{'name': TOPIC_PATH}]}
         conn = _Connection(returned)
-        response = self._callFUT(project=PROJECT, connection=conn)
-        topics = response['topics']
+        topics, next_page_token = self._callFUT(project=PROJECT,
+                                                connection=conn)
         self.assertEqual(len(topics), 1)
-        self.assertEqual(topics[0], {'name': TOPIC_NAME})
-        self.assertEqual(response['nextPageToken'], TOKEN)
+        self.assertTrue(isinstance(topics[0], Topic))
+        self.assertEqual(topics[0].name, TOPIC_NAME)
+        self.assertEqual(next_page_token, None)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
@@ -42,19 +43,21 @@ class Test_list_topics(unittest2.TestCase):
     def test_w_implicit_connection_and_project_wo_paging(self):
         from gcloud._testing import _monkey_defaults as _monkey_base_defaults
         from gcloud.pubsub._testing import _monkey_defaults
+        from gcloud.pubsub.topic import Topic
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         TOKEN = 'TOKEN'
-        returned = {'topics': [{'name': TOPIC_NAME}],
+        returned = {'topics': [{'name': TOPIC_PATH}],
                     'nextPageToken': TOKEN}
         conn = _Connection(returned)
         with _monkey_base_defaults(project=PROJECT):
             with _monkey_defaults(connection=conn):
-                response = self._callFUT()
-        topics = response['topics']
+                topics, next_page_token = self._callFUT()
         self.assertEqual(len(topics), 1)
-        self.assertEqual(topics[0], {'name': TOPIC_NAME})
-        self.assertEqual(response['nextPageToken'], TOKEN)
+        self.assertTrue(isinstance(topics[0], Topic))
+        self.assertEqual(topics[0].name, TOPIC_NAME)
+        self.assertEqual(next_page_token, TOKEN)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
@@ -62,19 +65,21 @@ class Test_list_topics(unittest2.TestCase):
         self.assertEqual(req['query_params'], {})
 
     def test_w_explicit_connection_and_project_w_paging(self):
+        from gcloud.pubsub.topic import Topic
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
-        returned = {'topics': [{'name': TOPIC_NAME}],
+        returned = {'topics': [{'name': TOPIC_PATH}],
                     'nextPageToken': TOKEN2}
         conn = _Connection(returned)
-        response = self._callFUT(SIZE, TOKEN1, PROJECT, conn)
-        topics = response['topics']
+        topics, next_page_token = self._callFUT(SIZE, TOKEN1, PROJECT, conn)
         self.assertEqual(len(topics), 1)
-        self.assertEqual(topics[0], {'name': TOPIC_NAME})
-        self.assertEqual(response['nextPageToken'], TOKEN2)
+        self.assertTrue(isinstance(topics[0], Topic))
+        self.assertEqual(topics[0].name, TOPIC_NAME)
+        self.assertEqual(next_page_token, TOKEN2)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
