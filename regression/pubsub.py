@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
+
 import unittest2
 
 from gcloud import _helpers
@@ -40,3 +42,23 @@ class TestPubsubTopics(unittest2.TestCase):
         self.to_delete.append(topic)
         self.assertTrue(topic.exists())
         self.assertEqual(topic.name, new_topic_name)
+
+    def test_list_topics(self):
+        topics_to_create = [
+            'new%d' % (1000 * time.time(),),
+            'newer%d' % (1000 * time.time(),),
+            'newest%d' % (1000 * time.time(),),
+        ]
+        created_topics = []
+        for topic_name in topics_to_create:
+            topic = Topic(topic_name)
+            topic.create()
+            self.to_delete.append(topic)
+
+        # Retrieve the topics.
+        all_topics, _ = pubsub.list_topics()
+        project_id = pubsub.get_default_project()
+        created_topics = [topic for topic in all_topics
+                          if topic.name in topics_to_create and
+                          topic.project == project_id]
+        self.assertEqual(len(created_topics), len(topics_to_create))
