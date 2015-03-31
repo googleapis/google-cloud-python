@@ -54,8 +54,7 @@ class Test_ACLEntity(unittest2.TestCase):
         TYPE = 'type'
         ROLE = 'role'
         entity = self._makeOne(TYPE)
-        found = entity.grant(ROLE)
-        self.assertTrue(found is entity)
+        entity.grant(ROLE)
         self.assertEqual(entity.get_roles(), set([ROLE]))
 
     def test_grant_duplicate(self):
@@ -72,8 +71,7 @@ class Test_ACLEntity(unittest2.TestCase):
         TYPE = 'type'
         ROLE = 'nonesuch'
         entity = self._makeOne(TYPE)
-        found = entity.revoke(ROLE)
-        self.assertTrue(found is entity)
+        entity.revoke(ROLE)
         self.assertEqual(entity.get_roles(), set())
 
     def test_revoke_hit(self):
@@ -545,7 +543,7 @@ class Test_BucketACL(unittest2.TestCase):
         acl = self._makeOne(bucket)
         acl.loaded = True
         acl.entity('allUsers', ROLE)
-        self.assertTrue(acl.reload() is acl)
+        acl.reload()
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -560,7 +558,7 @@ class Test_BucketACL(unittest2.TestCase):
         acl = self._makeOne(bucket)
         acl.loaded = True
         acl.entity('allUsers', ROLE)
-        self.assertTrue(acl.reload() is acl)
+        acl.reload()
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -575,7 +573,7 @@ class Test_BucketACL(unittest2.TestCase):
         bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
-        self.assertTrue(acl.reload() is acl)
+        acl.reload()
         self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -589,7 +587,7 @@ class Test_BucketACL(unittest2.TestCase):
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
         bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
-        self.assertTrue(acl.reload() is acl)
+        acl.reload()
         self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -601,7 +599,7 @@ class Test_BucketACL(unittest2.TestCase):
         connection = _Connection()
         bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
-        self.assertTrue(acl.save() is acl)
+        acl.save()
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
@@ -611,7 +609,7 @@ class Test_BucketACL(unittest2.TestCase):
         bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
-        self.assertTrue(acl.save() is acl)
+        acl.save()
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -629,7 +627,7 @@ class Test_BucketACL(unittest2.TestCase):
         acl = self._makeOne(bucket)
         acl.loaded = True
         acl.entity('allUsers').grant(ROLE)
-        self.assertTrue(acl.save() is acl)
+        acl.save()
         self.assertEqual(list(acl), AFTER)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -648,7 +646,7 @@ class Test_BucketACL(unittest2.TestCase):
         bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
         acl.loaded = True
-        self.assertTrue(acl.save(new_acl) is acl)
+        acl.save(new_acl)
         entries = list(acl)
         self.assertEqual(len(entries), 2)
         self.assertTrue(STICKY in entries)
@@ -670,7 +668,7 @@ class Test_BucketACL(unittest2.TestCase):
         acl = self._makeOne(bucket)
         acl.loaded = True
         acl.entity('allUsers', ROLE1)
-        self.assertTrue(acl.clear() is acl)
+        acl.clear()
         self.assertEqual(list(acl), [STICKY])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -708,7 +706,7 @@ class Test_ObjectACL(unittest2.TestCase):
         acl = self._makeOne(blob)
         acl.loaded = True
         acl.entity('allUsers', ROLE)
-        self.assertTrue(acl.reload() is acl)
+        acl.reload()
         self.assertEqual(list(acl), [])
 
     def test_reload_eager_empty(self):
@@ -722,7 +720,7 @@ class Test_ObjectACL(unittest2.TestCase):
         acl = self._makeOne(blob)
         acl.loaded = True
         acl.entity('allUsers', ROLE)
-        self.assertTrue(acl.reload() is acl)
+        acl.reload()
         self.assertEqual(list(acl), [])
 
     def test_reload_eager_nonempty(self):
@@ -735,7 +733,7 @@ class Test_ObjectACL(unittest2.TestCase):
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
-        self.assertTrue(acl.reload() is acl)
+        acl.reload()
         self.assertEqual(list(acl), after['items'])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -751,7 +749,7 @@ class Test_ObjectACL(unittest2.TestCase):
         bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
-        self.assertTrue(acl.reload() is acl)
+        acl.reload()
         self.assertEqual(list(acl),
                          [{'entity': 'allUsers', 'role': ROLE}])
         kw = connection._requested
@@ -766,7 +764,7 @@ class Test_ObjectACL(unittest2.TestCase):
         bucket = _Bucket(NAME, connection)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
-        self.assertTrue(acl.save() is acl)
+        acl.save()
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
@@ -779,7 +777,7 @@ class Test_ObjectACL(unittest2.TestCase):
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
-        self.assertTrue(acl.save() is acl)
+        acl.save()
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -795,7 +793,7 @@ class Test_ObjectACL(unittest2.TestCase):
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         acl.loaded = True
-        self.assertTrue(acl.save() is acl)
+        acl.save()
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -814,7 +812,7 @@ class Test_ObjectACL(unittest2.TestCase):
         acl = self._makeOne(blob)
         acl.loaded = True
         acl.entity('allUsers', 'other-role')
-        self.assertTrue(acl.save(new_acl) is acl)
+        acl.save(new_acl)
         self.assertEqual(list(acl), new_acl)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -833,7 +831,7 @@ class Test_ObjectACL(unittest2.TestCase):
         acl = self._makeOne(blob)
         acl.loaded = True
         acl.entity('allUsers', ROLE)
-        self.assertTrue(acl.clear() is acl)
+        acl.clear()
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)

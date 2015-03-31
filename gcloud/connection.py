@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-""" Shared implementation of connections to API servers."""
+"""Shared implementation of connections to API servers."""
 
 import json
 from pkg_resources import get_distribution

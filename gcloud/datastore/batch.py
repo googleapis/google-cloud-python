@@ -57,7 +57,7 @@ class Batch(object):
     """
 
     def __init__(self, dataset_id=None, connection=None):
-        """ Construct a batch.
+        """Construct a batch.
 
         :type dataset_id: :class:`str`.
         :param dataset_id: The ID of the dataset.

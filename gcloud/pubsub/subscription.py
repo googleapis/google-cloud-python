@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-""" Define API Subscriptions."""
+"""Define API Subscriptions."""
 
 from gcloud.exceptions import NotFound
 

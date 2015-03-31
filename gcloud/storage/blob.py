@@ -419,13 +419,9 @@ class Blob(_PropertyMixin):
                               content_type=content_type)
 
     def make_public(self):
-        """Make this blob public giving all users read access.
-
-        :returns: The current object.
-        """
+        """Make this blob public giving all users read access."""
         self.acl.all().grant_read()
         self.acl.save()
-        return self
 
     cache_control = _scalar_property('cacheControl')
     """HTTP 'Cache-Control' header for this object.
@@ -639,7 +635,7 @@ class Blob(_PropertyMixin):
 
 
 class _UploadConfig(object):
-    """ Faux message FBO apitools' 'ConfigureRequest'.
+    """Faux message FBO apitools' 'ConfigureRequest'.
 
     Values extracted from apitools
     'samples/storage_sample/storage/storage_v1_client.py'

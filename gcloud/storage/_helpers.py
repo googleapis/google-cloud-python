@@ -50,17 +50,12 @@ class _PropertyMixin(object):
         self._changes = set()
 
     def reload(self):
-        """Reload properties from Cloud Storage.
-
-        :rtype: :class:`_PropertyMixin`
-        :returns: The object you just reloaded data for.
-        """
+        """Reload properties from Cloud Storage."""
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params = {'projection': 'noAcl'}
         self._properties = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)
-        return self
 
     def _patch_properties(self, properties):
         """Update particular fields of this object's properties.
@@ -73,21 +68,14 @@ class _PropertyMixin(object):
 
         :type properties: dict
         :param properties: The dictionary of values to update.
-
-        :rtype: :class:`_PropertyMixin`
-        :returns: The current object.
         """
         self._changes.update(properties.keys())
         self._properties.update(properties)
-        return self
 
     def patch(self):
         """Sends all changed properties in a PATCH request.
 
-        Updates the ``properties`` with the response from the backend.
-
-        :rtype: :class:`Bucket`
-        :returns: The current bucket.
+        Updates the ``_properties`` with the response from the backend.
         """
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
@@ -96,7 +84,6 @@ class _PropertyMixin(object):
         self._properties = self.connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'})
-        return self
 
 
 def _scalar_property(fieldname):
