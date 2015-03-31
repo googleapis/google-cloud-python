@@ -70,23 +70,6 @@ class Transaction(Batch):
          ...
          >>> assert not entity.key.is_partial  # There *is* an ID.
 
-       After completion, you can determine if a commit succeeded or failed.
-       For example, trying to delete a key that doesn't exist::
-
-         >>> with datastore.Transaction() as xact:
-         ...     xact.delete(key)
-         ...
-         >>> xact.succeeded
-         False
-
-       or successfully storing two entities:
-
-         >>> with datastore.Transaction() as xact:
-         ...     datastore.put([entity1, entity2])
-         ...
-         >>> xact.succeeded
-         True
-
     If you don't want to use the context manager you can initialize a
     transaction manually::
 
