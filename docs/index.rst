@@ -15,6 +15,9 @@
   storage-buckets
   storage-acl
   pubsub-api
+  pubsub-surface
+  pubsub-subscription
+  pubsub-topic
 
 
 Getting started
