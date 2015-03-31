@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ACL &mdash; gcloud 8955180 documentation</title>
+    <title>ACL &mdash; gcloud daa0027 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '8955180',
+        VERSION:     'daa0027',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8955180 documentation" href="index.html" />
+    <link rel="top" title="gcloud daa0027 documentation" href="index.html" />
     <link rel="next" title="gcloud.pubsub API" href="pubsub-api.html" />
     <link rel="prev" title="Buckets" href="storage-buckets.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-acl%0ARelease%3A%208955180" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-acl%0ARelease%3A%20daa0027" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8955180)
+              Version History (daa0027)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -358,13 +358,12 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 <dt id="gcloud.storage.acl.ACL.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>Reload the ACL data from Cloud Storage.</p>
+<p>This is a virtual method, expected to be implemented by subclasses.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><code class="xref py py-class docutils literal"><span class="pre">ACL</span></code></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -447,32 +446,12 @@ bunch of coworkers:</p>
 </pre></div>
 </div>
 <p>At this point all the custom rules you created have been removed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.BucketACL" title="gcloud.storage.acl.BucketACL"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.BucketACL</span></code></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.BucketACL.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#BucketACL.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.BucketACL.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>Reload the ACL data from Cloud Storage.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.BucketACL" title="gcloud.storage.acl.BucketACL"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.BucketACL</span></code></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
@@ -502,10 +481,6 @@ one bucket to another:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>acl</strong> (<a class="reference internal" href="#gcloud.storage.acl.ACL" title="gcloud.storage.acl.ACL"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.ACL</span></code></a>, or a compatible list.) &#8211; The ACL object to save.  If left blank, this will save
 current entries.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.BucketACL" title="gcloud.storage.acl.BucketACL"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.acl.BucketACL</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
 </tr>
 </tbody>
 </table>
@@ -555,16 +530,6 @@ rules with this method.</p>
 <dt id="gcloud.storage.acl.ObjectACL.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ObjectACL.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ObjectACL.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>Reload the ACL data from Cloud Storage.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.acl.ObjectACL" title="gcloud.storage.acl.ObjectACL"><code class="xref py py-class docutils literal"><span class="pre">ObjectACL</span></code></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The current ACL.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">

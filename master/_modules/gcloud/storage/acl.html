@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.acl &mdash; gcloud 8955180 documentation</title>
+    <title>gcloud.storage.acl &mdash; gcloud daa0027 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '8955180',
+        VERSION:     'daa0027',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8955180 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud daa0027 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%208955180" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%20daa0027" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8955180)
+              Version History (daa0027)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -209,55 +209,41 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :type role: string</span>
 <span class="sd">        :param role: The role to add to the entity.</span>
-
-<span class="sd">        :rtype: :class:`_ACLEntity`</span>
-<span class="sd">        :returns: The entity class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">revoke</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove a role from the entity.</span>
 
 <span class="sd">        :type role: string</span>
 <span class="sd">        :param role: The role to remove from the entity.</span>
-
-<span class="sd">        :rtype: :class:`_ACLEntity`</span>
-<span class="sd">        :returns: The entity class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">role</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">grant_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Grant read access to the current entity.&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">grant_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Grant write access to the current entity.&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">grant_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Grant owner access to the current entity.&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">revoke_read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Revoke read access from the current entity.&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">READER_ROLE</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">revoke_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Revoke write access from the current entity.&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">WRITER_ROLE</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">revoke_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Revoke owner access from the current entity.&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="n">_ACLEntity</span><span class="o">.</span><span class="n">OWNER_ROLE</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="ACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL">[docs]</a><span class="k">class</span> <span class="nc">ACL</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -316,7 +302,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">_ACLEntity</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid dictionary: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">entity_dict</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">entity</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+        <span class="n">entity</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">entity</span>
 </div>
 <div class="viewcode-block" id="ACL.has_entity"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.has_entity">[docs]</a>    <span class="k">def</span> <span class="nf">has_entity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns whether or not this ACL has any entries for an entity.</span>
@@ -443,8 +430,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="ACL.reload"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.</span>
 
-<span class="sd">        :rtype: :class:`ACL`</span>
-<span class="sd">        :returns: The current ACL.</span>
+<span class="sd">        This is a virtual method, expected to be implemented by subclasses.</span>
+
+<span class="sd">        :raises: :class:`NotImplementedError`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 </div>
@@ -478,11 +466,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
 
 <div class="viewcode-block" id="BucketACL.reload"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.BucketACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.storage.acl.BucketACL`</span>
-<span class="sd">        :returns: The current ACL.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
         <span class="n">url_path</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">)</span>
@@ -490,8 +474,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="bp">self</span>
 </div>
 <div class="viewcode-block" id="BucketACL.save"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.BucketACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save this ACL for the current bucket.</span>
@@ -516,9 +498,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.</span>
 <span class="sd">        :param acl: The ACL object to save.  If left blank, this will save</span>
 <span class="sd">                    current entries.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.storage.acl.BucketACL`</span>
-<span class="sd">        :returns: The current ACL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">acl</span> <span class="o">=</span> <span class="bp">self</span>
@@ -535,8 +514,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">,</span> <span class="p">()):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
-
-        <span class="k">return</span> <span class="bp">self</span>
 </div>
 <div class="viewcode-block" id="BucketACL.clear"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.BucketACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove all ACL entries.</span>
@@ -559,11 +536,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; acl.clear()</span>
 
 <span class="sd">        At this point all the custom rules you created have been removed.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.storage.acl.BucketACL`</span>
-<span class="sd">        :returns: The current ACL.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">([])</span>
 
 </div></div>
 <div class="viewcode-block" id="DefaultObjectACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.DefaultObjectACL">[docs]</a><span class="k">class</span> <span class="nc">DefaultObjectACL</span><span class="p">(</span><span class="n">BucketACL</span><span class="p">):</span>
@@ -584,11 +558,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">blob</span> <span class="o">=</span> <span class="n">blob</span>
 
 <div class="viewcode-block" id="ObjectACL.reload"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ObjectACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.</span>
-
-<span class="sd">        :rtype: :class:`ObjectACL`</span>
-<span class="sd">        :returns: The current ACL.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
         <span class="n">url_path</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/acl&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span>
@@ -596,8 +566,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="bp">self</span>
 </div>
 <div class="viewcode-block" id="ObjectACL.save"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ObjectACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save the ACL data for this blob.</span>
@@ -620,8 +588,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="p">()):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
-
-        <span class="k">return</span> <span class="bp">self</span>
 </div>
 <div class="viewcode-block" id="ObjectACL.clear"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ObjectACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove all ACL rules from the blob.</span>
@@ -631,7 +597,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        have access to a blob that you created even after you clear ACL</span>
 <span class="sd">        rules with this method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">([])</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">([])</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->

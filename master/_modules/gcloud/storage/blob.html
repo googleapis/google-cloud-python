@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 8955180 documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud daa0027 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '8955180',
+        VERSION:     'daa0027',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8955180 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud daa0027 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%208955180" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20daa0027" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8955180)
+              Version History (daa0027)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -501,13 +501,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                               <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
-
-<span class="sd">        :returns: The current object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span>
 </div>
     <span class="n">cache_control</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s">&#39;cacheControl&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Cache-Control&#39; header for this object.</span>
@@ -721,7 +717,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 </div>
 <span class="k">class</span> <span class="nc">_UploadConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Faux message FBO apitools&#39; &#39;ConfigureRequest&#39;.</span>
+    <span class="sd">&quot;&quot;&quot;Faux message FBO apitools&#39; &#39;ConfigureRequest&#39;.</span>
 
 <span class="sd">    Values extracted from apitools</span>
 <span class="sd">    &#39;samples/storage_sample/storage/storage_v1_client.py&#39;</span>
