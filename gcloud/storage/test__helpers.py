@@ -74,7 +74,7 @@ class Test_PropertyMixin(unittest2.TestCase):
     def test__patch_properties(self):
         connection = _Connection({'foo': 'Foo'})
         derived = self._derivedClass(connection, '/path')()
-        self.assertTrue(derived._patch_properties({'foo': 'Foo'}) is derived)
+        derived._patch_properties({'foo': 'Foo'})
         derived.patch()
         kw = connection._requested
         self.assertEqual(len(kw), 1)

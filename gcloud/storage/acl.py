@@ -127,55 +127,41 @@ class _ACLEntity(object):
 
         :type role: string
         :param role: The role to add to the entity.
-
-        :rtype: :class:`_ACLEntity`
-        :returns: The entity class.
         """
         self.roles.add(role)
-        return self
 
     def revoke(self, role):
         """Remove a role from the entity.
 
         :type role: string
         :param role: The role to remove from the entity.
-
-        :rtype: :class:`_ACLEntity`
-        :returns: The entity class.
         """
         if role in self.roles:
             self.roles.remove(role)
-        return self
 
     def grant_read(self):
         """Grant read access to the current entity."""
-
-        return self.grant(_ACLEntity.READER_ROLE)
+        self.grant(_ACLEntity.READER_ROLE)
 
     def grant_write(self):
         """Grant write access to the current entity."""
-
-        return self.grant(_ACLEntity.WRITER_ROLE)
+        self.grant(_ACLEntity.WRITER_ROLE)
 
     def grant_owner(self):
         """Grant owner access to the current entity."""
-
-        return self.grant(_ACLEntity.OWNER_ROLE)
+        self.grant(_ACLEntity.OWNER_ROLE)
 
     def revoke_read(self):
         """Revoke read access from the current entity."""
-
-        return self.revoke(_ACLEntity.READER_ROLE)
+        self.revoke(_ACLEntity.READER_ROLE)
 
     def revoke_write(self):
         """Revoke write access from the current entity."""
-
-        return self.revoke(_ACLEntity.WRITER_ROLE)
+        self.revoke(_ACLEntity.WRITER_ROLE)
 
     def revoke_owner(self):
         """Revoke owner access from the current entity."""
-
-        return self.revoke(_ACLEntity.OWNER_ROLE)
+        self.revoke(_ACLEntity.OWNER_ROLE)
 
 
 class ACL(object):
@@ -234,7 +220,8 @@ class ACL(object):
         if not isinstance(entity, _ACLEntity):
             raise ValueError('Invalid dictionary: %s' % entity_dict)
 
-        return entity.grant(role)
+        entity.grant(role)
+        return entity
 
     def has_entity(self, entity):
         """Returns whether or not this ACL has any entries for an entity.
@@ -361,8 +348,9 @@ class ACL(object):
     def reload(self):
         """Reload the ACL data from Cloud Storage.
 
-        :rtype: :class:`ACL`
-        :returns: The current ACL.
+        This is a virtual method, expected to be implemented by subclasses.
+
+        :raises: :class:`NotImplementedError`
         """
         raise NotImplementedError
 
@@ -396,11 +384,7 @@ class BucketACL(ACL):
         self.bucket = bucket
 
     def reload(self):
-        """Reload the ACL data from Cloud Storage.
-
-        :rtype: :class:`gcloud.storage.acl.BucketACL`
-        :returns: The current ACL.
-        """
+        """Reload the ACL data from Cloud Storage."""
         self.entities.clear()
 
         url_path = '%s/%s' % (self.bucket.path, self._URL_PATH_ELEM)
@@ -408,8 +392,6 @@ class BucketACL(ACL):
         self.loaded = True
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
-
-        return self
 
     def save(self, acl=None):
         """Save this ACL for the current bucket.
@@ -434,9 +416,6 @@ class BucketACL(ACL):
         :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.
         :param acl: The ACL object to save.  If left blank, this will save
                     current entries.
-
-        :rtype: :class:`gcloud.storage.acl.BucketACL`
-        :returns: The current ACL.
         """
         if acl is None:
             acl = self
@@ -453,8 +432,6 @@ class BucketACL(ACL):
             for entry in result.get(self._URL_PATH_ELEM, ()):
                 self.add_entity(self.entity_from_dict(entry))
             self.loaded = True
-
-        return self
 
     def clear(self):
         """Remove all ACL entries.
@@ -477,11 +454,8 @@ class BucketACL(ACL):
           >>> acl.clear()
 
         At this point all the custom rules you created have been removed.
-
-        :rtype: :class:`gcloud.storage.acl.BucketACL`
-        :returns: The current ACL.
         """
-        return self.save([])
+        self.save([])
 
 
 class DefaultObjectACL(BucketACL):
@@ -502,11 +476,7 @@ class ObjectACL(ACL):
         self.blob = blob
 
     def reload(self):
-        """Reload the ACL data from Cloud Storage.
-
-        :rtype: :class:`ObjectACL`
-        :returns: The current ACL.
-        """
+        """Reload the ACL data from Cloud Storage."""
         self.entities.clear()
 
         url_path = '%s/acl' % self.blob.path
@@ -514,8 +484,6 @@ class ObjectACL(ACL):
         self.loaded = True
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
-
-        return self
 
     def save(self, acl=None):
         """Save the ACL data for this blob.
@@ -539,8 +507,6 @@ class ObjectACL(ACL):
                 self.add_entity(self.entity_from_dict(entry))
             self.loaded = True
 
-        return self
-
     def clear(self):
         """Remove all ACL rules from the blob.
 
@@ -549,4 +515,4 @@ class ObjectACL(ACL):
         have access to a blob that you created even after you clear ACL
         rules with this method.
         """
-        return self.save([])
+        self.save([])

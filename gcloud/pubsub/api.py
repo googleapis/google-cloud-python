@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-""" Define API functions (not bound to classes)."""
+"""Define API functions (not bound to classes)."""
 
 from gcloud._helpers import get_default_project
 from gcloud.pubsub._implicit_environ import get_default_connection
