@@ -117,6 +117,71 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
       </header>
 
       <section class="content">
+        <div class="section" id="getting-started">
+          <h1>
+            <span id="getting-started-show">▹</span>
+            <span id="getting-started-hide" style="display: none">▿</span>
+              Getting started with 
+             <tt class="docutils literal"><span class="pre">gcloud</span></tt>
+          </h1>
+          <div id="getting-started-body" style="display: none">
+          <p>The
+             <tt class="docutils literal"><span class="pre">gcloud</span></tt>
+             library is
+             <tt class="docutils literal"><span class="pre">pip</span></tt>
+             install-able:
+          </p>
+
+          <div class="highlight-console">
+            <div class="highlight">
+              <pre>
+<span class="gp">$</span> pip install gcloud</pre>
+            </div>
+          </div>
+
+          <p>If you have trouble installing
+            <tt class="docutils literal"><span class="pre">pycrypto</span></tt>
+            or
+            <tt class="docutils literal"><span class="pre">pyopenssl</span></tt>
+            (and you&#8217;re on Ubuntu), you can try install the precompiled
+            packages:
+          </p>
+
+          <div class="highlight-console">
+            <div class="highlight">
+              <pre>
+<span class="gp">$</span> sudo apt-get install python-crypto python-openssl</pre>
+            </div>
+          </div>
+
+          <p>If you want to install everything with
+             <tt class="docutils literal"><span class="pre">pip</span></tt>,
+             try installing the
+             <tt class="docutils literal"><span class="pre">dev</span></tt>
+             packages beforehand:
+          </p>
+
+          <div class="highlight-console">
+           <div class="highlight">
+             <pre>
+<span class="gp">$</span> sudo apt-get install python-dev libssl-dev</pre>
+           </div>
+          </div>
+
+        <p>If you want to install <cite>gcloud-python</cite> from source,
+           you can clone the repository from GitHub:
+        </p>
+
+        <div class="highlight-console">
+          <div class="highlight">
+            <pre>
+<span class="gp">$</span> git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
+<span class="gp">$</span> <span class="nb">cd </span>gcloud-python
+<span class="gp">$</span> python setup.py install</pre>
+          </div>
+        </div>
+        </div>
+
         {% block body %} {% endblock %}
       </section><!-- end of .content -->
       <nav class="side-nav">
@@ -154,6 +219,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <script src="{{ pathto('_static/js/vendor/jquery-1.10.2.min.js', 1) }}"></script>
     <script src="{{ pathto('_static/js/plugins.js', 1) }}"></script>
     <script src="{{ pathto('_static/js/main.js', 1) }}"></script>
+    <script>
+      $("#getting-started-hide").click(function() {
+        $("#getting-started-hide").hide();
+        $("#getting-started-show").show();
+        $("#getting-started-body").hide();
+      });
+      $("#getting-started-show").click(function() {
+        $("#getting-started-hide").show();
+        $("#getting-started-show").hide();
+        $("#getting-started-body").show();
+      });
+    </script>
   {% endblock %}
 
   {# Silence the footer #}

@@ -16,12 +16,6 @@
   storage-acl
   pubsub-api
 
-
-Getting started
----------------
-
-.. include:: _components/getting-started.rst
-
 Cloud Datastore
 ~~~~~~~~~~~~~~~
 
