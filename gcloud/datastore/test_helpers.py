@@ -574,3 +574,96 @@ class Test__prepare_key_for_request(unittest2.TestCase):
         key = datastore_pb.Key()
         new_key = self._callFUT(key)
         self.assertTrue(new_key is key)
+
+
+class Test_find_true_dataset_id(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
+    def _callFUT(self, dataset_id, connection):
+        from gcloud.datastore.helpers import find_true_dataset_id
+        return find_true_dataset_id(dataset_id, connection)
+
+    def test_prefixed(self):
+        PREFIXED = 's~DATASET'
+        result = self._callFUT(PREFIXED, object())
+        self.assertEqual(PREFIXED, result)
+
+    def test_unprefixed_bogus_key_miss(self):
+        UNPREFIXED = 'DATASET'
+        PREFIX = 's~'
+        CONNECTION = _Connection(PREFIX, from_missing=False)
+        result = self._callFUT(UNPREFIXED, CONNECTION)
+
+        self.assertEqual(CONNECTION._called_dataset_id, UNPREFIXED)
+
+        self.assertEqual(len(CONNECTION._lookup_result), 1)
+
+        # Make sure just one.
+        called_key_pb, = CONNECTION._called_key_pbs
+        path_element = called_key_pb.path_element
+        self.assertEqual(len(path_element), 1)
+        self.assertEqual(path_element[0].kind, '__MissingLookupKind')
+        self.assertEqual(path_element[0].id, 1)
+        self.assertFalse(path_element[0].HasField('name'))
+
+        PREFIXED = PREFIX + UNPREFIXED
+        self.assertEqual(result, PREFIXED)
+
+    def test_unprefixed_bogus_key_hit(self):
+        UNPREFIXED = 'DATASET'
+        PREFIX = 'e~'
+        CONNECTION = _Connection(PREFIX, from_missing=True)
+        result = self._callFUT(UNPREFIXED, CONNECTION)
+
+        self.assertEqual(CONNECTION._called_dataset_id, UNPREFIXED)
+        self.assertEqual(CONNECTION._lookup_result, [])
+
+        # Make sure just one.
+        called_key_pb, = CONNECTION._called_key_pbs
+        path_element = called_key_pb.path_element
+        self.assertEqual(len(path_element), 1)
+        self.assertEqual(path_element[0].kind, '__MissingLookupKind')
+        self.assertEqual(path_element[0].id, 1)
+        self.assertFalse(path_element[0].HasField('name'))
+
+        PREFIXED = PREFIX + UNPREFIXED
+        self.assertEqual(result, PREFIXED)
+
+
+class _Connection(object):
+
+    _called_dataset_id = _called_key_pbs = _lookup_result = None
+
+    def __init__(self, prefix, from_missing=False):
+        self.prefix = prefix
+        self.from_missing = from_missing
+
+    def lookup(self, dataset_id, key_pbs):
+        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+
+        # Store the arguments called with.
+        self._called_dataset_id = dataset_id
+        self._called_key_pbs = key_pbs
+
+        key_pb, = key_pbs
+
+        response = datastore_pb.Entity()
+        response.key.CopyFrom(key_pb)
+        response.key.partition_id.dataset_id = self.prefix + dataset_id
+
+        missing = []
+        deferred = []
+        if self.from_missing:
+            missing[:] = [response]
+            self._lookup_result = []
+        else:
+            self._lookup_result = [response]
+
+        return self._lookup_result, missing, deferred
