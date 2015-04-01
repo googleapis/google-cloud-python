@@ -33,6 +33,46 @@ __all__ = ('entity_from_protobuf', 'key_from_protobuf')
 INT_VALUE_CHECKER = Int64ValueChecker()
 
 
+def find_true_dataset_id(dataset_id, connection):
+    """Find the true (unaliased) dataset ID.
+
+    If the given ID already has a 's~' or 'e~' prefix, does nothing.
+    Otherwise, looks up a bogus Key('__MissingLookupKind', 1) and reads the
+    true prefixed dataset ID from the response (either from found or from
+    missing).
+
+    For some context, see:
+      github.com/GoogleCloudPlatform/gcloud-python/pull/528
+      github.com/GoogleCloudPlatform/google-cloud-datastore/issues/59
+
+    :type dataset_id: string
+    :param dataset_id: The dataset ID to un-alias / prefix.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: A connection provided to connection to the dataset.
+
+    :rtype: string
+    :returns: The true / prefixed / un-aliased dataset ID.
+    """
+    if dataset_id.startswith('s~') or dataset_id.startswith('e~'):
+        return dataset_id
+
+    # Create the bogus Key protobuf to be looked up and remove
+    # the dataset ID so the backend won't complain.
+    bogus_key_pb = Key('__MissingLookupKind', 1,
+                       dataset_id=dataset_id).to_protobuf()
+    bogus_key_pb.partition_id.ClearField('dataset_id')
+
+    found_pbs, missing_pbs, _ = connection.lookup(dataset_id, [bogus_key_pb])
+    # By not passing in `deferred`, lookup will continue until
+    # all results are `found` or `missing`.
+    all_pbs = missing_pbs + found_pbs
+    # We only asked for one, so should only receive one.
+    returned_pb, = all_pbs
+
+    return returned_pb.key.partition_id.dataset_id
+
+
 def entity_from_protobuf(pb):
     """Factory method for creating an entity based on a protobuf.
 
