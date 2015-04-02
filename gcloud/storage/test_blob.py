@@ -667,12 +667,23 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_component_count(self):
-        BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        BUCKET = object()
         COMPONENT_COUNT = 42
-        properties = {'componentCount': COMPONENT_COUNT}
-        blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
+        blob = self._makeOne('blob-name', bucket=BUCKET,
+                             properties={'componentCount': COMPONENT_COUNT})
+        self.assertEqual(blob.component_count, COMPONENT_COUNT)
+
+    def test_component_count_unset(self):
+        BUCKET = object()
+        blob = self._makeOne('blob-name', bucket=BUCKET)
+        self.assertEqual(blob.component_count, None)
+
+    def test_component_count_string_val(self):
+        BUCKET = object()
+        COMPONENT_COUNT = 42
+        blob = self._makeOne(
+            'blob-name', bucket=BUCKET,
+            properties={'componentCount': str(COMPONENT_COUNT)})
         self.assertEqual(blob.component_count, COMPONENT_COUNT)
 
     def test_content_disposition_getter(self):
@@ -820,12 +831,22 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(blob.etag, ETAG)
 
     def test_generation(self):
-        BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        BUCKET = object()
         GENERATION = 42
-        properties = {'generation': GENERATION}
-        blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
+        blob = self._makeOne('blob-name', bucket=BUCKET,
+                             properties={'generation': GENERATION})
+        self.assertEqual(blob.generation, GENERATION)
+
+    def test_generation_unset(self):
+        BUCKET = object()
+        blob = self._makeOne('blob-name', bucket=BUCKET)
+        self.assertEqual(blob.generation, None)
+
+    def test_generation_string_val(self):
+        BUCKET = object()
+        GENERATION = 42
+        blob = self._makeOne('blob-name', bucket=BUCKET,
+                             properties={'generation': str(GENERATION)})
         self.assertEqual(blob.generation, GENERATION)
 
     def test_id(self):
@@ -901,12 +922,23 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
     def test_metageneration(self):
-        BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        BUCKET = object()
         METAGENERATION = 42
-        properties = {'metageneration': METAGENERATION}
-        blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
+        blob = self._makeOne('blob-name', bucket=BUCKET,
+                             properties={'metageneration': METAGENERATION})
+        self.assertEqual(blob.metageneration, METAGENERATION)
+
+    def test_metageneration_unset(self):
+        BUCKET = object()
+        blob = self._makeOne('blob-name', bucket=BUCKET)
+        self.assertEqual(blob.metageneration, None)
+
+    def test_metageneration_string_val(self):
+        BUCKET = object()
+        METAGENERATION = 42
+        blob = self._makeOne(
+            'blob-name', bucket=BUCKET,
+            properties={'metageneration': str(METAGENERATION)})
         self.assertEqual(blob.metageneration, METAGENERATION)
 
     def test_owner(self):
@@ -930,12 +962,22 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(blob.self_link, SELF_LINK)
 
     def test_size(self):
-        BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        BUCKET = object()
         SIZE = 42
-        properties = {'size': SIZE}
-        blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
+        blob = self._makeOne('blob-name', bucket=BUCKET,
+                             properties={'size': SIZE})
+        self.assertEqual(blob.size, SIZE)
+
+    def test_size_unset(self):
+        BUCKET = object()
+        blob = self._makeOne('blob-name', bucket=BUCKET)
+        self.assertEqual(blob.size, None)
+
+    def test_size_string_val(self):
+        BUCKET = object()
+        SIZE = 42
+        blob = self._makeOne('blob-name', bucket=BUCKET,
+                             properties={'size': str(SIZE)})
         self.assertEqual(blob.size, SIZE)
 
     def test_storage_class(self):

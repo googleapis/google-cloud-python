@@ -821,6 +821,16 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(properties=properties)
         self.assertEqual(bucket.metageneration, METAGENERATION)
 
+    def test_metageneration_unset(self):
+        bucket = self._makeOne()
+        self.assertEqual(bucket.metageneration, None)
+
+    def test_metageneration_string_val(self):
+        METAGENERATION = 42
+        properties = {'metageneration': str(METAGENERATION)}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.metageneration, METAGENERATION)
+
     def test_owner(self):
         OWNER = {'entity': 'project-owner-12345', 'entityId': '23456'}
         properties = {'owner': OWNER}
@@ -832,6 +842,16 @@ class Test_Bucket(unittest2.TestCase):
     def test_project_number(self):
         PROJECT_NUMBER = 12345
         properties = {'projectNumber': PROJECT_NUMBER}
+        bucket = self._makeOne(properties=properties)
+        self.assertEqual(bucket.project_number, PROJECT_NUMBER)
+
+    def test_project_number_unset(self):
+        bucket = self._makeOne()
+        self.assertEqual(bucket.project_number, None)
+
+    def test_project_number_string_val(self):
+        PROJECT_NUMBER = 12345
+        properties = {'projectNumber': str(PROJECT_NUMBER)}
         bucket = self._makeOne(properties=properties)
         self.assertEqual(bucket.project_number, PROJECT_NUMBER)
 

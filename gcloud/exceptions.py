@@ -17,6 +17,7 @@
 See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
 """
 
+import copy
 import json
 import six
 
@@ -38,7 +39,7 @@ class GCloudError(Exception):
         super(GCloudError, self).__init__()
         # suppress deprecation warning under 2.6.x
         self.message = message
-        self._errors = [error.copy() for error in errors]
+        self._errors = errors
 
     def __str__(self):
         return '%d %s' % (self.code, self.message)
@@ -50,7 +51,7 @@ class GCloudError(Exception):
         :rtype: list(dict)
         :returns: a list of mappings describing each error.
         """
-        return [error.copy() for error in self._errors]
+        return [copy.deepcopy(error) for error in self._errors]
 
 
 class Redirection(GCloudError):

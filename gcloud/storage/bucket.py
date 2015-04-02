@@ -513,9 +513,11 @@ class Bucket(_PropertyMixin):
         See: http://tools.ietf.org/html/rfc2616#section-3.11 and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string
+        :rtype: string or ``NoneType``
+        :returns: The bucket etag or ``None`` if the property is not
+                  set locally.
         """
-        return self._properties['etag']
+        return self._properties.get('etag')
 
     @property
     def id(self):
@@ -523,9 +525,11 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string
+        :rtype: string or ``NoneType``
+        :returns: The ID of the bucket or ``None`` if the property is not
+                  set locally.
         """
-        return self._properties['id']
+        return self._properties.get('id')
 
     @property
     def lifecycle_rules(self):
@@ -558,7 +562,9 @@ class Bucket(_PropertyMixin):
     See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
     https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations
 
-    :rtype: string
+    If the property is not set locally, returns ``None``.
+
+    :rtype: string or ``NoneType``
     """
 
     def get_logging(self):
@@ -571,8 +577,7 @@ class Bucket(_PropertyMixin):
                   (if logging is enabled), or None (if not).
         """
         info = self._properties.get('logging')
-        if info is not None:
-            return info.copy()
+        return copy.deepcopy(info)
 
     def enable_logging(self, bucket_name, object_prefix=''):
         """Enable access logging for this bucket.
@@ -601,9 +606,13 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: integer
+        :rtype: integer or ``NoneType``
+        :returns: The metageneration of the bucket or ``None`` if the property
+                  is not set locally.
         """
-        return self._properties['metageneration']
+        metageneration = self._properties.get('metageneration')
+        if metageneration is not None:
+            return int(metageneration)
 
     @property
     def owner(self):
@@ -611,10 +620,11 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: dict
-        :returns: mapping of owner's role/ID.
+        :rtype: dict or ``NoneType``
+        :returns: Mapping of owner's role/ID. If the property is not set
+                  locally, returns ``None``.
         """
-        return self._properties['owner'].copy()
+        return copy.deepcopy(self._properties.get('owner'))
 
     @property
     def project_number(self):
@@ -622,9 +632,13 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: integer
+        :rtype: integer or ``NoneType``
+        :returns: The project number that owns the bucket or ``None`` if the
+                  property is not set locally.
         """
-        return self._properties['projectNumber']
+        project_number = self._properties.get('projectNumber')
+        if project_number is not None:
+            return int(project_number)
 
     @property
     def self_link(self):
@@ -632,21 +646,25 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string
+        :rtype: string or ``NoneType``
+        :returns: The self link for the bucket or ``None`` if the property is
+                  not set locally.
         """
-        return self._properties['selfLink']
+        return self._properties.get('selfLink')
 
     @property
     def storage_class(self):
         """Retrieve the storage class for the bucket.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and
+        See: https://cloud.google.com/storage/docs/storage-classes
+        https://cloud.google.com/storage/docs/nearline-storage
         https://cloud.google.com/storage/docs/durable-reduced-availability
 
-        :rtype: string
-        :returns: Currently one of "STANDARD", "DURABLE_REDUCED_AVAILABILITY"
+        :rtype: string or ``NoneType``
+        :returns: If set, one of "STANDARD", "NEARLINE", or
+                  "DURABLE_REDUCED_AVAILABILITY", else ``None``.
         """
-        return self._properties['storageClass']
+        return self._properties.get('storageClass')
 
     @property
     def time_created(self):
@@ -654,10 +672,11 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string
-        :returns: timestamp in RFC 3339 format.
+        :rtype: string or ``NoneType``
+        :returns: RFC3339 valid timestamp, or ``None`` if the property is not
+                  set locally.
         """
-        return self._properties['timeCreated']
+        return self._properties.get('timeCreated')
 
     @property
     def versioning_enabled(self):
