@@ -100,3 +100,27 @@ class TestPubsub(unittest2.TestCase):
                    if subscription.name in subscriptions_to_create and
                    subscription.topic.name == TOPIC_NAME]
         self.assertEqual(len(created), len(subscriptions_to_create))
+
+    def test_message_pull_mode_e2e(self):
+        from base64 import b64encode as b64
+        TOPIC_NAME = 'subscribe-me'
+        topic = Topic(TOPIC_NAME)
+        self.assertFalse(topic.exists())
+        topic.create()
+        self.to_delete.append(topic)
+        SUBSCRIPTION_NAME = 'subscribing-now'
+        subscription = Subscription(SUBSCRIPTION_NAME, topic)
+        self.assertFalse(subscription.exists())
+        subscription.create()
+        self.to_delete.append(subscription)
+
+        MESSAGE = b'MESSAGE'
+        EXTRA = b'EXTRA TWO'
+        topic.publish(MESSAGE, extra=EXTRA)
+
+        received = subscription.pull()
+        ack_ids = [msg['ackId'] for msg in received]
+        subscription.acknowledge(ack_ids)
+        one, = received
+        self.assertEqual(one['message']['data'], b64(MESSAGE))
+        self.assertEqual(one['message']['attributes'], {'extra': EXTRA})
