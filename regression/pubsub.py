@@ -18,6 +18,7 @@ import unittest2
 
 from gcloud import _helpers
 from gcloud import pubsub
+from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
 
@@ -25,7 +26,7 @@ _helpers._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
 pubsub.set_defaults()
 
 
-class TestPubsubTopics(unittest2.TestCase):
+class TestPubsub(unittest2.TestCase):
 
     def setUp(self):
         self.to_delete = []
@@ -35,13 +36,13 @@ class TestPubsubTopics(unittest2.TestCase):
             doomed.delete()
 
     def test_create_topic(self):
-        new_topic_name = 'a-new-topic'
-        topic = Topic(new_topic_name)
+        TOPIC_NAME = 'a-new-topic'
+        topic = Topic(TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
         self.assertTrue(topic.exists())
-        self.assertEqual(topic.name, new_topic_name)
+        self.assertEqual(topic.name, TOPIC_NAME)
 
     def test_list_topics(self):
         topics_to_create = [
@@ -49,7 +50,6 @@ class TestPubsubTopics(unittest2.TestCase):
             'newer%d' % (1000 * time.time(),),
             'newest%d' % (1000 * time.time(),),
         ]
-        created_topics = []
         for topic_name in topics_to_create:
             topic = Topic(topic_name)
             topic.create()
@@ -58,7 +58,45 @@ class TestPubsubTopics(unittest2.TestCase):
         # Retrieve the topics.
         all_topics, _ = pubsub.list_topics()
         project_id = pubsub.get_default_project()
-        created_topics = [topic for topic in all_topics
-                          if topic.name in topics_to_create and
-                          topic.project == project_id]
-        self.assertEqual(len(created_topics), len(topics_to_create))
+        created = [topic for topic in all_topics
+                   if topic.name in topics_to_create and
+                   topic.project == project_id]
+        self.assertEqual(len(created), len(topics_to_create))
+
+    def test_create_subscription(self):
+        TOPIC_NAME = 'subscribe-me'
+        topic = Topic(TOPIC_NAME)
+        self.assertFalse(topic.exists())
+        topic.create()
+        self.to_delete.append(topic)
+        SUBSCRIPTION_NAME = 'subscribing-now'
+        subscription = Subscription(SUBSCRIPTION_NAME, topic)
+        self.assertFalse(subscription.exists())
+        subscription.create()
+        self.to_delete.append(subscription)
+        self.assertTrue(subscription.exists())
+        self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
+        self.assertTrue(subscription.topic is topic)
+
+    def test_list_subscriptions(self):
+        TOPIC_NAME = 'subscribe-me'
+        topic = Topic(TOPIC_NAME)
+        self.assertFalse(topic.exists())
+        topic.create()
+        self.to_delete.append(topic)
+        subscriptions_to_create = [
+            'new%d' % (1000 * time.time(),),
+            'newer%d' % (1000 * time.time(),),
+            'newest%d' % (1000 * time.time(),),
+        ]
+        for subscription_name in subscriptions_to_create:
+            subscription = Subscription(subscription_name, topic)
+            subscription.create()
+            self.to_delete.append(subscription)
+
+        # Retrieve the subscriptions.
+        all_subscriptions, _ = pubsub.list_subscriptions()
+        created = [subscription for subscription in all_subscriptions
+                   if subscription.name in subscriptions_to_create and
+                   subscription.topic.name == TOPIC_NAME]
+        self.assertEqual(len(created), len(subscriptions_to_create))
