@@ -44,6 +44,82 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
 
+    def test_from_api_repr_no_topics_no_connection(self):
+        from gcloud.pubsub.topic import Topic
+        from gcloud.pubsub._testing import _monkey_defaults
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        DEADLINE = 42
+        ENDPOINT = 'https://api.example.com/push'
+        resource = {'topic': TOPIC_PATH,
+                    'name': SUB_PATH,
+                    'ackDeadlineSeconds': DEADLINE,
+                    'pushConfig': {'pushEndpoint': ENDPOINT}}
+        conn = _Connection()
+        klass = self._getTargetClass()
+        with _monkey_defaults(connection=conn):
+            subscription = klass.from_api_repr(resource, connection=conn)
+        self.assertEqual(subscription.name, SUB_NAME)
+        topic = subscription.topic
+        self.assertTrue(isinstance(topic, Topic))
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertTrue(topic.connection is conn)
+        self.assertEqual(subscription.ack_deadline, DEADLINE)
+        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+
+    def test_from_api_repr_w_topics_no_topic_match(self):
+        from gcloud.pubsub.topic import Topic
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        DEADLINE = 42
+        ENDPOINT = 'https://api.example.com/push'
+        resource = {'topic': TOPIC_PATH,
+                    'name': SUB_PATH,
+                    'ackDeadlineSeconds': DEADLINE,
+                    'pushConfig': {'pushEndpoint': ENDPOINT}}
+        conn = _Connection()
+        topics = {}
+        klass = self._getTargetClass()
+        subscription = klass.from_api_repr(resource, connection=conn,
+                                           topics=topics)
+        self.assertEqual(subscription.name, SUB_NAME)
+        topic = subscription.topic
+        self.assertTrue(isinstance(topic, Topic))
+        self.assertTrue(topic is topics[TOPIC_PATH])
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertTrue(topic.connection is conn)
+        self.assertEqual(subscription.ack_deadline, DEADLINE)
+        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+
+    def test_from_api_repr_w_topics_w_topic_match(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        DEADLINE = 42
+        ENDPOINT = 'https://api.example.com/push'
+        resource = {'topic': TOPIC_PATH,
+                    'name': SUB_PATH,
+                    'ackDeadlineSeconds': DEADLINE,
+                    'pushConfig': {'pushEndpoint': ENDPOINT}}
+        topic = object()
+        topics = {TOPIC_PATH: topic}
+        klass = self._getTargetClass()
+        subscription = klass.from_api_repr(resource, topics=topics)
+        self.assertEqual(subscription.name, SUB_NAME)
+        self.assertTrue(subscription.topic is topic)
+        self.assertEqual(subscription.ack_deadline, DEADLINE)
+        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+
     def test_create_pull_wo_ack_deadline(self):
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
