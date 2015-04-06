@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Subscriptions &mdash; gcloud f3c3543 documentation</title>
+    <title>Subscriptions &mdash; gcloud 9c7f1fd documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'f3c3543',
+        VERSION:     '9c7f1fd',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud f3c3543 documentation" href="index.html" />
+    <link rel="top" title="gcloud 9c7f1fd documentation" href="index.html" />
     <link rel="next" title="Topics" href="pubsub-topic.html" />
     <link rel="prev" title="gcloud.pubsub API" href="pubsub-surface.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%20f3c3543" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%209c7f1fd" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (f3c3543)
+              Version History (9c7f1fd)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -146,6 +146,31 @@ If not set, the application must pull messages.</li>
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get</a></p>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="gcloud.pubsub.subscription.Subscription.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>connection=None</em>, <em>topics=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  construct a topic given its API representation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<em>dict</em>) &#8211; topic resource representation returned from the API</li>
+<li><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
+falls back to the default inferred from the
+environment.</li>
+<li><strong>topics</strong> (<em>dict or None</em>) &#8211; A mapping of topic names -&gt; topics.  If not passed,
+the subscription will have a newly-created topic.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.pubsub.subscription.Subscription" title="gcloud.pubsub.subscription.Subscription"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.subscription.Subscription</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.modify_ack_deadline">
 <code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>ack_id</em>, <em>ack_deadline</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
@@ -209,12 +234,12 @@ available.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of dict</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of (ack_id, message) tuples</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">sequence of mappings, each containing keys <code class="docutils literal"><span class="pre">ackId</span></code> (the
-ID to be used in a subsequent call to <a class="reference internal" href="#gcloud.pubsub.subscription.Subscription.acknowledge" title="gcloud.pubsub.subscription.Subscription.acknowledge"><code class="xref py py-meth docutils literal"><span class="pre">acknowledge()</span></code></a>)
-and <code class="docutils literal"><span class="pre">message</span></code>.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">sequence of tuples: <code class="docutils literal"><span class="pre">ack_id</span></code> is the ID to be used in a
+subsequent call to <a class="reference internal" href="#gcloud.pubsub.subscription.Subscription.acknowledge" title="gcloud.pubsub.subscription.Subscription.acknowledge"><code class="xref py py-meth docutils literal"><span class="pre">acknowledge()</span></code></a>, and <code class="docutils literal"><span class="pre">message</span></code>
+is an instance of <code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.message.Message</span></code>.</p>
 </td>
 </tr>
 </tbody>
