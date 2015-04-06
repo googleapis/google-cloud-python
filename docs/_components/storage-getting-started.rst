@@ -156,9 +156,9 @@ bucket object::
   >>> bucket = storage.get_bucket('my-bucket', connection=connection)
 
 If you want to get all the blobs in the bucket, you can use
-:func:`get_all_blobs <gcloud.storage.bucket.Bucket.get_all_blobs>`::
+:func:`list_blobs <gcloud.storage.bucket.Bucket.list_blobs>`::
 
-  >>> blobs = bucket.get_all_blobs()
+  >>> blobs = bucket.list_blobs()
 
 However, if you're looking to iterate through the blobs, you can use the
 bucket itself as an iterator::
