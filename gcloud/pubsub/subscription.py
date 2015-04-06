@@ -74,9 +74,7 @@ class Subscription(object):
         """
         conn = self.topic.connection
         try:
-            conn.api_request(method='GET',
-                             path=self.path,
-                             query_params={'fields': 'name'})
+            conn.api_request(method='GET', path=self.path)
         except NotFound:
             return False
         else:
