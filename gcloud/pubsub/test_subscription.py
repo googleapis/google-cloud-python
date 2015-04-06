@@ -248,6 +248,7 @@ class TestSubscription(unittest2.TestCase):
 
     def test_pull_wo_return_immediately_wo_max_messages(self):
         import base64
+        from gcloud.pubsub.message import Message
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -256,15 +257,19 @@ class TestSubscription(unittest2.TestCase):
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD)
-        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {}}
+        MESSAGE = {'messageId': MSG_ID, 'data': B64}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         conn = _Connection({'receivedMessages': [REC_MESSAGE]})
         topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
         subscription = self._makeOne(SUB_NAME, topic)
         pulled = subscription.pull()
         self.assertEqual(len(pulled), 1)
-        self.assertEqual(pulled[0]['ackId'], ACK_ID)
-        self.assertEqual(pulled[0]['message'], MESSAGE)
+        ack_id, message = pulled[0]
+        self.assertEqual(ack_id, ACK_ID)
+        self.assertTrue(isinstance(message, Message))
+        self.assertEqual(message.data, PAYLOAD)
+        self.assertEqual(message.message_id, MSG_ID)
+        self.assertEqual(message.attrs, {})
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
@@ -274,6 +279,7 @@ class TestSubscription(unittest2.TestCase):
 
     def test_pull_w_return_immediately_w_max_messages(self):
         import base64
+        from gcloud.pubsub.message import Message
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -282,15 +288,19 @@ class TestSubscription(unittest2.TestCase):
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD)
-        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {}}
+        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         conn = _Connection({'receivedMessages': [REC_MESSAGE]})
         topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
         subscription = self._makeOne(SUB_NAME, topic)
         pulled = subscription.pull(return_immediately=True, max_messages=3)
         self.assertEqual(len(pulled), 1)
-        self.assertEqual(pulled[0]['ackId'], ACK_ID)
-        self.assertEqual(pulled[0]['message'], MESSAGE)
+        ack_id, message = pulled[0]
+        self.assertEqual(ack_id, ACK_ID)
+        self.assertTrue(isinstance(message, Message))
+        self.assertEqual(message.data, PAYLOAD)
+        self.assertEqual(message.message_id, MSG_ID)
+        self.assertEqual(message.attrs, {'a': 'b'})
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')

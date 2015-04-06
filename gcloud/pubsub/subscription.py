@@ -15,6 +15,7 @@
 """Define API Subscriptions."""
 
 from gcloud.exceptions import NotFound
+from gcloud.pubsub.message import Message
 from gcloud.pubsub.topic import Topic
 
 
@@ -162,10 +163,10 @@ class Subscription(object):
         :type max_messages: int
         :param max_messages: the maximum number of messages to return.
 
-        :rtype: list of dict
-        :returns: sequence of mappings, each containing keys ``ackId`` (the
-                  ID to be used in a subsequent call to :meth:`acknowledge`)
-                  and ``message``.
+        :rtype: list of (ack_id, message) tuples
+        :returns: sequence of tuples: ``ack_id`` is the ID to be used in a
+                  subsequent call to :meth:`acknowledge`, and ``message``
+                  is an instance of :class:`gcloud.pubsub.message.Message`.
         """
         data = {'returnImmediately': return_immediately,
                 'maxMessages': max_messages}
@@ -173,7 +174,8 @@ class Subscription(object):
         response = conn.api_request(method='POST',
                                     path='%s:pull' % self.path,
                                     data=data)
-        return response['receivedMessages']
+        return [(info['ackId'], Message.from_api_repr(info['message']))
+                for info in response['receivedMessages']]
 
     def acknowledge(self, ack_ids):
         """API call:  acknowledge retrieved messages for the subscription.
