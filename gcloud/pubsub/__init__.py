@@ -29,6 +29,7 @@ from gcloud._helpers import set_default_project
 from gcloud.connection import get_scoped_connection
 from gcloud.pubsub import _implicit_environ
 from gcloud.pubsub._implicit_environ import get_default_connection
+from gcloud.pubsub.api import list_subscriptions
 from gcloud.pubsub.api import list_topics
 from gcloud.pubsub.connection import Connection
 

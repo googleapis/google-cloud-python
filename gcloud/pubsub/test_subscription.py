@@ -296,4 +296,5 @@ class _Topic(object):
         self.name = name
         self.project = project
         self.connection = connection
-        self.path = 'projects/%s/topics/%s' % (project, name)
+        self.full_name = 'projects/%s/topics/%s' % (project, name)
+        self.path = '/projects/%s/topics/%s' % (project, name)

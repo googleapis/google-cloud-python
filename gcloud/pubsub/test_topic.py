@@ -35,6 +35,8 @@ class TestTopic(unittest2.TestCase):
                 topic = self._makeOne(TOPIC_NAME)
         self.assertEqual(topic.name, TOPIC_NAME)
         self.assertEqual(topic.project, PROJECT)
+        self.assertEqual(topic.full_name,
+                         'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.connection is conn)
 
     def test_ctor_w_explicit_project_and_connection(self):
@@ -44,6 +46,8 @@ class TestTopic(unittest2.TestCase):
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
         self.assertEqual(topic.name, TOPIC_NAME)
         self.assertEqual(topic.project, PROJECT)
+        self.assertEqual(topic.full_name,
+                         'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.connection is conn)
 
     def test_create(self):

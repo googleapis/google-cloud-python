@@ -51,9 +51,14 @@ class Topic(object):
         self.connection = connection
 
     @property
+    def full_name(self):
+        """Fully-qualified name used in topic / subscription APIs"""
+        return 'projects/%s/topics/%s' % (self.project, self.name)
+
+    @property
     def path(self):
         """URL path for the topic's APIs"""
-        return '/projects/%s/topics/%s' % (self.project, self.name)
+        return '/%s' % (self.full_name)
 
     def create(self):
         """API call:  create the topic via a PUT request
