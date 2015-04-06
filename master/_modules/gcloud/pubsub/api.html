@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.api &mdash; gcloud 1536f09 documentation</title>
+    <title>gcloud.pubsub.api &mdash; gcloud 18a8330 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '1536f09',
+        VERSION:     '18a8330',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 1536f09 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 18a8330 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/api%0ARelease%3A%201536f09" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/api%0ARelease%3A%2018a8330" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (1536f09)
+              Version History (18a8330)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -98,6 +98,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">get_default_project</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub.subscription</span> <span class="kn">import</span> <span class="n">Subscription</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.topic</span> <span class="kn">import</span> <span class="n">Topic</span>
 
 
@@ -147,10 +148,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
     <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/projects/</span><span class="si">%s</span><span class="s">/topics&#39;</span> <span class="o">%</span> <span class="n">project</span>
     <span class="n">resp</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-    <span class="n">topics</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">full_name</span> <span class="ow">in</span> <span class="p">[</span><span class="n">topic</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;topics&#39;</span><span class="p">]]:</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">t_project</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">full_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
-        <span class="n">topics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Topic</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">t_project</span><span class="p">,</span> <span class="n">connection</span><span class="p">))</span>
+    <span class="n">topics</span> <span class="o">=</span> <span class="p">[</span><span class="n">_topic_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
+              <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;topics&#39;</span><span class="p">]]</span>
     <span class="k">return</span> <span class="n">topics</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span>
 
 </div>
@@ -184,9 +183,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                       defaults to the connection inferred from the</span>
 <span class="sd">                       environment.</span>
 
-<span class="sd">    :rtype: dict</span>
-<span class="sd">    :returns: keys include ``subscriptions`` (a list of subscription mappings)</span>
-<span class="sd">              and ``nextPageToken`` (a string:  if non-empty, indicates that</span>
+<span class="sd">    :rtype: tuple, (list, str)</span>
+<span class="sd">    :returns: list of :class:`gcloud.pubsub.subscription.Subscription`, plus a</span>
+<span class="sd">              &quot;next page token&quot; string:  if not None, indicates that</span>
 <span class="sd">              more topics can be retrieved with another call (pass that</span>
 <span class="sd">              value as ``page_token``).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -209,7 +208,52 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">else</span><span class="p">:</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/projects/</span><span class="si">%s</span><span class="s">/topics/</span><span class="si">%s</span><span class="s">/subscriptions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">topic_name</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span></div>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">topics</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">subscriptions</span> <span class="o">=</span> <span class="p">[</span><span class="n">_subscription_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">topics</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;subscriptions&#39;</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">subscriptions</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_topic_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct a topic given its full path-like name.</span>
+
+<span class="sd">    :type resource: dict</span>
+<span class="sd">    :param resource: topic resource representation returned from the API</span>
+
+<span class="sd">    :type connection: :class:`gcloud.pubsub.connection.Connection`</span>
+<span class="sd">    :param connection: connection to use for the topic.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.pubsub.topic.Topic`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Topic</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_subscription_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">topics</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct a topic given its full path-like name.</span>
+
+<span class="sd">    :type resource: string</span>
+<span class="sd">    :param resource: subscription resource representation returned from the API</span>
+
+<span class="sd">    :type topics: dict, full_name -&gt; :class:`gcloud.pubsub.topic.Topic`</span>
+<span class="sd">    :param topics: the topics to which subscriptions have been bound</span>
+
+<span class="sd">    :type connection: :class:`gcloud.pubsub.connection.Connection`</span>
+<span class="sd">    :param connection: connection to use for the topic.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.pubsub.subscription.Subscription`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t_name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;topic&#39;</span><span class="p">]</span>
+    <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="p">[</span><span class="n">t_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_topic_from_resource</span><span class="p">({</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">t_name</span><span class="p">},</span>
+                                                      <span class="n">connection</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+    <span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
+    <span class="n">push_config</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pushEndpoint&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Subscription</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">)</span>
 </pre></div>
 
       </section><!-- end of .content -->
