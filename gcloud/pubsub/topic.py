@@ -50,6 +50,23 @@ class Topic(object):
         self.project = project
         self.connection = connection
 
+    @classmethod
+    def from_api_repr(cls, resource, connection=None):
+        """Factory:  construct a topic given its API representation
+
+        :type resource: dict
+        :param resource: topic resource representation returned from the API
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the default inferred from the
+                           environment.
+
+        :rtype: :class:`gcloud.pubsub.topic.Topic`
+        """
+        _, project, _, name = resource['name'].split('/')
+        return cls(name, project, connection)
+
     @property
     def full_name(self):
         """Fully-qualified name used in topic / subscription APIs"""

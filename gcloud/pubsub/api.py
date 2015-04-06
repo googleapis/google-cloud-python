@@ -66,7 +66,7 @@ def list_topics(page_size=None, page_token=None,
 
     path = '/projects/%s/topics' % project
     resp = connection.api_request(method='GET', path=path, query_params=params)
-    topics = [_topic_from_resource(resource, connection)
+    topics = [Topic.from_api_repr(resource, connection)
               for resource in resp['topics']]
     return topics, resp.get('nextPageToken')
 
@@ -128,47 +128,8 @@ def list_subscriptions(page_size=None, page_token=None, topic_name=None,
 
     resp = connection.api_request(method='GET', path=path, query_params=params)
     topics = {}
-    subscriptions = [_subscription_from_resource(resource, topics, connection)
+    subscriptions = [Subscription.from_api_repr(resource,
+                                                connection=connection,
+                                                topics=topics)
                      for resource in resp['subscriptions']]
     return subscriptions, resp.get('nextPageToken')
-
-
-def _topic_from_resource(resource, connection):
-    """Construct a topic given its full path-like name.
-
-    :type resource: dict
-    :param resource: topic resource representation returned from the API
-
-    :type connection: :class:`gcloud.pubsub.connection.Connection`
-    :param connection: connection to use for the topic.
-
-    :rtype: :class:`gcloud.pubsub.topic.Topic`
-    """
-    _, project, _, name = resource['name'].split('/')
-    return Topic(name, project, connection)
-
-
-def _subscription_from_resource(resource, topics, connection):
-    """Construct a topic given its full path-like name.
-
-    :type resource: string
-    :param resource: subscription resource representation returned from the API
-
-    :type topics: dict, full_name -> :class:`gcloud.pubsub.topic.Topic`
-    :param topics: the topics to which subscriptions have been bound
-
-    :type connection: :class:`gcloud.pubsub.connection.Connection`
-    :param connection: connection to use for the topic.
-
-    :rtype: :class:`gcloud.pubsub.subscription.Subscription`
-    """
-    t_name = resource['topic']
-    topic = topics.get(t_name)
-    if topic is None:
-        topic = topics[t_name] = _topic_from_resource({'name': t_name},
-                                                      connection)
-    _, _, _, name = resource['name'].split('/')
-    ack_deadline = resource.get('ackDeadlineSeconds')
-    push_config = resource.get('pushConfig', {})
-    push_endpoint = push_config.get('pushEndpoint')
-    return Subscription(name, topic, ack_deadline, push_endpoint)

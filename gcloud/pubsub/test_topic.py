@@ -50,6 +50,34 @@ class TestTopic(unittest2.TestCase):
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.connection is conn)
 
+    def test_from_api_repr_wo_connection(self):
+        from gcloud.pubsub._testing import _monkey_defaults
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        resource = {'name': PATH}
+        klass = self._getTargetClass()
+        conn = _Connection()
+        with _monkey_defaults(connection=conn):
+            topic = klass.from_api_repr(resource)
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertEqual(topic.full_name, PATH)
+        self.assertTrue(topic.connection is conn)
+
+    def test_from_api_repr_w_connection(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        resource = {'name': PATH}
+        conn = object()
+        klass = self._getTargetClass()
+        topic = klass.from_api_repr(resource, connection=conn)
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertEqual(topic.full_name, PATH)
+        self.assertTrue(topic.connection is conn)
+
     def test_create(self):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'

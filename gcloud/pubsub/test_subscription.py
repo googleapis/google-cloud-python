@@ -44,6 +44,82 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
 
+    def test_from_api_repr_no_topics_no_connection(self):
+        from gcloud.pubsub.topic import Topic
+        from gcloud.pubsub._testing import _monkey_defaults
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        DEADLINE = 42
+        ENDPOINT = 'https://api.example.com/push'
+        resource = {'topic': TOPIC_PATH,
+                    'name': SUB_PATH,
+                    'ackDeadlineSeconds': DEADLINE,
+                    'pushConfig': {'pushEndpoint': ENDPOINT}}
+        conn = _Connection()
+        klass = self._getTargetClass()
+        with _monkey_defaults(connection=conn):
+            subscription = klass.from_api_repr(resource, connection=conn)
+        self.assertEqual(subscription.name, SUB_NAME)
+        topic = subscription.topic
+        self.assertTrue(isinstance(topic, Topic))
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertTrue(topic.connection is conn)
+        self.assertEqual(subscription.ack_deadline, DEADLINE)
+        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+
+    def test_from_api_repr_w_topics_no_topic_match(self):
+        from gcloud.pubsub.topic import Topic
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        DEADLINE = 42
+        ENDPOINT = 'https://api.example.com/push'
+        resource = {'topic': TOPIC_PATH,
+                    'name': SUB_PATH,
+                    'ackDeadlineSeconds': DEADLINE,
+                    'pushConfig': {'pushEndpoint': ENDPOINT}}
+        conn = _Connection()
+        topics = {}
+        klass = self._getTargetClass()
+        subscription = klass.from_api_repr(resource, connection=conn,
+                                           topics=topics)
+        self.assertEqual(subscription.name, SUB_NAME)
+        topic = subscription.topic
+        self.assertTrue(isinstance(topic, Topic))
+        self.assertTrue(topic is topics[TOPIC_PATH])
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertTrue(topic.connection is conn)
+        self.assertEqual(subscription.ack_deadline, DEADLINE)
+        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+
+    def test_from_api_repr_w_topics_w_topic_match(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        DEADLINE = 42
+        ENDPOINT = 'https://api.example.com/push'
+        resource = {'topic': TOPIC_PATH,
+                    'name': SUB_PATH,
+                    'ackDeadlineSeconds': DEADLINE,
+                    'pushConfig': {'pushEndpoint': ENDPOINT}}
+        topic = object()
+        topics = {TOPIC_PATH: topic}
+        klass = self._getTargetClass()
+        subscription = klass.from_api_repr(resource, topics=topics)
+        self.assertEqual(subscription.name, SUB_NAME)
+        self.assertTrue(subscription.topic is topic)
+        self.assertEqual(subscription.ack_deadline, DEADLINE)
+        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+
     def test_create_pull_wo_ack_deadline(self):
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
@@ -172,6 +248,7 @@ class TestSubscription(unittest2.TestCase):
 
     def test_pull_wo_return_immediately_wo_max_messages(self):
         import base64
+        from gcloud.pubsub.message import Message
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -180,15 +257,19 @@ class TestSubscription(unittest2.TestCase):
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD)
-        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {}}
+        MESSAGE = {'messageId': MSG_ID, 'data': B64}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         conn = _Connection({'receivedMessages': [REC_MESSAGE]})
         topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
         subscription = self._makeOne(SUB_NAME, topic)
         pulled = subscription.pull()
         self.assertEqual(len(pulled), 1)
-        self.assertEqual(pulled[0]['ackId'], ACK_ID)
-        self.assertEqual(pulled[0]['message'], MESSAGE)
+        ack_id, message = pulled[0]
+        self.assertEqual(ack_id, ACK_ID)
+        self.assertTrue(isinstance(message, Message))
+        self.assertEqual(message.data, PAYLOAD)
+        self.assertEqual(message.message_id, MSG_ID)
+        self.assertEqual(message.attrs, {})
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
@@ -198,6 +279,7 @@ class TestSubscription(unittest2.TestCase):
 
     def test_pull_w_return_immediately_w_max_messages(self):
         import base64
+        from gcloud.pubsub.message import Message
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -206,15 +288,19 @@ class TestSubscription(unittest2.TestCase):
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD)
-        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {}}
+        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         conn = _Connection({'receivedMessages': [REC_MESSAGE]})
         topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
         subscription = self._makeOne(SUB_NAME, topic)
         pulled = subscription.pull(return_immediately=True, max_messages=3)
         self.assertEqual(len(pulled), 1)
-        self.assertEqual(pulled[0]['ackId'], ACK_ID)
-        self.assertEqual(pulled[0]['message'], MESSAGE)
+        ack_id, message = pulled[0]
+        self.assertEqual(ack_id, ACK_ID)
+        self.assertTrue(isinstance(message, Message))
+        self.assertEqual(message.data, PAYLOAD)
+        self.assertEqual(message.message_id, MSG_ID)
+        self.assertEqual(message.attrs, {'a': 'b'})
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')

@@ -199,11 +199,7 @@ Delete a subscription:
 Pull messages from a subscription
 ---------------------------------
 
-Fetch pending messages for a pull subscription
-
-.. note::
-
-   The messages will have been ACKed already.
+Fetch pending messages for a pull subscription:
 
 .. doctest::
 
@@ -215,13 +211,22 @@ Fetch pending messages for a pull subscription
    ...     topic.publish('this is the first message_payload')
    ...     topic.publish('this is the second message_payload',
    ...                   attr1='value1', attr2='value2')
-   >>> messages = subscription.pull()  # API request
+   >>> received = subscription.pull()  # API request
+   >>> messages = [recv[1] for recv in received]
    >>> [message.id for message in messages]
    [<message_id1>, <message_id2>]
    >>> [message.data for message in messages]
    ['this is the first message_payload', 'this is the second message_payload']
-   >>> [message.attrs for message in messages]
+   >>> [message.attributes for message in messages]
    [{}, {'attr1': 'value1', 'attr2': 'value2'}]
+
+Note that received messages must be acknowledged, or else the back-end
+will re-send them later:
+
+.. doctest::
+
+   >>> ack_ids = [recv[0] for recv in received]
+   >>> subscription.acknowledge(ack_ids)
 
 Fetch a limited number of pending messages for a pull subscription:
 
@@ -235,8 +240,9 @@ Fetch a limited number of pending messages for a pull subscription:
    ...     topic.publish('this is the first message_payload')
    ...     topic.publish('this is the second message_payload',
    ...                   attr1='value1', attr2='value2')
-   >>> [message.id for message in subscription.pull(max_messages=1)]
-   [<message_id1>]
+   >>> received = subscription.pull(max_messages=1)  # API request
+   >>> messages = [recv[1] for recv in received]
+   >>> [message.id for message in messages]
 
 Fetch messages for a pull subscription without blocking (none pending):
 
@@ -246,6 +252,7 @@ Fetch messages for a pull subscription without blocking (none pending):
    >>> from gcloud.pubsub.subscription import Subscription
    >>> topic = Topic('topic_name')
    >>> subscription = Subscription('subscription_name', topic)
-   >>> [message.id for message in subscription.pull(return_immediately=True)]
+   >>> received = subscription.pull(max_messages=1)  # API request
+   >>> messages = [recv[1] for recv in received]
+   >>> [message.id for message in messages]
    []
-

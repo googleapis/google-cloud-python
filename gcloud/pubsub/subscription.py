@@ -15,6 +15,8 @@
 """Define API Subscriptions."""
 
 from gcloud.exceptions import NotFound
+from gcloud.pubsub.message import Message
+from gcloud.pubsub.topic import Topic
 
 
 class Subscription(object):
@@ -42,6 +44,37 @@ class Subscription(object):
         self.topic = topic
         self.ack_deadline = ack_deadline
         self.push_endpoint = push_endpoint
+
+    @classmethod
+    def from_api_repr(cls, resource, connection=None, topics=None):
+        """Factory:  construct a topic given its API representation
+
+        :type resource: dict
+        :param resource: topic resource representation returned from the API
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the default inferred from the
+                           environment.
+
+        :type topics: dict or None
+        :param topics: A mapping of topic names -> topics.  If not passed,
+                       the subscription will have a newly-created topic.
+
+        :rtype: :class:`gcloud.pubsub.subscription.Subscription`
+        """
+        if topics is None:
+            topics = {}
+        t_name = resource['topic']
+        topic = topics.get(t_name)
+        if topic is None:
+            topic = topics[t_name] = Topic.from_api_repr({'name': t_name},
+                                                         connection)
+        _, _, _, name = resource['name'].split('/')
+        ack_deadline = resource.get('ackDeadlineSeconds')
+        push_config = resource.get('pushConfig', {})
+        push_endpoint = push_config.get('pushEndpoint')
+        return cls(name, topic, ack_deadline, push_endpoint)
 
     @property
     def path(self):
@@ -130,10 +163,10 @@ class Subscription(object):
         :type max_messages: int
         :param max_messages: the maximum number of messages to return.
 
-        :rtype: list of dict
-        :returns: sequence of mappings, each containing keys ``ackId`` (the
-                  ID to be used in a subsequent call to :meth:`acknowledge`)
-                  and ``message``.
+        :rtype: list of (ack_id, message) tuples
+        :returns: sequence of tuples: ``ack_id`` is the ID to be used in a
+                  subsequent call to :meth:`acknowledge`, and ``message``
+                  is an instance of :class:`gcloud.pubsub.message.Message`.
         """
         data = {'returnImmediately': return_immediately,
                 'maxMessages': max_messages}
@@ -141,7 +174,8 @@ class Subscription(object):
         response = conn.api_request(method='POST',
                                     path='%s:pull' % self.path,
                                     data=data)
-        return response['receivedMessages']
+        return [(info['ackId'], Message.from_api_repr(info['message']))
+                for info in response['receivedMessages']]
 
     def acknowledge(self, ack_ids):
         """API call:  acknowledge retrieved messages for the subscription.
