@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud fd06f16 documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud 1536f09 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'fd06f16',
+        VERSION:     '1536f09',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud fd06f16 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 1536f09 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20fd06f16" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%201536f09" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (fd06f16)
+              Version History (1536f09)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -511,52 +511,64 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    See: https://tools.ietf.org/html/rfc7234#section-5.2 and</span>
 <span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    If the property is not set locally, returns ``None``.</span>
+
+<span class="sd">    :rtype: string or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_disposition</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s">&#39;contentDisposition&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Disposition&#39; header for this object.</span>
 
 <span class="sd">    See: https://tools.ietf.org/html/rfc6266 and</span>
-<span class="sd">            https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    If the property is not set locally, returns ``None``.</span>
+
+<span class="sd">    :rtype: string or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_encoding</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s">&#39;contentEncoding&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Encoding&#39; header for this object.</span>
 
 <span class="sd">    See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and</span>
-<span class="sd">            https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    If the property is not set locally, returns ``None``.</span>
+
+<span class="sd">    :rtype: string or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_language</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s">&#39;contentLanguage&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Language&#39; header for this object.</span>
 
 <span class="sd">    See: http://tools.ietf.org/html/bcp47 and</span>
-<span class="sd">            https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    If the property is not set locally, returns ``None``.</span>
+
+<span class="sd">    :rtype: string or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content_type</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s">&#39;contentType&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;HTTP &#39;Content-Type&#39; header for this object.</span>
 
 <span class="sd">    See: https://tools.ietf.org/html/rfc2616#section-14.17 and</span>
-<span class="sd">            https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    If the property is not set locally, returns ``None``.</span>
+
+<span class="sd">    :rtype: string or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">crc32c</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s">&#39;crc32c&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;CRC32C checksum for this object.</span>
 
 <span class="sd">    See: http://tools.ietf.org/html/rfc4960#appendix-B and</span>
-<span class="sd">            https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    If the property is not set locally, returns ``None``.</span>
+
+<span class="sd">    :rtype: string or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -565,9 +577,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: integer</span>
+<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :returns: The component count (in case of a composed object) or</span>
+<span class="sd">                  ``None`` if the property is not set locally. This property</span>
+<span class="sd">                  will not be set on objects not created via ``compose``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;componentCount&#39;</span><span class="p">]</span>
+        <span class="n">component_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;componentCount&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">component_count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">component_count</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -576,9 +593,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        See: http://tools.ietf.org/html/rfc2616#section-3.11 and</span>
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: The blob etag or ``None`` if the property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;etag&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;etag&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -586,9 +604,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: integer</span>
+<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :returns: The generation of the blob or ``None`` if the property</span>
+<span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;generation&#39;</span><span class="p">]</span>
+        <span class="n">generation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;generation&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">generation</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -596,17 +618,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: The ID of the blob or ``None`` if the property is not</span>
+<span class="sd">                  set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
 
     <span class="n">md5_hash</span> <span class="o">=</span> <span class="n">_scalar_property</span><span class="p">(</span><span class="s">&#39;md5Hash&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;MD5 hash for this object.</span>
 
 <span class="sd">    See: http://tools.ietf.org/html/rfc4960#appendix-B and</span>
-<span class="sd">            https://cloud.google.com/storage/docs/json_api/v1/objects</span>
+<span class="sd">         https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    If the property is not set locally, returns ``None``.</span>
+
+<span class="sd">    :rtype: string or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
@@ -615,9 +641,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: The media link for the blob or ``None`` if the property is</span>
+<span class="sd">                  not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;mediaLink&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;mediaLink&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -625,9 +653,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: dict</span>
+<span class="sd">        :rtype: dict or ``NoneType``</span>
+<span class="sd">        :returns: The metadata associated with the blob or ``None`` if the</span>
+<span class="sd">                  property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;metadata&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;metadata&#39;</span><span class="p">))</span>
 
     <span class="nd">@metadata.setter</span>
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -635,7 +665,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :type value: dict</span>
+<span class="sd">        :type value: dict or ``NoneType``</span>
+<span class="sd">        :param value: The blob metadata to set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s">&#39;metadata&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
@@ -645,9 +676,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: integer</span>
+<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :returns: The metageneration of the blob or ``None`` if the property</span>
+<span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;metageneration&#39;</span><span class="p">]</span>
+        <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;metageneration&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">metageneration</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -655,10 +690,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: mapping of owner&#39;s role/ID.</span>
+<span class="sd">        :rtype: dict or ``NoneType``</span>
+<span class="sd">        :returns: Mapping of owner&#39;s role/ID. If the property is not set</span>
+<span class="sd">                  locally, returns ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;owner&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;owner&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -666,31 +702,39 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: The self link for the blob or ``None`` if the property is</span>
+<span class="sd">                  not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;selfLink&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;selfLink&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Size of the object,  in bytes.</span>
+        <span class="sd">&quot;&quot;&quot;Size of the object, in bytes.</span>
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: integer</span>
+<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :returns: The size of the blob or ``None`` if the property</span>
+<span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;size&#39;</span><span class="p">]</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;size&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the storage class for the object.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects and</span>
-<span class="sd">        https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket</span>
+<span class="sd">        See: https://cloud.google.com/storage/docs/storage-classes</span>
+<span class="sd">        https://cloud.google.com/storage/docs/nearline-storage</span>
+<span class="sd">        https://cloud.google.com/storage/docs/durable-reduced-availability</span>
 
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: Currently one of &quot;STANDARD&quot;, &quot;DURABLE_REDUCED_AVAILABILITY&quot;</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: If set, one of &quot;STANDARD&quot;, &quot;NEARLINE&quot;, or</span>
+<span class="sd">                  &quot;DURABLE_REDUCED_AVAILABILITY&quot;, else ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;storageClass&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;storageClass&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time_deleted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -698,9 +742,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string or None</span>
-<span class="sd">        :returns: timestamp in RFC 3339 format, or None if the object</span>
-<span class="sd">                  has a &quot;live&quot; version.</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: RFC3339 valid timestamp, or ``None`` if the property is not</span>
+<span class="sd">                  set locally. If the blob has not been deleted, this will</span>
+<span class="sd">                  never be set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;timeDeleted&#39;</span><span class="p">)</span>
 
@@ -710,10 +755,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: timestamp in RFC 3339 format.</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: RFC3339 valid timestamp, or ``None`` if the property is not</span>
+<span class="sd">                  set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;updated&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;updated&#39;</span><span class="p">)</span>
 
 </div>
 <span class="k">class</span> <span class="nc">_UploadConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

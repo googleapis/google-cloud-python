@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud fd06f16 documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud 1536f09 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'fd06f16',
+        VERSION:     '1536f09',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud fd06f16 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 1536f09 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20fd06f16" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%201536f09" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (fd06f16)
+              Version History (1536f09)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -595,9 +595,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        See: http://tools.ietf.org/html/rfc2616#section-3.11 and</span>
 <span class="sd">             https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: The bucket etag or ``None`` if the property is not</span>
+<span class="sd">                  set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;etag&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;etag&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -605,9 +607,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: The ID of the bucket or ``None`` if the property is not</span>
+<span class="sd">                  set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">lifecycle_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -640,7 +644,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    See: https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
 <span class="sd">    https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</span>
 
-<span class="sd">    :rtype: string</span>
+<span class="sd">    If the property is not set locally, returns ``None``.</span>
+
+<span class="sd">    :rtype: string or ``NoneType``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Bucket.get_logging"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_logging">[docs]</a>    <span class="k">def</span> <span class="nf">get_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -653,8 +659,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                  (if logging is enabled), or None (if not).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;logging&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">info</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.enable_logging"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.enable_logging">[docs]</a>    <span class="k">def</span> <span class="nf">enable_logging</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket_name</span><span class="p">,</span> <span class="n">object_prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable access logging for this bucket.</span>
@@ -683,9 +688,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
-<span class="sd">        :rtype: integer</span>
+<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :returns: The metageneration of the bucket or ``None`` if the property</span>
+<span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;metageneration&#39;</span><span class="p">]</span>
+        <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;metageneration&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">metageneration</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">owner</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -693,10 +702,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
-<span class="sd">        :rtype: dict</span>
-<span class="sd">        :returns: mapping of owner&#39;s role/ID.</span>
+<span class="sd">        :rtype: dict or ``NoneType``</span>
+<span class="sd">        :returns: Mapping of owner&#39;s role/ID. If the property is not set</span>
+<span class="sd">                  locally, returns ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;owner&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;owner&#39;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -704,9 +714,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
-<span class="sd">        :rtype: integer</span>
+<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :returns: The project number that owns the bucket or ``None`` if the</span>
+<span class="sd">                  property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;projectNumber&#39;</span><span class="p">]</span>
+        <span class="n">project_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;projectNumber&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">project_number</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">project_number</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -714,21 +728,25 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: The self link for the bucket or ``None`` if the property is</span>
+<span class="sd">                  not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;selfLink&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;selfLink&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve the storage class for the bucket.</span>
 
-<span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets and</span>
+<span class="sd">        See: https://cloud.google.com/storage/docs/storage-classes</span>
+<span class="sd">        https://cloud.google.com/storage/docs/nearline-storage</span>
 <span class="sd">        https://cloud.google.com/storage/docs/durable-reduced-availability</span>
 
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: Currently one of &quot;STANDARD&quot;, &quot;DURABLE_REDUCED_AVAILABILITY&quot;</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: If set, one of &quot;STANDARD&quot;, &quot;NEARLINE&quot;, or</span>
+<span class="sd">                  &quot;DURABLE_REDUCED_AVAILABILITY&quot;, else ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;storageClass&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;storageClass&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time_created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -736,10 +754,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/buckets</span>
 
-<span class="sd">        :rtype: string</span>
-<span class="sd">        :returns: timestamp in RFC 3339 format.</span>
+<span class="sd">        :rtype: string or ``NoneType``</span>
+<span class="sd">        :returns: RFC3339 valid timestamp, or ``None`` if the property is not</span>
+<span class="sd">                  set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;timeCreated&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;timeCreated&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">versioning_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

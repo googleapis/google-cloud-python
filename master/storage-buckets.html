@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Buckets &mdash; gcloud fd06f16 documentation</title>
+    <title>Buckets &mdash; gcloud 1536f09 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'fd06f16',
+        VERSION:     '1536f09',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud fd06f16 documentation" href="index.html" />
+    <link rel="top" title="gcloud 1536f09 documentation" href="index.html" />
     <link rel="next" title="ACL" href="storage-acl.html" />
     <link rel="prev" title="Blobs / Objects" href="storage-blobs.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%20fd06f16" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%201536f09" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (fd06f16)
+              Version History (1536f09)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -397,7 +397,10 @@ attributes to <code class="docutils literal"><span class="pre">None</span></code
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The bucket etag or <code class="docutils literal"><span class="pre">None</span></code> if the property is not
+set locally.</td>
 </tr>
 </tbody>
 </table>
@@ -496,7 +499,10 @@ will only retrieve the blob paths.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The ID of the bucket or <code class="docutils literal"><span class="pre">None</span></code> if the property is not
+set locally.</td>
 </tr>
 </tbody>
 </table>
@@ -553,11 +559,12 @@ separate blobs.</li>
 <dd><p>Retrieve location configured for this bucket.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
 <a class="reference external" href="https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations">https://cloud.google.com/storage/docs/concepts-techniques#specifyinglocations</a></p>
+<p>If the property is not set locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -592,7 +599,10 @@ future public as well.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The metageneration of the bucket or <code class="docutils literal"><span class="pre">None</span></code> if the property
+is not set locally.</td>
 </tr>
 </tbody>
 </table>
@@ -607,9 +617,10 @@ future public as well.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">mapping of owner&#8217;s role/ID.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mapping of owner&#8217;s role/ID. If the property is not set
+locally, returns <code class="docutils literal"><span class="pre">None</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -648,7 +659,10 @@ future public as well.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The project number that owns the bucket or <code class="docutils literal"><span class="pre">None</span></code> if the
+property is not set locally.</td>
 </tr>
 </tbody>
 </table>
@@ -663,7 +677,10 @@ future public as well.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The self link for the bucket or <code class="docutils literal"><span class="pre">None</span></code> if the property is
+not set locally.</td>
 </tr>
 </tbody>
 </table>
@@ -673,15 +690,17 @@ future public as well.</li>
 <dt id="gcloud.storage.bucket.Bucket.storage_class">
 <code class="descname">storage_class</code><a class="headerlink" href="#gcloud.storage.bucket.Bucket.storage_class" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve the storage class for the bucket.</p>
-<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/buckets">https://cloud.google.com/storage/docs/json_api/v1/buckets</a> and
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/storage-classes">https://cloud.google.com/storage/docs/storage-classes</a>
+<a class="reference external" href="https://cloud.google.com/storage/docs/nearline-storage">https://cloud.google.com/storage/docs/nearline-storage</a>
 <a class="reference external" href="https://cloud.google.com/storage/docs/durable-reduced-availability">https://cloud.google.com/storage/docs/durable-reduced-availability</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Currently one of &#8220;STANDARD&#8221;, &#8220;DURABLE_REDUCED_AVAILABILITY&#8221;</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">If set, one of &#8220;STANDARD&#8221;, &#8220;NEARLINE&#8221;, or
+&#8220;DURABLE_REDUCED_AVAILABILITY&#8221;, else <code class="docutils literal"><span class="pre">None</span></code>.</td>
 </tr>
 </tbody>
 </table>
@@ -696,9 +715,10 @@ future public as well.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timestamp in RFC 3339 format.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">RFC3339 valid timestamp, or <code class="docutils literal"><span class="pre">None</span></code> if the property is not
+set locally.</td>
 </tr>
 </tbody>
 </table>
