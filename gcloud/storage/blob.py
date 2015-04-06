@@ -429,52 +429,64 @@ class Blob(_PropertyMixin):
     See: https://tools.ietf.org/html/rfc7234#section-5.2 and
          https://cloud.google.com/storage/docs/json_api/v1/objects
 
-    :rtype: string
+    If the property is not set locally, returns ``None``.
+
+    :rtype: string or ``NoneType``
     """
 
     content_disposition = _scalar_property('contentDisposition')
     """HTTP 'Content-Disposition' header for this object.
 
     See: https://tools.ietf.org/html/rfc6266 and
-            https://cloud.google.com/storage/docs/json_api/v1/objects
+         https://cloud.google.com/storage/docs/json_api/v1/objects
 
-    :rtype: string
+    If the property is not set locally, returns ``None``.
+
+    :rtype: string or ``NoneType``
     """
 
     content_encoding = _scalar_property('contentEncoding')
     """HTTP 'Content-Encoding' header for this object.
 
     See: https://tools.ietf.org/html/rfc7231#section-3.1.2.2 and
-            https://cloud.google.com/storage/docs/json_api/v1/objects
+         https://cloud.google.com/storage/docs/json_api/v1/objects
 
-    :rtype: string
+    If the property is not set locally, returns ``None``.
+
+    :rtype: string or ``NoneType``
     """
 
     content_language = _scalar_property('contentLanguage')
     """HTTP 'Content-Language' header for this object.
 
     See: http://tools.ietf.org/html/bcp47 and
-            https://cloud.google.com/storage/docs/json_api/v1/objects
+         https://cloud.google.com/storage/docs/json_api/v1/objects
 
-    :rtype: string
+    If the property is not set locally, returns ``None``.
+
+    :rtype: string or ``NoneType``
     """
 
     content_type = _scalar_property('contentType')
     """HTTP 'Content-Type' header for this object.
 
     See: https://tools.ietf.org/html/rfc2616#section-14.17 and
-            https://cloud.google.com/storage/docs/json_api/v1/objects
+         https://cloud.google.com/storage/docs/json_api/v1/objects
 
-    :rtype: string
+    If the property is not set locally, returns ``None``.
+
+    :rtype: string or ``NoneType``
     """
 
     crc32c = _scalar_property('crc32c')
     """CRC32C checksum for this object.
 
     See: http://tools.ietf.org/html/rfc4960#appendix-B and
-            https://cloud.google.com/storage/docs/json_api/v1/objects
+         https://cloud.google.com/storage/docs/json_api/v1/objects
 
-    :rtype: string
+    If the property is not set locally, returns ``None``.
+
+    :rtype: string or ``NoneType``
     """
 
     @property
@@ -483,9 +495,14 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer
+        :rtype: integer or ``NoneType``
+        :returns: The component count (in case of a composed object) or
+                  ``None`` if the property is not set locally. This property
+                  will not be set on objects not created via ``compose``.
         """
-        return self._properties['componentCount']
+        component_count = self._properties.get('componentCount')
+        if component_count is not None:
+            return int(component_count)
 
     @property
     def etag(self):
@@ -494,9 +511,10 @@ class Blob(_PropertyMixin):
         See: http://tools.ietf.org/html/rfc2616#section-3.11 and
              https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string
+        :rtype: string or ``NoneType``
+        :returns: The blob etag or ``None`` if the property is not set locally.
         """
-        return self._properties['etag']
+        return self._properties.get('etag')
 
     @property
     def generation(self):
@@ -504,9 +522,13 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer
+        :rtype: integer or ``NoneType``
+        :returns: The generation of the blob or ``None`` if the property
+                  is not set locally.
         """
-        return self._properties['generation']
+        generation = self._properties.get('generation')
+        if generation is not None:
+            return int(generation)
 
     @property
     def id(self):
@@ -514,17 +536,21 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string
+        :rtype: string or ``NoneType``
+        :returns: The ID of the blob or ``None`` if the property is not
+                  set locally.
         """
-        return self._properties['id']
+        return self._properties.get('id')
 
     md5_hash = _scalar_property('md5Hash')
     """MD5 hash for this object.
 
     See: http://tools.ietf.org/html/rfc4960#appendix-B and
-            https://cloud.google.com/storage/docs/json_api/v1/objects
+         https://cloud.google.com/storage/docs/json_api/v1/objects
 
-    :rtype: string
+    If the property is not set locally, returns ``None``.
+
+    :rtype: string or ``NoneType``
     """
 
     @property
@@ -533,9 +559,11 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string
+        :rtype: string or ``NoneType``
+        :returns: The media link for the blob or ``None`` if the property is
+                  not set locally.
         """
-        return self._properties['mediaLink']
+        return self._properties.get('mediaLink')
 
     @property
     def metadata(self):
@@ -543,9 +571,11 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: dict
+        :rtype: dict or ``NoneType``
+        :returns: The metadata associated with the blob or ``None`` if the
+                  property is not set locally.
         """
-        return copy.deepcopy(self._properties['metadata'])
+        return copy.deepcopy(self._properties.get('metadata'))
 
     @metadata.setter
     def metadata(self, value):
@@ -553,7 +583,8 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :type value: dict
+        :type value: dict or ``NoneType``
+        :param value: The blob metadata to set.
         """
         self._patch_property('metadata', value)
 
@@ -563,9 +594,13 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer
+        :rtype: integer or ``NoneType``
+        :returns: The metageneration of the blob or ``None`` if the property
+                  is not set locally.
         """
-        return self._properties['metageneration']
+        metageneration = self._properties.get('metageneration')
+        if metageneration is not None:
+            return int(metageneration)
 
     @property
     def owner(self):
@@ -573,10 +608,11 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: dict
-        :returns: mapping of owner's role/ID.
+        :rtype: dict or ``NoneType``
+        :returns: Mapping of owner's role/ID. If the property is not set
+                  locally, returns ``None``.
         """
-        return self._properties['owner'].copy()
+        return copy.deepcopy(self._properties.get('owner'))
 
     @property
     def self_link(self):
@@ -584,31 +620,39 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string
+        :rtype: string or ``NoneType``
+        :returns: The self link for the blob or ``None`` if the property is
+                  not set locally.
         """
-        return self._properties['selfLink']
+        return self._properties.get('selfLink')
 
     @property
     def size(self):
-        """Size of the object,  in bytes.
+        """Size of the object, in bytes.
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: integer
+        :rtype: integer or ``NoneType``
+        :returns: The size of the blob or ``None`` if the property
+                  is not set locally.
         """
-        return self._properties['size']
+        size = self._properties.get('size')
+        if size is not None:
+            return int(size)
 
     @property
     def storage_class(self):
         """Retrieve the storage class for the object.
 
-        See: https://cloud.google.com/storage/docs/json_api/v1/objects and
-        https://cloud.google.com/storage/docs/durable-reduced-availability#_DRA_Bucket
+        See: https://cloud.google.com/storage/docs/storage-classes
+        https://cloud.google.com/storage/docs/nearline-storage
+        https://cloud.google.com/storage/docs/durable-reduced-availability
 
-        :rtype: string
-        :returns: Currently one of "STANDARD", "DURABLE_REDUCED_AVAILABILITY"
+        :rtype: string or ``NoneType``
+        :returns: If set, one of "STANDARD", "NEARLINE", or
+                  "DURABLE_REDUCED_AVAILABILITY", else ``None``.
         """
-        return self._properties['storageClass']
+        return self._properties.get('storageClass')
 
     @property
     def time_deleted(self):
@@ -616,9 +660,10 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or None
-        :returns: timestamp in RFC 3339 format, or None if the object
-                  has a "live" version.
+        :rtype: string or ``NoneType``
+        :returns: RFC3339 valid timestamp, or ``None`` if the property is not
+                  set locally. If the blob has not been deleted, this will
+                  never be set.
         """
         return self._properties.get('timeDeleted')
 
@@ -628,10 +673,11 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string
-        :returns: timestamp in RFC 3339 format.
+        :rtype: string or ``NoneType``
+        :returns: RFC3339 valid timestamp, or ``None`` if the property is not
+                  set locally.
         """
-        return self._properties['updated']
+        return self._properties.get('updated')
 
 
 class _UploadConfig(object):

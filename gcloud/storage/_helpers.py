@@ -98,7 +98,7 @@ def _scalar_property(fieldname):
     """
     def _getter(self):
         """Scalar property getter."""
-        return self._properties[fieldname]
+        return self._properties.get(fieldname)
 
     def _setter(self, value):
         """Scalar property setter."""
