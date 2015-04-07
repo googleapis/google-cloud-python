@@ -35,14 +35,14 @@ class Message(object):
     def __init__(self, data, message_id, attributes=None):
         self.data = data
         self.message_id = message_id
-        self._attrs = attributes
+        self._attributes = attributes
 
     @property
-    def attrs(self):
+    def attributes(self):
         """Lazily-constructed attribute dictionary"""
-        if self._attrs is None:
-            self._attrs = {}
-        return self._attrs
+        if self._attributes is None:
+            self._attributes = {}
+        return self._attributes
 
     @classmethod
     def from_api_repr(cls, api_repr):
