@@ -126,12 +126,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
-    def test_publish_single_wo_attrs(self):
+    def test_publish_single_bytes_wo_attrs(self):
         import base64
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD)
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64,
                    'attributes': {}}
@@ -151,7 +151,7 @@ class TestTopic(unittest2.TestCase):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD)
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64,
                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}

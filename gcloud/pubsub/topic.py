@@ -113,7 +113,8 @@ class Topic(object):
         :rtype: str
         :returns: message ID assigned by the server to the published message
         """
-        message_data = {'data': base64.b64encode(message), 'attributes': attrs}
+        message_b = base64.b64encode(message).decode('ascii')
+        message_data = {'data': message_b, 'attributes': attrs}
         data = {'messages': [message_data]}
         response = self.connection.api_request(method='POST',
                                                path='%s:publish' % self.path,

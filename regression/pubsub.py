@@ -114,7 +114,7 @@ class TestPubsub(unittest2.TestCase):
         self.to_delete.append(subscription)
 
         MESSAGE = b'MESSAGE'
-        EXTRA = b'EXTRA'
+        EXTRA = 'EXTRA'
         topic.publish(MESSAGE, extra=EXTRA)
 
         received = subscription.pull()
