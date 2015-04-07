@@ -171,7 +171,7 @@ class TestSubscription(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
-        self.assertEqual(req['query_params'], {'fields': 'name'})
+        self.assertEqual(req.get('query_params'), None)
 
     def test_exists_hit(self):
         PROJECT = 'PROJECT'
@@ -187,7 +187,7 @@ class TestSubscription(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
-        self.assertEqual(req['query_params'], {'fields': 'name'})
+        self.assertEqual(req.get('query_params'), None)
 
     def test_reload(self):
         PROJECT = 'PROJECT'
