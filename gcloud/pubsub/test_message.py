@@ -24,15 +24,15 @@ class TestMessage(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor_no_attrs(self):
+    def test_ctor_no_attributes(self):
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
         message = self._makeOne(data=DATA, message_id=MESSAGE_ID)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
-        self.assertEqual(message.attrs, {})
+        self.assertEqual(message.attributes, {})
 
-    def test_ctor_w_attrs(self):
+    def test_ctor_w_attributes(self):
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
         ATTRS = {'a': 'b'}
@@ -40,9 +40,9 @@ class TestMessage(unittest2.TestCase):
                                 attributes=ATTRS)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
-        self.assertEqual(message.attrs, ATTRS)
+        self.assertEqual(message.attributes, ATTRS)
 
-    def test_from_api_repr_no_attrs(self):
+    def test_from_api_repr_no_attributes(self):
         from base64 import b64encode as b64
         DATA = b'DEADBEEF'
         B64_DATA = b64(DATA)
@@ -51,9 +51,9 @@ class TestMessage(unittest2.TestCase):
         message = self._getTargetClass().from_api_repr(api_repr)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
-        self.assertEqual(message.attrs, {})
+        self.assertEqual(message.attributes, {})
 
-    def test_from_api_repr_w_attrs(self):
+    def test_from_api_repr_w_attributes(self):
         from base64 import b64encode as b64
         DATA = b'DEADBEEF'
         B64_DATA = b64(DATA)
@@ -65,4 +65,4 @@ class TestMessage(unittest2.TestCase):
         message = self._getTargetClass().from_api_repr(api_repr)
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
-        self.assertEqual(message.attrs, ATTRS)
+        self.assertEqual(message.attributes, ATTRS)

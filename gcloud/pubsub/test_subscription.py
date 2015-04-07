@@ -269,7 +269,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertTrue(isinstance(message, Message))
         self.assertEqual(message.data, PAYLOAD)
         self.assertEqual(message.message_id, MSG_ID)
-        self.assertEqual(message.attrs, {})
+        self.assertEqual(message.attributes, {})
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
@@ -300,7 +300,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertTrue(isinstance(message, Message))
         self.assertEqual(message.data, PAYLOAD)
         self.assertEqual(message.message_id, MSG_ID)
-        self.assertEqual(message.attrs, {'a': 'b'})
+        self.assertEqual(message.attributes, {'a': 'b'})
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
