@@ -101,7 +101,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], {})
+        self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
     def test___iter___non_empty(self):
         NAME = 'name'
@@ -115,7 +115,7 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], {})
+        self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
     def test___contains___miss(self):
         NAME = 'name'
@@ -269,58 +269,46 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
-    def test_get_all_blobs_empty(self):
+    def test_list_blobs_defaults(self):
         NAME = 'name'
         connection = _Connection({'items': []})
         bucket = self._makeOne(NAME, connection)
-        blobs = bucket.get_all_blobs()
-        self.assertEqual(blobs, [])
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], {})
-
-    def test_get_all_blobs_non_empty(self):
-        NAME = 'name'
-        BLOB_NAME = 'blob-name'
-        connection = _Connection({'items': [{'name': BLOB_NAME}]})
-        bucket = self._makeOne(NAME, connection)
-        blobs = bucket.get_all_blobs()
-        blob, = blobs
-        self.assertTrue(blob.bucket is bucket)
-        self.assertEqual(blob.name, BLOB_NAME)
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], {})
-
-    def test_iterator_defaults(self):
-        NAME = 'name'
-        connection = _Connection({'items': []})
-        bucket = self._makeOne(NAME, connection)
-        iterator = bucket.iterator()
+        iterator = bucket.list_blobs()
         blobs = list(iterator)
         self.assertEqual(blobs, [])
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], {})
+        self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
-    def test_iterator_explicit(self):
+    def test_list_blobs_explicit(self):
         NAME = 'name'
+        MAX_RESULTS = 10
+        PAGE_TOKEN = 'ABCD'
+        PREFIX = 'subfolder'
+        DELIMITER = '/'
+        VERSIONS = True
+        PROJECTION = 'full'
+        FIELDS = 'items/contentLanguage,nextPageToken'
         EXPECTED = {
-            'prefix': 'subfolder',
-            'delimiter': '/',
             'maxResults': 10,
-            'versions': True,
+            'pageToken': PAGE_TOKEN,
+            'prefix': PREFIX,
+            'delimiter': DELIMITER,
+            'versions': VERSIONS,
+            'projection': PROJECTION,
+            'fields': FIELDS,
         }
         connection = _Connection({'items': []})
         bucket = self._makeOne(NAME, connection)
-        iterator = bucket.iterator(
-            prefix='subfolder',
-            delimiter='/',
-            max_results=10,
-            versions=True,
+        iterator = bucket.list_blobs(
+            max_results=MAX_RESULTS,
+            page_token=PAGE_TOKEN,
+            prefix=PREFIX,
+            delimiter=DELIMITER,
+            versions=VERSIONS,
+            projection=PROJECTION,
+            fields=FIELDS,
         )
         blobs = list(iterator)
         self.assertEqual(blobs, [])
@@ -1069,7 +1057,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw[1]['query_params'], {})
+        self.assertEqual(kw[1]['query_params'], {'projection': 'noAcl'})
 
 
 class _Connection(object):

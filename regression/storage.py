@@ -205,13 +205,13 @@ class TestStorageListFiles(TestStorageFiles):
             blob.delete()
 
     def test_list_files(self):
-        all_blobs = self.bucket.get_all_blobs()
+        all_blobs = list(self.bucket.list_blobs())
         self.assertEqual(len(all_blobs), len(self.FILENAMES))
 
     def test_paginate_files(self):
         truncation_size = 1
         count = len(self.FILENAMES) - truncation_size
-        iterator = self.bucket.iterator(max_results=count)
+        iterator = self.bucket.list_blobs(max_results=count)
         response = iterator.get_next_page_response()
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual(len(blobs), count)
@@ -254,7 +254,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
             blob.delete()
 
     def test_root_level_w_delimiter(self):
-        iterator = self.bucket.iterator(delimiter='/')
+        iterator = self.bucket.list_blobs(delimiter='/')
         response = iterator.get_next_page_response()
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual([blob.name for blob in blobs], ['file01.txt'])
@@ -263,7 +263,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual(iterator.prefixes, ('parent/',))
 
     def test_first_level(self):
-        iterator = self.bucket.iterator(delimiter='/', prefix='parent/')
+        iterator = self.bucket.list_blobs(delimiter='/', prefix='parent/')
         response = iterator.get_next_page_response()
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual([blob.name for blob in blobs], ['parent/file11.txt'])
@@ -272,7 +272,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual(iterator.prefixes, ('parent/child/',))
 
     def test_second_level(self):
-        iterator = self.bucket.iterator(delimiter='/', prefix='parent/child/')
+        iterator = self.bucket.list_blobs(delimiter='/',
+                                          prefix='parent/child/')
         response = iterator.get_next_page_response()
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual([blob.name for blob in blobs],
@@ -288,8 +289,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         # of 1024 characters in the UTF-8 encoded name:
         # https://cloud.google.com/storage/docs/bucketnaming#objectnames
         # Exercise a layer deeper to illustrate this.
-        iterator = self.bucket.iterator(delimiter='/',
-                                        prefix='parent/child/grand/')
+        iterator = self.bucket.list_blobs(delimiter='/',
+                                          prefix='parent/child/grand/')
         response = iterator.get_next_page_response()
         blobs = list(iterator.get_items_from_response(response))
         self.assertEqual([blob.name for blob in blobs],

@@ -23,9 +23,9 @@ in Python::
   False
 
 If you want to get all the blobs in the bucket, you can use
-:func:`get_all_blobs <gcloud.storage.bucket.Bucket.get_all_blobs>`::
+:func:`list_blobs <gcloud.storage.bucket.Bucket.list_blobs>`::
 
-  >>> blobs = bucket.get_all_blobs()
+  >>> blobs = bucket.list_blobs()
 
 You can also use the bucket as an iterator::
 
@@ -104,7 +104,7 @@ class Bucket(_PropertyMixin):
         return '<Bucket: %s>' % self.name
 
     def __iter__(self):
-        return iter(self._iterator_class(bucket=self))
+        return iter(self.list_blobs())
 
     def __contains__(self, blob_name):
         blob = Blob(blob_name, bucket=self)
@@ -223,42 +223,47 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return None
 
-    def get_all_blobs(self):
-        """List all the blobs in this bucket.
-
-        This will **not** retrieve all the data for all the blobs, it
-        will only retrieve the blob paths.
-
-        This is equivalent to::
-
-          blobs = [blob for blob in bucket]
-
-        :rtype: list of :class:`gcloud.storage.blob.Blob`
-        :returns: A list of all the Blob objects in this bucket.
-        """
-        return list(self)
-
-    def iterator(self, prefix=None, delimiter=None, max_results=None,
-                 versions=None):
+    def list_blobs(self, max_results=None, page_token=None, prefix=None,
+                   delimiter=None, versions=None,
+                   projection='noAcl', fields=None):
         """Return an iterator used to find blobs in the bucket.
 
-        :type prefix: string or None
+        :type max_results: integer or ``NoneType``
+        :param max_results: maximum number of blobs to return.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of blobs. If not
+                           passed, will return the first page of blobs.
+
+        :type prefix: string or ``NoneType``
         :param prefix: optional prefix used to filter blobs.
 
-        :type delimiter: string or None
+        :type delimiter: string or ``NoneType``
         :param delimiter: optional delimter, used with ``prefix`` to
                           emulate hierarchy.
 
-        :type max_results: integer or None
-        :param max_results: maximum number of blobs to return.
-
-        :type versions: boolean or None
+        :type versions: boolean or ``NoneType``
         :param versions: whether object versions should be returned as
                          separate blobs.
 
-        :rtype: :class:`_BlobIterator`
+        :type projection: string or ``NoneType``
+        :param projection: If used, must be 'full' or 'noAcl'. Defaults to
+                           'noAcl'. Specifies the set of properties to return.
+
+        :type fields: string or ``NoneType``
+        :param fields: Selector specifying which fields to include in a
+                       partial response. Must be a list of fields. For example
+                       to get a partial response with just the next page token
+                       and the language of each blob returned:
+                       'items/contentLanguage,nextPageToken'
+
+        :rtype: :class:`_BlobIterator`.
+        :returns: An iterator of blobs.
         """
         extra_params = {}
+
+        if max_results is not None:
+            extra_params['maxResults'] = max_results
 
         if prefix is not None:
             extra_params['prefix'] = prefix
@@ -266,13 +271,20 @@ class Bucket(_PropertyMixin):
         if delimiter is not None:
             extra_params['delimiter'] = delimiter
 
-        if max_results is not None:
-            extra_params['maxResults'] = max_results
-
         if versions is not None:
             extra_params['versions'] = versions
 
-        return self._iterator_class(self, extra_params=extra_params)
+        extra_params['projection'] = projection
+
+        if fields is not None:
+            extra_params['fields'] = fields
+
+        result = self._iterator_class(self, extra_params=extra_params)
+        # Page token must be handled specially since the base `Iterator`
+        # class has it as a reserved property.
+        if page_token is not None:
+            result.next_page_token = page_token
+        return result
 
     def delete(self, force=False):
         """Delete this bucket.
@@ -297,7 +309,7 @@ class Bucket(_PropertyMixin):
                  contains more than 256 objects / blobs.
         """
         if force:
-            blobs = list(self.iterator(
+            blobs = list(self.list_blobs(
                 max_results=self._MAX_OBJECTS_FOR_BUCKET_DELETE + 1))
             if len(blobs) > self._MAX_OBJECTS_FOR_BUCKET_DELETE:
                 message = (
@@ -325,7 +337,7 @@ class Bucket(_PropertyMixin):
           >>> from gcloud import storage
           >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
-          >>> print bucket.get_all_blobs()
+          >>> print bucket.list_blobs()
           [<Blob: my-bucket, my-file.txt>]
           >>> bucket.delete_blob('my-file.txt')
           >>> try:
@@ -408,7 +420,7 @@ class Bucket(_PropertyMixin):
           >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file('~/my-file.txt', 'remote-text-file.txt')
-          >>> print bucket.get_all_blobs()
+          >>> print bucket.list_blobs()
           [<Blob: my-bucket, remote-text-file.txt>]
 
         If you don't provide a blob name, we will try to upload the file
@@ -418,7 +430,7 @@ class Bucket(_PropertyMixin):
           >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file('~/my-file.txt')
-          >>> print bucket.get_all_blobs()
+          >>> print bucket.list_blobs()
           [<Blob: my-bucket, my-file.txt>]
 
         :type filename: string
@@ -450,7 +462,7 @@ class Bucket(_PropertyMixin):
           >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file(open('~/my-file.txt'), 'remote-text-file.txt')
-          >>> print bucket.get_all_blobs()
+          >>> print bucket.list_blobs()
           [<Blob: my-bucket, remote-text-file.txt>]
 
         If you don't provide a blob name, we will try to upload the file
@@ -460,7 +472,7 @@ class Bucket(_PropertyMixin):
           >>> connection = storage.get_connection()
           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
           >>> bucket.upload_file(open('~/my-file.txt'))
-          >>> print bucket.get_all_blobs()
+          >>> print bucket.list_blobs()
           [<Blob: my-bucket, my-file.txt>]
 
         :type file_obj: file
