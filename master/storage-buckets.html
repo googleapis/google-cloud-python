@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Buckets &mdash; gcloud 96ee9d3 documentation</title>
+    <title>Buckets &mdash; gcloud 41b5b72 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '96ee9d3',
+        VERSION:     '41b5b72',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 96ee9d3 documentation" href="index.html" />
+    <link rel="top" title="gcloud 41b5b72 documentation" href="index.html" />
     <link rel="next" title="ACL" href="storage-acl.html" />
     <link rel="prev" title="Blobs / Objects" href="storage-blobs.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%2096ee9d3" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%2041b5b72" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (96ee9d3)
+              Version History (41b5b72)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -92,8 +92,8 @@ in Python:</p>
 </pre></div>
 </div>
 <p>If you want to get all the blobs in the bucket, you can use
-<a class="reference internal" href="#gcloud.storage.bucket.Bucket.get_all_blobs" title="gcloud.storage.bucket.Bucket.get_all_blobs"><code class="xref py py-func docutils literal"><span class="pre">get_all_blobs</span></code></a>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">blobs</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<a class="reference internal" href="#gcloud.storage.bucket.Bucket.list_blobs" title="gcloud.storage.bucket.Bucket.list_blobs"><code class="xref py py-func docutils literal"><span class="pre">list_blobs</span></code></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">blobs</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can also use the bucket as an iterator:</p>
@@ -298,7 +298,7 @@ contains more than 256 objects / blobs.</td>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
 <span class="go">[&lt;Blob: my-bucket, my-file.txt&gt;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="s">&#39;my-file.txt&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
@@ -423,28 +423,6 @@ set locally.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.get_all_blobs">
-<code class="descname">get_all_blobs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_all_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_all_blobs" title="Permalink to this definition">#</a></dt>
-<dd><p>List all the blobs in this bucket.</p>
-<p>This will <strong>not</strong> retrieve all the data for all the blobs, it
-will only retrieve the blob paths.</p>
-<p>This is equivalent to:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">blobs</span> <span class="o">=</span> <span class="p">[</span><span class="n">blob</span> <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">bucket</span><span class="p">]</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></code></a></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of all the Blob objects in this bucket.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.get_blob">
 <code class="descname">get_blob</code><span class="sig-paren">(</span><em>blob_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.get_blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.get_blob" title="Permalink to this definition">#</a></dt>
 <dd><p>Get a blob object by name.</p>
@@ -508,31 +486,6 @@ set locally.</td>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.iterator">
-<code class="descname">iterator</code><span class="sig-paren">(</span><em>prefix=None</em>, <em>delimiter=None</em>, <em>max_results=None</em>, <em>versions=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.iterator" title="Permalink to this definition">#</a></dt>
-<dd><p>Return an iterator used to find blobs in the bucket.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>prefix</strong> (<em>string or None</em>) &#8211; optional prefix used to filter blobs.</li>
-<li><strong>delimiter</strong> (<em>string or None</em>) &#8211; optional delimter, used with <code class="docutils literal"><span class="pre">prefix</span></code> to
-emulate hierarchy.</li>
-<li><strong>max_results</strong> (<em>integer or None</em>) &#8211; maximum number of blobs to return.</li>
-<li><strong>versions</strong> (<em>boolean or None</em>) &#8211; whether object versions should be returned as
-separate blobs.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">_BlobIterator</span></code></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.lifecycle_rules">
 <code class="descname">lifecycle_rules</code><a class="headerlink" href="#gcloud.storage.bucket.Bucket.lifecycle_rules" title="Permalink to this definition">#</a></dt>
@@ -548,6 +501,43 @@ separate blobs.</li>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list(dict)</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A sequence of mappings describing each lifecycle rule.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.list_blobs">
+<code class="descname">list_blobs</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>versions=None</em>, <em>projection='noAcl'</em>, <em>fields=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.list_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.list_blobs" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an iterator used to find blobs in the bucket.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_results</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; maximum number of blobs to return.</li>
+<li><strong>page_token</strong> (<em>string</em>) &#8211; opaque marker for the next &#8220;page&#8221; of blobs. If not
+passed, will return the first page of blobs.</li>
+<li><strong>prefix</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; optional prefix used to filter blobs.</li>
+<li><strong>delimiter</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; optional delimter, used with <code class="docutils literal"><span class="pre">prefix</span></code> to
+emulate hierarchy.</li>
+<li><strong>versions</strong> (boolean or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; whether object versions should be returned as
+separate blobs.</li>
+<li><strong>projection</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; If used, must be &#8216;full&#8217; or &#8216;noAcl&#8217;. Defaults to
+&#8216;noAcl&#8217;. Specifies the set of properties to return.</li>
+<li><strong>fields</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Selector specifying which fields to include in a
+partial response. Must be a list of fields. For example
+to get a partial response with just the next page token
+and the language of each blob returned:
+&#8216;items/contentLanguage,nextPageToken&#8217;</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">_BlobIterator</span></code>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An iterator of blobs.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -734,7 +724,7 @@ set locally.</td>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">,</span> <span class="s">&#39;remote-text-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
 <span class="go">[&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
 </pre></div>
 </div>
@@ -744,7 +734,7 @@ using the local filename (<strong>not</strong> the complete path):</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
 <span class="go">[&lt;Blob: my-bucket, my-file.txt&gt;]</span>
 </pre></div>
 </div>
@@ -781,7 +771,7 @@ file system.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">),</span> <span class="s">&#39;remote-text-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
 <span class="go">[&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
 </pre></div>
 </div>
@@ -791,7 +781,7 @@ using the local filename (<strong>not</strong> the complete path):</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">get_all_blobs</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
 <span class="go">[&lt;Blob: my-bucket, my-file.txt&gt;]</span>
 </pre></div>
 </div>

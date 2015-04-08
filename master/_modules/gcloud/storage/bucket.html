@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud 96ee9d3 documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud 41b5b72 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '96ee9d3',
+        VERSION:     '41b5b72',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 96ee9d3 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 41b5b72 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%2096ee9d3" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%2041b5b72" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (96ee9d3)
+              Version History (41b5b72)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -105,9 +105,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">  False</span>
 
 <span class="sd">If you want to get all the blobs in the bucket, you can use</span>
-<span class="sd">:func:`get_all_blobs &lt;gcloud.storage.bucket.Bucket.get_all_blobs&gt;`::</span>
+<span class="sd">:func:`list_blobs &lt;gcloud.storage.bucket.Bucket.list_blobs&gt;`::</span>
 
-<span class="sd">  &gt;&gt;&gt; blobs = bucket.get_all_blobs()</span>
+<span class="sd">  &gt;&gt;&gt; blobs = bucket.list_blobs()</span>
 
 <span class="sd">You can also use the bucket as an iterator::</span>
 
@@ -186,7 +186,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="s">&#39;&lt;Bucket: </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">):</span>
         <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
@@ -305,42 +305,47 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
 </div>
-<div class="viewcode-block" id="Bucket.get_all_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_all_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List all the blobs in this bucket.</span>
-
-<span class="sd">        This will **not** retrieve all the data for all the blobs, it</span>
-<span class="sd">        will only retrieve the blob paths.</span>
-
-<span class="sd">        This is equivalent to::</span>
-
-<span class="sd">          blobs = [blob for blob in bucket]</span>
-
-<span class="sd">        :rtype: list of :class:`gcloud.storage.blob.Blob`</span>
-<span class="sd">        :returns: A list of all the Blob objects in this bucket.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Bucket.iterator"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.iterator">[docs]</a>    <span class="k">def</span> <span class="nf">iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">versions</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.list_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.list_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                   <span class="n">delimiter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                   <span class="n">projection</span><span class="o">=</span><span class="s">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an iterator used to find blobs in the bucket.</span>
 
-<span class="sd">        :type prefix: string or None</span>
+<span class="sd">        :type max_results: integer or ``NoneType``</span>
+<span class="sd">        :param max_results: maximum number of blobs to return.</span>
+
+<span class="sd">        :type page_token: string</span>
+<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of blobs. If not</span>
+<span class="sd">                           passed, will return the first page of blobs.</span>
+
+<span class="sd">        :type prefix: string or ``NoneType``</span>
 <span class="sd">        :param prefix: optional prefix used to filter blobs.</span>
 
-<span class="sd">        :type delimiter: string or None</span>
+<span class="sd">        :type delimiter: string or ``NoneType``</span>
 <span class="sd">        :param delimiter: optional delimter, used with ``prefix`` to</span>
 <span class="sd">                          emulate hierarchy.</span>
 
-<span class="sd">        :type max_results: integer or None</span>
-<span class="sd">        :param max_results: maximum number of blobs to return.</span>
-
-<span class="sd">        :type versions: boolean or None</span>
+<span class="sd">        :type versions: boolean or ``NoneType``</span>
 <span class="sd">        :param versions: whether object versions should be returned as</span>
 <span class="sd">                         separate blobs.</span>
 
-<span class="sd">        :rtype: :class:`_BlobIterator`</span>
+<span class="sd">        :type projection: string or ``NoneType``</span>
+<span class="sd">        :param projection: If used, must be &#39;full&#39; or &#39;noAcl&#39;. Defaults to</span>
+<span class="sd">                           &#39;noAcl&#39;. Specifies the set of properties to return.</span>
+
+<span class="sd">        :type fields: string or ``NoneType``</span>
+<span class="sd">        :param fields: Selector specifying which fields to include in a</span>
+<span class="sd">                       partial response. Must be a list of fields. For example</span>
+<span class="sd">                       to get a partial response with just the next page token</span>
+<span class="sd">                       and the language of each blob returned:</span>
+<span class="sd">                       &#39;items/contentLanguage,nextPageToken&#39;</span>
+
+<span class="sd">        :rtype: :class:`_BlobIterator`.</span>
+<span class="sd">        :returns: An iterator of blobs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
 
         <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
@@ -348,13 +353,20 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="n">delimiter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;delimiter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">delimiter</span>
 
-        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
-
         <span class="k">if</span> <span class="n">versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;versions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versions</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;projection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">projection</span>
+
+        <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="c"># Page token must be handled specially since the base `Iterator`</span>
+        <span class="c"># class has it as a reserved property.</span>
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
+        <span class="k">return</span> <span class="n">result</span>
 </div>
 <div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this bucket.</span>
@@ -379,7 +391,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                 contains more than 256 objects / blobs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
-            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iterator</span><span class="p">(</span>
+            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
                 <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
@@ -407,7 +419,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection()</span>
 <span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
+<span class="sd">          &gt;&gt;&gt; print bucket.list_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
 <span class="sd">          &gt;&gt;&gt; bucket.delete_blob(&#39;my-file.txt&#39;)</span>
 <span class="sd">          &gt;&gt;&gt; try:</span>
@@ -490,7 +502,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection()</span>
 <span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;, &#39;remote-text-file.txt&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
+<span class="sd">          &gt;&gt;&gt; print bucket.list_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
 
 <span class="sd">        If you don&#39;t provide a blob name, we will try to upload the file</span>
@@ -500,7 +512,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection()</span>
 <span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
+<span class="sd">          &gt;&gt;&gt; print bucket.list_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
 
 <span class="sd">        :type filename: string</span>
@@ -532,7 +544,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection()</span>
 <span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(open(&#39;~/my-file.txt&#39;), &#39;remote-text-file.txt&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
+<span class="sd">          &gt;&gt;&gt; print bucket.list_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
 
 <span class="sd">        If you don&#39;t provide a blob name, we will try to upload the file</span>
@@ -542,7 +554,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">          &gt;&gt;&gt; connection = storage.get_connection()</span>
 <span class="sd">          &gt;&gt;&gt; bucket = storage.get_bucket(&#39;my-bucket&#39;, connection=connection)</span>
 <span class="sd">          &gt;&gt;&gt; bucket.upload_file(open(&#39;~/my-file.txt&#39;))</span>
-<span class="sd">          &gt;&gt;&gt; print bucket.get_all_blobs()</span>
+<span class="sd">          &gt;&gt;&gt; print bucket.list_blobs()</span>
 <span class="sd">          [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
 
 <span class="sd">        :type file_obj: file</span>
