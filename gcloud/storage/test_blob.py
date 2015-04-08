@@ -254,6 +254,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
+            ({'status': OK}, b''),
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
@@ -279,6 +280,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
+            ({'status': OK}, b''),
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
@@ -311,6 +313,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
+            ({'status': OK}, b''),
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
@@ -386,8 +389,8 @@ class Test_Blob(unittest2.TestCase):
         from six.moves.urllib.parse import urlsplit
         from tempfile import NamedTemporaryFile
         from gcloud._testing import _Monkey
-        from _gcloud_vendor.apitools.base.py import http_wrapper
-        from _gcloud_vendor.apitools.base.py import transfer
+        from apitools.base.py import http_wrapper
+        from apitools.base.py import transfer
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = b'ABCDEF'
@@ -445,7 +448,7 @@ class Test_Blob(unittest2.TestCase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from tempfile import NamedTemporaryFile
-        from _gcloud_vendor.apitools.base.py import http_wrapper
+        from apitools.base.py import http_wrapper
         BLOB_NAME = 'parent/child'
         UPLOAD_URL = 'http://example.com/upload/name/parent%2Fchild'
         DATA = b'ABCDEF'
@@ -465,8 +468,12 @@ class Test_Blob(unittest2.TestCase):
             fh.write(DATA)
             fh.flush()
             blob.upload_from_file(fh, rewind=True)
+            self.assertEqual(fh.tell(), len(DATA))
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
+        self.assertEqual(rq[0]['redirections'], 5)
+        self.assertEqual(rq[0]['body'], DATA)
+        self.assertEqual(rq[0]['connection_type'], None)
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
@@ -487,7 +494,7 @@ class Test_Blob(unittest2.TestCase):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
         from tempfile import NamedTemporaryFile
-        from _gcloud_vendor.apitools.base.py import http_wrapper
+        from apitools.base.py import http_wrapper
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = b'ABCDEF'
@@ -551,7 +558,7 @@ class Test_Blob(unittest2.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from _gcloud_vendor.apitools.base.py import http_wrapper
+        from apitools.base.py import http_wrapper
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = b'ABCDEF'
@@ -588,7 +595,7 @@ class Test_Blob(unittest2.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from _gcloud_vendor.apitools.base.py import http_wrapper
+        from apitools.base.py import http_wrapper
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = u'ABCDEF\u1234'
@@ -1051,6 +1058,8 @@ class _Connection(_Responder):
 
 
 class _HTTP(_Responder):
+
+    connections = {}  # For google-apitools debugging.
 
     def request(self, uri, method, headers, body, **kw):
         return self._respond(uri=uri, method=method, headers=headers,

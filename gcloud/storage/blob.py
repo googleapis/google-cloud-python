@@ -25,8 +25,8 @@ from io import BytesIO
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
-from _gcloud_vendor.apitools.base.py import http_wrapper
-from _gcloud_vendor.apitools.base.py import transfer
+from apitools.base.py import http_wrapper
+from apitools.base.py import transfer
 
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
@@ -224,7 +224,7 @@ class Blob(_PropertyMixin):
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
-        download = transfer.Download.FromStream(file_obj, auto_transfer=False)
+        download = transfer.Download.FromStream(file_obj, auto_transfer=True)
         download.chunksize = self.CHUNK_SIZE
         headers = {'Range': 'bytes=0-%d' % (self.CHUNK_SIZE - 1)}
         request = http_wrapper.Request(download_url, 'GET', headers)
@@ -347,7 +347,7 @@ class Blob(_PropertyMixin):
         # Should we be passing callbacks through from caller?  We can't
         # pass them as None, because apitools wants to print to the console
         # by default.
-        if upload.strategy == transfer._RESUMABLE_UPLOAD:
+        if upload.strategy == transfer.RESUMABLE_UPLOAD:
             http_response = upload.StreamInChunks(
                 callback=lambda *args: None,
                 finish_callback=lambda *args: None)
