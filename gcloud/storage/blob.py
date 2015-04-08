@@ -224,7 +224,7 @@ class Blob(_PropertyMixin):
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
-        download = transfer.Download.FromStream(file_obj, auto_transfer=False)
+        download = transfer.Download.FromStream(file_obj, auto_transfer=True)
         download.chunksize = self.CHUNK_SIZE
         headers = {'Range': 'bytes=0-%d' % (self.CHUNK_SIZE - 1)}
         request = http_wrapper.Request(download_url, 'GET', headers)

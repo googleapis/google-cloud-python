@@ -254,6 +254,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
+            ({'status': OK}, b''),
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
@@ -279,6 +280,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
+            ({'status': OK}, b''),
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
@@ -311,6 +313,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
+            ({'status': OK}, b''),
         )
         bucket = _Bucket(connection)
         MEDIA_LINK = 'http://example.com/media/'
@@ -465,8 +468,12 @@ class Test_Blob(unittest2.TestCase):
             fh.write(DATA)
             fh.flush()
             blob.upload_from_file(fh, rewind=True)
+            self.assertEqual(fh.tell(), len(DATA))
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
+        self.assertEqual(rq[0]['redirections'], 5)
+        self.assertEqual(rq[0]['body'], DATA)
+        self.assertEqual(rq[0]['connection_type'], None)
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
