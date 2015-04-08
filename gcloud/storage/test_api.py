@@ -78,42 +78,55 @@ class Test_lookup_bucket(unittest2.TestCase):
         self._lookup_bucket_hit_helper(use_default=True)
 
 
-class Test_get_all_buckets(unittest2.TestCase):
+class Test_list_buckets(unittest2.TestCase):
 
-    def _callFUT(self, project=None, connection=None):
-        from gcloud.storage.api import get_all_buckets
-        return get_all_buckets(project=project, connection=connection)
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.storage.api import list_buckets
+        return list_buckets(*args, **kwargs)
 
     def test_empty(self):
+        from six.moves.urllib.parse import parse_qs
+        from six.moves.urllib.parse import urlparse
         from gcloud.storage.connection import Connection
         PROJECT = 'project'
         conn = Connection()
-        URI = '/'.join([
-            conn.API_BASE_URL,
-            'storage',
-            conn.API_VERSION,
-            'b?project=%s' % PROJECT,
-        ])
+        EXPECTED_QUERY = {
+            'project': [PROJECT],
+            'projection': ['noAcl'],
+        }
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
             b'{}',
         )
-        buckets = list(self._callFUT(PROJECT, conn))
+        buckets = list(self._callFUT(project=PROJECT, connection=conn))
         self.assertEqual(len(buckets), 0)
         self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
+        self.assertEqual(http._called_with['body'], None)
 
-    def _get_all_buckets_non_empty_helper(self, project, use_default=False):
+        BASE_URI = '/'.join([
+            conn.API_BASE_URL,
+            'storage',
+            conn.API_VERSION,
+            'b',
+        ])
+        URI = http._called_with['uri']
+        self.assertTrue(URI.startswith(BASE_URI))
+        uri_parts = urlparse(URI)
+        self.assertEqual(parse_qs(uri_parts.query), EXPECTED_QUERY)
+
+    def _list_buckets_non_empty_helper(self, project, use_default=False):
+        from six.moves.urllib.parse import urlencode
         from gcloud._testing import _monkey_defaults as _base_monkey_defaults
         from gcloud.storage._testing import _monkey_defaults
         from gcloud.storage.connection import Connection
         BUCKET_NAME = 'bucket-name'
         conn = Connection()
+        query_params = urlencode({'project': project, 'projection': 'noAcl'})
         URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
-            'b?project=%s' % project,
+            'b?%s' % (query_params,),
         ])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
@@ -126,7 +139,7 @@ class Test_get_all_buckets(unittest2.TestCase):
                 with _monkey_defaults(connection=conn):
                     buckets = list(self._callFUT())
         else:
-            buckets = list(self._callFUT(project, conn))
+            buckets = list(self._callFUT(project=project, connection=conn))
 
         self.assertEqual(len(buckets), 1)
         self.assertEqual(buckets[0].name, BUCKET_NAME)
@@ -134,10 +147,58 @@ class Test_get_all_buckets(unittest2.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_non_empty(self):
-        self._get_all_buckets_non_empty_helper('PROJECT', use_default=False)
+        self._list_buckets_non_empty_helper('PROJECT', use_default=False)
 
     def test_non_use_default(self):
-        self._get_all_buckets_non_empty_helper('PROJECT', use_default=True)
+        self._list_buckets_non_empty_helper('PROJECT', use_default=True)
+
+    def test_all_arguments(self):
+        from six.moves.urllib.parse import parse_qs
+        from six.moves.urllib.parse import urlparse
+        from gcloud.storage.connection import Connection
+        PROJECT = 'foo-bar'
+        MAX_RESULTS = 10
+        PAGE_TOKEN = 'ABCD'
+        PREFIX = 'subfolder'
+        PROJECTION = 'full'
+        FIELDS = 'items/id,nextPageToken'
+        EXPECTED_QUERY = {
+            'project': [PROJECT],
+            'maxResults': [str(MAX_RESULTS)],
+            'pageToken': [PAGE_TOKEN],
+            'prefix': [PREFIX],
+            'projection': [PROJECTION],
+            'fields': [FIELDS],
+        }
+        CONNECTION = Connection()
+        http = CONNECTION._http = Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{"items": []}',
+        )
+        iterator = self._callFUT(
+            project=PROJECT,
+            max_results=MAX_RESULTS,
+            page_token=PAGE_TOKEN,
+            prefix=PREFIX,
+            projection=PROJECTION,
+            fields=FIELDS,
+            connection=CONNECTION,
+        )
+        buckets = list(iterator)
+        self.assertEqual(buckets, [])
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertEqual(http._called_with['body'], None)
+
+        BASE_URI = '/'.join([
+            CONNECTION.API_BASE_URL,
+            'storage',
+            CONNECTION.API_VERSION,
+            'b'
+        ])
+        URI = http._called_with['uri']
+        self.assertTrue(URI.startswith(BASE_URI))
+        uri_parts = urlparse(URI)
+        self.assertEqual(parse_qs(uri_parts.query), EXPECTED_QUERY)
 
 
 class Test_get_bucket(unittest2.TestCase):

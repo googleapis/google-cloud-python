@@ -184,7 +184,7 @@ If you have a full bucket, you can delete it this way::
 Listing available buckets
 -------------------------
 
-  >>> for bucket in storage.get_all_buckets(connection):
+  >>> for bucket in storage.list_buckets(connection):
   ...   print bucket.name
 
 Managing access control

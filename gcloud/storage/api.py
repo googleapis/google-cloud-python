@@ -59,21 +59,44 @@ def lookup_bucket(bucket_name, connection=None):
         return None
 
 
-def get_all_buckets(project=None, connection=None):
+def list_buckets(project=None, max_results=None, page_token=None, prefix=None,
+                 projection='noAcl', fields=None, connection=None):
     """Get all buckets in the project.
 
     This will not populate the list of blobs available in each
     bucket.
 
       >>> from gcloud import storage
-      >>> for bucket in storage.get_all_buckets():
+      >>> for bucket in storage.list_buckets():
       >>>   print bucket
 
     This implements "storage.buckets.list".
 
-    :type project: string
+    :type project: string or ``NoneType``
     :param project: Optional. The project to use when listing all buckets.
                     If not provided, falls back to default.
+
+    :type max_results: integer or ``NoneType``
+    :param max_results: Optional. Maximum number of buckets to return.
+
+    :type page_token: string or ``NoneType``
+    :param page_token: Optional. Opaque marker for the next "page" of buckets.
+                       If not passed, will return the first page of buckets.
+
+    :type prefix: string or ``NoneType``
+    :param prefix: Optional. Filter results to buckets whose names begin with
+                   this prefix.
+
+    :type projection: string or ``NoneType``
+    :param projection: If used, must be 'full' or 'noAcl'. Defaults to
+                       'noAcl'. Specifies the set of properties to return.
+
+    :type fields: string or ``NoneType``
+    :param fields: Selector specifying which fields to include in a
+                   partial response. Must be a list of fields. For example
+                   to get a partial response with just the next page token
+                   and the language of each bucket returned:
+                   'items/id,nextPageToken'
 
     :type connection: :class:`gcloud.storage.connection.Connection` or
                       ``NoneType``
@@ -87,8 +110,25 @@ def get_all_buckets(project=None, connection=None):
     if project is None:
         project = get_default_project()
     extra_params = {'project': project}
-    return iter(_BucketIterator(connection=connection,
-                                extra_params=extra_params))
+
+    if max_results is not None:
+        extra_params['maxResults'] = max_results
+
+    if prefix is not None:
+        extra_params['prefix'] = prefix
+
+    extra_params['projection'] = projection
+
+    if fields is not None:
+        extra_params['fields'] = fields
+
+    result = _BucketIterator(connection=connection,
+                             extra_params=extra_params)
+    # Page token must be handled specially since the base `Iterator`
+    # class has it as a reserved property.
+    if page_token is not None:
+        result.next_page_token = page_token
+    return iter(result)
 
 
 def get_bucket(bucket_name, connection=None):
