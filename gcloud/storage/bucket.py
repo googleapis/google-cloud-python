@@ -33,6 +33,7 @@ You can also use the bucket as an iterator::
   ...   print blob
 """
 
+import datetime
 import copy
 import os
 import six
@@ -45,6 +46,7 @@ from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
 from gcloud.storage.blob import Blob
+from gcloud.storage.blob import _GOOGLE_TIMESTAMP_FORMAT
 
 
 class _BlobIterator(Iterator):
@@ -684,11 +686,13 @@ class Bucket(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/buckets
 
-        :rtype: string or ``NoneType``
-        :returns: RFC3339 valid timestamp, or ``None`` if the property is not
-                  set locally.
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp, or
+                  ``None`` if the property is not set locally.
         """
-        return self._properties.get('timeCreated')
+        value = self._properties.get('timeCreated')
+        if value is not None:
+            return datetime.datetime.strptime(value, _GOOGLE_TIMESTAMP_FORMAT)
 
     @property
     def versioning_enabled(self):

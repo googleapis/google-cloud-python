@@ -15,12 +15,12 @@
 """Create / interact with Google Cloud Storage blobs."""
 
 import copy
+import datetime
+from io import BytesIO
 import json
 import mimetypes
 import os
 import time
-import datetime
-from io import BytesIO
 
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
@@ -37,6 +37,7 @@ from gcloud.storage.acl import ObjectACL
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
+_GOOGLE_TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 
 class Blob(_PropertyMixin):
@@ -248,11 +249,7 @@ class Blob(_PropertyMixin):
         with open(filename, 'wb') as file_obj:
             self.download_to_file(file_obj)
 
-        mtime = time.mktime(
-            datetime.datetime.strptime(
-                self._properties['updated'],
-                '%Y-%m-%dT%H:%M:%S.%fz').timetuple()
-        )
+        mtime = time.mktime(self.updated.timetuple())
         os.utime(file_obj.name, (mtime, mtime))
 
     def download_as_string(self):
@@ -660,12 +657,14 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
-        :returns: RFC3339 valid timestamp, or ``None`` if the property is not
-                  set locally. If the blob has not been deleted, this will
-                  never be set.
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp, or
+                  ``None`` if the property is not set locally. If the blob has
+                  not been deleted, this will never be set.
         """
-        return self._properties.get('timeDeleted')
+        value = self._properties.get('timeDeleted')
+        if value is not None:
+            return datetime.datetime.strptime(value, _GOOGLE_TIMESTAMP_FORMAT)
 
     @property
     def updated(self):
@@ -673,11 +672,13 @@ class Blob(_PropertyMixin):
 
         See: https://cloud.google.com/storage/docs/json_api/v1/objects
 
-        :rtype: string or ``NoneType``
-        :returns: RFC3339 valid timestamp, or ``None`` if the property is not
-                  set locally.
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp, or
+                  ``None`` if the property is not set locally.
         """
-        return self._properties.get('updated')
+        value = self._properties.get('updated')
+        if value is not None:
+            return datetime.datetime.strptime(value, _GOOGLE_TIMESTAMP_FORMAT)
 
 
 class _UploadConfig(object):
