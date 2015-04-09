@@ -856,10 +856,16 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(bucket.storage_class, STORAGE_CLASS)
 
     def test_time_created(self):
-        TIME_CREATED = '2014-11-05T20:34:37Z'
+        import datetime
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37)
+        TIME_CREATED = TIMESTAMP.isoformat() + '.000Z'
         properties = {'timeCreated': TIME_CREATED}
         bucket = self._makeOne(properties=properties)
-        self.assertEqual(bucket.time_created, TIME_CREATED)
+        self.assertEqual(bucket.time_created, TIMESTAMP)
+
+    def test_time_created_unset(self):
+        bucket = self._makeOne()
+        self.assertEqual(bucket.time_created, None)
 
     def test_versioning_enabled_getter_missing(self):
         NAME = 'name'

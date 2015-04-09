@@ -125,12 +125,12 @@ class Test_Blob(unittest2.TestCase):
         from gcloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
-        EXPIRATION = '2014-10-16T20:34:37Z'
+        EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
-               '&Expiration=2014-10-16T20:34:37Z')
+               '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
@@ -151,12 +151,12 @@ class Test_Blob(unittest2.TestCase):
         from gcloud.storage import blob as MUT
 
         BLOB_NAME = 'parent/child'
-        EXPIRATION = '2014-10-16T20:34:37Z'
+        EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
-               '&Expiration=2014-10-16T20:34:37Z')
+               '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
@@ -176,12 +176,12 @@ class Test_Blob(unittest2.TestCase):
         from gcloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
-        EXPIRATION = '2014-10-16T20:34:37Z'
+        EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
-               '&Expiration=2014-10-16T20:34:37Z')
+               '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
@@ -267,7 +267,6 @@ class Test_Blob(unittest2.TestCase):
     def test_download_to_filename(self):
         import os
         import time
-        import datetime
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
         from tempfile import NamedTemporaryFile
@@ -292,11 +291,7 @@ class Test_Blob(unittest2.TestCase):
             with open(f.name, 'rb') as g:
                 wrote = g.read()
                 mtime = os.path.getmtime(f.name)
-                updatedTime = time.mktime(
-                    datetime.datetime.strptime(
-                        blob._properties['updated'],
-                        '%Y-%m-%dT%H:%M:%S.%fz').timetuple()
-                )
+                updatedTime = time.mktime(blob.updated.timetuple())
         self.assertEqual(wrote, b'abcdef')
         self.assertEqual(mtime, updatedTime)
 
@@ -990,22 +985,36 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(blob.storage_class, STORAGE_CLASS)
 
     def test_time_deleted(self):
+        import datetime
         BLOB_NAME = 'blob-name'
         connection = _Connection()
         bucket = _Bucket(connection)
-        TIME_DELETED = '2014-11-05T20:34:37Z'
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37)
+        TIME_DELETED = TIMESTAMP.isoformat() + '.000Z'
         properties = {'timeDeleted': TIME_DELETED}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
-        self.assertEqual(blob.time_deleted, TIME_DELETED)
+        self.assertEqual(blob.time_deleted, TIMESTAMP)
+
+    def test_time_deleted_unset(self):
+        BUCKET = object()
+        blob = self._makeOne('blob-name', bucket=BUCKET)
+        self.assertEqual(blob.time_deleted, None)
 
     def test_updated(self):
+        import datetime
         BLOB_NAME = 'blob-name'
         connection = _Connection()
         bucket = _Bucket(connection)
-        UPDATED = '2014-11-05T20:34:37Z'
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37)
+        UPDATED = TIMESTAMP.isoformat() + '.000Z'
         properties = {'updated': UPDATED}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
-        self.assertEqual(blob.updated, UPDATED)
+        self.assertEqual(blob.updated, TIMESTAMP)
+
+    def test_updated_unset(self):
+        BUCKET = object()
+        blob = self._makeOne('blob-name', bucket=BUCKET)
+        self.assertEqual(blob.updated, None)
 
 
 class _Responder(object):
