@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 1cdcc6d documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud 3f6ee7b documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '1cdcc6d',
+        VERSION:     '3f6ee7b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 1cdcc6d documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 3f6ee7b documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%201cdcc6d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%203f6ee7b" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (1cdcc6d)
+              Version History (3f6ee7b)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -97,12 +97,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Storage blobs.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>  <span class="c"># pylint: disable=F0401</span>
@@ -119,6 +119,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 
 <span class="n">_API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://storage.googleapis.com&#39;</span>
+<span class="n">_GOOGLE_TIMESTAMP_FORMAT</span> <span class="o">=</span> <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">T%H:%M:%S.</span><span class="si">%f</span><span class="s">Z&#39;</span>
 
 
 <div class="viewcode-block" id="Blob"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob">[docs]</a><span class="k">class</span> <span class="nc">Blob</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
@@ -330,11 +331,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
 
-        <span class="n">mtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span>
-            <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;updated&#39;</span><span class="p">],</span>
-                <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">T%H:%M:%S.</span><span class="si">%f</span><span class="s">z&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()</span>
-        <span class="p">)</span>
+        <span class="n">mtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updated</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
         <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">mtime</span><span class="p">,</span> <span class="n">mtime</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -742,12 +739,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string or ``NoneType``</span>
-<span class="sd">        :returns: RFC3339 valid timestamp, or ``None`` if the property is not</span>
-<span class="sd">                  set locally. If the blob has not been deleted, this will</span>
-<span class="sd">                  never be set.</span>
+<span class="sd">        :rtype: :class:`datetime.datetime` or ``NoneType``</span>
+<span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
+<span class="sd">                  ``None`` if the property is not set locally. If the blob has</span>
+<span class="sd">                  not been deleted, this will never be set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;timeDeleted&#39;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;timeDeleted&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_GOOGLE_TIMESTAMP_FORMAT</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -755,11 +754,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/json_api/v1/objects</span>
 
-<span class="sd">        :rtype: string or ``NoneType``</span>
-<span class="sd">        :returns: RFC3339 valid timestamp, or ``None`` if the property is not</span>
-<span class="sd">                  set locally.</span>
+<span class="sd">        :rtype: :class:`datetime.datetime` or ``NoneType``</span>
+<span class="sd">        :returns: Datetime object parsed from RFC3339 valid timestamp, or</span>
+<span class="sd">                  ``None`` if the property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;updated&#39;</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;updated&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_GOOGLE_TIMESTAMP_FORMAT</span><span class="p">)</span>
 
 </div>
 <span class="k">class</span> <span class="nc">_UploadConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
