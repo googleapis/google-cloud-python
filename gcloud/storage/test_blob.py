@@ -465,8 +465,12 @@ class Test_Blob(unittest2.TestCase):
             fh.write(DATA)
             fh.flush()
             blob.upload_from_file(fh, rewind=True)
+            self.assertEqual(fh.tell(), len(DATA))
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
+        self.assertEqual(rq[0]['redirections'], 5)
+        self.assertEqual(rq[0]['body'], DATA)
+        self.assertEqual(rq[0]['connection_type'], None)
         self.assertEqual(rq[0]['method'], 'POST')
         uri = rq[0]['uri']
         scheme, netloc, path, qs, _ = urlsplit(uri)
@@ -1052,7 +1056,11 @@ class _Connection(_Responder):
 
 class _HTTP(_Responder):
 
+    connections = {}  # For google-apitools debugging.
+
     def request(self, uri, method, headers, body, **kw):
+        if hasattr(body, 'read'):
+            body = body.read()
         return self._respond(uri=uri, method=method, headers=headers,
                              body=body, **kw)
 

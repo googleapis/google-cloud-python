@@ -347,7 +347,7 @@ class Blob(_PropertyMixin):
         # Should we be passing callbacks through from caller?  We can't
         # pass them as None, because apitools wants to print to the console
         # by default.
-        if upload.strategy == transfer._RESUMABLE_UPLOAD:
+        if upload.strategy == transfer.RESUMABLE_UPLOAD:
             http_response = upload.StreamInChunks(
                 callback=lambda *args: None,
                 finish_callback=lambda *args: None)
