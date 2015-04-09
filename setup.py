@@ -23,10 +23,10 @@ REQUIREMENTS = [
 
 setup(
     name='gcloud',
-    version='0.4.3',
+    version='0.5.0',
     description='API Client library for Google Cloud',
-    author='JJ Geewax',
-    author_email='jj@geewax.org',
+    author='Google Cloud Platform',
+    author_email='jjg+gcloud-python@google.com',
     long_description=README,
     scripts=[],
     url='https://github.com/GoogleCloudPlatform/gcloud-python',
