@@ -56,7 +56,7 @@ Once you have the connection,
 you can create buckets and blobs::
 
   >>> from gcloud import storage
-  >>> storage.get_all_buckets(connection)
+  >>> storage.list_buckets(connection)
   [<Bucket: ...>, ...]
   >>> bucket = storage.create_bucket('my-new-bucket', connection=connection)
   >>> print bucket

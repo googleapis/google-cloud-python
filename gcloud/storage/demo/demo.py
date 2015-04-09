@@ -25,7 +25,7 @@ from gcloud.storage import demo
 connection = storage.get_connection()
 
 # OK, now let's look at all of the buckets...
-print(demo.get_all_buckets(connection))  # This might take a second...
+print(list(demo.list_buckets(connection)))  # This might take a second...
 
 # Now let's create a new bucket...
 bucket_name = ("bucket-%s" % time.time()).replace(".", "")  # Get rid of dots.
@@ -34,7 +34,7 @@ bucket = demo.create_bucket(bucket_name, connection)
 print(bucket)
 
 # Let's look at all of the buckets again...
-print(demo.get_all_buckets(connection))
+print(list(demo.list_buckets(connection)))
 
 # How about we create a new blob inside this bucket.
 blob = storage.Blob("my-new-file.txt", bucket=bucket)

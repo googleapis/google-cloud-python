@@ -15,13 +15,14 @@
 import os
 from gcloud import storage
 
-__all__ = ['create_bucket', 'get_all_buckets', 'PROJECT_ID']
+__all__ = ['create_bucket', 'list_buckets', 'PROJECT_ID']
 
 PROJECT_ID = os.getenv('GCLOUD_TESTS_PROJECT_ID')
 
 
-def get_all_buckets(connection):
-    return list(storage.get_all_buckets(PROJECT_ID, connection))
+def list_buckets(connection):
+    return list(storage.list_buckets(project=PROJECT_ID,
+                                     connection=connection))
 
 
 def create_bucket(bucket_name, connection):
