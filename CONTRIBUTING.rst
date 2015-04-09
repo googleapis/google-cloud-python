@@ -283,32 +283,6 @@ should either be:
   ``EXTRA_TOX_ENVS``. This value is unencrypted in ``gcloud-python-wheels``
   to make ongoing maintenance easier.
 
-Shared Code with External Projects
-----------------------------------
-
-In order to enable high-quality HTTP transfer of large data (for Cloud
-Storage), we have temporarily included some code from the
-`apitools <https://github.com/craigcitro/apitools>`__  library.
-
-We have chosen to partially include it, rather than include it as
-a dependency because
-
-- The library is not yet included on PyPI.
-- The library's ``protorpc`` dependency is not Python 3 friendly, so
-  would block us from Python 3 support if fully included.
-
-The included code in lives in the
-`_gcloud_vendor <https://github.com/GoogleCloudPlatform/gcloud-python/tree/master/_gcloud_vendor>`__
-directory. It is a snapshot of the ``e5a5c36e24926310712d20b93b4cdd02424a81f5``
-commit from the main project imported in
-``4c27079cf6d7f9814b36cfd16f3402455f768094``. In addition to the raw import,
-we have customized (e.g. rewriting imports) for our library:
-
-- ``334961054d875641d150eec4d6938f6f824ea655``
-- ``565750ee7d19742b520dd62e2a4ff38325987284``
-- ``67b06019549a4db8168ff4c5171c9d701ac94a15``
-- ``f4a53ee64fad5f3d7f29a0341e6a72a060edfcc2``
-
 Supported Python Versions
 -------------------------
 

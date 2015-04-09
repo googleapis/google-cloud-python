@@ -25,8 +25,8 @@ from io import BytesIO
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
-from _gcloud_vendor.apitools.base.py import http_wrapper
-from _gcloud_vendor.apitools.base.py import transfer
+from apitools.base.py import http_wrapper
+from apitools.base.py import transfer
 
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
