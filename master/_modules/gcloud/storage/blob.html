@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 3f6ee7b documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud f08e71b documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '3f6ee7b',
+        VERSION:     'f08e71b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 3f6ee7b documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud f08e71b documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%203f6ee7b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20f08e71b" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (3f6ee7b)
+              Version History (f08e71b)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -107,8 +107,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>  <span class="c"># pylint: disable=F0401</span>
 
-<span class="kn">from</span> <span class="nn">_gcloud_vendor.apitools.base.py</span> <span class="kn">import</span> <span class="n">http_wrapper</span>
-<span class="kn">from</span> <span class="nn">_gcloud_vendor.apitools.base.py</span> <span class="kn">import</span> <span class="n">transfer</span>
+<span class="kn">from</span> <span class="nn">apitools.base.py</span> <span class="kn">import</span> <span class="n">http_wrapper</span>
+<span class="kn">from</span> <span class="nn">apitools.base.py</span> <span class="kn">import</span> <span class="n">transfer</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">generate_signed_url</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
@@ -426,7 +426,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="c"># Should we be passing callbacks through from caller?  We can&#39;t</span>
         <span class="c"># pass them as None, because apitools wants to print to the console</span>
         <span class="c"># by default.</span>
-        <span class="k">if</span> <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="n">transfer</span><span class="o">.</span><span class="n">_RESUMABLE_UPLOAD</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="n">transfer</span><span class="o">.</span><span class="n">RESUMABLE_UPLOAD</span><span class="p">:</span>
             <span class="n">http_response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">StreamInChunks</span><span class="p">(</span>
                 <span class="n">callback</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
                 <span class="n">finish_callback</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
