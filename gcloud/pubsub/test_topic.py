@@ -38,17 +38,22 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(topic.full_name,
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.connection is conn)
+        self.assertFalse(topic.timestamp_messages)
 
-    def test_ctor_w_explicit_project_and_connection(self):
+    def test_ctor_w_explicit_project_connection_and_timestamp(self):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         conn = _Connection()
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = self._makeOne(TOPIC_NAME,
+                              project=PROJECT,
+                              connection=conn,
+                              timestamp_messages=True)
         self.assertEqual(topic.name, TOPIC_NAME)
         self.assertEqual(topic.project, PROJECT)
         self.assertEqual(topic.full_name,
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.connection is conn)
+        self.assertTrue(topic.timestamp_messages)
 
     def test_from_api_repr_wo_connection(self):
         from gcloud.pubsub._testing import _monkey_defaults
@@ -139,6 +144,67 @@ class TestTopic(unittest2.TestCase):
         conn = _Connection({'messageIds': [MSGID]})
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
         msgid = topic.publish(PAYLOAD)
+        self.assertEqual(msgid, MSGID)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['data'], {'messages': [MESSAGE]})
+
+    def test_publish_single_bytes_wo_attrs_w_add_timestamp(self):
+        import base64
+        import datetime
+        from gcloud.pubsub import topic as MUT
+        from gcloud._testing import _Monkey
+        NOW = datetime.datetime.utcnow()
+
+        def _utcnow():
+            return NOW
+
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        MSGID = 'DEADBEEF'
+        MESSAGE = {'data': B64,
+                   'attributes': {'timestamp': '%sZ' % NOW.isoformat()}}
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        conn = _Connection({'messageIds': [MSGID]})
+        topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn,
+                              timestamp_messages=True)
+        with _Monkey(MUT, _NOW=_utcnow):
+            msgid = topic.publish(PAYLOAD)
+        self.assertEqual(msgid, MSGID)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['data'], {'messages': [MESSAGE]})
+
+    def test_publish_single_bytes_w_add_timestamp_w_ts_in_attrs(self):
+        import base64
+        import datetime
+        from gcloud.pubsub import topic as MUT
+        from gcloud._testing import _Monkey
+        NOW = datetime.datetime.utcnow()
+
+        def _utcnow():  # pragma: NO COVER
+            return NOW
+
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        MSGID = 'DEADBEEF'
+        OVERRIDE = '2015-04-10T16:46:22.868399Z'
+        MESSAGE = {'data': B64,
+                   'attributes': {'timestamp': OVERRIDE}}
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        conn = _Connection({'messageIds': [MSGID]})
+        topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn,
+                              timestamp_messages=True)
+        with _Monkey(MUT, _NOW=_utcnow):
+            msgid = topic.publish(PAYLOAD, timestamp=OVERRIDE)
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
