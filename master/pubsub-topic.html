@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Topics &mdash; gcloud 4c63b2a documentation</title>
+    <title>Topics &mdash; gcloud 028a15d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4c63b2a',
+        VERSION:     '028a15d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 4c63b2a documentation" href="index.html" />
+    <link rel="top" title="gcloud 028a15d documentation" href="index.html" />
     <link rel="prev" title="Subscriptions" href="pubsub-subscription.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-topic%0ARelease%3A%204c63b2a" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-topic%0ARelease%3A%20028a15d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (4c63b2a)
+              Version History (028a15d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -84,7 +84,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>Define API Topics.</p>
 <dl class="class">
 <dt id="gcloud.pubsub.topic.Topic">
-<em class="property">class </em><code class="descclassname">gcloud.pubsub.topic.</code><code class="descname">Topic</code><span class="sig-paren">(</span><em>name</em>, <em>project=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.pubsub.topic.</code><code class="descname">Topic</code><span class="sig-paren">(</span><em>name</em>, <em>project=None</em>, <em>connection=None</em>, <em>timestamp_messages=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Topics are targets to which messages can be published.</p>
 <p>Subscribers then receive those messages.</p>
@@ -99,8 +99,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <li><strong>project</strong> (<em>string</em>) &#8211; the project to which the topic belongs.  If not passed,
 falls back to the default inferred from the environment.</li>
 <li><strong>connection</strong> (<em>:class:gcloud.pubsub.connection.Connection</em>) &#8211; the connection to use.  If not passed,
-falls back to the default inferred from the
-environment.</li>
+falls back to the default inferred from the</li>
+<li><strong>timestamp_messages</strong> (<em>boolean</em>) &#8211; If true, the topic will add a <code class="docutils literal"><span class="pre">timestamp</span></code> key
+to the attributes of each published message:
+the value will be an RFC 3339 timestamp.</li>
 </ul>
 </td>
 </tr>
