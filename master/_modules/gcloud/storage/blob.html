@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud c689c3f documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud 4c63b2a documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'c689c3f',
+        VERSION:     '4c63b2a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud c689c3f documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 4c63b2a documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20c689c3f" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%204c63b2a" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c689c3f)
+              Version History (4c63b2a)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -133,17 +133,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :param bucket: The bucket to which this blob belongs. Required, unless the</span>
 <span class="sd">                   implicit default bucket has been set.</span>
 
+<span class="sd">    :type chunk_size: integer</span>
+<span class="sd">    :param chunk_size: The size of a chunk of data whenever iterating (1 MB).</span>
+<span class="sd">                       This must be a multiple of 256 KB per the API</span>
+<span class="sd">                       specification.</span>
+
 <span class="sd">    :type properties: dict</span>
 <span class="sd">    :param properties: All the other data provided by Cloud Storage.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">CHUNK_SIZE</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span>  <span class="c"># 1 MB.</span>
-    <span class="sd">&quot;&quot;&quot;The size of a chunk of data whenever iterating (1 MB).</span>
+    <span class="n">_chunk_size</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># Default value for each instance.</span>
 
-<span class="sd">    This must be a multiple of 256 KB per the API specification.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">1024</span>
+    <span class="sd">&quot;&quot;&quot;Number (256 KB, in bytes) that must divide the chunk size.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">bucket</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">bucket</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">get_default_bucket</span><span class="p">()</span>
 
@@ -152,8 +156,33 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="nb">super</span><span class="p">(</span><span class="n">Blob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span>  <span class="c"># Check that setter accepts value.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">ObjectACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chunk_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the blob&#39;s default chunk size.</span>
+
+<span class="sd">        :rtype: integer or ``NoneType``</span>
+<span class="sd">        :returns: The current blob&#39;s chunk size, if it is set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span>
+
+    <span class="nd">@chunk_size.setter</span>
+    <span class="k">def</span> <span class="nf">chunk_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the blob&#39;s default chunk size.</span>
+
+<span class="sd">        :type value: integer or ``NoneType``</span>
+<span class="sd">        :param value: The current blob&#39;s chunk size, if it is set.</span>
+
+<span class="sd">        :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a</span>
+<span class="sd">                 multiple of 256 KB.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Chunk size must be a multiple of </span><span class="si">%d</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">,))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Blob.path_helper"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.path_helper">[docs]</a>    <span class="k">def</span> <span class="nf">path_helper</span><span class="p">(</span><span class="n">bucket_path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">):</span>
@@ -308,8 +337,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="c"># Use apitools &#39;Download&#39; facility.</span>
         <span class="n">download</span> <span class="o">=</span> <span class="n">transfer</span><span class="o">.</span><span class="n">Download</span><span class="o">.</span><span class="n">FromStream</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">auto_transfer</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-        <span class="n">download</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CHUNK_SIZE</span>
-        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;Range&#39;</span><span class="p">:</span> <span class="s">&#39;bytes=0-</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CHUNK_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)}</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">download</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
+            <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Range&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;bytes=0-</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,)</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">http_wrapper</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
         <span class="n">download</span><span class="o">.</span><span class="n">InitializeDownload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
@@ -401,7 +432,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="n">upload</span> <span class="o">=</span> <span class="n">transfer</span><span class="o">.</span><span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span>
                                  <span class="n">auto_transfer</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                                 <span class="n">chunksize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CHUNK_SIZE</span><span class="p">)</span>
+                                 <span class="n">chunksize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span><span class="p">)</span>
 
         <span class="n">url_builder</span> <span class="o">=</span> <span class="n">_UrlBuilder</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                                   <span class="n">object_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
