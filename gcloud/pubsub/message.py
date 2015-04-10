@@ -19,7 +19,7 @@ import datetime
 
 import pytz
 
-RFC3369 = '%Y-%m-%dT%H:%M:%S.%fZ'
+_RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 
 class Message(object):
@@ -54,13 +54,13 @@ class Message(object):
         """Return timestamp from attributes, if passed.
 
         :rtype: datetime
-        :returns: timestamp (in UTC timezone) parsed from RFC 3369 timestamp
+        :returns: timestamp (in UTC timezone) parsed from RFC 3339 timestamp
         :raises: ValueError if timestamp not in ``attributes``, or malformed
         """
         stamp = self.attributes.get('timestamp')
         if stamp is None:
             raise ValueError('No timestamp')
-        return datetime.datetime.strptime(stamp, RFC3369).replace(
+        return datetime.datetime.strptime(stamp, _RFC3339_MICROS).replace(
             tzinfo=pytz.UTC)
 
     @classmethod

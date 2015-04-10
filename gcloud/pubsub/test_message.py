@@ -91,13 +91,13 @@ class TestMessage(unittest2.TestCase):
 
     def test_timestamp_w_timestamp_in_attributes(self):
         from datetime import datetime
-        import pytz
+        from pytz import utc
+        from gcloud.pubsub.message import _RFC3339_MICROS
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
         TIMESTAMP = '2015-04-10T18:42:27.131956Z'
-        RFC3369 = '%Y-%m-%dT%H:%M:%S.%fZ'
-        naive = datetime.strptime(TIMESTAMP, RFC3369)
-        timestamp = naive.replace(tzinfo=pytz.utc)
+        naive = datetime.strptime(TIMESTAMP, _RFC3339_MICROS)
+        timestamp = naive.replace(tzinfo=utc)
         ATTRS = {'timestamp': TIMESTAMP}
         message = self._makeOne(data=DATA, message_id=MESSAGE_ID,
                                 attributes=ATTRS)
