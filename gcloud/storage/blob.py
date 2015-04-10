@@ -51,17 +51,21 @@ class Blob(_PropertyMixin):
     :param bucket: The bucket to which this blob belongs. Required, unless the
                    implicit default bucket has been set.
 
+    :type chunk_size: integer
+    :param chunk_size: The size of a chunk of data whenever iterating (1 MB).
+                       This must be a multiple of 256 KB per the API
+                       specification.
+
     :type properties: dict
     :param properties: All the other data provided by Cloud Storage.
     """
 
-    CHUNK_SIZE = 1024 * 1024  # 1 MB.
-    """The size of a chunk of data whenever iterating (1 MB).
+    _chunk_size = None  # Default value for each instance.
 
-    This must be a multiple of 256 KB per the API specification.
-    """
+    _CHUNK_SIZE_MULTIPLE = 256 * 1024
+    """Number (256 KB, in bytes) that must divide the chunk size."""
 
-    def __init__(self, name, bucket=None):
+    def __init__(self, name, bucket=None, chunk_size=None):
         if bucket is None:
             bucket = _implicit_environ.get_default_bucket()
 
@@ -70,8 +74,33 @@ class Blob(_PropertyMixin):
 
         super(Blob, self).__init__(name=name)
 
+        self.chunk_size = chunk_size  # Check that setter accepts value.
         self.bucket = bucket
         self._acl = ObjectACL(self)
+
+    @property
+    def chunk_size(self):
+        """Get the blob's default chunk size.
+
+        :rtype: integer or ``NoneType``
+        :returns: The current blob's chunk size, if it is set.
+        """
+        return self._chunk_size
+
+    @chunk_size.setter
+    def chunk_size(self, value):
+        """Set the blob's default chunk size.
+
+        :type value: integer or ``NoneType``
+        :param value: The current blob's chunk size, if it is set.
+
+        :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a
+                 multiple of 256 KB.
+        """
+        if value is not None and value % self._CHUNK_SIZE_MULTIPLE != 0:
+            raise ValueError('Chunk size must be a multiple of %d.' % (
+                self._CHUNK_SIZE_MULTIPLE,))
+        self._chunk_size = value
 
     @staticmethod
     def path_helper(bucket_path, blob_name):
@@ -226,8 +255,10 @@ class Blob(_PropertyMixin):
 
         # Use apitools 'Download' facility.
         download = transfer.Download.FromStream(file_obj, auto_transfer=False)
-        download.chunksize = self.CHUNK_SIZE
-        headers = {'Range': 'bytes=0-%d' % (self.CHUNK_SIZE - 1)}
+        headers = {}
+        if self.chunk_size is not None:
+            download.chunksize = self.chunk_size
+            headers['Range'] = 'bytes=0-%d' % (self.chunk_size - 1,)
         request = http_wrapper.Request(download_url, 'GET', headers)
 
         download.InitializeDownload(request, self.connection.http)
@@ -319,7 +350,7 @@ class Blob(_PropertyMixin):
 
         upload = transfer.Upload(file_obj, content_type, total_bytes,
                                  auto_transfer=False,
-                                 chunksize=self.CHUNK_SIZE)
+                                 chunksize=self.chunk_size)
 
         url_builder = _UrlBuilder(bucket_name=self.bucket.name,
                                   object_name=self.name)

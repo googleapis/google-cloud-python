@@ -69,6 +69,41 @@ class Test_Blob(unittest2.TestCase):
         self.assertFalse(blob._acl.loaded)
         self.assertTrue(blob._acl.blob is blob)
 
+    def test_chunk_size_ctor(self):
+        from gcloud.storage.blob import Blob
+        BLOB_NAME = 'blob-name'
+        BUCKET = object()
+        chunk_size = 10 * Blob._CHUNK_SIZE_MULTIPLE
+        blob = self._makeOne(BLOB_NAME, bucket=BUCKET, chunk_size=chunk_size)
+        self.assertEqual(blob._chunk_size, chunk_size)
+
+    def test_chunk_size_getter(self):
+        BLOB_NAME = 'blob-name'
+        BUCKET = object()
+        blob = self._makeOne(BLOB_NAME, bucket=BUCKET)
+        self.assertEqual(blob.chunk_size, None)
+        VALUE = object()
+        blob._chunk_size = VALUE
+        self.assertTrue(blob.chunk_size is VALUE)
+
+    def test_chunk_size_setter(self):
+        BLOB_NAME = 'blob-name'
+        BUCKET = object()
+        blob = self._makeOne(BLOB_NAME, bucket=BUCKET)
+        self.assertEqual(blob._chunk_size, None)
+        blob._CHUNK_SIZE_MULTIPLE = 10
+        blob.chunk_size = 20
+        self.assertEqual(blob._chunk_size, 20)
+
+    def test_chunk_size_setter_bad_value(self):
+        BLOB_NAME = 'blob-name'
+        BUCKET = object()
+        blob = self._makeOne(BLOB_NAME, bucket=BUCKET)
+        self.assertEqual(blob._chunk_size, None)
+        blob._CHUNK_SIZE_MULTIPLE = 10
+        with self.assertRaises(ValueError):
+            blob.chunk_size = 11
+
     def test_acl_property(self):
         from gcloud.storage.acl import ObjectACL
         FAKE_BUCKET = _Bucket(None)
@@ -242,7 +277,7 @@ class Test_Blob(unittest2.TestCase):
         blob.delete()
         self.assertFalse(blob.exists())
 
-    def test_download_to_file(self):
+    def _download_to_file_helper(self, chunk_size=None):
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
         from io import BytesIO
@@ -259,10 +294,18 @@ class Test_Blob(unittest2.TestCase):
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
-        blob.CHUNK_SIZE = 3
+        if chunk_size is not None:
+            blob._CHUNK_SIZE_MULTIPLE = 1
+            blob.chunk_size = chunk_size
         fh = BytesIO()
         blob.download_to_file(fh)
         self.assertEqual(fh.getvalue(), b'abcdef')
+
+    def test_download_to_file_default(self):
+        self._download_to_file_helper()
+
+    def test_download_to_file_with_chunk_size(self):
+        self._download_to_file_helper(chunk_size=3)
 
     def test_download_to_filename(self):
         import os
@@ -284,7 +327,8 @@ class Test_Blob(unittest2.TestCase):
         properties = {'mediaLink': MEDIA_LINK,
                       'updated': '2014-12-06T13:13:50.690Z'}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
-        blob.CHUNK_SIZE = 3
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 3
         with NamedTemporaryFile() as f:
             blob.download_to_filename(f.name)
             f.flush()
@@ -311,7 +355,8 @@ class Test_Blob(unittest2.TestCase):
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
-        blob.CHUNK_SIZE = 3
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 3
         fetched = blob.download_as_string()
         self.assertEqual(fetched, b'abcdef')
 
@@ -330,7 +375,8 @@ class Test_Blob(unittest2.TestCase):
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
-        blob.CHUNK_SIZE = 5
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
         with NamedTemporaryFile() as fh:
             fh.write(DATA)
             fh.flush()
@@ -398,7 +444,8 @@ class Test_Blob(unittest2.TestCase):
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        blob.CHUNK_SIZE = 5
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
         # Set the threshhold low enough that we force a resumable uploada.
         with _Monkey(transfer, _RESUMABLE_UPLOAD_THRESHOLD=5):
             with NamedTemporaryFile() as fh:
@@ -455,7 +502,8 @@ class Test_Blob(unittest2.TestCase):
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        blob.CHUNK_SIZE = 5
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
         with NamedTemporaryFile() as fh:
             fh.write(DATA)
             fh.flush()
@@ -502,7 +550,8 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket,
                              properties=properties)
-        blob.CHUNK_SIZE = 5
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
         with NamedTemporaryFile(suffix='.jpeg') as fh:
             fh.write(DATA)
             fh.flush()
@@ -565,7 +614,8 @@ class Test_Blob(unittest2.TestCase):
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        blob.CHUNK_SIZE = 5
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
         blob.upload_from_string(DATA)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
@@ -603,7 +653,8 @@ class Test_Blob(unittest2.TestCase):
         )
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        blob.CHUNK_SIZE = 5
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
         blob.upload_from_string(DATA)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
