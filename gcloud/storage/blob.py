@@ -386,7 +386,7 @@ class Blob(_PropertyMixin):
         if not isinstance(response_content,
                           six.string_types):  # pragma: NO COVER  Python3
             response_content = response_content.decode('utf-8')
-        self._properties = json.loads(response_content)
+        self._set_properties(json.loads(response_content))
 
     def upload_from_filename(self, filename, content_type=None):
         """Upload this blob's contents from the content of a named file.
