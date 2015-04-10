@@ -43,13 +43,13 @@ class Topic(object):
     :param connection: the connection to use.  If not passed,
                         falls back to the default inferred from the
 
-    :type add_timestamp_to_messages: boolean
-    :param add_timestamp_to_messages: If true, the topic will add a key,
-                        ``timestamp``, to the attributes of each published
-                        method:  the value will be an RFC 3339 timestamp.
+    :type timestamp_messages: boolean
+    :param timestamp_messages: If true, the topic will add a ``timestamp`` key
+                               to the attributes of each published message:
+                               the value will be an RFC 3339 timestamp.
     """
     def __init__(self, name, project=None, connection=None,
-                 add_timestamp_to_messages=False):
+                 timestamp_messages=False):
         if project is None:
             project = get_default_project()
         if connection is None:
@@ -57,7 +57,7 @@ class Topic(object):
         self.name = name
         self.project = project
         self.connection = connection
-        self.add_timestamp_to_messages = add_timestamp_to_messages
+        self.timestamp_messages = timestamp_messages
 
     @classmethod
     def from_api_repr(cls, resource, connection=None):
@@ -122,7 +122,7 @@ class Topic(object):
         :rtype: str
         :returns: message ID assigned by the server to the published message
         """
-        if self.add_timestamp_to_messages:
+        if self.timestamp_messages:
             attrs['timestamp'] = '%sZ' % _NOW().isoformat()
         message_b = base64.b64encode(message).decode('ascii')
         message_data = {'data': message_b, 'attributes': attrs}

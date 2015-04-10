@@ -38,7 +38,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(topic.full_name,
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.connection is conn)
-        self.assertFalse(topic.add_timestamp_to_messages)
+        self.assertFalse(topic.timestamp_messages)
 
     def test_ctor_w_explicit_project_connection_and_timestamp(self):
         TOPIC_NAME = 'topic_name'
@@ -47,13 +47,13 @@ class TestTopic(unittest2.TestCase):
         topic = self._makeOne(TOPIC_NAME,
                               project=PROJECT,
                               connection=conn,
-                              add_timestamp_to_messages=True)
+                              timestamp_messages=True)
         self.assertEqual(topic.name, TOPIC_NAME)
         self.assertEqual(topic.project, PROJECT)
         self.assertEqual(topic.full_name,
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.connection is conn)
-        self.assertTrue(topic.add_timestamp_to_messages)
+        self.assertTrue(topic.timestamp_messages)
 
     def test_from_api_repr_wo_connection(self):
         from gcloud.pubsub._testing import _monkey_defaults
@@ -171,7 +171,7 @@ class TestTopic(unittest2.TestCase):
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn,
-                              add_timestamp_to_messages=True)
+                              timestamp_messages=True)
         with _Monkey(MUT, _NOW=_utcnow):
             msgid = topic.publish(PAYLOAD)
         self.assertEqual(msgid, MSGID)
