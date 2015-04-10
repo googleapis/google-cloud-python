@@ -181,6 +181,37 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s:publish' % PATH)
         self.assertEqual(req['data'], {'messages': [MESSAGE]})
 
+    def test_publish_single_bytes_w_add_timestamp_w_ts_in_attrs(self):
+        import base64
+        import datetime
+        from gcloud.pubsub import topic as MUT
+        from gcloud._testing import _Monkey
+        NOW = datetime.datetime.utcnow()
+
+        def _utcnow():  # pragma: NO COVER
+            return NOW
+
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        MSGID = 'DEADBEEF'
+        OVERRIDE = '2015-04-10T16:46:22.868399Z'
+        MESSAGE = {'data': B64,
+                   'attributes': {'timestamp': OVERRIDE}}
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        conn = _Connection({'messageIds': [MSGID]})
+        topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn,
+                              timestamp_messages=True)
+        with _Monkey(MUT, _NOW=_utcnow):
+            msgid = topic.publish(PAYLOAD, timestamp=OVERRIDE)
+        self.assertEqual(msgid, MSGID)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['data'], {'messages': [MESSAGE]})
+
     def test_publish_single_w_attrs(self):
         import base64
         TOPIC_NAME = 'topic_name'

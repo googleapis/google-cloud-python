@@ -122,7 +122,7 @@ class Topic(object):
         :rtype: str
         :returns: message ID assigned by the server to the published message
         """
-        if self.timestamp_messages:
+        if self.timestamp_messages and 'timestamp' not in attrs:
             attrs['timestamp'] = '%sZ' % _NOW().isoformat()
         message_b = base64.b64encode(message).decode('ascii')
         message_data = {'data': message_b, 'attributes': attrs}
