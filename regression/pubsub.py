@@ -103,7 +103,7 @@ class TestPubsub(unittest2.TestCase):
 
     def test_message_pull_mode_e2e(self):
         TOPIC_NAME = 'subscribe-me'
-        topic = Topic(TOPIC_NAME)
+        topic = Topic(TOPIC_NAME, timestamp_messages=True)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -113,14 +113,23 @@ class TestPubsub(unittest2.TestCase):
         subscription.create()
         self.to_delete.append(subscription)
 
-        MESSAGE = b'MESSAGE'
-        EXTRA = 'EXTRA'
-        topic.publish(MESSAGE, extra=EXTRA)
+        MESSAGE_1 = b'MESSAGE ONE'
+        MESSAGE_2 = b'MESSAGE ONE'
+        EXTRA_1 = 'EXTRA 1'
+        EXTRA_2 = 'EXTRA 2'
+        topic.publish(MESSAGE_1, extra=EXTRA_1)
+        topic.publish(MESSAGE_2, extra=EXTRA_2)
 
-        received = subscription.pull()
+        received = subscription.pull(max_messages=2)
         ack_ids = [recv[0] for recv in received]
         subscription.acknowledge(ack_ids)
         messages = [recv[1] for recv in received]
-        message, = messages
-        self.assertEqual(message.data, MESSAGE)
-        self.assertEqual(message.attributes, {'extra': EXTRA})
+
+        def _by_timestamp(message):
+            return message.timestamp
+
+        message1, message2 = sorted(messages, key=_by_timestamp)
+        self.assertEqual(message1.data, MESSAGE_1)
+        self.assertEqual(message1.attributes['extra'], EXTRA_1)
+        self.assertEqual(message2.data, MESSAGE_2)
+        self.assertEqual(message2.attributes['extra'], EXTRA_2)

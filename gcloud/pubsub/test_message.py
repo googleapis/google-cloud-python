@@ -66,3 +66,39 @@ class TestMessage(unittest2.TestCase):
         self.assertEqual(message.data, DATA)
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, ATTRS)
+
+    def test_timestamp_no_attributes(self):
+        DATA = b'DEADBEEF'
+        MESSAGE_ID = b'12345'
+        message = self._makeOne(data=DATA, message_id=MESSAGE_ID)
+
+        def _to_fail():
+            return message.timestamp
+
+        self.assertRaises(ValueError, _to_fail)
+
+    def test_timestamp_wo_timestamp_in_attributes(self):
+        DATA = b'DEADBEEF'
+        MESSAGE_ID = b'12345'
+        ATTRS = {'a': 'b'}
+        message = self._makeOne(data=DATA, message_id=MESSAGE_ID,
+                                attributes=ATTRS)
+
+        def _to_fail():
+            return message.timestamp
+
+        self.assertRaises(ValueError, _to_fail)
+
+    def test_timestamp_w_timestamp_in_attributes(self):
+        from datetime import datetime
+        import pytz
+        DATA = b'DEADBEEF'
+        MESSAGE_ID = b'12345'
+        TIMESTAMP = '2015-04-10T18:42:27.131956Z'
+        RFC3369 = '%Y-%m-%dT%H:%M:%S.%fZ'
+        naive = datetime.strptime(TIMESTAMP, RFC3369)
+        timestamp = naive.replace(tzinfo=pytz.utc)
+        ATTRS = {'timestamp': TIMESTAMP}
+        message = self._makeOne(data=DATA, message_id=MESSAGE_ID,
+                                attributes=ATTRS)
+        self.assertEqual(message.timestamp, timestamp)
