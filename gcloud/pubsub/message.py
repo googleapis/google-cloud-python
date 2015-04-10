@@ -51,11 +51,15 @@ class Message(object):
 
     @property
     def timestamp(self):
-        """Return timestamp from attributes, if passed.
+        """Return sortable timestamp from attributes, if passed.
+
+        Allows sorting messages in publication order (assuming consistent
+        clocks across all publishers).
 
         :rtype: datetime
         :returns: timestamp (in UTC timezone) parsed from RFC 3339 timestamp
-        :raises: ValueError if timestamp not in ``attributes``, or malformed
+        :raises: ValueError if timestamp not in ``attributes``, or if it does
+                 not match the RFC 3339 format.
         """
         stamp = self.attributes.get('timestamp')
         if stamp is None:
