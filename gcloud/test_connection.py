@@ -255,7 +255,7 @@ class TestJSONConnection(unittest2.TestCase):
             b'CONTENT',
         )
         self.assertEqual(conn.api_request('GET', '/', expect_json=False),
-                         b'CONTENT')
+                         u'CONTENT')
 
     def test_api_request_w_query_params(self):
         from six.moves.urllib.parse import parse_qsl

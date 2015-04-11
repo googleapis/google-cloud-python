@@ -89,7 +89,7 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(connection)
         self.assertTrue(batch._connection is connection)
         self.assertEqual(len(batch._requests), 0)
-        self.assertEqual(len(batch._responses), 0)
+        self.assertEqual(len(batch._futures), 0)
 
     def test_ctor_w_implicit_connection(self):
         from gcloud.storage._testing import _monkey_defaults
@@ -101,92 +101,100 @@ class TestBatch(unittest2.TestCase):
 
         self.assertTrue(batch._connection is connection)
         self.assertEqual(len(batch._requests), 0)
-        self.assertEqual(len(batch._responses), 0)
+        self.assertEqual(len(batch._futures), 0)
 
-    def test__make_request_GET_forwarded_to_connection(self):
+    def test__make_request_GET_normal(self):
+        from gcloud.storage.batch import _FutureDict
         URL = 'http://example.com/api'
         expected = _Response()
         http = _HTTP((expected, ''))
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         response, content = batch._make_request('GET', URL)
-        self.assertTrue(response is expected)
-        self.assertEqual(content, '')
+        self.assertEqual(response.status, 204)
+        self.assertTrue(isinstance(content, _FutureDict))
+        self.assertEqual(content._value, None)
+        self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
             ('Content-Length', 0),
         ]
-        self.assertEqual(len(http._requests), 1)
-        self.assertEqual(http._requests[0][0], 'GET')
-        self.assertEqual(http._requests[0][1], URL)
-        headers = http._requests[0][2]
+        solo_request, = batch._requests
+        self.assertEqual(solo_request[0], 'GET')
+        self.assertEqual(solo_request[1], URL)
+        headers = solo_request[2]
         for key, value in EXPECTED_HEADERS:
             self.assertEqual(headers[key], value)
-        self.assertEqual(http._requests[0][3], None)
-        self.assertEqual(batch._requests, [])
+        self.assertEqual(solo_request[3], None)
 
     def test__make_request_POST_normal(self):
+        from gcloud.storage.batch import _FutureDict
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         response, content = batch._make_request('POST', URL, data={'foo': 1})
         self.assertEqual(response.status, 204)
-        self.assertEqual(content, '')
+        self.assertTrue(isinstance(content, _FutureDict))
+        self.assertEqual(content._value, None)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
             ('Content-Length', 10),
         ]
-        self.assertEqual(len(batch._requests), 1)
-        self.assertEqual(batch._requests[0][0], 'POST')
-        self.assertEqual(batch._requests[0][1], URL)
-        headers = batch._requests[0][2]
+        solo_request, = batch._requests
+        self.assertEqual(solo_request[0], 'POST')
+        self.assertEqual(solo_request[1], URL)
+        headers = solo_request[2]
         for key, value in EXPECTED_HEADERS:
             self.assertEqual(headers[key], value)
-        self.assertEqual(batch._requests[0][3], {'foo': 1})
+        self.assertEqual(solo_request[3], {'foo': 1})
 
     def test__make_request_PATCH_normal(self):
+        from gcloud.storage.batch import _FutureDict
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         response, content = batch._make_request('PATCH', URL, data={'foo': 1})
         self.assertEqual(response.status, 204)
-        self.assertEqual(content, '')
+        self.assertTrue(isinstance(content, _FutureDict))
+        self.assertEqual(content._value, None)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
             ('Content-Length', 10),
         ]
-        self.assertEqual(len(batch._requests), 1)
-        self.assertEqual(batch._requests[0][0], 'PATCH')
-        self.assertEqual(batch._requests[0][1], URL)
-        headers = batch._requests[0][2]
+        solo_request, = batch._requests
+        self.assertEqual(solo_request[0], 'PATCH')
+        self.assertEqual(solo_request[1], URL)
+        headers = solo_request[2]
         for key, value in EXPECTED_HEADERS:
             self.assertEqual(headers[key], value)
-        self.assertEqual(batch._requests[0][3], {'foo': 1})
+        self.assertEqual(solo_request[3], {'foo': 1})
 
     def test__make_request_DELETE_normal(self):
+        from gcloud.storage.batch import _FutureDict
         URL = 'http://example.com/api'
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         response, content = batch._make_request('DELETE', URL)
         self.assertEqual(response.status, 204)
-        self.assertEqual(content, '')
+        self.assertTrue(isinstance(content, _FutureDict))
+        self.assertEqual(content._value, None)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
             ('Content-Length', 0),
         ]
-        self.assertEqual(len(batch._requests), 1)
-        self.assertEqual(batch._requests[0][0], 'DELETE')
-        self.assertEqual(batch._requests[0][1], URL)
-        headers = batch._requests[0][2]
+        solo_request, = batch._requests
+        self.assertEqual(solo_request[0], 'DELETE')
+        self.assertEqual(solo_request[1], URL)
+        headers = solo_request[2]
         for key, value in EXPECTED_HEADERS:
             self.assertEqual(headers[key], value)
-        self.assertEqual(batch._requests[0][3], None)
+        self.assertEqual(solo_request[3], None)
 
     def test__make_request_POST_too_many_requests(self):
         URL = 'http://example.com/api'
@@ -223,18 +231,24 @@ class TestBatch(unittest2.TestCase):
         lines = chunk.splitlines()
         # blank + 2 headers + blank + request + 2 headers + blank + body
         payload_str = json.dumps(payload)
-        self.assertEqual(len(lines), 9)
         self.assertEqual(lines[0], '')
         self.assertEqual(lines[1], 'Content-Type: application/http')
         self.assertEqual(lines[2], 'MIME-Version: 1.0')
         self.assertEqual(lines[3], '')
         self.assertEqual(lines[4], '%s %s HTTP/1.1' % (method, url))
-        self.assertEqual(lines[5], 'Content-Length: %d' % len(payload_str))
-        self.assertEqual(lines[6], 'Content-Type: application/json')
-        self.assertEqual(lines[7], '')
-        self.assertEqual(json.loads(lines[8]), payload)
+        if method == 'GET':
+            self.assertEqual(len(lines), 7)
+            self.assertEqual(lines[5], '')
+            self.assertEqual(lines[6], '')
+        else:
+            self.assertEqual(len(lines), 9)
+            self.assertEqual(lines[5], 'Content-Length: %d' % len(payload_str))
+            self.assertEqual(lines[6], 'Content-Type: application/json')
+            self.assertEqual(lines[7], '')
+            self.assertEqual(json.loads(lines[8]), payload)
 
     def test_finish_nonempty(self):
+        import httplib2
         URL = 'http://api.example.com/other_api'
         expected = _Response()
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
@@ -242,20 +256,24 @@ class TestBatch(unittest2.TestCase):
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         batch.API_BASE_URL = 'http://api.example.com'
-        batch._requests.append(('POST', URL, {}, {'foo': 1, 'bar': 2}))
-        batch._requests.append(('PATCH', URL, {}, {'bar': 3}))
-        batch._requests.append(('DELETE', URL, {}, None))
+        batch._do_request('POST', URL, {}, {'foo': 1, 'bar': 2})
+        batch._do_request('PATCH', URL, {}, {'bar': 3})
+        batch._do_request('DELETE', URL, {}, None)
         result = batch.finish()
         self.assertEqual(len(result), len(batch._requests))
-        self.assertEqual(result[0][0], '200')
-        self.assertEqual(result[0][1], 'OK')
-        self.assertEqual(result[0][2], {'foo': 1, 'bar': 2})
-        self.assertEqual(result[1][0], '200')
-        self.assertEqual(result[1][1], 'OK')
-        self.assertEqual(result[1][2], {'foo': 1, 'bar': 3})
-        self.assertEqual(result[2][0], '204')
-        self.assertEqual(result[2][1], 'No Content')
-        self.assertEqual(result[2][2], '')
+        response0 = httplib2.Response({
+            'content-length': '20',
+            'content-type': 'application/json; charset=UTF-8',
+            'status': '200',
+        })
+        self.assertEqual(result[0], (response0, {'foo': 1, 'bar': 2}))
+        response1 = response0
+        self.assertEqual(result[1], (response1, {u'foo': 1, u'bar': 3}))
+        response2 = httplib2.Response({
+            'content-length': '0',
+            'status': '204',
+        })
+        self.assertEqual(result[2], (response2, ''))
         self.assertEqual(len(http._requests), 1)
         method, uri, headers, body = http._requests[0]
         self.assertEqual(method, 'POST')
@@ -278,6 +296,56 @@ class TestBatch(unittest2.TestCase):
         self._check_subrequest_payload(chunks[1], 'PATCH', URL, {'bar': 3})
 
         self._check_subrequest_no_payload(chunks[2], 'DELETE', URL)
+
+    def test_finish_responses_mismatch(self):
+        URL = 'http://api.example.com/other_api'
+        expected = _Response()
+        expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
+        http = _HTTP((expected, _TWO_PART_MIME_RESPONSE_WITH_FAIL))
+        connection = _Connection(http=http)
+        batch = self._makeOne(connection)
+        batch.API_BASE_URL = 'http://api.example.com'
+        batch._requests.append(('GET', URL, {}, None))
+        self.assertRaises(ValueError, batch.finish)
+
+    def test_finish_nonempty_with_status_failure(self):
+        from gcloud.exceptions import NotFound
+        URL = 'http://api.example.com/other_api'
+        expected = _Response()
+        expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
+        http = _HTTP((expected, _TWO_PART_MIME_RESPONSE_WITH_FAIL))
+        connection = _Connection(http=http)
+        batch = self._makeOne(connection)
+        batch.API_BASE_URL = 'http://api.example.com'
+        batch._do_request('GET', URL, {}, None)
+        batch._do_request('GET', URL, {}, None)
+        # Make sure futures are not populated.
+        self.assertEqual([future.owner for future in batch._futures],
+                         [None, None])
+        self.assertRaises(NotFound, batch.finish)
+        self.assertEqual(batch._futures[0]._value,
+                         {'foo': 1, 'bar': 2})
+        self.assertEqual(batch._futures[1]._value,
+                         {u'error': {u'message': u'Not Found'}})
+
+        self.assertEqual(len(http._requests), 1)
+        method, uri, headers, body = http._requests[0]
+        self.assertEqual(method, 'POST')
+        self.assertEqual(uri, 'http://api.example.com/batch')
+        self.assertEqual(len(headers), 2)
+        ctype, boundary = [x.strip()
+                           for x in headers['Content-Type'].split(';')]
+        self.assertEqual(ctype, 'multipart/mixed')
+        self.assertTrue(boundary.startswith('boundary="=='))
+        self.assertTrue(boundary.endswith('=="'))
+        self.assertEqual(headers['MIME-Version'], '1.0')
+
+        divider = '--' + boundary[len('boundary="'):-1]
+        chunks = body.split(divider)[1:-1]  # discard prolog / epilog
+        self.assertEqual(len(chunks), 2)
+
+        self._check_subrequest_payload(chunks[0], 'GET', URL, {})
+        self._check_subrequest_payload(chunks[1], 'GET', URL, {})
 
     def test_finish_nonempty_non_multipart_response(self):
         URL = 'http://api.example.com/other_api'
@@ -312,16 +380,12 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch._requests[0][0], 'POST')
         self.assertEqual(batch._requests[1][0], 'PATCH')
         self.assertEqual(batch._requests[2][0], 'DELETE')
-        self.assertEqual(len(batch._responses), 3)
-        self.assertEqual(
-            batch._responses[0],
-            ('200', 'OK', {'foo': 1, 'bar': 2}))
-        self.assertEqual(
-            batch._responses[1],
-            ('200', 'OK', {'foo': 1, 'bar': 3}))
-        self.assertEqual(
-            batch._responses[2],
-            ('204', 'No Content', ''))
+        self.assertEqual(len(batch._futures), 3)
+        self.assertEqual(batch._futures[0]._value,
+                         {'foo': 1, 'bar': 2})
+        self.assertEqual(batch._futures[1]._value,
+                         {'foo': 1, 'bar': 3})
+        self.assertEqual(batch._futures[2]._value, '')
 
     def test_as_context_mgr_w_error(self):
         from gcloud.storage.batch import _BATCHES
@@ -344,7 +408,8 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(list(_BATCHES), [])
         self.assertEqual(len(http._requests), 0)
         self.assertEqual(len(batch._requests), 3)
-        self.assertEqual(len(batch._responses), 0)
+        self.assertEqual([future._value for future in batch._futures],
+                         [None, None, None])
 
 
 class Test__unpack_batch_response(unittest2.TestCase):
@@ -353,24 +418,58 @@ class Test__unpack_batch_response(unittest2.TestCase):
         from gcloud.storage.batch import _unpack_batch_response
         return _unpack_batch_response(response, content)
 
+    def _unpack_helper(self, response, content):
+        import httplib2
+        result = list(self._callFUT(response, content))
+        self.assertEqual(len(result), 3)
+        response0 = httplib2.Response({
+            'content-length': '20',
+            'content-type': 'application/json; charset=UTF-8',
+            'status': '200',
+        })
+        self.assertEqual(result[0], (response0, {u'bar': 2, u'foo': 1}))
+        response1 = response0
+        self.assertEqual(result[1], (response1, {u'foo': 1, u'bar': 3}))
+        response2 = httplib2.Response({
+            'content-length': '0',
+            'status': '204',
+        })
+        self.assertEqual(result[2], (response2, ''))
+
     def test_bytes(self):
         RESPONSE = {'content-type': b'multipart/mixed; boundary="DEADBEEF="'}
         CONTENT = _THREE_PART_MIME_RESPONSE
-        result = list(self._callFUT(RESPONSE, CONTENT))
-        self.assertEqual(len(result), 3)
-        self.assertEqual(result[0], ('200', 'OK', {u'bar': 2, u'foo': 1}))
-        self.assertEqual(result[1], ('200', 'OK', {u'foo': 1, u'bar': 3}))
-        self.assertEqual(result[2], ('204', 'No Content', ''))
+        self._unpack_helper(RESPONSE, CONTENT)
 
     def test_unicode(self):
         RESPONSE = {'content-type': u'multipart/mixed; boundary="DEADBEEF="'}
         CONTENT = _THREE_PART_MIME_RESPONSE.decode('utf-8')
-        result = list(self._callFUT(RESPONSE, CONTENT))
-        self.assertEqual(len(result), 3)
-        self.assertEqual(result[0], ('200', 'OK', {u'bar': 2, u'foo': 1}))
-        self.assertEqual(result[1], ('200', 'OK', {u'foo': 1, u'bar': 3}))
-        self.assertEqual(result[2], ('204', 'No Content', ''))
+        self._unpack_helper(RESPONSE, CONTENT)
 
+
+_TWO_PART_MIME_RESPONSE_WITH_FAIL = b"""\
+--DEADBEEF=
+Content-Type: application/http
+Content-ID: <response-8a09ca85-8d1d-4f45-9eb0-da8e8b07ec83+1>
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=UTF-8
+Content-Length: 20
+
+{"foo": 1, "bar": 2}
+
+--DEADBEEF=
+Content-Type: application/http
+Content-ID: <response-8a09ca85-8d1d-4f45-9eb0-da8e8b07ec83+2>
+
+HTTP/1.1 404 Not Found
+Content-Type: application/json; charset=UTF-8
+Content-Length: 35
+
+{"error": {"message": "Not Found"}}
+
+--DEADBEEF=--
+"""
 
 _THREE_PART_MIME_RESPONSE = b"""\
 --DEADBEEF=
@@ -434,6 +533,31 @@ class Test__FutureDict(unittest2.TestCase):
         future = self._makeOne()
         with self.assertRaises(KeyError):
             future[None] = None
+
+    def test_set_future_value_no_owner(self):
+        future = self._makeOne()
+        self.assertEqual(future._value, None)
+        VALUE = object()
+        future.set_future_value(VALUE)
+        self.assertTrue(future._value is VALUE)
+
+    def test_set_future_value_with_owner(self):
+        from gcloud.storage._helpers import _PropertyMixin
+        future = self._makeOne()
+        future.owner = _PropertyMixin()
+        self.assertEqual(future._value, None)
+        self.assertEqual(future.owner._properties, {})
+        VALUE = object()
+        future.set_future_value(VALUE)
+        self.assertTrue(future._value is VALUE)
+        self.assertTrue(future.owner._properties is VALUE)
+
+    def test_set_future_value_already_set(self):
+        future = self._makeOne()
+        self.assertEqual(future._value, None)
+        VALUE = object()
+        future.set_future_value(VALUE)
+        self.assertRaises(ValueError, future.set_future_value, VALUE)
 
 
 class _Connection(object):

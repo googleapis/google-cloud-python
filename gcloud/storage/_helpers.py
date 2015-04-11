@@ -84,7 +84,7 @@ class _PropertyMixin(object):
     def _set_properties(self, value):
         """Set the properties for the current object.
 
-        :type value: dict
+        :type value: dict or :class:`gcloud.storage.batch._FutureDict`
         :param value: The properties to be set.
         """
         self._properties = value

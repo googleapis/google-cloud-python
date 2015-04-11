@@ -292,12 +292,13 @@ class JSONConnection(Connection):
         if not 200 <= response.status < 300:
             raise make_exception(response, content)
 
-        if content and expect_json:
+        if isinstance(content, six.binary_type):
+            content = content.decode('utf-8')
+
+        if expect_json and content and isinstance(content, six.string_types):
             content_type = response.get('content-type', '')
             if not content_type.startswith('application/json'):
                 raise TypeError('Expected JSON, got %s' % content_type)
-            if isinstance(content, six.binary_type):
-                content = content.decode('utf-8')
             return json.loads(content)
 
         return content
