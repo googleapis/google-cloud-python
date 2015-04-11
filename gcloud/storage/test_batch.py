@@ -404,6 +404,38 @@ Content-Length: 0
 """
 
 
+class Test__FutureDict(unittest2.TestCase):
+
+    def _makeOne(self, *args, **kw):
+        from gcloud.storage.batch import _FutureDict
+        return _FutureDict(*args, **kw)
+
+    def test_ctor_defaults(self):
+        future = self._makeOne()
+        self.assertEqual(future.owner, None)
+
+    def test_ctor_owner(self):
+        OWNER = object()
+        future = self._makeOne(owner=OWNER)
+        self.assertTrue(future.owner is OWNER)
+
+    def test_get(self):
+        future = self._makeOne()
+        self.assertRaises(KeyError, future.get, None)
+
+    def test___getitem__(self):
+        future = self._makeOne()
+        value = orig_value = object()
+        with self.assertRaises(KeyError):
+            value = future[None]
+        self.assertTrue(value is orig_value)
+
+    def test___setitem__(self):
+        future = self._makeOne()
+        with self.assertRaises(KeyError):
+            future[None] = None
+
+
 class _Connection(object):
 
     project = 'TESTING'

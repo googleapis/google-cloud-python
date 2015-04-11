@@ -71,6 +71,61 @@ class NoContent(object):
     status = 204
 
 
+class _FutureDict(object):
+    """Class to hold a future value for a deferred request.
+
+    Used by for requests that get sent in a :class:`Batch`.
+
+    :type owner: object
+    :param owner: Optional. A blob or bucket (or other type) that depends on
+                  this future.
+    """
+
+    def __init__(self, owner=None):
+        self.owner = owner
+
+    @staticmethod
+    def get(key, default=None):
+        """Stand-in for dict.get.
+
+        :type key: object
+        :param key: Hashable dictionary key.
+
+        :type default: object
+        :param default: Fallback value to dict.get.
+
+        :raises: :class:`KeyError` always since the future is intended to fail
+                 as a dictionary.
+        """
+        raise KeyError('Cannot get(%r, default=%r) on a future' % (
+            key, default))
+
+    def __getitem__(self, key):
+        """Stand-in for dict[key].
+
+        :type key: object
+        :param key: Hashable dictionary key.
+
+        :raises: :class:`KeyError` always since the future is intended to fail
+                 as a dictionary.
+        """
+        raise KeyError('Cannot get item %r from a future' % (key,))
+
+    def __setitem__(self, key, value):
+        """Stand-in for dict[key] = value.
+
+        :type key: object
+        :param key: Hashable dictionary key.
+
+        :type value: object
+        :param value: Dictionary value.
+
+        :raises: :class:`KeyError` always since the future is intended to fail
+                 as a dictionary.
+        """
+        raise KeyError('Cannot set %r -> %r on a future' % (key, value))
+
+
 class Batch(Connection):
     """Proxy an underlying connection, batching up change operations.
 

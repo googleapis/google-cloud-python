@@ -88,6 +88,8 @@ class _PropertyMixin(object):
         :param value: The properties to be set.
         """
         self._properties = value
+        if hasattr(value, 'owner'):
+            value.owner = self
         # If the values are reset, the changes must as well.
         self._changes = set()
 
