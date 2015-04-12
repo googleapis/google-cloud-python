@@ -227,7 +227,7 @@ class _BucketIterator(Iterator):
         for item in response.get('items', []):
             name = item.get('name')
             bucket = Bucket(name, connection=self.connection)
-            bucket._properties = item
+            bucket._set_properties(item)
             yield bucket
 
 

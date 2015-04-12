@@ -26,7 +26,7 @@ those results into an iterable of the actual objects you want::
       items = response.get('items', [])
       for item in items:
         my_item = MyItemClass(other_arg=True)
-        my_item._properties = item
+        my_item._set_properties(item)
         yield my_item
 
 You then can use this to get **all** the results from a resource::

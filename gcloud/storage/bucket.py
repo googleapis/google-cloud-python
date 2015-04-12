@@ -75,7 +75,7 @@ class _BlobIterator(Iterator):
         for item in response.get('items', []):
             name = item.get('name')
             blob = Blob(name, bucket=self.bucket)
-            blob._properties = item
+            blob._set_properties(item)
             yield blob
 
 
@@ -152,9 +152,10 @@ class Bucket(_PropertyMixin):
                                    'from environment.')
 
         query_params = {'project': project}
-        self._properties = self.connection.api_request(
+        api_response = self.connection.api_request(
             method='POST', path='/b', query_params=query_params,
             data={'name': self.name})
+        self._set_properties(api_response)
 
     @property
     def acl(self):
@@ -220,7 +221,7 @@ class Bucket(_PropertyMixin):
                                                    path=blob.path)
             name = response.get('name')  # Expect this to be blob_name
             blob = Blob(name, bucket=self)
-            blob._properties = response
+            blob._set_properties(response)
             return blob
         except NotFound:
             return None
@@ -408,7 +409,7 @@ class Bucket(_PropertyMixin):
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
         copy_result = self.connection.api_request(method='POST', path=api_path)
-        new_blob._properties = copy_result
+        new_blob._set_properties(copy_result)
         return new_blob
 
     def upload_file(self, filename, blob_name=None):

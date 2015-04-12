@@ -54,10 +54,9 @@ class _PropertyMixin(object):
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params = {'projection': 'noAcl'}
-        self._properties = self.connection.api_request(
+        api_response = self.connection.api_request(
             method='GET', path=self.path, query_params=query_params)
-        # If the api_request succeeded, we reset changes.
-        self._changes = set()
+        self._set_properties(api_response)
 
     def _patch_property(self, name, value):
         """Update field of this object's properties.
@@ -77,6 +76,16 @@ class _PropertyMixin(object):
         self._changes.add(name)
         self._properties[name] = value
 
+    def _set_properties(self, value):
+        """Set the properties for the current object.
+
+        :type value: dict
+        :param value: The properties to be set.
+        """
+        self._properties = value
+        # If the values are reset, the changes must as well.
+        self._changes = set()
+
     def patch(self):
         """Sends all changed properties in a PATCH request.
 
@@ -86,11 +95,10 @@ class _PropertyMixin(object):
         # to work properly w/ 'noAcl'.
         update_properties = dict((key, self._properties[key])
                                  for key in self._changes)
-        self._properties = self.connection.api_request(
+        api_response = self.connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'})
-        # If the api_request succeeded, we reset changes.
-        self._changes = set()
+        self._set_properties(api_response)
 
 
 def _scalar_property(fieldname):
