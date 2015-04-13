@@ -19,6 +19,7 @@ from the enviroment.
 """
 
 
+from gcloud._helpers import _lazy_property_deco
 from gcloud.connection import get_scoped_connection
 from gcloud.storage.connection import Connection
 
@@ -38,9 +39,16 @@ class _DefaultsContainer(object):
     :param connection: Persistent implied connection from environment.
     """
 
-    def __init__(self, bucket=None, connection=None):
+    @_lazy_property_deco
+    @staticmethod
+    def connection():
+        """Return the implicit default connection.."""
+        return get_connection()
+
+    def __init__(self, bucket=None, connection=None, implicit=False):
         self.bucket = bucket
-        self.connection = connection
+        if connection is not None or not implicit:
+            self.connection = connection
 
 
 def get_default_bucket():
@@ -88,4 +96,4 @@ def set_default_connection(connection=None):
     _DEFAULTS.connection = connection
 
 
-_DEFAULTS = _DefaultsContainer()
+_DEFAULTS = _DefaultsContainer(implicit=True)

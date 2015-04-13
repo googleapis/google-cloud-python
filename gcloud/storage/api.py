@@ -33,7 +33,6 @@ def lookup_bucket(bucket_name, connection=None):
     than catching an exception::
 
       >>> from gcloud import storage
-      >>> storage.set_defaults()
       >>> bucket = storage.lookup_bucket('doesnt-exist')
       >>> print bucket
       None
@@ -172,7 +171,6 @@ def create_bucket(bucket_name, project=None, connection=None):
     For example::
 
       >>> from gcloud import storage
-      >>> storage.set_defaults()
       >>> bucket = storage.create_bucket('my-bucket')
       >>> print bucket
       <Bucket: my-bucket>

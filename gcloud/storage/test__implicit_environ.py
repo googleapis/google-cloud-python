@@ -27,6 +27,14 @@ class Test_get_default_bucket(unittest2.TestCase):
 
 class Test_get_default_connection(unittest2.TestCase):
 
+    def setUp(self):
+        from gcloud.storage._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.storage._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
     def _callFUT(self):
         from gcloud.storage._implicit_environ import get_default_connection
         return get_default_connection()
@@ -99,3 +107,30 @@ class Test_set_default_connection(unittest2.TestCase):
         self.assertEqual(_implicit_environ.get_default_connection(), fake_cnxn)
         self.assertEqual(_called_args, [()])
         self.assertEqual(_called_kwargs, [{}])
+
+
+class Test_lazy_loading(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.storage._testing import _setup_defaults
+        _setup_defaults(self, implicit=True)
+
+    def tearDown(self):
+        from gcloud.storage._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
+    def test_descriptor_for_connection(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import _implicit_environ
+
+        self.assertFalse(
+            'connection' in _implicit_environ._DEFAULTS.__dict__)
+
+        DEFAULT = object()
+
+        with _Monkey(_implicit_environ, get_connection=lambda: DEFAULT):
+            lazy_loaded = _implicit_environ._DEFAULTS.connection
+
+        self.assertEqual(lazy_loaded, DEFAULT)
+        self.assertTrue(
+            'connection' in _implicit_environ._DEFAULTS.__dict__)

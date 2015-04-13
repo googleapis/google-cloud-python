@@ -99,7 +99,6 @@ to Cloud Storage using this Client Library.
 .. code:: python
 
     from gcloud import storage
-    storage.set_defaults()
     bucket = storage.get_bucket('bucket-id-here')
     # Then do other things...
     blob = bucket.get_blob('/remote/path/to/file.txt')

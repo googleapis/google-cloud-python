@@ -18,7 +18,7 @@ import unittest2
 class Test_get_default_connection(unittest2.TestCase):
 
     def _callFUT(self):
-        from gcloud.storage._implicit_environ import get_default_connection
+        from gcloud.pubsub._implicit_environ import get_default_connection
         return get_default_connection()
 
     def test_wo_override(self):
