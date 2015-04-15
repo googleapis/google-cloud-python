@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.__init__ &mdash; gcloud f6cb792 documentation</title>
+    <title>gcloud.storage.__init__ &mdash; gcloud 21395ef documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'f6cb792',
+        VERSION:     '21395ef',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud f6cb792 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 21395ef documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%20f6cb792" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/__init__%0ARelease%3A%2021395ef" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (f6cb792)
+              Version History (21395ef)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -99,7 +99,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">You&#39;ll typically use these to get started with the API:</span>
 
 <span class="sd">&gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">&gt;&gt;&gt; storage.set_defaults()</span>
 <span class="sd">&gt;&gt;&gt; bucket = storage.get_bucket(&#39;bucket-id-here&#39;)</span>
 <span class="sd">&gt;&gt;&gt; # Then do other things...</span>
 <span class="sd">&gt;&gt;&gt; blob = bucket.get_blob(&#39;/remote/path/to/file.txt&#39;)</span>
@@ -125,10 +124,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">credentials</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">get_default_project</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">set_default_project</span>
-<span class="kn">from</span> <span class="nn">gcloud.connection</span> <span class="kn">import</span> <span class="n">get_scoped_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">SCOPE</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">get_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._implicit_environ</span> <span class="kn">import</span> <span class="n">set_default_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.api</span> <span class="kn">import</span> <span class="n">create_bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.api</span> <span class="kn">import</span> <span class="n">get_bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.api</span> <span class="kn">import</span> <span class="n">list_buckets</span>
@@ -138,10 +139,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.storage.bucket</span> <span class="kn">import</span> <span class="n">Bucket</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 
-
-<span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/devstorage.full_control&#39;</span><span class="p">,</span>
-         <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span><span class="p">,</span>
-         <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_write&#39;</span><span class="p">)</span>
 
 <span class="n">_BUCKET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;GCLOUD_BUCKET_NAME&#39;</span>
 
@@ -172,16 +169,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">_DEFAULTS</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
 
 </div>
-<div class="viewcode-block" id="set_default_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.set_default_connection">[docs]</a><span class="k">def</span> <span class="nf">set_default_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set default connection either explicitly or implicitly as fall-back.</span>
-
-<span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
-<span class="sd">    :param connection: A connection provided to be the default.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span> <span class="ow">or</span> <span class="n">get_connection</span><span class="p">()</span>
-    <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">_DEFAULTS</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
-
-</div>
 <div class="viewcode-block" id="set_defaults"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.set_defaults">[docs]</a><span class="k">def</span> <span class="nf">set_defaults</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set defaults either explicitly or implicitly as fall-back.</span>
 
@@ -200,24 +187,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="n">set_default_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
     <span class="c"># NOTE: `set_default_bucket` is called after `set_default_connection`</span>
     <span class="c">#       since `set_default_bucket` falls back to implicit connection.</span>
-    <span class="n">set_default_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
-
-</div>
-<div class="viewcode-block" id="get_connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.__init__.get_connection">[docs]</a><span class="k">def</span> <span class="nf">get_connection</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Shortcut method to establish a connection to Cloud Storage.</span>
-
-<span class="sd">    Use this if you are going to access several buckets with the same</span>
-<span class="sd">    set of credentials:</span>
-
-<span class="sd">    &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">    &gt;&gt;&gt; connection = storage.get_connection()</span>
-<span class="sd">    &gt;&gt;&gt; bucket1 = storage.get_bucket(&#39;bucket1&#39;, connection=connection)</span>
-<span class="sd">    &gt;&gt;&gt; bucket2 = storage.get_bucket(&#39;bucket2&#39;, connection=connection)</span>
-
-<span class="sd">    :rtype: :class:`gcloud.storage.connection.Connection`</span>
-<span class="sd">    :returns: A connection defined with the proper credentials.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">get_scoped_connection</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="n">SCOPE</span><span class="p">)</span></div>
+    <span class="n">set_default_bucket</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
