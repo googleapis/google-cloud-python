@@ -12,7 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with a batch of updates / deletes."""
+"""Create / interact with a batch of updates / deletes.
+
+Batches provide the ability to execute multiple operations
+in a single request to the Cloud Datastore API.
+
+See
+https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations
+"""
 
 from gcloud._helpers import _LocalStack
 from gcloud.datastore import _implicit_environ
