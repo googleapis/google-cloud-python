@@ -62,16 +62,9 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(derived._changes, set())
 
     def test__patch_property(self):
-        connection = _Connection({'foo': 'Foo'})
-        derived = self._derivedClass(connection, '/path')()
+        derived = self._derivedClass()()
         derived._patch_property('foo', 'Foo')
-        derived.patch()
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['data'], {'foo': 'Foo'})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(derived._properties, {'foo': 'Foo'})
 
     def test_patch(self):
         connection = _Connection({'foo': 'Foo'})

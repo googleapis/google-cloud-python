@@ -702,19 +702,13 @@ class Test_Blob(unittest2.TestCase):
     def test_cache_control_setter(self):
         BLOB_NAME = 'blob-name'
         CACHE_CONTROL = 'no-cache'
-        after = {'cacheControl': CACHE_CONTROL}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob.cache_control, None)
         blob.cache_control = CACHE_CONTROL
-        blob.patch()
         self.assertEqual(blob.cache_control, CACHE_CONTROL)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
-        self.assertEqual(kw[0]['data'], {'cacheControl': CACHE_CONTROL})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(connection._requested), 0)
 
     def test_component_count(self):
         BUCKET = object()
@@ -748,20 +742,13 @@ class Test_Blob(unittest2.TestCase):
     def test_content_disposition_setter(self):
         BLOB_NAME = 'blob-name'
         CONTENT_DISPOSITION = 'Attachment; filename=example.jpg'
-        after = {'contentDisposition': CONTENT_DISPOSITION}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob.content_disposition, None)
         blob.content_disposition = CONTENT_DISPOSITION
-        blob.patch()
         self.assertEqual(blob.content_disposition, CONTENT_DISPOSITION)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
-        self.assertEqual(kw[0]['data'],
-                         {'contentDisposition': CONTENT_DISPOSITION})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(connection._requested), 0)
 
     def test_content_encoding_getter(self):
         BLOB_NAME = 'blob-name'
@@ -775,20 +762,13 @@ class Test_Blob(unittest2.TestCase):
     def test_content_encoding_setter(self):
         BLOB_NAME = 'blob-name'
         CONTENT_ENCODING = 'gzip'
-        after = {'contentEncoding': CONTENT_ENCODING}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob.content_encoding, None)
         blob.content_encoding = CONTENT_ENCODING
-        blob.patch()
         self.assertEqual(blob.content_encoding, CONTENT_ENCODING)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
-        self.assertEqual(kw[0]['data'],
-                         {'contentEncoding': CONTENT_ENCODING})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(connection._requested), 0)
 
     def test_content_language_getter(self):
         BLOB_NAME = 'blob-name'
@@ -802,20 +782,13 @@ class Test_Blob(unittest2.TestCase):
     def test_content_language_setter(self):
         BLOB_NAME = 'blob-name'
         CONTENT_LANGUAGE = 'pt-BR'
-        after = {'contentLanguage': CONTENT_LANGUAGE}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob.content_language, None)
         blob.content_language = CONTENT_LANGUAGE
-        blob.patch()
         self.assertEqual(blob.content_language, CONTENT_LANGUAGE)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
-        self.assertEqual(kw[0]['data'],
-                         {'contentLanguage': CONTENT_LANGUAGE})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(connection._requested), 0)
 
     def test_content_type_getter(self):
         BLOB_NAME = 'blob-name'
@@ -829,20 +802,13 @@ class Test_Blob(unittest2.TestCase):
     def test_content_type_setter(self):
         BLOB_NAME = 'blob-name'
         CONTENT_TYPE = 'image/jpeg'
-        after = {'contentType': CONTENT_TYPE}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob.content_type, None)
         blob.content_type = CONTENT_TYPE
-        blob.patch()
         self.assertEqual(blob.content_type, CONTENT_TYPE)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
-        self.assertEqual(kw[0]['data'],
-                         {'contentType': CONTENT_TYPE})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(connection._requested), 0)
 
     def test_crc32c_getter(self):
         BLOB_NAME = 'blob-name'
@@ -856,20 +822,13 @@ class Test_Blob(unittest2.TestCase):
     def test_crc32c_setter(self):
         BLOB_NAME = 'blob-name'
         CRC32C = 'DEADBEEF'
-        after = {'crc32c': CRC32C}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob.crc32c, None)
         blob.crc32c = CRC32C
-        blob.patch()
         self.assertEqual(blob.crc32c, CRC32C)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
-        self.assertEqual(kw[0]['data'],
-                         {'crc32c': CRC32C})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(connection._requested), 0)
 
     def test_etag(self):
         BLOB_NAME = 'blob-name'
@@ -920,20 +879,13 @@ class Test_Blob(unittest2.TestCase):
     def test_md5_hash_setter(self):
         BLOB_NAME = 'blob-name'
         MD5_HASH = 'DEADBEEF'
-        after = {'md5Hash': MD5_HASH}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob.md5_hash, None)
         blob.md5_hash = MD5_HASH
-        blob.patch()
         self.assertEqual(blob.md5_hash, MD5_HASH)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
-        self.assertEqual(kw[0]['data'],
-                         {'md5Hash': MD5_HASH})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(connection._requested), 0)
 
     def test_media_link(self):
         BLOB_NAME = 'blob-name'
@@ -956,20 +908,13 @@ class Test_Blob(unittest2.TestCase):
     def test_metadata_setter(self):
         BLOB_NAME = 'blob-name'
         METADATA = {'foo': 'Foo'}
-        after = {'metadata': METADATA}
-        connection = _Connection(after)
+        connection = _Connection()
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        self.assertEqual(blob.metadata, None)
         blob.metadata = METADATA
-        blob.patch()
         self.assertEqual(blob.metadata, METADATA)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
-        self.assertEqual(kw[0]['data'],
-                         {'metadata': METADATA})
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        self.assertEqual(len(connection._requested), 0)
 
     def test_metageneration(self):
         BUCKET = object()
