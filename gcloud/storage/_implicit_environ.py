@@ -19,6 +19,16 @@ from the enviroment.
 """
 
 
+from gcloud._helpers import _lazy_property_deco
+from gcloud.connection import get_scoped_connection
+from gcloud.storage.connection import Connection
+
+
+SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
+         'https://www.googleapis.com/auth/devstorage.read_only',
+         'https://www.googleapis.com/auth/devstorage.read_write')
+
+
 class _DefaultsContainer(object):
     """Container for defaults.
 
@@ -29,9 +39,16 @@ class _DefaultsContainer(object):
     :param connection: Persistent implied connection from environment.
     """
 
-    def __init__(self, bucket=None, connection=None):
+    @_lazy_property_deco
+    @staticmethod
+    def connection():
+        """Return the implicit default connection.."""
+        return get_connection()
+
+    def __init__(self, bucket=None, connection=None, implicit=False):
         self.bucket = bucket
-        self.connection = connection
+        if connection is not None or not implicit:
+            self.connection = connection
 
 
 def get_default_bucket():
@@ -52,4 +69,31 @@ def get_default_connection():
     return _DEFAULTS.connection
 
 
-_DEFAULTS = _DefaultsContainer()
+def get_connection():
+    """Shortcut method to establish a connection to Cloud Storage.
+
+    Use this if you are going to access several buckets with the same
+    set of credentials:
+
+    >>> from gcloud import storage
+    >>> connection = storage.get_connection()
+    >>> bucket1 = storage.get_bucket('bucket1', connection=connection)
+    >>> bucket2 = storage.get_bucket('bucket2', connection=connection)
+
+    :rtype: :class:`gcloud.storage.connection.Connection`
+    :returns: A connection defined with the proper credentials.
+    """
+    return get_scoped_connection(Connection, SCOPE)
+
+
+def set_default_connection(connection=None):
+    """Set default connection either explicitly or implicitly as fall-back.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: A connection provided to be the default.
+    """
+    connection = connection or get_connection()
+    _DEFAULTS.connection = connection
+
+
+_DEFAULTS = _DefaultsContainer(implicit=True)

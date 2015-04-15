@@ -17,7 +17,6 @@
 You'll typically use these to get started with the API:
 
 >>> from gcloud import storage
->>> storage.set_defaults()
 >>> bucket = storage.get_bucket('bucket-id-here')
 >>> # Then do other things...
 >>> blob = bucket.get_blob('/remote/path/to/file.txt')
@@ -43,10 +42,12 @@ import os
 from gcloud import credentials
 from gcloud._helpers import get_default_project
 from gcloud._helpers import set_default_project
-from gcloud.connection import get_scoped_connection
 from gcloud.storage import _implicit_environ
+from gcloud.storage._implicit_environ import SCOPE
+from gcloud.storage._implicit_environ import get_connection
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
+from gcloud.storage._implicit_environ import set_default_connection
 from gcloud.storage.api import create_bucket
 from gcloud.storage.api import get_bucket
 from gcloud.storage.api import list_buckets
@@ -56,10 +57,6 @@ from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.connection import Connection
 
-
-SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
-         'https://www.googleapis.com/auth/devstorage.read_only',
-         'https://www.googleapis.com/auth/devstorage.read_write')
 
 _BUCKET_ENV_VAR_NAME = 'GCLOUD_BUCKET_NAME'
 
@@ -90,16 +87,6 @@ def set_default_bucket(bucket=None):
         _implicit_environ._DEFAULTS.bucket = bucket
 
 
-def set_default_connection(connection=None):
-    """Set default connection either explicitly or implicitly as fall-back.
-
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: A connection provided to be the default.
-    """
-    connection = connection or get_connection()
-    _implicit_environ._DEFAULTS.connection = connection
-
-
 def set_defaults(bucket=None, project=None, connection=None):
     """Set defaults either explicitly or implicitly as fall-back.
 
@@ -119,20 +106,3 @@ def set_defaults(bucket=None, project=None, connection=None):
     # NOTE: `set_default_bucket` is called after `set_default_connection`
     #       since `set_default_bucket` falls back to implicit connection.
     set_default_bucket(bucket=bucket)
-
-
-def get_connection():
-    """Shortcut method to establish a connection to Cloud Storage.
-
-    Use this if you are going to access several buckets with the same
-    set of credentials:
-
-    >>> from gcloud import storage
-    >>> connection = storage.get_connection()
-    >>> bucket1 = storage.get_bucket('bucket1', connection=connection)
-    >>> bucket2 = storage.get_bucket('bucket2', connection=connection)
-
-    :rtype: :class:`gcloud.storage.connection.Connection`
-    :returns: A connection defined with the proper credentials.
-    """
-    return get_scoped_connection(Connection, SCOPE)

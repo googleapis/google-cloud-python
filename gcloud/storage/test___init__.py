@@ -15,27 +15,6 @@
 import unittest2
 
 
-class Test_get_connection(unittest2.TestCase):
-
-    def _callFUT(self, *args, **kw):
-        from gcloud.storage import get_connection
-        return get_connection(*args, **kw)
-
-    def test_it(self):
-        from gcloud import credentials
-        from gcloud.storage import SCOPE
-        from gcloud.storage.connection import Connection
-        from gcloud.test_credentials import _Client
-        from gcloud._testing import _Monkey
-        client = _Client()
-        with _Monkey(credentials, client=client):
-            found = self._callFUT()
-        self.assertTrue(isinstance(found, Connection))
-        self.assertTrue(found._credentials is client._signed)
-        self.assertEqual(found._credentials._scopes, SCOPE)
-        self.assertTrue(client._get_app_default_called)
-
-
 class Test_set_default_bucket(unittest2.TestCase):
 
     def setUp(self):
@@ -135,52 +114,6 @@ class Test_set_default_bucket(unittest2.TestCase):
                 default_bucket = _implicit_environ.get_default_bucket()
                 self.assertEqual(default_bucket.name, IMPLICIT_BUCKET_NAME)
                 self.assertEqual(default_bucket.connection, CONNECTION)
-
-
-class Test_set_default_connection(unittest2.TestCase):
-
-    def setUp(self):
-        from gcloud.storage._testing import _setup_defaults
-        _setup_defaults(self)
-
-    def tearDown(self):
-        from gcloud.storage._testing import _tear_down_defaults
-        _tear_down_defaults(self)
-
-    def _callFUT(self, connection=None):
-        from gcloud.storage import set_default_connection
-        return set_default_connection(connection=connection)
-
-    def test_set_explicit(self):
-        from gcloud.storage import _implicit_environ
-
-        self.assertEqual(_implicit_environ.get_default_connection(), None)
-        fake_cnxn = object()
-        self._callFUT(connection=fake_cnxn)
-        self.assertEqual(_implicit_environ.get_default_connection(), fake_cnxn)
-
-    def test_set_implicit(self):
-        from gcloud._testing import _Monkey
-        from gcloud import storage
-        from gcloud.storage import _implicit_environ
-
-        self.assertEqual(_implicit_environ.get_default_connection(), None)
-
-        fake_cnxn = object()
-        _called_args = []
-        _called_kwargs = []
-
-        def mock_get_connection(*args, **kwargs):
-            _called_args.append(args)
-            _called_kwargs.append(kwargs)
-            return fake_cnxn
-
-        with _Monkey(storage, get_connection=mock_get_connection):
-            self._callFUT()
-
-        self.assertEqual(_implicit_environ.get_default_connection(), fake_cnxn)
-        self.assertEqual(_called_args, [()])
-        self.assertEqual(_called_kwargs, [{}])
 
 
 class Test_set_defaults(unittest2.TestCase):

@@ -28,7 +28,6 @@ HTTP = httplib2.Http()
 SHARED_BUCKETS = {}
 
 _helpers._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
-storage.set_defaults()
 
 
 def setUpModule():
