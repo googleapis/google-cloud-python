@@ -209,18 +209,24 @@ class Blob(_PropertyMixin):
             api_access_endpoint=_API_ACCESS_ENDPOINT,
             expiration=expiration, method=method)
 
-    def exists(self):
+    def exists(self, connection=None):
         """Determines whether or not this blob exists.
+
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
 
         :rtype: boolean
         :returns: True if the blob exists in Cloud Storage.
         """
+        connection = _require_connection(connection)
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
             query_params = {'fields': 'name'}
-            self.connection.api_request(method='GET', path=self.path,
-                                        query_params=query_params)
+            connection.api_request(method='GET', path=self.path,
+                                   query_params=query_params)
             return True
         except NotFound:
             return False

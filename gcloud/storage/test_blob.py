@@ -266,19 +266,19 @@ class Test_Blob(unittest2.TestCase):
         NONESUCH = 'nonesuch'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(NONESUCH, bucket=bucket)
-        self.assertFalse(blob.exists())
+        self.assertFalse(blob.exists(connection=connection))
 
     def test_exists_hit(self):
         from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
         found_response = {'status': OK}
         connection = _Connection(found_response)
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        self.assertTrue(blob.exists())
+        self.assertTrue(blob.exists(connection=connection))
 
     def test_rename(self):
         BLOB_NAME = 'blob-name'
@@ -299,11 +299,11 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         blob.delete()
-        self.assertFalse(blob.exists())
+        self.assertFalse(blob.exists(connection=connection))
 
     def _download_to_file_helper(self, chunk_size=None):
         from six.moves.http_client import OK
