@@ -790,8 +790,9 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_time_created(self):
         import datetime
+        from gcloud._helpers import _RFC3339_MICROS
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37)
-        TIME_CREATED = TIMESTAMP.isoformat() + '.000Z'
+        TIME_CREATED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'timeCreated': TIME_CREATED}
         bucket = self._makeOne(properties=properties)
         self.assertEqual(bucket.time_created, TIMESTAMP)

@@ -35,10 +35,10 @@ from gcloud.storage._helpers import _require_connection
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage import _implicit_environ
 from gcloud.storage.acl import ObjectACL
+from gcloud._helpers import _RFC3339_MICROS
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
-_GOOGLE_TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 
 class Blob(_PropertyMixin):
@@ -749,7 +749,7 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get('timeDeleted')
         if value is not None:
-            return datetime.datetime.strptime(value, _GOOGLE_TIMESTAMP_FORMAT)
+            return datetime.datetime.strptime(value, _RFC3339_MICROS)
 
     @property
     def updated(self):
@@ -763,7 +763,7 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get('updated')
         if value is not None:
-            return datetime.datetime.strptime(value, _GOOGLE_TIMESTAMP_FORMAT)
+            return datetime.datetime.strptime(value, _RFC3339_MICROS)
 
 
 class _UploadConfig(object):

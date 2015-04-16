@@ -46,7 +46,7 @@ from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
 from gcloud.storage.blob import Blob
-from gcloud.storage.blob import _GOOGLE_TIMESTAMP_FORMAT
+from gcloud._helpers import _RFC3339_MICROS
 
 
 class _BlobIterator(Iterator):
@@ -693,7 +693,7 @@ class Bucket(_PropertyMixin):
         """
         value = self._properties.get('timeCreated')
         if value is not None:
-            return datetime.datetime.strptime(value, _GOOGLE_TIMESTAMP_FORMAT)
+            return datetime.datetime.strptime(value, _RFC3339_MICROS)
 
     @property
     def versioning_enabled(self):
