@@ -36,6 +36,8 @@ You can also use the bucket as an iterator::
 import datetime
 import copy
 import os
+
+import pytz
 import six
 
 from gcloud._helpers import get_default_project
@@ -46,7 +48,7 @@ from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
 from gcloud.storage.blob import Blob
-from gcloud.storage.blob import _GOOGLE_TIMESTAMP_FORMAT
+from gcloud._helpers import _RFC3339_MICROS
 
 
 class _BlobIterator(Iterator):
@@ -693,7 +695,8 @@ class Bucket(_PropertyMixin):
         """
         value = self._properties.get('timeCreated')
         if value is not None:
-            return datetime.datetime.strptime(value, _GOOGLE_TIMESTAMP_FORMAT)
+            naive = datetime.datetime.strptime(value, _RFC3339_MICROS)
+            return naive.replace(tzinfo=pytz.utc)
 
     @property
     def versioning_enabled(self):

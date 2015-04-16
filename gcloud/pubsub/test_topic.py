@@ -155,6 +155,7 @@ class TestTopic(unittest2.TestCase):
         import base64
         import datetime
         from gcloud.pubsub import topic as MUT
+        from gcloud._helpers import _RFC3339_MICROS
         from gcloud._testing import _Monkey
         NOW = datetime.datetime.utcnow()
 
@@ -167,7 +168,7 @@ class TestTopic(unittest2.TestCase):
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64,
-                   'attributes': {'timestamp': '%sZ' % NOW.isoformat()}}
+                   'attributes': {'timestamp': NOW.strftime(_RFC3339_MICROS)}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn,
@@ -183,13 +184,6 @@ class TestTopic(unittest2.TestCase):
 
     def test_publish_single_bytes_w_add_timestamp_w_ts_in_attrs(self):
         import base64
-        import datetime
-        from gcloud.pubsub import topic as MUT
-        from gcloud._testing import _Monkey
-        NOW = datetime.datetime.utcnow()
-
-        def _utcnow():  # pragma: NO COVER
-            return NOW
 
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
@@ -203,8 +197,7 @@ class TestTopic(unittest2.TestCase):
         conn = _Connection({'messageIds': [MSGID]})
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn,
                               timestamp_messages=True)
-        with _Monkey(MUT, _NOW=_utcnow):
-            msgid = topic.publish(PAYLOAD, timestamp=OVERRIDE)
+        msgid = topic.publish(PAYLOAD, timestamp=OVERRIDE)
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]

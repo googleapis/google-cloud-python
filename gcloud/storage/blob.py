@@ -22,6 +22,7 @@ import mimetypes
 import os
 import time
 
+import pytz
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
@@ -35,10 +36,10 @@ from gcloud.storage._helpers import _require_connection
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage import _implicit_environ
 from gcloud.storage.acl import ObjectACL
+from gcloud._helpers import _RFC3339_MICROS
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
-_GOOGLE_TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 
 class Blob(_PropertyMixin):
@@ -749,7 +750,8 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get('timeDeleted')
         if value is not None:
-            return datetime.datetime.strptime(value, _GOOGLE_TIMESTAMP_FORMAT)
+            naive = datetime.datetime.strptime(value, _RFC3339_MICROS)
+            return naive.replace(tzinfo=pytz.utc)
 
     @property
     def updated(self):
@@ -763,7 +765,8 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get('updated')
         if value is not None:
-            return datetime.datetime.strptime(value, _GOOGLE_TIMESTAMP_FORMAT)
+            naive = datetime.datetime.strptime(value, _RFC3339_MICROS)
+            return naive.replace(tzinfo=pytz.utc)
 
 
 class _UploadConfig(object):
