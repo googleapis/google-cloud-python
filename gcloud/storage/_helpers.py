@@ -20,6 +20,9 @@ These are *not* part of the API.
 from Crypto.Hash import MD5
 import base64
 
+from gcloud.storage._implicit_environ import get_default_connection
+from gcloud.storage.batch import Batch
+
 
 class _PropertyMixin(object):
     """Abstract mixin for cloud storage classes with associated propertties.
@@ -99,6 +102,30 @@ class _PropertyMixin(object):
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'})
         self._set_properties(api_response)
+
+
+def _require_connection(connection=None):
+    """Infer a connection from the environment, if not passed explicitly.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: Optional.
+
+    :rtype: :class:`gcloud.storage.connection.Connection`
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
+             cannot be inferred from the environment.
+    """
+    # NOTE: We use current Batch directly since it inherits from Connection.
+    if connection is None:
+        connection = Batch.current()
+
+    if connection is None:
+        connection = get_default_connection()
+
+    if connection is None:
+        raise EnvironmentError('Connection could not be inferred.')
+
+    return connection
 
 
 def _scalar_property(fieldname):
