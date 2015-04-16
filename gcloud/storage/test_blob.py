@@ -318,7 +318,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -326,7 +326,7 @@ class Test_Blob(unittest2.TestCase):
             blob._CHUNK_SIZE_MULTIPLE = 1
             blob.chunk_size = chunk_size
         fh = BytesIO()
-        blob.download_to_file(fh)
+        blob.download_to_file(fh, connection=connection)
         self.assertEqual(fh.getvalue(), b'abcdef')
 
     def test_download_to_file_default(self):
@@ -350,7 +350,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK,
                       'updated': '2014-12-06T13:13:50.690Z'}
@@ -358,7 +358,7 @@ class Test_Blob(unittest2.TestCase):
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
         with NamedTemporaryFile() as f:
-            blob.download_to_filename(f.name)
+            blob.download_to_filename(f.name, connection=connection)
             f.flush()
             with open(f.name, 'rb') as g:
                 wrote = g.read()
@@ -379,13 +379,13 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
-        fetched = blob.download_as_string()
+        fetched = blob.download_as_string(connection=connection)
         self.assertEqual(fetched, b'abcdef')
 
     def _upload_from_file_simple_test_helper(self, properties=None,

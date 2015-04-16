@@ -263,15 +263,20 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self.name)
 
-    def download_to_file(self, file_obj):
+    def download_to_file(self, file_obj, connection=None):
         """Download the contents of this blob into a file-like object.
 
         :type file_obj: file
         :param file_obj: A file handle to which to write the blob's data.
 
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
+
         :raises: :class:`gcloud.exceptions.NotFound`
         """
-
+        connection = _require_connection(connection)
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
@@ -282,7 +287,7 @@ class Blob(_PropertyMixin):
             headers['Range'] = 'bytes=0-%d' % (self.chunk_size - 1,)
         request = http_wrapper.Request(download_url, 'GET', headers)
 
-        download.InitializeDownload(request, self.connection.http)
+        download.InitializeDownload(request, connection.http)
 
         # Should we be passing callbacks through from caller?  We can't
         # pass them as None, because apitools wants to print to the console
@@ -290,29 +295,39 @@ class Blob(_PropertyMixin):
         download.StreamInChunks(callback=lambda *args: None,
                                 finish_callback=lambda *args: None)
 
-    def download_to_filename(self, filename):
+    def download_to_filename(self, filename, connection=None):
         """Download the contents of this blob into a named file.
 
         :type filename: string
         :param filename: A filename to be passed to ``open``.
 
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
+
         :raises: :class:`gcloud.exceptions.NotFound`
         """
         with open(filename, 'wb') as file_obj:
-            self.download_to_file(file_obj)
+            self.download_to_file(file_obj, connection=connection)
 
         mtime = time.mktime(self.updated.timetuple())
         os.utime(file_obj.name, (mtime, mtime))
 
-    def download_as_string(self):
+    def download_as_string(self, connection=None):
         """Download the contents of this blob as a string.
+
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
 
         :rtype: bytes
         :returns: The data stored in this blob.
         :raises: :class:`gcloud.exceptions.NotFound`
         """
         string_buffer = BytesIO()
-        self.download_to_file(string_buffer)
+        self.download_to_file(string_buffer, connection=connection)
         return string_buffer.getvalue()
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
