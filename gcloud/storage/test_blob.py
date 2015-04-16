@@ -401,7 +401,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (response, b'{}'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
@@ -409,7 +409,8 @@ class Test_Blob(unittest2.TestCase):
             fh.write(DATA)
             fh.flush()
             blob.upload_from_file(fh, rewind=True,
-                                  content_type=content_type_arg)
+                                  content_type=content_type_arg,
+                                  connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -470,7 +471,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b''),
             (chunk2_response, b'{}'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
@@ -479,7 +480,7 @@ class Test_Blob(unittest2.TestCase):
             with NamedTemporaryFile() as fh:
                 fh.write(DATA)
                 fh.flush()
-                blob.upload_from_file(fh, rewind=True)
+                blob.upload_from_file(fh, rewind=True, connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -528,14 +529,14 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
         with NamedTemporaryFile() as fh:
             fh.write(DATA)
             fh.flush()
-            blob.upload_from_file(fh, rewind=True)
+            blob.upload_from_file(fh, rewind=True, connection=connection)
             self.assertEqual(fh.tell(), len(DATA))
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
@@ -575,7 +576,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket,
                              properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
@@ -583,7 +584,8 @@ class Test_Blob(unittest2.TestCase):
         with NamedTemporaryFile(suffix='.jpeg') as fh:
             fh.write(DATA)
             fh.flush()
-            blob.upload_from_filename(fh.name, content_type=content_type_arg)
+            blob.upload_from_filename(fh.name, content_type=content_type_arg,
+                                      connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -640,11 +642,11 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        blob.upload_from_string(DATA)
+        blob.upload_from_string(DATA, connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -679,11 +681,11 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        blob.upload_from_string(DATA)
+        blob.upload_from_string(DATA, connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')

@@ -331,7 +331,7 @@ class Blob(_PropertyMixin):
         return string_buffer.getvalue()
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
-                         content_type=None, num_retries=6):
+                         content_type=None, num_retries=6, connection=None):
         """Upload the contents of this blob from a file-like object.
 
         The content type of the upload will either be
@@ -367,7 +367,13 @@ class Blob(_PropertyMixin):
 
         :type num_retries: integer
         :param num_retries: Number of upload retries. Defaults to 6.
+
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
         """
+        connection = _require_connection(connection)
         content_type = (content_type or self._properties.get('contentType') or
                         'application/octet-stream')
 
@@ -377,11 +383,10 @@ class Blob(_PropertyMixin):
 
         # Get the basic stats about the file.
         total_bytes = size or os.fstat(file_obj.fileno()).st_size
-        conn = self.connection
         headers = {
             'Accept': 'application/json',
             'Accept-Encoding': 'gzip, deflate',
-            'User-Agent': conn.USER_AGENT,
+            'User-Agent': connection.USER_AGENT,
         }
 
         upload = transfer.Upload(file_obj, content_type, total_bytes,
@@ -393,20 +398,20 @@ class Blob(_PropertyMixin):
         upload_config = _UploadConfig()
 
         # Temporary URL, until we know simple vs. resumable.
-        base_url = conn.API_BASE_URL + '/upload'
-        upload_url = conn.build_api_url(api_base_url=base_url,
-                                        path=self.bucket.path + '/o')
+        base_url = connection.API_BASE_URL + '/upload'
+        upload_url = connection.build_api_url(api_base_url=base_url,
+                                              path=self.bucket.path + '/o')
 
         # Use apitools 'Upload' facility.
         request = http_wrapper.Request(upload_url, 'POST', headers)
 
         upload.ConfigureRequest(upload_config, request, url_builder)
         query_params = url_builder.query_params
-        base_url = conn.API_BASE_URL + '/upload'
-        request.url = conn.build_api_url(api_base_url=base_url,
-                                         path=self.bucket.path + '/o',
-                                         query_params=query_params)
-        upload.InitializeUpload(request, conn.http)
+        base_url = connection.API_BASE_URL + '/upload'
+        request.url = connection.build_api_url(api_base_url=base_url,
+                                               path=self.bucket.path + '/o',
+                                               query_params=query_params)
+        upload.InitializeUpload(request, connection.http)
 
         # Should we be passing callbacks through from caller?  We can't
         # pass them as None, because apitools wants to print to the console
@@ -416,7 +421,7 @@ class Blob(_PropertyMixin):
                 callback=lambda *args: None,
                 finish_callback=lambda *args: None)
         else:
-            http_response = http_wrapper.MakeRequest(conn.http, request,
+            http_response = http_wrapper.MakeRequest(connection.http, request,
                                                      retries=num_retries)
         response_content = http_response.content
         if not isinstance(response_content,
@@ -424,7 +429,8 @@ class Blob(_PropertyMixin):
             response_content = response_content.decode('utf-8')
         self._set_properties(json.loads(response_content))
 
-    def upload_from_filename(self, filename, content_type=None):
+    def upload_from_filename(self, filename, content_type=None,
+                             connection=None):
         """Upload this blob's contents from the content of a named file.
 
         The content type of the upload will either be
@@ -448,15 +454,22 @@ class Blob(_PropertyMixin):
 
         :type content_type: string or ``NoneType``
         :param content_type: Optional type of content being uploaded.
+
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
         """
         content_type = content_type or self._properties.get('contentType')
         if content_type is None:
             content_type, _ = mimetypes.guess_type(filename)
 
         with open(filename, 'rb') as file_obj:
-            self.upload_from_file(file_obj, content_type=content_type)
+            self.upload_from_file(file_obj, content_type=content_type,
+                                  connection=connection)
 
-    def upload_from_string(self, data, content_type='text/plain'):
+    def upload_from_string(self, data, content_type='text/plain',
+                           connection=None):
         """Upload contents of this blob from the provided string.
 
         .. note::
@@ -473,14 +486,19 @@ class Blob(_PropertyMixin):
         :type data: bytes or text
         :param data: The data to store in this blob.  If the value is
                      text, it will be encoded as UTF-8.
+
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
         """
         if isinstance(data, six.text_type):
             data = data.encode('utf-8')
         string_buffer = BytesIO()
         string_buffer.write(data)
         self.upload_from_file(file_obj=string_buffer, rewind=True,
-                              size=len(data),
-                              content_type=content_type)
+                              size=len(data), content_type=content_type,
+                              connection=connection)
 
     def make_public(self):
         """Make this blob public giving all users read access."""
