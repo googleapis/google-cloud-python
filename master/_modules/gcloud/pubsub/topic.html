@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.topic &mdash; gcloud 2c1e1ac documentation</title>
+    <title>gcloud.pubsub.topic &mdash; gcloud 286207b documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2c1e1ac',
+        VERSION:     '286207b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 2c1e1ac documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 286207b documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/topic%0ARelease%3A%202c1e1ac" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/topic%0ARelease%3A%20286207b" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (2c1e1ac)
+              Version History (286207b)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -100,6 +100,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">get_default_project</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_RFC3339_MICROS</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
 
@@ -205,7 +206,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :returns: message ID assigned by the server to the published message</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_messages</span> <span class="ow">and</span> <span class="s">&#39;timestamp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
-            <span class="n">attrs</span><span class="p">[</span><span class="s">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">Z&#39;</span> <span class="o">%</span> <span class="n">_NOW</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_NOW</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">_RFC3339_MICROS</span><span class="p">)</span>
         <span class="n">message_b</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">)</span>
         <span class="n">message_data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="n">message_b</span><span class="p">,</span> <span class="s">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">}</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">message_data</span><span class="p">]}</span>

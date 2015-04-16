@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 2c1e1ac documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud 286207b documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2c1e1ac',
+        VERSION:     '286207b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 2c1e1ac documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 286207b documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%202c1e1ac" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20286207b" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (2c1e1ac)
+              Version History (286207b)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -104,6 +104,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
+<span class="kn">import</span> <span class="nn">pytz</span>
 <span class="kn">import</span> <span class="nn">six</span>
 <span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>  <span class="c"># pylint: disable=F0401</span>
 
@@ -117,10 +118,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">ObjectACL</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_RFC3339_MICROS</span>
 
 
 <span class="n">_API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://storage.googleapis.com&#39;</span>
-<span class="n">_GOOGLE_TIMESTAMP_FORMAT</span> <span class="o">=</span> <span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">T%H:%M:%S.</span><span class="si">%f</span><span class="s">Z&#39;</span>
 
 
 <div class="viewcode-block" id="Blob"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob">[docs]</a><span class="k">class</span> <span class="nc">Blob</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
@@ -831,7 +832,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;timeDeleted&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_GOOGLE_TIMESTAMP_FORMAT</span><span class="p">)</span>
+            <span class="n">naive</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_MICROS</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">naive</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">updated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -845,7 +847,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;updated&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_GOOGLE_TIMESTAMP_FORMAT</span><span class="p">)</span>
+            <span class="n">naive</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_RFC3339_MICROS</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">naive</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">pytz</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
 
 </div>
 <span class="k">class</span> <span class="nc">_UploadConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
