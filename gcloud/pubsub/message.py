@@ -15,6 +15,11 @@
 """Define API Topics."""
 
 import base64
+import datetime
+
+import pytz
+
+_RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 
 class Message(object):
@@ -43,6 +48,24 @@ class Message(object):
         if self._attributes is None:
             self._attributes = {}
         return self._attributes
+
+    @property
+    def timestamp(self):
+        """Return sortable timestamp from attributes, if passed.
+
+        Allows sorting messages in publication order (assuming consistent
+        clocks across all publishers).
+
+        :rtype: datetime
+        :returns: timestamp (in UTC timezone) parsed from RFC 3339 timestamp
+        :raises: ValueError if timestamp not in ``attributes``, or if it does
+                 not match the RFC 3339 format.
+        """
+        stamp = self.attributes.get('timestamp')
+        if stamp is None:
+            raise ValueError('No timestamp')
+        return datetime.datetime.strptime(stamp, _RFC3339_MICROS).replace(
+            tzinfo=pytz.UTC)
 
     @classmethod
     def from_api_repr(cls, api_repr):
