@@ -155,24 +155,42 @@ class Test_Blob(unittest2.TestCase):
             blob.public_url,
             'http://commondatastorage.googleapis.com/name/parent%2Fchild')
 
-    def test_generate_signed_url_w_default_method(self):
+    def _basic_generate_signed_url_helper(self, credentials=None):
         from gcloud._testing import _Monkey
         from gcloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
 
+        _called_require = []
+
+        def mock_require(connection):
+            _called_require.append(connection)
+            return connection
+
         SIGNER = _Signer()
-        with _Monkey(MUT, generate_signed_url=SIGNER):
-            self.assertEqual(blob.generate_signed_url(EXPIRATION), URI)
+        with _Monkey(MUT, generate_signed_url=SIGNER,
+                     _require_connection=mock_require):
+            signed_uri = blob.generate_signed_url(EXPIRATION,
+                                                  connection=connection,
+                                                  credentials=credentials)
+            self.assertEqual(signed_uri, URI)
+
+        if credentials is None:
+            self.assertEqual(_called_require, [connection])
+        else:
+            self.assertEqual(_called_require, [])
 
         PATH = '/name/%s' % (BLOB_NAME,)
-        EXPECTED_ARGS = (_Connection.credentials,)
+        if credentials is None:
+            EXPECTED_ARGS = (_Connection.credentials,)
+        else:
+            EXPECTED_ARGS = (credentials,)
         EXPECTED_KWARGS = {
             'api_access_endpoint': 'https://storage.googleapis.com',
             'expiration': EXPIRATION,
@@ -181,6 +199,13 @@ class Test_Blob(unittest2.TestCase):
         }
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
+    def test_generate_signed_url_w_default_method(self):
+        self._basic_generate_signed_url_helper()
+
+    def test_generate_signed_url_w_credentials(self):
+        credentials = object()
+        self._basic_generate_signed_url_helper(credentials=credentials)
+
     def test_generate_signed_url_w_slash_in_name(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import blob as MUT
@@ -188,14 +213,16 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
-            self.assertEqual(blob.generate_signed_url(EXPIRATION), URI)
+            signed_url = blob.generate_signed_url(EXPIRATION,
+                                                  connection=connection)
+            self.assertEqual(signed_url, URI)
 
         EXPECTED_ARGS = (_Connection.credentials,)
         EXPECTED_KWARGS = {
@@ -213,15 +240,16 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
-            self.assertEqual(
-                blob.generate_signed_url(EXPIRATION, method='POST'), URI)
+            signed_uri = blob.generate_signed_url(EXPIRATION, method='POST',
+                                                  connection=connection)
+            self.assertEqual(signed_uri, URI)
 
         PATH = '/name/%s' % (BLOB_NAME,)
         EXPECTED_ARGS = (_Connection.credentials,)
@@ -238,19 +266,19 @@ class Test_Blob(unittest2.TestCase):
         NONESUCH = 'nonesuch'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(NONESUCH, bucket=bucket)
-        self.assertFalse(blob.exists())
+        self.assertFalse(blob.exists(connection=connection))
 
     def test_exists_hit(self):
         from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
         found_response = {'status': OK}
         connection = _Connection(found_response)
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        self.assertTrue(blob.exists())
+        self.assertTrue(blob.exists(connection=connection))
 
     def test_rename(self):
         BLOB_NAME = 'blob-name'
@@ -271,11 +299,11 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         blob.delete()
-        self.assertFalse(blob.exists())
+        self.assertFalse(blob.exists(connection=connection))
 
     def _download_to_file_helper(self, chunk_size=None):
         from six.moves.http_client import OK
@@ -290,7 +318,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -298,7 +326,7 @@ class Test_Blob(unittest2.TestCase):
             blob._CHUNK_SIZE_MULTIPLE = 1
             blob.chunk_size = chunk_size
         fh = BytesIO()
-        blob.download_to_file(fh)
+        blob.download_to_file(fh, connection=connection)
         self.assertEqual(fh.getvalue(), b'abcdef')
 
     def test_download_to_file_default(self):
@@ -322,7 +350,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK,
                       'updated': '2014-12-06T13:13:50.690Z'}
@@ -330,7 +358,7 @@ class Test_Blob(unittest2.TestCase):
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
         with NamedTemporaryFile() as f:
-            blob.download_to_filename(f.name)
+            blob.download_to_filename(f.name, connection=connection)
             f.flush()
             with open(f.name, 'rb') as g:
                 wrote = g.read()
@@ -351,13 +379,13 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
-        fetched = blob.download_as_string()
+        fetched = blob.download_as_string(connection=connection)
         self.assertEqual(fetched, b'abcdef')
 
     def _upload_from_file_simple_test_helper(self, properties=None,
@@ -373,7 +401,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (response, b'{}'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
@@ -381,7 +409,8 @@ class Test_Blob(unittest2.TestCase):
             fh.write(DATA)
             fh.flush()
             blob.upload_from_file(fh, rewind=True,
-                                  content_type=content_type_arg)
+                                  content_type=content_type_arg,
+                                  connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -442,7 +471,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b''),
             (chunk2_response, b'{}'),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
@@ -451,7 +480,7 @@ class Test_Blob(unittest2.TestCase):
             with NamedTemporaryFile() as fh:
                 fh.write(DATA)
                 fh.flush()
-                blob.upload_from_file(fh, rewind=True)
+                blob.upload_from_file(fh, rewind=True, connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -500,14 +529,14 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
         with NamedTemporaryFile() as fh:
             fh.write(DATA)
             fh.flush()
-            blob.upload_from_file(fh, rewind=True)
+            blob.upload_from_file(fh, rewind=True, connection=connection)
             self.assertEqual(fh.tell(), len(DATA))
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
@@ -547,7 +576,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket,
                              properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
@@ -555,7 +584,8 @@ class Test_Blob(unittest2.TestCase):
         with NamedTemporaryFile(suffix='.jpeg') as fh:
             fh.write(DATA)
             fh.flush()
-            blob.upload_from_filename(fh.name, content_type=content_type_arg)
+            blob.upload_from_filename(fh.name, content_type=content_type_arg,
+                                      connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -612,11 +642,11 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        blob.upload_from_string(DATA)
+        blob.upload_from_string(DATA, connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -651,11 +681,11 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        blob.upload_from_string(DATA)
+        blob.upload_from_string(DATA, connection=connection)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')

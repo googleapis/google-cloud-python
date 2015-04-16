@@ -118,21 +118,25 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
     def test___contains___miss(self):
+        from gcloud.storage._testing import _monkey_defaults
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
-        self.assertFalse(NONESUCH in bucket)
+        bucket = self._makeOne(NAME, None)
+        with _monkey_defaults(connection=connection):
+            self.assertFalse(NONESUCH in bucket)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
 
     def test___contains___hit(self):
+        from gcloud.storage._testing import _monkey_defaults
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({'name': BLOB_NAME})
-        bucket = self._makeOne(NAME, connection)
-        self.assertTrue(BLOB_NAME in bucket)
+        bucket = self._makeOne(NAME, None)
+        with _monkey_defaults(connection=connection):
+            self.assertTrue(BLOB_NAME in bucket)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
