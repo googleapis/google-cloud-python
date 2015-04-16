@@ -18,6 +18,7 @@ import base64
 import datetime
 
 from gcloud._helpers import get_default_project
+from gcloud._helpers import _RFC3339_MICROS
 from gcloud.exceptions import NotFound
 from gcloud.pubsub._implicit_environ import get_default_connection
 
@@ -123,7 +124,7 @@ class Topic(object):
         :returns: message ID assigned by the server to the published message
         """
         if self.timestamp_messages and 'timestamp' not in attrs:
-            attrs['timestamp'] = '%sZ' % _NOW().isoformat()
+            attrs['timestamp'] = _NOW().strftime(_RFC3339_MICROS)
         message_b = base64.b64encode(message).decode('ascii')
         message_data = {'data': message_b, 'attributes': attrs}
         data = {'messages': [message_data]}

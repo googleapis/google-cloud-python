@@ -31,6 +31,8 @@ try:
 except ImportError:
     app_identity = None
 
+_RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
+
 
 class _LocalStack(Local):
     """Manage a thread-local LIFO stack of resources.

@@ -92,7 +92,7 @@ class TestMessage(unittest2.TestCase):
     def test_timestamp_w_timestamp_in_attributes(self):
         from datetime import datetime
         from pytz import utc
-        from gcloud.pubsub.message import _RFC3339_MICROS
+        from gcloud._helpers import _RFC3339_MICROS
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
         TIMESTAMP = '2015-04-10T18:42:27.131956Z'

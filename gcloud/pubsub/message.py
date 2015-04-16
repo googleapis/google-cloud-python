@@ -19,7 +19,7 @@ import datetime
 
 import pytz
 
-_RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
+from gcloud._helpers import _RFC3339_MICROS
 
 
 class Message(object):
