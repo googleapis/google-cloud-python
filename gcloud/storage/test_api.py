@@ -115,19 +115,21 @@ class Test_list_buckets(unittest2.TestCase):
         self.assertEqual(parse_qs(uri_parts.query), EXPECTED_QUERY)
 
     def _list_buckets_non_empty_helper(self, project, use_default=False):
+        from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlencode
+        from six.moves.urllib.parse import urlparse
         from gcloud._testing import _monkey_defaults as _base_monkey_defaults
         from gcloud.storage._testing import _monkey_defaults
         from gcloud.storage.connection import Connection
         BUCKET_NAME = 'bucket-name'
         conn = Connection()
         query_params = urlencode({'project': project, 'projection': 'noAcl'})
-        URI = '/'.join([
+        BASE_URI = '/'.join([
             conn.API_BASE_URL,
             'storage',
             conn.API_VERSION,
-            'b?%s' % (query_params,),
         ])
+        URI = '/'.join([BASE_URI, 'b?%s' % (query_params,)])
         http = conn._http = Http(
             {'status': '200', 'content-type': 'application/json'},
             '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME)
@@ -144,7 +146,9 @@ class Test_list_buckets(unittest2.TestCase):
         self.assertEqual(len(buckets), 1)
         self.assertEqual(buckets[0].name, BUCKET_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
-        self.assertEqual(http._called_with['uri'], URI)
+        self.assertTrue(http._called_with['uri'].startswith(BASE_URI))
+        self.assertEqual(parse_qs(urlparse(http._called_with['uri']).query),
+                         parse_qs(urlparse(URI).query))
 
     def test_non_empty(self):
         self._list_buckets_non_empty_helper('PROJECT', use_default=False)
