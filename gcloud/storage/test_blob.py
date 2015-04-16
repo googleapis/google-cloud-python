@@ -155,24 +155,42 @@ class Test_Blob(unittest2.TestCase):
             blob.public_url,
             'http://commondatastorage.googleapis.com/name/parent%2Fchild')
 
-    def test_generate_signed_url_w_default_method(self):
+    def _basic_generate_signed_url_helper(self, credentials=None):
         from gcloud._testing import _Monkey
         from gcloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
 
+        _called_require = []
+
+        def mock_require(connection):
+            _called_require.append(connection)
+            return connection
+
         SIGNER = _Signer()
-        with _Monkey(MUT, generate_signed_url=SIGNER):
-            self.assertEqual(blob.generate_signed_url(EXPIRATION), URI)
+        with _Monkey(MUT, generate_signed_url=SIGNER,
+                     _require_connection=mock_require):
+            signed_uri = blob.generate_signed_url(EXPIRATION,
+                                                  connection=connection,
+                                                  credentials=credentials)
+            self.assertEqual(signed_uri, URI)
+
+        if credentials is None:
+            self.assertEqual(_called_require, [connection])
+        else:
+            self.assertEqual(_called_require, [])
 
         PATH = '/name/%s' % (BLOB_NAME,)
-        EXPECTED_ARGS = (_Connection.credentials,)
+        if credentials is None:
+            EXPECTED_ARGS = (_Connection.credentials,)
+        else:
+            EXPECTED_ARGS = (credentials,)
         EXPECTED_KWARGS = {
             'api_access_endpoint': 'https://storage.googleapis.com',
             'expiration': EXPIRATION,
@@ -181,6 +199,13 @@ class Test_Blob(unittest2.TestCase):
         }
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
+    def test_generate_signed_url_w_default_method(self):
+        self._basic_generate_signed_url_helper()
+
+    def test_generate_signed_url_w_credentials(self):
+        credentials = object()
+        self._basic_generate_signed_url_helper(credentials=credentials)
+
     def test_generate_signed_url_w_slash_in_name(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import blob as MUT
@@ -188,14 +213,16 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
-            self.assertEqual(blob.generate_signed_url(EXPIRATION), URI)
+            signed_url = blob.generate_signed_url(EXPIRATION,
+                                                  connection=connection)
+            self.assertEqual(signed_url, URI)
 
         EXPECTED_ARGS = (_Connection.credentials,)
         EXPECTED_KWARGS = {
@@ -213,15 +240,16 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket(None)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
 
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
-            self.assertEqual(
-                blob.generate_signed_url(EXPIRATION, method='POST'), URI)
+            signed_uri = blob.generate_signed_url(EXPIRATION, method='POST',
+                                                  connection=connection)
+            self.assertEqual(signed_uri, URI)
 
         PATH = '/name/%s' % (BLOB_NAME,)
         EXPECTED_ARGS = (_Connection.credentials,)

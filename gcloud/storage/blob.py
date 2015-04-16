@@ -31,6 +31,7 @@ from apitools.base.py import transfer
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
+from gcloud.storage._helpers import _require_connection
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage import _implicit_environ
 from gcloud.storage.acl import ObjectACL
@@ -164,7 +165,8 @@ class Blob(_PropertyMixin):
             bucket_name=self.bucket.name,
             quoted_name=quote(self.name, safe=''))
 
-    def generate_signed_url(self, expiration, method='GET'):
+    def generate_signed_url(self, expiration, method='GET',
+                            connection=None, credentials=None):
         """Generates a signed URL for this blob.
 
         If you have a blob that you want to allow access to for a set
@@ -181,6 +183,15 @@ class Blob(_PropertyMixin):
         :type method: string
         :param method: The HTTP verb that will be used when requesting the URL.
 
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
+
+        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+                           :class:`NoneType`
+        :param credentials: The OAuth2 credentials to use to sign the URL.
+
         :rtype: string
         :returns: A signed URL you can use to access the resource
                   until expiration.
@@ -189,8 +200,12 @@ class Blob(_PropertyMixin):
             bucket_name=self.bucket.name,
             quoted_name=quote(self.name, safe=''))
 
+        if credentials is None:
+            connection = _require_connection(connection)
+            credentials = connection.credentials
+
         return generate_signed_url(
-            self.connection.credentials, resource=resource,
+            credentials, resource=resource,
             api_access_endpoint=_API_ACCESS_ENDPOINT,
             expiration=expiration, method=method)
 
