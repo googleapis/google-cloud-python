@@ -22,6 +22,7 @@ import mimetypes
 import os
 import time
 
+import pytz
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
@@ -749,7 +750,8 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get('timeDeleted')
         if value is not None:
-            return datetime.datetime.strptime(value, _RFC3339_MICROS)
+            naive = datetime.datetime.strptime(value, _RFC3339_MICROS)
+            return naive.replace(tzinfo=pytz.utc)
 
     @property
     def updated(self):
@@ -763,7 +765,8 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get('updated')
         if value is not None:
-            return datetime.datetime.strptime(value, _RFC3339_MICROS)
+            naive = datetime.datetime.strptime(value, _RFC3339_MICROS)
+            return naive.replace(tzinfo=pytz.utc)
 
 
 class _UploadConfig(object):

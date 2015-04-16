@@ -1016,11 +1016,12 @@ class Test_Blob(unittest2.TestCase):
 
     def test_time_deleted(self):
         import datetime
+        from pytz import utc
         from gcloud._helpers import _RFC3339_MICROS
         BLOB_NAME = 'blob-name'
         connection = _Connection()
         bucket = _Bucket(connection)
-        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37)
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=utc)
         TIME_DELETED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'timeDeleted': TIME_DELETED}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -1033,11 +1034,12 @@ class Test_Blob(unittest2.TestCase):
 
     def test_updated(self):
         import datetime
+        from pytz import utc
         from gcloud._helpers import _RFC3339_MICROS
         BLOB_NAME = 'blob-name'
         connection = _Connection()
         bucket = _Bucket(connection)
-        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37)
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=utc)
         UPDATED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'updated': UPDATED}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
