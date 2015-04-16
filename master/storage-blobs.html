@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Blobs / Objects &mdash; gcloud 40d84e9 documentation</title>
+    <title>Blobs / Objects &mdash; gcloud 06e26ad documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '40d84e9',
+        VERSION:     '06e26ad',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 40d84e9 documentation" href="index.html" />
+    <link rel="top" title="gcloud 06e26ad documentation" href="index.html" />
     <link rel="next" title="Buckets" href="storage-buckets.html" />
     <link rel="prev" title="Storage" href="storage-api.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-blobs%0ARelease%3A%2040d84e9" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-blobs%0ARelease%3A%2006e26ad" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (40d84e9)
+              Version History (06e26ad)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -299,17 +299,21 @@ will not be set on objects not created via <code class="docutils literal"><span 
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.download_as_string">
-<code class="descname">download_as_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.download_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.download_as_string" title="Permalink to this definition">#</a></dt>
+<code class="descname">download_as_string</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.download_as_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.download_as_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob as a string.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The data stored in this blob.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The data stored in this blob.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -317,15 +321,22 @@ will not be set on objects not created via <code class="docutils literal"><span 
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.download_to_file">
-<code class="descname">download_to_file</code><span class="sig-paren">(</span><em>file_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.download_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.download_to_file" title="Permalink to this definition">#</a></dt>
+<code class="descname">download_to_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.download_to_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.download_to_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob into a file-like object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle to which to write the blob&#8217;s data.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle to which to write the blob&#8217;s data.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -333,15 +344,22 @@ will not be set on objects not created via <code class="docutils literal"><span 
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.download_to_filename">
-<code class="descname">download_to_filename</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.download_to_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.download_to_filename" title="Permalink to this definition">#</a></dt>
+<code class="descname">download_to_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.download_to_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.download_to_filename" title="Permalink to this definition">#</a></dt>
 <dd><p>Download the contents of this blob into a named file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>string</em>) &#8211; A filename to be passed to <code class="docutils literal"><span class="pre">open</span></code>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<em>string</em>) &#8211; A filename to be passed to <code class="docutils literal"><span class="pre">open</span></code>.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a></p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -369,15 +387,19 @@ will not be set on objects not created via <code class="docutils literal"><span 
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.exists" title="Permalink to this definition">#</a></dt>
+<code class="descname">exists</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>Determines whether or not this blob exists.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the blob exists in Cloud Storage.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the blob exists in Cloud Storage.</td>
 </tr>
 </tbody>
 </table>
@@ -385,7 +407,7 @@ will not be set on objects not created via <code class="docutils literal"><span 
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.generate_signed_url">
-<code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>expiration</em>, <em>method='GET'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.generate_signed_url" title="Permalink to this definition">#</a></dt>
+<code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>expiration</em>, <em>method='GET'</em>, <em>connection=None</em>, <em>credentials=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.generate_signed_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Generates a signed URL for this blob.</p>
 <p>If you have a blob that you want to allow access to for a set
 amount of time, you can use this method to generate a URL that
@@ -400,6 +422,11 @@ log in.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>expiration</strong> (<em>int, long, datetime.datetime, datetime.timedelta</em>) &#8211; When the signed URL should expire.</li>
 <li><strong>method</strong> (<em>string</em>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</li>
+<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
+<code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 credentials to use to sign the URL.</li>
 </ul>
 </td>
 </tr>
@@ -724,7 +751,7 @@ not been deleted, this will never be set.</td>
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.upload_from_file">
-<code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em>, <em>num_retries=6</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.upload_from_file" title="Permalink to this definition">#</a></dt>
+<code class="descname">upload_from_file</code><span class="sig-paren">(</span><em>file_obj</em>, <em>rewind=False</em>, <em>size=None</em>, <em>content_type=None</em>, <em>num_retries=6</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.upload_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.upload_from_file" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload the contents of this blob from a file-like object.</p>
 <p>The content type of the upload will either be
 - The value passed in to the function (if any)
@@ -753,6 +780,9 @@ If not provided, we&#8217;ll try to guess the size using
 <code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code></li>
 <li><strong>content_type</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional type of content being uploaded.</li>
 <li><strong>num_retries</strong> (<em>integer</em>) &#8211; Number of upload retries. Defaults to 6.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</li>
 </ul>
 </td>
 </tr>
@@ -762,7 +792,7 @@ If not provided, we&#8217;ll try to guess the size using
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.upload_from_filename">
-<code class="descname">upload_from_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>content_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.upload_from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.upload_from_filename" title="Permalink to this definition">#</a></dt>
+<code class="descname">upload_from_filename</code><span class="sig-paren">(</span><em>filename</em>, <em>content_type=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.upload_from_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.upload_from_filename" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload this blob&#8217;s contents from the content of a named file.</p>
 <p>The content type of the upload will either be
 - The value passed in to the function (if any)
@@ -785,6 +815,9 @@ API documents for details.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>filename</strong> (<em>string</em>) &#8211; The path to the file.</li>
 <li><strong>content_type</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional type of content being uploaded.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</li>
 </ul>
 </td>
 </tr>
@@ -794,7 +827,7 @@ API documents for details.</p>
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.upload_from_string">
-<code class="descname">upload_from_string</code><span class="sig-paren">(</span><em>data</em>, <em>content_type='text/plain'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.upload_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.upload_from_string" title="Permalink to this definition">#</a></dt>
+<code class="descname">upload_from_string</code><span class="sig-paren">(</span><em>data</em>, <em>content_type='text/plain'</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.upload_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.upload_from_string" title="Permalink to this definition">#</a></dt>
 <dd><p>Upload contents of this blob from the provided string.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -810,8 +843,14 @@ API documents for details.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>bytes or text</em>) &#8211; The data to store in this blob.  If the value is
-text, it will be encoded as UTF-8.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>bytes or text</em>) &#8211; The data to store in this blob.  If the value is
+text, it will be encoded as UTF-8.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
