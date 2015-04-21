@@ -73,22 +73,12 @@ class Test_PropertyMixin(unittest2.TestCase):
         # Make sure changes get reset by reload.
         self.assertEqual(derived._changes, set())
 
-    def test__set_properties_no_future(self):
+    def test__set_properties(self):
         mixin = self._makeOne()
         self.assertEqual(mixin._properties, {})
-        VALUE = {'foo': 'bar'}
+        VALUE = object()
         mixin._set_properties(VALUE)
         self.assertEqual(mixin._properties, VALUE)
-        self.assertFalse(hasattr(VALUE, 'owner'))
-
-    def test__set_properties_future(self):
-        from gcloud.storage.batch import _FutureDict
-        mixin = self._makeOne()
-        future = _FutureDict()
-        self.assertEqual(future.owner, None)
-        mixin._set_properties(future)
-        self.assertEqual(mixin._properties, future)
-        self.assertEqual(future.owner, mixin)
 
     def test__patch_property(self):
         derived = self._derivedClass()()

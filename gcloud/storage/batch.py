@@ -77,15 +77,7 @@ class _FutureDict(object):
     """Class to hold a future value for a deferred request.
 
     Used by for requests that get sent in a :class:`Batch`.
-
-    :type owner: object
-    :param owner: Optional. A blob or bucket (or other type) that depends on
-                  this future.
     """
-
-    def __init__(self, owner=None):
-        self._value = None
-        self.owner = owner
 
     @staticmethod
     def get(key, default=None):
@@ -128,20 +120,6 @@ class _FutureDict(object):
         """
         raise KeyError('Cannot set %r -> %r on a future' % (key, value))
 
-    def set_future_value(self, value):
-        """Sets the value associated with the future.
-
-        :type value: object
-        :param value: The future value that was set.
-
-        :raises: :class:`ValueError` if the value is already set.
-        """
-        if self._value is not None:
-            raise ValueError('Future value is already set.')
-        self._value = value
-        if self.owner is not None:
-            self.owner._properties = value
-
 
 class Batch(Connection):
     """Proxy an underlying connection, batching up change operations.
@@ -160,7 +138,7 @@ class Batch(Connection):
         self._requests = []
         self._futures = []
 
-    def _do_request(self, method, url, headers, data):
+    def _do_request(self, method, url, headers, data, target_object):
         """Override Connection:  defer actual HTTP request.
 
         Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.
@@ -186,7 +164,9 @@ class Batch(Connection):
                              self._MAX_BATCH_SIZE)
         self._requests.append((method, url, headers, data))
         result = _FutureDict()
-        self._futures.append(result)
+        self._futures.append(target_object)
+        if target_object is not None:
+            target_object._properties = result
         return NoContent(), result
 
     def _prepare_batch_request(self):
@@ -234,12 +214,13 @@ class Batch(Connection):
         if len(self._futures) != len(responses):
             raise ValueError('Expected a response for every request.')
 
-        for future, sub_response in zip(self._futures, responses):
+        for target_object, sub_response in zip(self._futures, responses):
             resp_headers, sub_payload = sub_response
             if not 200 <= resp_headers.status < 300:
                 exception_args = exception_args or (resp_headers,
                                                     sub_payload)
-            future.set_future_value(sub_payload)
+            if target_object is not None:
+                target_object._properties = sub_payload
 
         if exception_args is not None:
             raise make_exception(*exception_args)

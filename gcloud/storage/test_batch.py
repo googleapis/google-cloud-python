@@ -110,10 +110,12 @@ class TestBatch(unittest2.TestCase):
         http = _HTTP((expected, ''))
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
-        response, content = batch._make_request('GET', URL)
+        target = _MockObject()
+        response, content = batch._make_request('GET', URL,
+                                                target_object=target)
         self.assertEqual(response.status, 204)
         self.assertTrue(isinstance(content, _FutureDict))
-        self.assertEqual(content._value, None)
+        self.assertEqual(target._properties, content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -133,10 +135,12 @@ class TestBatch(unittest2.TestCase):
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
-        response, content = batch._make_request('POST', URL, data={'foo': 1})
+        target = _MockObject()
+        response, content = batch._make_request('POST', URL, data={'foo': 1},
+                                                target_object=target)
         self.assertEqual(response.status, 204)
         self.assertTrue(isinstance(content, _FutureDict))
-        self.assertEqual(content._value, None)
+        self.assertEqual(target._properties, content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -156,10 +160,12 @@ class TestBatch(unittest2.TestCase):
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
-        response, content = batch._make_request('PATCH', URL, data={'foo': 1})
+        target = _MockObject()
+        response, content = batch._make_request('PATCH', URL, data={'foo': 1},
+                                                target_object=target)
         self.assertEqual(response.status, 204)
         self.assertTrue(isinstance(content, _FutureDict))
-        self.assertEqual(content._value, None)
+        self.assertEqual(target._properties, content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -179,10 +185,12 @@ class TestBatch(unittest2.TestCase):
         http = _HTTP()  # no requests expected
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
-        response, content = batch._make_request('DELETE', URL)
+        target = _MockObject()
+        response, content = batch._make_request('DELETE', URL,
+                                                target_object=target)
         self.assertEqual(response.status, 204)
         self.assertTrue(isinstance(content, _FutureDict))
-        self.assertEqual(content._value, None)
+        self.assertEqual(target._properties, content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -256,9 +264,9 @@ class TestBatch(unittest2.TestCase):
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         batch.API_BASE_URL = 'http://api.example.com'
-        batch._do_request('POST', URL, {}, {'foo': 1, 'bar': 2})
-        batch._do_request('PATCH', URL, {}, {'bar': 3})
-        batch._do_request('DELETE', URL, {}, None)
+        batch._do_request('POST', URL, {}, {'foo': 1, 'bar': 2}, None)
+        batch._do_request('PATCH', URL, {}, {'bar': 3}, None)
+        batch._do_request('DELETE', URL, {}, None, None)
         result = batch.finish()
         self.assertEqual(len(result), len(batch._requests))
         response0 = httplib2.Response({
@@ -317,15 +325,17 @@ class TestBatch(unittest2.TestCase):
         connection = _Connection(http=http)
         batch = self._makeOne(connection)
         batch.API_BASE_URL = 'http://api.example.com'
-        batch._do_request('GET', URL, {}, None)
-        batch._do_request('GET', URL, {}, None)
+        target1 = _MockObject()
+        target2 = _MockObject()
+        batch._do_request('GET', URL, {}, None, target1)
+        batch._do_request('GET', URL, {}, None, target2)
         # Make sure futures are not populated.
-        self.assertEqual([future.owner for future in batch._futures],
-                         [None, None])
+        self.assertEqual([future for future in batch._futures],
+                         [target1, target2])
         self.assertRaises(NotFound, batch.finish)
-        self.assertEqual(batch._futures[0]._value,
+        self.assertEqual(target1._properties,
                          {'foo': 1, 'bar': 2})
-        self.assertEqual(batch._futures[1]._value,
+        self.assertEqual(target2._properties,
                          {u'error': {u'message': u'Not Found'}})
 
         self.assertEqual(len(http._requests), 1)
@@ -369,25 +379,31 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(_BATCHES), [])
 
+        target1 = _MockObject()
+        target2 = _MockObject()
+        target3 = _MockObject()
         with self._makeOne(connection) as batch:
             self.assertEqual(list(_BATCHES), [batch])
-            batch._make_request('POST', URL, {'foo': 1, 'bar': 2})
-            batch._make_request('PATCH', URL, {'bar': 3})
-            batch._make_request('DELETE', URL)
+            batch._make_request('POST', URL, {'foo': 1, 'bar': 2},
+                                target_object=target1)
+            batch._make_request('PATCH', URL, {'bar': 3},
+                                target_object=target2)
+            batch._make_request('DELETE', URL, target_object=target3)
 
         self.assertEqual(list(_BATCHES), [])
         self.assertEqual(len(batch._requests), 3)
         self.assertEqual(batch._requests[0][0], 'POST')
         self.assertEqual(batch._requests[1][0], 'PATCH')
         self.assertEqual(batch._requests[2][0], 'DELETE')
-        self.assertEqual(len(batch._futures), 3)
-        self.assertEqual(batch._futures[0]._value,
+        self.assertEqual(batch._futures, [target1, target2, target3])
+        self.assertEqual(target1._properties,
                          {'foo': 1, 'bar': 2})
-        self.assertEqual(batch._futures[1]._value,
+        self.assertEqual(target2._properties,
                          {'foo': 1, 'bar': 3})
-        self.assertEqual(batch._futures[2]._value, '')
+        self.assertEqual(target3._properties, '')
 
     def test_as_context_mgr_w_error(self):
+        from gcloud.storage.batch import _FutureDict
         from gcloud.storage.batch import _BATCHES
         URL = 'http://example.com/api'
         http = _HTTP()
@@ -395,12 +411,17 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(_BATCHES), [])
 
+        target1 = _MockObject()
+        target2 = _MockObject()
+        target3 = _MockObject()
         try:
             with self._makeOne(connection) as batch:
                 self.assertEqual(list(_BATCHES), [batch])
-                batch._make_request('POST', URL, {'foo': 1, 'bar': 2})
-                batch._make_request('PATCH', URL, {'bar': 3})
-                batch._make_request('DELETE', URL)
+                batch._make_request('POST', URL, {'foo': 1, 'bar': 2},
+                                    target_object=target1)
+                batch._make_request('PATCH', URL, {'bar': 3},
+                                    target_object=target2)
+                batch._make_request('DELETE', URL, target_object=target3)
                 raise ValueError()
         except ValueError:
             pass
@@ -408,8 +429,12 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(list(_BATCHES), [])
         self.assertEqual(len(http._requests), 0)
         self.assertEqual(len(batch._requests), 3)
-        self.assertEqual([future._value for future in batch._futures],
-                         [None, None, None])
+        self.assertEqual(batch._futures, [target1, target2, target3])
+        # Since the context manager fails, finish will not get called and
+        # the _properties will still be futures.
+        self.assertTrue(isinstance(target1._properties, _FutureDict))
+        self.assertTrue(isinstance(target2._properties, _FutureDict))
+        self.assertTrue(isinstance(target3._properties, _FutureDict))
 
 
 class Test__unpack_batch_response(unittest2.TestCase):
@@ -509,15 +534,6 @@ class Test__FutureDict(unittest2.TestCase):
         from gcloud.storage.batch import _FutureDict
         return _FutureDict(*args, **kw)
 
-    def test_ctor_defaults(self):
-        future = self._makeOne()
-        self.assertEqual(future.owner, None)
-
-    def test_ctor_owner(self):
-        OWNER = object()
-        future = self._makeOne(owner=OWNER)
-        self.assertTrue(future.owner is OWNER)
-
     def test_get(self):
         future = self._makeOne()
         self.assertRaises(KeyError, future.get, None)
@@ -533,31 +549,6 @@ class Test__FutureDict(unittest2.TestCase):
         future = self._makeOne()
         with self.assertRaises(KeyError):
             future[None] = None
-
-    def test_set_future_value_no_owner(self):
-        future = self._makeOne()
-        self.assertEqual(future._value, None)
-        VALUE = object()
-        future.set_future_value(VALUE)
-        self.assertTrue(future._value is VALUE)
-
-    def test_set_future_value_with_owner(self):
-        from gcloud.storage._helpers import _PropertyMixin
-        future = self._makeOne()
-        future.owner = _PropertyMixin()
-        self.assertEqual(future._value, None)
-        self.assertEqual(future.owner._properties, {})
-        VALUE = object()
-        future.set_future_value(VALUE)
-        self.assertTrue(future._value is VALUE)
-        self.assertTrue(future.owner._properties is VALUE)
-
-    def test_set_future_value_already_set(self):
-        future = self._makeOne()
-        self.assertEqual(future._value, None)
-        VALUE = object()
-        future.set_future_value(VALUE)
-        self.assertRaises(ValueError, future.set_future_value, VALUE)
 
 
 class _Connection(object):
@@ -601,3 +592,7 @@ class _HTTP(object):
         self._requests.append((method, uri, headers, body))
         response, self._responses = self._responses[0], self._responses[1:]
         return response
+
+
+class _MockObject(object):
+    pass

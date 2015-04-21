@@ -160,7 +160,7 @@ class JSONConnection(Connection):
         return url
 
     def _make_request(self, method, url, data=None, content_type=None,
-                      headers=None):
+                      headers=None, target_object=None):
         """A low level method to send a request to the API.
 
         Typically, you shouldn't need to use this method.
@@ -179,6 +179,12 @@ class JSONConnection(Connection):
 
         :type headers: dict
         :param headers: A dictionary of HTTP headers to send with the request.
+
+        :type target_object: object or :class:`NoneType`
+        :param target_object: Argument to be used by library callers.
+                              This can allow custom behavior, for example, to
+                              defer an HTTP request and complete initialization
+                              of the object at a later time.
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).
@@ -200,9 +206,9 @@ class JSONConnection(Connection):
 
         headers['User-Agent'] = self.USER_AGENT
 
-        return self._do_request(method, url, headers, data)
+        return self._do_request(method, url, headers, data, target_object)
 
-    def _do_request(self, method, url, headers, data):
+    def _do_request(self, method, url, headers, data, dummy):
         """Low-level helper:  perform the actual API request over HTTP.
 
         Allows batch context managers to override and defer a request.
@@ -219,6 +225,10 @@ class JSONConnection(Connection):
         :type data: string
         :param data: The data to send as the body of the request.
 
+        :type dummy: object or :class:`NoneType`
+        :param dummy: Unused ``target_object`` here but may be used
+                      by a superclass.
+
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).
         :returns: The HTTP response object and the content of the response.
@@ -229,7 +239,7 @@ class JSONConnection(Connection):
     def api_request(self, method, path, query_params=None,
                     data=None, content_type=None,
                     api_base_url=None, api_version=None,
-                    expect_json=True):
+                    expect_json=True, _target_object=None):
         """Make a request over the HTTP transport to the API.
 
         You shouldn't need to use this method, but if you plan to
@@ -274,6 +284,12 @@ class JSONConnection(Connection):
                             response as JSON and raise an exception if
                             that cannot be done.  Default is True.
 
+        :type _target_object: object or :class:`NoneType`
+        :param _target_object: Protected argument to be used by library
+                               callers. This can allow custom behavior, for
+                               example, to defer an HTTP request and complete
+                               initialization of the object at a later time.
+
         :raises: Exception if the response code is not 200 OK.
         """
         url = self.build_api_url(path=path, query_params=query_params,
@@ -287,7 +303,8 @@ class JSONConnection(Connection):
             content_type = 'application/json'
 
         response, content = self._make_request(
-            method=method, url=url, data=data, content_type=content_type)
+            method=method, url=url, data=data, content_type=content_type,
+            target_object=_target_object)
 
         if not 200 <= response.status < 300:
             raise make_exception(response, content)
