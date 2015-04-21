@@ -235,8 +235,8 @@ class Batch(Connection):
 
         url = '%s/batch' % self.API_BASE_URL
 
-        _req = self._connection._make_request
-        response, content = _req('POST', url, data=body, headers=headers)
+        response, content = self._connection._make_request(
+            'POST', url, data=body, headers=headers)
         responses = list(_unpack_batch_response(response, content))
         self._finish_futures(responses)
         return responses

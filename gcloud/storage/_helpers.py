@@ -60,7 +60,8 @@ class _PropertyMixin(object):
         # are handled via custom endpoints.
         query_params = {'projection': 'noAcl'}
         api_response = connection.api_request(
-            method='GET', path=self.path, query_params=query_params)
+            method='GET', path=self.path, query_params=query_params,
+            _target_object=self)
         self._set_properties(api_response)
 
     def _patch_property(self, name, value):
@@ -108,7 +109,7 @@ class _PropertyMixin(object):
                                  for key in self._changes)
         api_response = connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
-            query_params={'projection': 'full'})
+            query_params={'projection': 'full'}, _target_object=self)
         self._set_properties(api_response)
 
 

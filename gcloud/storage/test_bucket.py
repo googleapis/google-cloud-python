@@ -162,6 +162,7 @@ class Test_Bucket(unittest2.TestCase):
             'query_params': {
                 'fields': 'name',
             },
+            '_target_object': None,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
@@ -186,6 +187,7 @@ class Test_Bucket(unittest2.TestCase):
             'query_params': {
                 'fields': 'name',
             },
+            '_target_object': None,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
@@ -330,7 +332,11 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection()
         bucket = self._makeOne(NAME)
         self.assertRaises(NotFound, bucket.delete, connection=connection)
-        expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
+        expected_cw = [{
+            'method': 'DELETE',
+            'path': bucket.path,
+            '_target_object': None,
+        }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
     def test_delete_explicit_hit(self):
@@ -341,7 +347,11 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(NAME, connection)
         result = bucket.delete(force=True, connection=connection)
         self.assertTrue(result is None)
-        expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
+        expected_cw = [{
+            'method': 'DELETE',
+            'path': bucket.path,
+            '_target_object': None,
+        }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
     def test_delete_explicit_force_delete_blobs(self):
@@ -361,7 +371,11 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(NAME, connection)
         result = bucket.delete(force=True, connection=connection)
         self.assertTrue(result is None)
-        expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
+        expected_cw = [{
+            'method': 'DELETE',
+            'path': bucket.path,
+            '_target_object': None,
+        }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
     def test_delete_explicit_force_miss_blobs(self):
@@ -374,7 +388,11 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(NAME, connection)
         result = bucket.delete(force=True, connection=connection)
         self.assertTrue(result is None)
-        expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
+        expected_cw = [{
+            'method': 'DELETE',
+            'path': bucket.path,
+            '_target_object': None,
+        }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
     def test_delete_explicit_too_many(self):
