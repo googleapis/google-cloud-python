@@ -89,7 +89,7 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(connection)
         self.assertTrue(batch._connection is connection)
         self.assertEqual(len(batch._requests), 0)
-        self.assertEqual(len(batch._futures), 0)
+        self.assertEqual(len(batch._target_objects), 0)
 
     def test_ctor_w_implicit_connection(self):
         from gcloud.storage._testing import _monkey_defaults
@@ -101,7 +101,7 @@ class TestBatch(unittest2.TestCase):
 
         self.assertTrue(batch._connection is connection)
         self.assertEqual(len(batch._requests), 0)
-        self.assertEqual(len(batch._futures), 0)
+        self.assertEqual(len(batch._target_objects), 0)
 
     def test__make_request_GET_normal(self):
         from gcloud.storage.batch import _FutureDict
@@ -115,7 +115,7 @@ class TestBatch(unittest2.TestCase):
                                                 target_object=target)
         self.assertEqual(response.status, 204)
         self.assertTrue(isinstance(content, _FutureDict))
-        self.assertEqual(target._properties, content)
+        self.assertTrue(target._properties is content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -140,7 +140,7 @@ class TestBatch(unittest2.TestCase):
                                                 target_object=target)
         self.assertEqual(response.status, 204)
         self.assertTrue(isinstance(content, _FutureDict))
-        self.assertEqual(target._properties, content)
+        self.assertTrue(target._properties is content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -165,7 +165,7 @@ class TestBatch(unittest2.TestCase):
                                                 target_object=target)
         self.assertEqual(response.status, 204)
         self.assertTrue(isinstance(content, _FutureDict))
-        self.assertEqual(target._properties, content)
+        self.assertTrue(target._properties is content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -190,7 +190,7 @@ class TestBatch(unittest2.TestCase):
                                                 target_object=target)
         self.assertEqual(response.status, 204)
         self.assertTrue(isinstance(content, _FutureDict))
-        self.assertEqual(target._properties, content)
+        self.assertTrue(target._properties is content)
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
@@ -330,13 +330,13 @@ class TestBatch(unittest2.TestCase):
         batch._do_request('GET', URL, {}, None, target1)
         batch._do_request('GET', URL, {}, None, target2)
         # Make sure futures are not populated.
-        self.assertEqual([future for future in batch._futures],
+        self.assertEqual([future for future in batch._target_objects],
                          [target1, target2])
+        target2_future_before = target2._properties
         self.assertRaises(NotFound, batch.finish)
         self.assertEqual(target1._properties,
                          {'foo': 1, 'bar': 2})
-        self.assertEqual(target2._properties,
-                         {u'error': {u'message': u'Not Found'}})
+        self.assertTrue(target2._properties is target2_future_before)
 
         self.assertEqual(len(http._requests), 1)
         method, uri, headers, body = http._requests[0]
@@ -395,7 +395,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch._requests[0][0], 'POST')
         self.assertEqual(batch._requests[1][0], 'PATCH')
         self.assertEqual(batch._requests[2][0], 'DELETE')
-        self.assertEqual(batch._futures, [target1, target2, target3])
+        self.assertEqual(batch._target_objects, [target1, target2, target3])
         self.assertEqual(target1._properties,
                          {'foo': 1, 'bar': 2})
         self.assertEqual(target2._properties,
@@ -429,7 +429,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(list(_BATCHES), [])
         self.assertEqual(len(http._requests), 0)
         self.assertEqual(len(batch._requests), 3)
-        self.assertEqual(batch._futures, [target1, target2, target3])
+        self.assertEqual(batch._target_objects, [target1, target2, target3])
         # Since the context manager fails, finish will not get called and
         # the _properties will still be futures.
         self.assertTrue(isinstance(target1._properties, _FutureDict))

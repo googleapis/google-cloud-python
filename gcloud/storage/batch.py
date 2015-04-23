@@ -136,7 +136,7 @@ class Batch(Connection):
         super(Batch, self).__init__()
         self._connection = connection
         self._requests = []
-        self._futures = []
+        self._target_objects = []
 
     def _do_request(self, method, url, headers, data, target_object):
         """Override Connection:  defer actual HTTP request.
@@ -164,7 +164,7 @@ class Batch(Connection):
                              self._MAX_BATCH_SIZE)
         self._requests.append((method, url, headers, data))
         result = _FutureDict()
-        self._futures.append(target_object)
+        self._target_objects.append(target_object)
         if target_object is not None:
             target_object._properties = result
         return NoContent(), result
@@ -211,15 +211,16 @@ class Batch(Connection):
         # until all futures have been populated.
         exception_args = None
 
-        if len(self._futures) != len(responses):
+        if len(self._target_objects) != len(responses):
             raise ValueError('Expected a response for every request.')
 
-        for target_object, sub_response in zip(self._futures, responses):
+        for target_object, sub_response in zip(self._target_objects,
+                                               responses):
             resp_headers, sub_payload = sub_response
             if not 200 <= resp_headers.status < 300:
                 exception_args = exception_args or (resp_headers,
                                                     sub_payload)
-            if target_object is not None:
+            elif target_object is not None:
                 target_object._properties = sub_payload
 
         if exception_args is not None:
