@@ -428,7 +428,9 @@ class Bucket(_PropertyMixin):
                 else:
                     raise
 
-    def copy_blob(self, blob, destination_bucket, new_name=None):
+    @staticmethod
+    def copy_blob(blob, destination_bucket, new_name=None,
+                  connection=None):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         :type blob: string or :class:`gcloud.storage.blob.Blob`
@@ -441,18 +443,24 @@ class Bucket(_PropertyMixin):
         :type new_name: string
         :param new_name: (optional) the new name for the copied file.
 
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
+
         :rtype: :class:`gcloud.storage.blob.Blob`
         :returns: The new Blob.
         """
+        connection = _require_connection(connection)
         if new_name is None:
             new_name = blob.name
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
-        copy_result = self.connection.api_request(method='POST', path=api_path)
+        copy_result = connection.api_request(method='POST', path=api_path)
         new_blob._set_properties(copy_result)
         return new_blob
 
-    def upload_file(self, filename, blob_name=None):
+    def upload_file(self, filename, blob_name=None, connection=None):
         """Shortcut method to upload a file into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -485,16 +493,21 @@ class Bucket(_PropertyMixin):
                           of the bucket with the same name as on your local
                           file system.
 
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
+
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
         """
         if blob_name is None:
             blob_name = os.path.basename(filename)
         blob = Blob(bucket=self, name=blob_name)
-        blob.upload_from_filename(filename)
+        blob.upload_from_filename(filename, connection=connection)
         return blob
 
-    def upload_file_object(self, file_obj, blob_name=None):
+    def upload_file_object(self, file_obj, blob_name=None, connection=None):
         """Shortcut method to upload a file object into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -527,13 +540,18 @@ class Bucket(_PropertyMixin):
                           of the bucket with the same name as on your local
                           file system.
 
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
+
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
         """
         if blob_name is None:
             blob_name = os.path.basename(file_obj.name)
         blob = Blob(bucket=self, name=blob_name)
-        blob.upload_from_file(file_obj)
+        blob.upload_from_file(file_obj, connection=connection)
         return blob
 
     @property

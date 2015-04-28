@@ -194,8 +194,10 @@ class Test_Bucket(unittest2.TestCase):
         from gcloud._testing import _monkey_defaults
         BUCKET_NAME = 'bucket-name'
         bucket = self._makeOne(BUCKET_NAME)
+        CONNECTION = object()
         with _monkey_defaults(project=None):
-            self.assertRaises(EnvironmentError, bucket.create)
+            self.assertRaises(EnvironmentError, bucket.create,
+                              connection=CONNECTION)
 
     def test_create_hit_explicit_project(self):
         BUCKET_NAME = 'bucket-name'
@@ -391,7 +393,8 @@ class Test_Bucket(unittest2.TestCase):
 
         # Make the Bucket refuse to delete with 2 objects.
         bucket._MAX_OBJECTS_FOR_BUCKET_DELETE = 1
-        self.assertRaises(ValueError, bucket.delete, force=True)
+        self.assertRaises(ValueError, bucket.delete, force=True,
+                          connection=connection)
         self.assertEqual(connection._deleted_buckets, [])
 
     def test_delete_blob_miss(self):
@@ -420,8 +423,8 @@ class Test_Bucket(unittest2.TestCase):
     def test_delete_blobs_empty(self):
         NAME = 'name'
         connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
-        bucket.delete_blobs([])
+        bucket = self._makeOne(NAME)
+        bucket.delete_blobs([], connection=connection)
         self.assertEqual(connection._requested, [])
 
     def test_delete_blobs_hit(self):
@@ -478,10 +481,10 @@ class Test_Bucket(unittest2.TestCase):
             path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
 
         connection = _Connection({})
-        source = self._makeOne(SOURCE, connection)
-        dest = self._makeOne(DEST, connection)
+        source = self._makeOne(SOURCE)
+        dest = self._makeOne(DEST)
         blob = _Blob()
-        new_blob = source.copy_blob(blob, dest)
+        new_blob = source.copy_blob(blob, dest, connection=connection)
         self.assertTrue(new_blob.bucket is dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
         kw, = connection._requested
@@ -501,10 +504,11 @@ class Test_Bucket(unittest2.TestCase):
             path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
 
         connection = _Connection({})
-        source = self._makeOne(SOURCE, connection)
-        dest = self._makeOne(DEST, connection)
+        source = self._makeOne(SOURCE)
+        dest = self._makeOne(DEST)
         blob = _Blob()
-        new_blob = source.copy_blob(blob, dest, NEW_NAME)
+        new_blob = source.copy_blob(blob, dest, NEW_NAME,
+                                    connection=connection)
         self.assertTrue(new_blob.bucket is dest)
         self.assertEqual(new_blob.name, NEW_NAME)
         kw, = connection._requested
@@ -526,13 +530,14 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_filename(self, filename):
-                _uploaded.append((self._bucket, self._name, filename))
+            def upload_from_filename(self, filename, connection=None):
+                _uploaded.append((self._bucket, self._name, filename,
+                                  connection))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
             bucket.upload_file(FILENAME)
-        self.assertEqual(_uploaded, [(bucket, BASENAME, FILENAME)])
+        self.assertEqual(_uploaded, [(bucket, BASENAME, FILENAME, None)])
 
     def test_upload_file_explicit_blob(self):
         from gcloud._testing import _Monkey
@@ -547,13 +552,14 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_filename(self, filename):
-                _uploaded.append((self._bucket, self._name, filename))
+            def upload_from_filename(self, filename, connection=None):
+                _uploaded.append((self._bucket, self._name, filename,
+                                  connection))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
             bucket.upload_file(FILENAME, BLOB_NAME)
-        self.assertEqual(_uploaded, [(bucket, BLOB_NAME, FILENAME)])
+        self.assertEqual(_uploaded, [(bucket, BLOB_NAME, FILENAME, None)])
 
     def test_upload_file_object_no_blob(self):
         from gcloud._testing import _Monkey
@@ -568,13 +574,13 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_file(self, fh):
-                _uploaded.append((self._bucket, self._name, fh))
+            def upload_from_file(self, fh, connection=None):
+                _uploaded.append((self._bucket, self._name, fh, connection))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
             found = bucket.upload_file_object(FILEOBJECT)
-        self.assertEqual(_uploaded, [(bucket, FILENAME, FILEOBJECT)])
+        self.assertEqual(_uploaded, [(bucket, FILENAME, FILEOBJECT, None)])
         self.assertTrue(isinstance(found, _Blob))
         self.assertEqual(found._name, FILENAME)
         self.assertTrue(found._bucket is bucket)
@@ -593,13 +599,13 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_file(self, fh):
-                _uploaded.append((self._bucket, self._name, fh))
+            def upload_from_file(self, fh, connection=None):
+                _uploaded.append((self._bucket, self._name, fh, connection))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
             found = bucket.upload_file_object(FILEOBJECT, BLOB_NAME)
-        self.assertEqual(_uploaded, [(bucket, BLOB_NAME, FILEOBJECT)])
+        self.assertEqual(_uploaded, [(bucket, BLOB_NAME, FILEOBJECT, None)])
         self.assertTrue(isinstance(found, _Blob))
         self.assertEqual(found._name, BLOB_NAME)
         self.assertTrue(found._bucket is bucket)
