@@ -255,8 +255,9 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
-        self.assertTrue(bucket.get_blob(NONESUCH) is None)
+        bucket = self._makeOne(NAME)
+        result = bucket.get_blob(NONESUCH, connection=connection)
+        self.assertTrue(result is None)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
@@ -265,8 +266,8 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({'name': BLOB_NAME})
-        bucket = self._makeOne(NAME, connection)
-        blob = bucket.get_blob(BLOB_NAME)
+        bucket = self._makeOne(NAME)
+        blob = bucket.get_blob(BLOB_NAME, connection=connection)
         self.assertTrue(blob.bucket is bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
@@ -325,8 +326,8 @@ class Test_Bucket(unittest2.TestCase):
         from gcloud.exceptions import NotFound
         NAME = 'name'
         connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
-        self.assertRaises(NotFound, bucket.delete)
+        bucket = self._makeOne(NAME)
+        self.assertRaises(NotFound, bucket.delete, connection=connection)
         expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
@@ -336,7 +337,8 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
         bucket = self._makeOne(NAME, connection)
-        self.assertEqual(bucket.delete(force=True), None)
+        result = bucket.delete(force=True, connection=connection)
+        self.assertTrue(result is None)
         expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
@@ -355,7 +357,8 @@ class Test_Bucket(unittest2.TestCase):
                                  DELETE_BLOB2_RESP)
         connection._delete_bucket = True
         bucket = self._makeOne(NAME, connection)
-        self.assertEqual(bucket.delete(force=True), None)
+        result = bucket.delete(force=True, connection=connection)
+        self.assertTrue(result is None)
         expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
@@ -367,7 +370,8 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
         bucket = self._makeOne(NAME, connection)
-        self.assertEqual(bucket.delete(force=True), None)
+        result = bucket.delete(force=True, connection=connection)
+        self.assertTrue(result is None)
         expected_cw = [{'method': 'DELETE', 'path': bucket.path}]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
@@ -395,8 +399,9 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
-        self.assertRaises(NotFound, bucket.delete_blob, NONESUCH)
+        bucket = self._makeOne(NAME)
+        self.assertRaises(NotFound, bucket.delete_blob, NONESUCH,
+                          connection=connection)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
@@ -405,8 +410,8 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({})
-        bucket = self._makeOne(NAME, connection)
-        result = bucket.delete_blob(BLOB_NAME)
+        bucket = self._makeOne(NAME)
+        result = bucket.delete_blob(BLOB_NAME, connection=connection)
         self.assertTrue(result is None)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
@@ -423,8 +428,8 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({})
-        bucket = self._makeOne(NAME, connection)
-        bucket.delete_blobs([BLOB_NAME])
+        bucket = self._makeOne(NAME)
+        bucket.delete_blobs([BLOB_NAME], connection=connection)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'DELETE')
@@ -436,8 +441,9 @@ class Test_Bucket(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         NONESUCH = 'nonesuch'
         connection = _Connection({})
-        bucket = self._makeOne(NAME, connection)
-        self.assertRaises(NotFound, bucket.delete_blobs, [BLOB_NAME, NONESUCH])
+        bucket = self._makeOne(NAME)
+        self.assertRaises(NotFound, bucket.delete_blobs, [BLOB_NAME, NONESUCH],
+                          connection=connection)
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'DELETE')
@@ -450,9 +456,10 @@ class Test_Bucket(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         NONESUCH = 'nonesuch'
         connection = _Connection({})
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         errors = []
-        bucket.delete_blobs([BLOB_NAME, NONESUCH], errors.append)
+        bucket.delete_blobs([BLOB_NAME, NONESUCH], errors.append,
+                            connection=connection)
         self.assertEqual(errors, [NONESUCH])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
