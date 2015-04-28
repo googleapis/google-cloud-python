@@ -154,8 +154,8 @@ class Test_Bucket(unittest2.TestCase):
                 raise NotFound(args)
 
         BUCKET_NAME = 'bucket-name'
-        bucket = self._makeOne(BUCKET_NAME, connection=_FakeConnection)
-        self.assertFalse(bucket.exists())
+        bucket = self._makeOne(BUCKET_NAME)
+        self.assertFalse(bucket.exists(connection=_FakeConnection))
         expected_called_kwargs = {
             'method': 'GET',
             'path': bucket.path,
@@ -178,8 +178,8 @@ class Test_Bucket(unittest2.TestCase):
                 return object()
 
         BUCKET_NAME = 'bucket-name'
-        bucket = self._makeOne(BUCKET_NAME, connection=_FakeConnection)
-        self.assertTrue(bucket.exists())
+        bucket = self._makeOne(BUCKET_NAME)
+        self.assertTrue(bucket.exists(connection=_FakeConnection))
         expected_called_kwargs = {
             'method': 'GET',
             'path': bucket.path,
@@ -202,8 +202,8 @@ class Test_Bucket(unittest2.TestCase):
         DATA = {'name': BUCKET_NAME}
         connection = _Connection(DATA)
         PROJECT = 'PROJECT'
-        bucket = self._makeOne(BUCKET_NAME, connection=connection)
-        bucket.create(PROJECT)
+        bucket = self._makeOne(BUCKET_NAME)
+        bucket.create(PROJECT, connection=connection)
 
         kw, = connection._requested
         self.assertEqual(kw['method'], 'POST')
@@ -217,9 +217,9 @@ class Test_Bucket(unittest2.TestCase):
         DATA = {'name': BUCKET_NAME}
         connection = _Connection(DATA)
         PROJECT = 'PROJECT'
-        bucket = self._makeOne(BUCKET_NAME, connection=connection)
+        bucket = self._makeOne(BUCKET_NAME)
         with _monkey_defaults(project=PROJECT):
-            bucket.create()
+            bucket.create(connection=connection)
 
         kw, = connection._requested
         self.assertEqual(kw['method'], 'POST')

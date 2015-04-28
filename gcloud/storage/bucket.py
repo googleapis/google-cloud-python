@@ -43,6 +43,7 @@ import six
 from gcloud._helpers import get_default_project
 from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
+from gcloud.storage._helpers import _require_connection
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
@@ -114,23 +115,29 @@ class Bucket(_PropertyMixin):
         blob = Blob(blob_name, bucket=self)
         return blob.exists()
 
-    def exists(self):
+    def exists(self, connection=None):
         """Determines whether or not this bucket exists.
+
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
 
         :rtype: boolean
         :returns: True if the bucket exists in Cloud Storage.
         """
+        connection = _require_connection(connection)
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
             query_params = {'fields': 'name'}
-            self.connection.api_request(method='GET', path=self.path,
-                                        query_params=query_params)
+            connection.api_request(method='GET', path=self.path,
+                                   query_params=query_params)
             return True
         except NotFound:
             return False
 
-    def create(self, project=None):
+    def create(self, project=None, connection=None):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -142,11 +149,17 @@ class Bucket(_PropertyMixin):
         :param project: Optional. The project to use when creating bucket.
                         If not provided, falls back to default.
 
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
+
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
         :raises: :class:`EnvironmentError` if the project is not given and
                  can't be inferred.
         """
+        connection = _require_connection(connection)
         if project is None:
             project = get_default_project()
         if project is None:
@@ -154,7 +167,7 @@ class Bucket(_PropertyMixin):
                                    'from environment.')
 
         query_params = {'project': project}
-        api_response = self.connection.api_request(
+        api_response = connection.api_request(
             method='POST', path='/b', query_params=query_params,
             data={'name': self.name})
         self._set_properties(api_response)
