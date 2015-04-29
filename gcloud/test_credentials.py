@@ -396,6 +396,9 @@ class _Credentials(object):
         self._scopes = scopes
         return self
 
+    def authorize(self, http):
+        self._authorized = http
+
 
 class _Client(object):
     def __init__(self):
