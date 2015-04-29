@@ -14,8 +14,8 @@
   storage-blobs
   storage-buckets
   storage-acl
+  pubsub-usage
   pubsub-api
-  pubsub-surface
   pubsub-subscription
   pubsub-topic
 
