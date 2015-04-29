@@ -8,7 +8,7 @@ Connection / Authorization
 
   - credentials (derived from GAE / GCE environ if present).
 
-  - ``project_id`` (derived from GAE / GCE environ if present).
+  - ``project`` (derived from GAE / GCE environ if present).
 
   - ``scopes``
 
@@ -29,7 +29,7 @@ Create a new topic for an explicit project:
 .. doctest::
 
    >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name', project_id='my.project')
+   >>> topic = Topic('topic_name', project='my.project')
    >>> topic.create()  # API request
 
 Check for the existance of a topic:
@@ -54,7 +54,7 @@ List topics for an explicit project:
 .. doctest::
 
    >>> from gcloud.pubsub import list_topics
-   >>> topics = list_topics(project_id='my.project')  # API request
+   >>> topics = list_topics(project='my.project')  # API request
    >>> [topic.name for topic in topics]
    ['topic_name']
 

@@ -340,13 +340,13 @@ class _BaseHTTPConnection(object):
 
 class _HTTPConnection(_BaseHTTPConnection):
 
-    def __init__(self, status, project_id):
+    def __init__(self, status, project):
         super(_HTTPConnection, self).__init__()
         self.status = status
-        self.project_id = project_id
+        self.project = project
 
     def getresponse(self):
-        return _HTTPResponse(self.status, self.project_id)
+        return _HTTPResponse(self.status, self.project)
 
 
 class _TimeoutHTTPConnection(_BaseHTTPConnection):
