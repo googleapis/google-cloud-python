@@ -1,5 +1,5 @@
-``gcloud.pubsub`` API
-=====================
+Using the API
+=============
 
 Connection / Authorization
 --------------------------
