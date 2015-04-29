@@ -32,6 +32,8 @@ IGNORED_DIRECTORIES = [
 ]
 IGNORED_FILES = [
     'gcloud/datastore/_datastore_v1_pb2.py',
+    'gcloud/storage/storage_v1_client.py',
+    'gcloud/storage/storage_v1_messages.py',
     'docs/conf.py',
     'setup.py',
 ]
