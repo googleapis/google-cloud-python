@@ -32,6 +32,8 @@ from gcloud.pubsub._implicit_environ import get_default_connection
 from gcloud.pubsub.api import list_subscriptions
 from gcloud.pubsub.api import list_topics
 from gcloud.pubsub.connection import Connection
+from gcloud.pubsub.subscription import Subscription
+from gcloud.pubsub.topic import Topic
 
 
 SCOPE = ('https://www.googleapis.com/auth/pubsub',
