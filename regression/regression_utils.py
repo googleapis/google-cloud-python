@@ -28,7 +28,7 @@ Please check the Contributing guide for instructions.
 """
 
 
-def get_environ(require_datastore=False, require_storage=False):
+def check_environ(require_datastore=False, require_storage=False):
     if require_datastore:
         if DATASET_ID is None or not os.path.isfile(CREDENTIALS):
             print(ENVIRON_ERROR_MSG, file=sys.stderr)
@@ -38,8 +38,3 @@ def get_environ(require_datastore=False, require_storage=False):
         if PROJECT_ID is None or not os.path.isfile(CREDENTIALS):
             print(ENVIRON_ERROR_MSG, file=sys.stderr)
             sys.exit(1)
-
-    return {
-        'project_id': PROJECT_ID,
-        'dataset_id': DATASET_ID,
-    }

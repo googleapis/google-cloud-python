@@ -57,10 +57,10 @@ class TestPubsub(unittest2.TestCase):
 
         # Retrieve the topics.
         all_topics, _ = pubsub.list_topics()
-        project_id = pubsub.get_default_project()
+        project = pubsub.get_default_project()
         created = [topic for topic in all_topics
                    if topic.name in topics_to_create and
-                   topic.project == project_id]
+                   topic.project == project]
         self.assertEqual(len(created), len(topics_to_create))
 
     def test_create_subscription(self):

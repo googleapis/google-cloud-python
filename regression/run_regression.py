@@ -42,9 +42,9 @@ def main():
     args = parser.parse_args()
     # Make sure environ is set before running test.
     if args.package == 'datastore':
-        regression_utils.get_environ(require_datastore=True)
+        regression_utils.check_environ(require_datastore=True)
     elif args.package == 'storage':
-        regression_utils.get_environ(require_storage=True)
+        regression_utils.check_environ(require_storage=True)
     test_result = run_module_tests(args.package)
     if not test_result.wasSuccessful():
         sys.exit(1)
