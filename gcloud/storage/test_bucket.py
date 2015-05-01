@@ -337,6 +337,18 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], EXPECTED)
 
+    def test_list_blobs_w_explicit_connection(self):
+        NAME = 'name'
+        connection = _Connection({'items': []})
+        bucket = self._makeOne(NAME, None)
+        iterator = bucket.list_blobs(connection=connection)
+        blobs = list(iterator)
+        self.assertEqual(blobs, [])
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
+        self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
+
     def test_delete_default_miss(self):
         from gcloud.exceptions import NotFound
         NAME = 'name'
@@ -906,7 +918,7 @@ class Test_Bucket(unittest2.TestCase):
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
         connection = _Connection(after)
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME, None)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
         with _monkey_defaults(connection=connection):
@@ -935,7 +947,7 @@ class Test_Bucket(unittest2.TestCase):
             # We return the same value for default_object_acl.reload()
             # to consume.
             connection = _Connection(after1, after1, after2)
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME, None)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = default_object_acl_loaded
         with _monkey_defaults(connection=connection):
@@ -980,14 +992,16 @@ class Test_Bucket(unittest2.TestCase):
             def acl(self):
                 return self
 
+            # Faux ACL methods
             def all(self):
                 return self
 
             def grant_read(self):
                 self._granted = True
 
-            def save_acl(self):
-                _saved.append((self._bucket, self._name, self._granted))
+            def save(self, connection=None):
+                _saved.append(
+                    (self._bucket, self._name, self._granted, connection))
 
         class _Iterator(_BlobIterator):
             def get_items_from_response(self, response):
@@ -999,7 +1013,7 @@ class Test_Bucket(unittest2.TestCase):
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
         connection = _Connection(after, {'items': [{'name': BLOB_NAME}]})
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME, None)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
         bucket._iterator_class = _Iterator
@@ -1007,7 +1021,7 @@ class Test_Bucket(unittest2.TestCase):
             bucket.make_public(recursive=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, BLOB_NAME, True)])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, connection)])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -1016,7 +1030,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw[1]['query_params'], {'projection': 'noAcl'})
+        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
 
 
 class _Connection(object):
