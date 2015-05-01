@@ -536,7 +536,7 @@ class Test_ACL(unittest2.TestCase):
         acl = self._makeOne()
         self.assertRaises(NotImplementedError, acl.reload)
 
-    def test_reload_eager_missing(self):
+    def test_reload_missing(self):
         # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
         ROLE = 'role'
         connection = _Connection({})
@@ -552,7 +552,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/testing/acl')
 
-    def test_reload_eager_empty(self):
+    def test_reload_empty_result_clears_local(self):
         ROLE = 'role'
         connection = _Connection({'items': []})
         acl = self._makeOne()
@@ -561,13 +561,14 @@ class Test_ACL(unittest2.TestCase):
         acl.loaded = True
         acl.entity('allUsers', ROLE)
         acl.reload()
+        self.assertTrue(acl.loaded)
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/testing/acl')
 
-    def test_reload_eager_nonempty(self):
+    def test_reload_nonempty_result(self):
         ROLE = 'role'
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
@@ -576,20 +577,7 @@ class Test_ACL(unittest2.TestCase):
         acl._reload_path = '/testing/acl'
         acl.loaded = True
         acl.reload()
-        self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/testing/acl')
-
-    def test_reload_lazy(self):
-        ROLE = 'role'
-        connection = _Connection(
-            {'items': [{'entity': 'allUsers', 'role': ROLE}]})
-        acl = self._makeOne()
-        acl._connection = connection
-        acl._reload_path = '/testing/acl'
-        acl.reload()
+        self.assertTrue(acl.loaded)
         self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
