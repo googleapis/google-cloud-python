@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud fb59514 documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud 8b6b4a2 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'fb59514',
+        VERSION:     '8b6b4a2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud fb59514 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 8b6b4a2 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20fb59514" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%208b6b4a2" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (fb59514)
+              Version History (8b6b4a2)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -125,6 +125,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">get_default_project</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_require_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">BucketACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
@@ -196,23 +197,29 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">blob</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this bucket exists.</span>
+
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
+<span class="sd">                          ``NoneType``</span>
+<span class="sd">        :param connection: Optional. The connection to use when sending</span>
+<span class="sd">                           requests. If not provided, falls back to default.</span>
 
 <span class="sd">        :rtype: boolean</span>
 <span class="sd">        :returns: True if the bucket exists in Cloud Storage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c"># We only need the status code (200 or not) so we seek to</span>
             <span class="c"># minimize the returned payload.</span>
             <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="s">&#39;name&#39;</span><span class="p">}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                        <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+            <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                                   <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">True</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
 </div>
-<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates current bucket.</span>
 
 <span class="sd">        If the bucket already exists, will raise</span>
@@ -224,11 +231,17 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :param project: Optional. The project to use when creating bucket.</span>
 <span class="sd">                        If not provided, falls back to default.</span>
 
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
+<span class="sd">                          ``NoneType``</span>
+<span class="sd">        :param connection: Optional. The connection to use when sending</span>
+<span class="sd">                           requests. If not provided, falls back to default.</span>
+
 <span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The newly created bucket.</span>
 <span class="sd">        :raises: :class:`EnvironmentError` if the project is not given and</span>
 <span class="sd">                 can&#39;t be inferred.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="n">get_default_project</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -236,7 +249,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                                    <span class="s">&#39;from environment.&#39;</span><span class="p">)</span>
 
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
@@ -280,7 +293,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Bucket.get_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_blob">[docs]</a>    <span class="k">def</span> <span class="nf">get_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.get_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_blob">[docs]</a>    <span class="k">def</span> <span class="nf">get_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a blob object by name.</span>
 
 <span class="sd">        This will return None if the blob doesn&#39;t exist::</span>
@@ -296,13 +309,19 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type blob_name: string</span>
 <span class="sd">        :param blob_name: The name of the blob to retrieve.</span>
 
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
+<span class="sd">                          ``NoneType``</span>
+<span class="sd">        :param connection: Optional. The connection to use when sending</span>
+<span class="sd">                           requests. If not provided, falls back to default.</span>
+
 <span class="sd">        :rtype: :class:`gcloud.storage.blob.Blob` or None</span>
 <span class="sd">        :returns: The blob object if it exists, otherwise None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span>
-                                                   <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span>
+                                              <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>  <span class="c"># Expect this to be blob_name</span>
             <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
             <span class="n">blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
@@ -373,7 +392,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">result</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
         <span class="k">return</span> <span class="n">result</span>
 </div>
-<div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this bucket.</span>
 
 <span class="sd">        The bucket **must** be empty in order to submit a delete request. If</span>
@@ -392,9 +411,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type force: boolean</span>
 <span class="sd">        :param force: If True, empties the bucket&#39;s objects then deletes it.</span>
 
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
+<span class="sd">                          ``NoneType``</span>
+<span class="sd">        :param connection: Optional. The connection to use when sending</span>
+<span class="sd">                           requests. If not provided, falls back to default.</span>
+
 <span class="sd">        :raises: :class:`ValueError` if ``force`` is ``True`` and the bucket</span>
 <span class="sd">                 contains more than 256 objects / blobs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
             <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
                 <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
@@ -408,11 +433,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
             <span class="c"># Ignore 404 errors on delete.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+                              <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from the current bucket.</span>
 
 <span class="sd">        If the blob isn&#39;t found (backend 404), raises a</span>
@@ -435,16 +461,22 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type blob_name: string</span>
 <span class="sd">        :param blob_name: A blob name to delete.</span>
 
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
+<span class="sd">                          ``NoneType``</span>
+<span class="sd">        :param connection: Optional. The connection to use when sending</span>
+<span class="sd">                           requests. If not provided, falls back to default.</span>
+
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound` (to suppress</span>
 <span class="sd">                 the exception, call ``delete_blobs``, passing a no-op</span>
 <span class="sd">                 ``on_error`` callback, e.g.::</span>
 
 <span class="sd">                 &gt;&gt;&gt; bucket.delete_blobs([blob], on_error=lambda blob: None)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="n">blob_path</span> <span class="o">=</span> <span class="n">Blob</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob_path</span><span class="p">)</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob_path</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Bucket.delete_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.delete_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a list of blobs from the current bucket.</span>
 
 <span class="sd">        Uses :func:`Bucket.delete_blob` to delete each individual blob.</span>
@@ -457,22 +489,30 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                         :class:`gcloud.exceptions.NotFound`;</span>
 <span class="sd">                         otherwise, the exception is propagated.</span>
 
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
+<span class="sd">                          ``NoneType``</span>
+<span class="sd">        :param connection: Optional. The connection to use when sending</span>
+<span class="sd">                           requests. If not provided, falls back to default.</span>
+
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound` (if</span>
 <span class="sd">                 `on_error` is not passed).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">blob_name</span> <span class="o">=</span> <span class="n">blob</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
                     <span class="n">blob_name</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="n">blob_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">on_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                     <span class="n">on_error</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span>
 </div>
-<div class="viewcode-block" id="Bucket.copy_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.copy_blob">[docs]</a>    <span class="k">def</span> <span class="nf">copy_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Bucket.copy_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.copy_blob">[docs]</a>    <span class="k">def</span> <span class="nf">copy_blob</span><span class="p">(</span><span class="n">blob</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                  <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Copy the given blob to the given bucket, optionally with a new name.</span>
 
 <span class="sd">        :type blob: string or :class:`gcloud.storage.blob.Blob`</span>
@@ -485,18 +525,24 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type new_name: string</span>
 <span class="sd">        :param new_name: (optional) the new name for the copied file.</span>
 
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
+<span class="sd">                          ``NoneType``</span>
+<span class="sd">        :param connection: Optional. The connection to use when sending</span>
+<span class="sd">                           requests. If not provided, falls back to default.</span>
+
 <span class="sd">        :rtype: :class:`gcloud.storage.blob.Blob`</span>
 <span class="sd">        :returns: The new Blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">new_name</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span>
         <span class="n">new_blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">destination_bucket</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">new_name</span><span class="p">)</span>
         <span class="n">api_path</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/copyTo&#39;</span> <span class="o">+</span> <span class="n">new_blob</span><span class="o">.</span><span class="n">path</span>
-        <span class="n">copy_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">)</span>
+        <span class="n">copy_result</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">)</span>
         <span class="n">new_blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">copy_result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_blob</span>
 </div>
-<div class="viewcode-block" id="Bucket.upload_file"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.upload_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.upload_file"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.upload_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Shortcut method to upload a file into this bucket.</span>
 
 <span class="sd">        Use this method to quickly put a local file in Cloud Storage.</span>
@@ -529,16 +575,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                          of the bucket with the same name as on your local</span>
 <span class="sd">                          file system.</span>
 
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
+<span class="sd">                          ``NoneType``</span>
+<span class="sd">        :param connection: Optional. The connection to use when sending</span>
+<span class="sd">                           requests. If not provided, falls back to default.</span>
+
 <span class="sd">        :rtype: :class:`Blob`</span>
 <span class="sd">        :returns: The updated Blob object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">blob_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">blob_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
-        <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">blob</span>
 </div>
-<div class="viewcode-block" id="Bucket.upload_file_object"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.upload_file_object">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.upload_file_object"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.upload_file_object">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Shortcut method to upload a file object into this bucket.</span>
 
 <span class="sd">        Use this method to quickly put a local file in Cloud Storage.</span>
@@ -571,13 +622,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                          of the bucket with the same name as on your local</span>
 <span class="sd">                          file system.</span>
 
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
+<span class="sd">                          ``NoneType``</span>
+<span class="sd">        :param connection: Optional. The connection to use when sending</span>
+<span class="sd">                           requests. If not provided, falls back to default.</span>
+
 <span class="sd">        :rtype: :class:`Blob`</span>
 <span class="sd">        :returns: The updated Blob object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">blob_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">blob_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
-        <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+        <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">blob</span>
 </div>
     <span class="nd">@property</span>
