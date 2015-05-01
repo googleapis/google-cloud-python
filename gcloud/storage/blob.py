@@ -232,7 +232,7 @@ class Blob(_PropertyMixin):
         except NotFound:
             return False
 
-    def rename(self, new_name):
+    def rename(self, new_name, connection=None):
         """Renames this blob using copy and delete operations.
 
         Effectively, copies blob to the same bucket with a new name, then
@@ -246,15 +246,26 @@ class Blob(_PropertyMixin):
         :type new_name: string
         :param new_name: The new name for this blob.
 
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
+
         :rtype: :class:`Blob`
         :returns: The newly-copied blob.
         """
-        new_blob = self.bucket.copy_blob(self, self.bucket, new_name)
-        self.delete()
+        new_blob = self.bucket.copy_blob(self, self.bucket, new_name,
+                                         connection=connection)
+        self.delete(connection=connection)
         return new_blob
 
-    def delete(self):
+    def delete(self, connection=None):
         """Deletes a blob from Cloud Storage.
+
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
 
         :rtype: :class:`Blob`
         :returns: The blob that was just deleted.
@@ -262,7 +273,7 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`gcloud.storage.bucket.Bucket.delete_blob`).
         """
-        return self.bucket.delete_blob(self.name)
+        return self.bucket.delete_blob(self.name, connection=connection)
 
     def download_to_file(self, file_obj, connection=None):
         """Download the contents of this blob into a file-like object.
