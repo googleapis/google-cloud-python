@@ -61,6 +61,21 @@ class Test_PropertyMixin(unittest2.TestCase):
         # Make sure changes get reset by reload.
         self.assertEqual(derived._changes, set())
 
+    def test_reload_w_explicit_connection(self):
+        connection = _Connection({'foo': 'Foo'})
+        derived = self._derivedClass(None, '/path')()
+        # Make sure changes is not a set, so we can observe a change.
+        derived._changes = object()
+        derived.reload(connection)
+        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'GET')
+        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
+        # Make sure changes get reset by reload.
+        self.assertEqual(derived._changes, set())
+
     def test__patch_property(self):
         derived = self._derivedClass()()
         derived._patch_property('foo', 'Foo')
@@ -75,6 +90,26 @@ class Test_PropertyMixin(unittest2.TestCase):
         derived._properties = {'bar': BAR, 'baz': BAZ}
         derived._changes = set(['bar'])  # Ignore baz.
         derived.patch()
+        self.assertEqual(derived._properties, {'foo': 'Foo'})
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/path')
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+        # Since changes does not include `baz`, we don't see it sent.
+        self.assertEqual(kw[0]['data'], {'bar': BAR})
+        # Make sure changes get reset by patch().
+        self.assertEqual(derived._changes, set())
+
+    def test_patch_w_explicit_connection(self):
+        connection = _Connection({'foo': 'Foo'})
+        derived = self._derivedClass(None, '/path')()
+        # Make sure changes is non-empty, so we can observe a change.
+        BAR = object()
+        BAZ = object()
+        derived._properties = {'bar': BAR, 'baz': BAZ}
+        derived._changes = set(['bar'])  # Ignore baz.
+        derived.patch(connection)
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
