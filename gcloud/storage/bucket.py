@@ -63,12 +63,18 @@ class _BlobIterator(Iterator):
 
     :type extra_params: dict or None
     :param extra_params: Extra query string parameters for the API call.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: The connection to use when sending requests.  Defaults
+                       to the bucket's connection
     """
-    def __init__(self, bucket, extra_params=None):
+    def __init__(self, bucket, extra_params=None, connection=None):
+        if connection is None:
+            connection = bucket.connection
         self.bucket = bucket
         self.prefixes = ()
         super(_BlobIterator, self).__init__(
-            connection=bucket.connection, path=bucket.path + '/o',
+            connection=connection, path=bucket.path + '/o',
             extra_params=extra_params)
 
     def get_items_from_response(self, response):

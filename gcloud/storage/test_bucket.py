@@ -37,6 +37,17 @@ class Test__BlobIterator(unittest2.TestCase):
         self.assertEqual(iterator.next_page_token, None)
         self.assertEqual(iterator.prefixes, ())
 
+    def test_ctor_w_explicit_connection(self):
+        connection = _Connection()
+        bucket = _Bucket(None)
+        iterator = self._makeOne(bucket, connection=connection)
+        self.assertTrue(iterator.bucket is bucket)
+        self.assertTrue(iterator.connection is connection)
+        self.assertEqual(iterator.path, '%s/o' % bucket.path)
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+        self.assertEqual(iterator.prefixes, ())
+
     def test_get_items_from_response_empty(self):
         connection = _Connection()
         bucket = _Bucket(connection)
