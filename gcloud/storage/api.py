@@ -196,7 +196,7 @@ def create_bucket(bucket_name, project=None, connection=None):
     """
     connection = _require_connection(connection)
     bucket = Bucket(bucket_name, connection=connection)
-    bucket.create(project)
+    bucket.create(project, connection=connection)
     return bucket
 
 
