@@ -60,6 +60,9 @@ class _BlobIterator(Iterator):
 
     :type bucket: :class:`gcloud.storage.bucket.Bucket`
     :param bucket: The bucket from which to list blobs.
+
+    :type extra_params: dict or None
+    :param extra_params: Extra query string parameters for the API call.
     """
     def __init__(self, bucket, extra_params=None):
         self.bucket = bucket
