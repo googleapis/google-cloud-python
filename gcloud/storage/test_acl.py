@@ -833,7 +833,6 @@ class Test_DefaultObjectACL(unittest2.TestCase):
 
     def test_ctor(self):
         NAME = 'name'
-        BLOB_NAME = 'blob-name'
         connection = _Connection()
         bucket = _Bucket(NAME, connection)
         acl = self._makeOne(bucket)
