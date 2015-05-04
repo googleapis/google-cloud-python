@@ -291,7 +291,21 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(new_blob.name, NEW_NAME)
         self.assertFalse(BLOB_NAME in bucket._blobs)
-        self.assertTrue(BLOB_NAME in bucket._deleted)
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
+        self.assertTrue(NEW_NAME in bucket._blobs)
+
+    def test_rename_w_explicit_connection(self):
+        BLOB_NAME = 'blob-name'
+        NEW_NAME = 'new-name'
+        connection = _Connection()
+        bucket = _Bucket(None)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        bucket._blobs[BLOB_NAME] = 1
+        new_blob = blob.rename(NEW_NAME, connection=connection)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(new_blob.name, NEW_NAME)
+        self.assertFalse(BLOB_NAME in bucket._blobs)
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
         self.assertTrue(NEW_NAME in bucket._blobs)
 
     def test_delete(self):
@@ -299,11 +313,24 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
-        bucket = _Bucket(None)
+        bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         blob.delete()
         self.assertFalse(blob.exists(connection=connection))
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
+
+    def test_delete_w_explicit_connection(self):
+        from six.moves.http_client import NOT_FOUND
+        BLOB_NAME = 'blob-name'
+        not_found_response = {'status': NOT_FOUND}
+        connection = _Connection(not_found_response)
+        bucket = _Bucket(None)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        bucket._blobs[BLOB_NAME] = 1
+        blob.delete(connection=connection)
+        self.assertFalse(blob.exists(connection=connection))
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
 
     def _download_to_file_helper(self, chunk_size=None):
         from six.moves.http_client import OK
@@ -1111,15 +1138,21 @@ class _Bucket(object):
     def __init__(self, connection):
         self.connection = connection
         self._blobs = {}
+        self._copied = []
         self._deleted = []
 
-    def copy_blob(self, blob, destination_bucket, new_name):
+    def copy_blob(self, blob, destination_bucket, new_name, connection=None):
+        if connection is None:
+            connection = self.connection
+        self._copied.append((blob, destination_bucket, new_name, connection))
         destination_bucket._blobs[new_name] = self._blobs[blob.name]
         return blob.__class__(new_name, bucket=destination_bucket)
 
-    def delete_blob(self, blob_name):
+    def delete_blob(self, blob_name, connection=None):
+        if connection is None:
+            connection = self.connection
         del self._blobs[blob_name]
-        self._deleted.append(blob_name)
+        self._deleted.append((blob_name, connection))
 
 
 class _Signer(object):
