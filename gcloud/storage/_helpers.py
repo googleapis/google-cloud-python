@@ -33,11 +33,6 @@ class _PropertyMixin(object):
     """
 
     @property
-    def connection(self):
-        """Abstract getter for the connection to use."""
-        raise NotImplementedError
-
-    @property
     def path(self):
         """Abstract getter for the object path."""
         raise NotImplementedError
@@ -52,12 +47,19 @@ class _PropertyMixin(object):
         self._properties = {}
         self._changes = set()
 
-    def reload(self):
-        """Reload properties from Cloud Storage."""
+    def reload(self, connection=None):
+        """Reload properties from Cloud Storage.
+
+        :type connection: :class:`gcloud.storage.connection.Connection`
+        :param connection: An explicit connection to use for the API request.
+                           If not passed, use the connection assigned to
+                           the object in its constructor.
+        """
+        connection = _require_connection(connection)
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params = {'projection': 'noAcl'}
-        api_response = self.connection.api_request(
+        api_response = connection.api_request(
             method='GET', path=self.path, query_params=query_params)
         self._set_properties(api_response)
 
@@ -89,16 +91,22 @@ class _PropertyMixin(object):
         # If the values are reset, the changes must as well.
         self._changes = set()
 
-    def patch(self):
+    def patch(self, connection=None):
         """Sends all changed properties in a PATCH request.
 
         Updates the ``_properties`` with the response from the backend.
+
+        :type connection: :class:`gcloud.storage.connection.Connection`
+        :param connection: An explicit connection to use for the API request.
+                           If not passed, use the connection assigned to
+                           the object in its constructor.
         """
+        connection = _require_connection(connection)
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
         update_properties = dict((key, self._properties[key])
                                  for key in self._changes)
-        api_response = self.connection.api_request(
+        api_response = connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'})
         self._set_properties(api_response)
