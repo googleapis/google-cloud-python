@@ -122,6 +122,16 @@ class Topic(object):
         else:
             return True
 
+    def _timestamp_message(self, attrs):
+        """Add a timestamp to ``attrs``, if the topic is so configured.
+
+        If ``attrs`` already has the key, do nothing.
+
+        Helper method for ``publish``/``Batch.publish``.
+        """
+        if self.timestamp_messages and 'timestamp' not in attrs:
+            attrs['timestamp'] = _NOW().strftime(_RFC3339_MICROS)
+
     def publish(self, message, connection=None, **attrs):
         """API call:  publish a message to a topic via a POST request
 
@@ -144,8 +154,7 @@ class Topic(object):
         if connection is None:
             connection = self.connection
 
-        if self.timestamp_messages and 'timestamp' not in attrs:
-            attrs['timestamp'] = _NOW().strftime(_RFC3339_MICROS)
+        self._timestamp_message(attrs)
         message_b = base64.b64encode(message).decode('ascii')
         message_data = {'data': message_b, 'attributes': attrs}
         data = {'messages': [message_data]}
@@ -216,14 +225,15 @@ class Batch(object):
         :type attrs: dict (string -> string)
         :message attrs: key-value pairs to send as message attributes
         """
+        self.topic._timestamp_message(attrs)
         self.messages.append(
             {'data': base64.b64encode(message), 'attributes': attrs})
 
     def commit(self):
         """Send saved messages as a single API call."""
-        conn = self.connection
-        response = conn.api_request(method='POST',
-                                    path='%s:publish' % self.topic.path,
-                                    data={'messages': self.messages[:]})
+        connection = self.connection
+        response = connection.api_request(method='POST',
+                                          path='%s:publish' % self.topic.path,
+                                          data={'messages': self.messages[:]})
         self.message_ids.extend(response['messageIds'])
         del self.messages[:]
