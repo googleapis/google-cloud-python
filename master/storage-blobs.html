@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Blobs / Objects &mdash; gcloud 8b5c5b9 documentation</title>
+    <title>Blobs / Objects &mdash; gcloud 2e629e0 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '8b5c5b9',
+        VERSION:     '2e629e0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8b5c5b9 documentation" href="index.html" />
+    <link rel="top" title="gcloud 2e629e0 documentation" href="index.html" />
     <link rel="next" title="Buckets" href="storage-buckets.html" />
     <link rel="prev" title="Storage" href="storage-api.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-blobs%0ARelease%3A%208b5c5b9" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-blobs%0ARelease%3A%202e629e0" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8b5c5b9)
+              Version History (2e629e0)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -279,17 +279,21 @@ will not be set on objects not created via <code class="docutils literal"><span 
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.delete" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Deletes a blob from Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The blob that was just deleted.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The blob that was just deleted.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a>
 (propagated from
 <a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blob" title="gcloud.storage.bucket.Bucket.delete_blob"><code class="xref py py-meth docutils literal"><span class="pre">gcloud.storage.bucket.Bucket.delete_blob()</span></code></a>).</td>
 </tr>
@@ -632,7 +636,7 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 
 <dl class="method">
 <dt id="gcloud.storage.blob.Blob.rename">
-<code class="descname">rename</code><span class="sig-paren">(</span><em>new_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.rename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.rename" title="Permalink to this definition">#</a></dt>
+<code class="descname">rename</code><span class="sig-paren">(</span><em>new_name</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.rename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.rename" title="Permalink to this definition">#</a></dt>
 <dd><p>Renames this blob using copy and delete operations.</p>
 <p>Effectively, copies blob to the same bucket with a new name, then
 deletes the blob.</p>
@@ -646,11 +650,19 @@ could be a very (temporarily) costly or a very slow operation.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_name</strong> (<em>string</em>) &#8211; The new name for this blob.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>new_name</strong> (<em>string</em>) &#8211; The new name for this blob.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a></p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The newly-copied blob.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The newly-copied blob.</p>
+</td>
 </tr>
 </tbody>
 </table>
