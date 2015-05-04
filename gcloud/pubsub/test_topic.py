@@ -419,6 +419,32 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(req['path'], '%s:publish' % topic.path)
         self.assertEqual(req['data'], {'messages': [MESSAGE1, MESSAGE2]})
 
+    def test_commit_w_passed_connection(self):
+        import base64
+        PAYLOAD1 = b'This is the first message text'
+        PAYLOAD2 = b'This is the second message text'
+        B64_1 = base64.b64encode(PAYLOAD1)
+        B64_2 = base64.b64encode(PAYLOAD2)
+        MSGID1 = 'DEADBEEF'
+        MSGID2 = 'BEADCAFE'
+        MESSAGE1 = {'data': B64_1.decode('ascii'),
+                    'attributes': {}}
+        MESSAGE2 = {'data': B64_2.decode('ascii'),
+                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
+        conn = _Connection({'messageIds': [MSGID1, MSGID2]})
+        topic = _Topic()
+        batch = self._makeOne(topic)
+        batch.publish(PAYLOAD1)
+        batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
+        batch.commit(connection=conn)
+        self.assertEqual(list(batch), [MSGID1, MSGID2])
+        self.assertEqual(list(batch.messages), [])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '%s:publish' % topic.path)
+        self.assertEqual(req['data'], {'messages': [MESSAGE1, MESSAGE2]})
+
     def test_context_mgr_success(self):
         import base64
         PAYLOAD1 = b'This is the first message text'

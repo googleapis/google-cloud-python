@@ -227,11 +227,18 @@ class Batch(object):
         """
         self.topic._timestamp_message(attrs)
         self.messages.append(
-            {'data': base64.b64encode(message), 'attributes': attrs})
+            {'data': base64.b64encode(message).decode('ascii'),
+             'attributes': attrs})
 
-    def commit(self):
-        """Send saved messages as a single API call."""
-        connection = self.connection
+    def commit(self, connection=None):
+        """Send saved messages as a single API call.
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the ``connection`` attribute.
+        """
+        if connection is None:
+            connection = self.connection
         response = connection.api_request(method='POST',
                                           path='%s:publish' % self.topic.path,
                                           data={'messages': self.messages[:]})
