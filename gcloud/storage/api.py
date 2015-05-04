@@ -160,7 +160,7 @@ def get_bucket(bucket_name, connection=None):
     """
     connection = _require_connection(connection)
     bucket = Bucket(bucket_name, connection=connection)
-    bucket.reload()
+    bucket.reload(connection=connection)
     return bucket
 
 

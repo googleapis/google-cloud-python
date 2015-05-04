@@ -33,11 +33,6 @@ class _PropertyMixin(object):
     """
 
     @property
-    def connection(self):
-        """Abstract getter for the connection to use."""
-        raise NotImplementedError
-
-    @property
     def path(self):
         """Abstract getter for the object path."""
         raise NotImplementedError
@@ -60,8 +55,7 @@ class _PropertyMixin(object):
                            If not passed, use the connection assigned to
                            the object in its constructor.
         """
-        if connection is None:
-            connection = self.connection
+        connection = _require_connection(connection)
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params = {'projection': 'noAcl'}
@@ -107,8 +101,7 @@ class _PropertyMixin(object):
                            If not passed, use the connection assigned to
                            the object in its constructor.
         """
-        if connection is None:
-            connection = self.connection
+        connection = _require_connection(connection)
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
         update_properties = dict((key, self._properties[key])

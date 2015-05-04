@@ -24,13 +24,9 @@ class Test_PropertyMixin(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def _derivedClass(self, connection=None, path=None):
+    def _derivedClass(self, path=None):
 
         class Derived(self._getTargetClass()):
-
-            @property
-            def connection(self):
-                return connection
 
             @property
             def path(self):
@@ -38,20 +34,21 @@ class Test_PropertyMixin(unittest2.TestCase):
 
         return Derived
 
-    def test_connection_is_abstract(self):
-        mixin = self._makeOne()
-        self.assertRaises(NotImplementedError, lambda: mixin.connection)
+    def _monkey(self, connection):
+        from gcloud.storage._testing import _monkey_defaults
+        return _monkey_defaults(connection=connection)
 
     def test_path_is_abstract(self):
         mixin = self._makeOne()
         self.assertRaises(NotImplementedError, lambda: mixin.path)
 
-    def test_reload(self):
+    def test_reload_w_implicit_connection(self):
         connection = _Connection({'foo': 'Foo'})
-        derived = self._derivedClass(connection, '/path')()
+        derived = self._derivedClass('/path')()
         # Make sure changes is not a set, so we can observe a change.
         derived._changes = object()
-        derived.reload()
+        with self._monkey(connection):
+            derived.reload()
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -63,7 +60,7 @@ class Test_PropertyMixin(unittest2.TestCase):
 
     def test_reload_w_explicit_connection(self):
         connection = _Connection({'foo': 'Foo'})
-        derived = self._derivedClass(None, '/path')()
+        derived = self._derivedClass('/path')()
         # Make sure changes is not a set, so we can observe a change.
         derived._changes = object()
         derived.reload(connection)
@@ -81,15 +78,16 @@ class Test_PropertyMixin(unittest2.TestCase):
         derived._patch_property('foo', 'Foo')
         self.assertEqual(derived._properties, {'foo': 'Foo'})
 
-    def test_patch(self):
+    def test_patch_w_implicit_connection(self):
         connection = _Connection({'foo': 'Foo'})
-        derived = self._derivedClass(connection, '/path')()
+        derived = self._derivedClass('/path')()
         # Make sure changes is non-empty, so we can observe a change.
         BAR = object()
         BAZ = object()
         derived._properties = {'bar': BAR, 'baz': BAZ}
         derived._changes = set(['bar'])  # Ignore baz.
-        derived.patch()
+        with self._monkey(connection):
+            derived.patch()
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -103,7 +101,7 @@ class Test_PropertyMixin(unittest2.TestCase):
 
     def test_patch_w_explicit_connection(self):
         connection = _Connection({'foo': 'Foo'})
-        derived = self._derivedClass(None, '/path')()
+        derived = self._derivedClass('/path')()
         # Make sure changes is non-empty, so we can observe a change.
         BAR = object()
         BAZ = object()
