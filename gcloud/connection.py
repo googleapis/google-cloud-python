@@ -208,7 +208,8 @@ class JSONConnection(Connection):
 
         return self._do_request(method, url, headers, data, target_object)
 
-    def _do_request(self, method, url, headers, data, dummy):
+    def _do_request(self, method, url, headers, data,
+                    target_object):  # pylint: disable=unused-argument
         """Low-level helper:  perform the actual API request over HTTP.
 
         Allows batch context managers to override and defer a request.
@@ -225,9 +226,9 @@ class JSONConnection(Connection):
         :type data: string
         :param data: The data to send as the body of the request.
 
-        :type dummy: object or :class:`NoneType`
-        :param dummy: Unused ``target_object`` here but may be used
-                      by a superclass.
+        :type target_object: object or :class:`NoneType`
+        :param target_object: Unused ``target_object`` here but may be used
+                              by a superclass.
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).
