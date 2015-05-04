@@ -505,15 +505,6 @@ class Test_ACL(unittest2.TestCase):
         entity = acl.entity(TYPE, ID)
         self.assertEqual(acl.get_entities(), [entity])
 
-    def test_connection_wo_attr(self):
-        acl = self._makeOne()
-        self.assertRaises(NotImplementedError, lambda: acl.connection)
-
-    def test_connection_w_attr(self):
-        acl = self._makeOne()
-        connection = acl._connection = object()
-        self.assertTrue(acl.connection is connection)
-
     def test_reload_path_wo_attr(self):
         acl = self._makeOne()
         self.assertRaises(NotImplementedError, lambda: acl.reload_path)
@@ -532,20 +523,21 @@ class Test_ACL(unittest2.TestCase):
         acl._save_path = '/testing'
         self.assertEqual(acl.save_path, '/testing')
 
-    def test_reload_wo_attrs_raises_NotImplementedError(self):
+    def test_reload_wo_path_raises_NotImplementedError(self):
         acl = self._makeOne()
         self.assertRaises(NotImplementedError, acl.reload)
 
-    def test_reload_missing_w_connection_attr(self):
+    def test_reload_missing_w_implicit_connection(self):
         # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
+        from gcloud.storage._testing import _monkey_defaults
         ROLE = 'role'
         connection = _Connection({})
         acl = self._makeOne()
-        acl._connection = connection
         acl._reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
-        acl.reload()
+        with _monkey_defaults(connection=connection):
+            acl.reload()
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -567,15 +559,16 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/testing/acl')
 
-    def test_reload_empty_result_clears_local_w_connection_attr(self):
+    def test_reload_empty_result_clears_local_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
         ROLE = 'role'
         connection = _Connection({'items': []})
         acl = self._makeOne()
-        acl._connection = connection
         acl._reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
-        acl.reload()
+        with _monkey_defaults(connection=connection):
+            acl.reload()
         self.assertTrue(acl.loaded)
         self.assertEqual(list(acl), [])
         kw = connection._requested
@@ -598,15 +591,16 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/testing/acl')
 
-    def test_reload_nonempty_result_w_connection_attr(self):
+    def test_reload_nonempty_result_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
         ROLE = 'role'
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
         acl = self._makeOne()
-        acl._connection = connection
         acl._reload_path = '/testing/acl'
         acl.loaded = True
-        acl.reload()
+        with _monkey_defaults(connection=connection):
+            acl.reload()
         self.assertTrue(acl.loaded)
         self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
         kw = connection._requested
@@ -629,17 +623,19 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/testing/acl')
 
-    def test_save_wo_attrs_raises_NotImplementedError(self):
+    def test_save_wo_path_raises_NotImplementedError(self):
         acl = self._makeOne()
         acl.loaded = True
         self.assertRaises(NotImplementedError, acl.save)
 
-    def test_save_none_set_none_passed_w_connection_attr(self):
+    def test_save_none_set_none_passed_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
         connection = _Connection()
         acl = self._makeOne()
         acl._connection = connection
         acl._save_path = '/testing'
-        acl.save()
+        with _monkey_defaults(connection=connection):
+            acl.save()
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
@@ -651,13 +647,14 @@ class Test_ACL(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
-    def test_save_existing_missing_none_passed_w_connection_attr(self):
+    def test_save_existing_missing_none_passed_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
         connection = _Connection({})
         acl = self._makeOne()
-        acl._connection = connection
         acl._save_path = '/testing'
         acl.loaded = True
-        acl.save()
+        with _monkey_defaults(connection=connection):
+            acl.save()
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -680,16 +677,17 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': []})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_save_no_arg_w_connection_attr(self):
+    def test_save_no_arg_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
         ROLE = 'role'
         AFTER = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'acl': AFTER})
         acl = self._makeOne()
-        acl._connection = connection
         acl._save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers').grant(ROLE)
-        acl.save()
+        with _monkey_defaults(connection=connection):
+            acl.save()
         self.assertEqual(list(acl), AFTER)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -715,17 +713,18 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': AFTER})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_save_w_arg_w_connection_attr(self):
+    def test_save_w_arg_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
         ROLE1 = 'role1'
         ROLE2 = 'role2'
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
         new_acl = [{'entity': 'allUsers', 'role': ROLE1}]
         connection = _Connection({'acl': [STICKY] + new_acl})
         acl = self._makeOne()
-        acl._connection = connection
         acl._save_path = '/testing'
         acl.loaded = True
-        acl.save(new_acl)
+        with _monkey_defaults(connection=connection):
+            acl.save(new_acl)
         entries = list(acl)
         self.assertEqual(len(entries), 2)
         self.assertTrue(STICKY in entries)
@@ -758,21 +757,18 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': new_acl})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_clear_wo_attrs_raises_NotImplementedError(self):
-        acl = self._makeOne()
-        self.assertRaises(NotImplementedError, acl.clear)
-
-    def test_clear_w_connection_attr(self):
+    def test_clear_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
         ROLE1 = 'role1'
         ROLE2 = 'role2'
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
         connection = _Connection({'acl': [STICKY]})
         acl = self._makeOne()
-        acl._connection = connection
         acl._save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers', ROLE1)
-        acl.clear()
+        with _monkey_defaults(connection=connection):
+            acl.clear()
         self.assertEqual(list(acl), [STICKY])
         kw = connection._requested
         self.assertEqual(len(kw), 1)

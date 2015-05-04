@@ -78,6 +78,8 @@ This list of tuples can be used as the ``entity`` and ``role`` fields
 when sending metadata for ACLs to the API.
 """
 
+from gcloud.storage._helpers import _require_connection
+
 
 class _ACLEntity(object):
     """Class representing a set of roles for an entity.
@@ -347,22 +349,6 @@ class ACL(object):
         return list(self.entities.values())
 
     @property
-    def connection(self):
-        """Compute the connection for API requests for this ACL.
-
-        This is a virtual method, expected to be implemented by subclasses.
-
-        :raises: :class:`NotImplementedError` if ``_connection`` attribute
-                 is not set on the instance.
-
-        """
-        # Allow override for testing
-        connection = getattr(self, '_connection', None)
-        if connection is not None:
-            return connection
-        raise NotImplementedError
-
-    @property
     def reload_path(self):
         """Compute the path for GET API requests for this ACL.
 
@@ -400,12 +386,12 @@ class ACL(object):
         :param connection: explicit connection to use for API request;
                            defaults to instance property.
         """
-        if connection is None:
-            connection = self.connection
+        path = self.reload_path
+        connection = _require_connection(connection)
 
         self.entities.clear()
 
-        found = connection.api_request(method='GET', path=self.reload_path)
+        found = connection.api_request(method='GET', path=path)
         self.loaded = True
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
@@ -421,9 +407,6 @@ class ACL(object):
         :param connection: explicit connection to use for API request;
                            defaults to instance property.
         """
-        if connection is None:
-            connection = self.connection
-
         if acl is None:
             acl = self
             save_to_backend = acl.loaded
@@ -431,8 +414,11 @@ class ACL(object):
             save_to_backend = True
 
         if save_to_backend:
+            path = self.save_path
+            connection = _require_connection(connection)
             result = connection.api_request(
-                method='PATCH', path=self.save_path,
+                method='PATCH',
+                path=path,
                 data={self._URL_PATH_ELEM: list(acl)},
                 query_params={'projection': 'full'})
             self.entities.clear()
