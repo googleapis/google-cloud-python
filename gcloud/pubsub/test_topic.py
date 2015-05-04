@@ -235,9 +235,9 @@ class TestTopic(unittest2.TestCase):
         B64_2 = base64.b64encode(PAYLOAD2)
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1,
+        MESSAGE1 = {'data': B64_1.decode('ascii'),
                     'attributes': {}}
-        MESSAGE2 = {'data': B64_2,
+        MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
@@ -263,9 +263,9 @@ class TestTopic(unittest2.TestCase):
         B64_2 = base64.b64encode(PAYLOAD2)
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1,
+        MESSAGE1 = {'data': B64_1.decode('ascii'),
                     'attributes': {}}
-        MESSAGE2 = {'data': B64_2,
+        MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
@@ -332,9 +332,7 @@ class TestBatch(unittest2.TestCase):
         from gcloud.pubsub.topic import Batch
         return Batch
 
-    def _makeOne(self, topic=None, connection=None):
-        if topic is None:
-            topic = _Topic()
+    def _makeOne(self, topic, connection=None):
         if connection is None:
             return self._getTargetClass()(topic)
         return self._getTargetClass()(topic, connection)
@@ -397,19 +395,16 @@ class TestBatch(unittest2.TestCase):
 
     def test_commit_w_connection_attr(self):
         import base64
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
         PAYLOAD1 = b'This is the first message text'
         PAYLOAD2 = b'This is the second message text'
         B64_1 = base64.b64encode(PAYLOAD1)
         B64_2 = base64.b64encode(PAYLOAD2)
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1,
+        MESSAGE1 = {'data': B64_1.decode('ascii'),
                     'attributes': {}}
-        MESSAGE2 = {'data': B64_2,
+        MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
         topic = _Topic(connection=conn)
         batch = self._makeOne(topic)
@@ -432,9 +427,9 @@ class TestBatch(unittest2.TestCase):
         B64_2 = base64.b64encode(PAYLOAD2)
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1,
+        MESSAGE1 = {'data': B64_1.decode('ascii'),
                     'attributes': {}}
-        MESSAGE2 = {'data': B64_2,
+        MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
         topic = _Topic(connection=conn)
@@ -461,9 +456,9 @@ class TestBatch(unittest2.TestCase):
         B64_2 = base64.b64encode(PAYLOAD2)
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1,
+        MESSAGE1 = {'data': B64_1.decode('ascii'),
                     'attributes': {}}
-        MESSAGE2 = {'data': B64_2,
+        MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
         topic = _Topic(connection=conn)
