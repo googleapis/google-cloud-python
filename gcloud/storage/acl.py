@@ -453,11 +453,6 @@ class BucketACL(ACL):
         self.bucket = bucket
 
     @property
-    def connection(self):
-        """Compute the connection for API requests for this ACL."""
-        return self.bucket.connection
-
-    @property
     def reload_path(self):
         """Compute the path for GET API requests for this ACL."""
         return '%s/%s' % (self.bucket.path, self._URL_PATH_ELEM)
@@ -484,11 +479,6 @@ class ObjectACL(ACL):
     def __init__(self, blob):
         super(ObjectACL, self).__init__()
         self.blob = blob
-
-    @property
-    def connection(self):
-        """Compute the connection for API requests for this ACL."""
-        return self.blob.connection
 
     @property
     def reload_path(self):

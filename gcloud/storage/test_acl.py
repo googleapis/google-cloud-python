@@ -807,13 +807,11 @@ class Test_BucketACL(unittest2.TestCase):
 
     def test_ctor(self):
         NAME = 'name'
-        connection = _Connection()
-        bucket = _Bucket(NAME, connection)
+        bucket = _Bucket(NAME)
         acl = self._makeOne(bucket)
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
         self.assertTrue(acl.bucket is bucket)
-        self.assertTrue(acl.connection is connection)
         self.assertEqual(acl.reload_path, '/b/%s/acl' % NAME)
         self.assertEqual(acl.save_path, '/b/%s' % NAME)
 
@@ -829,13 +827,11 @@ class Test_DefaultObjectACL(unittest2.TestCase):
 
     def test_ctor(self):
         NAME = 'name'
-        connection = _Connection()
-        bucket = _Bucket(NAME, connection)
+        bucket = _Bucket(NAME)
         acl = self._makeOne(bucket)
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
         self.assertTrue(acl.bucket is bucket)
-        self.assertTrue(acl.connection is connection)
         self.assertEqual(acl.reload_path, '/b/%s/defaultObjectAcl' % NAME)
         self.assertEqual(acl.save_path, '/b/%s' % NAME)
 
@@ -852,14 +848,12 @@ class Test_ObjectACL(unittest2.TestCase):
     def test_ctor(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(NAME, connection)
+        bucket = _Bucket(NAME)
         blob = _Blob(bucket, BLOB_NAME)
         acl = self._makeOne(blob)
         self.assertEqual(acl.entities, {})
         self.assertFalse(acl.loaded)
         self.assertTrue(acl.blob is blob)
-        self.assertTrue(acl.connection is connection)
         self.assertEqual(acl.reload_path, '/b/%s/o/%s/acl' % (NAME, BLOB_NAME))
         self.assertEqual(acl.save_path, '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
@@ -871,19 +865,14 @@ class _Blob(object):
         self.blob = blob
 
     @property
-    def connection(self):
-        return self.bucket.connection
-
-    @property
     def path(self):
         return '%s/o/%s' % (self.bucket.path, self.blob)
 
 
 class _Bucket(object):
 
-    def __init__(self, name, connection):
+    def __init__(self, name):
         self.name = name
-        self.connection = connection
 
     @property
     def path(self):
