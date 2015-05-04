@@ -161,12 +161,12 @@ class Topic(object):
         :param connection: the connection to use.  If not passed,
                            falls back to the ``connection`` attribute.
 
-        :rtype: :class:_Batch
+        :rtype: :class:Batch
         """
         if connection is None:
-            return _Batch(self)
+            return Batch(self)
 
-        return _Batch(self, connection=connection)
+        return Batch(self, connection=connection)
 
     def delete(self, connection=None):
         """API call:  delete the topic via a DELETE request
@@ -184,7 +184,7 @@ class Topic(object):
         connection.api_request(method='DELETE', path=self.path)
 
 
-class _Batch(object):
+class Batch(object):
     """Context manager:  collect messages to publish via a single API call.
 
     Helper returned by :meth:Topic.batch
