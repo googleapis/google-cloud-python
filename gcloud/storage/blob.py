@@ -521,8 +521,6 @@ class Blob(_PropertyMixin):
         :param connection: Optional. The connection to use when sending
                            requests. If not provided, falls back to default.
         """
-        if connection is None:
-            connection = self.connection
         self.acl.all().grant_read()
         self.acl.save(connection=connection)
 

@@ -729,7 +729,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(headers['Content-Type'], 'text/plain')
         self.assertEqual(rq[0]['body'], ENCODED)
 
-    def test_make_public(self):
+    def test_make_public_w_implicit_ocnnection(self):
         from gcloud.storage.acl import _ACLEntity
         from gcloud.storage._testing import _monkey_defaults
         BLOB_NAME = 'blob-name'
