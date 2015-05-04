@@ -38,29 +38,35 @@ class Dataset(object):
         self.dataset_id = dataset_id
         self.connection = connection
 
-    def get(self, keys, missing=None, deferred=None):
+    def get(self, keys, missing=None, deferred=None, connection=None):
         """Proxy to :func:`gcloud.datastore.api.get`.
 
         Passes our ``dataset_id``.
         """
+        if connection is None:
+            connection = self.connection
         return get(keys, missing=missing, deferred=deferred,
-                   connection=self.connection, dataset_id=self.dataset_id)
+                   connection=connection, dataset_id=self.dataset_id)
 
-    def put(self, entities):
+    def put(self, entities, connection=None):
         """Proxy to :func:`gcloud.datastore.api.put`.
 
         Passes our ``dataset_id``.
         """
-        return put(entities, connection=self.connection,
-                   dataset_id=self.dataset_id)
+        if connection is None:
+            connection = self.connection
 
-    def delete(self, keys):
+        return put(entities, connection=connection, dataset_id=self.dataset_id)
+
+    def delete(self, keys, connection=None):
         """Proxy to :func:`gcloud.datastore.api.delete`.
 
         Passes our ``dataset_id``.
         """
-        return delete(keys, connection=self.connection,
-                      dataset_id=self.dataset_id)
+        if connection is None:
+            connection = self.connection
+
+        return delete(keys, connection=connection, dataset_id=self.dataset_id)
 
     def key(self, *path_args, **kwargs):
         """Proxy to :class:`gcloud.datastore.key.Key`.
@@ -72,20 +78,25 @@ class Dataset(object):
         kwargs['dataset_id'] = self.dataset_id
         return Key(*path_args, **kwargs)
 
-    def batch(self):
+    def batch(self, connection=None):
         """Proxy to :class:`gcloud.datastore.batch.Batch`.
 
         Passes our ``dataset_id``.
         """
-        return Batch(dataset_id=self.dataset_id, connection=self.connection)
+        if connection is None:
+            connection = self.connection
 
-    def transaction(self):
+        return Batch(dataset_id=self.dataset_id, connection=connection)
+
+    def transaction(self, connection=None):
         """Proxy to :class:`gcloud.datastore.transaction.Transaction`.
 
         Passes our ``dataset_id``.
         """
-        return Transaction(dataset_id=self.dataset_id,
-                           connection=self.connection)
+        if connection is None:
+            connection = self.connection
+
+        return Transaction(dataset_id=self.dataset_id, connection=connection)
 
     def query(self, **kwargs):
         """Proxy to :class:`gcloud.datastore.query.Query`.
