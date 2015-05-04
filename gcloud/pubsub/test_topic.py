@@ -83,7 +83,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(topic.full_name, PATH)
         self.assertTrue(topic.connection is conn)
 
-    def test_create(self):
+    def test_create_w_connection_attr(self):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
@@ -95,7 +95,19 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['method'], 'PUT')
         self.assertEqual(req['path'], '/%s' % PATH)
 
-    def test_exists_miss(self):
+    def test_create_w_passed_connection(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        conn = _Connection({'name': PATH})
+        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        topic.create(connection=conn)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PUT')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_exists_miss_w_connection_attr(self):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
@@ -107,31 +119,19 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
 
-    def test_exists_hit(self):
+    def test_exists_hit_w_passed_connection(self):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'name': PATH})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
-        self.assertTrue(topic.exists())
+        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        self.assertTrue(topic.exists(connection=conn))
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
 
-    def test_delete(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        conn = _Connection({})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
-        topic.delete()
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % PATH)
-
-    def test_publish_single_bytes_wo_attrs(self):
+    def test_publish_single_bytes_wo_attrs_w_connection_attr(self):
         import base64
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
@@ -151,7 +151,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s:publish' % PATH)
         self.assertEqual(req['data'], {'messages': [MESSAGE]})
 
-    def test_publish_single_bytes_wo_attrs_w_add_timestamp(self):
+    def test_publish_single_bytes_wo_attrs_w_add_timestamp_passed_conn(self):
         import base64
         import datetime
         from gcloud.pubsub import topic as MUT
@@ -171,10 +171,10 @@ class TestTopic(unittest2.TestCase):
                    'attributes': {'timestamp': NOW.strftime(_RFC3339_MICROS)}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn,
+        topic = self._makeOne(TOPIC_NAME, project=PROJECT,
                               timestamp_messages=True)
         with _Monkey(MUT, _NOW=_utcnow):
-            msgid = topic.publish(PAYLOAD)
+            msgid = topic.publish(PAYLOAD, connection=conn)
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -225,7 +225,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s:publish' % PATH)
         self.assertEqual(req['data'], {'messages': [MESSAGE]})
 
-    def test_publish_multiple(self):
+    def test_publish_multiple_w_connection_attr(self):
         import base64
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
@@ -243,6 +243,34 @@ class TestTopic(unittest2.TestCase):
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
         topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
         with topic.batch() as batch:
+            batch.publish(PAYLOAD1)
+            batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
+        self.assertEqual(list(batch), [MSGID1, MSGID2])
+        self.assertEqual(list(batch.messages), [])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['data'], {'messages': [MESSAGE1, MESSAGE2]})
+
+    def test_publish_multiple_w_passed_connection(self):
+        import base64
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PAYLOAD1 = b'This is the first message text'
+        PAYLOAD2 = b'This is the second message text'
+        B64_1 = base64.b64encode(PAYLOAD1)
+        B64_2 = base64.b64encode(PAYLOAD2)
+        MSGID1 = 'DEADBEEF'
+        MSGID2 = 'BEADCAFE'
+        MESSAGE1 = {'data': B64_1,
+                    'attributes': {}}
+        MESSAGE2 = {'data': B64_2,
+                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        conn = _Connection({'messageIds': [MSGID1, MSGID2]})
+        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        with topic.batch(connection=conn) as batch:
             batch.publish(PAYLOAD1)
             batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
         self.assertEqual(list(batch), [MSGID1, MSGID2])
@@ -274,6 +302,30 @@ class TestTopic(unittest2.TestCase):
             pass
         self.assertEqual(list(batch), [])
         self.assertEqual(len(conn._requested), 0)
+
+    def test_delete_w_connection_attr(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        conn = _Connection({})
+        topic = self._makeOne(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic.delete()
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'DELETE')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_delete_w_passed_connection(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        conn = _Connection({})
+        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        topic.delete(connection=conn)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'DELETE')
+        self.assertEqual(req['path'], '/%s' % PATH)
 
 
 class _Connection(object):

@@ -87,28 +87,42 @@ class Topic(object):
         """URL path for the topic's APIs"""
         return '/%s' % (self.full_name)
 
-    def create(self):
+    def create(self, connection=None):
         """API call:  create the topic via a PUT request
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/create
-        """
-        self.connection.api_request(method='PUT', path=self.path)
 
-    def exists(self):
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the ``connection`` attribute.
+        """
+        if connection is None:
+            connection = self.connection
+
+        connection.api_request(method='PUT', path=self.path)
+
+    def exists(self, connection=None):
         """API call:  test for the existence of the topic via a GET request
 
         See
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/get
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the ``connection`` attribute.
         """
+        if connection is None:
+            connection = self.connection
+
         try:
-            self.connection.api_request(method='GET', path=self.path)
+            connection.api_request(method='GET', path=self.path)
         except NotFound:
             return False
         else:
             return True
 
-    def publish(self, message, **attrs):
+    def publish(self, message, connection=None, **attrs):
         """API call:  publish a message to a topic via a POST request
 
         See:
@@ -117,36 +131,57 @@ class Topic(object):
         :type message: bytes
         :param message: the message payload
 
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the ``connection`` attribute.
+
         :type attrs: dict (string -> string)
         :message attrs: key-value pairs to send as message attributes
 
         :rtype: str
         :returns: message ID assigned by the server to the published message
         """
+        if connection is None:
+            connection = self.connection
+
         if self.timestamp_messages and 'timestamp' not in attrs:
             attrs['timestamp'] = _NOW().strftime(_RFC3339_MICROS)
         message_b = base64.b64encode(message).decode('ascii')
         message_data = {'data': message_b, 'attributes': attrs}
         data = {'messages': [message_data]}
-        response = self.connection.api_request(method='POST',
-                                               path='%s:publish' % self.path,
-                                               data=data)
+        response = connection.api_request(method='POST',
+                                          path='%s:publish' % self.path,
+                                          data=data)
         return response['messageIds'][0]
 
-    def batch(self):
+    def batch(self, connection=None):
         """Return a batch to use as a context manager.
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the ``connection`` attribute.
 
         :rtype: :class:_Batch
         """
-        return _Batch(self)
+        if connection is None:
+            return _Batch(self)
 
-    def delete(self):
+        return _Batch(self, connection=connection)
+
+    def delete(self, connection=None):
         """API call:  delete the topic via a DELETE request
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/delete
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the ``connection`` attribute.
         """
-        self.connection.api_request(method='DELETE', path=self.path)
+        if connection is None:
+            connection = self.connection
+
+        connection.api_request(method='DELETE', path=self.path)
 
 
 class _Batch(object):
@@ -154,10 +189,13 @@ class _Batch(object):
 
     Helper returned by :meth:Topic.batch
     """
-    def __init__(self, topic):
+    def __init__(self, topic, connection=None):
         self.topic = topic
         self.messages = []
         self.message_ids = []
+        if connection is None:
+            connection = topic.connection
+        self.connection = connection
 
     def __enter__(self):
         return self
@@ -183,7 +221,7 @@ class _Batch(object):
 
     def commit(self):
         """Send saved messages as a single API call."""
-        conn = self.topic.connection
+        conn = self.connection
         response = conn.api_request(method='POST',
                                     path='%s:publish' % self.topic.path,
                                     data={'messages': self.messages[:]})
