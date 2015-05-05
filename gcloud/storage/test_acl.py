@@ -505,35 +505,13 @@ class Test_ACL(unittest2.TestCase):
         entity = acl.entity(TYPE, ID)
         self.assertEqual(acl.get_entities(), [entity])
 
-    def test_reload_path_wo_attr(self):
-        acl = self._makeOne()
-        self.assertRaises(NotImplementedError, lambda: acl.reload_path)
-
-    def test_reload_path_w_attr(self):
-        acl = self._makeOne()
-        acl._reload_path = '/testing/acl'
-        self.assertEqual(acl.reload_path, '/testing/acl')
-
-    def test_save_path_wo_attr(self):
-        acl = self._makeOne()
-        self.assertRaises(NotImplementedError, lambda: acl.save_path)
-
-    def test_save_path_w_attr(self):
-        acl = self._makeOne()
-        acl._save_path = '/testing'
-        self.assertEqual(acl.save_path, '/testing')
-
-    def test_reload_wo_path_raises_NotImplementedError(self):
-        acl = self._makeOne()
-        self.assertRaises(NotImplementedError, acl.reload)
-
     def test_reload_missing_w_implicit_connection(self):
         # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
         from gcloud.storage._testing import _monkey_defaults
         ROLE = 'role'
         connection = _Connection({})
         acl = self._makeOne()
-        acl._reload_path = '/testing/acl'
+        acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
         with _monkey_defaults(connection=connection):
@@ -549,7 +527,7 @@ class Test_ACL(unittest2.TestCase):
         ROLE = 'role'
         connection = _Connection({})
         acl = self._makeOne()
-        acl._reload_path = '/testing/acl'
+        acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
         acl.reload(connection=connection)
@@ -564,7 +542,7 @@ class Test_ACL(unittest2.TestCase):
         ROLE = 'role'
         connection = _Connection({'items': []})
         acl = self._makeOne()
-        acl._reload_path = '/testing/acl'
+        acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
         with _monkey_defaults(connection=connection):
@@ -580,7 +558,7 @@ class Test_ACL(unittest2.TestCase):
         ROLE = 'role'
         connection = _Connection({'items': []})
         acl = self._makeOne()
-        acl._reload_path = '/testing/acl'
+        acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
         acl.reload(connection=connection)
@@ -597,7 +575,7 @@ class Test_ACL(unittest2.TestCase):
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
         acl = self._makeOne()
-        acl._reload_path = '/testing/acl'
+        acl.reload_path = '/testing/acl'
         acl.loaded = True
         with _monkey_defaults(connection=connection):
             acl.reload()
@@ -613,7 +591,7 @@ class Test_ACL(unittest2.TestCase):
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
         acl = self._makeOne()
-        acl._reload_path = '/testing/acl'
+        acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.reload(connection=connection)
         self.assertTrue(acl.loaded)
@@ -623,17 +601,12 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/testing/acl')
 
-    def test_save_wo_path_raises_NotImplementedError(self):
-        acl = self._makeOne()
-        acl.loaded = True
-        self.assertRaises(NotImplementedError, acl.save)
-
     def test_save_none_set_none_passed_w_implicit_connection(self):
         from gcloud.storage._testing import _monkey_defaults
         connection = _Connection()
         acl = self._makeOne()
         acl._connection = connection
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         with _monkey_defaults(connection=connection):
             acl.save()
         kw = connection._requested
@@ -642,7 +615,7 @@ class Test_ACL(unittest2.TestCase):
     def test_save_none_set_none_passed_w_explicit_connection(self):
         connection = _Connection()
         acl = self._makeOne()
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         acl.save(connection=connection)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
@@ -651,7 +624,7 @@ class Test_ACL(unittest2.TestCase):
         from gcloud.storage._testing import _monkey_defaults
         connection = _Connection({})
         acl = self._makeOne()
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         acl.loaded = True
         with _monkey_defaults(connection=connection):
             acl.save()
@@ -666,7 +639,7 @@ class Test_ACL(unittest2.TestCase):
     def test_save_existing_missing_none_passed_w_explicit_connection(self):
         connection = _Connection({})
         acl = self._makeOne()
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         acl.loaded = True
         acl.save(connection=connection)
         self.assertEqual(list(acl), [])
@@ -683,7 +656,7 @@ class Test_ACL(unittest2.TestCase):
         AFTER = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'acl': AFTER})
         acl = self._makeOne()
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers').grant(ROLE)
         with _monkey_defaults(connection=connection):
@@ -701,7 +674,7 @@ class Test_ACL(unittest2.TestCase):
         AFTER = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'acl': AFTER})
         acl = self._makeOne()
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers').grant(ROLE)
         acl.save(connection=connection)
@@ -721,7 +694,7 @@ class Test_ACL(unittest2.TestCase):
         new_acl = [{'entity': 'allUsers', 'role': ROLE1}]
         connection = _Connection({'acl': [STICKY] + new_acl})
         acl = self._makeOne()
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         acl.loaded = True
         with _monkey_defaults(connection=connection):
             acl.save(new_acl)
@@ -743,7 +716,7 @@ class Test_ACL(unittest2.TestCase):
         new_acl = [{'entity': 'allUsers', 'role': ROLE1}]
         connection = _Connection({'acl': [STICKY] + new_acl})
         acl = self._makeOne()
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         acl.loaded = True
         acl.save(new_acl, connection)
         entries = list(acl)
@@ -764,7 +737,7 @@ class Test_ACL(unittest2.TestCase):
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
         connection = _Connection({'acl': [STICKY]})
         acl = self._makeOne()
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers', ROLE1)
         with _monkey_defaults(connection=connection):
@@ -783,7 +756,7 @@ class Test_ACL(unittest2.TestCase):
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
         connection = _Connection({'acl': [STICKY]})
         acl = self._makeOne()
-        acl._save_path = '/testing'
+        acl.save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers', ROLE1)
         acl.clear(connection=connection)

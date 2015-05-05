@@ -172,6 +172,11 @@ class ACL(object):
     _URL_PATH_ELEM = 'acl'
     loaded = False
 
+    # Subclasses must override to provide these attributes (typically,
+    # as properties).
+    reload_path = None
+    save_path = None
+
     def __init__(self):
         self.entities = {}
 
@@ -347,37 +352,6 @@ class ACL(object):
         """
         self._ensure_loaded()
         return list(self.entities.values())
-
-    @property
-    def reload_path(self):
-        """Compute the path for GET API requests for this ACL.
-
-        This is a virtual method, expected to be implemented by subclasses.
-
-        :raises: :class:`NotImplementedError` if ``_reload_path`` attribute
-                 is not set on the instance.
-        """
-        # Allow override for testing
-        path = getattr(self, '_reload_path', None)
-        if path is not None:
-            return path
-        raise NotImplementedError
-
-    @property
-    def save_path(self):
-        """Compute the path for PATCH API requests for this ACL.
-
-        This is a virtual method, expected to be implemented by subclasses.
-
-        :raises: :class:`NotImplementedError` if ``_save_path`` attribute
-                 is not set on the instance.
-
-        """
-        # Allow override for testing
-        path = getattr(self, '_save_path', None)
-        if path is not None:
-            return path
-        raise NotImplementedError
 
     def reload(self, connection=None):
         """Reload the ACL data from Cloud Storage.
