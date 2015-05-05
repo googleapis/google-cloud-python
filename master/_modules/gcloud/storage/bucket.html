@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud 2cdaeb2 documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud 73a341c documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '2cdaeb2',
+        VERSION:     '73a341c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 2cdaeb2 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 73a341c documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%202cdaeb2" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%2073a341c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (2cdaeb2)
+              Version History (73a341c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -213,8 +213,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="c"># We only need the status code (200 or not) so we seek to</span>
             <span class="c"># minimize the returned payload.</span>
             <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="s">&#39;name&#39;</span><span class="p">}</span>
+            <span class="c"># We intentionally pass `_target_object=None` since fields=name</span>
+            <span class="c"># would limit the local properties.</span>
             <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                   <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+                                   <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+                                   <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+            <span class="c"># NOTE: This will not fail immediately in a batch. However, when</span>
+            <span class="c">#       Batch.finish() is called, the resulting `NotFound` will be</span>
+            <span class="c">#       raised.</span>
             <span class="k">return</span> <span class="bp">True</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
@@ -251,7 +257,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">})</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span> <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
 </div>
     <span class="nd">@property</span>
@@ -320,11 +326,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span>
-                                              <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>  <span class="c"># Expect this to be blob_name</span>
-            <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="n">blob</span><span class="p">)</span>
+            <span class="c"># NOTE: We assume response.get(&#39;name&#39;) matches `blob_name`.</span>
             <span class="n">blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+            <span class="c"># NOTE: This will not fail immediately in a batch. However, when</span>
+            <span class="c">#       Batch.finish() is called, the resulting `NotFound` will be</span>
+            <span class="c">#       raised.</span>
             <span class="k">return</span> <span class="n">blob</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">None</span>
@@ -436,7 +444,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="bp">self</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
                               <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 
-        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="c"># We intentionally pass `_target_object=None` since a DELETE</span>
+        <span class="c"># request has no response value (whether in a standard request or</span>
+        <span class="c"># in a batch request).</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                               <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from the current bucket.</span>
@@ -474,7 +486,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="n">blob_path</span> <span class="o">=</span> <span class="n">Blob</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">)</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob_path</span><span class="p">)</span>
+        <span class="c"># We intentionally pass `_target_object=None` since a DELETE</span>
+        <span class="c"># request has no response value (whether in a standard request or</span>
+        <span class="c"># in a batch request).</span>
+        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob_path</span><span class="p">,</span>
+                               <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.delete_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a list of blobs from the current bucket.</span>
@@ -538,7 +554,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">new_name</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span>
         <span class="n">new_blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">destination_bucket</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">new_name</span><span class="p">)</span>
         <span class="n">api_path</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/copyTo&#39;</span> <span class="o">+</span> <span class="n">new_blob</span><span class="o">.</span><span class="n">path</span>
-        <span class="n">copy_result</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">)</span>
+        <span class="n">copy_result</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span>
+                                             <span class="n">_target_object</span><span class="o">=</span><span class="n">new_blob</span><span class="p">)</span>
         <span class="n">new_blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">copy_result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_blob</span>
 </div>

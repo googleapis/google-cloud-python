@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>GCloud Package &mdash; gcloud 2cdaeb2 documentation</title>
+    <title>GCloud Package &mdash; gcloud 73a341c documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '2cdaeb2',
+        VERSION:     '73a341c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 2cdaeb2 documentation" href="index.html" />
+    <link rel="top" title="gcloud 73a341c documentation" href="index.html" />
     <link rel="next" title="Datastore" href="datastore-api.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%202cdaeb2" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%2073a341c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (2cdaeb2)
+              Version History (73a341c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -211,7 +211,7 @@ must be updated by subclasses.</p>
 
 <dl class="method">
 <dt id="gcloud.connection.JSONConnection.api_request">
-<code class="descname">api_request</code><span class="sig-paren">(</span><em>method</em>, <em>path</em>, <em>query_params=None</em>, <em>data=None</em>, <em>content_type=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em>, <em>expect_json=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#JSONConnection.api_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.JSONConnection.api_request" title="Permalink to this definition">#</a></dt>
+<code class="descname">api_request</code><span class="sig-paren">(</span><em>method</em>, <em>path</em>, <em>query_params=None</em>, <em>data=None</em>, <em>content_type=None</em>, <em>api_base_url=None</em>, <em>api_version=None</em>, <em>expect_json=True</em>, <em>_target_object=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#JSONConnection.api_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.JSONConnection.api_request" title="Permalink to this definition">#</a></dt>
 <dd><p>Make a request over the HTTP transport to the API.</p>
 <p>You shouldn&#8217;t need to use this method, but if you plan to
 interact with the API using these primitives, this is the
@@ -243,6 +243,10 @@ gcloud-python.</li>
 <li><strong>expect_json</strong> (<em>boolean</em>) &#8211; If True, this method will try to parse the
 response as JSON and raise an exception if
 that cannot be done.  Default is True.</li>
+<li><strong>_target_object</strong> (object or <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; Protected argument to be used by library
+callers. This can allow custom behavior, for
+example, to defer an HTTP request and complete
+initialization of the object at a later time.</li>
 </ul>
 </td>
 </tr>
