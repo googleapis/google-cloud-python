@@ -227,7 +227,8 @@ class Blob(_PropertyMixin):
             # minimize the returned payload.
             query_params = {'fields': 'name'}
             connection.api_request(method='GET', path=self.path,
-                                   query_params=query_params)
+                                   query_params=query_params,
+                                   _target_object=self)
             return True
         except NotFound:
             return False

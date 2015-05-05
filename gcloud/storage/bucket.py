@@ -131,8 +131,14 @@ class Bucket(_PropertyMixin):
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
             query_params = {'fields': 'name'}
+            # We intentionally pass `_target_object=None` since fields=name
+            # would limit the local properties.
             connection.api_request(method='GET', path=self.path,
-                                   query_params=query_params)
+                                   query_params=query_params,
+                                   _target_object=None)
+            # NOTE: This will not fail immediately in a batch. However, when
+            #       Batch.finish() is called, the resulting `NotFound` will be
+            #       raised.
             return True
         except NotFound:
             return False
@@ -169,7 +175,7 @@ class Bucket(_PropertyMixin):
         query_params = {'project': project}
         api_response = connection.api_request(
             method='POST', path='/b', query_params=query_params,
-            data={'name': self.name})
+            data={'name': self.name}, _target_object=self)
         self._set_properties(api_response)
 
     @property
@@ -238,11 +244,13 @@ class Bucket(_PropertyMixin):
         connection = _require_connection(connection)
         blob = Blob(bucket=self, name=blob_name)
         try:
-            response = connection.api_request(method='GET',
-                                              path=blob.path)
-            name = response.get('name')  # Expect this to be blob_name
-            blob = Blob(name, bucket=self)
+            response = connection.api_request(
+                method='GET', path=blob.path, _target_object=blob)
+            # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
+            # NOTE: This will not fail immediately in a batch. However, when
+            #       Batch.finish() is called, the resulting `NotFound` will be
+            #       raised.
             return blob
         except NotFound:
             return None
@@ -354,7 +362,11 @@ class Bucket(_PropertyMixin):
             self.delete_blobs(blobs, on_error=lambda blob: None,
                               connection=connection)
 
-        connection.api_request(method='DELETE', path=self.path)
+        # We intentionally pass `_target_object=None` since a DELETE
+        # request has no response value (whether in a standard request or
+        # in a batch request).
+        connection.api_request(method='DELETE', path=self.path,
+                               _target_object=None)
 
     def delete_blob(self, blob_name, connection=None):
         """Deletes a blob from the current bucket.
@@ -392,7 +404,11 @@ class Bucket(_PropertyMixin):
         """
         connection = _require_connection(connection)
         blob_path = Blob.path_helper(self.path, blob_name)
-        connection.api_request(method='DELETE', path=blob_path)
+        # We intentionally pass `_target_object=None` since a DELETE
+        # request has no response value (whether in a standard request or
+        # in a batch request).
+        connection.api_request(method='DELETE', path=blob_path,
+                               _target_object=None)
 
     def delete_blobs(self, blobs, on_error=None, connection=None):
         """Deletes a list of blobs from the current bucket.
@@ -456,7 +472,8 @@ class Bucket(_PropertyMixin):
             new_name = blob.name
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
-        copy_result = connection.api_request(method='POST', path=api_path)
+        copy_result = connection.api_request(method='POST', path=api_path,
+                                             _target_object=new_blob)
         new_blob._set_properties(copy_result)
         return new_blob
 
