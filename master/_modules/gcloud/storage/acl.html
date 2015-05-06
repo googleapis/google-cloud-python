@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.acl &mdash; gcloud 73a341c documentation</title>
+    <title>gcloud.storage.acl &mdash; gcloud 90b4f72 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '73a341c',
+        VERSION:     '90b4f72',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 73a341c documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 90b4f72 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%2073a341c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%2090b4f72" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (73a341c)
+              Version History (90b4f72)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -160,6 +160,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">when sending metadata for ACLs to the API.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_require_connection</span>
+
 
 <span class="k">class</span> <span class="nc">_ACLEntity</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class representing a set of roles for an entity.</span>
@@ -249,7 +251,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="ACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL">[docs]</a><span class="k">class</span> <span class="nc">ACL</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Container class representing a list of access controls.&quot;&quot;&quot;</span>
 
+    <span class="n">_URL_PATH_ELEM</span> <span class="o">=</span> <span class="s">&#39;acl&#39;</span>
     <span class="n">loaded</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="c"># Subclasses must override to provide these attributes (typically,</span>
+    <span class="c"># as properties).</span>
+    <span class="n">reload_path</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">save_path</span> <span class="o">=</span> <span class="bp">None</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span> <span class="o">=</span> <span class="p">{}</span>
@@ -427,35 +435,70 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 </div>
-<div class="viewcode-block" id="ACL.reload"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ACL.reload"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.</span>
 
-<span class="sd">        This is a virtual method, expected to be implemented by subclasses.</span>
-
-<span class="sd">        :raises: :class:`NotImplementedError`</span>
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or None</span>
+<span class="sd">        :param connection: explicit connection to use for API request;</span>
+<span class="sd">                           defaults to instance property.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_path</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="n">found</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
 </div>
-<div class="viewcode-block" id="ACL.save"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A method to be overridden by subclasses.</span>
+<div class="viewcode-block" id="ACL.save"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save this ACL for the current bucket.</span>
 
 <span class="sd">        :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.</span>
 <span class="sd">        :param acl: The ACL object to save.  If left blank, this will save</span>
 <span class="sd">                    current entries.</span>
 
-<span class="sd">        :raises: NotImplementedError</span>
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or None</span>
+<span class="sd">        :param connection: explicit connection to use for API request;</span>
+<span class="sd">                           defaults to instance property.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">acl</span> <span class="o">=</span> <span class="bp">self</span>
+            <span class="n">save_to_backend</span> <span class="o">=</span> <span class="n">acl</span><span class="o">.</span><span class="n">loaded</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">save_to_backend</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">if</span> <span class="n">save_to_backend</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span>
+                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)},</span>
+                <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">,</span> <span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
 </div>
-<div class="viewcode-block" id="ACL.clear"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remove all entities from the ACL.&quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+<div class="viewcode-block" id="ACL.clear"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove all ACL entries.</span>
+
+<span class="sd">        Note that this won&#39;t actually remove *ALL* the rules, but it</span>
+<span class="sd">        will remove all the non-default rules.  In short, you&#39;ll still</span>
+<span class="sd">        have access to a bucket that you created even after you clear</span>
+<span class="sd">        ACL rules with this method.</span>
+
+<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or None</span>
+<span class="sd">        :param connection: explicit connection to use for API request;</span>
+<span class="sd">                           defaults to instance property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">([],</span> <span class="n">connection</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="BucketACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.BucketACL">[docs]</a><span class="k">class</span> <span class="nc">BucketACL</span><span class="p">(</span><span class="n">ACL</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An ACL specifically for a bucket.&quot;&quot;&quot;</span>
-
-    <span class="n">_URL_PATH_ELEM</span> <span class="o">=</span> <span class="s">&#39;acl&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -465,81 +508,17 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="nb">super</span><span class="p">(</span><span class="n">BucketACL</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
 
-<div class="viewcode-block" id="BucketACL.reload"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.BucketACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reload_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the path for GET API requests for this ACL.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">)</span>
 
-        <span class="n">url_path</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">)</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">url_path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">()):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">save_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the path for PATCH API requests for this ACL.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span>
+
 </div>
-<div class="viewcode-block" id="BucketACL.save"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.BucketACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Save this ACL for the current bucket.</span>
-
-<span class="sd">        If called without arguments, this will save the entries</span>
-<span class="sd">        currently stored on this ACL::</span>
-
-<span class="sd">           &gt;&gt;&gt; acl.save()</span>
-
-<span class="sd">        You can also provide a specific ACL to save instead of the one</span>
-<span class="sd">        currently set on the Bucket object::</span>
-
-<span class="sd">           &gt;&gt;&gt; acl.save(acl=my_other_acl)</span>
-
-<span class="sd">        You can use this to set access controls to be consistent from</span>
-<span class="sd">        one bucket to another::</span>
-
-<span class="sd">          &gt;&gt;&gt; bucket1 = storage.get_bucket(bucket1_name, connection=connection)</span>
-<span class="sd">          &gt;&gt;&gt; bucket2 = storage.get_bucket(bucket2_name, connection=connection)</span>
-<span class="sd">          &gt;&gt;&gt; bucket2.acl.save(bucket1.acl)</span>
-
-<span class="sd">        :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.</span>
-<span class="sd">        :param acl: The ACL object to save.  If left blank, this will save</span>
-<span class="sd">                    current entries.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">acl</span> <span class="o">=</span> <span class="bp">self</span>
-            <span class="n">save_to_backend</span> <span class="o">=</span> <span class="n">acl</span><span class="o">.</span><span class="n">loaded</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">save_to_backend</span> <span class="o">=</span> <span class="bp">True</span>
-
-        <span class="k">if</span> <span class="n">save_to_backend</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)},</span>
-                <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">,</span> <span class="p">()):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
-</div>
-<div class="viewcode-block" id="BucketACL.clear"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.BucketACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remove all ACL entries.</span>
-
-<span class="sd">        Note that this won&#39;t actually remove *ALL* the rules, but it</span>
-<span class="sd">        will remove all the non-default rules.  In short, you&#39;ll still</span>
-<span class="sd">        have access to a bucket that you created even after you clear</span>
-<span class="sd">        ACL rules with this method.</span>
-
-<span class="sd">        For example, imagine that you granted access to this bucket to a</span>
-<span class="sd">        bunch of coworkers::</span>
-
-<span class="sd">          &gt;&gt;&gt; acl.user(&#39;coworker1@example.org&#39;).grant_read()</span>
-<span class="sd">          &gt;&gt;&gt; acl.user(&#39;coworker2@example.org&#39;).grant_read()</span>
-<span class="sd">          &gt;&gt;&gt; acl.save()</span>
-
-<span class="sd">        Now they work in another part of the company and you want to</span>
-<span class="sd">        &#39;start fresh&#39; on who has access::</span>
-
-<span class="sd">          &gt;&gt;&gt; acl.clear()</span>
-
-<span class="sd">        At this point all the custom rules you created have been removed.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">([])</span>
-
-</div></div>
 <div class="viewcode-block" id="DefaultObjectACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.DefaultObjectACL">[docs]</a><span class="k">class</span> <span class="nc">DefaultObjectACL</span><span class="p">(</span><span class="n">BucketACL</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class representing the default object ACL for a bucket.&quot;&quot;&quot;</span>
 
@@ -557,47 +536,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="nb">super</span><span class="p">(</span><span class="n">ObjectACL</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob</span> <span class="o">=</span> <span class="n">blob</span>
 
-<div class="viewcode-block" id="ObjectACL.reload"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ObjectACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reload_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the path for GET API requests for this ACL.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/acl&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span>
 
-        <span class="n">url_path</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/acl&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span>
-        <span class="n">found</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">url_path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">()):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-</div>
-<div class="viewcode-block" id="ObjectACL.save"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ObjectACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Save the ACL data for this blob.</span>
-
-<span class="sd">        :type acl: :class:`gcloud.storage.acl.ACL`</span>
-<span class="sd">        :param acl: The ACL object to save.  If left blank, this will</span>
-<span class="sd">                    save the entries set locally on the ACL.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">acl</span> <span class="o">=</span> <span class="bp">self</span>
-            <span class="n">save_to_backend</span> <span class="o">=</span> <span class="n">acl</span><span class="o">.</span><span class="n">loaded</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">save_to_backend</span> <span class="o">=</span> <span class="bp">True</span>
-
-        <span class="k">if</span> <span class="n">save_to_backend</span><span class="p">:</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;acl&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)},</span>
-                <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="p">()):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
-</div>
-<div class="viewcode-block" id="ObjectACL.clear"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ObjectACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remove all ACL rules from the blob.</span>
-
-<span class="sd">        Note that this won&#39;t actually remove *ALL* the rules, but it</span>
-<span class="sd">        will remove all the non-default rules.  In short, you&#39;ll still</span>
-<span class="sd">        have access to a blob that you created even after you clear ACL</span>
-<span class="sd">        rules with this method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">([])</span></div></div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">save_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the path for PATCH API requests for this ACL.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
