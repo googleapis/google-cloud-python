@@ -17,6 +17,7 @@
 from gcloud.exceptions import NotFound
 from gcloud.pubsub.message import Message
 from gcloud.pubsub.topic import Topic
+from gcloud.pubsub._implicit_environ import _require_connection
 
 
 class Subscription(object):
@@ -46,16 +47,11 @@ class Subscription(object):
         self.push_endpoint = push_endpoint
 
     @classmethod
-    def from_api_repr(cls, resource, connection=None, topics=None):
+    def from_api_repr(cls, resource, topics=None):
         """Factory:  construct a topic given its API representation
 
         :type resource: dict
         :param resource: topic resource representation returned from the API
-
-        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
-        :param connection: the connection to use.  If not passed,
-                           falls back to the default inferred from the
-                           environment.
 
         :type topics: dict or None
         :param topics: A mapping of topic names -> topics.  If not passed,
@@ -68,8 +64,7 @@ class Subscription(object):
         t_name = resource['topic']
         topic = topics.get(t_name)
         if topic is None:
-            topic = topics[t_name] = Topic.from_api_repr({'name': t_name},
-                                                         connection)
+            topic = topics[t_name] = Topic.from_api_repr({'name': t_name})
         _, _, _, name = resource['name'].split('/')
         ack_deadline = resource.get('ackDeadlineSeconds')
         push_config = resource.get('pushConfig', {})
@@ -82,11 +77,15 @@ class Subscription(object):
         project = self.topic.project
         return '/projects/%s/subscriptions/%s' % (project, self.name)
 
-    def create(self):
+    def create(self, connection=None):
         """API call:  create the subscription via a PUT request
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/create
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the topic's connection.
         """
         data = {'topic': self.topic.full_name}
 
@@ -96,36 +95,44 @@ class Subscription(object):
         if self.push_endpoint is not None:
             data['pushConfig'] = {'pushEndpoint': self.push_endpoint}
 
-        conn = self.topic.connection
-        conn.api_request(method='PUT', path=self.path, data=data)
+        connection = _require_connection(connection)
+        connection.api_request(method='PUT', path=self.path, data=data)
 
-    def exists(self):
+    def exists(self, connection=None):
         """API call:  test existence of the subscription via a GET request
 
         See
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the topic's connection.
         """
-        conn = self.topic.connection
+        connection = _require_connection(connection)
         try:
-            conn.api_request(method='GET', path=self.path)
+            connection.api_request(method='GET', path=self.path)
         except NotFound:
             return False
         else:
             return True
 
-    def reload(self):
+    def reload(self, connection=None):
         """API call:  sync local subscription configuration via a GET request
 
         See
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the topic's connection.
         """
-        conn = self.topic.connection
-        data = conn.api_request(method='GET', path=self.path)
+        connection = _require_connection(connection)
+        data = connection.api_request(method='GET', path=self.path)
         self.ack_deadline = data.get('ackDeadline')
         push_config = data.get('pushConfig', {})
         self.push_endpoint = push_config.get('pushEndpoint')
 
-    def modify_push_configuration(self, push_endpoint):
+    def modify_push_configuration(self, push_endpoint, connection=None):
         """API call:  update the push endpoint for the subscription.
 
         See:
@@ -135,18 +142,22 @@ class Subscription(object):
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end.  If None, the application must pull
                               messages.
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the topic's connection.
         """
+        connection = _require_connection(connection)
         data = {}
         config = data['pushConfig'] = {}
         if push_endpoint is not None:
             config['pushEndpoint'] = push_endpoint
-        conn = self.topic.connection
-        conn.api_request(method='POST',
-                         path='%s:modifyPushConfig' % self.path,
-                         data=data)
+        connection.api_request(method='POST',
+                               path='%s:modifyPushConfig' % self.path,
+                               data=data)
         self.push_endpoint = push_endpoint
 
-    def pull(self, return_immediately=False, max_messages=1):
+    def pull(self, return_immediately=False, max_messages=1, connection=None):
         """API call:  retrieve messages for the subscription.
 
         See:
@@ -161,21 +172,25 @@ class Subscription(object):
         :type max_messages: int
         :param max_messages: the maximum number of messages to return.
 
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the topic's connection.
+
         :rtype: list of (ack_id, message) tuples
         :returns: sequence of tuples: ``ack_id`` is the ID to be used in a
                   subsequent call to :meth:`acknowledge`, and ``message``
                   is an instance of :class:`gcloud.pubsub.message.Message`.
         """
+        connection = _require_connection(connection)
         data = {'returnImmediately': return_immediately,
                 'maxMessages': max_messages}
-        conn = self.topic.connection
-        response = conn.api_request(method='POST',
-                                    path='%s:pull' % self.path,
-                                    data=data)
+        response = connection.api_request(method='POST',
+                                          path='%s:pull' % self.path,
+                                          data=data)
         return [(info['ackId'], Message.from_api_repr(info['message']))
                 for info in response['receivedMessages']]
 
-    def acknowledge(self, ack_ids):
+    def acknowledge(self, ack_ids, connection=None):
         """API call:  acknowledge retrieved messages for the subscription.
 
         See:
@@ -183,14 +198,18 @@ class Subscription(object):
 
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged
-        """
-        data = {'ackIds': ack_ids}
-        conn = self.topic.connection
-        conn.api_request(method='POST',
-                         path='%s:acknowledge' % self.path,
-                         data=data)
 
-    def modify_ack_deadline(self, ack_id, ack_deadline):
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the topic's connection.
+        """
+        connection = _require_connection(connection)
+        data = {'ackIds': ack_ids}
+        connection.api_request(method='POST',
+                               path='%s:acknowledge' % self.path,
+                               data=data)
+
+    def modify_ack_deadline(self, ack_id, ack_deadline, connection=None):
         """API call:  update acknowledgement deadline for a retrieved message.
 
         See:
@@ -201,18 +220,26 @@ class Subscription(object):
 
         :type ack_deadline: int
         :param ack_deadline: new deadline for the message, in seconds
-        """
-        data = {'ackId': ack_id, 'ackDeadlineSeconds': ack_deadline}
-        conn = self.topic.connection
-        conn.api_request(method='POST',
-                         path='%s:modifyAckDeadline' % self.path,
-                         data=data)
 
-    def delete(self):
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the topic's connection.
+        """
+        connection = _require_connection(connection)
+        data = {'ackId': ack_id, 'ackDeadlineSeconds': ack_deadline}
+        connection.api_request(method='POST',
+                               path='%s:modifyAckDeadline' % self.path,
+                               data=data)
+
+    def delete(self, connection=None):
         """API call:  delete the subscription via a DELETE request.
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/delete
+
+        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+        :param connection: the connection to use.  If not passed,
+                           falls back to the topic's connection.
         """
-        conn = self.topic.connection
-        conn.api_request(method='DELETE', path=self.path)
+        connection = _require_connection(connection)
+        connection.api_request(method='DELETE', path=self.path)

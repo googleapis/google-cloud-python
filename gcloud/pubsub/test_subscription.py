@@ -44,9 +44,8 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
 
-    def test_from_api_repr_no_topics_no_connection(self):
+    def test_from_api_repr_no_topics(self):
         from gcloud.pubsub.topic import Topic
-        from gcloud.pubsub._testing import _monkey_defaults
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
@@ -58,16 +57,13 @@ class TestSubscription(unittest2.TestCase):
                     'name': SUB_PATH,
                     'ackDeadlineSeconds': DEADLINE,
                     'pushConfig': {'pushEndpoint': ENDPOINT}}
-        conn = _Connection()
         klass = self._getTargetClass()
-        with _monkey_defaults(connection=conn):
-            subscription = klass.from_api_repr(resource, connection=conn)
+        subscription = klass.from_api_repr(resource)
         self.assertEqual(subscription.name, SUB_NAME)
         topic = subscription.topic
         self.assertTrue(isinstance(topic, Topic))
         self.assertEqual(topic.name, TOPIC_NAME)
         self.assertEqual(topic.project, PROJECT)
-        self.assertTrue(topic.connection is conn)
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
 
@@ -84,18 +80,15 @@ class TestSubscription(unittest2.TestCase):
                     'name': SUB_PATH,
                     'ackDeadlineSeconds': DEADLINE,
                     'pushConfig': {'pushEndpoint': ENDPOINT}}
-        conn = _Connection()
         topics = {}
         klass = self._getTargetClass()
-        subscription = klass.from_api_repr(resource, connection=conn,
-                                           topics=topics)
+        subscription = klass.from_api_repr(resource, topics=topics)
         self.assertEqual(subscription.name, SUB_NAME)
         topic = subscription.topic
         self.assertTrue(isinstance(topic, Topic))
         self.assertTrue(topic is topics[TOPIC_PATH])
         self.assertEqual(topic.name, TOPIC_NAME)
         self.assertEqual(topic.project, PROJECT)
-        self.assertTrue(topic.connection is conn)
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
 
@@ -120,7 +113,8 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
 
-    def test_create_pull_wo_ack_deadline(self):
+    def test_create_pull_wo_ack_deadline_w_implicit_connection(self):
+        from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -128,16 +122,17 @@ class TestSubscription(unittest2.TestCase):
         TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         BODY = {'topic': TOPIC_PATH}
         conn = _Connection({'name': SUB_PATH})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        subscription.create()
+        with _monkey_defaults(connection=conn):
+            subscription.create()
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'PUT')
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
         self.assertEqual(req['data'], BODY)
 
-    def test_create_push_w_ack_deadline(self):
+    def test_create_push_w_ack_deadline_w_explicit_connection(self):
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -149,47 +144,50 @@ class TestSubscription(unittest2.TestCase):
                 'ackDeadline': DEADLINE,
                 'pushConfig': {'pushEndpoint': ENDPOINT}}
         conn = _Connection({'name': SUB_PATH})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic, DEADLINE, ENDPOINT)
-        subscription.create()
+        subscription.create(connection=conn)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'PUT')
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
         self.assertEqual(req['data'], BODY)
 
-    def test_exists_miss(self):
+    def test_exists_miss_w_implicit_connection(self):
+        from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
         TOPIC_NAME = 'topic_name'
         conn = _Connection()
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        self.assertFalse(subscription.exists())
+        with _monkey_defaults(connection=conn):
+            self.assertFalse(subscription.exists())
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
         self.assertEqual(req.get('query_params'), None)
 
-    def test_exists_hit(self):
+    def test_exists_hit_w_explicit_connection(self):
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
         TOPIC_NAME = 'topic_name'
         TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'name': SUB_PATH, 'topic': TOPIC_PATH})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        self.assertTrue(subscription.exists())
+        self.assertTrue(subscription.exists(connection=conn))
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
         self.assertEqual(req.get('query_params'), None)
 
-    def test_reload(self):
+    def test_reload_w_implicit_connection(self):
+        from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -201,9 +199,10 @@ class TestSubscription(unittest2.TestCase):
                             'topic': TOPIC_PATH,
                             'ackDeadline': DEADLINE,
                             'pushConfig': {'pushEndpoint': ENDPOINT}})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        subscription.reload()
+        with _monkey_defaults(connection=conn):
+            subscription.reload()
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
         self.assertEqual(len(conn._requested), 1)
@@ -211,16 +210,40 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
 
-    def test_modify_push_config_w_endpoint(self):
+    def test_reload_w_explicit_connection(self):
+        PROJECT = 'PROJECT'
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        TOPIC_NAME = 'topic_name'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        DEADLINE = 42
+        ENDPOINT = 'https://api.example.com/push'
+        conn = _Connection({'name': SUB_PATH,
+                            'topic': TOPIC_PATH,
+                            'ackDeadline': DEADLINE,
+                            'pushConfig': {'pushEndpoint': ENDPOINT}})
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
+        subscription = self._makeOne(SUB_NAME, topic)
+        subscription.reload(connection=conn)
+        self.assertEqual(subscription.ack_deadline, DEADLINE)
+        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+
+    def test_modify_push_config_w_endpoint_w_implicit_connection(self):
+        from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
         TOPIC_NAME = 'topic_name'
         ENDPOINT = 'https://api.example.com/push'
         conn = _Connection({})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        subscription.modify_push_configuration(push_endpoint=ENDPOINT)
+        with _monkey_defaults(connection=conn):
+            subscription.modify_push_configuration(push_endpoint=ENDPOINT)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -229,16 +252,17 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['data'],
                          {'pushConfig': {'pushEndpoint': ENDPOINT}})
 
-    def test_modify_push_config_wo_endpoint(self):
+    def test_modify_push_config_wo_endpoint_w_explicit_connection(self):
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
         TOPIC_NAME = 'topic_name'
         ENDPOINT = 'https://api.example.com/push'
         conn = _Connection({})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic, push_endpoint=ENDPOINT)
-        subscription.modify_push_configuration(push_endpoint=None)
+        subscription.modify_push_configuration(push_endpoint=None,
+                                               connection=conn)
         self.assertEqual(subscription.push_endpoint, None)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -246,9 +270,10 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s:modifyPushConfig' % SUB_PATH)
         self.assertEqual(req['data'], {'pushConfig': {}})
 
-    def test_pull_wo_return_immediately_wo_max_messages(self):
+    def test_pull_wo_return_immediately_max_messages_w_implicit_conn(self):
         import base64
         from gcloud.pubsub.message import Message
+        from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -260,9 +285,10 @@ class TestSubscription(unittest2.TestCase):
         MESSAGE = {'messageId': MSG_ID, 'data': B64}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         conn = _Connection({'receivedMessages': [REC_MESSAGE]})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        pulled = subscription.pull()
+        with _monkey_defaults(connection=conn):
+            pulled = subscription.pull()
         self.assertEqual(len(pulled), 1)
         ack_id, message = pulled[0]
         self.assertEqual(ack_id, ACK_ID)
@@ -277,7 +303,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['data'],
                          {'returnImmediately': False, 'maxMessages': 1})
 
-    def test_pull_w_return_immediately_w_max_messages(self):
+    def test_pull_w_return_immediately_w_max_messages_w_explicit_conn(self):
         import base64
         from gcloud.pubsub.message import Message
         PROJECT = 'PROJECT'
@@ -291,9 +317,10 @@ class TestSubscription(unittest2.TestCase):
         MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         conn = _Connection({'receivedMessages': [REC_MESSAGE]})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        pulled = subscription.pull(return_immediately=True, max_messages=3)
+        pulled = subscription.pull(return_immediately=True, max_messages=3,
+                                   connection=conn)
         self.assertEqual(len(pulled), 1)
         ack_id, message = pulled[0]
         self.assertEqual(ack_id, ACK_ID)
@@ -308,7 +335,8 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['data'],
                          {'returnImmediately': True, 'maxMessages': 3})
 
-    def test_acknowledge(self):
+    def test_acknowledge_w_implicit_connection(self):
+        from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -316,16 +344,35 @@ class TestSubscription(unittest2.TestCase):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         conn = _Connection({})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        subscription.acknowledge([ACK_ID1, ACK_ID2])
+        with _monkey_defaults(connection=conn):
+            subscription.acknowledge([ACK_ID1, ACK_ID2])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s:acknowledge' % SUB_PATH)
         self.assertEqual(req['data'], {'ackIds': [ACK_ID1, ACK_ID2]})
 
-    def test_modify_ack_deadline(self):
+    def test_acknowledge_w_explicit_connection(self):
+        PROJECT = 'PROJECT'
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        TOPIC_NAME = 'topic_name'
+        ACK_ID1 = 'DEADBEEF'
+        ACK_ID2 = 'BEADCAFE'
+        conn = _Connection({})
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
+        subscription = self._makeOne(SUB_NAME, topic)
+        subscription.acknowledge([ACK_ID1, ACK_ID2], connection=conn)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s:acknowledge' % SUB_PATH)
+        self.assertEqual(req['data'], {'ackIds': [ACK_ID1, ACK_ID2]})
+
+    def test_modify_ack_deadline_w_implicit_connection(self):
+        from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -333,9 +380,10 @@ class TestSubscription(unittest2.TestCase):
         ACK_ID = 'DEADBEEF'
         DEADLINE = 42
         conn = _Connection({})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        subscription.modify_ack_deadline(ACK_ID, DEADLINE)
+        with _monkey_defaults(connection=conn):
+            subscription.modify_ack_deadline(ACK_ID, DEADLINE)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
@@ -343,15 +391,49 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['data'],
                          {'ackId': ACK_ID, 'ackDeadlineSeconds': DEADLINE})
 
-    def test_delete(self):
+    def test_modify_ack_deadline_w_explicit_connection(self):
+        PROJECT = 'PROJECT'
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        TOPIC_NAME = 'topic_name'
+        ACK_ID = 'DEADBEEF'
+        DEADLINE = 42
+        conn = _Connection({})
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
+        subscription = self._makeOne(SUB_NAME, topic)
+        subscription.modify_ack_deadline(ACK_ID, DEADLINE, connection=conn)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s:modifyAckDeadline' % SUB_PATH)
+        self.assertEqual(req['data'],
+                         {'ackId': ACK_ID, 'ackDeadlineSeconds': DEADLINE})
+
+    def test_delete_w_implicit_connection(self):
+        from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
         TOPIC_NAME = 'topic_name'
         conn = _Connection({})
-        topic = _Topic(TOPIC_NAME, project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        subscription.delete()
+        with _monkey_defaults(connection=conn):
+            subscription.delete()
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'DELETE')
+        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+
+    def test_delete_w_explicit_connection(self):
+        PROJECT = 'PROJECT'
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        TOPIC_NAME = 'topic_name'
+        conn = _Connection({})
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
+        subscription = self._makeOne(SUB_NAME, topic)
+        subscription.delete(connection=conn)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'DELETE')
@@ -378,9 +460,8 @@ class _Connection(object):
 
 class _Topic(object):
 
-    def __init__(self, name, project, connection):
+    def __init__(self, name, project):
         self.name = name
         self.project = project
-        self.connection = connection
         self.full_name = 'projects/%s/topics/%s' % (project, name)
         self.path = '/projects/%s/topics/%s' % (project, name)

@@ -15,7 +15,7 @@
 """Define API functions (not bound to classes)."""
 
 from gcloud._helpers import get_default_project
-from gcloud.pubsub._implicit_environ import get_default_connection
+from gcloud.pubsub._implicit_environ import _require_connection
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
@@ -53,8 +53,7 @@ def list_topics(page_size=None, page_token=None,
     if project is None:
         project = get_default_project()
 
-    if connection is None:
-        connection = get_default_connection()
+    connection = _require_connection(connection)
 
     params = {}
 
@@ -66,8 +65,7 @@ def list_topics(page_size=None, page_token=None,
 
     path = '/projects/%s/topics' % project
     resp = connection.api_request(method='GET', path=path, query_params=params)
-    topics = [Topic.from_api_repr(resource, connection)
-              for resource in resp['topics']]
+    topics = [Topic.from_api_repr(resource) for resource in resp['topics']]
     return topics, resp.get('nextPageToken')
 
 
@@ -110,8 +108,7 @@ def list_subscriptions(page_size=None, page_token=None, topic_name=None,
     if project is None:
         project = get_default_project()
 
-    if connection is None:
-        connection = get_default_connection()
+    connection = _require_connection(connection)
 
     params = {}
 
@@ -128,8 +125,6 @@ def list_subscriptions(page_size=None, page_token=None, topic_name=None,
 
     resp = connection.api_request(method='GET', path=path, query_params=params)
     topics = {}
-    subscriptions = [Subscription.from_api_repr(resource,
-                                                connection=connection,
-                                                topics=topics)
+    subscriptions = [Subscription.from_api_repr(resource, topics=topics)
                      for resource in resp['subscriptions']]
     return subscriptions, resp.get('nextPageToken')
