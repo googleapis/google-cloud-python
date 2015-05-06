@@ -731,6 +731,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_make_public(self):
         from gcloud.storage.acl import _ACLEntity
+        from gcloud.storage._testing import _monkey_defaults
         BLOB_NAME = 'blob-name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive}
@@ -738,7 +739,8 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.acl.loaded = True
-        blob.make_public()
+        with _monkey_defaults(connection=connection):
+            blob.make_public()
         self.assertEqual(list(blob.acl), permissive)
         kw = connection._requested
         self.assertEqual(len(kw), 1)

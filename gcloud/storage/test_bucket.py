@@ -890,6 +890,7 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_make_public_defaults(self):
         from gcloud.storage.acl import _ACLEntity
+        from gcloud.storage._testing import _monkey_defaults
         NAME = 'name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
@@ -897,7 +898,8 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(NAME, connection)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
-        bucket.make_public()
+        with _monkey_defaults(connection=connection):
+            bucket.make_public()
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
         kw = connection._requested
@@ -909,6 +911,7 @@ class Test_Bucket(unittest2.TestCase):
 
     def _make_public_w_future_helper(self, default_object_acl_loaded=True):
         from gcloud.storage.acl import _ACLEntity
+        from gcloud.storage._testing import _monkey_defaults
         NAME = 'name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after1 = {'acl': permissive, 'defaultObjectAcl': []}
@@ -924,7 +927,8 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(NAME, connection)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = default_object_acl_loaded
-        bucket.make_public(future=True)
+        with _monkey_defaults(connection=connection):
+            bucket.make_public(future=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), permissive)
         kw = connection._requested
@@ -951,6 +955,7 @@ class Test_Bucket(unittest2.TestCase):
     def test_make_public_recursive(self):
         from gcloud.storage.acl import _ACLEntity
         from gcloud.storage.bucket import _BlobIterator
+        from gcloud.storage._testing import _monkey_defaults
         _saved = []
 
         class _Blob(object):
@@ -987,7 +992,8 @@ class Test_Bucket(unittest2.TestCase):
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
         bucket._iterator_class = _Iterator
-        bucket.make_public(recursive=True)
+        with _monkey_defaults(connection=connection):
+            bucket.make_public(recursive=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
         self.assertEqual(_saved, [(bucket, BLOB_NAME, True)])

@@ -78,6 +78,8 @@ This list of tuples can be used as the ``entity`` and ``role`` fields
 when sending metadata for ACLs to the API.
 """
 
+from gcloud.storage._helpers import _require_connection
+
 
 class _ACLEntity(object):
     """Class representing a set of roles for an entity.
@@ -167,7 +169,13 @@ class _ACLEntity(object):
 class ACL(object):
     """Container class representing a list of access controls."""
 
+    _URL_PATH_ELEM = 'acl'
     loaded = False
+
+    # Subclasses must override to provide these attributes (typically,
+    # as properties).
+    reload_path = None
+    save_path = None
 
     def __init__(self):
         self.entities = {}
@@ -345,35 +353,70 @@ class ACL(object):
         self._ensure_loaded()
         return list(self.entities.values())
 
-    def reload(self):
+    def reload(self, connection=None):
         """Reload the ACL data from Cloud Storage.
 
-        This is a virtual method, expected to be implemented by subclasses.
-
-        :raises: :class:`NotImplementedError`
+        :type connection: :class:`gcloud.storage.connection.Connection` or None
+        :param connection: explicit connection to use for API request;
+                           defaults to instance property.
         """
-        raise NotImplementedError
+        path = self.reload_path
+        connection = _require_connection(connection)
 
-    def save(self, acl=None):
-        """A method to be overridden by subclasses.
+        self.entities.clear()
+
+        found = connection.api_request(method='GET', path=path)
+        self.loaded = True
+        for entry in found.get('items', ()):
+            self.add_entity(self.entity_from_dict(entry))
+
+    def save(self, acl=None, connection=None):
+        """Save this ACL for the current bucket.
 
         :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.
         :param acl: The ACL object to save.  If left blank, this will save
                     current entries.
 
-        :raises: NotImplementedError
+        :type connection: :class:`gcloud.storage.connection.Connection` or None
+        :param connection: explicit connection to use for API request;
+                           defaults to instance property.
         """
-        raise NotImplementedError
+        if acl is None:
+            acl = self
+            save_to_backend = acl.loaded
+        else:
+            save_to_backend = True
 
-    def clear(self):
-        """Remove all entities from the ACL."""
-        raise NotImplementedError
+        if save_to_backend:
+            path = self.save_path
+            connection = _require_connection(connection)
+            result = connection.api_request(
+                method='PATCH',
+                path=path,
+                data={self._URL_PATH_ELEM: list(acl)},
+                query_params={'projection': 'full'})
+            self.entities.clear()
+            for entry in result.get(self._URL_PATH_ELEM, ()):
+                self.add_entity(self.entity_from_dict(entry))
+            self.loaded = True
+
+    def clear(self, connection=None):
+        """Remove all ACL entries.
+
+        Note that this won't actually remove *ALL* the rules, but it
+        will remove all the non-default rules.  In short, you'll still
+        have access to a bucket that you created even after you clear
+        ACL rules with this method.
+
+        :type connection: :class:`gcloud.storage.connection.Connection` or None
+        :param connection: explicit connection to use for API request;
+                           defaults to instance property.
+        """
+        self.save([], connection)
 
 
 class BucketACL(ACL):
     """An ACL specifically for a bucket."""
-
-    _URL_PATH_ELEM = 'acl'
 
     def __init__(self, bucket):
         """
@@ -383,79 +426,15 @@ class BucketACL(ACL):
         super(BucketACL, self).__init__()
         self.bucket = bucket
 
-    def reload(self):
-        """Reload the ACL data from Cloud Storage."""
-        self.entities.clear()
+    @property
+    def reload_path(self):
+        """Compute the path for GET API requests for this ACL."""
+        return '%s/%s' % (self.bucket.path, self._URL_PATH_ELEM)
 
-        url_path = '%s/%s' % (self.bucket.path, self._URL_PATH_ELEM)
-        found = self.bucket.connection.api_request(method='GET', path=url_path)
-        self.loaded = True
-        for entry in found.get('items', ()):
-            self.add_entity(self.entity_from_dict(entry))
-
-    def save(self, acl=None):
-        """Save this ACL for the current bucket.
-
-        If called without arguments, this will save the entries
-        currently stored on this ACL::
-
-           >>> acl.save()
-
-        You can also provide a specific ACL to save instead of the one
-        currently set on the Bucket object::
-
-           >>> acl.save(acl=my_other_acl)
-
-        You can use this to set access controls to be consistent from
-        one bucket to another::
-
-          >>> bucket1 = storage.get_bucket(bucket1_name, connection=connection)
-          >>> bucket2 = storage.get_bucket(bucket2_name, connection=connection)
-          >>> bucket2.acl.save(bucket1.acl)
-
-        :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.
-        :param acl: The ACL object to save.  If left blank, this will save
-                    current entries.
-        """
-        if acl is None:
-            acl = self
-            save_to_backend = acl.loaded
-        else:
-            save_to_backend = True
-
-        if save_to_backend:
-            result = self.bucket.connection.api_request(
-                method='PATCH', path=self.bucket.path,
-                data={self._URL_PATH_ELEM: list(acl)},
-                query_params={'projection': 'full'})
-            self.entities.clear()
-            for entry in result.get(self._URL_PATH_ELEM, ()):
-                self.add_entity(self.entity_from_dict(entry))
-            self.loaded = True
-
-    def clear(self):
-        """Remove all ACL entries.
-
-        Note that this won't actually remove *ALL* the rules, but it
-        will remove all the non-default rules.  In short, you'll still
-        have access to a bucket that you created even after you clear
-        ACL rules with this method.
-
-        For example, imagine that you granted access to this bucket to a
-        bunch of coworkers::
-
-          >>> acl.user('coworker1@example.org').grant_read()
-          >>> acl.user('coworker2@example.org').grant_read()
-          >>> acl.save()
-
-        Now they work in another part of the company and you want to
-        'start fresh' on who has access::
-
-          >>> acl.clear()
-
-        At this point all the custom rules you created have been removed.
-        """
-        self.save([])
+    @property
+    def save_path(self):
+        """Compute the path for PATCH API requests for this ACL."""
+        return self.bucket.path
 
 
 class DefaultObjectACL(BucketACL):
@@ -475,44 +454,12 @@ class ObjectACL(ACL):
         super(ObjectACL, self).__init__()
         self.blob = blob
 
-    def reload(self):
-        """Reload the ACL data from Cloud Storage."""
-        self.entities.clear()
+    @property
+    def reload_path(self):
+        """Compute the path for GET API requests for this ACL."""
+        return '%s/acl' % self.blob.path
 
-        url_path = '%s/acl' % self.blob.path
-        found = self.blob.connection.api_request(method='GET', path=url_path)
-        self.loaded = True
-        for entry in found.get('items', ()):
-            self.add_entity(self.entity_from_dict(entry))
-
-    def save(self, acl=None):
-        """Save the ACL data for this blob.
-
-        :type acl: :class:`gcloud.storage.acl.ACL`
-        :param acl: The ACL object to save.  If left blank, this will
-                    save the entries set locally on the ACL.
-        """
-        if acl is None:
-            acl = self
-            save_to_backend = acl.loaded
-        else:
-            save_to_backend = True
-
-        if save_to_backend:
-            result = self.blob.connection.api_request(
-                method='PATCH', path=self.blob.path, data={'acl': list(acl)},
-                query_params={'projection': 'full'})
-            self.entities.clear()
-            for entry in result.get('acl', ()):
-                self.add_entity(self.entity_from_dict(entry))
-            self.loaded = True
-
-    def clear(self):
-        """Remove all ACL rules from the blob.
-
-        Note that this won't actually remove *ALL* the rules, but it
-        will remove all the non-default rules.  In short, you'll still
-        have access to a blob that you created even after you clear ACL
-        rules with this method.
-        """
-        self.save([])
+    @property
+    def save_path(self):
+        """Compute the path for PATCH API requests for this ACL."""
+        return self.blob.path
