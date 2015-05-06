@@ -16,6 +16,7 @@
 from gcloud.datastore.api import delete
 from gcloud.datastore.api import get
 from gcloud.datastore.api import put
+from gcloud.datastore.api import _require_connection
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
@@ -32,19 +33,17 @@ class Dataset(object):
     :param connection: (optional) connection to pass to proxied API methods
     """
 
-    def __init__(self, dataset_id, connection=None):
+    def __init__(self, dataset_id):
         if dataset_id is None:
             raise ValueError('dataset_id required')
         self.dataset_id = dataset_id
-        self.connection = connection
 
     def get(self, keys, missing=None, deferred=None, connection=None):
         """Proxy to :func:`gcloud.datastore.api.get`.
 
         Passes our ``dataset_id``.
         """
-        if connection is None:
-            connection = self.connection
+        connection = _require_connection(connection)
         return get(keys, missing=missing, deferred=deferred,
                    connection=connection, dataset_id=self.dataset_id)
 
@@ -53,9 +52,7 @@ class Dataset(object):
 
         Passes our ``dataset_id``.
         """
-        if connection is None:
-            connection = self.connection
-
+        connection = _require_connection(connection)
         return put(entities, connection=connection, dataset_id=self.dataset_id)
 
     def delete(self, keys, connection=None):
@@ -63,9 +60,7 @@ class Dataset(object):
 
         Passes our ``dataset_id``.
         """
-        if connection is None:
-            connection = self.connection
-
+        connection = _require_connection(connection)
         return delete(keys, connection=connection, dataset_id=self.dataset_id)
 
     def key(self, *path_args, **kwargs):
@@ -83,9 +78,7 @@ class Dataset(object):
 
         Passes our ``dataset_id``.
         """
-        if connection is None:
-            connection = self.connection
-
+        connection = _require_connection(connection)
         return Batch(dataset_id=self.dataset_id, connection=connection)
 
     def transaction(self, connection=None):
@@ -93,9 +86,7 @@ class Dataset(object):
 
         Passes our ``dataset_id``.
         """
-        if connection is None:
-            connection = self.connection
-
+        connection = _require_connection(connection)
         return Transaction(dataset_id=self.dataset_id, connection=connection)
 
     def query(self, **kwargs):
