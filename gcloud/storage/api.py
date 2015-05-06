@@ -126,7 +126,7 @@ def list_buckets(project=None, max_results=None, page_token=None, prefix=None,
     # class has it as a reserved property.
     if page_token is not None:
         result.next_page_token = page_token
-    return iter(result)
+    return result
 
 
 def get_bucket(bucket_name, connection=None):
