@@ -38,4 +38,24 @@ def get_default_connection():
     return _DEFAULTS.connection
 
 
+def _require_connection(connection=None):
+    """Infer a connection from the environment, if not passed explicitly.
+
+    :type connection: :class:`gcloud.pubsub.connection.Connection`
+    :param connection: Optional.
+
+    :rtype: :class:`gcloud.pubsub.connection.Connection`
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
+             cannot be inferred from the environment.
+    """
+    if connection is None:
+        connection = get_default_connection()
+
+    if connection is None:
+        raise EnvironmentError('Connection could not be inferred.')
+
+    return connection
+
+
 _DEFAULTS = _DefaultsContainer()
