@@ -20,7 +20,7 @@ import datetime
 from gcloud._helpers import get_default_project
 from gcloud._helpers import _RFC3339_MICROS
 from gcloud.exceptions import NotFound
-from gcloud.pubsub._implicit_environ import get_default_connection
+from gcloud.pubsub._implicit_environ import _require_connection
 
 _NOW = datetime.datetime.utcnow
 
@@ -40,42 +40,29 @@ class Topic(object):
     :param project: the project to which the topic belongs.  If not passed,
                     falls back to the default inferred from the environment.
 
-    :type connection: :class:gcloud.pubsub.connection.Connection
-    :param connection: the connection to use.  If not passed,
-                        falls back to the default inferred from the
-
     :type timestamp_messages: boolean
     :param timestamp_messages: If true, the topic will add a ``timestamp`` key
                                to the attributes of each published message:
                                the value will be an RFC 3339 timestamp.
     """
-    def __init__(self, name, project=None, connection=None,
-                 timestamp_messages=False):
+    def __init__(self, name, project=None, timestamp_messages=False):
         if project is None:
             project = get_default_project()
-        if connection is None:
-            connection = get_default_connection()
         self.name = name
         self.project = project
-        self.connection = connection
         self.timestamp_messages = timestamp_messages
 
     @classmethod
-    def from_api_repr(cls, resource, connection=None):
+    def from_api_repr(cls, resource):
         """Factory:  construct a topic given its API representation
 
         :type resource: dict
         :param resource: topic resource representation returned from the API
 
-        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
-        :param connection: the connection to use.  If not passed,
-                           falls back to the default inferred from the
-                           environment.
-
         :rtype: :class:`gcloud.pubsub.topic.Topic`
         """
         _, project, _, name = resource['name'].split('/')
-        return cls(name, project, connection)
+        return cls(name, project)
 
     @property
     def full_name(self):
@@ -97,9 +84,7 @@ class Topic(object):
         :param connection: the connection to use.  If not passed,
                            falls back to the ``connection`` attribute.
         """
-        if connection is None:
-            connection = self.connection
-
+        connection = _require_connection(connection)
         connection.api_request(method='PUT', path=self.path)
 
     def exists(self, connection=None):
@@ -112,8 +97,7 @@ class Topic(object):
         :param connection: the connection to use.  If not passed,
                            falls back to the ``connection`` attribute.
         """
-        if connection is None:
-            connection = self.connection
+        connection = _require_connection(connection)
 
         try:
             connection.api_request(method='GET', path=self.path)
@@ -151,8 +135,7 @@ class Topic(object):
         :rtype: str
         :returns: message ID assigned by the server to the published message
         """
-        if connection is None:
-            connection = self.connection
+        connection = _require_connection(connection)
 
         self._timestamp_message(attrs)
         message_b = base64.b64encode(message).decode('ascii')
@@ -166,15 +149,8 @@ class Topic(object):
     def batch(self, connection=None):
         """Return a batch to use as a context manager.
 
-        :type connection: :class:`gcloud.pubsub.connection.Connection` or None
-        :param connection: the connection to use.  If not passed,
-                           falls back to the ``connection`` attribute.
-
         :rtype: :class:Batch
         """
-        if connection is None:
-            return Batch(self)
-
         return Batch(self, connection=connection)
 
     def delete(self, connection=None):
@@ -187,9 +163,7 @@ class Topic(object):
         :param connection: the connection to use.  If not passed,
                            falls back to the ``connection`` attribute.
         """
-        if connection is None:
-            connection = self.connection
-
+        connection = _require_connection(connection)
         connection.api_request(method='DELETE', path=self.path)
 
 
@@ -197,13 +171,18 @@ class Batch(object):
     """Context manager:  collect messages to publish via a single API call.
 
     Helper returned by :meth:Topic.batch
+
+    :type topic: :class:`gcloud.pubsub.topic.Topic`
+    :param topic: the topic being published
+
+    :type connection: :class:`gcloud.pubsub.connection.Connection` or None
+    :param connection: the connection to use.  If not passed,
+                        falls back to the implicit default.
     """
     def __init__(self, topic, connection=None):
         self.topic = topic
         self.messages = []
         self.message_ids = []
-        if connection is None:
-            connection = topic.connection
         self.connection = connection
 
     def __enter__(self):
@@ -237,8 +216,9 @@ class Batch(object):
         :param connection: the connection to use.  If not passed,
                            falls back to the ``connection`` attribute.
         """
-        if connection is None:
+        if connection is None and self.connection is not None:
             connection = self.connection
+        connection = _require_connection(connection)
         response = connection.api_request(method='POST',
                                           path='%s:publish' % self.topic.path,
                                           data={'messages': self.messages[:]})
