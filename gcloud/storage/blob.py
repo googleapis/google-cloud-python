@@ -162,7 +162,7 @@ class Blob(_PropertyMixin):
         :returns: The public URL for this blob.
         """
         return '{storage_base_url}/{bucket_name}/{quoted_name}'.format(
-            storage_base_url='http://commondatastorage.googleapis.com',
+            storage_base_url='https://storage.googleapis.com',
             bucket_name=self.bucket.name,
             quoted_name=quote(self.name, safe=''))
 
