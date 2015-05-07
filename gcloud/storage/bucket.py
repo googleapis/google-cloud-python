@@ -69,8 +69,7 @@ class _BlobIterator(Iterator):
                        to the bucket's connection
     """
     def __init__(self, bucket, extra_params=None, connection=None):
-        if connection is None:
-            connection = bucket.connection
+        connection = _require_connection(connection)
         self.bucket = bucket
         self.prefixes = ()
         super(_BlobIterator, self).__init__(
@@ -363,7 +362,8 @@ class Bucket(_PropertyMixin):
         connection = _require_connection(connection)
         if force:
             blobs = list(self.list_blobs(
-                max_results=self._MAX_OBJECTS_FOR_BUCKET_DELETE + 1))
+                max_results=self._MAX_OBJECTS_FOR_BUCKET_DELETE + 1,
+                connection=connection))
             if len(blobs) > self._MAX_OBJECTS_FOR_BUCKET_DELETE:
                 message = (
                     'Refusing to delete bucket with more than '

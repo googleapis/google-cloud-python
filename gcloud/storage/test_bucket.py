@@ -26,10 +26,12 @@ class Test__BlobIterator(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor(self):
+    def test_ctor_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
         connection = _Connection()
-        bucket = _Bucket(connection)
-        iterator = self._makeOne(bucket)
+        bucket = _Bucket(None)
+        with _monkey_defaults(connection=connection):
+            iterator = self._makeOne(bucket)
         self.assertTrue(iterator.bucket is bucket)
         self.assertTrue(iterator.connection is connection)
         self.assertEqual(iterator.path, '%s/o' % bucket.path)
@@ -49,20 +51,25 @@ class Test__BlobIterator(unittest2.TestCase):
         self.assertEqual(iterator.prefixes, ())
 
     def test_get_items_from_response_empty(self):
+        from gcloud.storage._testing import _monkey_defaults
         connection = _Connection()
         bucket = _Bucket(connection)
-        iterator = self._makeOne(bucket)
-        self.assertEqual(list(iterator.get_items_from_response({})), [])
+        with _monkey_defaults(connection=connection):
+            iterator = self._makeOne(bucket)
+            blobs = list(iterator.get_items_from_response({}))
+        self.assertEqual(blobs, [])
         self.assertEqual(iterator.prefixes, ())
 
     def test_get_items_from_response_non_empty(self):
         from gcloud.storage.blob import Blob
+        from gcloud.storage._testing import _monkey_defaults
         BLOB_NAME = 'blob-name'
         response = {'items': [{'name': BLOB_NAME}], 'prefixes': ['foo']}
         connection = _Connection()
         bucket = _Bucket(connection)
-        iterator = self._makeOne(bucket)
-        blobs = list(iterator.get_items_from_response(response))
+        with _monkey_defaults(connection=connection):
+            iterator = self._makeOne(bucket)
+            blobs = list(iterator.get_items_from_response(response))
         self.assertEqual(len(blobs), 1)
         blob = blobs[0]
         self.assertTrue(isinstance(blob, Blob))
@@ -104,10 +111,12 @@ class Test_Bucket(unittest2.TestCase):
         self.assertTrue(bucket._default_object_acl.bucket is bucket)
 
     def test___iter___empty(self):
+        from gcloud.storage._testing import _monkey_defaults
         NAME = 'name'
         connection = _Connection({'items': []})
-        bucket = self._makeOne(NAME, connection)
-        blobs = list(bucket)
+        bucket = self._makeOne(NAME)
+        with _monkey_defaults(connection=connection):
+            blobs = list(bucket)
         self.assertEqual(blobs, [])
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
@@ -115,11 +124,13 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
     def test___iter___non_empty(self):
+        from gcloud.storage._testing import _monkey_defaults
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({'items': [{'name': BLOB_NAME}]})
-        bucket = self._makeOne(NAME, connection)
-        blobs = list(bucket)
+        bucket = self._makeOne(NAME)
+        with _monkey_defaults(connection=connection):
+            blobs = list(bucket)
         blob, = blobs
         self.assertTrue(blob.bucket is bucket)
         self.assertEqual(blob.name, BLOB_NAME)
@@ -290,11 +301,13 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
     def test_list_blobs_defaults(self):
+        from gcloud.storage._testing import _monkey_defaults
         NAME = 'name'
         connection = _Connection({'items': []})
-        bucket = self._makeOne(NAME, connection)
-        iterator = bucket.list_blobs()
-        blobs = list(iterator)
+        bucket = self._makeOne(NAME)
+        with _monkey_defaults(connection=connection):
+            iterator = bucket.list_blobs()
+            blobs = list(iterator)
         self.assertEqual(blobs, [])
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
@@ -302,6 +315,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
     def test_list_blobs_explicit(self):
+        from gcloud.storage._testing import _monkey_defaults
         NAME = 'name'
         MAX_RESULTS = 10
         PAGE_TOKEN = 'ABCD'
@@ -320,17 +334,18 @@ class Test_Bucket(unittest2.TestCase):
             'fields': FIELDS,
         }
         connection = _Connection({'items': []})
-        bucket = self._makeOne(NAME, connection)
-        iterator = bucket.list_blobs(
-            max_results=MAX_RESULTS,
-            page_token=PAGE_TOKEN,
-            prefix=PREFIX,
-            delimiter=DELIMITER,
-            versions=VERSIONS,
-            projection=PROJECTION,
-            fields=FIELDS,
-        )
-        blobs = list(iterator)
+        bucket = self._makeOne(NAME)
+        with _monkey_defaults(connection=connection):
+            iterator = bucket.list_blobs(
+                max_results=MAX_RESULTS,
+                page_token=PAGE_TOKEN,
+                prefix=PREFIX,
+                delimiter=DELIMITER,
+                versions=VERSIONS,
+                projection=PROJECTION,
+                fields=FIELDS,
+            )
+            blobs = list(iterator)
         self.assertEqual(blobs, [])
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
