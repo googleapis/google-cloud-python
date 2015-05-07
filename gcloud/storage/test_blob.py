@@ -729,7 +729,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(headers['Content-Type'], 'text/plain')
         self.assertEqual(rq[0]['body'], ENCODED)
 
-    def test_make_public(self):
+    def test_make_public_w_implicit_ocnnection(self):
         from gcloud.storage.acl import _ACLEntity
         from gcloud.storage._testing import _monkey_defaults
         BLOB_NAME = 'blob-name'
@@ -741,6 +741,24 @@ class Test_Blob(unittest2.TestCase):
         blob.acl.loaded = True
         with _monkey_defaults(connection=connection):
             blob.make_public()
+        self.assertEqual(list(blob.acl), permissive)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/b/name/o/%s' % BLOB_NAME)
+        self.assertEqual(kw[0]['data'], {'acl': permissive})
+        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_make_public_w_explicit_connection(self):
+        from gcloud.storage.acl import _ACLEntity
+        BLOB_NAME = 'blob-name'
+        permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
+        after = {'acl': permissive}
+        connection = _Connection(after)
+        bucket = _Bucket(None)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        blob.acl.loaded = True
+        blob.make_public(connection=connection)
         self.assertEqual(list(blob.acl), permissive)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
