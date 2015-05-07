@@ -226,9 +226,14 @@ class Blob(_PropertyMixin):
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
             query_params = {'fields': 'name'}
+            # We intentionally pass `_target_object=None` since fields=name
+            # would limit the local properties.
             connection.api_request(method='GET', path=self.path,
                                    query_params=query_params,
-                                   _target_object=self)
+                                   _target_object=None)
+            # NOTE: This will not fail immediately in a batch. However, when
+            #       Batch.finish() is called, the resulting `NotFound` will be
+            #       raised.
             return True
         except NotFound:
             return False
