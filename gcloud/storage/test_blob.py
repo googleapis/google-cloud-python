@@ -143,7 +143,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(connection)
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.public_url,
-                         'http://commondatastorage.googleapis.com/name/%s' %
+                         'https://storage.googleapis.com/name/%s' %
                          BLOB_NAME)
 
     def test_public_url_w_slash_in_name(self):
@@ -153,7 +153,7 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(
             blob.public_url,
-            'http://commondatastorage.googleapis.com/name/parent%2Fchild')
+            'https://storage.googleapis.com/name/parent%2Fchild')
 
     def _basic_generate_signed_url_helper(self, credentials=None):
         from gcloud._testing import _Monkey
