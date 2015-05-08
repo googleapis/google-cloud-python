@@ -20,7 +20,6 @@ from the enviroment.
 
 
 from gcloud._helpers import _lazy_property_deco
-from gcloud.credentials import get_credentials
 from gcloud.storage.connection import Connection
 
 
@@ -78,8 +77,7 @@ def get_connection():
     :rtype: :class:`gcloud.storage.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    credentials = get_credentials()
-    return Connection(credentials=credentials)
+    return Connection.from_environment()
 
 
 def set_default_connection(connection=None):

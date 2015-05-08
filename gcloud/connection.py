@@ -21,6 +21,9 @@ from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
 import httplib2
 
+from gcloud.credentials import get_credentials
+from gcloud.credentials import get_for_service_account_json
+from gcloud.credentials import get_for_service_account_p12
 from gcloud.exceptions import make_exception
 
 
@@ -111,6 +114,68 @@ class Connection(object):
         if credentials and credentials.create_scoped_required():
             credentials = credentials.create_scoped(scope)
         return credentials
+
+    @classmethod
+    def from_service_account_json(cls, json_credentials_path, *args, **kwargs):
+        """Factory to retrieve JSON credentials while creating connection.
+
+        :type json_credentials_path: string
+        :param json_credentials_path: The path to a private key file (this file
+                                      was given to you when you created the
+                                      service account). This file must contain
+                                      a JSON object with a private key and
+                                      other credentials information (downloaded
+                                      from the Google APIs console).
+
+        :rtype: :class:`gcloud.connection.Connection`
+        :returns: The connection created with the retrieved JSON credentials.
+        """
+        credentials = get_for_service_account_json(json_credentials_path)
+        if 'credentials' in kwargs:
+            raise TypeError('credentials must not be in keyword arguments')
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
+    def from_service_account_p12(cls, client_email, private_key_path,
+                                 *args, **kwargs):
+        """Factory to retrieve P12 credentials while creating connection.
+
+        .. note::
+          Unless you have an explicit reason to use a PKCS12 key for your
+          service account, we recommend using a JSON key.
+
+        :type client_email: string
+        :param client_email: The e-mail attached to the service account.
+
+        :type private_key_path: string
+        :param private_key_path: The path to a private key file (this file was
+                                 given to you when you created the service
+                                 account). This file must be in P12 format.
+
+        :rtype: :class:`gcloud.connection.Connection`
+        :returns: The connection created with the retrieved P12 credentials.
+        """
+        credentials = get_for_service_account_p12(client_email,
+                                                  private_key_path)
+        if 'credentials' in kwargs:
+            raise TypeError('credentials must not be in keyword arguments')
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
+    def from_environment(cls, *args, **kwargs):
+        """Factory to retrieve implicit credentials while creating connection.
+
+        :rtype: :class:`gcloud.connection.Connection`
+        :returns: The connection created with the retrieved implicit
+                  credentials.
+        """
+        credentials = get_credentials()
+        if 'credentials' in kwargs:
+            raise TypeError('credentials must not be in keyword arguments')
+        kwargs['credentials'] = credentials
+        return cls(*args, **kwargs)
 
 
 class JSONConnection(Connection):

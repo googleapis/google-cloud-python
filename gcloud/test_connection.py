@@ -71,6 +71,81 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         self.assertEqual(conn.USER_AGENT, expected_ua)
 
+    def _from_service_account_json_helper(self, **kwargs):
+        from gcloud._testing import _Monkey
+        from gcloud import connection
+
+        KLASS = self._getTargetClass()
+        CREDS = object()
+        _CALLED = []
+
+        def mock_creds(arg1):
+            _CALLED.append((arg1,))
+            return CREDS
+
+        FOO = object()
+        with _Monkey(connection, get_for_service_account_json=mock_creds):
+            conn = KLASS.from_service_account_json(FOO, **kwargs)
+
+        self.assertTrue(conn.credentials is CREDS)
+        self.assertEqual(_CALLED, [(FOO,)])
+
+    def test_from_service_account_json(self):
+        self._from_service_account_json_helper()
+
+    def test_from_service_account_json_fail(self):
+        with self.assertRaises(TypeError):
+            self._from_service_account_json_helper(credentials=None)
+
+    def _from_service_account_p12_helper(self, **kwargs):
+        from gcloud._testing import _Monkey
+        from gcloud import connection
+
+        KLASS = self._getTargetClass()
+        CREDS = object()
+        _CALLED = []
+
+        def mock_creds(arg1, arg2):
+            _CALLED.append((arg1, arg2))
+            return CREDS
+
+        FOO = object()
+        BAR = object()
+        with _Monkey(connection, get_for_service_account_p12=mock_creds):
+            conn = KLASS.from_service_account_p12(FOO, BAR, **kwargs)
+
+        self.assertTrue(conn.credentials is CREDS)
+        self.assertEqual(_CALLED, [(FOO, BAR)])
+
+    def test_from_service_account_p12(self):
+        self._from_service_account_p12_helper()
+
+    def test_from_service_account_p12_fail(self):
+        with self.assertRaises(TypeError):
+            self._from_service_account_p12_helper(credentials=None)
+
+    def _from_environment_helper(self, **kwargs):
+        from gcloud._testing import _Monkey
+        from gcloud import connection
+
+        KLASS = self._getTargetClass()
+        CREDS = object()
+
+        def mock_creds():
+            return CREDS
+
+        with _Monkey(connection, get_credentials=mock_creds):
+            conn = KLASS.from_environment(**kwargs)
+
+        self.assertTrue(conn.credentials is CREDS)
+
+    def test_from_environment(self):
+        self._from_environment_helper()
+
+    def test_from_environment_fail(self):
+        with self.assertRaises(TypeError):
+            self._from_environment_helper(credentials=None)
+
 
 class TestJSONConnection(unittest2.TestCase):
 
