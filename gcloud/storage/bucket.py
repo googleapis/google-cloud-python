@@ -60,12 +60,20 @@ class _BlobIterator(Iterator):
 
     :type bucket: :class:`gcloud.storage.bucket.Bucket`
     :param bucket: The bucket from which to list blobs.
+
+    :type extra_params: dict or None
+    :param extra_params: Extra query string parameters for the API call.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: The connection to use when sending requests.  Defaults
+                       to the bucket's connection
     """
-    def __init__(self, bucket, extra_params=None):
+    def __init__(self, bucket, extra_params=None, connection=None):
+        connection = _require_connection(connection)
         self.bucket = bucket
         self.prefixes = ()
         super(_BlobIterator, self).__init__(
-            connection=bucket.connection, path=bucket.path + '/o',
+            connection=connection, path=bucket.path + '/o',
             extra_params=extra_params)
 
     def get_items_from_response(self, response):
@@ -257,7 +265,7 @@ class Bucket(_PropertyMixin):
 
     def list_blobs(self, max_results=None, page_token=None, prefix=None,
                    delimiter=None, versions=None,
-                   projection='noAcl', fields=None):
+                   projection='noAcl', fields=None, connection=None):
         """Return an iterator used to find blobs in the bucket.
 
         :type max_results: integer or ``NoneType``
@@ -289,6 +297,11 @@ class Bucket(_PropertyMixin):
                        and the language of each blob returned:
                        'items/contentLanguage,nextPageToken'
 
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
+
         :rtype: :class:`_BlobIterator`.
         :returns: An iterator of blobs.
         """
@@ -311,7 +324,8 @@ class Bucket(_PropertyMixin):
         if fields is not None:
             extra_params['fields'] = fields
 
-        result = self._iterator_class(self, extra_params=extra_params)
+        result = self._iterator_class(
+            self, extra_params=extra_params, connection=connection)
         # Page token must be handled specially since the base `Iterator`
         # class has it as a reserved property.
         if page_token is not None:
@@ -348,7 +362,8 @@ class Bucket(_PropertyMixin):
         connection = _require_connection(connection)
         if force:
             blobs = list(self.list_blobs(
-                max_results=self._MAX_OBJECTS_FOR_BUCKET_DELETE + 1))
+                max_results=self._MAX_OBJECTS_FOR_BUCKET_DELETE + 1,
+                connection=connection))
             if len(blobs) > self._MAX_OBJECTS_FOR_BUCKET_DELETE:
                 message = (
                     'Refusing to delete bucket with more than '
@@ -844,7 +859,7 @@ class Bucket(_PropertyMixin):
         """
         return self.configure_website(None, None)
 
-    def make_public(self, recursive=False, future=False):
+    def make_public(self, recursive=False, future=False, connection=None):
         """Make a bucket public.
 
         :type recursive: boolean
@@ -854,18 +869,26 @@ class Bucket(_PropertyMixin):
         :type future: boolean
         :param future: If True, this will make all objects created in the
                        future public as well.
+
+        :type connection: :class:`gcloud.storage.connection.Connection` or
+                          ``NoneType``
+        :param connection: Optional. The connection to use when sending
+                           requests. If not provided, falls back to default.
         """
+        connection = _require_connection(connection)
+
         self.acl.all().grant_read()
-        self.acl.save()
+        self.acl.save(connection=connection)
 
         if future:
             doa = self.default_object_acl
             if not doa.loaded:
-                doa.reload()
+                doa.reload(connection=connection)
             doa.all().grant_read()
-            doa.save()
+            doa.save(connection=connection)
 
         if recursive:
-            for blob in self:
+            for blob in self.list_blobs(projection='full',
+                                        connection=connection):
                 blob.acl.all().grant_read()
-                blob.save_acl()
+                blob.acl.save(connection=connection)
