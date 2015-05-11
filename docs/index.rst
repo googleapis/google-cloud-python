@@ -10,6 +10,8 @@
   datastore-transactions
   datastore-batches
   datastore-dataset
+  search-api
+  search-usage
   storage-api
   storage-blobs
   storage-buckets
