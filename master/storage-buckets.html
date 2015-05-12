@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Buckets &mdash; gcloud a59dc9d documentation</title>
+    <title>Buckets &mdash; gcloud 290b09e documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'a59dc9d',
+        VERSION:     '290b09e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud a59dc9d documentation" href="index.html" />
+    <link rel="top" title="gcloud 290b09e documentation" href="index.html" />
     <link rel="next" title="ACL" href="storage-acl.html" />
     <link rel="prev" title="Blobs / Objects" href="storage-blobs.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%20a59dc9d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%20290b09e" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a59dc9d)
+              Version History (290b09e)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -547,7 +547,7 @@ set locally.</td>
 
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.list_blobs">
-<code class="descname">list_blobs</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>versions=None</em>, <em>projection='noAcl'</em>, <em>fields=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.list_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.list_blobs" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_blobs</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>versions=None</em>, <em>projection='noAcl'</em>, <em>fields=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.list_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.list_blobs" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an iterator used to find blobs in the bucket.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -569,6 +569,9 @@ partial response. Must be a list of fields. For example
 to get a partial response with just the next page token
 and the language of each blob returned:
 &#8216;items/contentLanguage,nextPageToken&#8217;</li>
+<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</li>
 </ul>
 </td>
 </tr>
@@ -601,7 +604,7 @@ and the language of each blob returned:
 
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.make_public">
-<code class="descname">make_public</code><span class="sig-paren">(</span><em>recursive=False</em>, <em>future=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.make_public"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.make_public" title="Permalink to this definition">#</a></dt>
+<code class="descname">make_public</code><span class="sig-paren">(</span><em>recursive=False</em>, <em>future=False</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.make_public"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.make_public" title="Permalink to this definition">#</a></dt>
 <dd><p>Make a bucket public.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -612,6 +615,9 @@ and the language of each blob returned:
 public as well.</li>
 <li><strong>future</strong> (<em>boolean</em>) &#8211; If True, this will make all objects created in the
 future public as well.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
+<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
+requests. If not provided, falls back to default.</li>
 </ul>
 </td>
 </tr>
