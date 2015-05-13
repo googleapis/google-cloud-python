@@ -40,7 +40,6 @@ class Test_Blob(unittest2.TestCase):
             blob = self._makeOne(None)
 
         self.assertEqual(blob.bucket, FAKE_BUCKET)
-        self.assertEqual(blob.connection, None)
         self.assertEqual(blob.name, None)
         self.assertEqual(blob._properties, {})
         self.assertFalse(blob._acl.loaded)
@@ -50,7 +49,6 @@ class Test_Blob(unittest2.TestCase):
         FAKE_BUCKET = _Bucket(None)
         blob = self._makeOne(None, bucket=FAKE_BUCKET)
         self.assertEqual(blob.bucket, FAKE_BUCKET)
-        self.assertEqual(blob.connection, None)
         self.assertEqual(blob.name, None)
         self.assertEqual(blob._properties, {})
         self.assertFalse(blob._acl.loaded)
@@ -63,7 +61,6 @@ class Test_Blob(unittest2.TestCase):
         properties = {'key': 'value'}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         self.assertTrue(blob.bucket is bucket)
-        self.assertTrue(blob.connection is connection)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(blob._properties, properties)
         self.assertFalse(blob._acl.loaded)
