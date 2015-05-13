@@ -104,8 +104,11 @@ class Bucket(_PropertyMixin):
     """
     _iterator_class = _BlobIterator
 
-    _MAX_OBJECTS_FOR_BUCKET_DELETE = 256
-    """Maximum number of existing objects allowed in Bucket.delete()."""
+    _MAX_OBJECTS_FOR_ITERATION = 256
+    """Maximum number of existing objects allowed in iteration.
+
+    This is used in Bucket.delete() and Bucket.make_public().
+    """
 
     def __init__(self, name=None, connection=None):
         super(Bucket, self).__init__(name=name)
@@ -362,15 +365,15 @@ class Bucket(_PropertyMixin):
         connection = _require_connection(connection)
         if force:
             blobs = list(self.list_blobs(
-                max_results=self._MAX_OBJECTS_FOR_BUCKET_DELETE + 1,
+                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
                 connection=connection))
-            if len(blobs) > self._MAX_OBJECTS_FOR_BUCKET_DELETE:
+            if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                 message = (
                     'Refusing to delete bucket with more than '
                     '%d objects. If you actually want to delete '
                     'this bucket, please delete the objects '
                     'yourself before calling Bucket.delete().'
-                ) % (self._MAX_OBJECTS_FOR_BUCKET_DELETE,)
+                ) % (self._MAX_OBJECTS_FOR_ITERATION,)
                 raise ValueError(message)
 
             # Ignore 404 errors on delete.
@@ -862,6 +865,10 @@ class Bucket(_PropertyMixin):
     def make_public(self, recursive=False, future=False, connection=None):
         """Make a bucket public.
 
+        If ``recursive=True`` and the bucket contains more than 256
+        objects / blobs this will cowardly refuse to make the objects public.
+        This is to prevent extremely long runtime of this method.
+
         :type recursive: boolean
         :param recursive: If True, this will make all blobs inside the bucket
                           public as well.
@@ -888,7 +895,19 @@ class Bucket(_PropertyMixin):
             doa.save(connection=connection)
 
         if recursive:
-            for blob in self.list_blobs(projection='full',
-                                        connection=connection):
+            blobs = list(self.list_blobs(
+                projection='full',
+                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
+                connection=connection))
+            if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
+                message = (
+                    'Refusing to make public recursively with more than '
+                    '%d objects. If you actually want to make every object '
+                    'in this bucket public, please do it on the objects '
+                    'yourself.'
+                ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                raise ValueError(message)
+
+            for blob in blobs:
                 blob.acl.all().grant_read()
                 blob.acl.save(connection=connection)
