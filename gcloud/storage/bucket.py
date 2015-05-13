@@ -112,13 +112,6 @@ class Bucket(_PropertyMixin):
     def __repr__(self):
         return '<Bucket: %s>' % self.name
 
-    def __iter__(self):
-        return iter(self.list_blobs())
-
-    def __contains__(self, blob_name):
-        blob = Blob(blob_name, bucket=self)
-        return blob.exists()
-
     def exists(self, connection=None):
         """Determines whether or not this bucket exists.
 
