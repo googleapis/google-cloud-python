@@ -50,7 +50,6 @@ def lookup_bucket(bucket_name, connection=None):
     :rtype: :class:`gcloud.storage.bucket.Bucket`
     :returns: The bucket matching the name provided or None if not found.
     """
-    connection = _require_connection(connection)
     try:
         return get_bucket(bucket_name, connection=connection)
     except NotFound:
@@ -104,7 +103,6 @@ def list_buckets(project=None, max_results=None, page_token=None, prefix=None,
     :rtype: iterable of :class:`gcloud.storage.bucket.Bucket` objects.
     :returns: All buckets belonging to this project.
     """
-    connection = _require_connection(connection)
     if project is None:
         project = get_default_project()
     extra_params = {'project': project}
@@ -159,7 +157,7 @@ def get_bucket(bucket_name, connection=None):
     :raises: :class:`gcloud.exceptions.NotFound`
     """
     connection = _require_connection(connection)
-    bucket = Bucket(bucket_name, connection=connection)
+    bucket = Bucket(bucket_name)
     bucket.reload(connection=connection)
     return bucket
 
@@ -195,7 +193,7 @@ def create_bucket(bucket_name, project=None, connection=None):
     :returns: The newly created bucket.
     """
     connection = _require_connection(connection)
-    bucket = Bucket(bucket_name, connection=connection)
+    bucket = Bucket(bucket_name)
     bucket.create(project, connection=connection)
     return bucket
 
@@ -212,6 +210,7 @@ class _BucketIterator(Iterator):
     """
 
     def __init__(self, connection, extra_params=None):
+        connection = _require_connection(connection)
         super(_BucketIterator, self).__init__(connection=connection, path='/b',
                                               extra_params=extra_params)
 
@@ -223,6 +222,6 @@ class _BucketIterator(Iterator):
         """
         for item in response.get('items', []):
             name = item.get('name')
-            bucket = Bucket(name, connection=self.connection)
+            bucket = Bucket(name)
             bucket._set_properties(item)
             yield bucket

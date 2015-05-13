@@ -29,7 +29,7 @@ class Test__BlobIterator(unittest2.TestCase):
     def test_ctor_w_implicit_connection(self):
         from gcloud.storage._testing import _monkey_defaults
         connection = _Connection()
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         with _monkey_defaults(connection=connection):
             iterator = self._makeOne(bucket)
         self.assertTrue(iterator.bucket is bucket)
@@ -41,7 +41,7 @@ class Test__BlobIterator(unittest2.TestCase):
 
     def test_ctor_w_explicit_connection(self):
         connection = _Connection()
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         iterator = self._makeOne(bucket, connection=connection)
         self.assertTrue(iterator.bucket is bucket)
         self.assertTrue(iterator.connection is connection)
@@ -53,7 +53,7 @@ class Test__BlobIterator(unittest2.TestCase):
     def test_get_items_from_response_empty(self):
         from gcloud.storage._testing import _monkey_defaults
         connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         with _monkey_defaults(connection=connection):
             iterator = self._makeOne(bucket)
             blobs = list(iterator.get_items_from_response({}))
@@ -66,7 +66,7 @@ class Test__BlobIterator(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         response = {'items': [{'name': BLOB_NAME}], 'prefixes': ['foo']}
         connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         with _monkey_defaults(connection=connection):
             iterator = self._makeOne(bucket)
             blobs = list(iterator.get_items_from_response(response))
@@ -88,7 +88,6 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_ctor_defaults(self):
         bucket = self._makeOne()
-        self.assertEqual(bucket.connection, None)
         self.assertEqual(bucket.name, None)
         self.assertEqual(bucket._properties, {})
         self.assertFalse(bucket._acl.loaded)
@@ -98,69 +97,14 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_ctor_explicit(self):
         NAME = 'name'
-        connection = _Connection()
         properties = {'key': 'value'}
-        bucket = self._makeOne(NAME, connection, properties=properties)
-        self.assertTrue(bucket.connection is connection)
+        bucket = self._makeOne(NAME, properties=properties)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, properties)
         self.assertFalse(bucket._acl.loaded)
         self.assertTrue(bucket._acl.bucket is bucket)
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertTrue(bucket._default_object_acl.bucket is bucket)
-
-    def test___iter___empty(self):
-        from gcloud.storage._testing import _monkey_defaults
-        NAME = 'name'
-        connection = _Connection({'items': []})
-        bucket = self._makeOne(NAME)
-        with _monkey_defaults(connection=connection):
-            blobs = list(bucket)
-        self.assertEqual(blobs, [])
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
-
-    def test___iter___non_empty(self):
-        from gcloud.storage._testing import _monkey_defaults
-        NAME = 'name'
-        BLOB_NAME = 'blob-name'
-        connection = _Connection({'items': [{'name': BLOB_NAME}]})
-        bucket = self._makeOne(NAME)
-        with _monkey_defaults(connection=connection):
-            blobs = list(bucket)
-        blob, = blobs
-        self.assertTrue(blob.bucket is bucket)
-        self.assertEqual(blob.name, BLOB_NAME)
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
-
-    def test___contains___miss(self):
-        from gcloud.storage._testing import _monkey_defaults
-        NAME = 'name'
-        NONESUCH = 'nonesuch'
-        connection = _Connection()
-        bucket = self._makeOne(NAME, None)
-        with _monkey_defaults(connection=connection):
-            self.assertFalse(NONESUCH in bucket)
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
-
-    def test___contains___hit(self):
-        from gcloud.storage._testing import _monkey_defaults
-        NAME = 'name'
-        BLOB_NAME = 'blob-name'
-        connection = _Connection({'name': BLOB_NAME})
-        bucket = self._makeOne(NAME, None)
-        with _monkey_defaults(connection=connection):
-            self.assertTrue(BLOB_NAME in bucket)
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
     def test_exists_miss(self):
         from gcloud.exceptions import NotFound
@@ -272,8 +216,7 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_path_w_name(self):
         NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         self.assertEqual(bucket.path, '/b/%s' % NAME)
 
     def test_get_blob_miss(self):
@@ -354,7 +297,7 @@ class Test_Bucket(unittest2.TestCase):
     def test_list_blobs_w_explicit_connection(self):
         NAME = 'name'
         connection = _Connection({'items': []})
-        bucket = self._makeOne(NAME, None)
+        bucket = self._makeOne(NAME)
         iterator = bucket.list_blobs(connection=connection)
         blobs = list(iterator)
         self.assertEqual(blobs, [])
@@ -381,7 +324,7 @@ class Test_Bucket(unittest2.TestCase):
         GET_BLOBS_RESP = {'items': []}
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         result = bucket.delete(force=True, connection=connection)
         self.assertTrue(result is None)
         expected_cw = [{
@@ -405,7 +348,7 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(GET_BLOBS_RESP, DELETE_BLOB1_RESP,
                                  DELETE_BLOB2_RESP)
         connection._delete_bucket = True
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         result = bucket.delete(force=True, connection=connection)
         self.assertTrue(result is None)
         expected_cw = [{
@@ -422,7 +365,7 @@ class Test_Bucket(unittest2.TestCase):
         # Note the connection does not have a response for the blob.
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         result = bucket.delete(force=True, connection=connection)
         self.assertTrue(result is None)
         expected_cw = [{
@@ -444,7 +387,7 @@ class Test_Bucket(unittest2.TestCase):
         }
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
 
         # Make the Bucket refuse to delete with 2 objects.
         bucket._MAX_OBJECTS_FOR_BUCKET_DELETE = 1
@@ -679,21 +622,16 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_location_getter(self):
         NAME = 'name'
-        connection = _Connection()
         before = {'location': 'AS'}
-        bucket = self._makeOne(NAME, connection, properties=before)
+        bucket = self._makeOne(NAME, properties=before)
         self.assertEqual(bucket.location, 'AS')
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
 
     def test_location_setter(self):
         NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         self.assertEqual(bucket.location, None)
         bucket.location = 'AS'
         self.assertEqual(bucket.location, 'AS')
-        self.assertEqual(len(connection._requested), 0)
 
     def test_lifecycle_rules_getter(self):
         NAME = 'name'
@@ -709,13 +647,10 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         LC_RULE = {'action': {'type': 'Delete'}, 'condition': {'age': 42}}
         rules = [LC_RULE]
-        connection = _Connection()
-
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         self.assertEqual(bucket.lifecycle_rules, [])
         bucket.lifecycle_rules = rules
         self.assertEqual(bucket.lifecycle_rules, rules)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_cors_getter(self):
         NAME = 'name'
@@ -742,13 +677,11 @@ class Test_Bucket(unittest2.TestCase):
             'origin': ['127.0.0.1'],
             'responseHeader': ['Content-Type'],
         }
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
 
         self.assertEqual(bucket.cors, [])
         bucket.cors = [CORS_ENTRY]
         self.assertEqual(bucket.cors, [CORS_ENTRY])
-        self.assertEqual(len(connection._requested), 0)
 
     def test_get_logging_w_prefix(self):
         NAME = 'name'
@@ -760,49 +693,41 @@ class Test_Bucket(unittest2.TestCase):
                 'logObjectPrefix': LOG_PREFIX,
             },
         }
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection, properties=before)
+        bucket = self._makeOne(NAME, properties=before)
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
         self.assertEqual(info['logObjectPrefix'], LOG_PREFIX)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_enable_logging_defaults(self):
         NAME = 'name'
         LOG_BUCKET = 'logs'
         before = {'logging': None}
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection, properties=before)
+        bucket = self._makeOne(NAME, properties=before)
         self.assertTrue(bucket.get_logging() is None)
         bucket.enable_logging(LOG_BUCKET)
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
         self.assertEqual(info['logObjectPrefix'], '')
-        self.assertEqual(len(connection._requested), 0)
 
     def test_enable_logging_explicit(self):
         NAME = 'name'
         LOG_BUCKET = 'logs'
         LOG_PFX = 'pfx'
         before = {'logging': None}
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection, properties=before)
+        bucket = self._makeOne(NAME, properties=before)
         self.assertTrue(bucket.get_logging() is None)
         bucket.enable_logging(LOG_BUCKET, LOG_PFX)
         info = bucket.get_logging()
         self.assertEqual(info['logBucket'], LOG_BUCKET)
         self.assertEqual(info['logObjectPrefix'], LOG_PFX)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_disable_logging(self):
         NAME = 'name'
         before = {'logging': {'logBucket': 'logs', 'logObjectPrefix': 'pfx'}}
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection, properties=before)
+        bucket = self._makeOne(NAME, properties=before)
         self.assertTrue(bucket.get_logging() is not None)
         bucket.disable_logging()
         self.assertTrue(bucket.get_logging() is None)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_metageneration(self):
         METAGENERATION = 42
@@ -872,58 +797,45 @@ class Test_Bucket(unittest2.TestCase):
 
     def test_versioning_enabled_getter_missing(self):
         NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         self.assertEqual(bucket.versioning_enabled, False)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_versioning_enabled_getter(self):
         NAME = 'name'
         before = {'versioning': {'enabled': True}}
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection, properties=before)
+        bucket = self._makeOne(NAME, properties=before)
         self.assertEqual(bucket.versioning_enabled, True)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
 
     def test_versioning_enabled_setter(self):
         NAME = 'name'
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         self.assertFalse(bucket.versioning_enabled)
         bucket.versioning_enabled = True
         self.assertTrue(bucket.versioning_enabled)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_configure_website_defaults(self):
         NAME = 'name'
         UNSET = {'website': {'mainPageSuffix': None,
                              'notFoundPage': None}}
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         bucket.configure_website()
         self.assertEqual(bucket._properties, UNSET)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_configure_website_explicit(self):
         NAME = 'name'
         WEBSITE_VAL = {'website': {'mainPageSuffix': 'html',
                                    'notFoundPage': '404.html'}}
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         bucket.configure_website('html', '404.html')
         self.assertEqual(bucket._properties, WEBSITE_VAL)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_disable_website(self):
         NAME = 'name'
         UNSET = {'website': {'mainPageSuffix': None,
                              'notFoundPage': None}}
-        connection = _Connection()
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         bucket.disable_website()
         self.assertEqual(bucket._properties, UNSET)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_make_public_defaults(self):
         from gcloud.storage.acl import _ACLEntity
@@ -932,7 +844,7 @@ class Test_Bucket(unittest2.TestCase):
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
         connection = _Connection(after)
-        bucket = self._makeOne(NAME, None)
+        bucket = self._makeOne(NAME)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
         with _monkey_defaults(connection=connection):
@@ -961,7 +873,7 @@ class Test_Bucket(unittest2.TestCase):
             # We return the same value for default_object_acl.reload()
             # to consume.
             connection = _Connection(after1, after1, after2)
-        bucket = self._makeOne(NAME, None)
+        bucket = self._makeOne(NAME)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = default_object_acl_loaded
         with _monkey_defaults(connection=connection):
@@ -1027,7 +939,7 @@ class Test_Bucket(unittest2.TestCase):
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive, 'defaultObjectAcl': []}
         connection = _Connection(after, {'items': [{'name': BLOB_NAME}]})
-        bucket = self._makeOne(NAME, None)
+        bucket = self._makeOne(NAME)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
         bucket._iterator_class = _Iterator
@@ -1086,9 +998,6 @@ class _Connection(object):
 class _Bucket(object):
     path = '/b/name'
     name = 'name'
-
-    def __init__(self, connection):
-        self.connection = connection
 
 
 class MockFile(io.StringIO):

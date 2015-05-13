@@ -96,9 +96,6 @@ class Bucket(_PropertyMixin):
     :type name: string
     :param name: The name of the bucket.
 
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: The connection to use when sending requests.
-
     :type properties: dictionary or ``NoneType``
     :param properties: The properties associated with the bucket.
     """
@@ -107,21 +104,13 @@ class Bucket(_PropertyMixin):
     _MAX_OBJECTS_FOR_BUCKET_DELETE = 256
     """Maximum number of existing objects allowed in Bucket.delete()."""
 
-    def __init__(self, name=None, connection=None):
+    def __init__(self, name=None):
         super(Bucket, self).__init__(name=name)
-        self._connection = connection
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
 
     def __repr__(self):
         return '<Bucket: %s>' % self.name
-
-    def __iter__(self):
-        return iter(self.list_blobs())
-
-    def __contains__(self, blob_name):
-        blob = Blob(blob_name, bucket=self)
-        return blob.exists()
 
     def exists(self, connection=None):
         """Determines whether or not this bucket exists.
@@ -195,15 +184,6 @@ class Bucket(_PropertyMixin):
     def default_object_acl(self):
         """Create our defaultObjectACL on demand."""
         return self._default_object_acl
-
-    @property
-    def connection(self):
-        """Getter property for the connection to use with this Bucket.
-
-        :rtype: :class:`gcloud.storage.connection.Connection`
-        :returns: The connection to use.
-        """
-        return self._connection
 
     @staticmethod
     def path_helper(bucket_name):

@@ -52,7 +52,7 @@ class TestStorageBuckets(unittest2.TestCase):
     def tearDown(self):
         with storage.Batch() as batch:
             for bucket_name in self.case_buckets_to_delete:
-                storage.Bucket(bucket_name, connection=batch).delete()
+                storage.Bucket(bucket_name).delete(connection=batch)
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'
@@ -186,7 +186,7 @@ class TestStorageListFiles(TestStorageFiles):
     def setUpClass(cls):
         super(TestStorageListFiles, cls).setUpClass()
         # Make sure bucket empty before beginning.
-        for blob in cls.bucket:
+        for blob in cls.bucket.list_blobs():
             blob.delete()
 
         logo_path = cls.FILES['logo']['path']
@@ -237,7 +237,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     def setUpClass(cls):
         super(TestStoragePseudoHierarchy, cls).setUpClass()
         # Make sure bucket empty before beginning.
-        for blob in cls.bucket:
+        for blob in cls.bucket.list_blobs():
             blob.delete()
 
         simple_path = cls.FILES['simple']['path']
@@ -337,4 +337,4 @@ class TestStorageSignURLs(TestStorageFiles):
         self.assertEqual(content, b'')
 
         # Check that the blob has actually been deleted.
-        self.assertFalse(blob.name in self.bucket)
+        self.assertFalse(blob.exists())

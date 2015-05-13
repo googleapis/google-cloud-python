@@ -250,6 +250,7 @@ class Blob(_PropertyMixin):
         :rtype: :class:`Blob`
         :returns: The newly-copied blob.
         """
+        connection = _require_connection(connection)
         new_blob = self.bucket.copy_blob(self, self.bucket, new_name,
                                          connection=connection)
         self.delete(connection=connection)
@@ -269,6 +270,7 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`gcloud.storage.bucket.Bucket.delete_blob`).
         """
+        connection = _require_connection(connection)
         return self.bucket.delete_blob(self.name, connection=connection)
 
     def download_to_file(self, file_obj, connection=None):

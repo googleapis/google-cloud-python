@@ -78,10 +78,9 @@ def set_default_bucket(bucket=None):
     """
     if bucket is None:
         bucket_name = os.getenv(_BUCKET_ENV_VAR_NAME)
-        connection = get_default_connection()
 
-        if bucket_name is not None and connection is not None:
-            bucket = Bucket(bucket_name, connection=connection)
+        if bucket_name is not None:
+            bucket = Bucket(bucket_name)
 
     if bucket is not None:
         _implicit_environ._DEFAULTS.bucket = bucket
