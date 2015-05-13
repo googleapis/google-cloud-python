@@ -73,7 +73,6 @@ class Test__BlobIterator(unittest2.TestCase):
         self.assertEqual(len(blobs), 1)
         blob = blobs[0]
         self.assertTrue(isinstance(blob, Blob))
-        self.assertTrue(blob.connection is connection)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(iterator.prefixes, ('foo',))
 

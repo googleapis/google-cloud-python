@@ -133,16 +133,6 @@ class Blob(_PropertyMixin):
         return '<Blob: %s, %s>' % (bucket_name, self.name)
 
     @property
-    def connection(self):
-        """Getter property for the connection to use with this Blob.
-
-        :rtype: :class:`gcloud.storage.connection.Connection` or None
-        :returns: The connection to use, or None if no connection is set.
-        """
-        if self.bucket and self.bucket.connection:
-            return self.bucket.connection
-
-    @property
     def path(self):
         """Getter property for the URL path to this Blob.
 
