@@ -157,6 +157,77 @@ requests and handle token refresh on 401 errors.</p>
 </table>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="gcloud.connection.Connection.from_environment">
+<em class="property">classmethod </em><code class="descname">from_environment</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#Connection.from_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection.from_environment" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to retrieve implicit credentials while creating connection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The connection created with the retrieved implicit
+credentials.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="gcloud.connection.Connection.from_service_account_json">
+<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#Connection.from_service_account_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to retrieve JSON credentials while creating connection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>json_credentials_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file
+was given to you when you created the
+service account). This file must contain
+a JSON object with a private key and
+other credentials information (downloaded
+from the Google APIs console).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The connection created with the retrieved JSON credentials.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="gcloud.connection.Connection.from_service_account_p12">
+<em class="property">classmethod </em><code class="descname">from_service_account_p12</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#Connection.from_service_account_p12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection.from_service_account_p12" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to retrieve P12 credentials while creating connection.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unless you have an explicit reason to use a PKCS12 key for your
+service account, we recommend using a JSON key.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
+<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
+given to you when you created the service
+account). This file must be in P12 format.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The connection created with the retrieved P12 credentials.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="gcloud.connection.Connection.http">
 <code class="descname">http</code><a class="headerlink" href="#gcloud.connection.Connection.http" title="Permalink to this definition">#</a></dt>

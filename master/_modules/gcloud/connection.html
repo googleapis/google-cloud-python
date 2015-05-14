@@ -103,6 +103,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">import</span> <span class="nn">httplib2</span>
 
+<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_credentials</span>
+<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_for_service_account_json</span>
+<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_for_service_account_p12</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
 
 
@@ -194,7 +197,69 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">create_scoped</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">credentials</span>
 
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Connection.from_service_account_json"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.connection.Connection.from_service_account_json">[docs]</a>    <span class="k">def</span> <span class="nf">from_service_account_json</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">json_credentials_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory to retrieve JSON credentials while creating connection.</span>
+
+<span class="sd">        :type json_credentials_path: string</span>
+<span class="sd">        :param json_credentials_path: The path to a private key file (this file</span>
+<span class="sd">                                      was given to you when you created the</span>
+<span class="sd">                                      service account). This file must contain</span>
+<span class="sd">                                      a JSON object with a private key and</span>
+<span class="sd">                                      other credentials information (downloaded</span>
+<span class="sd">                                      from the Google APIs console).</span>
+
+<span class="sd">        :rtype: :class:`gcloud.connection.Connection`</span>
+<span class="sd">        :returns: The connection created with the retrieved JSON credentials.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_for_service_account_json</span><span class="p">(</span><span class="n">json_credentials_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&#39;credentials&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;credentials must not be in keyword arguments&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Connection.from_service_account_p12"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.connection.Connection.from_service_account_p12">[docs]</a>    <span class="k">def</span> <span class="nf">from_service_account_p12</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">,</span>
+                                 <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory to retrieve P12 credentials while creating connection.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">          Unless you have an explicit reason to use a PKCS12 key for your</span>
+<span class="sd">          service account, we recommend using a JSON key.</span>
+
+<span class="sd">        :type client_email: string</span>
+<span class="sd">        :param client_email: The e-mail attached to the service account.</span>
+
+<span class="sd">        :type private_key_path: string</span>
+<span class="sd">        :param private_key_path: The path to a private key file (this file was</span>
+<span class="sd">                                 given to you when you created the service</span>
+<span class="sd">                                 account). This file must be in P12 format.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.connection.Connection`</span>
+<span class="sd">        :returns: The connection created with the retrieved P12 credentials.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_for_service_account_p12</span><span class="p">(</span><span class="n">client_email</span><span class="p">,</span>
+                                                  <span class="n">private_key_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&#39;credentials&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;credentials must not be in keyword arguments&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Connection.from_environment"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.connection.Connection.from_environment">[docs]</a>    <span class="k">def</span> <span class="nf">from_environment</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory to retrieve implicit credentials while creating connection.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.connection.Connection`</span>
+<span class="sd">        :returns: The connection created with the retrieved implicit</span>
+<span class="sd">                  credentials.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s">&#39;credentials&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;credentials must not be in keyword arguments&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+</div></div>
 <div class="viewcode-block" id="JSONConnection"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.connection.JSONConnection">[docs]</a><span class="k">class</span> <span class="nc">JSONConnection</span><span class="p">(</span><span class="n">Connection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A connection to a Google JSON-based API.</span>
 

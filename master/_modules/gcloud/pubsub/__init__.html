@@ -108,7 +108,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">get_default_project</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">set_default_project</span>
-<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_credentials</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.api</span> <span class="kn">import</span> <span class="n">list_subscriptions</span>
@@ -157,8 +156,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :rtype: :class:`gcloud.pubsub.connection.Connection`</span>
 <span class="sd">    :returns: A connection defined with the proper credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Connection</span><span class="o">.</span><span class="n">from_environment</span><span class="p">()</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
