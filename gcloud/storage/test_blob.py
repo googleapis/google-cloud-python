@@ -31,7 +31,7 @@ class Test_Blob(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.storage import _implicit_environ
 
-        FAKE_BUCKET = _Bucket(None)
+        FAKE_BUCKET = _Bucket()
 
         def mock_get_bucket():
             return FAKE_BUCKET
@@ -46,7 +46,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertTrue(blob._acl.blob is blob)
 
     def test_ctor_defaults(self):
-        FAKE_BUCKET = _Bucket(None)
+        FAKE_BUCKET = _Bucket()
         blob = self._makeOne(None, bucket=FAKE_BUCKET)
         self.assertEqual(blob.bucket, FAKE_BUCKET)
         self.assertEqual(blob.name, None)
@@ -56,8 +56,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_ctor_explicit(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         properties = {'key': 'value'}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         self.assertTrue(blob.bucket is bucket)
@@ -103,7 +102,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_acl_property(self):
         from gcloud.storage.acl import ObjectACL
-        FAKE_BUCKET = _Bucket(None)
+        FAKE_BUCKET = _Bucket()
         blob = self._makeOne(None, bucket=FAKE_BUCKET)
         acl = blob.acl
         self.assertTrue(isinstance(acl, ObjectACL))
@@ -115,29 +114,25 @@ class Test_Blob(unittest2.TestCase):
         self.assertRaises(ValueError, getattr, blob, 'path')
 
     def test_path_no_name(self):
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(None, bucket=bucket)
         self.assertRaises(ValueError, getattr, blob, 'path')
 
     def test_path_normal(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.path, '/b/name/o/%s' % BLOB_NAME)
 
     def test_path_w_slash_in_name(self):
         BLOB_NAME = 'parent/child'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.path, '/b/name/o/parent%2Fchild')
 
     def test_public_url(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.public_url,
                          'https://storage.googleapis.com/name/%s' %
@@ -145,8 +140,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_public_url_w_slash_in_name(self):
         BLOB_NAME = 'parent/child'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(
             blob.public_url,
@@ -159,7 +153,7 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
@@ -210,7 +204,7 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
@@ -237,7 +231,7 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
@@ -263,7 +257,7 @@ class Test_Blob(unittest2.TestCase):
         NONESUCH = 'nonesuch'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(NONESUCH, bucket=bucket)
         self.assertFalse(blob.exists(connection=connection))
 
@@ -272,19 +266,21 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         found_response = {'status': OK}
         connection = _Connection(found_response)
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         self.assertTrue(blob.exists(connection=connection))
 
-    def test_rename(self):
+    def test_rename_w_implicit_connection(self):
+        from gcloud.storage._testing import _monkey_defaults
         BLOB_NAME = 'blob-name'
         NEW_NAME = 'new-name'
         connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        new_blob = blob.rename(NEW_NAME)
+        with _monkey_defaults(connection=connection):
+            new_blob = blob.rename(NEW_NAME)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(new_blob.name, NEW_NAME)
         self.assertFalse(BLOB_NAME in bucket._blobs)
@@ -295,7 +291,7 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         NEW_NAME = 'new-name'
         connection = _Connection()
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         new_blob = blob.rename(NEW_NAME, connection=connection)
@@ -305,15 +301,17 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
         self.assertTrue(NEW_NAME in bucket._blobs)
 
-    def test_delete(self):
+    def test_delete_w_implicit_connection(self):
         from six.moves.http_client import NOT_FOUND
+        from gcloud.storage._testing import _monkey_defaults
         BLOB_NAME = 'blob-name'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        blob.delete()
+        with _monkey_defaults(connection=connection):
+            blob.delete()
         self.assertFalse(blob.exists(connection=connection))
         self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
 
@@ -322,7 +320,7 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         blob.delete(connection=connection)
@@ -342,7 +340,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -374,7 +372,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK,
                       'updated': '2014-12-06T13:13:50.690Z'}
@@ -403,7 +401,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -425,7 +423,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (response, b'{}'),
         )
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
@@ -495,7 +493,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b''),
             (chunk2_response, b'{}'),
         )
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
@@ -553,7 +551,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
@@ -600,7 +598,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket,
                              properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
@@ -666,7 +664,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
@@ -705,7 +703,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
@@ -733,7 +731,7 @@ class Test_Blob(unittest2.TestCase):
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive}
         connection = _Connection(after)
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.acl.loaded = True
         with _monkey_defaults(connection=connection):
@@ -752,7 +750,7 @@ class Test_Blob(unittest2.TestCase):
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive}
         connection = _Connection(after)
-        bucket = _Bucket(None)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.acl.loaded = True
         blob.make_public(connection=connection)
@@ -766,8 +764,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_cache_control_getter(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         CACHE_CONTROL = 'no-cache'
         properties = {'cacheControl': CACHE_CONTROL}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -776,13 +773,11 @@ class Test_Blob(unittest2.TestCase):
     def test_cache_control_setter(self):
         BLOB_NAME = 'blob-name'
         CACHE_CONTROL = 'no-cache'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.cache_control, None)
         blob.cache_control = CACHE_CONTROL
         self.assertEqual(blob.cache_control, CACHE_CONTROL)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_component_count(self):
         BUCKET = object()
@@ -806,8 +801,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_content_disposition_getter(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         CONTENT_DISPOSITION = 'Attachment; filename=example.jpg'
         properties = {'contentDisposition': CONTENT_DISPOSITION}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -816,18 +810,15 @@ class Test_Blob(unittest2.TestCase):
     def test_content_disposition_setter(self):
         BLOB_NAME = 'blob-name'
         CONTENT_DISPOSITION = 'Attachment; filename=example.jpg'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.content_disposition, None)
         blob.content_disposition = CONTENT_DISPOSITION
         self.assertEqual(blob.content_disposition, CONTENT_DISPOSITION)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_content_encoding_getter(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         CONTENT_ENCODING = 'gzip'
         properties = {'contentEncoding': CONTENT_ENCODING}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -836,18 +827,15 @@ class Test_Blob(unittest2.TestCase):
     def test_content_encoding_setter(self):
         BLOB_NAME = 'blob-name'
         CONTENT_ENCODING = 'gzip'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.content_encoding, None)
         blob.content_encoding = CONTENT_ENCODING
         self.assertEqual(blob.content_encoding, CONTENT_ENCODING)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_content_language_getter(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         CONTENT_LANGUAGE = 'pt-BR'
         properties = {'contentLanguage': CONTENT_LANGUAGE}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -856,18 +844,15 @@ class Test_Blob(unittest2.TestCase):
     def test_content_language_setter(self):
         BLOB_NAME = 'blob-name'
         CONTENT_LANGUAGE = 'pt-BR'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.content_language, None)
         blob.content_language = CONTENT_LANGUAGE
         self.assertEqual(blob.content_language, CONTENT_LANGUAGE)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_content_type_getter(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         CONTENT_TYPE = 'image/jpeg'
         properties = {'contentType': CONTENT_TYPE}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -876,18 +861,15 @@ class Test_Blob(unittest2.TestCase):
     def test_content_type_setter(self):
         BLOB_NAME = 'blob-name'
         CONTENT_TYPE = 'image/jpeg'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.content_type, None)
         blob.content_type = CONTENT_TYPE
         self.assertEqual(blob.content_type, CONTENT_TYPE)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_crc32c_getter(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         CRC32C = 'DEADBEEF'
         properties = {'crc32c': CRC32C}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -896,18 +878,15 @@ class Test_Blob(unittest2.TestCase):
     def test_crc32c_setter(self):
         BLOB_NAME = 'blob-name'
         CRC32C = 'DEADBEEF'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.crc32c, None)
         blob.crc32c = CRC32C
         self.assertEqual(blob.crc32c, CRC32C)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_etag(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         ETAG = 'ETAG'
         properties = {'etag': ETAG}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -934,8 +913,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_id(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         ID = 'ID'
         properties = {'id': ID}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -943,8 +921,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_md5_hash_getter(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         MD5_HASH = 'DEADBEEF'
         properties = {'md5Hash': MD5_HASH}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -953,18 +930,15 @@ class Test_Blob(unittest2.TestCase):
     def test_md5_hash_setter(self):
         BLOB_NAME = 'blob-name'
         MD5_HASH = 'DEADBEEF'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.md5_hash, None)
         blob.md5_hash = MD5_HASH
         self.assertEqual(blob.md5_hash, MD5_HASH)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_media_link(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -972,8 +946,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_metadata_getter(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         METADATA = {'foo': 'Foo'}
         properties = {'metadata': METADATA}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -982,13 +955,11 @@ class Test_Blob(unittest2.TestCase):
     def test_metadata_setter(self):
         BLOB_NAME = 'blob-name'
         METADATA = {'foo': 'Foo'}
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         self.assertEqual(blob.metadata, None)
         blob.metadata = METADATA
         self.assertEqual(blob.metadata, METADATA)
-        self.assertEqual(len(connection._requested), 0)
 
     def test_metageneration(self):
         BUCKET = object()
@@ -1012,8 +983,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_owner(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         OWNER = {'entity': 'project-owner-12345', 'entityId': '23456'}
         properties = {'owner': OWNER}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -1023,8 +993,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_self_link(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         SELF_LINK = 'http://example.com/self/'
         properties = {'selfLink': SELF_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -1051,8 +1020,7 @@ class Test_Blob(unittest2.TestCase):
 
     def test_storage_class(self):
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         STORAGE_CLASS = 'http://example.com/self/'
         properties = {'storageClass': STORAGE_CLASS}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
@@ -1063,8 +1031,7 @@ class Test_Blob(unittest2.TestCase):
         from pytz import utc
         from gcloud._helpers import _RFC3339_MICROS
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=utc)
         TIME_DELETED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'timeDeleted': TIME_DELETED}
@@ -1081,8 +1048,7 @@ class Test_Blob(unittest2.TestCase):
         from pytz import utc
         from gcloud._helpers import _RFC3339_MICROS
         BLOB_NAME = 'blob-name'
-        connection = _Connection()
-        bucket = _Bucket(connection)
+        bucket = _Bucket()
         TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=utc)
         UPDATED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {'updated': UPDATED}
@@ -1152,22 +1118,17 @@ class _Bucket(object):
     path = '/b/name'
     name = 'name'
 
-    def __init__(self, connection):
-        self.connection = connection
+    def __init__(self):
         self._blobs = {}
         self._copied = []
         self._deleted = []
 
     def copy_blob(self, blob, destination_bucket, new_name, connection=None):
-        if connection is None:
-            connection = self.connection
         self._copied.append((blob, destination_bucket, new_name, connection))
         destination_bucket._blobs[new_name] = self._blobs[blob.name]
         return blob.__class__(new_name, bucket=destination_bucket)
 
     def delete_blob(self, blob_name, connection=None):
-        if connection is None:
-            connection = self.connection
         del self._blobs[blob_name]
         self._deleted.append((blob_name, connection))
 

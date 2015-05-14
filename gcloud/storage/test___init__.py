@@ -58,7 +58,6 @@ class Test_set_default_bucket(unittest2.TestCase):
 
                 default_bucket = _implicit_environ.get_default_bucket()
                 self.assertEqual(default_bucket.name, IMPLICIT_BUCKET_NAME)
-                self.assertEqual(default_bucket.connection, CONNECTION)
 
     def test_set_explicit_w_env_var_set(self):
         from gcloud.storage._testing import _monkey_defaults
@@ -113,7 +112,6 @@ class Test_set_default_bucket(unittest2.TestCase):
 
                 default_bucket = _implicit_environ.get_default_bucket()
                 self.assertEqual(default_bucket.name, IMPLICIT_BUCKET_NAME)
-                self.assertEqual(default_bucket.connection, CONNECTION)
 
 
 class Test_set_defaults(unittest2.TestCase):

@@ -96,9 +96,6 @@ class Bucket(_PropertyMixin):
     :type name: string
     :param name: The name of the bucket.
 
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: The connection to use when sending requests.
-
     :type properties: dictionary or ``NoneType``
     :param properties: The properties associated with the bucket.
     """
@@ -195,15 +192,6 @@ class Bucket(_PropertyMixin):
     def default_object_acl(self):
         """Create our defaultObjectACL on demand."""
         return self._default_object_acl
-
-    @property
-    def connection(self):
-        """Getter property for the connection to use with this Bucket.
-
-        :rtype: :class:`gcloud.storage.connection.Connection`
-        :returns: The connection to use.
-        """
-        return self._connection
 
     @staticmethod
     def path_helper(bucket_name):

@@ -66,7 +66,6 @@ class Test_lookup_bucket(unittest2.TestCase):
             bucket = self._callFUT(BLOB_NAME, connection=conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -256,7 +255,6 @@ class Test_get_bucket(unittest2.TestCase):
             bucket = self._callFUT(BLOB_NAME, connection=conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
@@ -301,7 +299,6 @@ class Test_create_bucket(unittest2.TestCase):
             bucket = self._callFUT(BLOB_NAME, project=project, connection=conn)
 
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is conn)
         self.assertEqual(bucket.name, BLOB_NAME)
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
@@ -325,7 +322,6 @@ class Test__BucketIterator(unittest2.TestCase):
     def test_ctor(self):
         connection = object()
         iterator = self._makeOne(connection)
-        self.assertTrue(iterator.connection is connection)
         self.assertEqual(iterator.path, '/b')
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, None)
@@ -345,7 +341,6 @@ class Test__BucketIterator(unittest2.TestCase):
         self.assertEqual(len(buckets), 1)
         bucket = buckets[0]
         self.assertTrue(isinstance(bucket, Bucket))
-        self.assertTrue(bucket.connection is connection)
         self.assertEqual(bucket.name, BLOB_NAME)
 
 
