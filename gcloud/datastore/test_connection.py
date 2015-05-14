@@ -97,7 +97,12 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.credentials, None)
 
     def test_ctor_explicit(self):
-        creds = object()
+        class Creds(object):
+
+            def create_scoped_required(self):
+                return False
+
+        creds = Creds()
         conn = self._makeOne(creds)
         self.assertTrue(conn.credentials is creds)
 
@@ -122,6 +127,10 @@ class TestConnection(unittest2.TestCase):
             def authorize(self, http):
                 self._called_with = http
                 return authorized
+
+            def create_scoped_required(self):
+                return False
+
         creds = Creds()
         conn = self._makeOne(creds)
         self.assertTrue(conn.http is authorized)

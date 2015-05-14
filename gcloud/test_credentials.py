@@ -396,6 +396,9 @@ class _Credentials(object):
         self._scopes = scopes
         return self
 
+    def create_scoped_required(self):
+        return True
+
 
 class _Client(object):
     def __init__(self):

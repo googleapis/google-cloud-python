@@ -23,13 +23,9 @@ import os
 from gcloud._helpers import _app_engine_id
 from gcloud._helpers import _compute_engine_id
 from gcloud._helpers import _lazy_property_deco
-from gcloud.connection import get_scoped_connection
+from gcloud.credentials import get_credentials
 from gcloud.datastore.connection import Connection
 
-
-SCOPE = ('https://www.googleapis.com/auth/datastore',
-         'https://www.googleapis.com/auth/userinfo.email')
-"""The scopes required for authenticating as a Cloud Datastore consumer."""
 
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
 _GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
@@ -126,7 +122,8 @@ def get_connection():
     :rtype: :class:`gcloud.datastore.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    return get_scoped_connection(Connection, SCOPE)
+    credentials = get_credentials()
+    return Connection(credentials=credentials)
 
 
 def set_default_connection(connection=None):
