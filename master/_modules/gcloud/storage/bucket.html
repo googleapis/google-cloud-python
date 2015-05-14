@@ -178,9 +178,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type name: string</span>
 <span class="sd">    :param name: The name of the bucket.</span>
 
-<span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
-<span class="sd">    :param connection: The connection to use when sending requests.</span>
-
 <span class="sd">    :type properties: dictionary or ``NoneType``</span>
 <span class="sd">    :param properties: The properties associated with the bucket.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -277,15 +274,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">def</span> <span class="nf">default_object_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create our defaultObjectACL on demand.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_object_acl</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Getter property for the connection to use with this Bucket.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.storage.connection.Connection`</span>
-<span class="sd">        :returns: The connection to use.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Bucket.path_helper"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.path_helper">[docs]</a>    <span class="k">def</span> <span class="nf">path_helper</span><span class="p">(</span><span class="n">bucket_name</span><span class="p">):</span>
