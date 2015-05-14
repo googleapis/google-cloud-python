@@ -26,7 +26,6 @@ The main concepts with this API are:
 
 from gcloud._helpers import get_default_project
 from gcloud._helpers import set_default_project
-from gcloud.credentials import get_credentials
 from gcloud.pubsub import _implicit_environ
 from gcloud.pubsub._implicit_environ import get_default_connection
 from gcloud.pubsub.api import list_subscriptions
@@ -75,5 +74,4 @@ def get_connection():
     :rtype: :class:`gcloud.pubsub.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    credentials = get_credentials()
-    return Connection(credentials=credentials)
+    return Connection.from_environment()
