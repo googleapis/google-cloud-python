@@ -443,7 +443,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(NAME)
 
         # Make the Bucket refuse to delete with 2 objects.
-        bucket._MAX_OBJECTS_FOR_BUCKET_DELETE = 1
+        bucket._MAX_OBJECTS_FOR_ITERATION = 1
         self.assertRaises(ValueError, bucket.delete, force=True,
                           connection=connection)
         self.assertEqual(connection._deleted_buckets, [])
@@ -1009,7 +1009,34 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw[1]['query_params'], {'projection': 'full'})
+        max_results = bucket._MAX_OBJECTS_FOR_ITERATION + 1
+        self.assertEqual(kw[1]['query_params'],
+                         {'maxResults': max_results, 'projection': 'full'})
+
+    def test_make_public_recursive_too_many(self):
+        from gcloud.storage.acl import _ACLEntity
+
+        PERMISSIVE = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
+        AFTER = {'acl': PERMISSIVE, 'defaultObjectAcl': []}
+
+        NAME = 'name'
+        BLOB_NAME1 = 'blob-name1'
+        BLOB_NAME2 = 'blob-name2'
+        GET_BLOBS_RESP = {
+            'items': [
+                {'name': BLOB_NAME1},
+                {'name': BLOB_NAME2},
+            ],
+        }
+        connection = _Connection(AFTER, GET_BLOBS_RESP)
+        bucket = self._makeOne(NAME, connection)
+        bucket.acl.loaded = True
+        bucket.default_object_acl.loaded = True
+
+        # Make the Bucket refuse to make_public with 2 objects.
+        bucket._MAX_OBJECTS_FOR_ITERATION = 1
+        self.assertRaises(ValueError, bucket.make_public, recursive=True,
+                          connection=connection)
 
 
 class _Connection(object):
