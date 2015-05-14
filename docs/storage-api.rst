@@ -10,10 +10,9 @@ Storage
 :mod:`gcloud.storage`
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: gcloud.storage.__init__
-  :members:
-  :undoc-members:
-  :show-inheritance:
+.. automodule:: gcloud.storage
+  :members: get_connection, get_default_connection, get_default_bucket,
+            set_default_connection, set_default_bucket, set_defaults
 
 Connections
 ~~~~~~~~~~~

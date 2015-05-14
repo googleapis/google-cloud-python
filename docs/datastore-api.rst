@@ -10,10 +10,9 @@ Datastore
 :mod:`gcloud.datastore`
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: gcloud.datastore.__init__
-  :members:
-  :undoc-members:
-  :show-inheritance:
+.. automodule:: gcloud.datastore
+  :members: get_connection, get_default_connection, get_default_dataset_id,
+            set_default_connection, set_default_dataset_id, set_defaults
 
 Connections
 ~~~~~~~~~~~
