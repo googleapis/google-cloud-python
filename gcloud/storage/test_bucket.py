@@ -140,7 +140,7 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
-        bucket = self._makeOne(NAME, None)
+        bucket = self._makeOne(NAME)
         with _monkey_defaults(connection=connection):
             self.assertFalse(NONESUCH in bucket)
         kw, = connection._requested
@@ -152,7 +152,7 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({'name': BLOB_NAME})
-        bucket = self._makeOne(NAME, None)
+        bucket = self._makeOne(NAME)
         with _monkey_defaults(connection=connection):
             self.assertTrue(BLOB_NAME in bucket)
         kw, = connection._requested
