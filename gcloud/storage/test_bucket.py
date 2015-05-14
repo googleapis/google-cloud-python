@@ -1029,7 +1029,7 @@ class Test_Bucket(unittest2.TestCase):
             ],
         }
         connection = _Connection(AFTER, GET_BLOBS_RESP)
-        bucket = self._makeOne(NAME, connection)
+        bucket = self._makeOne(NAME)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
 
