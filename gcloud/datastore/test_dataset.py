@@ -54,7 +54,7 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(_called_with[0][0], ([key],))
         self.assertTrue(_called_with[0][1]['missing'] is None)
         self.assertTrue(_called_with[0][1]['deferred'] is None)
-        self.assertTrue(_called_with[0][1]['connection'] is conn)
+        self.assertTrue(_called_with[0][1]['connection'] is None)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_get_explicit_w_explicit_connection(self):
@@ -97,7 +97,7 @@ class TestDataset(unittest2.TestCase):
                 dataset.put([entity])
 
         self.assertEqual(_called_with[0][0], ([entity],))
-        self.assertTrue(_called_with[0][1]['connection'] is conn)
+        self.assertTrue(_called_with[0][1]['connection'] is None)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_put_w_explicit_connection(self):
@@ -136,7 +136,7 @@ class TestDataset(unittest2.TestCase):
                 dataset.delete([key])
 
         self.assertEqual(_called_with[0][0], ([key],))
-        self.assertTrue(_called_with[0][1]['connection'] is conn)
+        self.assertTrue(_called_with[0][1]['connection'] is None)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_delete_w_explicit_connection(self):
@@ -192,7 +192,7 @@ class TestDataset(unittest2.TestCase):
         self.assertTrue(isinstance(batch, _Dummy))
         self.assertEqual(batch.args, ())
         self.assertEqual(batch.kwargs,
-                         {'dataset_id': self.DATASET_ID, 'connection': conn})
+                         {'dataset_id': self.DATASET_ID, 'connection': None})
 
     def test_batch_w_explicit_connection(self):
         from gcloud.datastore import dataset as MUT
@@ -222,7 +222,7 @@ class TestDataset(unittest2.TestCase):
         self.assertTrue(isinstance(xact, _Dummy))
         self.assertEqual(xact.args, ())
         self.assertEqual(xact.kwargs,
-                         {'dataset_id': self.DATASET_ID, 'connection': conn})
+                         {'dataset_id': self.DATASET_ID, 'connection': None})
 
     def test_transaction_w_explicit_connection(self):
         from gcloud.datastore import dataset as MUT
