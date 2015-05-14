@@ -15,6 +15,7 @@
 """Create / interact with gcloud storage connections."""
 
 from gcloud import connection as base_connection
+from gcloud.storage import storage_v1_client
 
 
 class Connection(base_connection.JSONConnection):
@@ -28,3 +29,10 @@ class Connection(base_connection.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/storage/{api_version}{path}'
     """A template for the URL of a particular API call."""
+
+    def __init__(self, credentials=None, http=None):
+        super(Connection, self).__init__(credentials=credentials, http=http)
+        client = storage_v1_client.StorageV1(credentials=self._credentials,
+                                             get_credentials=False)
+        client._USER_AGENT = self.USER_AGENT
+        self._client = client

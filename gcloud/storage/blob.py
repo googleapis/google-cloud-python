@@ -17,7 +17,7 @@
 import copy
 import datetime
 from io import BytesIO
-import json
+# import json
 import mimetypes
 import os
 import time
@@ -36,6 +36,7 @@ from gcloud.storage._helpers import _require_connection
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage import _implicit_environ
 from gcloud.storage.acl import ObjectACL
+from gcloud.storage import storage_v1_messages
 from gcloud._helpers import _RFC3339_MICROS
 
 
@@ -340,8 +341,10 @@ class Blob(_PropertyMixin):
         self.download_to_file(string_buffer, connection=connection)
         return string_buffer.getvalue()
 
+    # def upload_from_file(self, file_obj, rewind=False, size=None,
+    #                      content_type=None, num_retries=6, connection=None):
     def upload_from_file(self, file_obj, rewind=False, size=None,
-                         content_type=None, num_retries=6, connection=None):
+                         content_type=None, connection=None):
         """Upload the contents of this blob from a file-like object.
 
         The content type of the upload will either be
@@ -384,60 +387,43 @@ class Blob(_PropertyMixin):
                            requests. If not provided, falls back to default.
         """
         connection = _require_connection(connection)
-        content_type = (content_type or self._properties.get('contentType') or
-                        'application/octet-stream')
-
         # Rewind the file if desired.
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
-
-        # Get the basic stats about the file.
         total_bytes = size or os.fstat(file_obj.fileno()).st_size
-        headers = {
-            'Accept': 'application/json',
-            'Accept-Encoding': 'gzip, deflate',
-            'User-Agent': connection.USER_AGENT,
-        }
 
-        upload = transfer.Upload(file_obj, content_type, total_bytes,
-                                 auto_transfer=False,
-                                 chunksize=self.chunk_size)
+        content_found = self._properties.pop('contentType', None)
+        content_type = (content_type or content_found or
+                        'application/octet-stream')
+        insert_request = storage_v1_messages.StorageObjectsInsertRequest(
+            **self._properties)
+        # Put it back so as note to break the _properties.
+        self._properties['contentType'] = content_found
 
-        url_builder = _UrlBuilder(bucket_name=self.bucket.name,
-                                  object_name=self.name)
-        upload_config = _UploadConfig()
+        insert_request.bucket = self.bucket.name
+        insert_request.name = self.name
 
-        # Temporary URL, until we know simple vs. resumable.
-        base_url = connection.API_BASE_URL + '/upload'
-        upload_url = connection.build_api_url(api_base_url=base_url,
-                                              path=self.bucket.path + '/o')
+        content_type = (content_type or self._properties.get('contentType') or
+                        'application/octet-stream')
+        upload = transfer.Upload.FromStream(file_obj, content_type,
+                                            total_bytes,
+                                            chunksize=self.chunk_size)
+        # @craigcitro, can I put `callback` and `finish_callback` here?
+        new_object = connection._client.objects.Insert(insert_request,
+                                                       upload=upload)
 
-        # Use apitools 'Upload' facility.
-        request = http_wrapper.Request(upload_url, 'POST', headers)
-
-        upload.ConfigureRequest(upload_config, request, url_builder)
-        query_params = url_builder.query_params
-        base_url = connection.API_BASE_URL + '/upload'
-        request.url = connection.build_api_url(api_base_url=base_url,
-                                               path=self.bucket.path + '/o',
-                                               query_params=query_params)
-        upload.InitializeUpload(request, connection.http)
-
-        # Should we be passing callbacks through from caller?  We can't
-        # pass them as None, because apitools wants to print to the console
-        # by default.
-        if upload.strategy == transfer.RESUMABLE_UPLOAD:
-            http_response = upload.StreamInChunks(
-                callback=lambda *args: None,
-                finish_callback=lambda *args: None)
-        else:
-            http_response = http_wrapper.MakeRequest(connection.http, request,
-                                                     retries=num_retries)
-        response_content = http_response.content
-        if not isinstance(response_content,
-                          six.string_types):  # pragma: NO COVER  Python3
-            response_content = response_content.decode('utf-8')
-        self._set_properties(json.loads(response_content))
+        result = {}
+        for field in new_object.all_fields():
+            result[field.name] = getattr(new_object, field.name, None)
+        # NOTE: Problem here for complex types. For example:
+        # >>> set(map(type, result.values()))
+        # {int,
+        #  NoneType,
+        #  unicode,
+        #  protorpc.messages.FieldList,
+        #  gcloud.storage.storage_v1_messages.OwnerValue,
+        #  datetime.datetime}
+        self._set_properties(result)
 
     def upload_from_filename(self, filename, content_type=None,
                              connection=None):
@@ -798,9 +784,9 @@ class _UploadConfig(object):
     simple_path = u'/upload/storage/v1/b/{bucket}/o'
 
 
-class _UrlBuilder(object):
-    """Faux builder FBO apitools' 'ConfigureRequest'"""
-    def __init__(self, bucket_name, object_name):
-        self.query_params = {'name': object_name}
-        self._bucket_name = bucket_name
-        self._relative_path = ''
+# class _UrlBuilder(object):
+#     """Faux builder FBO apitools' 'ConfigureRequest'"""
+#     def __init__(self, bucket_name, object_name):
+#         self.query_params = {'name': object_name}
+#         self._bucket_name = bucket_name
+#         self._relative_path = ''

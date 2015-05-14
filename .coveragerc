@@ -2,8 +2,10 @@
 omit =
 	*/demo/*
 	*/demo.py
+	gcloud/datastore/_datastore_v1_pb2.py
+	gcloud/storage/storage_v1_*.py
 exclude_lines =
-    # Re-enable the standard pragma
-    pragma: NO COVER
-    # Ignore debug-only repr
-    def __repr__
+	# Re-enable the standard pragma
+	pragma: NO COVER
+	# Ignore debug-only repr
+	def __repr__
