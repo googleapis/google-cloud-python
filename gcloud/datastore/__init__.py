@@ -71,10 +71,12 @@ def set_defaults(dataset_id=None, connection=None):
     """Set defaults either explicitly or implicitly as fall-back.
 
     Uses the arguments to call the individual default methods
+
     - set_default_dataset_id
     - set_default_connection
 
     In the future we will likely enable methods like
+
     - set_default_namespace
 
     :type dataset_id: string
