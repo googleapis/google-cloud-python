@@ -108,18 +108,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">get_default_project</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">set_default_project</span>
-<span class="kn">from</span> <span class="nn">gcloud.connection</span> <span class="kn">import</span> <span class="n">get_scoped_connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_credentials</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.api</span> <span class="kn">import</span> <span class="n">list_subscriptions</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.api</span> <span class="kn">import</span> <span class="n">list_topics</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub.connection</span> <span class="kn">import</span> <span class="n">SCOPE</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.subscription</span> <span class="kn">import</span> <span class="n">Subscription</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.topic</span> <span class="kn">import</span> <span class="n">Topic</span>
-
-
-<span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/pubsub&#39;</span><span class="p">,</span>
-         <span class="s">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="set_default_connection"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.__init__.set_default_connection">[docs]</a><span class="k">def</span> <span class="nf">set_default_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -160,7 +157,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :rtype: :class:`gcloud.pubsub.connection.Connection`</span>
 <span class="sd">    :returns: A connection defined with the proper credentials.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">get_scoped_connection</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="n">SCOPE</span><span class="p">)</span></div>
+    <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span></div>
 </pre></div>
 
       </section><!-- end of .content -->

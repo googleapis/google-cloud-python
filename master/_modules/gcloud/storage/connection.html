@@ -99,6 +99,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 
 
+<span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/devstorage.full_control&#39;</span><span class="p">,</span>
+         <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span><span class="p">,</span>
+         <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_write&#39;</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Storage consumer.&quot;&quot;&quot;</span>
+
+
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Storage via the JSON REST API.&quot;&quot;&quot;</span>
 
@@ -109,7 +115,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
 
     <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/storage/{api_version}{path}&#39;</span>
-    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span></div>
+    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_scoped_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">SCOPE</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
