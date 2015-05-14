@@ -12,26 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud storage buckets.
-
-If you want to check whether a blob exists, you can use the ``in`` operator
-in Python::
-
-  >>> print 'kitten.jpg' in bucket
-  True
-  >>> print 'does-not-exist' in bucket
-  False
-
-If you want to get all the blobs in the bucket, you can use
-:func:`list_blobs <gcloud.storage.bucket.Bucket.list_blobs>`::
-
-  >>> blobs = bucket.list_blobs()
-
-You can also use the bucket as an iterator::
-
-  >>> for blob in bucket:
-  ...   print blob
-"""
+"""Create / interact with gcloud storage buckets."""
 
 import datetime
 import copy
@@ -56,7 +37,7 @@ class _BlobIterator(Iterator):
     """An iterator listing blobs in a bucket
 
     You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`gcloud.storage.blob.Bucket` objects.
+    :class:`gcloud.storage.blob.Bucket.list_blobs` method.
 
     :type bucket: :class:`gcloud.storage.bucket.Bucket`
     :param bucket: The bucket from which to list blobs.
@@ -114,13 +95,6 @@ class Bucket(_PropertyMixin):
 
     def __repr__(self):
         return '<Bucket: %s>' % self.name
-
-    def __iter__(self):
-        return iter(self.list_blobs())
-
-    def __contains__(self, blob_name):
-        blob = Blob(blob_name, bucket=self)
-        return blob.exists()
 
     def exists(self, connection=None):
         """Determines whether or not this bucket exists.

@@ -106,59 +106,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertTrue(bucket._default_object_acl.bucket is bucket)
 
-    def test___iter___empty(self):
-        from gcloud.storage._testing import _monkey_defaults
-        NAME = 'name'
-        connection = _Connection({'items': []})
-        bucket = self._makeOne(NAME)
-        with _monkey_defaults(connection=connection):
-            blobs = list(bucket)
-        self.assertEqual(blobs, [])
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
-
-    def test___iter___non_empty(self):
-        from gcloud.storage._testing import _monkey_defaults
-        NAME = 'name'
-        BLOB_NAME = 'blob-name'
-        connection = _Connection({'items': [{'name': BLOB_NAME}]})
-        bucket = self._makeOne(NAME)
-        with _monkey_defaults(connection=connection):
-            blobs = list(bucket)
-        blob, = blobs
-        self.assertTrue(blob.bucket is bucket)
-        self.assertEqual(blob.name, BLOB_NAME)
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o' % NAME)
-        self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
-
-    def test___contains___miss(self):
-        from gcloud.storage._testing import _monkey_defaults
-        NAME = 'name'
-        NONESUCH = 'nonesuch'
-        connection = _Connection()
-        bucket = self._makeOne(NAME)
-        with _monkey_defaults(connection=connection):
-            self.assertFalse(NONESUCH in bucket)
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
-
-    def test___contains___hit(self):
-        from gcloud.storage._testing import _monkey_defaults
-        NAME = 'name'
-        BLOB_NAME = 'blob-name'
-        connection = _Connection({'name': BLOB_NAME})
-        bucket = self._makeOne(NAME)
-        with _monkey_defaults(connection=connection):
-            self.assertTrue(BLOB_NAME in bucket)
-        kw, = connection._requested
-        self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
-
     def test_exists_miss(self):
         from gcloud.exceptions import NotFound
 
