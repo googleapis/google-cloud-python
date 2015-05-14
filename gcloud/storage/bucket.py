@@ -104,9 +104,8 @@ class Bucket(_PropertyMixin):
     _MAX_OBJECTS_FOR_BUCKET_DELETE = 256
     """Maximum number of existing objects allowed in Bucket.delete()."""
 
-    def __init__(self, name=None, connection=None):
+    def __init__(self, name=None):
         super(Bucket, self).__init__(name=name)
-        self._connection = connection
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
 
