@@ -17,6 +17,12 @@
 from gcloud import connection as base_connection
 
 
+SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
+         'https://www.googleapis.com/auth/devstorage.read_only',
+         'https://www.googleapis.com/auth/devstorage.read_write')
+"""The scopes required for authenticating as a Cloud Storage consumer."""
+
+
 class Connection(base_connection.JSONConnection):
     """A connection to Google Cloud Storage via the JSON REST API."""
 
@@ -28,3 +34,7 @@ class Connection(base_connection.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/storage/{api_version}{path}'
     """A template for the URL of a particular API call."""
+
+    def __init__(self, credentials=None, http=None):
+        credentials = self._create_scoped_credentials(credentials, SCOPE)
+        super(Connection, self).__init__(credentials=credentials, http=http)

@@ -20,13 +20,8 @@ from the enviroment.
 
 
 from gcloud._helpers import _lazy_property_deco
-from gcloud.connection import get_scoped_connection
+from gcloud.credentials import get_credentials
 from gcloud.storage.connection import Connection
-
-
-SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
-         'https://www.googleapis.com/auth/devstorage.read_only',
-         'https://www.googleapis.com/auth/devstorage.read_write')
 
 
 class _DefaultsContainer(object):
@@ -83,7 +78,8 @@ def get_connection():
     :rtype: :class:`gcloud.storage.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    return get_scoped_connection(Connection, SCOPE)
+    credentials = get_credentials()
+    return Connection(credentials=credentials)
 
 
 def set_default_connection(connection=None):

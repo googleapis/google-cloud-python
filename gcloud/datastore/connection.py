@@ -21,6 +21,10 @@ from gcloud.exceptions import make_exception
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
 
+SCOPE = ('https://www.googleapis.com/auth/datastore',
+         'https://www.googleapis.com/auth/userinfo.email')
+"""The scopes required for authenticating as a Cloud Datastore consumer."""
+
 _GCD_HOST_ENV_VAR_NAME = 'DATASTORE_HOST'
 
 
@@ -46,6 +50,7 @@ class Connection(connection.Connection):
     """A template for the URL of a particular API call."""
 
     def __init__(self, credentials=None, http=None, api_base_url=None):
+        credentials = self._create_scoped_credentials(credentials, SCOPE)
         super(Connection, self).__init__(credentials=credentials, http=http)
         if api_base_url is None:
             api_base_url = os.getenv(_GCD_HOST_ENV_VAR_NAME,

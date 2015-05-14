@@ -43,7 +43,6 @@ from gcloud import credentials
 from gcloud._helpers import get_default_project
 from gcloud._helpers import set_default_project
 from gcloud.storage import _implicit_environ
-from gcloud.storage._implicit_environ import SCOPE
 from gcloud.storage._implicit_environ import get_connection
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
@@ -55,6 +54,7 @@ from gcloud.storage.api import lookup_bucket
 from gcloud.storage.batch import Batch
 from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
+from gcloud.storage.connection import SCOPE
 from gcloud.storage.connection import Connection
 
 

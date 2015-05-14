@@ -26,18 +26,15 @@ The main concepts with this API are:
 
 from gcloud._helpers import get_default_project
 from gcloud._helpers import set_default_project
-from gcloud.connection import get_scoped_connection
+from gcloud.credentials import get_credentials
 from gcloud.pubsub import _implicit_environ
 from gcloud.pubsub._implicit_environ import get_default_connection
 from gcloud.pubsub.api import list_subscriptions
 from gcloud.pubsub.api import list_topics
+from gcloud.pubsub.connection import SCOPE
 from gcloud.pubsub.connection import Connection
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
-
-
-SCOPE = ('https://www.googleapis.com/auth/pubsub',
-         'https://www.googleapis.com/auth/cloud-platform')
 
 
 def set_default_connection(connection=None):
@@ -78,4 +75,5 @@ def get_connection():
     :rtype: :class:`gcloud.pubsub.connection.Connection`
     :returns: A connection defined with the proper credentials.
     """
-    return get_scoped_connection(Connection, SCOPE)
+    credentials = get_credentials()
+    return Connection(credentials=credentials)

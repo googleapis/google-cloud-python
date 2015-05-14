@@ -305,7 +305,7 @@ class Test_get_connection(unittest2.TestCase):
 
     def test_it(self):
         from gcloud import credentials
-        from gcloud.datastore._implicit_environ import SCOPE
+        from gcloud.datastore.connection import SCOPE
         from gcloud.datastore.connection import Connection
         from gcloud.test_credentials import _Client
         from gcloud._testing import _Monkey

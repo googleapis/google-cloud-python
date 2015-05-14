@@ -17,6 +17,11 @@
 from gcloud import connection as base_connection
 
 
+SCOPE = ('https://www.googleapis.com/auth/pubsub',
+         'https://www.googleapis.com/auth/cloud-platform')
+"""The scopes required for authenticating as a Cloud Pub/Sub consumer."""
+
+
 class Connection(base_connection.JSONConnection):
     """A connection to Google Cloud Pubsub via the JSON REST API."""
 
@@ -28,3 +33,7 @@ class Connection(base_connection.JSONConnection):
 
     API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
     """A template for the URL of a particular API call."""
+
+    def __init__(self, credentials=None, http=None):
+        credentials = self._create_scoped_credentials(credentials, SCOPE)
+        super(Connection, self).__init__(credentials=credentials, http=http)
