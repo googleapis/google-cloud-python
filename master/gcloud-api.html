@@ -290,6 +290,30 @@ use the default for the library.</li>
 
 </dd></dl>
 
+<dl class="function">
+<dt id="gcloud.connection.get_scoped_connection">
+<code class="descclassname">gcloud.connection.</code><code class="descname">get_scoped_connection</code><span class="sig-paren">(</span><em>klass</em>, <em>scopes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#get_scoped_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.get_scoped_connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a scoped connection to GCloud.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>klass</strong> (subclass of <a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a>) &#8211; the specific <code class="docutils literal"><span class="pre">Connection</span></code> class to instantiate.</li>
+<li><strong>scopes</strong> (<em>list of URLs</em>) &#8211; the effective service auth scopes for the connection.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">instance of <code class="docutils literal"><span class="pre">klass</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A connection defined with the proper credentials.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="module-gcloud.credentials">
 <span id="credentials"></span><h2>Credentials<a class="headerlink" href="#module-gcloud.credentials" title="Permalink to this headline">#</a></h2>

@@ -183,11 +183,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_iterator_class</span> <span class="o">=</span> <span class="n">_BlobIterator</span>
 
-    <span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">=</span> <span class="mi">256</span>
-    <span class="sd">&quot;&quot;&quot;Maximum number of existing objects allowed in iteration.</span>
-
-<span class="sd">    This is used in Bucket.delete() and Bucket.make_public().</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span> <span class="o">=</span> <span class="mi">256</span>
+    <span class="sd">&quot;&quot;&quot;Maximum number of existing objects allowed in Bucket.delete().&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Bucket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
@@ -434,15 +431,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
             <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
-                <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
                 <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">))</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s">&#39;Refusing to delete bucket with more than &#39;</span>
                     <span class="s">&#39;</span><span class="si">%d</span><span class="s"> objects. If you actually want to delete &#39;</span>
                     <span class="s">&#39;this bucket, please delete the objects &#39;</span>
                     <span class="s">&#39;yourself before calling Bucket.delete().&#39;</span>
-                <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">,)</span>
+                <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_BUCKET_DELETE</span><span class="p">,)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
             <span class="c"># Ignore 404 errors on delete.</span>
@@ -934,10 +931,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Bucket.make_public"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a bucket public.</span>
 
-<span class="sd">        If ``recursive=True`` and the bucket contains more than 256</span>
-<span class="sd">        objects / blobs this will cowardly refuse to make the objects public.</span>
-<span class="sd">        This is to prevent extremely long runtime of this method.</span>
-
 <span class="sd">        :type recursive: boolean</span>
 <span class="sd">        :param recursive: If True, this will make all blobs inside the bucket</span>
 <span class="sd">                          public as well.</span>
@@ -964,20 +957,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="n">doa</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">recursive</span><span class="p">:</span>
-            <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
-                <span class="n">projection</span><span class="o">=</span><span class="s">&#39;full&#39;</span><span class="p">,</span>
-                <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">))</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">:</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s">&#39;Refusing to make public recursively with more than &#39;</span>
-                    <span class="s">&#39;</span><span class="si">%d</span><span class="s"> objects. If you actually want to make every object &#39;</span>
-                    <span class="s">&#39;in this bucket public, please do it on the objects &#39;</span>
-                    <span class="s">&#39;yourself.&#39;</span>
-                <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">,)</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-
-            <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s">&#39;full&#39;</span><span class="p">,</span>
+                                        <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">):</span>
                 <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
                 <span class="n">blob</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span></div></div>
 </pre></div>
