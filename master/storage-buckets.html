@@ -589,6 +589,9 @@ requests. If not provided, falls back to default.</li>
 <dt id="gcloud.storage.bucket.Bucket.make_public">
 <code class="descname">make_public</code><span class="sig-paren">(</span><em>recursive=False</em>, <em>future=False</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.make_public"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.make_public" title="Permalink to this definition">#</a></dt>
 <dd><p>Make a bucket public.</p>
+<p>If <code class="docutils literal"><span class="pre">recursive=True</span></code> and the bucket contains more than 256
+objects / blobs this will cowardly refuse to make the objects public.
+This is to prevent extremely long runtime of this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
