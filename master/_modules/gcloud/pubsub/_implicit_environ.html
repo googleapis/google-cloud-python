@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.connection &mdash; gcloud 0.5.0 documentation</title>
+    <title>gcloud.pubsub._implicit_environ &mdash; gcloud 0.5.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="top" title="gcloud 0.5.0 documentation" href="../../../index.html" />
-    <link rel="up" title="gcloud.storage" href="../storage.html" /> 
+    <link rel="up" title="gcloud.pubsub" href="../pubsub.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/connection%0ARelease%3A%200.5.0" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/_implicit_environ%0ARelease%3A%200.5.0" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -79,8 +79,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
       <section class="content">
         
-  <h1>Source code for gcloud.storage.connection</h1><div class="highlight"><pre>
-<span class="c"># Copyright 2014 Google Inc. All rights reserved.</span>
+  <h1>Source code for gcloud.pubsub._implicit_environ</h1><div class="highlight"><pre>
+<span class="c"># Copyright 2015 Google Inc. All rights reserved.</span>
 <span class="c">#</span>
 <span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c"># you may not use this file except in compliance with the License.</span>
@@ -94,32 +94,53 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="c"># See the License for the specific language governing permissions and</span>
 <span class="c"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Create / interact with gcloud storage connections.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Module to provide implicit behavior based on enviroment.</span>
 
-<span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
-
-
-<span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/devstorage.full_control&#39;</span><span class="p">,</span>
-         <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_only&#39;</span><span class="p">,</span>
-         <span class="s">&#39;https://www.googleapis.com/auth/devstorage.read_write&#39;</span><span class="p">)</span>
-<span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Storage consumer.&quot;&quot;&quot;</span>
+<span class="sd">Allows the pubsub package to infer the default connection from the enviroment.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../storage-api.html#gcloud.storage.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Storage via the JSON REST API.&quot;&quot;&quot;</span>
+<span class="k">class</span> <span class="nc">_DefaultsContainer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Container for defaults.</span>
 
-    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="n">base_connection</span><span class="o">.</span><span class="n">API_BASE_URL</span>
-    <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
+<span class="sd">    :type connection: :class:`gcloud.pubsub.connection.Connection`</span>
+<span class="sd">    :param connection: Persistent implied connection from environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1&#39;</span>
-    <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/storage/{api_version}{path}&#39;</span>
-    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_scoped_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">SCOPE</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span></div>
+<div class="viewcode-block" id="get_default_connection"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.get_default_connection">[docs]</a><span class="k">def</span> <span class="nf">get_default_connection</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get default connection.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.pubsub.connection.Connection` or ``NoneType``</span>
+<span class="sd">    :returns: The default connection if one has been set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_DEFAULTS</span><span class="o">.</span><span class="n">connection</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Infer a connection from the environment, if not passed explicitly.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.pubsub.connection.Connection`</span>
+<span class="sd">    :param connection: Optional.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.pubsub.connection.Connection`</span>
+<span class="sd">    :returns: A connection based on the current environment.</span>
+<span class="sd">    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and</span>
+<span class="sd">             cannot be inferred from the environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">get_default_connection</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Connection could not be inferred.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">connection</span>
+
+
+<span class="n">_DEFAULTS</span> <span class="o">=</span> <span class="n">_DefaultsContainer</span><span class="p">()</span>
 </pre></div>
 
       </section><!-- end of .content -->

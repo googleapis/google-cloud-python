@@ -149,8 +149,8 @@ you can create entities and save them:</p>
 </div>
 </div>
 <hr class="docutils" />
-<div class="section" id="module-gcloud.datastore.__init__">
-<span id="gcloud-datastore"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">gcloud.datastore</span></code><a class="headerlink" href="#module-gcloud.datastore.__init__" title="Permalink to this headline">#</a></h2>
+<div class="section" id="module-gcloud.datastore">
+<span id="gcloud-datastore"></span><h2><a class="reference internal" href="#module-gcloud.datastore" title="gcloud.datastore"><code class="xref py py-mod docutils literal"><span class="pre">gcloud.datastore</span></code></a><a class="headerlink" href="#module-gcloud.datastore" title="Permalink to this headline">#</a></h2>
 <p>Shortcut methods for getting set up with Google Cloud Datastore.</p>
 <p>You&#8217;ll typically use these to get started with the API:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
@@ -182,14 +182,116 @@ which represents an all-or-none transaction and enables consistency
 when race conditions may occur.</li>
 </ul>
 <dl class="function">
-<dt id="gcloud.datastore.__init__.set_defaults">
-<code class="descclassname">gcloud.datastore.__init__.</code><code class="descname">set_defaults</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/__init__.html#set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.__init__.set_defaults" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.get_connection">
+<code class="descclassname">gcloud.datastore.</code><code class="descname">get_connection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/_implicit_environ.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.get_connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Shortcut method to establish a connection to the Cloud Datastore.</p>
+<p>Use this if you are going to access several datasets
+with the same set of credentials (unlikely):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key1</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Kind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key2</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Kind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset2&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity1</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key1</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entity2</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key2</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A connection defined with the proper credentials.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.datastore.get_default_connection">
+<code class="descclassname">gcloud.datastore.</code><code class="descname">get_default_connection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/_implicit_environ.html#get_default_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.get_default_connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default connection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The default connection if one has been set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.datastore.get_default_dataset_id">
+<code class="descclassname">gcloud.datastore.</code><code class="descname">get_default_dataset_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/_implicit_environ.html#get_default_dataset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.get_default_dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default dataset ID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The default dataset ID if one has been set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.datastore.set_default_connection">
+<code class="descclassname">gcloud.datastore.</code><code class="descname">set_default_connection</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/_implicit_environ.html#set_default_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.set_default_connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Set default connection either explicitly or implicitly as fall-back.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a>) &#8211; A connection provided to be the default.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.datastore.set_default_dataset_id">
+<code class="descclassname">gcloud.datastore.</code><code class="descname">set_default_dataset_id</code><span class="sig-paren">(</span><em>dataset_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/_implicit_environ.html#set_default_dataset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.set_default_dataset_id" title="Permalink to this definition">#</a></dt>
+<dd><p>Set default dataset ID either explicitly or implicitly as fall-back.</p>
+<p>In implicit case, supports four environments. In order of precedence, the
+implicit environments are:</p>
+<ul class="simple">
+<li>GCLOUD_DATASET_ID environment variable</li>
+<li>DATASTORE_DATASET environment variable (for <code class="docutils literal"><span class="pre">gcd</span></code> testing)</li>
+<li>Google App Engine application ID</li>
+<li>Google Compute Engine project ID (from metadata server)</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_id</strong> (<em>string</em>) &#8211; Optional. The dataset ID to use as default.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">EnvironmentError</span></code> if no dataset ID was implied.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.datastore.set_defaults">
+<code class="descclassname">gcloud.datastore.</code><code class="descname">set_defaults</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore.html#set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.set_defaults" title="Permalink to this definition">#</a></dt>
 <dd><p>Set defaults either explicitly or implicitly as fall-back.</p>
-<p>Uses the arguments to call the individual default methods
-- set_default_dataset_id
-- set_default_connection</p>
-<p>In the future we will likely enable methods like
-- set_default_namespace</p>
+<p>Uses the arguments to call the individual default methods</p>
+<ul class="simple">
+<li>set_default_dataset_id</li>
+<li>set_default_connection</li>
+</ul>
+<p>In the future we will likely enable methods like</p>
+<ul class="simple">
+<li>set_default_namespace</li>
+</ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

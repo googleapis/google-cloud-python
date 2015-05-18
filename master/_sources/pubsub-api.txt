@@ -8,10 +8,9 @@ Pub/Sub
 :mod:`gcloud.pubsub`
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. automodule:: gcloud.pubsub.__init__
-  :members:
-  :undoc-members:
-  :show-inheritance:
+.. automodule:: gcloud.pubsub
+  :members: get_connection, get_default_connection,
+            set_default_connection, set_defaults
 
 Connections
 ~~~~~~~~~~~

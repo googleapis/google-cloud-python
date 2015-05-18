@@ -84,8 +84,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </div>
 <div class="section" id="pub-sub">
 <h1>Pub/Sub<a class="headerlink" href="#pub-sub" title="Permalink to this headline">#</a></h1>
-<div class="section" id="module-gcloud.pubsub.__init__">
-<span id="gcloud-pubsub"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">gcloud.pubsub</span></code><a class="headerlink" href="#module-gcloud.pubsub.__init__" title="Permalink to this headline">#</a></h2>
+<div class="section" id="module-gcloud.pubsub">
+<span id="gcloud-pubsub"></span><h2><a class="reference internal" href="#module-gcloud.pubsub" title="gcloud.pubsub"><code class="xref py py-mod docutils literal"><span class="pre">gcloud.pubsub</span></code></a><a class="headerlink" href="#module-gcloud.pubsub" title="Permalink to this headline">#</a></h2>
 <p>GCloud Pubsub API wrapper.</p>
 <p>The main concepts with this API are:</p>
 <ul class="simple">
@@ -95,8 +95,8 @@ can be published using the Cloud Storage Pubsub API.</li>
 subscription (either pull or push) to a topic.</li>
 </ul>
 <dl class="function">
-<dt id="gcloud.pubsub.__init__.get_connection">
-<code class="descclassname">gcloud.pubsub.__init__.</code><code class="descname">get_connection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/__init__.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.__init__.get_connection" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.pubsub.get_connection">
+<code class="descclassname">gcloud.pubsub.</code><code class="descname">get_connection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub.html#get_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.get_connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Shortcut method to establish a connection to Cloud Storage.</p>
 <p>Use this if you are going to access several buckets with the same
 set of credentials:</p>
@@ -119,8 +119,24 @@ set of credentials:</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="gcloud.pubsub.__init__.set_default_connection">
-<code class="descclassname">gcloud.pubsub.__init__.</code><code class="descname">set_default_connection</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/__init__.html#set_default_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.__init__.set_default_connection" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.pubsub.get_default_connection">
+<code class="descclassname">gcloud.pubsub.</code><code class="descname">get_default_connection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/_implicit_environ.html#get_default_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.get_default_connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Get default connection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The default connection if one has been set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.pubsub.set_default_connection">
+<code class="descclassname">gcloud.pubsub.</code><code class="descname">set_default_connection</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub.html#set_default_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.set_default_connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Set default connection either explicitly or implicitly as fall-back.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -133,8 +149,8 @@ set of credentials:</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="gcloud.pubsub.__init__.set_defaults">
-<code class="descclassname">gcloud.pubsub.__init__.</code><code class="descname">set_defaults</code><span class="sig-paren">(</span><em>project=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/__init__.html#set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.__init__.set_defaults" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.pubsub.set_defaults">
+<code class="descclassname">gcloud.pubsub.</code><code class="descname">set_defaults</code><span class="sig-paren">(</span><em>project=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub.html#set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.set_defaults" title="Permalink to this definition">#</a></dt>
 <dd><p>Set defaults either explicitly or implicitly as fall-back.</p>
 <p>Uses the arguments to call the individual default methods.</p>
 <table class="docutils field-list" frame="void" rules="none">
