@@ -294,10 +294,10 @@ class _NoCommitBatch(object):
         self._connection = connection
 
     def __enter__(self):
-        from gcloud.storage.batch import _BATCHES
-        _BATCHES.push(self._connection)
+        from gcloud.storage.connection import _CONNECTIONS
+        _CONNECTIONS.push(self._connection)
         return self._connection
 
     def __exit__(self, *args):
-        from gcloud.storage.batch import _BATCHES
-        _BATCHES.pop()
+        from gcloud.storage.connection import _CONNECTIONS
+        _CONNECTIONS.pop()

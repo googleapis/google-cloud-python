@@ -925,13 +925,13 @@ class _NoCommitBatch(object):
         self._batch = Batch(dataset_id, connection)
 
     def __enter__(self):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.push(self._batch)
+        from gcloud.datastore.connection import _CONNECTIONS
+        _CONNECTIONS.push(self._batch)
         return self._batch
 
     def __exit__(self, *args):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.pop()
+        from gcloud.datastore.connection import _CONNECTIONS
+        _CONNECTIONS.pop()
 
 
 class _NoCommitTransaction(object):
@@ -942,13 +942,13 @@ class _NoCommitTransaction(object):
         xact._id = transaction_id
 
     def __enter__(self):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.push(self._transaction)
+        from gcloud.datastore.connection import _CONNECTIONS
+        _CONNECTIONS.push(self._transaction)
         return self._transaction
 
     def __exit__(self, *args):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.pop()
+        from gcloud.datastore.connection import _CONNECTIONS
+        _CONNECTIONS.pop()
 
 
 class _HttpMultiple(object):

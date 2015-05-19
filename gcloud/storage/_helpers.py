@@ -21,7 +21,7 @@ from Crypto.Hash import MD5
 import base64
 
 from gcloud.storage._implicit_environ import get_default_connection
-from gcloud.storage.batch import Batch
+from gcloud.storage.connection import _CONNECTIONS
 
 
 class _PropertyMixin(object):
@@ -124,9 +124,8 @@ def _require_connection(connection=None):
     :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
              cannot be inferred from the environment.
     """
-    # NOTE: We use current Batch directly since it inherits from Connection.
     if connection is None:
-        connection = Batch.current()
+        connection = _CONNECTIONS.top
 
     if connection is None:
         connection = get_default_connection()
