@@ -37,7 +37,7 @@ class _DefaultsContainer(object):
     @staticmethod
     def connection():
         """Return the implicit default connection.."""
-        return get_connection()
+        return Connection.from_environment()
 
     def __init__(self, bucket=None, connection=None, implicit=False):
         self.bucket = bucket
@@ -63,30 +63,13 @@ def get_default_connection():
     return _DEFAULTS.connection
 
 
-def get_connection():
-    """Shortcut method to establish a connection to Cloud Storage.
-
-    Use this if you are going to access several buckets with the same
-    set of credentials:
-
-    >>> from gcloud import storage
-    >>> connection = storage.get_connection()
-    >>> bucket1 = storage.get_bucket('bucket1', connection=connection)
-    >>> bucket2 = storage.get_bucket('bucket2', connection=connection)
-
-    :rtype: :class:`gcloud.storage.connection.Connection`
-    :returns: A connection defined with the proper credentials.
-    """
-    return Connection.from_environment()
-
-
 def set_default_connection(connection=None):
     """Set default connection either explicitly or implicitly as fall-back.
 
     :type connection: :class:`gcloud.storage.connection.Connection`
     :param connection: A connection provided to be the default.
     """
-    connection = connection or get_connection()
+    connection = connection or Connection.from_environment()
     _DEFAULTS.connection = connection
 
 

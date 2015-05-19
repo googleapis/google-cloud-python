@@ -281,42 +281,22 @@ class Test_lazy_loading(unittest2.TestCase):
             'dataset_id' in _implicit_environ._DEFAULTS.__dict__)
 
     def test_descriptor_for_connection(self):
+        from gcloud import credentials
         from gcloud._testing import _Monkey
+        from gcloud.test_credentials import _Client
+        from gcloud.connection import Connection
         from gcloud.datastore import _implicit_environ
 
         self.assertFalse(
             'connection' in _implicit_environ._DEFAULTS.__dict__)
 
-        DEFAULT = object()
-
-        with _Monkey(_implicit_environ, get_connection=lambda: DEFAULT):
-            lazy_loaded = _implicit_environ._DEFAULTS.connection
-
-        self.assertEqual(lazy_loaded, DEFAULT)
-        self.assertTrue(
-            'connection' in _implicit_environ._DEFAULTS.__dict__)
-
-
-class Test_get_connection(unittest2.TestCase):
-
-    def _callFUT(self):
-        from gcloud.datastore._implicit_environ import get_connection
-        return get_connection()
-
-    def test_it(self):
-        from gcloud import credentials
-        from gcloud.datastore.connection import SCOPE
-        from gcloud.datastore.connection import Connection
-        from gcloud.test_credentials import _Client
-        from gcloud._testing import _Monkey
-
         client = _Client()
         with _Monkey(credentials, client=client):
-            found = self._callFUT()
-        self.assertTrue(isinstance(found, Connection))
-        self.assertTrue(found._credentials is client._signed)
-        self.assertEqual(found._credentials._scopes, SCOPE)
-        self.assertTrue(client._get_app_default_called)
+            lazy_loaded = _implicit_environ._DEFAULTS.connection
+
+        self.assertTrue(isinstance(lazy_loaded, Connection))
+        self.assertTrue(
+            'connection' in _implicit_environ._DEFAULTS.__dict__)
 
 
 class Test_set_default_connection(unittest2.TestCase):
@@ -342,13 +322,17 @@ class Test_set_default_connection(unittest2.TestCase):
         self.assertEqual(_implicit_environ.get_default_connection(), fake_cnxn)
 
     def test_set_implicit(self):
+        from gcloud import credentials
         from gcloud._testing import _Monkey
+        from gcloud.test_credentials import _Client
         from gcloud.datastore import _implicit_environ
+        from gcloud.datastore.connection import Connection
 
         self.assertEqual(_implicit_environ.get_default_connection(), None)
 
-        fake_cnxn = object()
-        with _Monkey(_implicit_environ, get_connection=lambda: fake_cnxn):
-            self._callFUT()
+        client = _Client()
+        with _Monkey(credentials, client=client):
+            found = self._callFUT()
 
-        self.assertEqual(_implicit_environ.get_default_connection(), fake_cnxn)
+        found = _implicit_environ.get_default_connection()
+        self.assertTrue(isinstance(found, Connection))

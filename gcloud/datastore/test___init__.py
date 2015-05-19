@@ -44,3 +44,25 @@ class Test_set_defaults(unittest2.TestCase):
 
         self.assertEqual(SET_DATASET_CALLED, [DATASET_ID])
         self.assertEqual(SET_CONNECTION_CALLED, [CONNECTION])
+
+
+class Test_get_connection(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud.datastore import get_connection
+        return get_connection()
+
+    def test_it(self):
+        from gcloud import credentials
+        from gcloud.datastore.connection import SCOPE
+        from gcloud.datastore.connection import Connection
+        from gcloud.test_credentials import _Client
+        from gcloud._testing import _Monkey
+
+        client = _Client()
+        with _Monkey(credentials, client=client):
+            found = self._callFUT()
+        self.assertTrue(isinstance(found, Connection))
+        self.assertTrue(found._credentials is client._signed)
+        self.assertEqual(found._credentials._scopes, SCOPE)
+        self.assertTrue(client._get_app_default_called)

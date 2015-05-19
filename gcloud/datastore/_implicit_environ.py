@@ -104,34 +104,13 @@ def get_default_dataset_id():
     return _DEFAULTS.dataset_id
 
 
-def get_connection():
-    """Shortcut method to establish a connection to the Cloud Datastore.
-
-    Use this if you are going to access several datasets
-    with the same set of credentials (unlikely):
-
-    >>> from gcloud import datastore
-
-    >>> connection = datastore.get_connection()
-    >>> key1 = datastore.Key('Kind', 1234, dataset_id='dataset1')
-    >>> key2 = datastore.Key('Kind', 1234, dataset_id='dataset2')
-    >>> entity1 = datastore.get(key1, connection=connection)
-    >>> entity2 = datastore.get(key2, connection=connection)
-
-    :rtype: :class:`gcloud.datastore.connection.Connection`
-    :returns: A connection defined with the proper credentials.
-    """
-    return Connection.from_environment()
-
-
 def set_default_connection(connection=None):
     """Set default connection either explicitly or implicitly as fall-back.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: A connection provided to be the default.
     """
-    connection = connection or get_connection()
-    _DEFAULTS.connection = connection
+    _DEFAULTS.connection = connection or Connection.from_environment()
 
 
 def get_default_connection():
@@ -163,7 +142,7 @@ class _DefaultsContainer(object):
     @staticmethod
     def connection():
         """Return the implicit default connection.."""
-        return get_connection()
+        return Connection.from_environment()
 
     def __init__(self, connection=None, dataset_id=None, implicit=False):
         if connection is not None or not implicit:
