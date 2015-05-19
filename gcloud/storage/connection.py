@@ -15,6 +15,10 @@
 """Create / interact with gcloud storage connections."""
 
 from gcloud import connection as base_connection
+from gcloud._helpers import _LocalStack
+
+
+_CONNECTIONS = _LocalStack()
 
 
 SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',

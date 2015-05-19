@@ -279,21 +279,21 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(key._id, _NEW_ID)
 
     def test_as_context_mgr_wo_error(self):
-        from gcloud.datastore.batch import _BATCHES
+        from gcloud.datastore.connection import _CONNECTIONS
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity = _Entity(_PROPERTIES)
         key = entity.key = _Key(_DATASET)
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
 
         with self._makeOne(dataset_id=_DATASET,
                            connection=connection) as batch:
-            self.assertEqual(list(_BATCHES), [batch])
+            self.assertEqual(list(_CONNECTIONS), [batch])
             batch.put(entity)
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
 
         insert_auto_ids = list(batch.mutation.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
@@ -305,7 +305,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(connection._committed, [(_DATASET, batch.mutation)])
 
     def test_as_context_mgr_nested(self):
-        from gcloud.datastore.batch import _BATCHES
+        from gcloud.datastore.connection import _CONNECTIONS
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
@@ -314,20 +314,20 @@ class TestBatch(unittest2.TestCase):
         entity2 = _Entity(_PROPERTIES)
         key2 = entity2.key = _Key(_DATASET)
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
 
         with self._makeOne(dataset_id=_DATASET,
                            connection=connection) as batch1:
-            self.assertEqual(list(_BATCHES), [batch1])
+            self.assertEqual(list(_CONNECTIONS), [batch1])
             batch1.put(entity1)
             with self._makeOne(dataset_id=_DATASET,
                                connection=connection) as batch2:
-                self.assertEqual(list(_BATCHES), [batch2, batch1])
+                self.assertEqual(list(_CONNECTIONS), [batch2, batch1])
                 batch2.put(entity2)
 
-            self.assertEqual(list(_BATCHES), [batch1])
+            self.assertEqual(list(_CONNECTIONS), [batch1])
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
 
         insert_auto_ids = list(batch1.mutation.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
@@ -350,25 +350,25 @@ class TestBatch(unittest2.TestCase):
                           (_DATASET, batch1.mutation)])
 
     def test_as_context_mgr_w_error(self):
-        from gcloud.datastore.batch import _BATCHES
+        from gcloud.datastore.connection import _CONNECTIONS
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity = _Entity(_PROPERTIES)
         key = entity.key = _Key(_DATASET)
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
 
         try:
             with self._makeOne(dataset_id=_DATASET,
                                connection=connection) as batch:
-                self.assertEqual(list(_BATCHES), [batch])
+                self.assertEqual(list(_CONNECTIONS), [batch])
                 batch.put(entity)
                 raise ValueError("testing")
         except ValueError:
             pass
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
 
         insert_auto_ids = list(batch.mutation.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)

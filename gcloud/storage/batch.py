@@ -26,13 +26,10 @@ import json
 
 import six
 
-from gcloud._helpers import _LocalStack
 from gcloud.exceptions import make_exception
 from gcloud.storage import _implicit_environ
 from gcloud.storage.connection import Connection
-
-
-_BATCHES = _LocalStack()
+from gcloud.storage.connection import _CONNECTIONS
 
 
 class MIMEApplicationHTTP(MIMEApplication):
@@ -245,10 +242,10 @@ class Batch(Connection):
     @staticmethod
     def current():
         """Return the topmost batch, or None."""
-        return _BATCHES.top
+        return _CONNECTIONS.top
 
     def __enter__(self):
-        _BATCHES.push(self)
+        _CONNECTIONS.push(self)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -256,7 +253,7 @@ class Batch(Connection):
             if exc_type is None:
                 self.finish()
         finally:
-            _BATCHES.pop()
+            _CONNECTIONS.pop()
 
 
 def _generate_faux_mime_message(parser, response, content):
