@@ -24,6 +24,7 @@ from gcloud._helpers import _app_engine_id
 from gcloud._helpers import _compute_engine_id
 from gcloud._helpers import _lazy_property_deco
 from gcloud.datastore.connection import Connection
+from gcloud.datastore.connection import _CONNECTIONS
 
 
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
@@ -102,6 +103,28 @@ def get_default_dataset_id():
     :returns: The default dataset ID if one has been set.
     """
     return _DEFAULTS.dataset_id
+
+
+def _require_connection(connection=None):
+    """Infer a connection from the environment, if not passed explicitly.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional.
+
+    :rtype: :class:`gcloud.datastore.connection.Connection`
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
+             cannot be inferred from the environment.
+    """
+    if connection is None:
+        top = _CONNECTIONS.top
+        if top is not None:
+            connection = top.connection
+        else:
+            connection = get_default_connection()
+            if connection is None:
+                raise EnvironmentError('Connection could not be inferred.')
+    return connection
 
 
 def set_default_connection(connection=None):

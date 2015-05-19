@@ -78,7 +78,7 @@ This list of tuples can be used as the ``entity`` and ``role`` fields
 when sending metadata for ACLs to the API.
 """
 
-from gcloud.storage._helpers import _require_connection
+from gcloud.storage._implicit_environ import _require_connection
 
 
 class _ACLEntity(object):

@@ -21,6 +21,7 @@ from the enviroment.
 
 from gcloud._helpers import _lazy_property_deco
 from gcloud.storage.connection import Connection
+from gcloud.storage.connection import _CONNECTIONS
 
 
 class _DefaultsContainer(object):
@@ -52,6 +53,29 @@ def get_default_bucket():
     :returns: The default bucket if one has been set.
     """
     return _DEFAULTS.bucket
+
+
+def _require_connection(connection=None):
+    """Infer a connection from the environment, if not passed explicitly.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: Optional.
+
+    :rtype: :class:`gcloud.storage.connection.Connection`
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
+             cannot be inferred from the environment.
+    """
+    if connection is None:
+        connection = _CONNECTIONS.top
+
+    if connection is None:
+        connection = get_default_connection()
+
+    if connection is None:
+        raise EnvironmentError('Connection could not be inferred.')
+
+    return connection
 
 
 def get_default_connection():

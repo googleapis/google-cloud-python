@@ -20,7 +20,7 @@ rather than via Connection.
 
 from gcloud.exceptions import NotFound
 from gcloud._helpers import get_default_project
-from gcloud.storage._helpers import _require_connection
+from gcloud.storage._implicit_environ import _require_connection
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.iterator import Iterator
 

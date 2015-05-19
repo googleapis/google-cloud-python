@@ -32,7 +32,7 @@ from apitools.base.py import transfer
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
-from gcloud.storage._helpers import _require_connection
+from gcloud.storage._implicit_environ import _require_connection
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage import _implicit_environ
 from gcloud.storage.acl import ObjectACL

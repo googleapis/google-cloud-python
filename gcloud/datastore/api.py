@@ -66,28 +66,6 @@ def _require_dataset_id(dataset_id=None, first_key=None):
     return dataset_id
 
 
-def _require_connection(connection=None):
-    """Infer a connection from the environment, if not passed explicitly.
-
-    :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: Optional.
-
-    :rtype: :class:`gcloud.datastore.connection.Connection`
-    :returns: A connection based on the current environment.
-    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
-             cannot be inferred from the environment.
-    """
-    if connection is None:
-        top = _CONNECTIONS.top
-        if top is not None:
-            connection = top.connection
-        else:
-            connection = _implicit_environ.get_default_connection()
-            if connection is None:
-                raise EnvironmentError('Connection could not be inferred.')
-    return connection
-
-
 def _extended_lookup(connection, dataset_id, key_pbs,
                      missing=None, deferred=None,
                      eventual=False, transaction_id=None):
@@ -201,7 +179,7 @@ def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
     if not keys:
         return []
 
-    connection = _require_connection(connection)
+    connection = _implicit_environ._require_connection(connection)
     dataset_id = _require_dataset_id(dataset_id, keys[0])
 
     if list(set([key.dataset_id for key in keys])) != [dataset_id]:
@@ -260,7 +238,7 @@ def put(entities, connection=None, dataset_id=None):
     if not entities:
         return
 
-    connection = _require_connection(connection)
+    connection = _implicit_environ._require_connection(connection)
     dataset_id = _require_dataset_id(dataset_id, entities[0].key)
 
     current = _CONNECTIONS.top
@@ -295,7 +273,7 @@ def delete(keys, connection=None, dataset_id=None):
     if not keys:
         return
 
-    connection = _require_connection(connection)
+    connection = _implicit_environ._require_connection(connection)
     dataset_id = _require_dataset_id(dataset_id, keys[0])
 
     # We allow partial keys to attempt a delete, the backend will fail.
@@ -325,7 +303,7 @@ def allocate_ids(incomplete_key, num_ids, connection=None):
     :returns: The (complete) keys allocated with ``incomplete_key`` as root.
     :raises: :class:`ValueError` if ``incomplete_key`` is not a partial key.
     """
-    connection = _require_connection(connection)
+    connection = _implicit_environ._require_connection(connection)
 
     if not incomplete_key.is_partial:
         raise ValueError(('Key is not partial.', incomplete_key))

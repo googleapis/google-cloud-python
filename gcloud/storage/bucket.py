@@ -24,8 +24,8 @@ import six
 from gcloud._helpers import get_default_project
 from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
-from gcloud.storage._helpers import _require_connection
 from gcloud.storage._helpers import _scalar_property
+from gcloud.storage._implicit_environ import _require_connection
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.iterator import Iterator
