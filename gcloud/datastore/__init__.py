@@ -48,7 +48,6 @@ The main concepts with this API are:
   when race conditions may occur.
 """
 
-from gcloud.datastore._implicit_environ import get_connection
 from gcloud.datastore._implicit_environ import get_default_connection
 from gcloud.datastore._implicit_environ import get_default_dataset_id
 from gcloud.datastore._implicit_environ import set_default_connection
@@ -87,3 +86,23 @@ def set_defaults(dataset_id=None, connection=None):
     """
     set_default_dataset_id(dataset_id=dataset_id)
     set_default_connection(connection=connection)
+
+
+def get_connection():
+    """Shortcut method to establish a connection to the Cloud Datastore.
+
+    Use this if you are going to access several datasets
+    with the same set of credentials (unlikely):
+
+    >>> from gcloud import datastore
+
+    >>> connection = datastore.get_connection()
+    >>> key1 = datastore.Key('Kind', 1234, dataset_id='dataset1')
+    >>> key2 = datastore.Key('Kind', 1234, dataset_id='dataset2')
+    >>> entity1 = datastore.get(key1, connection=connection)
+    >>> entity2 = datastore.get(key2, connection=connection)
+
+    :rtype: :class:`gcloud.datastore.connection.Connection`
+    :returns: A connection defined with the proper credentials.
+    """
+    return Connection.from_environment()
