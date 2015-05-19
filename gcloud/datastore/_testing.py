@@ -31,3 +31,36 @@ def _setup_defaults(test_case, *args, **kwargs):
 
 def _tear_down_defaults(test_case):
     _implicit_environ._DEFAULTS = test_case._replaced_defaults
+
+
+class _NoCommitBatch(object):
+
+    def __init__(self, dataset_id, connection):
+        from gcloud.datastore.batch import Batch
+        self._batch = Batch(dataset_id, connection)
+
+    def __enter__(self):
+        from gcloud.datastore.connection import _CONNECTIONS
+        _CONNECTIONS.push(self._batch)
+        return self._batch
+
+    def __exit__(self, *args):
+        from gcloud.datastore.connection import _CONNECTIONS
+        _CONNECTIONS.pop()
+
+
+class _NoCommitTransaction(object):
+
+    def __init__(self, dataset_id, connection, transaction_id='TRANSACTION'):
+        from gcloud.datastore.transaction import Transaction
+        xact = self._transaction = Transaction(dataset_id, connection)
+        xact._id = transaction_id
+
+    def __enter__(self):
+        from gcloud.datastore.connection import _CONNECTIONS
+        _CONNECTIONS.push(self._transaction)
+        return self._transaction
+
+    def __exit__(self, *args):
+        from gcloud.datastore.connection import _CONNECTIONS
+        _CONNECTIONS.pop()
