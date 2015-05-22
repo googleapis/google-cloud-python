@@ -302,6 +302,95 @@ class Test_lazy_loading(unittest2.TestCase):
         self.assertTrue('project' in _helpers._DEFAULTS.__dict__)
 
 
+class _Dummy(object):
+
+    def __init__(self, **kw):
+        self.__dict__.update(kw)
+
+
+class Test_ClientProxy(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud._helpers import _ClientProxy
+        return _ClientProxy
+
+    def _makeOne(self, wrapped, client):
+        return self._getTargetClass()(wrapped, client)
+
+    def test_ctor_and_attr_and_property(self):
+        NAME = 'name'
+
+        class _Wrapped(object):
+
+            def __init__(self, **kw):
+                self.__dict__.update(kw)
+
+            @property
+            def a_property(self):
+                return NAME
+
+        wrapped = _Wrapped(name=NAME)
+        client = object()
+        proxy = self._makeOne(wrapped, client)
+        self.assertTrue(proxy._wrapped is wrapped)
+        self.assertTrue(proxy._client is client)
+        self.assertEqual(proxy.name, NAME)
+        self.assertEqual(proxy.a_property, NAME)
+        self.assertRaises(AttributeError, getattr, proxy, 'nonesuch')
+
+    def test_method_taking_neither_connection_nor_project(self):
+
+        class _Wrapped(_Dummy):
+
+            def a_method(self, *args, **kw):
+                return args, kw
+
+        wrapped = _Wrapped()
+        client = object()
+        proxy = self._makeOne(wrapped, client)
+        self.assertEqual(proxy.a_method('foo', bar=1), (('foo',), {'bar': 1}))
+
+    def test_method_taking_connection_not_project(self):
+
+        class _Wrapped(_Dummy):
+
+            def a_method(self, connection):
+                return connection
+
+        wrapped = _Wrapped()
+        connection = object()
+        client = _Dummy(connection=connection)
+        proxy = self._makeOne(wrapped, client)
+        self.assertEqual(proxy.a_method(), connection)
+
+    def test_method_taking_project_not_connection(self):
+        PROJECT = 'PROJECT'
+
+        class _Wrapped(_Dummy):
+
+            def a_method(self, project):
+                return project
+
+        wrapped = _Wrapped()
+        client = _Dummy(project=PROJECT)
+        proxy = self._makeOne(wrapped, client)
+        self.assertEqual(proxy.a_method(), PROJECT)
+
+    def test_method_taking_connection_and_project(self):
+        PROJECT = 'PROJECT'
+
+        class _Wrapped(_Dummy):
+
+            def a_method(self, connection, project):
+                return connection, project
+
+        wrapped = _Wrapped()
+        connection = object()
+        client = _Dummy(connection=connection, project=PROJECT)
+        proxy = self._makeOne(wrapped, client)
+        self.assertEqual(proxy.a_method(), (connection, PROJECT))
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):
