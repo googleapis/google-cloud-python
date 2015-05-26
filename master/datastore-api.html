@@ -459,7 +459,7 @@ commit will be non-transactional.</li>
 under the hood in <code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.get()</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="n">key</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datastore</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">[&lt;Entity object&gt;]</span>
 </pre></div>
 </div>
@@ -645,7 +645,46 @@ inferred dataset ID.</p>
 
 <dl class="function">
 <dt id="gcloud.datastore.api.get">
-<code class="descclassname">gcloud.datastore.api.</code><code class="descname">get</code><span class="sig-paren">(</span><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>connection=None</em>, <em>dataset_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/api.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.get" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.datastore.api.</code><code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>connection=None</em>, <em>dataset_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/api.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieves entity from a single key (if it exists).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is just a thin wrapper over <code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.get_multi()</span></code>.
+The backend API does not make a distinction between a single key or
+multiple keys in a lookup request.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; The key to be retrieved from the datastore.</li>
+<li><strong>missing</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the key-only entities returned
+by the backend as &#8220;missing&#8221; will be copied into it.
+Use only as a keyword param.</li>
+<li><strong>deferred</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the keys returned
+by the backend as &#8220;deferred&#8221; will be copied into it.
+Use only as a keyword param.</li>
+<li><strong>connection</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a>) &#8211; Optional. The connection used to connect to datastore.
+If not passed, inferred from the environment.</li>
+<li><strong>dataset_id</strong> (<a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a>) &#8211; Optional. The dataset ID used to connect to datastore.
+If not passed, inferred from the environment.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested entity if it exists.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.datastore.api.get_multi">
+<code class="descclassname">gcloud.datastore.api.</code><code class="descname">get_multi</code><span class="sig-paren">(</span><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>connection=None</em>, <em>dataset_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/api.html#get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.api.get_multi" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieves entities, along with their attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

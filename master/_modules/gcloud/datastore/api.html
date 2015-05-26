@@ -248,7 +248,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="k">return</span> <span class="n">results</span>
 
 
-<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get_multi"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.get_multi">[docs]</a><span class="k">def</span> <span class="nf">get_multi</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+              <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Retrieves entities, along with their attributes.</span>
 
 <span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
@@ -314,6 +315,45 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">helpers</span><span class="o">.</span><span class="n">entity_from_protobuf</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">entities</span>
+
+</div>
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves entity from a single key (if it exists).</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">       This is just a thin wrapper over :func:`gcloud.datastore.get_multi`.</span>
+<span class="sd">       The backend API does not make a distinction between a single key or</span>
+<span class="sd">       multiple keys in a lookup request.</span>
+
+<span class="sd">    :type key: :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param key: The key to be retrieved from the datastore.</span>
+
+<span class="sd">    :type missing: an empty list or None.</span>
+<span class="sd">    :param missing: If a list is passed, the key-only entities returned</span>
+<span class="sd">                    by the backend as &quot;missing&quot; will be copied into it.</span>
+<span class="sd">                    Use only as a keyword param.</span>
+
+<span class="sd">    :type deferred: an empty list or None.</span>
+<span class="sd">    :param deferred: If a list is passed, the keys returned</span>
+<span class="sd">                     by the backend as &quot;deferred&quot; will be copied into it.</span>
+<span class="sd">                     Use only as a keyword param.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: Optional. The connection used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :type dataset_id: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :rtype: :class:`gcloud.datastore.entity.Entity` or ``NoneType``</span>
+<span class="sd">    :returns: The requested entity if it exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">entities</span> <span class="o">=</span> <span class="n">get_multi</span><span class="p">([</span><span class="n">key</span><span class="p">],</span> <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="n">deferred</span><span class="p">,</span>
+                         <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">entities</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 </div>
 <div class="viewcode-block" id="put"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.put">[docs]</a><span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
