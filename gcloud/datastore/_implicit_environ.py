@@ -24,6 +24,7 @@ from gcloud._helpers import _app_engine_id
 from gcloud._helpers import _compute_engine_id
 from gcloud._helpers import _lazy_property_deco
 from gcloud.datastore.connection import Connection
+from gcloud.datastore.connection import _CONNECTIONS
 
 
 _DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
@@ -104,24 +105,26 @@ def get_default_dataset_id():
     return _DEFAULTS.dataset_id
 
 
-def get_connection():
-    """Shortcut method to establish a connection to the Cloud Datastore.
+def _require_connection(connection=None):
+    """Infer a connection from the environment, if not passed explicitly.
 
-    Use this if you are going to access several datasets
-    with the same set of credentials (unlikely):
-
-    >>> from gcloud import datastore
-
-    >>> connection = datastore.get_connection()
-    >>> key1 = datastore.Key('Kind', 1234, dataset_id='dataset1')
-    >>> key2 = datastore.Key('Kind', 1234, dataset_id='dataset2')
-    >>> entity1 = datastore.get(key1, connection=connection)
-    >>> entity2 = datastore.get(key2, connection=connection)
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional.
 
     :rtype: :class:`gcloud.datastore.connection.Connection`
-    :returns: A connection defined with the proper credentials.
+    :returns: A connection based on the current environment.
+    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
+             cannot be inferred from the environment.
     """
-    return Connection.from_environment()
+    if connection is None:
+        top = _CONNECTIONS.top
+        if top is not None:
+            connection = top.connection
+        else:
+            connection = get_default_connection()
+            if connection is None:
+                raise EnvironmentError('Connection could not be inferred.')
+    return connection
 
 
 def set_default_connection(connection=None):
@@ -130,8 +133,7 @@ def set_default_connection(connection=None):
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: A connection provided to be the default.
     """
-    connection = connection or get_connection()
-    _DEFAULTS.connection = connection
+    _DEFAULTS.connection = connection or Connection.from_environment()
 
 
 def get_default_connection():
@@ -163,7 +165,7 @@ class _DefaultsContainer(object):
     @staticmethod
     def connection():
         """Return the implicit default connection.."""
-        return get_connection()
+        return Connection.from_environment()
 
     def __init__(self, connection=None, dataset_id=None, implicit=False):
         if connection is not None or not implicit:

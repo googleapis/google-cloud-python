@@ -43,7 +43,6 @@ from gcloud import credentials
 from gcloud._helpers import get_default_project
 from gcloud._helpers import set_default_project
 from gcloud.storage import _implicit_environ
-from gcloud.storage._implicit_environ import get_connection
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
 from gcloud.storage._implicit_environ import set_default_connection
@@ -105,3 +104,20 @@ def set_defaults(bucket=None, project=None, connection=None):
     # NOTE: `set_default_bucket` is called after `set_default_connection`
     #       since `set_default_bucket` falls back to implicit connection.
     set_default_bucket(bucket=bucket)
+
+
+def get_connection():
+    """Shortcut method to establish a connection to Cloud Storage.
+
+    Use this if you are going to access several buckets with the same
+    set of credentials:
+
+    >>> from gcloud import storage
+    >>> connection = storage.get_connection()
+    >>> bucket1 = storage.get_bucket('bucket1', connection=connection)
+    >>> bucket2 = storage.get_bucket('bucket2', connection=connection)
+
+    :rtype: :class:`gcloud.storage.connection.Connection`
+    :returns: A connection defined with the proper credentials.
+    """
+    return Connection.from_environment()

@@ -41,6 +41,7 @@ class Test__require_dataset_id(unittest2.TestCase):
             self.assertEqual(self._callFUT(first_key=_Key(ID)), ID)
 
     def test_implicit_unset_w_existing_batch_wo_keys(self):
+        from gcloud.datastore._testing import _NoCommitBatch
         ID = 'DATASET'
         with self._monkey(None):
             with _NoCommitBatch(dataset_id=ID, connection=object()):
@@ -48,6 +49,7 @@ class Test__require_dataset_id(unittest2.TestCase):
 
     def test_implicit_unset_w_existing_batch_w_keys(self):
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore._testing import _NoCommitBatch
         ID = 'DATASET'
         OTHER = 'OTHER'
         with self._monkey(None):
@@ -55,6 +57,7 @@ class Test__require_dataset_id(unittest2.TestCase):
                 self.assertEqual(self._callFUT(first_key=_Key(OTHER)), ID)
 
     def test_implicit_unset_w_existing_transaction_wo_keys(self):
+        from gcloud.datastore._testing import _NoCommitTransaction
         ID = 'DATASET'
         with self._monkey(None):
             with _NoCommitTransaction(dataset_id=ID, connection=object()):
@@ -62,6 +65,7 @@ class Test__require_dataset_id(unittest2.TestCase):
 
     def test_implicit_unset_w_existing_transaction_w_keys(self):
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore._testing import _NoCommitTransaction
         ID = 'DATASET'
         OTHER = 'OTHER'
         with self._monkey(None):
@@ -106,56 +110,6 @@ class Test__require_dataset_id(unittest2.TestCase):
         OTHER = 'OTHER'
         with self._monkey(IMPLICIT_ID):
             self.assertEqual(self._callFUT(ID, first_key=_Key(OTHER)), ID)
-
-
-class Test__require_connection(unittest2.TestCase):
-
-    _MARKER = object()
-
-    def _callFUT(self, passed=_MARKER):
-        from gcloud.datastore.api import _require_connection
-        if passed is self._MARKER:
-            return _require_connection()
-        return _require_connection(passed)
-
-    def _monkey(self, connection):
-        from gcloud.datastore._testing import _monkey_defaults
-        return _monkey_defaults(connection=connection)
-
-    def test_implicit_unset(self):
-        with self._monkey(None):
-            with self.assertRaises(EnvironmentError):
-                self._callFUT()
-
-    def test_implicit_unset_w_existing_batch(self):
-        ID = 'DATASET'
-        CONNECTION = object()
-        with self._monkey(None):
-            with _NoCommitBatch(dataset_id=ID, connection=CONNECTION):
-                self.assertEqual(self._callFUT(), CONNECTION)
-
-    def test_implicit_unset_w_existing_transaction(self):
-        ID = 'DATASET'
-        CONNECTION = object()
-        with self._monkey(None):
-            with _NoCommitTransaction(dataset_id=ID, connection=CONNECTION):
-                self.assertEqual(self._callFUT(), CONNECTION)
-
-    def test_implicit_unset_passed_explicitly(self):
-        CONNECTION = object()
-        with self._monkey(None):
-            self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
-
-    def test_implicit_set(self):
-        IMPLICIT_CONNECTION = object()
-        with self._monkey(IMPLICIT_CONNECTION):
-            self.assertTrue(self._callFUT() is IMPLICIT_CONNECTION)
-
-    def test_implicit_set_passed_explicitly(self):
-        IMPLICIT_CONNECTION = object()
-        CONNECTION = object()
-        with self._monkey(IMPLICIT_CONNECTION):
-            self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
 
 
 class Test_get_function(unittest2.TestCase):
@@ -499,6 +453,7 @@ class Test_get_function(unittest2.TestCase):
     def test_w_transaction(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
+        from gcloud.datastore._testing import _NoCommitTransaction
 
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
@@ -661,6 +616,7 @@ class Test_put_function(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore._testing import _NoCommitBatch
 
         # Build basic mocks needed to delete.
         _DATASET = 'DATASET'
@@ -687,6 +643,7 @@ class Test_put_function(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore._testing import _NoCommitBatch
 
         # Build basic mocks needed to delete.
         _DATASET = 'DATASET'
@@ -804,6 +761,7 @@ class Test_delete_function(unittest2.TestCase):
     def test_w_existing_batch(self):
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore._testing import _NoCommitBatch
 
         # Build basic mocks needed to delete.
         _DATASET = 'DATASET'
@@ -825,6 +783,7 @@ class Test_delete_function(unittest2.TestCase):
     def test_w_existing_transaction(self):
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore._testing import _NoCommitTransaction
 
         # Build basic mocks needed to delete.
         _DATASET = 'DATASET'
@@ -847,6 +806,7 @@ class Test_delete_function(unittest2.TestCase):
         from gcloud.datastore._testing import _monkey_defaults
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore._testing import _NoCommitBatch
 
         # Build basic mocks needed to delete.
         _DATASET = 'DATASET'
@@ -916,39 +876,6 @@ class Test_allocate_ids_function(unittest2.TestCase):
             COMPLETE_KEY = Key('KIND', 1234)
             self.assertRaises(ValueError, self._callFUT,
                               COMPLETE_KEY, 2)
-
-
-class _NoCommitBatch(object):
-
-    def __init__(self, dataset_id, connection):
-        from gcloud.datastore.batch import Batch
-        self._batch = Batch(dataset_id, connection)
-
-    def __enter__(self):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.push(self._batch)
-        return self._batch
-
-    def __exit__(self, *args):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.pop()
-
-
-class _NoCommitTransaction(object):
-
-    def __init__(self, dataset_id, connection, transaction_id='TRANSACTION'):
-        from gcloud.datastore.transaction import Transaction
-        xact = self._transaction = Transaction(dataset_id, connection)
-        xact._id = transaction_id
-
-    def __enter__(self):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.push(self._transaction)
-        return self._transaction
-
-    def __exit__(self, *args):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.pop()
 
 
 class _HttpMultiple(object):

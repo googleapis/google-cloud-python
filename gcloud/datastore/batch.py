@@ -21,14 +21,11 @@ See
 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations
 """
 
-from gcloud._helpers import _LocalStack
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import helpers
+from gcloud.datastore.connection import _CONNECTIONS
 from gcloud.datastore.key import _dataset_ids_equal
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
-
-
-_BATCHES = _LocalStack()
 
 
 class Batch(object):
@@ -90,7 +87,7 @@ class Batch(object):
     @staticmethod
     def current():
         """Return the topmost batch / transaction, or None."""
-        return _BATCHES.top
+        return _CONNECTIONS.top
 
     @property
     def dataset_id(self):
@@ -229,7 +226,7 @@ class Batch(object):
         pass
 
     def __enter__(self):
-        _BATCHES.push(self)
+        _CONNECTIONS.push(self)
         self.begin()
         return self
 
@@ -240,7 +237,7 @@ class Batch(object):
             else:
                 self.rollback()
         finally:
-            _BATCHES.pop()
+            _CONNECTIONS.pop()
 
 
 def _assign_entity_to_mutation(mutation_pb, entity, auto_id_entities):

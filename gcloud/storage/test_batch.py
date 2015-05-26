@@ -222,6 +222,20 @@ class TestBatch(unittest2.TestCase):
         self.assertRaises(ValueError, batch.finish)
         self.assertTrue(connection.http is http)
 
+    def test_current(self):
+        from gcloud.storage.connection import _CONNECTIONS
+        klass = self._getTargetClass()
+        http = _HTTP()  # no requests expected
+        connection = _Connection(http=http)
+        self.assertTrue(klass.current() is None)
+        batch = self._makeOne(connection)
+        _CONNECTIONS.push(batch)
+        try:
+            self.assertTrue(klass.current() is batch)
+        finally:
+            _CONNECTIONS.pop()
+        self.assertTrue(klass.current() is None)
+
     def _check_subrequest_no_payload(self, chunk, method, url):
         lines = chunk.splitlines()
         # blank + 2 headers + blank + request + blank + blank
@@ -370,27 +384,27 @@ class TestBatch(unittest2.TestCase):
         self.assertRaises(ValueError, batch.finish)
 
     def test_as_context_mgr_wo_error(self):
-        from gcloud.storage.batch import _BATCHES
+        from gcloud.storage.connection import _CONNECTIONS
         URL = 'http://example.com/api'
         expected = _Response()
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
         connection = _Connection(http=http)
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
 
         target1 = _MockObject()
         target2 = _MockObject()
         target3 = _MockObject()
         with self._makeOne(connection) as batch:
-            self.assertEqual(list(_BATCHES), [batch])
+            self.assertEqual(list(_CONNECTIONS), [batch])
             batch._make_request('POST', URL, {'foo': 1, 'bar': 2},
                                 target_object=target1)
             batch._make_request('PATCH', URL, {'bar': 3},
                                 target_object=target2)
             batch._make_request('DELETE', URL, target_object=target3)
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
         self.assertEqual(len(batch._requests), 3)
         self.assertEqual(batch._requests[0][0], 'POST')
         self.assertEqual(batch._requests[1][0], 'PATCH')
@@ -404,19 +418,19 @@ class TestBatch(unittest2.TestCase):
 
     def test_as_context_mgr_w_error(self):
         from gcloud.storage.batch import _FutureDict
-        from gcloud.storage.batch import _BATCHES
+        from gcloud.storage.connection import _CONNECTIONS
         URL = 'http://example.com/api'
         http = _HTTP()
         connection = _Connection(http=http)
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
 
         target1 = _MockObject()
         target2 = _MockObject()
         target3 = _MockObject()
         try:
             with self._makeOne(connection) as batch:
-                self.assertEqual(list(_BATCHES), [batch])
+                self.assertEqual(list(_CONNECTIONS), [batch])
                 batch._make_request('POST', URL, {'foo': 1, 'bar': 2},
                                     target_object=target1)
                 batch._make_request('PATCH', URL, {'bar': 3},
@@ -426,7 +440,7 @@ class TestBatch(unittest2.TestCase):
         except ValueError:
             pass
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(_CONNECTIONS), [])
         self.assertEqual(len(http._requests), 0)
         self.assertEqual(len(batch._requests), 3)
         self.assertEqual(batch._target_objects, [target1, target2, target3])

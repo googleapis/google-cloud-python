@@ -17,8 +17,12 @@
 import os
 
 from gcloud import connection
+from gcloud._helpers import _LocalStack
 from gcloud.exceptions import make_exception
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+
+
+_CONNECTIONS = _LocalStack()
 
 
 SCOPE = ('https://www.googleapis.com/auth/datastore',
