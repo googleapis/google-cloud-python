@@ -806,7 +806,7 @@ class Test_put_function(unittest2.TestCase):
         self.assertEqual(len(CURR_BATCH.mutation.delete), 0)
 
 
-class Test_delete_function(unittest2.TestCase):
+class Test_delete_multi_function(unittest2.TestCase):
 
     def setUp(self):
         from gcloud.datastore._testing import _setup_defaults
@@ -817,8 +817,8 @@ class Test_delete_function(unittest2.TestCase):
         _tear_down_defaults(self)
 
     def _callFUT(self, keys, connection=None, dataset_id=None):
-        from gcloud.datastore.api import delete
-        return delete(keys, connection=connection, dataset_id=dataset_id)
+        from gcloud.datastore.api import delete_multi
+        return delete_multi(keys, connection=connection, dataset_id=dataset_id)
 
     def test_no_connection(self):
         from gcloud.datastore import _implicit_environ
@@ -960,6 +960,38 @@ class Test_delete_function(unittest2.TestCase):
         self.assertEqual(len(deletes), 1)
         self.assertEqual(deletes[0], key._key)
         self.assertEqual(len(connection._committed), 0)
+
+
+class Test_delete_function(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
+    def _callFUT(self, key, connection=None, dataset_id=None):
+        from gcloud.datastore.api import delete
+        return delete(key, connection=connection, dataset_id=dataset_id)
+
+    def test_no_batch(self):
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        key = _Key(_DATASET)
+
+        result = self._callFUT(key, connection=connection,
+                               dataset_id=_DATASET)
+        self.assertEqual(result, None)
+        self.assertEqual(len(connection._committed), 1)
+        dataset_id, mutation = connection._committed[0]
+        self.assertEqual(dataset_id, _DATASET)
+        self.assertEqual(list(mutation.delete), [key.to_protobuf()])
 
 
 class Test_allocate_ids_function(unittest2.TestCase):

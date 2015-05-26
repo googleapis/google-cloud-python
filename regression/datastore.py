@@ -34,7 +34,7 @@ class TestDatastore(unittest2.TestCase):
     def tearDown(self):
         with datastore.Transaction():
             keys = [entity.key for entity in self.case_entities_to_delete]
-            datastore.delete(keys)
+            datastore.delete_multi(keys)
 
 
 class TestDatastoreAllocateIDs(TestDatastore):
