@@ -30,7 +30,7 @@ class Transaction(Batch):
       >>> from gcloud import datastore
 
       >>> with datastore.Transaction():
-      ...     datastore.put([entity1, entity2])
+      ...     datastore.put_multi([entity1, entity2])
 
     Because it derives from :class:`Batch`, :class`Transaction` also provides
     :meth:`put` and :meth:`delete` methods::
@@ -55,7 +55,7 @@ class Transaction(Batch):
 
          >>> with datastore.Transaction():
          ...     entity = datastore.Entity(key=Key('Thing'))
-         ...     datastore.put([entity])
+         ...     datastore.put(entity)
 
        ``entity`` won't have a complete Key until the transaction is
        committed.
@@ -65,7 +65,7 @@ class Transaction(Batch):
 
          >>> with datastore.Transaction():
          ...     entity = datastore.Entity(key=Key('Thing'))
-         ...     datastore.put([entity])
+         ...     datastore.put(entity)
          ...     assert entity.key.is_partial  # There is no ID on this key.
          ...
          >>> assert not entity.key.is_partial  # There *is* an ID.

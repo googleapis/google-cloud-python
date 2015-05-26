@@ -43,7 +43,7 @@ Open a Python console and...
   >>> entity = datastore.Entity(key=datastore.Key('Person'))
   >>> entity['name'] = 'Your name'
   >>> entity['age'] = 25
-  >>> datastore.put([entity])
+  >>> datastore.put(entity)
   >>> list(Query(kind='Person').fetch())
   [<Entity{...} {'name': 'Your name', 'age': 25}>]
 

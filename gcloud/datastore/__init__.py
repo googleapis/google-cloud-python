@@ -58,6 +58,7 @@ from gcloud.datastore.api import delete
 from gcloud.datastore.api import get
 from gcloud.datastore.api import get_multi
 from gcloud.datastore.api import put
+from gcloud.datastore.api import put_multi
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.connection import SCOPE
 from gcloud.datastore.connection import Connection

@@ -30,7 +30,7 @@ toy = datastore.Entity(key)
 toy.update({'name': 'Toy'})
 
 # Now let's save it to our datastore:
-datastore.put([toy])
+datastore.put(toy)
 
 # If we look it up by its key, we should find it...
 print(datastore.get(toy.key))
@@ -57,7 +57,7 @@ for id, name, age in SAMPLE_DATA:
     entity = datastore.Entity(key)
     entity['name'] = name
     entity['age'] = age
-    datastore.put([entity])
+    datastore.put(entity)
 # We'll start by look at all Thing entities:
 query = datastore.Query(kind='Thing')
 

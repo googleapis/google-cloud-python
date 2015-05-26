@@ -82,7 +82,7 @@ class TestDatastoreSave(TestDatastore):
 
     def _generic_test_post(self, name=None, key_id=None):
         entity = self._get_post(id_or_name=(name or key_id))
-        datastore.put([entity])
+        datastore.put(entity)
 
         # Register entity to be deleted.
         self.case_entities_to_delete.append(entity)
@@ -145,7 +145,7 @@ class TestDatastoreSaveKeys(TestDatastore):
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
-        datastore.put([entity])
+        datastore.put(entity)
         self.case_entities_to_delete.append(entity)
 
         query = datastore.Query(kind='Person')

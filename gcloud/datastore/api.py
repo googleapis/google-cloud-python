@@ -274,7 +274,7 @@ def get(key, missing=None, deferred=None, connection=None, dataset_id=None):
         return entities[0]
 
 
-def put(entities, connection=None, dataset_id=None):
+def put_multi(entities, connection=None, dataset_id=None):
     """Save the entities in the Cloud Datastore.
 
     :type entities: list of :class:`gcloud.datastore.entity.Entity`
@@ -310,6 +310,29 @@ def put(entities, connection=None, dataset_id=None):
         current.put(entity)
     if not in_batch:
         current.commit()
+
+
+def put(entity, connection=None, dataset_id=None):
+    """Save the entity in the Cloud Datastore.
+
+    .. note::
+
+       This is just a thin wrapper over :func:`gcloud.datastore.put_multi`.
+       The backend API does not make a distinction between a single entity or
+       multiple entities in a commit request.
+
+    :type entity: :class:`gcloud.datastore.entity.Entity`
+    :param entity: The entity to be saved to the datastore.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional connection used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :type dataset_id: :class:`gcloud.datastore.connection.Connection`
+    :param dataset_id: Optional. The dataset ID used to connect to datastore.
+                       If not passed, inferred from the environment.
+    """
+    put_multi([entity], connection=connection, dataset_id=dataset_id)
 
 
 def delete(keys, connection=None, dataset_id=None):
