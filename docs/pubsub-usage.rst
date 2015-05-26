@@ -46,7 +46,8 @@ List topics for the default project:
 .. doctest::
 
    >>> from gcloud.pubsub import list_topics
-   >>> [topic.name for topic in list_topics()]  # API request
+   >>> topics, next_page_token = list_topics()  # API request
+   >>> [topic.name for topic in topics]
    ['topic_name']
 
 List topics for an explicit project:
@@ -54,7 +55,7 @@ List topics for an explicit project:
 .. doctest::
 
    >>> from gcloud.pubsub import list_topics
-   >>> topics = list_topics(project='my.project')  # API request
+   >>> topics, next_page_token = list_topics(project='my.project')  # API request
    >>> [topic.name for topic in topics]
    ['topic_name']
 
@@ -181,7 +182,7 @@ List subscriptions for a topic:
 
    >>> from gcloud.pubsub import Topic
    >>> topic = Topic('topic_name')
-   >>> subscriptions = topic.list_subscriptions()  # API request
+   >>> subscriptions, next_page_token = topic.list_subscriptions()  # API request
    >>> [subscription.name for subscription in subscriptions]
    ['subscription_name']
 
@@ -190,7 +191,7 @@ List all subscriptions for the default project:
 .. doctest::
 
    >>> from gcloud.pubsub import list_subscriptions
-   >>> subscriptions = list_subscriptions()  # API request
+   >>> subscription, next_page_tokens = list_subscriptions()  # API request
    >>> [subscription.name for subscription in subscriptions]
    ['subscription_name']
 
