@@ -116,13 +116,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </div>
 <p>List topics for the default project:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">list_topics</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">topic</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">list_topics</span><span class="p">()]</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topics</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">list_topics</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">topic</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">]</span>
 <span class="go">[&#39;topic_name&#39;]</span>
 </pre></div>
 </div>
 <p>List topics for an explicit project:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">list_topics</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topics</span> <span class="o">=</span> <span class="n">list_topics</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;my.project&#39;</span><span class="p">)</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topics</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">list_topics</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;my.project&#39;</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">topic</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">]</span>
 <span class="go">[&#39;topic_name&#39;]</span>
 </pre></div>
@@ -225,14 +226,14 @@ used as a context manager.</p>
 <p>List subscriptions for a topic:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscriptions</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscriptions</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">subscription</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">]</span>
 <span class="go">[&#39;subscription_name&#39;]</span>
 </pre></div>
 </div>
 <p>List all subscriptions for the default project:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">list_subscriptions</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscriptions</span> <span class="o">=</span> <span class="n">list_subscriptions</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="p">,</span> <span class="n">next_page_tokens</span> <span class="o">=</span> <span class="n">list_subscriptions</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">subscription</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">]</span>
 <span class="go">[&#39;subscription_name&#39;]</span>
 </pre></div>
