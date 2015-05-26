@@ -166,7 +166,8 @@ def _extended_lookup(connection, dataset_id, key_pbs,
     return results
 
 
-def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
+def get_multi(keys, missing=None, deferred=None,
+              connection=None, dataset_id=None):
     """Retrieves entities, along with their attributes.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
@@ -232,6 +233,45 @@ def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
         entities.append(helpers.entity_from_protobuf(entity_pb))
 
     return entities
+
+
+def get(key, missing=None, deferred=None, connection=None, dataset_id=None):
+    """Retrieves entity from a single key (if it exists).
+
+    .. note::
+
+       This is just a thin wrapper over :func:`gcloud.datastore.get_multi`.
+       The backend API does not make a distinction between a single key or
+       multiple keys in a lookup request.
+
+    :type key: :class:`gcloud.datastore.key.Key`
+    :param key: The key to be retrieved from the datastore.
+
+    :type missing: an empty list or None.
+    :param missing: If a list is passed, the key-only entities returned
+                    by the backend as "missing" will be copied into it.
+                    Use only as a keyword param.
+
+    :type deferred: an empty list or None.
+    :param deferred: If a list is passed, the keys returned
+                     by the backend as "deferred" will be copied into it.
+                     Use only as a keyword param.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional. The connection used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :type dataset_id: :class:`gcloud.datastore.connection.Connection`
+    :param dataset_id: Optional. The dataset ID used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :rtype: :class:`gcloud.datastore.entity.Entity` or ``NoneType``
+    :returns: The requested entity if it exists.
+    """
+    entities = get_multi([key], missing=missing, deferred=deferred,
+                         connection=connection, dataset_id=dataset_id)
+    if entities:
+        return entities[0]
 
 
 def put(entities, connection=None, dataset_id=None):

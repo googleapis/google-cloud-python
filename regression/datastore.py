@@ -91,7 +91,7 @@ class TestDatastoreSave(TestDatastore):
             self.assertEqual(entity.key.name, name)
         if key_id is not None:
             self.assertEqual(entity.key.id, key_id)
-        retrieved_entity, = datastore.get([entity.key])
+        retrieved_entity = datastore.get(entity.key)
         # Check the given and retrieved are the the same.
         self.assertEqual(retrieved_entity, entity)
 
@@ -126,7 +126,7 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity2)
 
         keys = [entity1.key, entity2.key]
-        matches = datastore.get(keys)
+        matches = datastore.get_multi(keys)
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
@@ -330,12 +330,12 @@ class TestDatastoreTransaction(TestDatastore):
         entity['url'] = u'www.google.com'
 
         with datastore.Transaction() as xact:
-            results = datastore.get([entity.key])
-            if len(results) == 0:
+            result = datastore.get(entity.key)
+            if result is None:
                 xact.put(entity)
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.
-        retrieved_entity, = datastore.get([entity.key])
+        retrieved_entity = datastore.get(entity.key)
         self.case_entities_to_delete.append(retrieved_entity)
         self.assertEqual(retrieved_entity, entity)
