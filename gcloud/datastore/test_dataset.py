@@ -52,9 +52,9 @@ class TestDataset(unittest2.TestCase):
         key = object()
 
         with _Monkey(MUT, get=_get):
-            dataset.get([key])
+            dataset.get(key)
 
-        self.assertEqual(_called_with[0][0], ([key],))
+        self.assertEqual(_called_with[0][0], (key,))
         self.assertTrue(_called_with[0][1]['missing'] is None)
         self.assertTrue(_called_with[0][1]['deferred'] is None)
         self.assertTrue(_called_with[0][1]['connection'] is None)
@@ -74,7 +74,50 @@ class TestDataset(unittest2.TestCase):
         key, missing, deferred = object(), [], []
 
         with _Monkey(MUT, get=_get):
-            dataset.get([key], missing, deferred)
+            dataset.get(key, missing, deferred)
+
+        self.assertEqual(_called_with[0][0], (key,))
+        self.assertTrue(_called_with[0][1]['missing'] is missing)
+        self.assertTrue(_called_with[0][1]['deferred'] is deferred)
+        self.assertTrue(_called_with[0][1]['connection'] is conn)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
+
+    def test_get_multi_defaults(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        _called_with = []
+
+        def _get_multi(*args, **kw):
+            _called_with.append((args, kw))
+
+        dataset = self._makeOne()
+        key = object()
+
+        with _Monkey(MUT, get_multi=_get_multi):
+            dataset.get_multi([key])
+
+        self.assertEqual(_called_with[0][0], ([key],))
+        self.assertTrue(_called_with[0][1]['missing'] is None)
+        self.assertTrue(_called_with[0][1]['deferred'] is None)
+        self.assertTrue(_called_with[0][1]['connection'] is None)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
+
+    def test_get_multi_explicit(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        _called_with = []
+
+        def _get_multi(*args, **kw):
+            _called_with.append((args, kw))
+
+        conn = object()
+        dataset = self._makeOne(connection=conn)
+        key, missing, deferred = object(), [], []
+
+        with _Monkey(MUT, get_multi=_get_multi):
+            dataset.get_multi([key], missing, deferred)
 
         self.assertEqual(_called_with[0][0], ([key],))
         self.assertTrue(_called_with[0][1]['missing'] is missing)

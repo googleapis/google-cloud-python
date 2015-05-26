@@ -33,13 +33,13 @@ toy.update({'name': 'Toy'})
 datastore.put([toy])
 
 # If we look it up by its key, we should find it...
-print(datastore.get([toy.key]))
+print(datastore.get(toy.key))
 
 # And we should be able to delete it...
 datastore.delete([toy.key])
 
 # Since we deleted it, if we do another lookup it shouldn't be there again:
-print(datastore.get([toy.key]))
+print(datastore.get(toy.key))
 
 # Now let's try a more advanced query.
 # First, let's create some entities.
@@ -104,7 +104,7 @@ with datastore.Transaction() as xact:
     xact.rollback()
 
 # Let's check if the entity was actually created:
-created = datastore.get([key])
+created = datastore.get(key)
 print('yes' if created else 'no')
 
 # Remember, a key won't be complete until the transaction is commited.

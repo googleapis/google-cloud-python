@@ -153,7 +153,7 @@ class Connection(connection.Connection):
 
         >>> from gcloud import datastore
         >>> key = datastore.Key('MyKind', 1234, dataset_id='dataset-id')
-        >>> datastore.get([key])
+        >>> datastore.get(key)
         [<Entity object>]
 
         Using the ``connection`` class directly:

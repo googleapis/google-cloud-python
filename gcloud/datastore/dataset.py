@@ -15,6 +15,7 @@
 
 from gcloud.datastore.api import delete
 from gcloud.datastore.api import get
+from gcloud.datastore.api import get_multi
 from gcloud.datastore.api import put
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.key import Key
@@ -38,13 +39,22 @@ class Dataset(object):
         self.dataset_id = dataset_id
         self.connection = connection
 
-    def get(self, keys, missing=None, deferred=None):
+    def get(self, key, missing=None, deferred=None):
         """Proxy to :func:`gcloud.datastore.api.get`.
 
         Passes our ``dataset_id``.
         """
-        return get(keys, missing=missing, deferred=deferred,
+        return get(key, missing=missing, deferred=deferred,
                    connection=self.connection, dataset_id=self.dataset_id)
+
+    def get_multi(self, keys, missing=None, deferred=None):
+        """Proxy to :func:`gcloud.datastore.api.get_multi`.
+
+        Passes our ``dataset_id``.
+        """
+        return get_multi(keys, missing=missing, deferred=deferred,
+                         connection=self.connection,
+                         dataset_id=self.dataset_id)
 
     def put(self, entities):
         """Proxy to :func:`gcloud.datastore.api.put`.

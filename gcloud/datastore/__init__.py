@@ -56,6 +56,7 @@ from gcloud.datastore._implicit_environ import set_default_dataset_id
 from gcloud.datastore.api import allocate_ids
 from gcloud.datastore.api import delete
 from gcloud.datastore.api import get
+from gcloud.datastore.api import get_multi
 from gcloud.datastore.api import put
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.connection import SCOPE
