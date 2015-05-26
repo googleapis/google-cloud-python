@@ -213,6 +213,17 @@ class Test_get_function(unittest2.TestCase):
                                 dataset_id=DATASET_ID)
         self.assertEqual(results, [])
 
+    def test_miss_single_key(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        connection = _Connection()
+        key = Key('Kind', 1234, dataset_id=DATASET_ID)
+        result = self._callFUT(key, connection=connection,
+                               dataset_id=DATASET_ID)
+        self.assertTrue(result is None)
+
     def test_miss_wo_dataset_id(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
@@ -407,6 +418,34 @@ class Test_get_function(unittest2.TestCase):
         key = Key(KIND, ID, dataset_id=DATASET_ID)
         result, = self._callFUT([key], connection=connection,
                                 dataset_id=DATASET_ID)
+        new_key = result.key
+
+        # Check the returned value is as expected.
+        self.assertFalse(new_key is key)
+        self.assertEqual(new_key.dataset_id, DATASET_ID)
+        self.assertEqual(new_key.path, PATH)
+        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result['foo'], 'Foo')
+
+    def test_hit_single_key(self):
+        from gcloud.datastore.key import Key
+        from gcloud.datastore.test_connection import _Connection
+
+        DATASET_ID = 'DATASET'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+
+        # Make a found entity pb to be returned from mock backend.
+        entity_pb = self._make_entity_pb(DATASET_ID, KIND, ID,
+                                         'foo', 'Foo')
+
+        # Make a connection to return the entity pb.
+        connection = _Connection(entity_pb)
+
+        key = Key(KIND, ID, dataset_id=DATASET_ID)
+        result = self._callFUT(key, connection=connection,
+                               dataset_id=DATASET_ID)
         new_key = result.key
 
         # Check the returned value is as expected.
@@ -774,6 +813,23 @@ class Test_delete_function(unittest2.TestCase):
         key = _Key(_DATASET)
 
         result = self._callFUT([key], connection=connection,
+                               dataset_id=_DATASET)
+        self.assertEqual(result, None)
+        self.assertEqual(len(connection._committed), 1)
+        dataset_id, mutation = connection._committed[0]
+        self.assertEqual(dataset_id, _DATASET)
+        self.assertEqual(list(mutation.delete), [key.to_protobuf()])
+
+    def test_no_batch_single_key(self):
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        key = _Key(_DATASET)
+
+        result = self._callFUT(key, connection=connection,
                                dataset_id=_DATASET)
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)

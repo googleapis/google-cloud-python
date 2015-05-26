@@ -166,11 +166,13 @@ def _extended_lookup(connection, dataset_id, key_pbs,
     return results
 
 
-def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
+def get(key_or_keys, missing=None, deferred=None,
+        connection=None, dataset_id=None):
     """Retrieves entities, along with their attributes.
 
-    :type keys: list of :class:`gcloud.datastore.key.Key`
-    :param keys: The keys to be retrieved from the datastore.
+    :type key_or_keys: list of :class:`gcloud.datastore.key.Key` or
+                       :class:`gcloud.datastore.key.Key`
+    :param key_or_keys: The key or keys to be retrieved from the datastore.
 
     :type missing: an empty list or None.
     :param missing: If a list is passed, the key-only entities returned
@@ -191,14 +193,21 @@ def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
                        If not passed, inferred from the environment.
 
     :rtype: list of :class:`gcloud.datastore.entity.Entity`
-    :returns: The requested entities.
+    :returns: The requested entities (or a single entity if a single key is
+              passed).
     :raises: EnvironmentError if ``connection`` or ``dataset_id`` not passed,
              and cannot be inferred from the environment.  ValueError if
              one or more of ``keys`` has a dataset ID which does not match
              the passed / inferred dataset ID.
     """
-    if not keys:
+    if not key_or_keys:
         return []
+
+    single_key = not isinstance(key_or_keys, list)
+    if single_key:
+        keys = [key_or_keys]
+    else:
+        keys = key_or_keys
 
     connection = _require_connection(connection)
     dataset_id = _require_dataset_id(dataset_id, keys[0])
@@ -231,7 +240,12 @@ def get(keys, missing=None, deferred=None, connection=None, dataset_id=None):
     for entity_pb in entity_pbs:
         entities.append(helpers.entity_from_protobuf(entity_pb))
 
-    return entities
+    if not single_key:
+        return entities
+    else:
+        if entities:
+            # Assumes a single key will result in at most 1 entity.
+            return entities[0]
 
 
 def put(entities, connection=None, dataset_id=None):
@@ -272,11 +286,12 @@ def put(entities, connection=None, dataset_id=None):
         current.commit()
 
 
-def delete(keys, connection=None, dataset_id=None):
+def delete(key_or_keys, connection=None, dataset_id=None):
     """Delete the keys in the Cloud Datastore.
 
-    :type keys: list of :class:`gcloud.datastore.key.Key`
-    :param keys: The keys to be deleted from the datastore.
+    :type key_or_keys: list of :class:`gcloud.datastore.key.Key` or
+                       :class:`gcloud.datastore.key.Key`
+    :param key_or_keys: The key or keys to be deleted from the datastore.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: Optional connection used to connect to datastore.
@@ -291,8 +306,13 @@ def delete(keys, connection=None, dataset_id=None):
              one or more keys has a dataset ID not matching the passed /
              inferred dataset ID.
     """
-    if not keys:
+    if not key_or_keys:
         return
+
+    if isinstance(key_or_keys, list):
+        keys = key_or_keys
+    else:
+        keys = [key_or_keys]
 
     connection = _require_connection(connection)
     dataset_id = _require_dataset_id(dataset_id, keys[0])
