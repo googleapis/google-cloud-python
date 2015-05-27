@@ -96,7 +96,7 @@ mutation, and execute those within a transaction:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Transaction</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity1</span><span class="p">,</span> <span class="n">entity2</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put_multi</span><span class="p">([</span><span class="n">entity1</span><span class="p">,</span> <span class="n">entity2</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>Because it derives from <code class="xref py py-class docutils literal"><span class="pre">Batch</span></code>, :class`Transaction` also provides
@@ -122,7 +122,7 @@ entities will not be available at save time!  That means, if you
 try:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span>
-<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">entity</span></code> won&#8217;t have a complete Key until the transaction is
@@ -131,7 +131,7 @@ committed.</p>
 automatically generated ID will be assigned to the entity:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Transaction</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Thing&#39;</span><span class="p">))</span>
-<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">([</span><span class="n">entity</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="n">datastore</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">assert</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There is no ID on this key.</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="ow">not</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">is_partial</span>  <span class="c"># There *is* an ID.</span>

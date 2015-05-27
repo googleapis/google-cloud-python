@@ -356,7 +356,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">return</span> <span class="n">entities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 </div>
-<div class="viewcode-block" id="put"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.put">[docs]</a><span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="put_multi"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.put_multi">[docs]</a><span class="k">def</span> <span class="nf">put_multi</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Save the entities in the Cloud Datastore.</span>
 
 <span class="sd">    :type entities: list of :class:`gcloud.datastore.entity.Entity`</span>
@@ -394,7 +394,30 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">current</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 </div>
-<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="put"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.put">[docs]</a><span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Save the entity in the Cloud Datastore.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">       This is just a thin wrapper over :func:`gcloud.datastore.put_multi`.</span>
+<span class="sd">       The backend API does not make a distinction between a single entity or</span>
+<span class="sd">       multiple entities in a commit request.</span>
+
+<span class="sd">    :type entity: :class:`gcloud.datastore.entity.Entity`</span>
+<span class="sd">    :param entity: The entity to be saved to the datastore.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: Optional connection used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :type dataset_id: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">put_multi</span><span class="p">([</span><span class="n">entity</span><span class="p">],</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="delete_multi"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.delete_multi">[docs]</a><span class="k">def</span> <span class="nf">delete_multi</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Delete the keys in the Cloud Datastore.</span>
 
 <span class="sd">    :type keys: list of :class:`gcloud.datastore.key.Key`</span>
@@ -428,6 +451,29 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="n">current</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">in_batch</span><span class="p">:</span>
         <span class="n">current</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Delete the key in the Cloud Datastore.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">       This is just a thin wrapper over :func:`gcloud.datastore.delete_multi`.</span>
+<span class="sd">       The backend API does not make a distinction between a single key or</span>
+<span class="sd">       multiple keys in a commit request.</span>
+
+<span class="sd">    :type key: :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">    :param key: The key to be deleted from the datastore.</span>
+
+<span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param connection: Optional connection used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+
+<span class="sd">    :type dataset_id: :class:`gcloud.datastore.connection.Connection`</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID used to connect to datastore.</span>
+<span class="sd">                       If not passed, inferred from the environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">delete_multi</span><span class="p">([</span><span class="n">key</span><span class="p">],</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="allocate_ids"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.api.allocate_ids">[docs]</a><span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="p">,</span> <span class="n">num_ids</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>

@@ -112,7 +112,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">      &gt;&gt;&gt; from gcloud import datastore</span>
 
 <span class="sd">      &gt;&gt;&gt; with datastore.Transaction():</span>
-<span class="sd">      ...     datastore.put([entity1, entity2])</span>
+<span class="sd">      ...     datastore.put_multi([entity1, entity2])</span>
 
 <span class="sd">    Because it derives from :class:`Batch`, :class`Transaction` also provides</span>
 <span class="sd">    :meth:`put` and :meth:`delete` methods::</span>
@@ -137,7 +137,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">         &gt;&gt;&gt; with datastore.Transaction():</span>
 <span class="sd">         ...     entity = datastore.Entity(key=Key(&#39;Thing&#39;))</span>
-<span class="sd">         ...     datastore.put([entity])</span>
+<span class="sd">         ...     datastore.put(entity)</span>
 
 <span class="sd">       ``entity`` won&#39;t have a complete Key until the transaction is</span>
 <span class="sd">       committed.</span>
@@ -147,7 +147,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">         &gt;&gt;&gt; with datastore.Transaction():</span>
 <span class="sd">         ...     entity = datastore.Entity(key=Key(&#39;Thing&#39;))</span>
-<span class="sd">         ...     datastore.put([entity])</span>
+<span class="sd">         ...     datastore.put(entity)</span>
 <span class="sd">         ...     assert entity.key.is_partial  # There is no ID on this key.</span>
 <span class="sd">         ...</span>
 <span class="sd">         &gt;&gt;&gt; assert not entity.key.is_partial  # There *is* an ID.</span>

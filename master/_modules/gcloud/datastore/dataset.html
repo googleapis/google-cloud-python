@@ -96,9 +96,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">&quot;&quot;&quot;Convenience wrapper for invoking APIs/factories w/ a dataset ID.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">delete</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">delete_multi</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">get</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">get_multi</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">put</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">put_multi</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
@@ -138,21 +140,37 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
                          <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span>
                          <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Dataset.put"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entities</span><span class="p">):</span>
+<div class="viewcode-block" id="Dataset.put"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :func:`gcloud.datastore.api.put`.</span>
 
 <span class="sd">        Passes our ``dataset_id``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">put</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span>
+        <span class="k">return</span> <span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span>
                    <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Dataset.delete"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+<div class="viewcode-block" id="Dataset.put_multi"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.put_multi">[docs]</a>    <span class="k">def</span> <span class="nf">put_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entities</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Proxy to :func:`gcloud.datastore.api.put_multi`.</span>
+
+<span class="sd">        Passes our ``dataset_id``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">put_multi</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span>
+                         <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Dataset.delete"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :func:`gcloud.datastore.api.delete`.</span>
 
 <span class="sd">        Passes our ``dataset_id``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">delete</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span>
+        <span class="k">return</span> <span class="n">delete</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span>
                       <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Dataset.delete_multi"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.delete_multi">[docs]</a>    <span class="k">def</span> <span class="nf">delete_multi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Proxy to :func:`gcloud.datastore.api.delete_multi`.</span>
+
+<span class="sd">        Passes our ``dataset_id``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">delete_multi</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span>
+                            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Dataset.key"><a class="viewcode-back" href="../../../datastore-dataset.html#gcloud.datastore.dataset.Dataset.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`gcloud.datastore.key.Key`.</span>
