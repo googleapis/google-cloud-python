@@ -52,6 +52,12 @@ class TestEntity(unittest2.TestCase):
         self.assertEqual(sorted(entity.exclude_from_indexes),
                          sorted(_EXCLUDE_FROM_INDEXES))
 
+    def test_ctor_bad_exclude_from_indexes(self):
+        BAD_EXCLUDE_FROM_INDEXES = object()
+        key = _Key()
+        self.assertRaises(TypeError, self._makeOne, key=key,
+                          exclude_from_indexes=BAD_EXCLUDE_FROM_INDEXES)
+
     def test___eq_____ne___w_non_entity(self):
         from gcloud.datastore.key import Key
         key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
