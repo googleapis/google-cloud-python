@@ -43,6 +43,33 @@ class Test__LocalStack(unittest2.TestCase):
         self.assertEqual(list(batches), [])
 
 
+class Test__ensure_tuple_or_list(unittest2.TestCase):
+
+    def _callFUT(self, arg_name, tuple_or_list):
+        from gcloud._helpers import _ensure_tuple_or_list
+        return _ensure_tuple_or_list(arg_name, tuple_or_list)
+
+    def test_valid_tuple(self):
+        valid_tuple_or_list = ('a', 'b', 'c', 'd')
+        result = self._callFUT('ARGNAME', valid_tuple_or_list)
+        self.assertEqual(result, ['a', 'b', 'c', 'd'])
+
+    def test_valid_list(self):
+        valid_tuple_or_list = ['a', 'b', 'c', 'd']
+        result = self._callFUT('ARGNAME', valid_tuple_or_list)
+        self.assertEqual(result, valid_tuple_or_list)
+
+    def test_invalid(self):
+        invalid_tuple_or_list = object()
+        with self.assertRaises(TypeError):
+            self._callFUT('ARGNAME', invalid_tuple_or_list)
+
+    def test_invalid_iterable(self):
+        invalid_tuple_or_list = 'FOO'
+        with self.assertRaises(TypeError):
+            self._callFUT('ARGNAME', invalid_tuple_or_list)
+
+
 class Test__LazyProperty(unittest2.TestCase):
 
     def _getTargetClass(self):

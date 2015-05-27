@@ -16,6 +16,7 @@
 
 import base64
 
+from gcloud._helpers import _ensure_tuple_or_list
 from gcloud.datastore import _implicit_environ
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
@@ -90,9 +91,9 @@ class Query(object):
         self._namespace = namespace
         self._ancestor = ancestor
         self._filters = list(filters)
-        self._projection = list(projection)
-        self._order = list(order)
-        self._group_by = list(group_by)
+        self._projection = _ensure_tuple_or_list('projection', projection)
+        self._order = _ensure_tuple_or_list('order', order)
+        self._group_by = _ensure_tuple_or_list('group_by', group_by)
 
     @property
     def dataset_id(self):

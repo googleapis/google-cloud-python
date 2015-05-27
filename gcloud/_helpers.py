@@ -72,6 +72,29 @@ class _LocalStack(Local):
             return self._stack[-1]
 
 
+def _ensure_tuple_or_list(arg_name, tuple_or_list):
+    """Ensures an input is a tuple or list.
+
+    This effectively reduces the iterable types allowed to a very short
+    whitelist: list and tuple.
+
+    :type arg_name: string
+    :param arg_name: Name of argument to use in error message.
+
+    :type tuple_or_list: sequence of string
+    :param tuple_or_list: Sequence to be verified.
+
+    :rtype: list of string
+    :returns: The ``tuple_or_list`` passed in cast to a ``list``.
+    :raises: class:`TypeError` if the ``tuple_or_list`` is not a tuple or
+             list.
+    """
+    if not isinstance(tuple_or_list, (tuple, list)):
+        raise TypeError('Expected %s to be a tuple or list. '
+                        'Received %r' % (arg_name, tuple_or_list))
+    return list(tuple_or_list)
+
+
 class _LazyProperty(object):
     """Descriptor for lazy loaded property.
 

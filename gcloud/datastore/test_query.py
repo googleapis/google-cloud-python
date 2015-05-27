@@ -79,6 +79,27 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(query.order, ORDER)
         self.assertEqual(query.group_by, GROUP_BY)
 
+    def test_ctor_bad_projection(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        BAD_PROJECTION = object()
+        self.assertRaises(TypeError, self._makeOne, _KIND, _DATASET,
+                          projection=BAD_PROJECTION)
+
+    def test_ctor_bad_order(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        BAD_ORDER = object()
+        self.assertRaises(TypeError, self._makeOne, _KIND, _DATASET,
+                          order=BAD_ORDER)
+
+    def test_ctor_bad_group_by(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        BAD_GROUP_BY = object()
+        self.assertRaises(TypeError, self._makeOne, _KIND, _DATASET,
+                          group_by=BAD_GROUP_BY)
+
     def test_namespace_setter_w_non_string(self):
         _DATASET = 'DATASET'
         query = self._makeOne(dataset_id=_DATASET)
