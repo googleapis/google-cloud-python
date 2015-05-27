@@ -15,6 +15,9 @@
 """Class for representing a single entity in the Cloud Datastore."""
 
 
+from gcloud._helpers import _ensure_tuple_or_list
+
+
 class Entity(dict):
     """Entities are akin to rows in a relational database
 
@@ -76,7 +79,8 @@ class Entity(dict):
     def __init__(self, key=None, exclude_from_indexes=()):
         super(Entity, self).__init__()
         self.key = key
-        self._exclude_from_indexes = set(exclude_from_indexes)
+        self._exclude_from_indexes = set(_ensure_tuple_or_list(
+            'exclude_from_indexes', exclude_from_indexes))
 
     def __eq__(self, other):
         """Compare two entities for equality.
