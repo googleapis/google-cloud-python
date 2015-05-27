@@ -138,9 +138,9 @@ class TestDataset(unittest2.TestCase):
         entity = object()
 
         with _Monkey(MUT, put=_put):
-            dataset.put([entity])
+            dataset.put(entity)
 
-        self.assertEqual(_called_with[0][0], ([entity],))
+        self.assertEqual(_called_with[0][0], (entity,))
         self.assertTrue(_called_with[0][1]['connection'] is None)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
@@ -157,7 +157,45 @@ class TestDataset(unittest2.TestCase):
         dataset = self._makeOne(connection=conn)
 
         with _Monkey(MUT, put=_put):
-            dataset.put([entity])
+            dataset.put(entity)
+
+        self.assertEqual(_called_with[0][0], (entity,))
+        self.assertTrue(_called_with[0][1]['connection'] is conn)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
+
+    def test_put_multi_wo_connection(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        _called_with = []
+
+        def _put_multi(*args, **kw):
+            _called_with.append((args, kw))
+
+        dataset = self._makeOne()
+        entity = object()
+
+        with _Monkey(MUT, put_multi=_put_multi):
+            dataset.put_multi([entity])
+
+        self.assertEqual(_called_with[0][0], ([entity],))
+        self.assertTrue(_called_with[0][1]['connection'] is None)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
+
+    def test_put_multi_w_connection(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        _called_with = []
+
+        def _put_multi(*args, **kw):
+            _called_with.append((args, kw))
+
+        entity, conn = object(), object()
+        dataset = self._makeOne(connection=conn)
+
+        with _Monkey(MUT, put_multi=_put_multi):
+            dataset.put_multi([entity])
 
         self.assertEqual(_called_with[0][0], ([entity],))
         self.assertTrue(_called_with[0][1]['connection'] is conn)
@@ -176,9 +214,9 @@ class TestDataset(unittest2.TestCase):
         key = object()
 
         with _Monkey(MUT, delete=_delete):
-            dataset.delete([key])
+            dataset.delete(key)
 
-        self.assertEqual(_called_with[0][0], ([key],))
+        self.assertEqual(_called_with[0][0], (key,))
         self.assertTrue(_called_with[0][1]['connection'] is None)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
@@ -194,7 +232,44 @@ class TestDataset(unittest2.TestCase):
         key, conn = object(), object()
         dataset = self._makeOne(connection=conn)
         with _Monkey(MUT, delete=_delete):
-            dataset.delete([key])
+            dataset.delete(key)
+
+        self.assertEqual(_called_with[0][0], (key,))
+        self.assertTrue(_called_with[0][1]['connection'] is conn)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
+
+    def test_delete_multi_wo_connection(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        _called_with = []
+
+        def _delete_multi(*args, **kw):
+            _called_with.append((args, kw))
+
+        dataset = self._makeOne()
+        key = object()
+
+        with _Monkey(MUT, delete_multi=_delete_multi):
+            dataset.delete_multi([key])
+
+        self.assertEqual(_called_with[0][0], ([key],))
+        self.assertTrue(_called_with[0][1]['connection'] is None)
+        self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
+
+    def test_delete_multi_w_connection(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        _called_with = []
+
+        def _delete_multi(*args, **kw):
+            _called_with.append((args, kw))
+
+        key, conn = object(), object()
+        dataset = self._makeOne(connection=conn)
+        with _Monkey(MUT, delete_multi=_delete_multi):
+            dataset.delete_multi([key])
 
         self.assertEqual(_called_with[0][0], ([key],))
         self.assertTrue(_called_with[0][1]['connection'] is conn)

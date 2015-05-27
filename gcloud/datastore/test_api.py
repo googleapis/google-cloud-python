@@ -617,7 +617,7 @@ class Test_get_function(unittest2.TestCase):
         self.assertTrue(result is None)
 
 
-class Test_put_function(unittest2.TestCase):
+class Test_put_multi_function(unittest2.TestCase):
 
     def setUp(self):
         from gcloud.datastore._testing import _setup_defaults
@@ -628,8 +628,9 @@ class Test_put_function(unittest2.TestCase):
         _tear_down_defaults(self)
 
     def _callFUT(self, entities, connection=None, dataset_id=None):
-        from gcloud.datastore.api import put
-        return put(entities, connection=connection, dataset_id=dataset_id)
+        from gcloud.datastore.api import put_multi
+        return put_multi(entities, connection=connection,
+                         dataset_id=dataset_id)
 
     def test_no_connection(self):
         from gcloud.datastore import _implicit_environ
@@ -762,7 +763,50 @@ class Test_put_function(unittest2.TestCase):
         self.assertEqual(len(CURR_BATCH.mutation.delete), 0)
 
 
-class Test_delete_function(unittest2.TestCase):
+class Test_put_function(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
+    def _callFUT(self, entity, connection=None, dataset_id=None):
+        from gcloud.datastore.api import put
+        return put(entity, connection=connection, dataset_id=dataset_id)
+
+    def test_implicit_connection(self):
+        from gcloud.datastore._testing import _monkey_defaults
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Entity
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        entity = _Entity(foo=u'bar')
+        key = entity.key = _Key(_DATASET)
+
+        with _monkey_defaults(connection=connection):
+            # Set up Batch on stack so we can check it is used.
+            with _NoCommitBatch(_DATASET, connection) as CURR_BATCH:
+                result = self._callFUT(entity)
+
+        self.assertEqual(result, None)
+        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
+        self.assertEqual(len(CURR_BATCH.mutation.upsert), 1)
+        upserts = list(CURR_BATCH.mutation.upsert)
+        self.assertEqual(len(upserts), 1)
+        self.assertEqual(upserts[0].key, key.to_protobuf())
+        properties = list(upserts[0].property)
+        self.assertEqual(properties[0].name, 'foo')
+        self.assertEqual(properties[0].value.string_value, u'bar')
+        self.assertEqual(len(CURR_BATCH.mutation.delete), 0)
+
+
+class Test_delete_multi_function(unittest2.TestCase):
 
     def setUp(self):
         from gcloud.datastore._testing import _setup_defaults
@@ -773,8 +817,8 @@ class Test_delete_function(unittest2.TestCase):
         _tear_down_defaults(self)
 
     def _callFUT(self, keys, connection=None, dataset_id=None):
-        from gcloud.datastore.api import delete
-        return delete(keys, connection=connection, dataset_id=dataset_id)
+        from gcloud.datastore.api import delete_multi
+        return delete_multi(keys, connection=connection, dataset_id=dataset_id)
 
     def test_no_connection(self):
         from gcloud.datastore import _implicit_environ
@@ -916,6 +960,38 @@ class Test_delete_function(unittest2.TestCase):
         self.assertEqual(len(deletes), 1)
         self.assertEqual(deletes[0], key._key)
         self.assertEqual(len(connection._committed), 0)
+
+
+class Test_delete_function(unittest2.TestCase):
+
+    def setUp(self):
+        from gcloud.datastore._testing import _setup_defaults
+        _setup_defaults(self)
+
+    def tearDown(self):
+        from gcloud.datastore._testing import _tear_down_defaults
+        _tear_down_defaults(self)
+
+    def _callFUT(self, key, connection=None, dataset_id=None):
+        from gcloud.datastore.api import delete
+        return delete(key, connection=connection, dataset_id=dataset_id)
+
+    def test_no_batch(self):
+        from gcloud.datastore.test_batch import _Connection
+        from gcloud.datastore.test_batch import _Key
+
+        # Build basic mocks needed to delete.
+        _DATASET = 'DATASET'
+        connection = _Connection()
+        key = _Key(_DATASET)
+
+        result = self._callFUT(key, connection=connection,
+                               dataset_id=_DATASET)
+        self.assertEqual(result, None)
+        self.assertEqual(len(connection._committed), 1)
+        dataset_id, mutation = connection._committed[0]
+        self.assertEqual(dataset_id, _DATASET)
+        self.assertEqual(list(mutation.delete), [key.to_protobuf()])
 
 
 class Test_allocate_ids_function(unittest2.TestCase):

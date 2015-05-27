@@ -274,7 +274,7 @@ def get(key, missing=None, deferred=None, connection=None, dataset_id=None):
         return entities[0]
 
 
-def put(entities, connection=None, dataset_id=None):
+def put_multi(entities, connection=None, dataset_id=None):
     """Save the entities in the Cloud Datastore.
 
     :type entities: list of :class:`gcloud.datastore.entity.Entity`
@@ -312,7 +312,30 @@ def put(entities, connection=None, dataset_id=None):
         current.commit()
 
 
-def delete(keys, connection=None, dataset_id=None):
+def put(entity, connection=None, dataset_id=None):
+    """Save the entity in the Cloud Datastore.
+
+    .. note::
+
+       This is just a thin wrapper over :func:`gcloud.datastore.put_multi`.
+       The backend API does not make a distinction between a single entity or
+       multiple entities in a commit request.
+
+    :type entity: :class:`gcloud.datastore.entity.Entity`
+    :param entity: The entity to be saved to the datastore.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional connection used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :type dataset_id: :class:`gcloud.datastore.connection.Connection`
+    :param dataset_id: Optional. The dataset ID used to connect to datastore.
+                       If not passed, inferred from the environment.
+    """
+    put_multi([entity], connection=connection, dataset_id=dataset_id)
+
+
+def delete_multi(keys, connection=None, dataset_id=None):
     """Delete the keys in the Cloud Datastore.
 
     :type keys: list of :class:`gcloud.datastore.key.Key`
@@ -346,6 +369,29 @@ def delete(keys, connection=None, dataset_id=None):
         current.delete(key)
     if not in_batch:
         current.commit()
+
+
+def delete(key, connection=None, dataset_id=None):
+    """Delete the key in the Cloud Datastore.
+
+    .. note::
+
+       This is just a thin wrapper over :func:`gcloud.datastore.delete_multi`.
+       The backend API does not make a distinction between a single key or
+       multiple keys in a commit request.
+
+    :type key: :class:`gcloud.datastore.key.Key`
+    :param key: The key to be deleted from the datastore.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: Optional connection used to connect to datastore.
+                       If not passed, inferred from the environment.
+
+    :type dataset_id: :class:`gcloud.datastore.connection.Connection`
+    :param dataset_id: Optional. The dataset ID used to connect to datastore.
+                       If not passed, inferred from the environment.
+    """
+    delete_multi([key], connection=connection, dataset_id=dataset_id)
 
 
 def allocate_ids(incomplete_key, num_ids, connection=None):

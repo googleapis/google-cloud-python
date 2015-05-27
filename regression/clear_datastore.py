@@ -74,10 +74,10 @@ def remove_kind(kind):
         if len(ancestors) > TRANSACTION_MAX_GROUPS:
             delete_outside_transaction = True
         else:
-            datastore.delete([result.key for result in results])
+            datastore.delete_multi([result.key for result in results])
 
     if delete_outside_transaction:
-        datastore.delete([result.key for result in results])
+        datastore.delete_multi([result.key for result in results])
 
 
 def remove_all_entities():

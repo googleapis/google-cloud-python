@@ -65,7 +65,8 @@ class Entity(dict):
 
     :type key: :class:`gcloud.datastore.key.Key`
     :param key: Optional key to be set on entity. Required for
-                :func:`gcloud.datastore.put()`
+                :func:`gcloud.datastore.put()` and
+                :func:`gcloud.datastore.put_multi()`
 
     :type exclude_from_indexes: tuple of string
     :param exclude_from_indexes: Names of fields whose values are not to be
