@@ -98,6 +98,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">import</span> <span class="nn">base64</span>
 
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_ensure_tuple_or_list</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
@@ -172,9 +173,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ancestor</span> <span class="o">=</span> <span class="n">ancestor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filters</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_group_by</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">group_by</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span> <span class="o">=</span> <span class="n">_ensure_tuple_or_list</span><span class="p">(</span><span class="s">&#39;projection&#39;</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_order</span> <span class="o">=</span> <span class="n">_ensure_tuple_or_list</span><span class="p">(</span><span class="s">&#39;order&#39;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_group_by</span> <span class="o">=</span> <span class="n">_ensure_tuple_or_list</span><span class="p">(</span><span class="s">&#39;group_by&#39;</span><span class="p">,</span> <span class="n">group_by</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dataset_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
