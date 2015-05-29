@@ -188,7 +188,7 @@ class Subscription(object):
                                           path='%s:pull' % self.path,
                                           data=data)
         return [(info['ackId'], Message.from_api_repr(info['message']))
-                for info in response['receivedMessages']]
+                for info in response.get('receivedMessages', ())]
 
     def acknowledge(self, ack_ids, connection=None):
         """API call:  acknowledge retrieved messages for the subscription.
