@@ -335,6 +335,23 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['data'],
                          {'returnImmediately': True, 'maxMessages': 3})
 
+    def test_pull_wo_receivedMessages(self):
+        PROJECT = 'PROJECT'
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        TOPIC_NAME = 'topic_name'
+        conn = _Connection({})
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
+        subscription = self._makeOne(SUB_NAME, topic)
+        pulled = subscription.pull(return_immediately=False, connection=conn)
+        self.assertEqual(len(pulled), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s:pull' % SUB_PATH)
+        self.assertEqual(req['data'],
+                         {'returnImmediately': False, 'maxMessages': 1})
+
     def test_acknowledge_w_implicit_connection(self):
         from gcloud.pubsub._testing import _monkey_defaults
         PROJECT = 'PROJECT'
