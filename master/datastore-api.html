@@ -422,7 +422,7 @@ You shouldn&#8217;t have to provide this.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.commit">
-<code class="descname">commit</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>mutation_pb</em>, <em>transaction_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">#</a></dt>
+<code class="descname">commit</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>mutation_pb</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commit dataset mutations in context of current transation (if any).</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Commit</span></code> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -432,9 +432,9 @@ You shouldn&#8217;t have to provide this.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID dataset to which the transaction applies.</li>
 <li><strong>mutation_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">datastore_pb.Mutation</span></code>.) &#8211; The protobuf for the mutations being saved.</li>
-<li><strong>transaction_id</strong> (<em>string</em>) &#8211; The transaction ID returned from
-<a class="reference internal" href="#gcloud.datastore.connection.Connection.begin_transaction" title="gcloud.datastore.connection.Connection.begin_transaction"><code class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></code></a>.  If not passed, the
-commit will be non-transactional.</li>
+<li><strong>transaction_id</strong> (<em>string or None</em>) &#8211; The transaction ID returned from
+<a class="reference internal" href="#gcloud.datastore.connection.Connection.begin_transaction" title="gcloud.datastore.connection.Connection.begin_transaction"><code class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></code></a>.  Non-transactional
+batches must pass <code class="docutils literal"><span class="pre">None</span></code>.</li>
 </ul>
 </td>
 </tr>

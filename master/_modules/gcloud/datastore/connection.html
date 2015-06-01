@@ -379,7 +379,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">transaction</span>
 </div>
-<div class="viewcode-block" id="Connection.commit"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">mutation_pb</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.commit"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.connection.Connection.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">mutation_pb</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Commit dataset mutations in context of current transation (if any).</span>
 
 <span class="sd">        Maps the ``DatastoreService.Commit`` protobuf RPC.</span>
@@ -390,10 +390,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type mutation_pb: :class:`datastore_pb.Mutation`.</span>
 <span class="sd">        :param mutation_pb: The protobuf for the mutations being saved.</span>
 
-<span class="sd">        :type transaction_id: string</span>
+<span class="sd">        :type transaction_id: string or None</span>
 <span class="sd">        :param transaction_id: The transaction ID returned from</span>
-<span class="sd">                               :meth:`begin_transaction`.  If not passed, the</span>
-<span class="sd">                               commit will be non-transactional.</span>
+<span class="sd">                               :meth:`begin_transaction`.  Non-transactional</span>
+<span class="sd">                               batches must pass ``None``.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore._datastore_v1_pb2.MutationResult`.</span>
 <span class="sd">        :returns&#39;: the result protobuf for the mutation.</span>

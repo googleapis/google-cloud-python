@@ -144,6 +144,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">      ...   do_some_work(batch)</span>
 <span class="sd">      ...   raise Exception() # rolls back</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># &quot;protected&quot; attribute, always None for non-transactions</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a batch.</span>
@@ -293,7 +294,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        however it can be called explicitly if you don&#39;t want to use a</span>
 <span class="sd">        context manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
         <span class="c"># If the back-end returns without error, we are guaranteed that</span>
         <span class="c"># the response&#39;s &#39;insert_auto_id_key&#39; will match (length and order)</span>
         <span class="c"># the request&#39;s &#39;insert_auto_id` entities, which are derived from</span>
