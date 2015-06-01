@@ -663,7 +663,7 @@ class Test_put_multi_function(unittest2.TestCase):
 
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
-        dataset_id, mutation = connection._committed[0]
+        dataset_id, mutation, transaction_id = connection._committed[0]
         self.assertEqual(dataset_id, _DATASET)
         upserts = list(mutation.upsert)
         self.assertEqual(len(upserts), 1)
@@ -671,6 +671,7 @@ class Test_put_multi_function(unittest2.TestCase):
         properties = list(upserts[0].property)
         self.assertEqual(properties[0].name, 'foo')
         self.assertEqual(properties[0].value.string_value, u'bar')
+        self.assertTrue(transaction_id is None)
 
     def test_no_entities(self):
         from gcloud.datastore import _implicit_environ
@@ -700,7 +701,7 @@ class Test_put_multi_function(unittest2.TestCase):
                                dataset_id=_DATASET)
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
-        dataset_id, mutation = connection._committed[0]
+        dataset_id, mutation, transaction_id = connection._committed[0]
         self.assertEqual(dataset_id, _DATASET)
         inserts = list(mutation.insert_auto_id)
         self.assertEqual(len(inserts), 1)
@@ -708,6 +709,7 @@ class Test_put_multi_function(unittest2.TestCase):
         properties = list(inserts[0].property)
         self.assertEqual(properties[0].name, 'foo')
         self.assertEqual(properties[0].value.string_value, u'bar')
+        self.assertTrue(transaction_id is None)
 
     def test_existing_batch_w_completed_key(self):
         from gcloud.datastore.test_batch import _Connection
@@ -848,9 +850,10 @@ class Test_delete_multi_function(unittest2.TestCase):
 
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
-        dataset_id, mutation = connection._committed[0]
+        dataset_id, mutation, transaction_id = connection._committed[0]
         self.assertEqual(dataset_id, _DATASET)
         self.assertEqual(list(mutation.delete), [key.to_protobuf()])
+        self.assertTrue(transaction_id is None)
 
     def test_no_keys(self):
         from gcloud.datastore import _implicit_environ
@@ -872,9 +875,10 @@ class Test_delete_multi_function(unittest2.TestCase):
                                dataset_id=_DATASET)
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
-        dataset_id, mutation = connection._committed[0]
+        dataset_id, mutation, transaction_id = connection._committed[0]
         self.assertEqual(dataset_id, _DATASET)
         self.assertEqual(list(mutation.delete), [key.to_protobuf()])
+        self.assertTrue(transaction_id is None)
 
     def test_wo_batch_w_key_different_than_default_dataset_id(self):
         from gcloud.datastore._testing import _monkey_defaults
@@ -892,9 +896,10 @@ class Test_delete_multi_function(unittest2.TestCase):
             result = self._callFUT([key])
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
-        dataset_id, mutation = connection._committed[0]
+        dataset_id, mutation, transaction_id = connection._committed[0]
         self.assertEqual(dataset_id, _DATASET)
         self.assertEqual(list(mutation.delete), [key.to_protobuf()])
+        self.assertTrue(transaction_id is None)
 
     def test_w_existing_batch(self):
         from gcloud.datastore.test_batch import _Connection
@@ -989,9 +994,10 @@ class Test_delete_function(unittest2.TestCase):
                                dataset_id=_DATASET)
         self.assertEqual(result, None)
         self.assertEqual(len(connection._committed), 1)
-        dataset_id, mutation = connection._committed[0]
+        dataset_id, mutation, transaction_id = connection._committed[0]
         self.assertEqual(dataset_id, _DATASET)
         self.assertEqual(list(mutation.delete), [key.to_protobuf()])
+        self.assertTrue(transaction_id is None)
 
 
 class Test_allocate_ids_function(unittest2.TestCase):

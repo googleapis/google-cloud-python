@@ -134,7 +134,7 @@ class TestTransaction(unittest2.TestCase):
         xact._mutation = mutation = object()
         xact.begin()
         xact.commit()
-        self.assertEqual(connection._committed, (_DATASET, mutation))
+        self.assertEqual(connection._committed, (_DATASET, mutation, 234))
         self.assertEqual(xact.id, None)
 
     def test_commit_w_auto_ids(self):
@@ -150,7 +150,7 @@ class TestTransaction(unittest2.TestCase):
         xact._mutation = mutation = object()
         xact.begin()
         xact.commit()
-        self.assertEqual(connection._committed, (_DATASET, mutation))
+        self.assertEqual(connection._committed, (_DATASET, mutation, 234))
         self.assertEqual(xact.id, None)
         self.assertEqual(entity.key.path, [{'kind': _KIND, 'id': _ID}])
 
@@ -162,7 +162,7 @@ class TestTransaction(unittest2.TestCase):
         with xact:
             self.assertEqual(xact.id, 234)
             self.assertEqual(connection._begun, _DATASET)
-        self.assertEqual(connection._committed, (_DATASET, mutation))
+        self.assertEqual(connection._committed, (_DATASET, mutation, 234))
         self.assertEqual(xact.id, None)
 
     def test_context_manager_w_raise(self):
@@ -210,8 +210,8 @@ class _Connection(object):
     def rollback(self, dataset_id, transaction_id):
         self._rolled_back = dataset_id, transaction_id
 
-    def commit(self, dataset_id, mutation):
-        self._committed = (dataset_id, mutation)
+    def commit(self, dataset_id, mutation, transaction_id):
+        self._committed = (dataset_id, mutation, transaction_id)
         return self._commit_result
 
 

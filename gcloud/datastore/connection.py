@@ -297,7 +297,7 @@ class Connection(connection.Connection):
 
         return response.transaction
 
-    def commit(self, dataset_id, mutation_pb, transaction_id=None):
+    def commit(self, dataset_id, mutation_pb, transaction_id):
         """Commit dataset mutations in context of current transation (if any).
 
         Maps the ``DatastoreService.Commit`` protobuf RPC.
@@ -308,10 +308,10 @@ class Connection(connection.Connection):
         :type mutation_pb: :class:`datastore_pb.Mutation`.
         :param mutation_pb: The protobuf for the mutations being saved.
 
-        :type transaction_id: string
+        :type transaction_id: string or None
         :param transaction_id: The transaction ID returned from
-                               :meth:`begin_transaction`.  If not passed, the
-                               commit will be non-transactional.
+                               :meth:`begin_transaction`.  Non-transactional
+                               batches must pass ``None``.
 
         :rtype: :class:`gcloud.datastore._datastore_v1_pb2.MutationResult`.
         :returns': the result protobuf for the mutation.

@@ -707,7 +707,7 @@ class TestConnection(unittest2.TestCase):
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.commit(DATASET_ID, mutation)
+        result = conn.commit(DATASET_ID, mutation, None)
         self.assertEqual(result.index_updates, 0)
         self.assertEqual(list(result.insert_auto_id_key), [])
         cw = http._called_with
