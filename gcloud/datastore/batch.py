@@ -62,6 +62,7 @@ class Batch(object):
       ...   do_some_work(batch)
       ...   raise Exception() # rolls back
     """
+    _id = None  # "protected" attribute, always None for non-transactions
 
     def __init__(self, dataset_id=None, connection=None):
         """Construct a batch.
@@ -211,7 +212,8 @@ class Batch(object):
         however it can be called explicitly if you don't want to use a
         context manager.
         """
-        response = self.connection.commit(self._dataset_id, self.mutation)
+        response = self.connection.commit(
+            self._dataset_id, self.mutation, self._id)
         # If the back-end returns without error, we are guaranteed that
         # the response's 'insert_auto_id_key' will match (length and order)
         # the request's 'insert_auto_id` entities, which are derived from

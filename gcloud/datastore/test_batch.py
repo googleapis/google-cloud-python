@@ -42,6 +42,7 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(batch.dataset_id, _DATASET)
         self.assertEqual(batch.connection, connection)
+        self.assertTrue(batch._id is None)
         self.assertTrue(isinstance(batch.mutation, Mutation))
         self.assertEqual(batch._auto_id_entities, [])
 
@@ -56,6 +57,7 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(batch.dataset_id, _DATASET)
         self.assertEqual(batch.connection, CONNECTION)
+        self.assertTrue(batch._id is None)
         self.assertTrue(isinstance(batch.mutation, Mutation))
         self.assertEqual(batch._auto_id_entities, [])
 
@@ -260,7 +262,8 @@ class TestBatch(unittest2.TestCase):
 
         batch.commit()
 
-        self.assertEqual(connection._committed, [(_DATASET, batch.mutation)])
+        self.assertEqual(connection._committed,
+                         [(_DATASET, batch.mutation, None)])
 
     def test_commit_w_auto_id_entities(self):
         _DATASET = 'DATASET'
@@ -274,7 +277,8 @@ class TestBatch(unittest2.TestCase):
 
         batch.commit()
 
-        self.assertEqual(connection._committed, [(_DATASET, batch.mutation)])
+        self.assertEqual(connection._committed,
+                         [(_DATASET, batch.mutation, None)])
         self.assertFalse(key.is_partial)
         self.assertEqual(key._id, _NEW_ID)
 
@@ -302,7 +306,8 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(upserts[0].key, key._key)
         deletes = list(batch.mutation.delete)
         self.assertEqual(len(deletes), 0)
-        self.assertEqual(connection._committed, [(_DATASET, batch.mutation)])
+        self.assertEqual(connection._committed,
+                         [(_DATASET, batch.mutation, None)])
 
     def test_as_context_mgr_nested(self):
         from gcloud.datastore.batch import _BATCHES
@@ -346,8 +351,8 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(len(deletes), 0)
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch2.mutation),
-                          (_DATASET, batch1.mutation)])
+                         [(_DATASET, batch2.mutation, None),
+                          (_DATASET, batch1.mutation, None)])
 
     def test_as_context_mgr_w_error(self):
         from gcloud.datastore.batch import _BATCHES
@@ -406,8 +411,8 @@ class _Connection(object):
         self._commit_result = _CommitResult(*new_keys)
         self._committed = []
 
-    def commit(self, dataset_id, mutation):
-        self._committed.append((dataset_id, mutation))
+    def commit(self, dataset_id, mutation, transaction_id):
+        self._committed.append((dataset_id, mutation, transaction_id))
         return self._commit_result
 
 
