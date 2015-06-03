@@ -42,6 +42,73 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client.connection is connection)
         self.assertEqual(client.project, PROJECT)
 
+    def test_from_service_account_json(self):
+        from gcloud._testing import _Monkey
+        from gcloud import connection
+
+        PROJECT = 'PROJECT'
+        KLASS = self._getTargetClass()
+        CREDS = _Credentials()
+
+        _called = []
+
+        def mock_creds(*args):
+            _called.append(args)
+            return CREDS
+
+        JSON_CREDS_PATH = '/path/to/credentials.json'
+        with _Monkey(connection, get_for_service_account_json=mock_creds):
+            client = KLASS.from_service_account_json(JSON_CREDS_PATH, PROJECT)
+
+        self.assertTrue(client.connection.credentials is CREDS)
+        self.assertEqual(_called, [(JSON_CREDS_PATH,)])
+        self.assertEqual(client.project, PROJECT)
+
+    def test_from_service_account_p12(self):
+        from gcloud._testing import _Monkey
+        from gcloud import connection
+
+        PROJECT = 'PROJECT'
+        KLASS = self._getTargetClass()
+        CREDS = _Credentials()
+
+        _called = []
+
+        def mock_creds(*args):
+            _called.append(args)
+            return CREDS
+
+        CLIENT_EMAIL = 'client@example.com'
+        P12_PRIVKEY_PATH = '/path/to/privkey.p12'
+        with _Monkey(connection, get_for_service_account_p12=mock_creds):
+            client = KLASS.from_service_account_p12(
+                CLIENT_EMAIL, P12_PRIVKEY_PATH, PROJECT)
+
+        self.assertTrue(client.connection.credentials is CREDS)
+        self.assertEqual(_called, [(CLIENT_EMAIL, P12_PRIVKEY_PATH,)])
+        self.assertEqual(client.project, PROJECT)
+
+    def test_from_environment(self):
+        from gcloud._testing import _Monkey
+        from gcloud import connection
+
+        PROJECT = 'PROJECT'
+        KLASS = self._getTargetClass()
+        CREDS = _Credentials()
+
+        _called = []
+
+        def mock_creds(*args):
+            _called.append(args)
+            return CREDS
+
+        with _Monkey(connection, get_credentials=mock_creds):
+            client = KLASS.from_environment(PROJECT)
+
+        self.assertTrue(client.connection.credentials is CREDS)
+        self.assertEqual(_called, [()])
+        self.assertEqual(client.project, PROJECT)
+
     def test_topic(self):
         from gcloud.pubsub.client import _Topic
         from gcloud.pubsub.topic import Topic
@@ -224,3 +291,9 @@ class _Dummy(object):
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
+
+
+class _Credentials(object):
+
+    def create_scoped_required(self):
+        return False

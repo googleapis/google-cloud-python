@@ -282,16 +282,14 @@ Create a client using the defaults from the environment:
    >>> from gcloud.pubsub.client import Client
    >>> client = Client()
 
-Create a client using an explicit connection, but the default project:
+Create a client using explicit credentials, but the default project:
 
 .. doctest::
 
    >>> from gcloud.pubsub.client import Client
-   >>> from gcloud.pubsub.connection import Connection
-   >>> connection = Connection.from_service_account_json('/path/to/creds.json')
-   >>> client = Client(connection=connection)
+   >>> client = Client.from_service_account_json('/path/to/creds.json')
 
-Create a client using an explicit project ID, but the connetion inferred
+Create a client using an explicit project ID, but the credentials inferred
 from the environment:
 
 .. doctest::

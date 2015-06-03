@@ -23,6 +23,7 @@ from gcloud._helpers import get_default_project
 from gcloud._helpers import _ClientProxy
 from gcloud.pubsub._implicit_environ import _require_connection
 from gcloud.pubsub import api
+from gcloud.pubsub.connection import Connection
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
@@ -35,8 +36,8 @@ class Client(object):
                        from the environment.
 
     :type project: str or None
-    :param connection: The configured project. Defaults to the value inferred
-                       from the environment.
+    :param project: The configured project. Defaults to the value inferred
+                    from the environment.
     """
 
     def __init__(self, connection=None, project=None):
@@ -44,6 +45,73 @@ class Client(object):
         if project is None:
             project = get_default_project()
         self.project = project
+
+    @classmethod
+    def from_service_account_json(cls, json_credentials_path, project=None,
+                                  *args, **kwargs):
+        """Factory to retrieve JSON credentials while creating connection.
+
+        :type json_credentials_path: string
+        :param json_credentials_path: The path to a private key file (this file
+                                      was given to you when you created the
+                                      service account). This file must contain
+                                      a JSON object with a private key and
+                                      other credentials information (downloaded
+                                      from the Google APIs console).
+
+        :type project: str or None
+        :param project: The configured project. Defaults to the value inferred
+                        from the environment.
+
+        :rtype: :class:`gcloud.pubsub.client.Client`
+        :returns: A client, configured with a connection created with the
+                  retrieved JSON credentials, and the supplied project.
+        """
+        connection = Connection.from_service_account_json(
+            json_credentials_path, *args, **kwargs)
+        return cls(connection=connection, project=project)
+
+    @classmethod
+    def from_service_account_p12(cls, client_email, private_key_path,
+                                 project=None, *args, **kwargs):
+        """Factory to retrieve P12 credentials while creating connection.
+
+        .. note::
+          Unless you have an explicit reason to use a PKCS12 key for your
+          service account, we recommend using a JSON key.
+
+        :type client_email: string
+        :param client_email: The e-mail attached to the service account.
+
+        :type private_key_path: string
+        :param private_key_path: The path to a private key file (this file was
+                                 given to you when you created the service
+                                 account). This file must be in P12 format.
+
+        :type project: str or None
+        :param project: The configured project. Defaults to the value inferred
+                        from the environment.
+
+        :rtype: :class:`gcloud.pubsub.client.Client`
+        :returns: A client, configured with a connection created with the
+                  retrieved P12 credentials, and the supplied project.
+        """
+        connection = Connection.from_service_account_p12(
+            client_email, private_key_path, *args, **kwargs)
+        return cls(connection=connection, project=project)
+
+    @classmethod
+    def from_environment(cls, project=None, *args, **kwargs):
+        """Factory to retrieve implicit credentials while creating connection.
+
+        :rtype: :class:`gcloud.pubsub.client.Client`
+        :returns: The connection created with the retrieved implicit
+                  credentials.
+        :returns: A client, configured with a connection created with the
+                  retrieved implicit credentials, and the supplied project
+        """
+        connection = Connection.from_environment(*args, **kwargs)
+        return cls(connection=connection, project=project)
 
     def topic(self, name):
         """Proxy for :class:`gcloud.pubsub.topic.Topic`.
