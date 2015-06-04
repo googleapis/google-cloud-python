@@ -5,32 +5,32 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.__init__ &mdash; gcloud 0.5.0 documentation</title>
+    <title>gcloud.datastore &mdash; gcloud 0.6.0 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/css/normalize.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/css/github.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/css/github.min.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../../',
-        VERSION:     '0.5.0',
+        URL_ROOT:    '../../',
+        VERSION:     '0.6.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
-    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 0.5.0 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" /> 
+    <script type="text/javascript" src="../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.6.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
       <h1 class="logo">
         <a href="index.html" title="back to home">
-          <img src="../../../_static/images/logo.svg" alt="Google Cloud Platform" />
+          <img src="../../_static/images/logo.svg" alt="Google Cloud Platform" />
           <span class="gcloud">gcloud</span>
         </a>
       </h1>
@@ -40,19 +40,19 @@
           <li>
             <a href="
 https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
-              <img src="../../../_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              <img src="../../_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
               Node.js
             </a>
           </li>
           <li>
             <a href="#" title="Python docs page">
-              <img src="../../../_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              <img src="../../_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
               Python
             </a>
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/__init__%0ARelease%3A%200.5.0" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore%0ARelease%3A%200.6.0" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (0.5.0)
+              Version History (0.6.0)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -79,7 +79,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
       <section class="content">
         
-  <h1>Source code for gcloud.datastore.__init__</h1><div class="highlight"><pre>
+  <h1>Source code for gcloud.datastore</h1><div class="highlight"><pre>
 <span class="c"># Copyright 2014 Google Inc. All rights reserved.</span>
 <span class="c">#</span>
 <span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -130,7 +130,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">  when race conditions may occur.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">SCOPE</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">get_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">get_default_dataset_id</span>
@@ -138,9 +137,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.datastore._implicit_environ</span> <span class="kn">import</span> <span class="n">set_default_dataset_id</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">allocate_ids</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">delete</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">delete_multi</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">get</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">get_multi</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">put</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.api</span> <span class="kn">import</span> <span class="n">put_multi</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">SCOPE</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
@@ -149,14 +152,16 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
 
 
-<div class="viewcode-block" id="set_defaults"><a class="viewcode-back" href="../../../datastore-api.html#gcloud.datastore.__init__.set_defaults">[docs]</a><span class="k">def</span> <span class="nf">set_defaults</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="set_defaults"><a class="viewcode-back" href="../../datastore-api.html#gcloud.datastore.set_defaults">[docs]</a><span class="k">def</span> <span class="nf">set_defaults</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set defaults either explicitly or implicitly as fall-back.</span>
 
 <span class="sd">    Uses the arguments to call the individual default methods</span>
+
 <span class="sd">    - set_default_dataset_id</span>
 <span class="sd">    - set_default_connection</span>
 
 <span class="sd">    In the future we will likely enable methods like</span>
+
 <span class="sd">    - set_default_namespace</span>
 
 <span class="sd">    :type dataset_id: string</span>
@@ -171,48 +176,48 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
       </section><!-- end of .content -->
       <nav class="side-nav">
-        <ul><li><a href="../../../index.html">gcloud</a></li></ul>
+        <ul><li><a href="../../index.html">gcloud</a></li></ul>
         <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">GCloud Package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-api.html">Datastore</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-queries.html">Queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-batches.html">Batches</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-dataset.html">Dataset</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-blobs.html">Blobs / Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-buckets.html">Buckets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-acl.html">ACL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-api.html">Pub/Sub</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-surface.html"><code class="docutils literal"><span class="pre">gcloud.pubsub</span></code> API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-subscription.html">Subscriptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gcloud-api.html">GCloud Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore-api.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datastore-dataset.html">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pubsub-api.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pubsub-topic.html">Topics</a></li>
 </ul>
 
         <ul class="external-links">
           <li>
             <a href="https://github.com/GoogleCloudPlatform/gcloud-python/" title="Python on Github">
-              <img src="../../../_static/images/icon-link-github.svg" alt="Github icon" />
+              <img src="../../_static/images/icon-link-github.svg" alt="Github icon" />
               Github
             </a>
           </li>
           <li>
             <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues" title="Python issues on Github">
-              <img src="../../../_static/images/icon-link-github.svg" alt="Github icon" />
+              <img src="../../_static/images/icon-link-github.svg" alt="Github icon" />
               Issues
             </a>
           </li>
           <li>
             <a href="http://stackoverflow.com/questions/tagged/gcloud-python" title="gcloud on StackOverflow">
-              <img src="../../../_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              <img src="../../_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
               gcloud
             </a>
           </li>
           <li>
             <a href="https://pypi.python.org/pypi/gcloud" title="Python package manager">
-              <img src="../../../_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              <img src="../../_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
               Package Manager
             </a>
           </li>
@@ -220,9 +225,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
       </nav><!-- end of .side-nav -->
     </article><!-- end of .main -->
 
-    <script src="../../../_static/js/vendor/jquery-1.10.2.min.js"></script>
-    <script src="../../../_static/js/plugins.js"></script>
-    <script src="../../../_static/js/main.js"></script>
+    <script src="../../_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="../../_static/js/plugins.js"></script>
+    <script src="../../_static/js/main.js"></script>
   
   </body>
 </html>
