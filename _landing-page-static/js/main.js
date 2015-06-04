@@ -3,19 +3,19 @@ $('.nav-current').click(function(){
 });
 
 $('.faq-btn').click(function(){
-	$(this).toggleClass('open');
+  $(this).toggleClass('open');
 });
 
 $('.headerlink').parent().each(function() {
-	$(this).hover(
-		function() { $(this).children('.headerlink').show(); },
-		function() { $(this).children('.headerlink').hide(); }
-	);
+  $(this).hover(
+    function() { $(this).children('.headerlink').show(); },
+    function() { $(this).children('.headerlink').hide(); }
+  );
 });
 
 $('.side-nav').children('ul:nth-child(2)').children().each(function() {
   var itemName = $(this).text();
-	if (itemName !== 'Datastore' && itemName !== 'Storage') {
+  if (itemName !== 'Datastore' && itemName !== 'Storage') {
     $(this).css('padding-left','2em');
   }
 });
