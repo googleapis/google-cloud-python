@@ -20,6 +20,7 @@ from gcloud.credentials import get_credentials
 from gcloud.credentials import get_for_service_account_json
 from gcloud.credentials import get_for_service_account_p12
 from gcloud.pubsub.connection import Connection
+from gcloud.pubsub.topic import Topic
 
 
 class Client(object):
@@ -106,3 +107,38 @@ class Client(object):
         credentials = get_for_service_account_p12(client_email,
                                                   private_key_path)
         return cls(project=project, credentials=credentials)
+
+    def list_topics(self, page_size=None, page_token=None):
+        """List topics for the project associated with this client.
+
+        See:
+        cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.pubsub.topic.Topic`, plus a
+                  "next page token" string:  if not None, indicates that
+                  more topics can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/topics' % (self.project,)
+        resp = self.connection.api_request(method='GET', path=path,
+                                           query_params=params)
+        topics = [Topic.from_api_repr(resource) for resource in resp['topics']]
+        return topics, resp.get('nextPageToken')

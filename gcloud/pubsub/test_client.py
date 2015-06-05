@@ -131,6 +131,64 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client_obj.connection._credentials is CREDS)
         self.assertEqual(_CALLED, [(BOGUS_ARG1, BOGUS_ARG2)])
 
+    def test_list_topics_no_paging(self):
+        from gcloud.pubsub.topic import Topic
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+
+        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+
+        TOPIC_NAME = 'topic_name'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+
+        RETURNED = {'topics': [{'name': TOPIC_PATH}]}
+        # Replace the connection on the client with one of our own.
+        CLIENT_OBJ.connection = _Connection(RETURNED)
+
+        # Execute request.
+        topics, next_page_token = CLIENT_OBJ.list_topics()
+        # Test values are correct.
+        self.assertEqual(len(topics), 1)
+        self.assertTrue(isinstance(topics[0], Topic))
+        self.assertEqual(topics[0].name, TOPIC_NAME)
+        self.assertEqual(next_page_token, None)
+        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
+        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
+        self.assertEqual(req['query_params'], {})
+
+    def test_list_topics_with_paging(self):
+        from gcloud.pubsub.topic import Topic
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+
+        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+
+        TOPIC_NAME = 'topic_name'
+        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        TOKEN1 = 'TOKEN1'
+        TOKEN2 = 'TOKEN2'
+        SIZE = 1
+        RETURNED = {'topics': [{'name': TOPIC_PATH}],
+                    'nextPageToken': TOKEN2}
+        # Replace the connection on the client with one of our own.
+        CLIENT_OBJ.connection = _Connection(RETURNED)
+
+        # Execute request.
+        topics, next_page_token = CLIENT_OBJ.list_topics(SIZE, TOKEN1)
+        # Test values are correct.
+        self.assertEqual(len(topics), 1)
+        self.assertTrue(isinstance(topics[0], Topic))
+        self.assertEqual(topics[0].name, TOPIC_NAME)
+        self.assertEqual(next_page_token, TOKEN2)
+        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
+        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
+        self.assertEqual(req['query_params'],
+                         {'pageSize': SIZE, 'pageToken': TOKEN1})
+
 
 class _Credentials(object):
 
@@ -143,3 +201,15 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
+
+
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def api_request(self, **kw):
+        self._requested.append(kw)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
