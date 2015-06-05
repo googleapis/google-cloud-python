@@ -20,6 +20,7 @@ from gcloud.credentials import get_credentials
 from gcloud.credentials import get_for_service_account_json
 from gcloud.credentials import get_for_service_account_p12
 from gcloud.pubsub.connection import Connection
+from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
 
@@ -112,7 +113,7 @@ class Client(object):
         """List topics for the project associated with this client.
 
         See:
-        cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list
+        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list
 
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,
@@ -142,3 +143,53 @@ class Client(object):
                                            query_params=params)
         topics = [Topic.from_api_repr(resource) for resource in resp['topics']]
         return topics, resp.get('nextPageToken')
+
+    def list_subscriptions(self, page_size=None, page_token=None,
+                           topic_name=None):
+        """List subscriptions for the project associated with this client.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list
+
+        and (where ``topic_name`` is passed):
+        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/subscriptions/list
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :type topic_name: string
+        :param topic_name: limit results to subscriptions bound to the given
+                           topic.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.pubsub.subscription.Subscription`,
+                  plus a "next page token" string:  if not None, indicates that
+                  more topics can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        if topic_name is None:
+            path = '/projects/%s/subscriptions' % (self.project,)
+        else:
+            path = '/projects/%s/topics/%s/subscriptions' % (self.project,
+                                                             topic_name)
+
+        resp = self.connection.api_request(method='GET', path=path,
+                                           query_params=params)
+        topics = {}
+        subscriptions = [Subscription.from_api_repr(resource, topics=topics)
+                         for resource in resp['subscriptions']]
+        return subscriptions, resp.get('nextPageToken')
