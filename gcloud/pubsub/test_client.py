@@ -82,6 +82,55 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client_obj.connection._credentials is CREDS)
         self.assertEqual(CREDS._scopes, SCOPE)
 
+    def test_with_service_account_json(self):
+        from gcloud._testing import _Monkey
+        from gcloud.pubsub import client
+        from gcloud.pubsub.connection import Connection
+
+        PROJECT = 'PROJECT'
+        KLASS = self._getTargetClass()
+        CREDS = _Credentials()
+        _CALLED = []
+
+        def mock_creds(arg1):
+            _CALLED.append((arg1,))
+            return CREDS
+
+        BOGUS_ARG = object()
+        with _Monkey(client, get_for_service_account_json=mock_creds):
+            client_obj = KLASS.with_service_account_json(
+                BOGUS_ARG, project=PROJECT)
+
+        self.assertEqual(client_obj.project, PROJECT)
+        self.assertTrue(isinstance(client_obj.connection, Connection))
+        self.assertTrue(client_obj.connection._credentials is CREDS)
+        self.assertEqual(_CALLED, [(BOGUS_ARG,)])
+
+    def test_with_service_account_p12(self):
+        from gcloud._testing import _Monkey
+        from gcloud.pubsub import client
+        from gcloud.pubsub.connection import Connection
+
+        PROJECT = 'PROJECT'
+        KLASS = self._getTargetClass()
+        CREDS = _Credentials()
+        _CALLED = []
+
+        def mock_creds(arg1, arg2):
+            _CALLED.append((arg1, arg2))
+            return CREDS
+
+        BOGUS_ARG1 = object()
+        BOGUS_ARG2 = object()
+        with _Monkey(client, get_for_service_account_p12=mock_creds):
+            client_obj = KLASS.with_service_account_p12(
+                BOGUS_ARG1, BOGUS_ARG2, project=PROJECT)
+
+        self.assertEqual(client_obj.project, PROJECT)
+        self.assertTrue(isinstance(client_obj.connection, Connection))
+        self.assertTrue(client_obj.connection._credentials is CREDS)
+        self.assertEqual(_CALLED, [(BOGUS_ARG1, BOGUS_ARG2)])
+
 
 class _Credentials(object):
 
