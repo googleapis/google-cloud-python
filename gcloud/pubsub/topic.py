@@ -40,16 +40,25 @@ class Topic(object):
     :param project: the project to which the topic belongs.  If not passed,
                     falls back to the default inferred from the environment.
 
+    :type client: :class:`gcloud.pubsub.client.Client`
+    :param client: A client which holds credentials and project configuration
+                   for the topic (which requires a project).
+
     :type timestamp_messages: boolean
     :param timestamp_messages: If true, the topic will add a ``timestamp`` key
                                to the attributes of each published message:
                                the value will be an RFC 3339 timestamp.
     """
-    def __init__(self, name, project=None, timestamp_messages=False):
-        if project is None:
-            project = get_default_project()
+    def __init__(self, name, project=None,
+                 timestamp_messages=False, client=None):
         self.name = name
-        self.project = project
+        self.client = client
+        if project is None:
+            if self.client is not None:
+                project = self.client.project
+            else:
+                project = get_default_project()
+        self._project = project
         self.timestamp_messages = timestamp_messages
 
     @classmethod
@@ -63,6 +72,11 @@ class Topic(object):
         """
         _, project, _, name = resource['name'].split('/')
         return cls(name, project)
+
+    @property
+    def project(self):
+        """Project bound to the topic."""
+        return self._project
 
     @property
     def full_name(self):

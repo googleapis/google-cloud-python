@@ -193,3 +193,17 @@ class Client(object):
         subscriptions = [Subscription.from_api_repr(resource, topics=topics)
                          for resource in resp['subscriptions']]
         return subscriptions, resp.get('nextPageToken')
+
+    def topic(self, name, timestamp_messages=False):
+        """Creates a topic bound to the current client.
+
+        :type name: string
+        :param name: the name of the topic to be constructed.
+
+        :type timestamp_messages: boolean
+        :param timestamp_messages: To be passed to ``Topic`` constructor.
+
+        :rtype: :class:`gcloud.pubsub.topic.Topic`
+        :returns: Topic created with the current client.
+        """
+        return Topic(name, client=self, timestamp_messages=timestamp_messages)

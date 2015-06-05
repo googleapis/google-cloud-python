@@ -48,6 +48,20 @@ class TestTopic(unittest2.TestCase):
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.timestamp_messages)
 
+    def test_ctor_w_client(self):
+        from gcloud.pubsub.client import Client
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+        CLIENT = Client(project=PROJECT, credentials=CREDS)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertTrue(topic.client is CLIENT)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertEqual(topic.full_name,
+                         'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
+        self.assertFalse(topic.timestamp_messages)
+
     def test_from_api_repr(self):
         from gcloud.pubsub._testing import _monkey_defaults
         TOPIC_NAME = 'topic_name'
@@ -522,6 +536,19 @@ class _Topic(object):
     def _timestamp_message(self, attrs):
         if self.timestamp_messages:
             attrs['timestamp'] = 'TIMESTAMP'
+
+
+class _Credentials(object):
+
+    _scopes = None
+
+    @staticmethod
+    def create_scoped_required():
+        return True
+
+    def create_scoped(self, scope):
+        self._scopes = scope
+        return self
 
 
 class _Bugout(Exception):

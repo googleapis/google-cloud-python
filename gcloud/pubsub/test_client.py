@@ -302,6 +302,20 @@ class TestClient(unittest2.TestCase):
                          % (PROJECT, TOPIC_NAME))
         self.assertEqual(req['query_params'], {})
 
+    def test_make_topic(self):
+        PROJECT = 'PROJECT'
+        TOPIC_NAME = 'TOPIC_NAME'
+        CREDS = _Credentials()
+
+        client_obj = self._makeOne(project=PROJECT, credentials=CREDS)
+        new_topic = client_obj.topic(TOPIC_NAME)
+        self.assertEqual(new_topic.name, TOPIC_NAME)
+        self.assertTrue(new_topic.client is client_obj)
+        self.assertEqual(new_topic.project, PROJECT)
+        self.assertEqual(new_topic.full_name,
+                         'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
+        self.assertFalse(new_topic.timestamp_messages)
+
 
 class _Credentials(object):
 
