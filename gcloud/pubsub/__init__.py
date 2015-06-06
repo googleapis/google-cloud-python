@@ -23,6 +23,7 @@ The main concepts with this API are:
   subscription (either pull or push) to a topic.
 """
 
+from gcloud.pubsub.client import Client
 from gcloud.pubsub.connection import SCOPE
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
