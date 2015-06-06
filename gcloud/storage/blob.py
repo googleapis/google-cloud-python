@@ -370,7 +370,8 @@ class Blob(_PropertyMixin):
         :type size: int
         :param size: The number of bytes to read from the file handle.
                      If not provided, we'll try to guess the size using
-                     :func:`os.fstat`
+                     :func:`os.fstat`. (If the file handle is not from the
+                     filesystem this won't be possible.)
 
         :type content_type: string or ``NoneType``
         :param content_type: Optional type of content being uploaded.
@@ -382,6 +383,9 @@ class Blob(_PropertyMixin):
                           ``NoneType``
         :param connection: Optional. The connection to use when sending
                            requests. If not provided, falls back to default.
+
+        :raises: :class:`ValueError` if size is not passed in and can not be
+                 determined
         """
         connection = _require_connection(connection)
         content_type = (content_type or self._properties.get('contentType') or
@@ -392,7 +396,13 @@ class Blob(_PropertyMixin):
             file_obj.seek(0, os.SEEK_SET)
 
         # Get the basic stats about the file.
-        total_bytes = size or os.fstat(file_obj.fileno()).st_size
+        total_bytes = size
+        if total_bytes is None:
+            if hasattr(file_obj, 'fileno'):
+                total_bytes = os.fstat(file_obj.fileno()).st_size
+            else:
+                raise ValueError('total bytes could not be determined. Please '
+                                 'pass an explicit size.')
         headers = {
             'Accept': 'application/json',
             'Accept-Encoding': 'gzip, deflate',
