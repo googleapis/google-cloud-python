@@ -47,7 +47,7 @@ class Subscription(object):
         self.push_endpoint = push_endpoint
 
     @classmethod
-    def from_api_repr(cls, resource, topics=None):
+    def from_api_repr(cls, resource, topics=None, client=None):
         """Factory:  construct a topic given its API representation
 
         :type resource: dict
@@ -57,14 +57,20 @@ class Subscription(object):
         :param topics: A mapping of topic names -> topics.  If not passed,
                        the subscription will have a newly-created topic.
 
+        :type client: :class:`gcloud.pubsub.client.Client`
+        :param client: An optional client which holds credentials and project
+                       configuration for a topic.
+
         :rtype: :class:`gcloud.pubsub.subscription.Subscription`
+        :returns: Subscription parsed from ``resource``.
         """
         if topics is None:
             topics = {}
         t_name = resource['topic']
         topic = topics.get(t_name)
         if topic is None:
-            topic = topics[t_name] = Topic.from_api_repr({'name': t_name})
+            topic = topics[t_name] = Topic.from_api_repr({'name': t_name},
+                                                         client=client)
         _, _, _, name = resource['name'].split('/')
         ack_deadline = resource.get('ackDeadlineSeconds')
         push_config = resource.get('pushConfig', {})

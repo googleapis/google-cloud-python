@@ -191,7 +191,8 @@ class Client(object):
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)
         topics = {}
-        subscriptions = [Subscription.from_api_repr(resource, topics=topics)
+        subscriptions = [Subscription.from_api_repr(resource,
+                                                    topics=topics, client=self)
                          for resource in resp['subscriptions']]
         return subscriptions, resp.get('nextPageToken')
 
