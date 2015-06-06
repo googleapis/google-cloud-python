@@ -5,13 +5,6 @@
 Pub/Sub
 -------
 
-:mod:`gcloud.pubsub`
-~~~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: gcloud.pubsub
-  :members: get_connection, get_default_connection,
-            set_default_connection, set_defaults
-
 Connections
 ~~~~~~~~~~~
 
