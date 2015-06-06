@@ -1,16 +1,28 @@
 Using the API
 =============
 
-Connection / Authorization
---------------------------
+Authorization / Configuration
+-----------------------------
 
-- Inferred defaults used to create connection if none configured explicitly:
+- Use :class:`Client <gcloud.pubsub.client.Client>` objects to configure
+  your applications.
 
-  - credentials (derived from GAE / GCE environ if present).
+- :class:`Client <gcloud.pubsub.client.Client>` objects hold both a ``project``
+  and an authenticated connection to the PubSub service.
 
-  - ``project`` (derived from GAE / GCE environ if present).
+- The authentication credentials can be implicitly determined from the
+  environment or directly via
+  :meth:`with_service_account_json <gcloud.pubsub.client.Client.with_service_account_json>`
+  and
+  :meth:`with_service_account_p12 <gcloud.pubsub.client.Client.with_service_account_p12>`.
 
-  - ``scopes``
+- After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
+  environment variables, create a :class:`Client <gcloud.pubsub.client.Client>`
+
+  .. doctest::
+
+     >>> from gcloud import pubsub
+     >>> client = pubsub.Client()
 
 
 Manage topics for a project
@@ -20,24 +32,18 @@ Create a new topic for the default project:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name')
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
    >>> topic.create()  # API request
 
-Create a new topic for an explicit project:
+Check for the existence of a topic:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name', project='my.project')
-   >>> topic.create()  # API request
-
-Check for the existance of a topic:
-
-.. doctest::
-
-   >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name')
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
    >>> topic.exists()  # API request
    True
 
@@ -45,17 +51,9 @@ List topics for the default project:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import list_topics
-   >>> topics, next_page_token = list_topics()  # API request
-   >>> [topic.name for topic in topics]
-   ['topic_name']
-
-List topics for an explicit project:
-
-.. doctest::
-
-   >>> from gcloud.pubsub import list_topics
-   >>> topics, next_page_token = list_topics(project='my.project')  # API request
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topics, next_page_token = client.list_topics()  # API request
    >>> [topic.name for topic in topics]
    ['topic_name']
 
@@ -63,8 +61,9 @@ Delete a topic:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name')
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
    >>> topic.delete()  # API request
 
 
@@ -75,8 +74,9 @@ Publish a single message to a topic, without attributes:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name')
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
    >>> topic.publish('this is the message_payload')  # API request
    <message_id>
 
@@ -84,8 +84,9 @@ Publish a single message to a topic, with attributes:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name')
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
    >>> topic.publish('this is another message_payload',
    ...               attr1='value1', attr2='value2')  # API request
    <message_id>
@@ -94,8 +95,9 @@ Publish a set of messages to a topic (as a single request):
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name')
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
    >>> with topic.batch() as batch:
    ...     batch.publish('this is the first message_payload')
    ...     batch.publish('this is the second message_payload',
@@ -116,41 +118,42 @@ Create a new pull subscription for a topic:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> from gcloud.pubsub import Subscription
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', topic)
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubsub.Subscription('subscription_name', topic)
    >>> subscription.create()  # API request
 
 Create a new pull subscription for a topic with a non-default ACK deadline:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> from gcloud.pubsub import Subscription
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', ack_deadline=90)
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubsub.Subscription('subscription_name', ack_deadline=90)
    >>> subscription.create()  # API request
 
 Create a new push subscription for a topic:
 
 .. doctest::
 
+   >>> from gcloud import pubsub
    >>> ENDPOINT = 'https://example.com/hook'
-   >>> from gcloud.pubsub import Topic
-   >>> from gcloud.pubsub import Subscription
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', push_endpoint=ENDPOINT)
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubsub.Subscription('subscription_name',
+   ...                                    push_endpoint=ENDPOINT)
    >>> subscription.create()  # API request
 
 Check for the existence of a subscription:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> from gcloud.pubsub import Subscription
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', topic)
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubsub.Subscription('subscription_name', topic)
    >>> subscription.exists()  # API request
    True
 
@@ -158,31 +161,33 @@ Convert a pull subscription to push:
 
 .. doctest::
 
+   >>> from gcloud import pubsub
    >>> ENDPOINT = 'https://example.com/hook'
-   >>> from gcloud.pubsub import Topic
-   >>> from gcloud.pubsub import Subscription
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', topic)
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubsub.Subscription('subscription_name', topic)
    >>> subscription.modify_push_configuration(push_endpoint=ENDPOINT)  # API request
 
 Convert a push subscription to pull:
 
 .. doctest::
 
+   >>> from gcloud import pubsub
    >>> ENDPOINT = 'https://example.com/hook'
-   >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', topic,
-   ...                             push_endpoint=ENDPOINT)
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubusb.Subscription('subscription_name', topic,
+   ...                                    push_endpoint=ENDPOINT)
    >>> subscription.modify_push_configuration(push_endpoint=None)  # API request
 
 List subscriptions for a topic:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> topic = Topic('topic_name')
-   >>> subscriptions, next_page_token = topic.list_subscriptions()  # API request
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> subscriptions, next_page_token = client.list_subscriptions(
+   ...     topic_name='topic_name')  # API request
    >>> [subscription.name for subscription in subscriptions]
    ['subscription_name']
 
@@ -190,8 +195,9 @@ List all subscriptions for the default project:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import list_subscriptions
-   >>> subscription, next_page_tokens = list_subscriptions()  # API request
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> subscription, next_page_tokens = client.list_subscriptions()  # API request
    >>> [subscription.name for subscription in subscriptions]
    ['subscription_name']
 
@@ -199,10 +205,10 @@ Delete a subscription:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> from gcloud.pubsub import Subscription
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', topic)
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubsub.Subscription('subscription_name', topic)
    >>> subscription.delete()  # API request
 
 
@@ -213,13 +219,13 @@ Fetch pending messages for a pull subscription:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> from gcloud.pubsub import Subscription
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', topic)
-   >>> with topic:
-   ...     topic.publish('this is the first message_payload')
-   ...     topic.publish('this is the second message_payload',
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubsub.Subscription('subscription_name', topic)
+   >>> with topic.batch() as batch:
+   ...     batch.publish('this is the first message_payload')
+   ...     batch.publish('this is the second message_payload',
    ...                   attr1='value1', attr2='value2')
    >>> received = subscription.pull()  # API request
    >>> messages = [recv[1] for recv in received]
@@ -242,13 +248,13 @@ Fetch a limited number of pending messages for a pull subscription:
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> from gcloud.pubsub import Subscription
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', topic)
-   >>> with topic:
-   ...     topic.publish('this is the first message_payload')
-   ...     topic.publish('this is the second message_payload',
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubsub.Subscription('subscription_name', topic)
+   >>> with topic.batch() as batch:
+   ...     batch.publish('this is the first message_payload')
+   ...     batch.publish('this is the second message_payload',
    ...                   attr1='value1', attr2='value2')
    >>> received = subscription.pull(max_messages=1)  # API request
    >>> messages = [recv[1] for recv in received]
@@ -258,10 +264,10 @@ Fetch messages for a pull subscription without blocking (none pending):
 
 .. doctest::
 
-   >>> from gcloud.pubsub import Topic
-   >>> from gcloud.pubsub import Subscription
-   >>> topic = Topic('topic_name')
-   >>> subscription = Subscription('subscription_name', topic)
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = pubsub.Subscription('subscription_name', topic)
    >>> received = subscription.pull(max_messages=1)  # API request
    >>> messages = [recv[1] for recv in received]
    >>> [message.id for message in messages]

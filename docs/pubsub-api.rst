@@ -5,18 +5,18 @@
 Pub/Sub
 -------
 
-Connections
+Client
 ~~~~~~~~~~~
 
-.. automodule:: gcloud.pubsub.connection
+.. automodule:: gcloud.pubsub.client
   :members:
   :undoc-members:
   :show-inheritance:
 
-Interacting with the API
-~~~~~~~~~~~~~~~~~~~~~~~~
+Connections
+~~~~~~~~~~~
 
-.. automodule:: gcloud.pubsub.api
+.. automodule:: gcloud.pubsub.connection
   :members:
   :undoc-members:
   :show-inheritance:
