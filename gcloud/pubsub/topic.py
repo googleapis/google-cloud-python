@@ -17,7 +17,6 @@
 import base64
 import datetime
 
-from gcloud._helpers import get_default_project
 from gcloud._helpers import _RFC3339_MICROS
 from gcloud.exceptions import NotFound
 from gcloud.pubsub._implicit_environ import _require_connection
@@ -36,10 +35,6 @@ class Topic(object):
     :type name: string
     :param name: the name of the topic
 
-    :type project: string
-    :param project: the project to which the topic belongs.  If not passed,
-                    falls back to the default inferred from the environment.
-
     :type client: :class:`gcloud.pubsub.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the topic (which requires a project).
@@ -49,27 +44,22 @@ class Topic(object):
                                to the attributes of each published message:
                                the value will be an RFC 3339 timestamp.
     """
-    def __init__(self, name, project=None,
-                 timestamp_messages=False, client=None):
+    def __init__(self, name, client=None, timestamp_messages=False):
         self.name = name
+        if client is None:
+            raise ValueError('Topic constructor requires a client.')
         self._client = client
-        if project is None:
-            if self._client is not None:
-                project = self._client.project
-            else:
-                project = get_default_project()
-        self._project = project
         self.timestamp_messages = timestamp_messages
 
     @classmethod
-    def from_api_repr(cls, resource, client=None):
+    def from_api_repr(cls, resource, client):
         """Factory:  construct a topic given its API representation
 
         :type resource: dict
         :param resource: topic resource representation returned from the API
 
         :type client: :class:`gcloud.pubsub.client.Client`
-        :param client: An optional client which holds credentials and project
+        :param client: Client which holds credentials and project
                        configuration for the topic.
 
         :rtype: :class:`gcloud.pubsub.topic.Topic`
@@ -79,16 +69,15 @@ class Topic(object):
                  from the client.
         """
         _, project, _, name = resource['name'].split('/')
-        if client is not None:
-            if client.project != project:
-                raise ValueError('If client is not None, project value should '
-                                 'agree with project from resource.')
-        return cls(name, project=project, client=client)
+        if client.project != project:
+            raise ValueError('Project from clientshould agree with '
+                             'project from resource.')
+        return cls(name, client=client)
 
     @property
     def project(self):
         """Project bound to the topic."""
-        return self._project
+        return self._client.project
 
     @property
     def full_name(self):

@@ -58,7 +58,8 @@ class TestSubscription(unittest2.TestCase):
                     'ackDeadlineSeconds': DEADLINE,
                     'pushConfig': {'pushEndpoint': ENDPOINT}}
         klass = self._getTargetClass()
-        subscription = klass.from_api_repr(resource)
+        client = _Client(project=PROJECT)
+        subscription = klass.from_api_repr(resource, client)
         self.assertEqual(subscription.name, SUB_NAME)
         topic = subscription.topic
         self.assertTrue(isinstance(topic, Topic))
@@ -82,7 +83,8 @@ class TestSubscription(unittest2.TestCase):
                     'pushConfig': {'pushEndpoint': ENDPOINT}}
         topics = {}
         klass = self._getTargetClass()
-        subscription = klass.from_api_repr(resource, topics=topics)
+        client = _Client(project=PROJECT)
+        subscription = klass.from_api_repr(resource, client, topics=topics)
         self.assertEqual(subscription.name, SUB_NAME)
         topic = subscription.topic
         self.assertTrue(isinstance(topic, Topic))
@@ -107,7 +109,8 @@ class TestSubscription(unittest2.TestCase):
         topic = object()
         topics = {TOPIC_PATH: topic}
         klass = self._getTargetClass()
-        subscription = klass.from_api_repr(resource, topics=topics)
+        client = _Client(project=PROJECT)
+        subscription = klass.from_api_repr(resource, client, topics=topics)
         self.assertEqual(subscription.name, SUB_NAME)
         self.assertTrue(subscription.topic is topic)
         self.assertEqual(subscription.ack_deadline, DEADLINE)
@@ -482,3 +485,9 @@ class _Topic(object):
         self.project = project
         self.full_name = 'projects/%s/topics/%s' % (project, name)
         self.path = '/projects/%s/topics/%s' % (project, name)
+
+
+class _Client(object):
+
+    def __init__(self, project):
+        self.project = project

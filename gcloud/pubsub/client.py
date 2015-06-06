@@ -141,7 +141,7 @@ class Client(object):
         path = '/projects/%s/topics' % (self.project,)
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)
-        topics = [Topic.from_api_repr(resource, client=self)
+        topics = [Topic.from_api_repr(resource, self)
                   for resource in resp['topics']]
         return topics, resp.get('nextPageToken')
 
@@ -191,8 +191,8 @@ class Client(object):
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)
         topics = {}
-        subscriptions = [Subscription.from_api_repr(resource,
-                                                    topics=topics, client=self)
+        subscriptions = [Subscription.from_api_repr(resource, self,
+                                                    topics=topics)
                          for resource in resp['subscriptions']]
         return subscriptions, resp.get('nextPageToken')
 

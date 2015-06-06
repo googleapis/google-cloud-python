@@ -24,23 +24,15 @@ class TestTopic(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor_wo_inferred_project(self):
-        from gcloud._testing import _monkey_defaults
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        with _monkey_defaults(project=PROJECT):
-            topic = self._makeOne(TOPIC_NAME)
-        self.assertEqual(topic.name, TOPIC_NAME)
-        self.assertEqual(topic.project, PROJECT)
-        self.assertEqual(topic.full_name,
-                         'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
-        self.assertFalse(topic.timestamp_messages)
+    def test_ctor_wo_client(self):
+        self.assertRaises(ValueError, self._makeOne, 'TOPIC_NAME', client=None)
 
-    def test_ctor_w_explicit_project_and_timestamp(self):
+    def test_ctor_w_explicit_timestamp(self):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
+        CLIENT = _Client(project=PROJECT)
         topic = self._makeOne(TOPIC_NAME,
-                              project=PROJECT,
+                              client=CLIENT,
                               timestamp_messages=True)
         self.assertEqual(topic.name, TOPIC_NAME)
         self.assertEqual(topic.project, PROJECT)
@@ -48,34 +40,7 @@ class TestTopic(unittest2.TestCase):
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.timestamp_messages)
 
-    def test_ctor_w_client(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        CLIENT = _Client(project=PROJECT)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
-        self.assertEqual(topic.name, TOPIC_NAME)
-        self.assertTrue(topic._client is CLIENT)
-        self.assertEqual(topic.project, PROJECT)
-        self.assertEqual(topic.full_name,
-                         'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
-        self.assertFalse(topic.timestamp_messages)
-
     def test_from_api_repr(self):
-        from gcloud.pubsub._testing import _monkey_defaults
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        resource = {'name': PATH}
-        klass = self._getTargetClass()
-        conn = _Connection()
-        with _monkey_defaults(connection=conn):
-            topic = klass.from_api_repr(resource)
-        self.assertEqual(topic.name, TOPIC_NAME)
-        self.assertTrue(topic._client is None)
-        self.assertEqual(topic.project, PROJECT)
-        self.assertEqual(topic.full_name, PATH)
-
-    def test_from_api_repr_with_client(self):
         from gcloud.pubsub._testing import _monkey_defaults
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
@@ -108,7 +73,8 @@ class TestTopic(unittest2.TestCase):
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'name': PATH})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         with _monkey_defaults(connection=conn):
             topic.create()
         self.assertEqual(len(conn._requested), 1)
@@ -121,7 +87,8 @@ class TestTopic(unittest2.TestCase):
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'name': PATH})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         topic.create(connection=conn)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -134,7 +101,8 @@ class TestTopic(unittest2.TestCase):
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection()
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         with _monkey_defaults(connection=conn):
             self.assertFalse(topic.exists())
         self.assertEqual(len(conn._requested), 1)
@@ -147,7 +115,8 @@ class TestTopic(unittest2.TestCase):
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'name': PATH})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         self.assertTrue(topic.exists(connection=conn))
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -166,7 +135,8 @@ class TestTopic(unittest2.TestCase):
                    'attributes': {}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         with _monkey_defaults(connection=conn):
             msgid = topic.publish(PAYLOAD)
         self.assertEqual(msgid, MSGID)
@@ -197,7 +167,8 @@ class TestTopic(unittest2.TestCase):
                    'attributes': {'timestamp': NOW.strftime(_RFC3339_MICROS)}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT,
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT,
                               timestamp_messages=True)
         with _Monkey(MUT, _NOW=_utcnow):
             with _monkey_defaults(connection=conn):
@@ -222,7 +193,8 @@ class TestTopic(unittest2.TestCase):
                    'attributes': {'timestamp': OVERRIDE}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT,
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT,
                               timestamp_messages=True)
         with _monkey_defaults(connection=conn):
             msgid = topic.publish(PAYLOAD, timestamp=OVERRIDE)
@@ -245,7 +217,8 @@ class TestTopic(unittest2.TestCase):
                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         with _monkey_defaults(connection=conn):
             msgid = topic.publish(PAYLOAD, attr1='value1', attr2='value2')
         self.assertEqual(msgid, MSGID)
@@ -272,7 +245,8 @@ class TestTopic(unittest2.TestCase):
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         with _monkey_defaults(connection=conn):
             with topic.batch() as batch:
                 batch.publish(PAYLOAD1)
@@ -301,7 +275,8 @@ class TestTopic(unittest2.TestCase):
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         with topic.batch(connection=conn) as batch:
             batch.publish(PAYLOAD1)
             batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
@@ -321,7 +296,8 @@ class TestTopic(unittest2.TestCase):
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         try:
             with topic.batch() as batch:
                 batch.publish(PAYLOAD1, connection=conn)
@@ -339,7 +315,8 @@ class TestTopic(unittest2.TestCase):
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         with _monkey_defaults(connection=conn):
             topic.delete()
         self.assertEqual(len(conn._requested), 1)
@@ -352,7 +329,8 @@ class TestTopic(unittest2.TestCase):
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({})
-        topic = self._makeOne(TOPIC_NAME, project=PROJECT)
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         topic.delete(connection=conn)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
