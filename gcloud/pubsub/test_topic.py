@@ -49,14 +49,12 @@ class TestTopic(unittest2.TestCase):
         self.assertTrue(topic.timestamp_messages)
 
     def test_ctor_w_client(self):
-        from gcloud.pubsub.client import Client
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-        CLIENT = Client(project=PROJECT, credentials=CREDS)
+        CLIENT = _Client(project=PROJECT)
         topic = self._makeOne(TOPIC_NAME, client=CLIENT)
         self.assertEqual(topic.name, TOPIC_NAME)
-        self.assertTrue(topic.client is CLIENT)
+        self.assertTrue(topic._client is CLIENT)
         self.assertEqual(topic.project, PROJECT)
         self.assertEqual(topic.full_name,
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
@@ -73,8 +71,36 @@ class TestTopic(unittest2.TestCase):
         with _monkey_defaults(connection=conn):
             topic = klass.from_api_repr(resource)
         self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertTrue(topic._client is None)
         self.assertEqual(topic.project, PROJECT)
         self.assertEqual(topic.full_name, PATH)
+
+    def test_from_api_repr_with_client(self):
+        from gcloud.pubsub._testing import _monkey_defaults
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        CLIENT = _Client(project=PROJECT)
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        resource = {'name': PATH}
+        klass = self._getTargetClass()
+        conn = _Connection()
+        with _monkey_defaults(connection=conn):
+            topic = klass.from_api_repr(resource, client=CLIENT)
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertTrue(topic._client is CLIENT)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertEqual(topic.full_name, PATH)
+
+    def test_from_api_repr_with_bad_client(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT1 = 'PROJECT1'
+        PROJECT2 = 'PROJECT2'
+        CLIENT = _Client(project=PROJECT1)
+        PATH = 'projects/%s/topics/%s' % (PROJECT2, TOPIC_NAME)
+        resource = {'name': PATH}
+        klass = self._getTargetClass()
+        self.assertRaises(ValueError, klass.from_api_repr,
+                          resource, client=CLIENT)
 
     def test_create_w_implicit_connection(self):
         from gcloud.pubsub._testing import _monkey_defaults
@@ -538,17 +564,10 @@ class _Topic(object):
             attrs['timestamp'] = 'TIMESTAMP'
 
 
-class _Credentials(object):
+class _Client(object):
 
-    _scopes = None
-
-    @staticmethod
-    def create_scoped_required():
-        return True
-
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
+    def __init__(self, project):
+        self.project = project
 
 
 class _Bugout(Exception):

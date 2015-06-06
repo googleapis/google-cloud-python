@@ -310,7 +310,7 @@ class TestClient(unittest2.TestCase):
         client_obj = self._makeOne(project=PROJECT, credentials=CREDS)
         new_topic = client_obj.topic(TOPIC_NAME)
         self.assertEqual(new_topic.name, TOPIC_NAME)
-        self.assertTrue(new_topic.client is client_obj)
+        self.assertTrue(new_topic._client is client_obj)
         self.assertEqual(new_topic.project, PROJECT)
         self.assertEqual(new_topic.full_name,
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))

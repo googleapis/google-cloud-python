@@ -52,26 +52,38 @@ class Topic(object):
     def __init__(self, name, project=None,
                  timestamp_messages=False, client=None):
         self.name = name
-        self.client = client
+        self._client = client
         if project is None:
-            if self.client is not None:
-                project = self.client.project
+            if self._client is not None:
+                project = self._client.project
             else:
                 project = get_default_project()
         self._project = project
         self.timestamp_messages = timestamp_messages
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource, client=None):
         """Factory:  construct a topic given its API representation
 
         :type resource: dict
         :param resource: topic resource representation returned from the API
 
+        :type client: :class:`gcloud.pubsub.client.Client`
+        :param client: An optional client which holds credentials and project
+                       configuration for the topic.
+
         :rtype: :class:`gcloud.pubsub.topic.Topic`
+        :returns: Topic parsed from ``resource``.
+        :raises: :class:`ValueError` if ``client`` is not ``None`` and the
+                 project from the resource does not agree with the project
+                 from the client.
         """
         _, project, _, name = resource['name'].split('/')
-        return cls(name, project)
+        if client is not None:
+            if client.project != project:
+                raise ValueError('If client is not None, project value should '
+                                 'agree with project from resource.')
+        return cls(name, project=project, client=client)
 
     @property
     def project(self):
