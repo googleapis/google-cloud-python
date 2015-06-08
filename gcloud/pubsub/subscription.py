@@ -75,7 +75,17 @@ class Subscription(object):
     def path(self):
         """URL path for the subscription's APIs"""
         project = self.topic.project
-        return '/projects/%s/subscriptions/%s' % (project, self.name)
+        path = '/projects/%s/subscriptions/%s' % (project, self.name)
+        if hasattr(self,"_path"):
+            path = '/projects/%s/subscriptions/%s' % (project, self.name)
+        return path
+
+
+    @path.setter
+    def path(self, project):
+        """URL path setter"""
+        self._path = '/projects/%s/subscriptions/%s' % (project, self.name)
+
 
     def create(self, connection=None):
         """API call:  create the subscription via a PUT request

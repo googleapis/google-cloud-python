@@ -456,6 +456,20 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
 
+    def test_set_path_property(self):
+        PROJECT = 'PROJECT'
+        NEW_PROJECT = 'NEW_PROJECT'
+        SUB_NAME = 'sub_name'
+        SUB_PATH = '/projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        NEW_SUB_PATH = '/projects/%s/subscriptions/%s' % (NEW_PROJECT, SUB_NAME)
+        TOPIC_NAME = 'topic_name'
+        conn = _Connection({})
+        topic = _Topic(TOPIC_NAME, project=PROJECT)
+        subscription = self._makeOne(SUB_NAME, topic)
+        self.assertEqual(SUB_PATH ,subscription.path)
+        subscription.path = NEW_PROJECT
+        self.assertEqual(NEW_SUB_PATH, subscription.path)
+
 
 class _Connection(object):
 
