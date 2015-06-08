@@ -90,7 +90,10 @@ class Query(object):
         self._kind = kind
         self._namespace = namespace
         self._ancestor = ancestor
-        self._filters = list(filters)
+        self._filters = []
+        # Verify filters passed in.
+        for property_name, operator, value in filters:
+            self.add_filter(property_name, operator, value)
         self._projection = _ensure_tuple_or_list('projection', projection)
         self._order = _ensure_tuple_or_list('order', order)
         self._group_by = _ensure_tuple_or_list('group_by', group_by)
@@ -216,11 +219,8 @@ class Query(object):
             choices_message = 'Please use one of: =, <, <=, >, >=.'
             raise ValueError(error_message, choices_message)
 
-        if property_name == '__key__':
-            if not isinstance(value, Key):
-                raise ValueError('Invalid key: "%s"' % value)
-            if operator != '=':
-                raise ValueError('Invalid operator for key: "%s"' % operator)
+        if property_name == '__key__' and not isinstance(value, Key):
+            raise ValueError('Invalid key: "%s"' % value)
 
         self._filters.append((property_name, operator, value))
 
