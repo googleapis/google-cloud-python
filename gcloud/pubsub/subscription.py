@@ -45,6 +45,7 @@ class Subscription(object):
         self.topic = topic
         self.ack_deadline = ack_deadline
         self.push_endpoint = push_endpoint
+        self._path = None
 
     @classmethod
     def from_api_repr(cls, resource, topics=None):
@@ -76,16 +77,14 @@ class Subscription(object):
         """URL path for the subscription's APIs"""
         project = self.topic.project
         path = '/projects/%s/subscriptions/%s' % (project, self.name)
-        if hasattr(self,"_path"):
-            path = '/projects/%s/subscriptions/%s' % (project, self.name)
+        if self._path is not None:
+            path = self._path
         return path
-
 
     @path.setter
     def path(self, project):
         """URL path setter"""
         self._path = '/projects/%s/subscriptions/%s' % (project, self.name)
-
 
     def create(self, connection=None):
         """API call:  create the subscription via a PUT request

@@ -458,17 +458,16 @@ class TestSubscription(unittest2.TestCase):
 
     def test_set_path_property(self):
         PROJECT = 'PROJECT'
-        NEW_PROJECT = 'NEW_PROJECT'
+        PROJECT2 = 'PROJECT2'
         SUB_NAME = 'sub_name'
         SUB_PATH = '/projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        NEW_SUB_PATH = '/projects/%s/subscriptions/%s' % (NEW_PROJECT, SUB_NAME)
+        SUB_PATH2 = '/projects/%s/subscriptions/%s' % (PROJECT2, SUB_NAME)
         TOPIC_NAME = 'topic_name'
-        conn = _Connection({})
         topic = _Topic(TOPIC_NAME, project=PROJECT)
         subscription = self._makeOne(SUB_NAME, topic)
-        self.assertEqual(SUB_PATH ,subscription.path)
-        subscription.path = NEW_PROJECT
-        self.assertEqual(NEW_SUB_PATH, subscription.path)
+        self.assertEqual(SUB_PATH, subscription.path)
+        subscription.path = PROJECT2
+        self.assertEqual(SUB_PATH2, subscription.path)
 
 
 class _Connection(object):
