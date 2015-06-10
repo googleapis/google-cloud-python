@@ -100,6 +100,13 @@ class TestQuery(unittest2.TestCase):
         self.assertRaises(TypeError, self._makeOne, _KIND, _DATASET,
                           group_by=BAD_GROUP_BY)
 
+    def test_ctor_bad_filters(self):
+        _DATASET = 'DATASET'
+        _KIND = 'KIND'
+        FILTERS_CANT_UNPACK = [('one', 'two')]
+        self.assertRaises(ValueError, self._makeOne, _KIND, _DATASET,
+                          filters=FILTERS_CANT_UNPACK)
+
     def test_namespace_setter_w_non_string(self):
         _DATASET = 'DATASET'
         query = self._makeOne(dataset_id=_DATASET)
@@ -224,12 +231,13 @@ class TestQuery(unittest2.TestCase):
         query.add_filter('__key__', '=', key)
         self.assertEqual(query.filters, [('__key__', '=', key)])
 
-    def test_filter___key__invalid_operator(self):
+    def test_filter___key__not_equal_operator(self):
         from gcloud.datastore.key import Key
         _DATASET = 'DATASET'
         key = Key('Foo', dataset_id='DATASET')
         query = self._makeOne(dataset_id=_DATASET)
-        self.assertRaises(ValueError, query.add_filter, '__key__', '<', key)
+        query.add_filter('__key__', '<', key)
+        self.assertEqual(query.filters, [('__key__', '<', key)])
 
     def test_filter___key__invalid_value(self):
         _DATASET = 'DATASET'
