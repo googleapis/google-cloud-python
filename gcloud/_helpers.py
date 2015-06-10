@@ -15,6 +15,9 @@
 
 This module is not part of the public API surface of `gcloud`.
 """
+
+import functools
+import inspect
 import os
 import socket
 
@@ -261,3 +264,34 @@ class _DefaultsContainer(object):
 
 
 _DEFAULTS = _DefaultsContainer(implicit=True)
+
+
+class _ClientProxy(object):
+    """Proxy for :class:`gcloud.pubsub.topic.Topic`.
+
+    :param wrapped: Domain instance being proxied.
+
+    :param client: Client used to pass connection / project as needed to
+                   methods of ``wrapped``.
+    """
+    def __init__(self, wrapped, client):
+        self._wrapped = wrapped
+        self._client = client
+
+    def __getattr__(self, name):
+        """Proxy to wrapped object.
+
+        Pass 'connection' and 'project' from our client to methods which take
+        either / both.
+        """
+        found = getattr(self._wrapped, name)
+        if inspect.ismethod(found):
+            args, _, _ = inspect.getargs(found.__code__)
+            curried = {}
+            if 'connection' in args:
+                curried['connection'] = self._client.connection
+            if 'project' in args:
+                curried['project'] = self._client.project
+            if curried:
+                found = functools.partial(found, **curried)
+        return found

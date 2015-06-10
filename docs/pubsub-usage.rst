@@ -266,3 +266,86 @@ Fetch messages for a pull subscription without blocking (none pending):
    >>> messages = [recv[1] for recv in received]
    >>> [message.id for message in messages]
    []
+
+Using Clients
+-------------
+
+A :class:`gcloud.pubsub.client.Client` instance explicitly manages a
+:class:`gcloud.pubsub.connection.Connection` and an associated project
+ID.  Applications can then use the APIs which might otherwise take a
+``connection`` or ``project`` parameter, knowing that the values configured
+in the client will be passed.
+
+Create a client using the defaults from the environment:
+
+.. doctest::
+
+   >>> from gcloud.pubsub.client import Client
+   >>> client = Client()
+
+Create a client using explicit credentials, but the default project:
+
+.. doctest::
+
+   >>> from gcloud.pubsub.client import Client
+   >>> client = Client.from_service_account_json('/path/to/creds.json')
+
+Create a client using an explicit project ID, but the credentials inferred
+from the environment:
+
+.. doctest::
+
+   >>> from gcloud.pubsub.client import Client
+   >>> client = Client(project='your-project-id')
+
+Listing topics using a client (note that the client's connection
+is used to make the request, and its project is passed as a parameter):
+
+.. doctest::
+
+   >>> from gcloud.pubsub.client import Client
+   >>> client = Client(project='your-project-id')
+   >>> topics, next_page_token = client.list_topics()  # API request
+
+Listing subscriptions using a client (note that the client's connection
+is used to make the request, and its project is passed as a parameter):
+
+.. doctest::
+
+   >>> from gcloud.pubsub.client import Client
+   >>> client = Client(project='your-project-id')
+   >>> topics, next_page_token = client.list_topics()  # API request
+   >>> subscription, next_page_tokens = list_subscriptions()  # API request
+
+Instantiate a topic using a client (note that the client's project is passed
+through to the topic constructor, and that the returned object is a proxy
+which ensures that an API requests made via the topic use the client's
+connection):
+
+.. doctest::
+
+   >>> from gcloud.pubsub.client import Client
+   >>> client = Client(project='your-project-id')
+   >>> topic = client.topic('topic-name')
+   >>> topic.exists()  # API request
+   False
+   >>> topic.create()  # API request
+   >>> topic.exists()  # API request
+   True
+
+Instantiate a subscription using a client (note that the client's project is
+passed through to the subscription constructor, and that the returned object
+is a proxy which ensures that an API requests made via the subscription use
+the client's connection):
+
+.. doctest::
+
+   >>> from gcloud.pubsub.client import Client
+   >>> client = Client(project='your-project-id')
+   >>> topic = client.topic('topic-name')
+   >>> subscription = topic.subscription('subscription-name')
+   >>> subscription.exists()  # API request
+   False
+   >>> subscription.create()  # API request
+   >>> subscription.exists()  # API request
+   True
