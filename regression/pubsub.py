@@ -19,11 +19,10 @@ import unittest2
 from gcloud import _helpers
 from gcloud import pubsub
 from gcloud.pubsub.subscription import Subscription
-from gcloud.pubsub.topic import Topic
 
 
 _helpers._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
-pubsub.set_defaults()
+CLIENT = pubsub.Client()
 
 
 class TestPubsub(unittest2.TestCase):
@@ -37,7 +36,7 @@ class TestPubsub(unittest2.TestCase):
 
     def test_create_topic(self):
         TOPIC_NAME = 'a-new-topic'
-        topic = Topic(TOPIC_NAME)
+        topic = CLIENT.topic(TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -51,21 +50,20 @@ class TestPubsub(unittest2.TestCase):
             'newest%d' % (1000 * time.time(),),
         ]
         for topic_name in topics_to_create:
-            topic = Topic(topic_name)
+            topic = CLIENT.topic(topic_name)
             topic.create()
             self.to_delete.append(topic)
 
         # Retrieve the topics.
-        all_topics, _ = pubsub.list_topics()
-        project = pubsub.get_default_project()
+        all_topics, _ = CLIENT.list_topics()
         created = [topic for topic in all_topics
                    if topic.name in topics_to_create and
-                   topic.project == project]
+                   topic.project == CLIENT.project]
         self.assertEqual(len(created), len(topics_to_create))
 
     def test_create_subscription(self):
         TOPIC_NAME = 'subscribe-me'
-        topic = Topic(TOPIC_NAME)
+        topic = CLIENT.topic(TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -80,7 +78,7 @@ class TestPubsub(unittest2.TestCase):
 
     def test_list_subscriptions(self):
         TOPIC_NAME = 'subscribe-me'
-        topic = Topic(TOPIC_NAME)
+        topic = CLIENT.topic(TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -95,7 +93,7 @@ class TestPubsub(unittest2.TestCase):
             self.to_delete.append(subscription)
 
         # Retrieve the subscriptions.
-        all_subscriptions, _ = pubsub.list_subscriptions()
+        all_subscriptions, _ = CLIENT.list_subscriptions()
         created = [subscription for subscription in all_subscriptions
                    if subscription.name in subscriptions_to_create and
                    subscription.topic.name == TOPIC_NAME]
@@ -103,7 +101,7 @@ class TestPubsub(unittest2.TestCase):
 
     def test_message_pull_mode_e2e(self):
         TOPIC_NAME = 'subscribe-me'
-        topic = Topic(TOPIC_NAME, timestamp_messages=True)
+        topic = CLIENT.topic(TOPIC_NAME, timestamp_messages=True)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)

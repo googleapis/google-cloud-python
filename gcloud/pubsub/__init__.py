@@ -14,7 +14,6 @@
 
 """GCloud Pubsub API wrapper.
 
-
 The main concepts with this API are:
 
 - :class:`gcloud.pubsub.topic.Topic` represents an endpoint to which messages
@@ -24,54 +23,7 @@ The main concepts with this API are:
   subscription (either pull or push) to a topic.
 """
 
-from gcloud._helpers import get_default_project
-from gcloud._helpers import set_default_project
-from gcloud.pubsub import _implicit_environ
-from gcloud.pubsub._implicit_environ import get_default_connection
-from gcloud.pubsub.api import list_subscriptions
-from gcloud.pubsub.api import list_topics
+from gcloud.pubsub.client import Client
 from gcloud.pubsub.connection import SCOPE
-from gcloud.pubsub.connection import Connection
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
-
-
-def set_default_connection(connection=None):
-    """Set default connection either explicitly or implicitly as fall-back.
-
-    :type connection: :class:`gcloud.pubsub.connection.Connection`
-    :param connection: A connection provided to be the default.
-    """
-    _implicit_environ._DEFAULTS.connection = connection or get_connection()
-
-
-def set_defaults(project=None, connection=None):
-    """Set defaults either explicitly or implicitly as fall-back.
-
-    Uses the arguments to call the individual default methods.
-
-    :type project: string
-    :param project: Optional. The name of the project to connect to.
-
-    :type connection: :class:`gcloud.pubsub.connection.Connection`
-    :param connection: Optional. A connection provided to be the default.
-    """
-    set_default_project(project=project)
-    set_default_connection(connection=connection)
-
-
-def get_connection():
-    """Shortcut method to establish a connection to Cloud Storage.
-
-    Use this if you are going to access several buckets with the same
-    set of credentials:
-
-    >>> from gcloud import pubsub
-    >>> connection = pubsub.get_connection()
-    >>> bucket1 = pubsub.get_bucket('bucket1', connection=connection)
-    >>> bucket2 = pubsub.get_bucket('bucket2', connection=connection)
-
-    :rtype: :class:`gcloud.pubsub.connection.Connection`
-    :returns: A connection defined with the proper credentials.
-    """
-    return Connection.from_environment()
