@@ -108,7 +108,7 @@ If not set, the application must pull messages.</li>
 </table>
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.acknowledge">
-<code class="descname">acknowledge</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.acknowledge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.acknowledge" title="Permalink to this definition">#</a></dt>
+<code class="descname">acknowledge</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.acknowledge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.acknowledge" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  acknowledge retrieved messages for the subscription.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge</a></p>
@@ -118,8 +118,8 @@ If not set, the application must pull messages.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being acknowledged</li>
-<li><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the topic&#8217;s connection.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
 </ul>
 </td>
 </tr>
@@ -129,7 +129,7 @@ falls back to the topic&#8217;s connection.</li>
 
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.create" title="Permalink to this definition">#</a></dt>
+<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the subscription via a PUT request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/create">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/create</a></p>
@@ -137,8 +137,8 @@ falls back to the topic&#8217;s connection.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the topic&#8217;s connection.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
 </tr>
 </tbody>
 </table>
@@ -146,7 +146,7 @@ falls back to the topic&#8217;s connection.</td>
 
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.delete" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the subscription via a DELETE request.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/delete">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/delete</a></p>
@@ -154,8 +154,8 @@ falls back to the topic&#8217;s connection.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the topic&#8217;s connection.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
 </tr>
 </tbody>
 </table>
@@ -163,7 +163,7 @@ falls back to the topic&#8217;s connection.</td>
 
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.exists" title="Permalink to this definition">#</a></dt>
+<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  test existence of the subscription via a GET request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get</a></p>
@@ -171,8 +171,8 @@ falls back to the topic&#8217;s connection.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the topic&#8217;s connection.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
 </tr>
 </tbody>
 </table>
@@ -180,7 +180,7 @@ falls back to the topic&#8217;s connection.</td>
 
 <dl class="classmethod">
 <dt id="gcloud.pubsub.subscription.Subscription.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>topics=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em>, <em>topics=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory:  construct a topic given its API representation</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -188,12 +188,17 @@ falls back to the topic&#8217;s connection.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>resource</strong> (<em>dict</em>) &#8211; topic resource representation returned from the API</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a>) &#8211; Client which holds credentials and project
+configuration for a topic.</li>
 <li><strong>topics</strong> (<em>dict or None</em>) &#8211; A mapping of topic names -&gt; topics.  If not passed,
 the subscription will have a newly-created topic.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.pubsub.subscription.Subscription" title="gcloud.pubsub.subscription.Subscription"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.subscription.Subscription</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.pubsub.subscription.Subscription" title="gcloud.pubsub.subscription.Subscription"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.subscription.Subscription</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Subscription parsed from <code class="docutils literal"><span class="pre">resource</span></code>.</p>
 </td>
 </tr>
 </tbody>
@@ -202,7 +207,7 @@ the subscription will have a newly-created topic.</li>
 
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.modify_ack_deadline">
-<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>ack_id</em>, <em>ack_deadline</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
+<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>ack_id</em>, <em>ack_deadline</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update acknowledgement deadline for a retrieved message.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge</a></p>
@@ -213,8 +218,8 @@ the subscription will have a newly-created topic.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>ack_id</strong> (<em>string</em>) &#8211; ack ID of message being updated</li>
 <li><strong>ack_deadline</strong> (<em>int</em>) &#8211; new deadline for the message, in seconds</li>
-<li><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the topic&#8217;s connection.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
 </ul>
 </td>
 </tr>
@@ -224,7 +229,7 @@ falls back to the topic&#8217;s connection.</li>
 
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.modify_push_configuration">
-<code class="descname">modify_push_configuration</code><span class="sig-paren">(</span><em>push_endpoint</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_push_configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_push_configuration" title="Permalink to this definition">#</a></dt>
+<code class="descname">modify_push_configuration</code><span class="sig-paren">(</span><em>push_endpoint</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_push_configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_push_configuration" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update the push endpoint for the subscription.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/modifyPushConfig">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/modifyPushConfig</a></p>
@@ -236,8 +241,8 @@ falls back to the topic&#8217;s connection.</li>
 <li><strong>push_endpoint</strong> (<em>string</em>) &#8211; URL to which messages will be pushed by the
 back-end.  If None, the application must pull
 messages.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the topic&#8217;s connection.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
 </ul>
 </td>
 </tr>
@@ -253,7 +258,7 @@ falls back to the topic&#8217;s connection.</li>
 
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.pull">
-<code class="descname">pull</code><span class="sig-paren">(</span><em>return_immediately=False</em>, <em>max_messages=1</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.pull" title="Permalink to this definition">#</a></dt>
+<code class="descname">pull</code><span class="sig-paren">(</span><em>return_immediately=False</em>, <em>max_messages=1</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.pull" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  retrieve messages for the subscription.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/pull">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/pull</a></p>
@@ -267,8 +272,8 @@ messages are available;  if False, the API
 call blocks until one or more messages are
 available.</li>
 <li><strong>max_messages</strong> (<em>int</em>) &#8211; the maximum number of messages to return.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the topic&#8217;s connection.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
 </ul>
 </td>
 </tr>
@@ -286,7 +291,7 @@ is an instance of <code class="xref py py-class docutils literal"><span class="p
 
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.reload">
-<code class="descname">reload</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.reload" title="Permalink to this definition">#</a></dt>
+<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  sync local subscription configuration via a GET request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get</a></p>
@@ -294,8 +299,8 @@ is an instance of <code class="xref py py-class docutils literal"><span class="p
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the topic&#8217;s connection.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
 </tr>
 </tbody>
 </table>

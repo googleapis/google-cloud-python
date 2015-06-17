@@ -84,7 +84,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>Define API Topics.</p>
 <dl class="class">
 <dt id="gcloud.pubsub.topic.Batch">
-<em class="property">class </em><code class="descclassname">gcloud.pubsub.topic.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>topic</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Batch" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.pubsub.topic.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>topic</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Context manager:  collect messages to publish via a single API call.</p>
 <p>Helper returned by :meth:Topic.batch</p>
@@ -94,8 +94,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>topic</strong> (<a class="reference internal" href="#gcloud.pubsub.topic.Topic" title="gcloud.pubsub.topic.Topic"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.topic.Topic</span></code></a>) &#8211; the topic being published</li>
-<li><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the implicit default.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a>) &#8211; The client to use.</li>
 </ul>
 </td>
 </tr>
@@ -103,14 +102,14 @@ falls back to the implicit default.</li>
 </table>
 <dl class="method">
 <dt id="gcloud.pubsub.topic.Batch.commit">
-<code class="descname">commit</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Batch.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Batch.commit" title="Permalink to this definition">#</a></dt>
+<code class="descname">commit</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Batch.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Batch.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Send saved messages as a single API call.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the <code class="docutils literal"><span class="pre">connection</span></code> attribute.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current batch.</td>
 </tr>
 </tbody>
 </table>
@@ -136,7 +135,7 @@ falls back to the <code class="docutils literal"><span class="pre">connection</s
 
 <dl class="class">
 <dt id="gcloud.pubsub.topic.Topic">
-<em class="property">class </em><code class="descclassname">gcloud.pubsub.topic.</code><code class="descname">Topic</code><span class="sig-paren">(</span><em>name</em>, <em>project=None</em>, <em>timestamp_messages=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.pubsub.topic.</code><code class="descname">Topic</code><span class="sig-paren">(</span><em>name</em>, <em>client</em>, <em>timestamp_messages=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Topics are targets to which messages can be published.</p>
 <p>Subscribers then receive those messages.</p>
@@ -148,8 +147,8 @@ falls back to the <code class="docutils literal"><span class="pre">connection</s
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>name</strong> (<em>string</em>) &#8211; the name of the topic</li>
-<li><strong>project</strong> (<em>string</em>) &#8211; the project to which the topic belongs.  If not passed,
-falls back to the default inferred from the environment.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+for the topic (which requires a project).</li>
 <li><strong>timestamp_messages</strong> (<em>boolean</em>) &#8211; If true, the topic will add a <code class="docutils literal"><span class="pre">timestamp</span></code> key
 to the attributes of each published message:
 the value will be an RFC 3339 timestamp.</li>
@@ -160,13 +159,18 @@ the value will be an RFC 3339 timestamp.</li>
 </table>
 <dl class="method">
 <dt id="gcloud.pubsub.topic.Topic.batch">
-<code class="descname">batch</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.batch" title="Permalink to this definition">#</a></dt>
+<code class="descname">batch</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a batch to use as a context manager.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">:class:Batch</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.pubsub.topic.Batch" title="gcloud.pubsub.topic.Batch"><code class="xref py py-class docutils literal"><span class="pre">Batch</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A batch to use as a context manager.</td>
 </tr>
 </tbody>
 </table>
@@ -174,7 +178,7 @@ the value will be an RFC 3339 timestamp.</li>
 
 <dl class="method">
 <dt id="gcloud.pubsub.topic.Topic.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.create" title="Permalink to this definition">#</a></dt>
+<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the topic via a PUT request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/create">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/create</a></p>
@@ -182,8 +186,8 @@ the value will be an RFC 3339 timestamp.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the <code class="docutils literal"><span class="pre">connection</span></code> attribute.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</td>
 </tr>
 </tbody>
 </table>
@@ -191,7 +195,7 @@ falls back to the <code class="docutils literal"><span class="pre">connection</s
 
 <dl class="method">
 <dt id="gcloud.pubsub.topic.Topic.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.delete" title="Permalink to this definition">#</a></dt>
+<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the topic via a DELETE request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/delete">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/delete</a></p>
@@ -199,8 +203,8 @@ falls back to the <code class="docutils literal"><span class="pre">connection</s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the <code class="docutils literal"><span class="pre">connection</span></code> attribute.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</td>
 </tr>
 </tbody>
 </table>
@@ -208,7 +212,7 @@ falls back to the <code class="docutils literal"><span class="pre">connection</s
 
 <dl class="method">
 <dt id="gcloud.pubsub.topic.Topic.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.exists" title="Permalink to this definition">#</a></dt>
+<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  test for the existence of the topic via a GET request</p>
 <p>See
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/get">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/get</a></p>
@@ -216,8 +220,8 @@ falls back to the <code class="docutils literal"><span class="pre">connection</s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the <code class="docutils literal"><span class="pre">connection</span></code> attribute.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</td>
 </tr>
 </tbody>
 </table>
@@ -225,15 +229,29 @@ falls back to the <code class="docutils literal"><span class="pre">connection</s
 
 <dl class="classmethod">
 <dt id="gcloud.pubsub.topic.Topic.from_api_repr">
-<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.from_api_repr" title="Permalink to this definition">#</a></dt>
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.from_api_repr" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory:  construct a topic given its API representation</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<em>dict</em>) &#8211; topic resource representation returned from the API</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<em>dict</em>) &#8211; topic resource representation returned from the API</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a>) &#8211; Client which holds credentials and project
+configuration for the topic.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.pubsub.topic.Topic" title="gcloud.pubsub.topic.Topic"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.topic.Topic</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.pubsub.topic.Topic" title="gcloud.pubsub.topic.Topic"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.topic.Topic</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Topic parsed from <code class="docutils literal"><span class="pre">resource</span></code>.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if <code class="docutils literal"><span class="pre">client</span></code> is not <code class="docutils literal"><span class="pre">None</span></code> and the
+project from the resource does not agree with the project
+from the client.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -251,9 +269,15 @@ falls back to the <code class="docutils literal"><span class="pre">connection</s
 <dd><p>URL path for the topic&#8217;s APIs</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="gcloud.pubsub.topic.Topic.project">
+<code class="descname">project</code><a class="headerlink" href="#gcloud.pubsub.topic.Topic.project" title="Permalink to this definition">#</a></dt>
+<dd><p>Project bound to the topic.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="gcloud.pubsub.topic.Topic.publish">
-<code class="descname">publish</code><span class="sig-paren">(</span><em>message</em>, <em>connection=None</em>, <em>**attrs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.publish" title="Permalink to this definition">#</a></dt>
+<code class="descname">publish</code><span class="sig-paren">(</span><em>message</em>, <em>client=None</em>, <em>**attrs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.publish" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  publish a message to a topic via a POST request</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/publish">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/publish</a></p>
@@ -263,8 +287,8 @@ falls back to the <code class="docutils literal"><span class="pre">connection</s
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>message</strong> (<em>bytes</em>) &#8211; the message payload</li>
-<li><strong>connection</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.connection.Connection" title="gcloud.pubsub.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.connection.Connection</span></code></a> or None) &#8211; the connection to use.  If not passed,
-falls back to the <code class="docutils literal"><span class="pre">connection</span></code> attribute.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</li>
 </ul>
 </td>
 </tr>

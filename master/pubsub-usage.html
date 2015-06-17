@@ -82,55 +82,59 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         
   <div class="section" id="using-the-api">
 <h1>Using the API<a class="headerlink" href="#using-the-api" title="Permalink to this headline">#</a></h1>
-<div class="section" id="connection-authorization">
-<h2>Connection / Authorization<a class="headerlink" href="#connection-authorization" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li>Inferred defaults used to create connection if none configured explicitly:<ul>
-<li>credentials (derived from GAE / GCE environ if present).</li>
-<li><code class="docutils literal"><span class="pre">project</span></code> (derived from GAE / GCE environ if present).</li>
-<li><code class="docutils literal"><span class="pre">scopes</span></code></li>
-</ul>
+<div class="section" id="authorization-configuration">
+<h2>Authorization / Configuration<a class="headerlink" href="#authorization-configuration" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p class="first">Use <a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
+your applications.</p>
+</li>
+<li><p class="first"><a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">project</span></code>
+and an authenticated connection to the PubSub service.</p>
+</li>
+<li><p class="first">The authentication credentials can be implicitly determined from the
+environment or directly via
+<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client.from_service_account_json" title="gcloud.pubsub.client.Client.from_service_account_json"><code class="xref py py-meth docutils literal"><span class="pre">from_service_account_json</span></code></a>
+and
+<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client.from_service_account_p12" title="gcloud.pubsub.client.Client.from_service_account_p12"><code class="xref py py-meth docutils literal"><span class="pre">from_service_account_p12</span></code></a>.</p>
+</li>
+<li><p class="first">After setting <code class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> and <code class="docutils literal"><span class="pre">GCLOUD_PROJECT</span></code>
+environment variables, create a <a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
 </li>
 </ul>
 </div>
 <div class="section" id="manage-topics-for-a-project">
 <h2>Manage topics for a project<a class="headerlink" href="#manage-topics-for-a-project" title="Permalink to this headline">#</a></h2>
 <p>Create a new topic for the default project:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
-<p>Create a new topic for an explicit project:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="s">&#39;my.project&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
-</pre></div>
-</div>
-<p>Check for the existance of a topic:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<p>Check for the existence of a topic:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="go">True</span>
 </pre></div>
 </div>
 <p>List topics for the default project:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">list_topics</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topics</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">list_topics</span><span class="p">()</span>  <span class="c"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">topic</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">]</span>
-<span class="go">[&#39;topic_name&#39;]</span>
-</pre></div>
-</div>
-<p>List topics for an explicit project:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">list_topics</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topics</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">list_topics</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;my.project&#39;</span><span class="p">)</span>  <span class="c"># API request</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topics</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_topics</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">topic</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">]</span>
 <span class="go">[&#39;topic_name&#39;]</span>
 </pre></div>
 </div>
 <p>Delete a topic:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
@@ -138,23 +142,26 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="section" id="publish-messages-to-a-topic">
 <h2>Publish messages to a topic<a class="headerlink" href="#publish-messages-to-a-topic" title="Permalink to this headline">#</a></h2>
 <p>Publish a single message to a topic, without attributes:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the message_payload&#39;</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="go">&lt;message_id&gt;</span>
 </pre></div>
 </div>
 <p>Publish a single message to a topic, with attributes:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is another message_payload&#39;</span><span class="p">,</span>
 <span class="gp">... </span>              <span class="n">attr1</span><span class="o">=</span><span class="s">&#39;value1&#39;</span><span class="p">,</span> <span class="n">attr2</span><span class="o">=</span><span class="s">&#39;value2&#39;</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="go">&lt;message_id&gt;</span>
 </pre></div>
 </div>
 <p>Publish a set of messages to a topic (as a single request):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
@@ -172,77 +179,82 @@ used as a context manager.</p>
 <div class="section" id="manage-subscriptions-to-topics">
 <h2>Manage subscriptions to topics<a class="headerlink" href="#manage-subscriptions-to-topics" title="Permalink to this headline">#</a></h2>
 <p>Create a new pull subscription for a topic:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
 <p>Create a new pull subscription for a topic with a non-default ACK deadline:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span>
+<span class="gp">... </span>                                   <span class="n">ack_deadline</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
 <p>Create a new push subscription for a topic:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://example.com/hook&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://example.com/hook&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span>
+<span class="gp">... </span>                                   <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
 <p>Check for the existence of a subscription:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="go">True</span>
 </pre></div>
 </div>
 <p>Convert a pull subscription to push:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://example.com/hook&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://example.com/hook&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
 <p>Convert a push subscription to pull:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://example.com/hook&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span>
-<span class="gp">... </span>                            <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://example.com/hook&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubusb</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span>
+<span class="gp">... </span>                                   <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
 <p>List subscriptions for a topic:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscriptions</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>  <span class="c"># API request</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscriptions</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">topic_name</span><span class="o">=</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">subscription</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">]</span>
 <span class="go">[&#39;subscription_name&#39;]</span>
 </pre></div>
 </div>
 <p>List all subscriptions for the default project:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">list_subscriptions</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="p">,</span> <span class="n">next_page_tokens</span> <span class="o">=</span> <span class="n">list_subscriptions</span><span class="p">()</span>  <span class="c"># API request</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="p">,</span> <span class="n">next_page_tokens</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">subscription</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">]</span>
 <span class="go">[&#39;subscription_name&#39;]</span>
 </pre></div>
 </div>
 <p>Delete a subscription:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
@@ -250,13 +262,13 @@ used as a context manager.</p>
 <div class="section" id="pull-messages-from-a-subscription">
 <h2>Pull messages from a subscription<a class="headerlink" href="#pull-messages-from-a-subscription" title="Permalink to this headline">#</a></h2>
 <p>Fetch pending messages for a pull subscription:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                  <span class="n">attr1</span><span class="o">=</span><span class="s">&#39;value1&#39;</span><span class="p">,</span> <span class="n">attr2</span><span class="o">=</span><span class="s">&#39;value2&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
@@ -275,13 +287,13 @@ will re-send them later:</p>
 </pre></div>
 </div>
 <p>Fetch a limited number of pending messages for a pull subscription:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
 <span class="gp">... </span>                  <span class="n">attr1</span><span class="o">=</span><span class="s">&#39;value1&#39;</span><span class="p">,</span> <span class="n">attr2</span><span class="o">=</span><span class="s">&#39;value2&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
@@ -289,10 +301,10 @@ will re-send them later:</p>
 </pre></div>
 </div>
 <p>Fetch messages for a pull subscription without blocking (none pending):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Topic</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>

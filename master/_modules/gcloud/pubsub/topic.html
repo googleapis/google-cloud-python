@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
     <link rel="top" title="gcloud 0.6.0 documentation" href="../../../index.html" />
-    <link rel="up" title="gcloud.pubsub" href="../pubsub.html" /> 
+    <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -99,10 +99,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">get_default_project</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_RFC3339_MICROS</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">gcloud.pubsub._implicit_environ</span> <span class="kn">import</span> <span class="n">_require_connection</span>
 
 <span class="n">_NOW</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span>
 
@@ -118,34 +116,48 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type name: string</span>
 <span class="sd">    :param name: the name of the topic</span>
 
-<span class="sd">    :type project: string</span>
-<span class="sd">    :param project: the project to which the topic belongs.  If not passed,</span>
-<span class="sd">                    falls back to the default inferred from the environment.</span>
+<span class="sd">    :type client: :class:`gcloud.pubsub.client.Client`</span>
+<span class="sd">    :param client: A client which holds credentials and project configuration</span>
+<span class="sd">                   for the topic (which requires a project).</span>
 
 <span class="sd">    :type timestamp_messages: boolean</span>
 <span class="sd">    :param timestamp_messages: If true, the topic will add a ``timestamp`` key</span>
 <span class="sd">                               to the attributes of each published message:</span>
 <span class="sd">                               the value will be an RFC 3339 timestamp.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timestamp_messages</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">project</span> <span class="o">=</span> <span class="n">get_default_project</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">timestamp_messages</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_messages</span> <span class="o">=</span> <span class="n">timestamp_messages</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Topic.from_api_repr"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+<div class="viewcode-block" id="Topic.from_api_repr"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a topic given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: topic resource representation returned from the API</span>
 
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client`</span>
+<span class="sd">        :param client: Client which holds credentials and project</span>
+<span class="sd">                       configuration for the topic.</span>
+
 <span class="sd">        :rtype: :class:`gcloud.pubsub.topic.Topic`</span>
+<span class="sd">        :returns: Topic parsed from ``resource``.</span>
+<span class="sd">        :raises: :class:`ValueError` if ``client`` is not ``None`` and the</span>
+<span class="sd">                 project from the resource does not agree with the project</span>
+<span class="sd">                 from the client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">project</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span> <span class="o">!=</span> <span class="n">project</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Project from clientshould agree with &#39;</span>
+                             <span class="s">&#39;project from resource.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 </div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project bound to the topic.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fully-qualified name used in topic / subscription APIs&quot;&quot;&quot;</span>
@@ -156,33 +168,47 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="sd">&quot;&quot;&quot;URL path for the topic&#39;s APIs&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s">&#39;/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Topic.create"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
+
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current topic.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.pubsub.client.Client`</span>
+<span class="sd">        :returns: The client passed in or the currently bound client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
+        <span class="k">return</span> <span class="n">client</span>
+
+<div class="viewcode-block" id="Topic.create"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  create the topic via a PUT request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/create</span>
 
-<span class="sd">        :type connection: :class:`gcloud.pubsub.connection.Connection` or None</span>
-<span class="sd">        :param connection: the connection to use.  If not passed,</span>
-<span class="sd">                           falls back to the ``connection`` attribute.</span>
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Topic.exists"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Topic.exists"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test for the existence of the topic via a GET request</span>
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/get</span>
 
-<span class="sd">        :type connection: :class:`gcloud.pubsub.connection.Connection` or None</span>
-<span class="sd">        :param connection: the connection to use.  If not passed,</span>
-<span class="sd">                           falls back to the ``connection`` attribute.</span>
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
         <span class="k">else</span><span class="p">:</span>
@@ -198,7 +224,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_messages</span> <span class="ow">and</span> <span class="s">&#39;timestamp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
             <span class="n">attrs</span><span class="p">[</span><span class="s">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_NOW</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">_RFC3339_MICROS</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Topic.publish"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.publish">[docs]</a>    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
+<div class="viewcode-block" id="Topic.publish"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.publish">[docs]</a>    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  publish a message to a topic via a POST request</span>
 
 <span class="sd">        See:</span>
@@ -207,9 +233,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :type message: bytes</span>
 <span class="sd">        :param message: the message payload</span>
 
-<span class="sd">        :type connection: :class:`gcloud.pubsub.connection.Connection` or None</span>
-<span class="sd">        :param connection: the connection to use.  If not passed,</span>
-<span class="sd">                           falls back to the ``connection`` attribute.</span>
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current topic.</span>
 
 <span class="sd">        :type attrs: dict (string -&gt; string)</span>
 <span class="sd">        :message attrs: key-value pairs to send as message attributes</span>
@@ -217,36 +243,41 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: message ID assigned by the server to the published message</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp_message</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
         <span class="n">message_b</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">)</span>
         <span class="n">message_data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="n">message_b</span><span class="p">,</span> <span class="s">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">}</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">message_data</span><span class="p">]}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span>
-                                          <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">:publish&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                          <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">:publish&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;messageIds&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 </div>
-<div class="viewcode-block" id="Topic.batch"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Topic.batch"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a batch to use as a context manager.</span>
 
-<span class="sd">        :rtype: :class:Batch</span>
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current topic.</span>
+
+<span class="sd">        :rtype: :class:`Batch`</span>
+<span class="sd">        :returns: A batch to use as a context manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Topic.delete"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Topic.delete"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  delete the topic via a DELETE request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/delete</span>
 
-<span class="sd">        :type connection: :class:`gcloud.pubsub.connection.Connection` or None</span>
-<span class="sd">        :param connection: the connection to use.  If not passed,</span>
-<span class="sd">                           falls back to the ``connection`` attribute.</span>
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -257,15 +288,14 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :type topic: :class:`gcloud.pubsub.topic.Topic`</span>
 <span class="sd">    :param topic: the topic being published</span>
 
-<span class="sd">    :type connection: :class:`gcloud.pubsub.connection.Connection` or None</span>
-<span class="sd">    :param connection: the connection to use.  If not passed,</span>
-<span class="sd">                        falls back to the implicit default.</span>
+<span class="sd">    :type client: :class:`gcloud.pubsub.client.Client`</span>
+<span class="sd">    :param client: The client to use.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">topic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message_ids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -291,19 +321,18 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
             <span class="p">{</span><span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;ascii&#39;</span><span class="p">),</span>
              <span class="s">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">})</span>
 </div>
-<div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send saved messages as a single API call.</span>
 
-<span class="sd">        :type connection: :class:`gcloud.pubsub.connection.Connection` or None</span>
-<span class="sd">        :param connection: the connection to use.  If not passed,</span>
-<span class="sd">                           falls back to the ``connection`` attribute.</span>
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current batch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span>
-                                          <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">:publish&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                          <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[:]})</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">:publish&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;messages&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[:]})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message_ids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s">&#39;messageIds&#39;</span><span class="p">])</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[:]</span></div></div>
 </pre></div>
