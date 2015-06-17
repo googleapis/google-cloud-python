@@ -43,10 +43,8 @@ class Topic(object):
                                to the attributes of each published message:
                                the value will be an RFC 3339 timestamp.
     """
-    def __init__(self, name, client=None, timestamp_messages=False):
+    def __init__(self, name, client, timestamp_messages=False):
         self.name = name
-        if client is None:
-            raise ValueError('Topic constructor requires a client.')
         self._client = client
         self.timestamp_messages = timestamp_messages
 

@@ -40,7 +40,9 @@ class Client(object):
                         from the environment.
 
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests.
+    :param http: An optional HTTP object to make requests. If not passed, an
+                 ``http`` object is created that is bound to the
+                 ``credentials`` for the current object.
 
     :raises: :class:`ValueError` if the project is neither passed in nor
              set in the environment.
@@ -58,7 +60,7 @@ class Client(object):
         self.connection = Connection(credentials=credentials, http=http)
 
     @classmethod
-    def with_service_account_json(cls, json_credentials_path, project=None):
+    def from_service_account_json(cls, json_credentials_path, project=None):
         """Factory to retrieve JSON credentials while creating client.
 
         :type json_credentials_path: string
@@ -81,7 +83,7 @@ class Client(object):
         return cls(project=project, credentials=credentials)
 
     @classmethod
-    def with_service_account_p12(cls, client_email, private_key_path,
+    def from_service_account_p12(cls, client_email, private_key_path,
                                  project=None):
         """Factory to retrieve P12 credentials while creating client.
 

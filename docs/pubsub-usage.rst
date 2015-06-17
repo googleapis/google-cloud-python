@@ -12,9 +12,9 @@ Authorization / Configuration
 
 - The authentication credentials can be implicitly determined from the
   environment or directly via
-  :meth:`with_service_account_json <gcloud.pubsub.client.Client.with_service_account_json>`
+  :meth:`from_service_account_json <gcloud.pubsub.client.Client.from_service_account_json>`
   and
-  :meth:`with_service_account_p12 <gcloud.pubsub.client.Client.with_service_account_p12>`.
+  :meth:`from_service_account_p12 <gcloud.pubsub.client.Client.from_service_account_p12>`.
 
 - After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
   environment variables, create a :class:`Client <gcloud.pubsub.client.Client>`
@@ -131,7 +131,8 @@ Create a new pull subscription for a topic with a non-default ACK deadline:
    >>> from gcloud import pubsub
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', ack_deadline=90)
+   >>> subscription = pubsub.Subscription('subscription_name', topic,
+   ...                                    ack_deadline=90)
    >>> subscription.create()  # API request
 
 Create a new push subscription for a topic:
@@ -142,7 +143,7 @@ Create a new push subscription for a topic:
    >>> ENDPOINT = 'https://example.com/hook'
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name',
+   >>> subscription = pubsub.Subscription('subscription_name', topic,
    ...                                    push_endpoint=ENDPOINT)
    >>> subscription.create()  # API request
 

@@ -82,7 +82,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client_obj.connection._credentials is CREDS)
         self.assertEqual(CREDS._scopes, SCOPE)
 
-    def test_with_service_account_json(self):
+    def test_from_service_account_json(self):
         from gcloud._testing import _Monkey
         from gcloud.pubsub import client
         from gcloud.pubsub.connection import Connection
@@ -98,7 +98,7 @@ class TestClient(unittest2.TestCase):
 
         BOGUS_ARG = object()
         with _Monkey(client, get_for_service_account_json=mock_creds):
-            client_obj = KLASS.with_service_account_json(
+            client_obj = KLASS.from_service_account_json(
                 BOGUS_ARG, project=PROJECT)
 
         self.assertEqual(client_obj.project, PROJECT)
@@ -106,7 +106,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client_obj.connection._credentials is CREDS)
         self.assertEqual(_CALLED, [(BOGUS_ARG,)])
 
-    def test_with_service_account_p12(self):
+    def test_from_service_account_p12(self):
         from gcloud._testing import _Monkey
         from gcloud.pubsub import client
         from gcloud.pubsub.connection import Connection
@@ -123,7 +123,7 @@ class TestClient(unittest2.TestCase):
         BOGUS_ARG1 = object()
         BOGUS_ARG2 = object()
         with _Monkey(client, get_for_service_account_p12=mock_creds):
-            client_obj = KLASS.with_service_account_p12(
+            client_obj = KLASS.from_service_account_p12(
                 BOGUS_ARG1, BOGUS_ARG2, project=PROJECT)
 
         self.assertEqual(client_obj.project, PROJECT)
@@ -302,7 +302,7 @@ class TestClient(unittest2.TestCase):
                          % (PROJECT, TOPIC_NAME))
         self.assertEqual(req['query_params'], {})
 
-    def test_make_topic(self):
+    def test_topic(self):
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'TOPIC_NAME'
         CREDS = _Credentials()

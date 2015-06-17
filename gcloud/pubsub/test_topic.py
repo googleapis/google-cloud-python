@@ -24,9 +24,6 @@ class TestTopic(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor_wo_client(self):
-        self.assertRaises(ValueError, self._makeOne, 'TOPIC_NAME', client=None)
-
     def test_ctor_w_explicit_timestamp(self):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
