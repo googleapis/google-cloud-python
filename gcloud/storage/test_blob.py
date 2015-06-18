@@ -410,6 +410,16 @@ class Test_Blob(unittest2.TestCase):
         fetched = blob.download_as_string(connection=connection)
         self.assertEqual(fetched, b'abcdef')
 
+    def test_upload_from_file_size_failure(self):
+        BLOB_NAME = 'blob-name'
+        bucket = _Bucket()
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        file_obj = object()
+        connection = _Connection()
+        with self.assertRaises(ValueError):
+            blob.upload_from_file(file_obj, size=None,
+                                  connection=connection)
+
     def _upload_from_file_simple_test_helper(self, properties=None,
                                              content_type_arg=None,
                                              expected_content_type=None):
