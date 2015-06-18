@@ -777,19 +777,24 @@ API documents for details.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
 <li><strong>rewind</strong> (<em>boolean</em>) &#8211; If True, seek to the beginning of the file handle before
 writing the file to Cloud Storage.</li>
 <li><strong>size</strong> (<em>int</em>) &#8211; The number of bytes to read from the file handle.
 If not provided, we&#8217;ll try to guess the size using
-<code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code></li>
+<code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code>. (If the file handle is not from the
+filesystem this won&#8217;t be possible.)</li>
 <li><strong>content_type</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional type of content being uploaded.</li>
 <li><strong>num_retries</strong> (<em>integer</em>) &#8211; Number of upload retries. Defaults to 6.</li>
 <li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
 requests. If not provided, falls back to default.</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if size is not passed in and can not be
+determined</p>
 </td>
 </tr>
 </tbody>
