@@ -52,7 +52,8 @@ class _BlobIterator(Iterator):
     def __init__(self, bucket, extra_params=None, connection=None):
         connection = _require_connection(connection)
         self.bucket = bucket
-        self.prefixes = ()
+        self.prefixes = set()
+        self._current_prefixes = None
         super(_BlobIterator, self).__init__(
             connection=connection, path=bucket.path + '/o',
             extra_params=extra_params)
@@ -63,7 +64,8 @@ class _BlobIterator(Iterator):
         :type response: dict
         :param response: The JSON API response for a page of blobs.
         """
-        self.prefixes = tuple(response.get('prefixes', ()))
+        self._current_prefixes = tuple(response.get('prefixes', ()))
+        self.prefixes.update(self._current_prefixes)
         for item in response.get('items', []):
             name = item.get('name')
             blob = Blob(name, bucket=self.bucket)
