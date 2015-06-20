@@ -456,7 +456,7 @@ class Bucket(_PropertyMixin):
         new_blob._set_properties(copy_result)
         return new_blob
 
-    def upload_file(self, filename, blob_name=None, connection=None):
+    def upload_file(self, filename, blob_name=None, connection=None, content_type=None):
         """Shortcut method to upload a file into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -480,6 +480,15 @@ class Bucket(_PropertyMixin):
           >>> print bucket.list_blobs()
           [<Blob: my-bucket, my-file.txt>]
 
+         The content type of the file can also be specified
+
+           >>> from gcloud import storage
+           >>> connection = storage.get_connection()
+           >>> bucket = storage.get_bucket('my-bucket', connection=connection)
+           >>> bucket.upload_file('~/my-file.txt', 'remove-text-file.txt', content_type='application/octet-stream')
+           >>> print bucket.list_blobs()
+           [<Blob: my-bucket, remote-text-file.txt']
+
         :type filename: string
         :param filename: Local path to the file you want to upload.
 
@@ -500,7 +509,7 @@ class Bucket(_PropertyMixin):
         if blob_name is None:
             blob_name = os.path.basename(filename)
         blob = Blob(bucket=self, name=blob_name)
-        blob.upload_from_filename(filename, connection=connection)
+        blob.upload_from_filename(filename, connection=connection, content_type=content_type)
         return blob
 
     def upload_file_object(self, file_obj, blob_name=None, connection=None):
