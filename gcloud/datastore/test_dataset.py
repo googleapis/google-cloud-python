@@ -23,8 +23,9 @@ class TestDataset(unittest2.TestCase):
         from gcloud.datastore.dataset import Dataset
         return Dataset
 
-    def _makeOne(self, dataset_id=DATASET_ID, connection=None):
-        return self._getTargetClass()(dataset_id, connection)
+    def _makeOne(self, dataset_id=DATASET_ID, namespace=None, connection=None):
+        return self._getTargetClass()(dataset_id, namespace=namespace,
+                                      connection=connection)
 
     def test_ctor_w_dataset_id_None(self):
         self.assertRaises(ValueError, self._makeOne, None)
@@ -33,11 +34,13 @@ class TestDataset(unittest2.TestCase):
         dataset = self._makeOne()
         self.assertEqual(dataset.dataset_id, self.DATASET_ID)
 
-    def test_ctor_w_dataset_id_w_connection(self):
+    def test_ctor_w_explicit_inputs(self):
         conn = object()
-        dataset = self._makeOne(connection=conn)
+        namespace = object()
+        dataset = self._makeOne(namespace=namespace, connection=conn)
         self.assertEqual(dataset.dataset_id, self.DATASET_ID)
         self.assertTrue(dataset.connection is conn)
+        self.assertTrue(dataset.namespace is namespace)
 
     def test_get_defaults(self):
         from gcloud.datastore import dataset as MUT
@@ -294,7 +297,48 @@ class TestDataset(unittest2.TestCase):
 
         self.assertTrue(isinstance(key, _Dummy))
         self.assertEqual(key.args, (KIND, ID))
-        self.assertEqual(key.kwargs, {'dataset_id': self.DATASET_ID})
+        expected_kwargs = {
+            'dataset_id': self.DATASET_ID,
+            'namespace': None,
+        }
+        self.assertEqual(key.kwargs, expected_kwargs)
+
+    def test_key_w_namespace(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        KIND = 'KIND'
+        ID = 1234
+        NAMESPACE = object()
+        dataset = self._makeOne(namespace=NAMESPACE)
+        with _Monkey(MUT, Key=_Dummy):
+            key = dataset.key(KIND, ID)
+
+        self.assertTrue(isinstance(key, _Dummy))
+        expected_kwargs = {
+            'dataset_id': self.DATASET_ID,
+            'namespace': NAMESPACE,
+        }
+        self.assertEqual(key.kwargs, expected_kwargs)
+
+    def test_key_w_namespace_collision(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        KIND = 'KIND'
+        ID = 1234
+        NAMESPACE1 = object()
+        NAMESPACE2 = object()
+        dataset = self._makeOne(namespace=NAMESPACE1)
+        with _Monkey(MUT, Key=_Dummy):
+            key = dataset.key(KIND, ID, namespace=NAMESPACE2)
+
+        self.assertTrue(isinstance(key, _Dummy))
+        expected_kwargs = {
+            'dataset_id': self.DATASET_ID,
+            'namespace': NAMESPACE2,
+        }
+        self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_batch_wo_connection(self):
         from gcloud.datastore import dataset as MUT
@@ -347,8 +391,11 @@ class TestDataset(unittest2.TestCase):
 
         self.assertTrue(isinstance(xact, _Dummy))
         self.assertEqual(xact.args, ())
-        self.assertEqual(xact.kwargs,
-                         {'dataset_id': self.DATASET_ID, 'connection': conn})
+        expected_kwargs = {
+            'dataset_id': self.DATASET_ID,
+            'connection': conn,
+        }
+        self.assertEqual(xact.kwargs, expected_kwargs)
 
     def test_query_w_dataset_id(self):
         KIND = 'KIND'
@@ -366,7 +413,11 @@ class TestDataset(unittest2.TestCase):
 
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, ())
-        self.assertEqual(query.kwargs, {'dataset_id': self.DATASET_ID})
+        expected_kwargs = {
+            'dataset_id': self.DATASET_ID,
+            'namespace': None,
+        }
+        self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_explicit(self):
         from gcloud.datastore import dataset as MUT
@@ -404,6 +455,45 @@ class TestDataset(unittest2.TestCase):
         }
         self.assertEqual(query.args, ())
         self.assertEqual(query.kwargs, kwargs)
+
+    def test_query_w_namespace(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        KIND = 'KIND'
+        NAMESPACE = object()
+        dataset = self._makeOne(namespace=NAMESPACE)
+        with _Monkey(MUT, Query=_Dummy):
+            query = dataset.query(kind=KIND)
+
+        self.assertTrue(isinstance(query, _Dummy))
+        self.assertEqual(query.args, ())
+        expected_kwargs = {
+            'dataset_id': self.DATASET_ID,
+            'namespace': NAMESPACE,
+            'kind': KIND,
+        }
+        self.assertEqual(query.kwargs, expected_kwargs)
+
+    def test_query_w_namespace_collision(self):
+        from gcloud.datastore import dataset as MUT
+        from gcloud._testing import _Monkey
+
+        KIND = 'KIND'
+        NAMESPACE1 = object()
+        NAMESPACE2 = object()
+        dataset = self._makeOne(namespace=NAMESPACE1)
+        with _Monkey(MUT, Query=_Dummy):
+            query = dataset.query(kind=KIND, namespace=NAMESPACE2)
+
+        self.assertTrue(isinstance(query, _Dummy))
+        self.assertEqual(query.args, ())
+        expected_kwargs = {
+            'dataset_id': self.DATASET_ID,
+            'namespace': NAMESPACE2,
+            'kind': KIND,
+        }
+        self.assertEqual(query.kwargs, expected_kwargs)
 
 
 class _Dummy(object):
