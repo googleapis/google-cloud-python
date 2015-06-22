@@ -18,8 +18,8 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Datastore`_
 -  `Google Cloud Storage`_
 
-.. _Google Cloud Datastore: https://cloud.google.com/datastore/
-.. _Google Cloud Storage: https://cloud.google.com/storage/
+.. _Google Cloud Datastore: #google-cloud-datastore
+.. _Google Cloud Storage: #google-cloud-storage
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -43,23 +43,24 @@ Example Applications
 Google Cloud Datastore
 ----------------------
 
-Google `Cloud Datastore`_ is a fully managed, schemaless database for
-storing non-relational data. Cloud Datastore automatically scales with
-your users and supports ACID transactions, high availability of reads and
+Google `Cloud Datastore`_ (`Datastore API docs`_) is a fully managed, schemaless
+database for storing non-relational data. Cloud Datastore automatically scales
+with your users and supports ACID transactions, high availability of reads and
 writes, strong consistency for reads and ancestor queries, and eventual
 consistency for all other queries.
 
 .. _Cloud Datastore: https://cloud.google.com/datastore/docs
+.. _Datastore API docs: https://cloud.google.com/datastore/docs/apis/v1beta2/
 
-See the `Google Cloud Datastore docs`_ for more details on how to activate
-Cloud Datastore for your project.
-
-.. _Google Cloud Datastore docs: https://cloud.google.com/datastore/docs/activate
-
-See the ``gcloud-python`` API `datastore documentation`_ to learn how to interact
-with the Cloud Datastore using this Client Library.
+See the ``gcloud-python`` API `datastore documentation`_ to learn how to
+interact with the Cloud Datastore using this Client Library.
 
 .. _datastore documentation: https://googlecloudplatform.github.io/gcloud-python/latest/datastore-api.html
+
+See the `official Google Cloud Datastore documentation`_ for more details on how
+to activate Cloud Datastore for your project.
+
+.. _official Google Cloud Datastore documentation: https://cloud.google.com/datastore/docs/activate
 
 .. code:: python
 
@@ -79,22 +80,23 @@ with the Cloud Datastore using this Client Library.
 Google Cloud Storage
 --------------------
 
-Google `Cloud Storage`_ allows you to store data on Google infrastructure with
-very high reliability, performance and availability, and can be used to
-distribute large data objects to users via direct download.
+Google `Cloud Storage`_ (`Storage API docs`_) allows you to store data on Google
+infrastructure with very high reliability, performance and availability, and can
+be used to distribute large data objects to users via direct download.
 
 .. _Cloud Storage: https://cloud.google.com/storage/docs
-
-You need to create a Google Cloud Storage bucket to use this client
-library. Follow the steps on the `Google Cloud Storage docs`_
-to learn how to create a bucket.
-
-.. _Google Cloud Storage docs: https://cloud.google.com/storage/docs/cloud-console#_creatingbuckets
+.. _Storage API docs: https://cloud.google.com/storage/docs/json_api/v1
 
 See the ``gcloud-python`` API `storage documentation`_ to learn how to connect
 to Cloud Storage using this Client Library.
 
 .. _storage documentation: https://googlecloudplatform.github.io/gcloud-python/latest/storage-api.html
+
+You need to create a Google Cloud Storage bucket to use this client library.
+Follow along with the `official Google Cloud Storage documentation`_ to learn
+how to create a bucket.
+
+.. _official Google Cloud Storage documentation: https://cloud.google.com/storage/docs/cloud-console#_creatingbuckets
 
 .. code:: python
 
