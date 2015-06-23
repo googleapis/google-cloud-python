@@ -259,7 +259,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual([blob.name for blob in blobs], ['file01.txt'])
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is None)
-        self.assertEqual(iterator.prefixes, ('parent/',))
+        self.assertEqual(iterator.prefixes, set(['parent/']))
 
     def test_first_level(self):
         iterator = self.bucket.list_blobs(delimiter='/', prefix='parent/')
@@ -268,7 +268,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual([blob.name for blob in blobs], ['parent/file11.txt'])
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is None)
-        self.assertEqual(iterator.prefixes, ('parent/child/',))
+        self.assertEqual(iterator.prefixes, set(['parent/child/']))
 
     def test_second_level(self):
         iterator = self.bucket.list_blobs(delimiter='/',
@@ -281,7 +281,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is None)
         self.assertEqual(iterator.prefixes,
-                         ('parent/child/grand/', 'parent/child/other/'))
+                         set(['parent/child/grand/', 'parent/child/other/']))
 
     def test_third_level(self):
         # Pseudo-hierarchy can be arbitrarily deep, subject to the limit
@@ -296,7 +296,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
                          ['parent/child/grand/file31.txt'])
         self.assertEqual(iterator.page_number, 1)
         self.assertTrue(iterator.next_page_token is None)
-        self.assertEqual(iterator.prefixes, ())
+        self.assertEqual(iterator.prefixes, set())
 
 
 class TestStorageSignURLs(TestStorageFiles):
