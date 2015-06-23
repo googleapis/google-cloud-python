@@ -20,9 +20,9 @@ rather than via Connection.
 
 from gcloud.exceptions import NotFound
 from gcloud._helpers import get_default_project
+from gcloud.iterator import Iterator
 from gcloud.storage._helpers import _require_connection
 from gcloud.storage.bucket import Bucket
-from gcloud.storage.iterator import Iterator
 
 
 def lookup_bucket(bucket_name, connection=None):

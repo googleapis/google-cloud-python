@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc. All rights reserved.
+# Copyright 2015 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,33 +22,33 @@ method so that given a response (containing a page of results) it parses
 those results into an iterable of the actual objects you want::
 
   class MyIterator(Iterator):
-    def get_items_from_response(self, response):
-      items = response.get('items', [])
-      for item in items:
-        my_item = MyItemClass(other_arg=True)
-        my_item._set_properties(item)
-        yield my_item
+      def get_items_from_response(self, response):
+          items = response.get('items', [])
+          for item in items:
+              my_item = MyItemClass(other_arg=True)
+              my_item._set_properties(item)
+              yield my_item
 
 You then can use this to get **all** the results from a resource::
 
-  >>> iterator = MyIterator(...)
-  >>> list(iterator)  # Convert to a list (consumes all values).
+    >>> iterator = MyIterator(...)
+    >>> list(iterator)  # Convert to a list (consumes all values).
 
 Or you can walk your way through items and call off the search early if
 you find what you're looking for (resulting in possibly fewer
 requests)::
 
-  >>> for item in MyIterator(...):
-  >>>   print item.name
-  >>>   if not item.is_valid:
-  >>>     break
+    >>> for item in MyIterator(...):
+    >>>     print item.name
+    >>>     if not item.is_valid:
+    >>>         break
 """
 
 
 class Iterator(object):
-    """A generic class for iterating through Cloud Storage list responses.
+    """A generic class for iterating through Cloud JSON APIs list responses.
 
-    :type connection: :class:`gcloud.storage.connection.Connection`
+    :type connection: :class:`gcloud.connection.Connection`
     :param connection: The connection to use to make requests.
 
     :type path: string

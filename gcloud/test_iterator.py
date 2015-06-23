@@ -1,4 +1,4 @@
-# Copyright 2014 Google Inc. All rights reserved.
+# Copyright 2015 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import unittest2
 class TestIterator(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.storage.iterator import Iterator
+        from gcloud.iterator import Iterator
         return Iterator
 
     def _makeOne(self, *args, **kw):
