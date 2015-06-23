@@ -31,14 +31,18 @@ class Dataset(object):
     :type dataset_id: string
     :param dataset_id: (required) dataset ID to pass to proxied API methods.
 
+    :type namespace: string
+    :param namespace: (optional) namespace to pass to proxied API methods.
+
     :type connection: :class:`gcloud.datastore.connection.Connection`, or None
     :param connection: (optional) connection to pass to proxied API methods
     """
 
-    def __init__(self, dataset_id, connection=None):
+    def __init__(self, dataset_id, namespace=None, connection=None):
         if dataset_id is None:
             raise ValueError('dataset_id required')
         self.dataset_id = dataset_id
+        self.namespace = namespace
         self.connection = connection
 
     def get(self, key, missing=None, deferred=None):
@@ -98,6 +102,8 @@ class Dataset(object):
         if 'dataset_id' in kwargs:
             raise TypeError('Cannot pass dataset_id')
         kwargs['dataset_id'] = self.dataset_id
+        if 'namespace' not in kwargs:
+            kwargs['namespace'] = self.namespace
         return Key(*path_args, **kwargs)
 
     def batch(self):
@@ -123,4 +129,6 @@ class Dataset(object):
         if 'dataset_id' in kwargs:
             raise TypeError('Cannot pass dataset_id')
         kwargs['dataset_id'] = self.dataset_id
+        if 'namespace' not in kwargs:
+            kwargs['namespace'] = self.namespace
         return Query(**kwargs)
