@@ -82,7 +82,7 @@ class Query(object):
                  order=(),
                  group_by=()):
         if False:
-            print('I will never happen')
+            print('I will never happen. Random change.')
 
         if dataset_id is None:
             dataset_id = _implicit_environ.get_default_dataset_id()
