@@ -15,13 +15,13 @@
 import unittest2
 
 
-class TestDataset(unittest2.TestCase):
+class TestClient(unittest2.TestCase):
 
     DATASET_ID = 'DATASET'
 
     def _getTargetClass(self):
-        from gcloud.datastore.dataset import Dataset
-        return Dataset
+        from gcloud.datastore.client import Client
+        return Client
 
     def _makeOne(self, dataset_id=DATASET_ID, namespace=None, connection=None):
         return self._getTargetClass()(dataset_id, namespace=namespace,
@@ -31,19 +31,19 @@ class TestDataset(unittest2.TestCase):
         self.assertRaises(ValueError, self._makeOne, None)
 
     def test_ctor_w_dataset_id_no_connection(self):
-        dataset = self._makeOne()
-        self.assertEqual(dataset.dataset_id, self.DATASET_ID)
+        client = self._makeOne()
+        self.assertEqual(client.dataset_id, self.DATASET_ID)
 
     def test_ctor_w_explicit_inputs(self):
         conn = object()
         namespace = object()
-        dataset = self._makeOne(namespace=namespace, connection=conn)
-        self.assertEqual(dataset.dataset_id, self.DATASET_ID)
-        self.assertTrue(dataset.connection is conn)
-        self.assertTrue(dataset.namespace is namespace)
+        client = self._makeOne(namespace=namespace, connection=conn)
+        self.assertEqual(client.dataset_id, self.DATASET_ID)
+        self.assertTrue(client.connection is conn)
+        self.assertTrue(client.namespace is namespace)
 
     def test_get_defaults(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -51,11 +51,11 @@ class TestDataset(unittest2.TestCase):
         def _get(*args, **kw):
             _called_with.append((args, kw))
 
-        dataset = self._makeOne()
+        client = self._makeOne()
         key = object()
 
         with _Monkey(MUT, get=_get):
-            dataset.get(key)
+            client.get(key)
 
         self.assertEqual(_called_with[0][0], (key,))
         self.assertTrue(_called_with[0][1]['missing'] is None)
@@ -64,7 +64,7 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_get_explicit(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -73,11 +73,11 @@ class TestDataset(unittest2.TestCase):
             _called_with.append((args, kw))
 
         conn = object()
-        dataset = self._makeOne(connection=conn)
+        client = self._makeOne(connection=conn)
         key, missing, deferred = object(), [], []
 
         with _Monkey(MUT, get=_get):
-            dataset.get(key, missing, deferred)
+            client.get(key, missing, deferred)
 
         self.assertEqual(_called_with[0][0], (key,))
         self.assertTrue(_called_with[0][1]['missing'] is missing)
@@ -86,7 +86,7 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_get_multi_defaults(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -94,11 +94,11 @@ class TestDataset(unittest2.TestCase):
         def _get_multi(*args, **kw):
             _called_with.append((args, kw))
 
-        dataset = self._makeOne()
+        client = self._makeOne()
         key = object()
 
         with _Monkey(MUT, get_multi=_get_multi):
-            dataset.get_multi([key])
+            client.get_multi([key])
 
         self.assertEqual(_called_with[0][0], ([key],))
         self.assertTrue(_called_with[0][1]['missing'] is None)
@@ -107,7 +107,7 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_get_multi_explicit(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -116,11 +116,11 @@ class TestDataset(unittest2.TestCase):
             _called_with.append((args, kw))
 
         conn = object()
-        dataset = self._makeOne(connection=conn)
+        client = self._makeOne(connection=conn)
         key, missing, deferred = object(), [], []
 
         with _Monkey(MUT, get_multi=_get_multi):
-            dataset.get_multi([key], missing, deferred)
+            client.get_multi([key], missing, deferred)
 
         self.assertEqual(_called_with[0][0], ([key],))
         self.assertTrue(_called_with[0][1]['missing'] is missing)
@@ -129,7 +129,7 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_put_wo_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -137,18 +137,18 @@ class TestDataset(unittest2.TestCase):
         def _put(*args, **kw):
             _called_with.append((args, kw))
 
-        dataset = self._makeOne()
+        client = self._makeOne()
         entity = object()
 
         with _Monkey(MUT, put=_put):
-            dataset.put(entity)
+            client.put(entity)
 
         self.assertEqual(_called_with[0][0], (entity,))
         self.assertTrue(_called_with[0][1]['connection'] is None)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_put_w_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -157,17 +157,17 @@ class TestDataset(unittest2.TestCase):
             _called_with.append((args, kw))
 
         entity, conn = object(), object()
-        dataset = self._makeOne(connection=conn)
+        client = self._makeOne(connection=conn)
 
         with _Monkey(MUT, put=_put):
-            dataset.put(entity)
+            client.put(entity)
 
         self.assertEqual(_called_with[0][0], (entity,))
         self.assertTrue(_called_with[0][1]['connection'] is conn)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_put_multi_wo_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -175,18 +175,18 @@ class TestDataset(unittest2.TestCase):
         def _put_multi(*args, **kw):
             _called_with.append((args, kw))
 
-        dataset = self._makeOne()
+        client = self._makeOne()
         entity = object()
 
         with _Monkey(MUT, put_multi=_put_multi):
-            dataset.put_multi([entity])
+            client.put_multi([entity])
 
         self.assertEqual(_called_with[0][0], ([entity],))
         self.assertTrue(_called_with[0][1]['connection'] is None)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_put_multi_w_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -195,17 +195,17 @@ class TestDataset(unittest2.TestCase):
             _called_with.append((args, kw))
 
         entity, conn = object(), object()
-        dataset = self._makeOne(connection=conn)
+        client = self._makeOne(connection=conn)
 
         with _Monkey(MUT, put_multi=_put_multi):
-            dataset.put_multi([entity])
+            client.put_multi([entity])
 
         self.assertEqual(_called_with[0][0], ([entity],))
         self.assertTrue(_called_with[0][1]['connection'] is conn)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_delete_wo_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -213,18 +213,18 @@ class TestDataset(unittest2.TestCase):
         def _delete(*args, **kw):
             _called_with.append((args, kw))
 
-        dataset = self._makeOne()
+        client = self._makeOne()
         key = object()
 
         with _Monkey(MUT, delete=_delete):
-            dataset.delete(key)
+            client.delete(key)
 
         self.assertEqual(_called_with[0][0], (key,))
         self.assertTrue(_called_with[0][1]['connection'] is None)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_delete_w_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -233,16 +233,16 @@ class TestDataset(unittest2.TestCase):
             _called_with.append((args, kw))
 
         key, conn = object(), object()
-        dataset = self._makeOne(connection=conn)
+        client = self._makeOne(connection=conn)
         with _Monkey(MUT, delete=_delete):
-            dataset.delete(key)
+            client.delete(key)
 
         self.assertEqual(_called_with[0][0], (key,))
         self.assertTrue(_called_with[0][1]['connection'] is conn)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_delete_multi_wo_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -250,18 +250,18 @@ class TestDataset(unittest2.TestCase):
         def _delete_multi(*args, **kw):
             _called_with.append((args, kw))
 
-        dataset = self._makeOne()
+        client = self._makeOne()
         key = object()
 
         with _Monkey(MUT, delete_multi=_delete_multi):
-            dataset.delete_multi([key])
+            client.delete_multi([key])
 
         self.assertEqual(_called_with[0][0], ([key],))
         self.assertTrue(_called_with[0][1]['connection'] is None)
         self.assertEqual(_called_with[0][1]['dataset_id'], self.DATASET_ID)
 
     def test_delete_multi_w_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         _called_with = []
@@ -270,9 +270,9 @@ class TestDataset(unittest2.TestCase):
             _called_with.append((args, kw))
 
         key, conn = object(), object()
-        dataset = self._makeOne(connection=conn)
+        client = self._makeOne(connection=conn)
         with _Monkey(MUT, delete_multi=_delete_multi):
-            dataset.delete_multi([key])
+            client.delete_multi([key])
 
         self.assertEqual(_called_with[0][0], ([key],))
         self.assertTrue(_called_with[0][1]['connection'] is conn)
@@ -281,19 +281,19 @@ class TestDataset(unittest2.TestCase):
     def test_key_w_dataset_id(self):
         KIND = 'KIND'
         ID = 1234
-        dataset = self._makeOne()
+        client = self._makeOne()
         self.assertRaises(TypeError,
-                          dataset.key, KIND, ID, dataset_id=self.DATASET_ID)
+                          client.key, KIND, ID, dataset_id=self.DATASET_ID)
 
     def test_key_wo_dataset_id(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
         KIND = 'KIND'
         ID = 1234
-        dataset = self._makeOne()
+        client = self._makeOne()
 
         with _Monkey(MUT, Key=_Dummy):
-            key = dataset.key(KIND, ID)
+            key = client.key(KIND, ID)
 
         self.assertTrue(isinstance(key, _Dummy))
         self.assertEqual(key.args, (KIND, ID))
@@ -304,15 +304,15 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         KIND = 'KIND'
         ID = 1234
         NAMESPACE = object()
-        dataset = self._makeOne(namespace=NAMESPACE)
+        client = self._makeOne(namespace=NAMESPACE)
         with _Monkey(MUT, Key=_Dummy):
-            key = dataset.key(KIND, ID)
+            key = client.key(KIND, ID)
 
         self.assertTrue(isinstance(key, _Dummy))
         expected_kwargs = {
@@ -322,16 +322,16 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_key_w_namespace_collision(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         KIND = 'KIND'
         ID = 1234
         NAMESPACE1 = object()
         NAMESPACE2 = object()
-        dataset = self._makeOne(namespace=NAMESPACE1)
+        client = self._makeOne(namespace=NAMESPACE1)
         with _Monkey(MUT, Key=_Dummy):
-            key = dataset.key(KIND, ID, namespace=NAMESPACE2)
+            key = client.key(KIND, ID, namespace=NAMESPACE2)
 
         self.assertTrue(isinstance(key, _Dummy))
         expected_kwargs = {
@@ -341,12 +341,12 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(key.kwargs, expected_kwargs)
 
     def test_batch_wo_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
-        dataset = self._makeOne()
+        client = self._makeOne()
 
         with _Monkey(MUT, Batch=_Dummy):
-            batch = dataset.batch()
+            batch = client.batch()
 
         self.assertTrue(isinstance(batch, _Dummy))
         self.assertEqual(batch.args, ())
@@ -354,13 +354,13 @@ class TestDataset(unittest2.TestCase):
                          {'dataset_id': self.DATASET_ID, 'connection': None})
 
     def test_batch_w_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
         conn = object()
-        dataset = self._makeOne(connection=conn)
+        client = self._makeOne(connection=conn)
 
         with _Monkey(MUT, Batch=_Dummy):
-            batch = dataset.batch()
+            batch = client.batch()
 
         self.assertTrue(isinstance(batch, _Dummy))
         self.assertEqual(batch.args, ())
@@ -368,12 +368,12 @@ class TestDataset(unittest2.TestCase):
                          {'dataset_id': self.DATASET_ID, 'connection': conn})
 
     def test_transaction_wo_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
-        dataset = self._makeOne()
+        client = self._makeOne()
 
         with _Monkey(MUT, Transaction=_Dummy):
-            xact = dataset.transaction()
+            xact = client.transaction()
 
         self.assertTrue(isinstance(xact, _Dummy))
         self.assertEqual(xact.args, ())
@@ -381,13 +381,13 @@ class TestDataset(unittest2.TestCase):
                          {'dataset_id': self.DATASET_ID, 'connection': None})
 
     def test_transaction_w_connection(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
         conn = object()
-        dataset = self._makeOne(connection=conn)
+        client = self._makeOne(connection=conn)
 
         with _Monkey(MUT, Transaction=_Dummy):
-            xact = dataset.transaction()
+            xact = client.transaction()
 
         self.assertTrue(isinstance(xact, _Dummy))
         self.assertEqual(xact.args, ())
@@ -399,17 +399,17 @@ class TestDataset(unittest2.TestCase):
 
     def test_query_w_dataset_id(self):
         KIND = 'KIND'
-        dataset = self._makeOne()
+        client = self._makeOne()
         self.assertRaises(TypeError,
-                          dataset.query, kind=KIND, dataset_id=self.DATASET_ID)
+                          client.query, kind=KIND, dataset_id=self.DATASET_ID)
 
     def test_query_w_defaults(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
-        dataset = self._makeOne()
+        client = self._makeOne()
 
         with _Monkey(MUT, Query=_Dummy):
-            query = dataset.query()
+            query = client.query()
 
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, ())
@@ -420,7 +420,7 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_explicit(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
         KIND = 'KIND'
         NAMESPACE = 'NAMESPACE'
@@ -429,10 +429,10 @@ class TestDataset(unittest2.TestCase):
         PROJECTION = ['__key__']
         ORDER = ['PROPERTY']
         GROUP_BY = ['GROUPBY']
-        dataset = self._makeOne()
+        client = self._makeOne()
 
         with _Monkey(MUT, Query=_Dummy):
-            query = dataset.query(
+            query = client.query(
                 kind=KIND,
                 namespace=NAMESPACE,
                 ancestor=ANCESTOR,
@@ -457,14 +457,14 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(query.kwargs, kwargs)
 
     def test_query_w_namespace(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         KIND = 'KIND'
         NAMESPACE = object()
-        dataset = self._makeOne(namespace=NAMESPACE)
+        client = self._makeOne(namespace=NAMESPACE)
         with _Monkey(MUT, Query=_Dummy):
-            query = dataset.query(kind=KIND)
+            query = client.query(kind=KIND)
 
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, ())
@@ -476,15 +476,15 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(query.kwargs, expected_kwargs)
 
     def test_query_w_namespace_collision(self):
-        from gcloud.datastore import dataset as MUT
+        from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
         KIND = 'KIND'
         NAMESPACE1 = object()
         NAMESPACE2 = object()
-        dataset = self._makeOne(namespace=NAMESPACE1)
+        client = self._makeOne(namespace=NAMESPACE1)
         with _Monkey(MUT, Query=_Dummy):
-            query = dataset.query(kind=KIND, namespace=NAMESPACE2)
+            query = client.query(kind=KIND, namespace=NAMESPACE2)
 
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, ())

@@ -25,7 +25,7 @@ from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
 
 
-class Dataset(object):
+class Client(object):
     """Convenience wrapper for invoking APIs/factories w/ a dataset ID.
 
     :type dataset_id: string

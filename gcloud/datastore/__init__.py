@@ -28,9 +28,10 @@ The main concepts with this API are:
   which represents a connection between your machine and the Cloud Datastore
   API.
 
-- :class:`gcloud.datastore.dataset.Dataset`
-  which represents a dataset ID (string) bundled with a connection and has
-  convenience methods for constructing objects with that dataset ID.
+- :class:`gcloud.datastore.client.Client`
+  which represents a dataset ID (string) and namespace (string) bundled with
+  a connection and has convenience methods for constructing objects with that
+  dataset ID / namespace.
 
 - :class:`gcloud.datastore.entity.Entity`
   which represents a single entity in the datastore
@@ -63,7 +64,7 @@ from gcloud.datastore.api import put_multi
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.connection import SCOPE
 from gcloud.datastore.connection import Connection
-from gcloud.datastore.dataset import Dataset
+from gcloud.datastore.client import Client
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
