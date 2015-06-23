@@ -14,6 +14,8 @@
 
 """Create / interact with gcloud datastore queries."""
 
+from __future__ import print_function
+
 import base64
 
 from gcloud._helpers import _ensure_tuple_or_list
@@ -79,6 +81,8 @@ class Query(object):
                  projection=(),
                  order=(),
                  group_by=()):
+        if False:
+            print('I will never happen. Random change.')
 
         if dataset_id is None:
             dataset_id = _implicit_environ.get_default_dataset_id()
