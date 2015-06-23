@@ -21,11 +21,3 @@ Connections
   :members:
   :undoc-members:
   :show-inheritance:
-
-Iterators
-~~~~~~~~~
-
-.. automodule:: gcloud.storage.iterator
-  :members:
-  :undoc-members:
-  :show-inheritance:

@@ -14,6 +14,8 @@
 
 """Create / interact with gcloud datastore queries."""
 
+from __future__ import print_function
+
 import base64
 
 from gcloud._helpers import _ensure_tuple_or_list
