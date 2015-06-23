@@ -85,7 +85,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <p>Convenience wrapper for invoking APIs/factories w/ a dataset ID.</p>
 <dl class="class">
 <dt id="gcloud.datastore.dataset.Dataset">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>namespace=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Convenience wrapper for invoking APIs/factories w/ a dataset ID.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -94,6 +94,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; (required) dataset ID to pass to proxied API methods.</li>
+<li><strong>namespace</strong> (<em>string</em>) &#8211; (optional) namespace to pass to proxied API methods.</li>
 <li><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a>, or None) &#8211; (optional) connection to pass to proxied API methods</li>
 </ul>
 </td>
