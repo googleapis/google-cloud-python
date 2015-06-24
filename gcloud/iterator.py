@@ -53,6 +53,9 @@ class Iterator(object):
 
     :type path: string
     :param path: The path to query for the list of items.
+
+    :type extra_params: dict or None
+    :param extra_params: Extra query string parameters for the API call.
     """
 
     PAGE_TOKEN = 'pageToken'

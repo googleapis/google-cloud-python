@@ -156,7 +156,7 @@ class Topic(object):
                        ``client`` stored on the current topic.
 
         :type attrs: dict (string -> string)
-        :message attrs: key-value pairs to send as message attributes
+        :param attrs: key-value pairs to send as message attributes
 
         :rtype: str
         :returns: message ID assigned by the server to the published message
@@ -232,7 +232,7 @@ class Batch(object):
         :param message: the message payload
 
         :type attrs: dict (string -> string)
-        :message attrs: key-value pairs to send as message attributes
+        :param attrs: key-value pairs to send as message attributes
         """
         self.topic._timestamp_message(attrs)
         self.messages.append(

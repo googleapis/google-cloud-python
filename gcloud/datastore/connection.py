@@ -37,6 +37,9 @@ class Connection(connection.Connection):
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: The OAuth2 Credentials to use for this connection.
 
+    :type http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param http: An optional HTTP object to make requests.
+
     :type api_base_url: string
     :param api_base_url: The base of the API call URL. Defaults to the value
                          from :mod:`gcloud.connection`.

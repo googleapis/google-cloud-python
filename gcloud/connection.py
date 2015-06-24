@@ -127,6 +127,12 @@ class Connection(object):
                                       other credentials information (downloaded
                                       from the Google APIs console).
 
+        :type args: tuple
+        :param args: Remaining positional arguments to pass to constructor.
+
+        :type kwargs: dictionary
+        :param kwargs: Remaining keyword arguments to pass to constructor.
+
         :rtype: :class:`gcloud.connection.Connection`
         :returns: The connection created with the retrieved JSON credentials.
         """
@@ -152,6 +158,12 @@ class Connection(object):
         :param private_key_path: The path to a private key file (this file was
                                  given to you when you created the service
                                  account). This file must be in P12 format.
+
+        :type args: tuple
+        :param args: Remaining positional arguments to pass to constructor.
+
+        :type kwargs: dictionary
+        :param kwargs: Remaining keyword arguments to pass to constructor.
 
         :rtype: :class:`gcloud.connection.Connection`
         :returns: The connection created with the retrieved P12 credentials.

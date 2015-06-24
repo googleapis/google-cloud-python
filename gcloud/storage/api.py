@@ -207,6 +207,9 @@ class _BucketIterator(Iterator):
 
     :type connection: :class:`gcloud.storage.connection.Connection`
     :param connection: The connection to use for querying the list of buckets.
+
+    :type extra_params: dict or ``NoneType``
+    :param extra_params: Extra query string parameters for the API call.
     """
 
     def __init__(self, connection, extra_params=None):

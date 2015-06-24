@@ -86,6 +86,13 @@ class _ACLEntity(object):
 
     This is a helper class that you likely won't ever construct
     outside of using the factor methods on the :class:`ACL` object.
+
+    :type entity_type: string
+    :param entity_type: The type of entity (ie, 'group' or 'user').
+
+    :type identifier: string
+    :param identifier: The ID or e-mail of the entity. For the special
+                       entity types (like 'allUsers') this is optional.
     """
 
     READER_ROLE = 'READER'
@@ -93,15 +100,6 @@ class _ACLEntity(object):
     OWNER_ROLE = 'OWNER'
 
     def __init__(self, entity_type, identifier=None):
-        """Entity constructor.
-
-        :type entity_type: string
-        :param entity_type: The type of entity (ie, 'group' or 'user').
-
-        :type identifier: string
-        :param identifier: The ID or e-mail of the entity. For the special
-                           entity types (like 'allUsers') this is optional.
-        """
         self.identifier = identifier
         self.roles = set([])
         self.type = entity_type
@@ -416,13 +414,13 @@ class ACL(object):
 
 
 class BucketACL(ACL):
-    """An ACL specifically for a bucket."""
+    """An ACL specifically for a bucket.
+
+    :type bucket: :class:`gcloud.storage.bucket.Bucket`
+    :param bucket: The bucket to which this ACL relates.
+    """
 
     def __init__(self, bucket):
-        """
-        :type bucket: :class:`gcloud.storage.bucket.Bucket`
-        :param bucket: The bucket to which this ACL relates.
-        """
         super(BucketACL, self).__init__()
         self.bucket = bucket
 

@@ -81,6 +81,7 @@ def make_test_rc(base_rc_filename, additions_dict, target_filename):
             curr_val = curr_section.get(opt)
             if curr_val is None:
                 raise KeyError('Expected to be adding to existing option.')
+            curr_val = curr_val.rstrip(',')
             curr_section[opt] = '%s, %s' % (curr_val, opt_val)
 
     with open(target_filename, 'w') as file_obj:

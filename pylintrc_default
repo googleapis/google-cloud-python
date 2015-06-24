@@ -38,6 +38,9 @@ ignore =
 # List of plugins (as comma separated values of python modules names) to load,
 # usually to register additional checkers.
 # DEFAULT:  load-plugins=
+# RATIONALE: We want to make sure our docstrings match the objects
+#            they document.
+load-plugins=pylint.extensions.check_docs
 
 # DEPRECATED
 # DEFAULT:  include-ids=no
