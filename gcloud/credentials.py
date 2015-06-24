@@ -29,6 +29,17 @@ from oauth2client import crypt
 from oauth2client import service_account
 import pytz
 
+try:
+    from google.appengine.api import app_identity
+except ImportError:
+    app_identity = None
+
+try:
+    from oauth2client.appengine import AppAssertionCredentials as _GAECreds
+except ImportError:
+    class _GAECreds(object):
+        """Dummy class if not in App Engine environment."""
+
 
 def get_credentials():
     """Gets credentials implicitly from the current environment.
@@ -160,7 +171,66 @@ def _get_pem_key(credentials):
     return RSA.importKey(pem_text)
 
 
-def _get_signed_query_params(credentials, expiration, signature_string):
+def _get_signature_bytes(credentials, string_to_sign):
+    """Uses crypto attributes of credentials to sign a string/bytes.
+
+    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
+                       :class:`service_account._ServiceAccountCredentials`,
+                       :class:`_GAECreds`
+    :param credentials: The credentials used for signing text (typically
+                        involves the creation of an RSA key).
+
+    :type string_to_sign: string
+    :param string_to_sign: The string to be signed by the credentials.
+
+    :rtype: bytes
+    :returns: Signed bytes produced by the credentials.
+    """
+    if isinstance(credentials, _GAECreds):
+        _, signed_bytes = app_identity.sign_blob(string_to_sign)
+        return signed_bytes
+    else:
+        pem_key = _get_pem_key(credentials)
+        # Sign the string with the RSA key.
+        signer = PKCS1_v1_5.new(pem_key)
+        if not isinstance(string_to_sign, six.binary_type):
+            string_to_sign = string_to_sign.encode('utf-8')
+        signature_hash = SHA256.new(string_to_sign)
+        return signer.sign(signature_hash)
+
+
+def _get_service_account_name(credentials):
+    """Determines service account name from a credentials object.
+
+    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
+                       :class:`service_account._ServiceAccountCredentials`,
+                       :class:`_GAECreds`
+    :param credentials: The credentials used to determine the service
+                        account name.
+
+    :type string_to_sign: string
+    :param string_to_sign: The string to be signed by the credentials.
+
+    :rtype: bytes
+    :returns: Signed bytes produced by the credentials.
+    :raises: :class:`ValueError` if the credentials are not a valid service
+             account type
+    """
+    service_account_name = None
+    if isinstance(credentials, client.SignedJwtAssertionCredentials):
+        service_account_name = credentials.service_account_name
+    elif isinstance(credentials, service_account._ServiceAccountCredentials):
+        service_account_name = credentials._service_account_email
+    elif _GAECreds is not None and isinstance(credentials, _GAECreds):
+        service_account_name = app_identity.get_service_account_name()
+
+    if service_account_name is None:
+        raise ValueError('Service account name could not be determined '
+                         'from credentials')
+    return service_account_name
+
+
+def _get_signed_query_params(credentials, expiration, string_to_sign):
     """Gets query parameters for creating a signed URL.
 
     :type credentials: :class:`client.SignedJwtAssertionCredentials`,
@@ -171,27 +241,16 @@ def _get_signed_query_params(credentials, expiration, signature_string):
     :type expiration: int or long
     :param expiration: When the signed URL should expire.
 
-    :type signature_string: string
-    :param signature_string: The string to be signed by the credentials.
+    :type string_to_sign: string
+    :param string_to_sign: The string to be signed by the credentials.
 
     :rtype: dict
     :returns: Query parameters matching the signing credentials with a
               signed payload.
     """
-    pem_key = _get_pem_key(credentials)
-    # Sign the string with the RSA key.
-    signer = PKCS1_v1_5.new(pem_key)
-    if not isinstance(signature_string, six.binary_type):
-        signature_string = signature_string.encode('utf-8')
-    signature_hash = SHA256.new(signature_string)
-    signature_bytes = signer.sign(signature_hash)
+    signature_bytes = _get_signature_bytes(credentials, string_to_sign)
     signature = base64.b64encode(signature_bytes)
-
-    if isinstance(credentials, client.SignedJwtAssertionCredentials):
-        service_account_name = credentials.service_account_name
-    elif isinstance(credentials, service_account._ServiceAccountCredentials):
-        service_account_name = credentials._service_account_email
-    # We know one of the above must occur since `_get_pem_key` fails if not.
+    service_account_name = _get_service_account_name(credentials)
     return {
         'GoogleAccessId': service_account_name,
         'Expires': str(expiration),
@@ -277,7 +336,7 @@ def generate_signed_url(credentials, resource, expiration,
     expiration = _get_expiration_seconds(expiration)
 
     # Generate the string to sign.
-    signature_string = '\n'.join([
+    string_to_sign = '\n'.join([
         method,
         content_md5 or '',
         content_type or '',
@@ -287,7 +346,7 @@ def generate_signed_url(credentials, resource, expiration,
     # Set the right query parameters.
     query_params = _get_signed_query_params(credentials,
                                             expiration,
-                                            signature_string)
+                                            string_to_sign)
 
     # Return the built URL.
     return '{endpoint}{resource}?{querystring}'.format(
