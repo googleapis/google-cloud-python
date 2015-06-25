@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="gcloud 0.6.0 documentation" href="index.html" />
-    <link rel="next" title="Storage" href="storage-api.html" />
-    <link rel="prev" title="Batches" href="datastore-batches.html" /> 
+    <link rel="next" title="Datastore" href="datastore-api.html" />
+    <link rel="prev" title="GCloud Package" href="gcloud-api.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-dataset%0ARelease%3A%200.6.0" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%200.6.0" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -80,12 +80,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
       <section class="content">
         
-  <div class="section" id="module-gcloud.datastore.dataset">
-<span id="dataset"></span><h1>Dataset<a class="headerlink" href="#module-gcloud.datastore.dataset" title="Permalink to this headline">#</a></h1>
+  <div class="section" id="module-gcloud.datastore.client">
+<span id="dataset"></span><h1>Dataset<a class="headerlink" href="#module-gcloud.datastore.client" title="Permalink to this headline">#</a></h1>
 <p>Convenience wrapper for invoking APIs/factories w/ a dataset ID.</p>
 <dl class="class">
-<dt id="gcloud.datastore.dataset.Dataset">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.dataset.</code><code class="descname">Dataset</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>namespace=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client">
+<em class="property">class </em><code class="descclassname">gcloud.datastore.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>namespace=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Convenience wrapper for invoking APIs/factories w/ a dataset ID.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -102,71 +102,71 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 </tbody>
 </table>
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.batch">
-<code class="descname">batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.batch" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.batch">
+<code class="descname">batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-batches.html#gcloud.datastore.batch.Batch" title="gcloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.batch.Batch</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.delete" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-api.html#gcloud.datastore.api.delete" title="gcloud.datastore.api.delete"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.api.delete()</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.delete_multi">
-<code class="descname">delete_multi</code><span class="sig-paren">(</span><em>keys</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.delete_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.delete_multi" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.delete_multi">
+<code class="descname">delete_multi</code><span class="sig-paren">(</span><em>keys</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.delete_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.delete_multi" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-api.html#gcloud.datastore.api.delete_multi" title="gcloud.datastore.api.delete_multi"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.api.delete_multi()</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>missing=None</em>, <em>deferred=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>missing=None</em>, <em>deferred=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-api.html#gcloud.datastore.api.get" title="gcloud.datastore.api.get"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.api.get()</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.get_multi">
-<code class="descname">get_multi</code><span class="sig-paren">(</span><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.get_multi" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.get_multi">
+<code class="descname">get_multi</code><span class="sig-paren">(</span><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.get_multi" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-api.html#gcloud.datastore.api.get_multi" title="gcloud.datastore.api.get_multi"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.api.get_multi()</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.key">
-<code class="descname">key</code><span class="sig-paren">(</span><em>*path_args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.key" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.key">
+<code class="descname">key</code><span class="sig-paren">(</span><em>*path_args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.key" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.put">
-<code class="descname">put</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.put" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.put" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-api.html#gcloud.datastore.api.put" title="gcloud.datastore.api.put"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.api.put()</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.put_multi">
-<code class="descname">put_multi</code><span class="sig-paren">(</span><em>entities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.put_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.put_multi" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.put_multi">
+<code class="descname">put_multi</code><span class="sig-paren">(</span><em>entities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.put_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.put_multi" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-api.html#gcloud.datastore.api.put_multi" title="gcloud.datastore.api.put_multi"><code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.api.put_multi()</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.query">
-<code class="descname">query</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.query" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.query">
+<code class="descname">query</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.query" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.datastore.dataset.Dataset.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/dataset.html#Dataset.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.dataset.Dataset.transaction" title="Permalink to this definition">#</a></dt>
+<dt id="gcloud.datastore.client.Client.transaction">
+<code class="descname">transaction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
@@ -181,13 +181,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <ul><li><a href="index.html">gcloud</a></li></ul>
         <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">GCloud Package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
