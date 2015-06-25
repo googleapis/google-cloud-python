@@ -107,10 +107,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;}]&gt;</span>
 </pre></div>
 </div>
-<dl class="method">
-<dt id="gcloud.datastore.key.Key.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>*path_args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.__init__" title="Permalink to this definition">#</a></dt>
-<dd><p>Constructor / initializer for a key.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -118,40 +114,17 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>path_args</strong> (<em>tuple of string and integer</em>) &#8211; May represent a partial (odd length) or full (even
 length) key path.</li>
-<li><strong>namespace</strong> (<em>string</em>) &#8211; A namespace identifier for the key. Can only be
-passed as a keyword argument.</li>
-<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset ID associated with the key. Required,
-unless the implicit dataset ID has been set. Can
-only be passed as a keyword argument.</li>
-<li><strong>parent</strong> (<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; The parent of the key. Can only be passed as a
-keyword argument.</li>
+<li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Keyword arguments to be passed in.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<p>Constructor / initializer for a key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path_args</strong> (<em>tuple of string and integer</em>) &#8211; May represent a partial (odd length) or full (even
-length) key path.</li>
-<li><strong>namespace</strong> (<em>string</em>) &#8211; A namespace identifier for the key. Can only be
-passed as a keyword argument.</li>
-<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The dataset ID associated with the key. Required,
-unless the implicit dataset ID has been set. Can
-only be passed as a keyword argument.</li>
-<li><strong>parent</strong> (<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; The parent of the key. Can only be passed as a
-keyword argument.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<p>Accepted keyword arguments are
+* namespace (string): A namespace identifier for the key.
+* dataset_id (string): The dataset ID associated with the key.
+* parent (<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>): The parent of the key.</p>
+<p>The dataset ID argument is required unless it has been set implicitly.</p>
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.completed_key">
 <code class="descname">completed_key</code><span class="sig-paren">(</span><em>id_or_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/key.html#Key.completed_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.key.Key.completed_key" title="Permalink to this definition">#</a></dt>
