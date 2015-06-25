@@ -125,22 +125,29 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">      &gt;&gt;&gt; Key(&#39;Parent&#39;, &#39;foo&#39;, &#39;Child&#39;)</span>
 <span class="sd">      &lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;}]&gt;</span>
 
-<span class="sd">    :type path_args: tuple of string and integer</span>
-<span class="sd">    :param path_args: May represent a partial (odd length) or full (even</span>
-<span class="sd">                      length) key path.</span>
-
-<span class="sd">    :type kwargs: dictionary</span>
-<span class="sd">    :param kwargs: Keyword arguments to be passed in.</span>
-
-<span class="sd">    Accepted keyword arguments are</span>
-<span class="sd">    * namespace (string): A namespace identifier for the key.</span>
-<span class="sd">    * dataset_id (string): The dataset ID associated with the key.</span>
-<span class="sd">    * parent (:class:`gcloud.datastore.key.Key`): The parent of the key.</span>
-
-<span class="sd">    The dataset ID argument is required unless it has been set implicitly.</span>
+<span class="sd">    .. automethod:: __init__</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Key.__init__"><a class="viewcode-back" href="../../../datastore-keys.html#gcloud.datastore.key.Key.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor / initializer for a key.</span>
+
+<span class="sd">        :type path_args: tuple of string and integer</span>
+<span class="sd">        :param path_args: May represent a partial (odd length) or full (even</span>
+<span class="sd">                          length) key path.</span>
+
+<span class="sd">        :type namespace: string</span>
+<span class="sd">        :param namespace: A namespace identifier for the key. Can only be</span>
+<span class="sd">                          passed as a keyword argument.</span>
+
+<span class="sd">        :type dataset_id: string</span>
+<span class="sd">        :param dataset_id: The dataset ID associated with the key. Required,</span>
+<span class="sd">                           unless the implicit dataset ID has been set. Can</span>
+<span class="sd">                           only be passed as a keyword argument.</span>
+
+<span class="sd">        :type parent: :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">        :param parent: The parent of the key. Can only be passed as a</span>
+<span class="sd">                       keyword argument.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_flat_path</span> <span class="o">=</span> <span class="n">path_args</span>
         <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;parent&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;namespace&#39;</span><span class="p">)</span>
@@ -149,7 +156,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="c"># _flat_path, _parent, _namespace and _dataset_id must be set before</span>
         <span class="c"># _combine_args() is called.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combine_args</span><span class="p">()</span>
-
+</div>
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compare two keys for equality.</span>
 
@@ -468,14 +475,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    If ``dataset_id`` is unset, attempt to infer the ID from the environment.</span>
 
-<span class="sd">    :type dataset_id: string</span>
-<span class="sd">    :param dataset_id: A dataset ID.</span>
-
-<span class="sd">    :type parent: :class:`gcloud.datastore.key.Key` or ``NoneType``</span>
-<span class="sd">    :param parent: The parent of the key or ``None``.</span>
-
-<span class="sd">    :rtype: string</span>
-<span class="sd">    :returns: The ``dataset_id`` passed in, or implied from the environment.</span>
 <span class="sd">    :raises: :class:`ValueError` if ``dataset_id`` is ``None`` and no dataset</span>
 <span class="sd">             can be inferred.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

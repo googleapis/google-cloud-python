@@ -168,13 +168,6 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    This is a helper class that you likely won&#39;t ever construct</span>
 <span class="sd">    outside of using the factor methods on the :class:`ACL` object.</span>
-
-<span class="sd">    :type entity_type: string</span>
-<span class="sd">    :param entity_type: The type of entity (ie, &#39;group&#39; or &#39;user&#39;).</span>
-
-<span class="sd">    :type identifier: string</span>
-<span class="sd">    :param identifier: The ID or e-mail of the entity. For the special</span>
-<span class="sd">                       entity types (like &#39;allUsers&#39;) this is optional.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">READER_ROLE</span> <span class="o">=</span> <span class="s">&#39;READER&#39;</span>
@@ -182,6 +175,15 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="n">OWNER_ROLE</span> <span class="o">=</span> <span class="s">&#39;OWNER&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Entity constructor.</span>
+
+<span class="sd">        :type entity_type: string</span>
+<span class="sd">        :param entity_type: The type of entity (ie, &#39;group&#39; or &#39;user&#39;).</span>
+
+<span class="sd">        :type identifier: string</span>
+<span class="sd">        :param identifier: The ID or e-mail of the entity. For the special</span>
+<span class="sd">                           entity types (like &#39;allUsers&#39;) this is optional.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="n">identifier</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">roles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">entity_type</span>
@@ -496,13 +498,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 </div></div>
 <div class="viewcode-block" id="BucketACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.BucketACL">[docs]</a><span class="k">class</span> <span class="nc">BucketACL</span><span class="p">(</span><span class="n">ACL</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An ACL specifically for a bucket.</span>
-
-<span class="sd">    :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
-<span class="sd">    :param bucket: The bucket to which this ACL relates.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;An ACL specifically for a bucket.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :type bucket: :class:`gcloud.storage.bucket.Bucket`</span>
+<span class="sd">        :param bucket: The bucket to which this ACL relates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BucketACL</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
 

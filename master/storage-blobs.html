@@ -100,6 +100,7 @@ implicit default bucket has been set.</li>
 <li><strong>chunk_size</strong> (<em>integer</em>) &#8211; The size of a chunk of data whenever iterating (1 MB).
 This must be a multiple of 256 KB per the API
 specification.</li>
+<li><strong>properties</strong> (<em>dict</em>) &#8211; All the other data provided by Cloud Storage.</li>
 </ul>
 </td>
 </tr>
@@ -856,8 +857,6 @@ API documents for details.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>data</strong> (<em>bytes or text</em>) &#8211; The data to store in this blob.  If the value is
 text, it will be encoded as UTF-8.</li>
-<li><strong>content_type</strong> (<em>string</em>) &#8211; Optional type of content being uploaded. Defaults
-to <code class="docutils literal"><span class="pre">'text/plain'</span></code>.</li>
 <li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
 <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
 requests. If not provided, falls back to default.</li>
