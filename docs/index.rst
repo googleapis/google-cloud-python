@@ -3,13 +3,13 @@
   :hidden:
 
   gcloud-api
+  datastore-client
   datastore-api
   datastore-entities
   datastore-keys
   datastore-queries
   datastore-transactions
   datastore-batches
-  datastore-dataset
   storage-api
   storage-blobs
   storage-buckets
