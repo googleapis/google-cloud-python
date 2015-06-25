@@ -3,8 +3,8 @@
   :hidden:
 
   gcloud-api
-  datastore-client
   datastore-api
+  datastore-client
   datastore-entities
   datastore-keys
   datastore-queries
