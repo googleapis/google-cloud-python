@@ -123,9 +123,11 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<em>bytes</em>) &#8211; the message payload</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Message attrs:</th><td class="field-body">key-value pairs to send as message attributes</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>message</strong> (<em>bytes</em>) &#8211; the message payload</li>
+<li><strong>attrs</strong> (<em>dict (string -&gt; string)</em>) &#8211; key-value pairs to send as message attributes</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -289,16 +291,14 @@ from the client.</p>
 <li><strong>message</strong> (<em>bytes</em>) &#8211; the message payload</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</li>
+<li><strong>attrs</strong> (<em>dict (string -&gt; string)</em>) &#8211; key-value pairs to send as message attributes</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Message attrs:</th><td class="field-body"><p class="first">key-value pairs to send as message attributes</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">message ID assigned by the server to the published message</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">message ID assigned by the server to the published message</p>
 </td>
 </tr>
 </tbody>
