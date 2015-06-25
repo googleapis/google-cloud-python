@@ -18,6 +18,7 @@ import base64
 import datetime
 
 from gcloud._helpers import _RFC3339_MICROS
+from gcloud.exceptions import Conflict
 from gcloud.exceptions import NotFound
 
 _NOW = datetime.datetime.utcnow
@@ -42,11 +43,24 @@ class Topic(object):
     :param timestamp_messages: If true, the topic will add a ``timestamp`` key
                                to the attributes of each published message:
                                the value will be an RFC 3339 timestamp.
+
+    :type auto_create: boolean
+    :param auto_create: If true, will attempt to create the topic on
+    :param auto_create: If true, will attempt to create the topic on
+                        instantiation. If the topic already exists, we'll
+                        catch and ignore a 409 error (Conflict). Any other
+                        errors will not be caught.
     """
-    def __init__(self, name, client, timestamp_messages=False):
+    def __init__(self, name, client, timestamp_messages=False,
+                 auto_create=False):
         self.name = name
         self._client = client
         self.timestamp_messages = timestamp_messages
+        if auto_create:
+            try:
+                self.create()
+            except Conflict:
+                pass
 
     @classmethod
     def from_api_repr(cls, resource, client):

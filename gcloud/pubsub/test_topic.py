@@ -37,6 +37,61 @@ class TestTopic(unittest2.TestCase):
                          'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
         self.assertTrue(topic.timestamp_messages)
 
+    def test_ctor_auto_create_new_topic(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        conn = _Connection({'name': PATH})
+        CLIENT = _Client(project=PROJECT, connection=conn)
+        topic = self._makeOne(TOPIC_NAME, CLIENT,
+                              auto_create=True)
+        req, = conn._requested  # Asserts length 1.
+        self.assertEqual(req['method'], 'PUT')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertEqual(topic.full_name,
+                         'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
+
+    def test_ctor_auto_create_existing_topic(self):
+        class _ConflictConnection(object):
+
+            def __init__(self):
+                self._requested = []
+
+            def api_request(self, **kw):
+                from gcloud.exceptions import Conflict
+                self._requested.append(kw)
+                raise Conflict('Always fail.')
+
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        conn = _ConflictConnection()
+        CLIENT = _Client(project=PROJECT, connection=conn)
+
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        topic = self._makeOne(TOPIC_NAME, CLIENT, auto_create=True)
+        req, = conn._requested  # Asserts length 1.
+        self.assertEqual(req['method'], 'PUT')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertEqual(topic.project, PROJECT)
+        self.assertEqual(topic.full_name, PATH)
+
+    def test_ctor_auto_create_uncaught_error(self):
+        from gcloud.exceptions import NotFound
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        conn = _Connection()
+        CLIENT = _Client(project=PROJECT, connection=conn)
+        self.assertRaises(NotFound, self._makeOne, TOPIC_NAME,
+                          CLIENT, auto_create=True)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PUT')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
     def test_from_api_repr(self):
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
