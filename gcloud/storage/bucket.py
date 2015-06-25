@@ -78,9 +78,6 @@ class Bucket(_PropertyMixin):
 
     :type name: string
     :param name: The name of the bucket.
-
-    :type properties: dictionary or ``NoneType``
-    :param properties: The properties associated with the bucket.
     """
     _iterator_class = _BlobIterator
 

@@ -40,6 +40,12 @@ class MIMEApplicationHTTP(MIMEApplication):
 
     Constructs payload from headers and body
 
+    :type method: string
+    :param method: HTTP method
+
+    :type uri: string
+    :param uri: URI for HTTP request
+
     :type headers:  dict
     :param headers: HTTP headers
 
@@ -154,6 +160,12 @@ class Batch(Connection):
 
         :type data: string
         :param data: The data to send as the body of the request.
+
+        :type target_object: object or :class:`NoneType`
+        :param target_object: This allows us to enable custom behavior in our
+                              batch connection. Here we defer an HTTP request
+                              and complete initialization of the object at a
+                              later time.
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).

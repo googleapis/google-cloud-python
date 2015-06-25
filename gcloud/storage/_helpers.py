@@ -30,6 +30,9 @@ class _PropertyMixin(object):
     Non-abstract subclasses should implement:
       - connection
       - path
+
+    :type name: string
+    :param name: The name of the object.
     """
 
     @property
@@ -38,11 +41,6 @@ class _PropertyMixin(object):
         raise NotImplementedError
 
     def __init__(self, name=None):
-        """_PropertyMixin constructor.
-
-        :type name: string
-        :param name: The name of the object.
-        """
         self.name = name
         self._properties = {}
         self._changes = set()
@@ -156,6 +154,13 @@ def _write_buffer_to_hash(buffer_object, hash_obj, digest_block_size=8192):
 
     :type buffer_object: bytes buffer
     :param buffer_object: Buffer containing bytes used to update a hash object.
+
+    :type hash_obj: object that implements update
+    :param hash_obj: A hash object (MD5 or CRC32-C).
+
+    :type digest_block_size: integer
+    :param digest_block_size: The block size to write to the hash.
+                              Defaults to 8192.
     """
     block = buffer_object.read(digest_block_size)
 

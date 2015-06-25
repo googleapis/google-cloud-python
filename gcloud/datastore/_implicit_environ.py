@@ -151,6 +151,10 @@ class _DefaultsContainer(object):
 
     :type dataset_id: string
     :param dataset_id: Persistent implied dataset ID from environment.
+
+    :type implicit: boolean
+    :param implicit: Boolean indicating if the container should allow
+                     implicit properties.
     """
 
     @_lazy_property_deco

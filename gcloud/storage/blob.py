@@ -57,9 +57,6 @@ class Blob(_PropertyMixin):
     :param chunk_size: The size of a chunk of data whenever iterating (1 MB).
                        This must be a multiple of 256 KB per the API
                        specification.
-
-    :type properties: dict
-    :param properties: All the other data provided by Cloud Storage.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -506,6 +503,10 @@ class Blob(_PropertyMixin):
         :type data: bytes or text
         :param data: The data to store in this blob.  If the value is
                      text, it will be encoded as UTF-8.
+
+        :type content_type: string
+        :param content_type: Optional type of content being uploaded. Defaults
+                             to ``'text/plain'``.
 
         :type connection: :class:`gcloud.storage.connection.Connection` or
                           ``NoneType``

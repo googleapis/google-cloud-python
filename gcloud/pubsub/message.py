@@ -28,14 +28,15 @@ class Message(object):
     See:
     https://cloud.google.com/pubsub/reference/rest/google/pubsub/v1beta2/PubsubMessage
 
-    :type name: bytes
-    :param name: the payload of the message
+    :type data: bytes
+    :param data: the payload of the message
 
     :type message_id: string
     :param message_id: An ID assigned to the message by the API.
 
-    :type attrs: dict or None
-    :param attrs: Extra metadata associated by the publisher with the message.
+    :type attributes: dict or None
+    :param attributes: Extra metadata associated by the publisher with the
+                       message.
     """
     def __init__(self, data, message_id, attributes=None):
         self.data = data

@@ -43,29 +43,22 @@ class Key(object):
       >>> Key('Parent', 'foo', 'Child')
       <Key[{'kind': 'Parent', 'name': 'foo'}, {'kind': 'Child'}]>
 
-    .. automethod:: __init__
+    :type path_args: tuple of string and integer
+    :param path_args: May represent a partial (odd length) or full (even
+                      length) key path.
+
+    :type kwargs: dictionary
+    :param kwargs: Keyword arguments to be passed in.
+
+    Accepted keyword arguments are
+    * namespace (string): A namespace identifier for the key.
+    * dataset_id (string): The dataset ID associated with the key.
+    * parent (:class:`gcloud.datastore.key.Key`): The parent of the key.
+
+    The dataset ID argument is required unless it has been set implicitly.
     """
 
     def __init__(self, *path_args, **kwargs):
-        """Constructor / initializer for a key.
-
-        :type path_args: tuple of string and integer
-        :param path_args: May represent a partial (odd length) or full (even
-                          length) key path.
-
-        :type namespace: string
-        :param namespace: A namespace identifier for the key. Can only be
-                          passed as a keyword argument.
-
-        :type dataset_id: string
-        :param dataset_id: The dataset ID associated with the key. Required,
-                           unless the implicit dataset ID has been set. Can
-                           only be passed as a keyword argument.
-
-        :type parent: :class:`gcloud.datastore.key.Key`
-        :param parent: The parent of the key. Can only be passed as a
-                       keyword argument.
-        """
         self._flat_path = path_args
         parent = self._parent = kwargs.get('parent')
         self._namespace = kwargs.get('namespace')
@@ -393,6 +386,14 @@ def _validate_dataset_id(dataset_id, parent):
 
     If ``dataset_id`` is unset, attempt to infer the ID from the environment.
 
+    :type dataset_id: string
+    :param dataset_id: A dataset ID.
+
+    :type parent: :class:`gcloud.datastore.key.Key` or ``NoneType``
+    :param parent: The parent of the key or ``None``.
+
+    :rtype: string
+    :returns: The ``dataset_id`` passed in, or implied from the environment.
     :raises: :class:`ValueError` if ``dataset_id`` is ``None`` and no dataset
              can be inferred.
     """

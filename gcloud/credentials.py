@@ -208,20 +208,17 @@ def _get_service_account_name(credentials):
     :param credentials: The credentials used to determine the service
                         account name.
 
-    :type string_to_sign: string
-    :param string_to_sign: The string to be signed by the credentials.
-
-    :rtype: bytes
-    :returns: Signed bytes produced by the credentials.
+    :rtype: string
+    :returns: Service account name associated with the credentials.
     :raises: :class:`ValueError` if the credentials are not a valid service
-             account type
+             account type.
     """
     service_account_name = None
     if isinstance(credentials, client.SignedJwtAssertionCredentials):
         service_account_name = credentials.service_account_name
     elif isinstance(credentials, service_account._ServiceAccountCredentials):
         service_account_name = credentials._service_account_email
-    elif _GAECreds is not None and isinstance(credentials, _GAECreds):
+    elif isinstance(credentials, _GAECreds):
         service_account_name = app_identity.get_service_account_name()
 
     if service_account_name is None:

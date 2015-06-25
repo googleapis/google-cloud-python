@@ -61,21 +61,19 @@ class Batch(object):
       >>> with Batch() as batch:
       ...   do_some_work(batch)
       ...   raise Exception() # rolls back
+
+    :type dataset_id: :class:`str`.
+    :param dataset_id: The ID of the dataset.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: The connection used to connect to datastore.
+
+    :raises: :class:`ValueError` if either a connection or dataset ID
+             are not set.
     """
     _id = None  # "protected" attribute, always None for non-transactions
 
     def __init__(self, dataset_id=None, connection=None):
-        """Construct a batch.
-
-        :type dataset_id: :class:`str`.
-        :param dataset_id: The ID of the dataset.
-
-        :type connection: :class:`gcloud.datastore.connection.Connection`
-        :param connection: The connection used to connect to datastore.
-
-        :raises: :class:`ValueError` if either a connection or dataset ID
-                 are not set.
-        """
         self._connection = (connection or
                             _implicit_environ.get_default_connection())
         self._dataset_id = (dataset_id or
@@ -254,14 +252,14 @@ def _assign_entity_to_mutation(mutation_pb, entity, auto_id_entities):
     Helper method for ``Batch.put``.
 
     :type mutation_pb: :class:`gcloud.datastore._datastore_v1_pb2.Mutation`
-    :param mutation_pb; the Mutation protobuf for the batch / transaction.
+    :param mutation_pb: The Mutation protobuf for the batch / transaction.
 
     :type entity: :class:`gcloud.datastore.entity.Entity`
-    :param entity; the entity being updated within the batch / transaction.
+    :param entity: The entity being updated within the batch / transaction.
 
     :type auto_id_entities: list of :class:`gcloud.datastore.entity.Entity`
-    :param auto_id_entities: entiites with partial keys, to be fixed up
-                              during commit.
+    :param auto_id_entities: Entities with partial keys, to be fixed up
+                             during commit.
     """
     auto_id = entity.key.is_partial
 
