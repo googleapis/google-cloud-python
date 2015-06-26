@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Script to populate datastore with regression test data."""
+"""Script to populate datastore with system test data."""
 
 from six.moves import input
 

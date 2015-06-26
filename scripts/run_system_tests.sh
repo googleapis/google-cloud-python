@@ -18,7 +18,7 @@ set -ev
 
 # If we're on Travis, we need to set up the environment.
 if [[ "${TRAVIS}" == "true" ]]; then
-  # If merging to master and not a pull request, run regression test.
+  # If merging to master and not a pull request, run system test.
   if [[ "${TRAVIS_BRANCH}" == "master" ]] && \
          [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
     echo "Running in Travis during merge, decrypting stored key file."
@@ -26,7 +26,7 @@ if [[ "${TRAVIS}" == "true" ]]; then
     # Convert encrypted key file into decrypted file to be used.
     openssl aes-256-cbc -K $encrypted_a1b222e8c14d_key \
         -iv $encrypted_a1b222e8c14d_iv \
-        -in regression/key.json.enc \
+        -in system_tests/key.json.enc \
         -out $GOOGLE_APPLICATION_CREDENTIALS -d
   else
     echo "Running in Travis during non-merge to master, doing nothing."
@@ -34,7 +34,7 @@ if [[ "${TRAVIS}" == "true" ]]; then
   fi
 fi
 
-# Run the regression tests for each tested package.
-python regression/run_regression.py --package datastore
-python regression/run_regression.py --package storage
-python regression/run_regression.py --package pubsub
+# Run the system tests for each tested package.
+python system_tests/run_system_test.py --package datastore
+python system_tests/run_system_test.py --package storage
+python system_tests/run_system_test.py --package pubsub

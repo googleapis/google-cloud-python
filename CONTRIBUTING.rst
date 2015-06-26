@@ -141,22 +141,22 @@ Running Tests
    $ cd ~/hack-on-gcloud/
    $ /usr/bin/tox
 
-Running Regression Tests
-------------------------
+Running System Tests
+--------------------
 
-- To run regression tests you can execute::
+- To run system tests you can execute::
 
-   $ tox -e regression
+   $ tox -e system-tests
 
-  or run only regression tests for a particular package via::
+  or run only system tests for a particular package via::
 
-   $ python regression/run_regression.py --package {package}
+   $ python system_tests/run_system_test.py --package {package}
 
   This alone will not run the tests. You'll need to change some local
   auth settings and change some configuration in your project to
   run all the tests.
 
-- Regression tests will be run against an actual project and
+- System tests will be run against an actual project and
   so you'll need to provide some environment variables to facilitate
   authentication to your project:
 
@@ -165,17 +165,17 @@ Running Regression Tests
   - ``GCLOUD_TESTS_DATASET_ID``: The name of the dataset your tests connect to.
     This is typically the same as ``GCLOUD_TESTS_PROJECT_ID``.
   - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to a JSON key file;
-    see ``regression/app_credentials.json.sample`` as an example. Such a file
+    see ``system_tests/app_credentials.json.sample`` as an example. Such a file
     can be downloaded directly from the developer's console by clicking
     "Generate new JSON key". See private key
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
     for more details.
 
-- Examples of these can be found in ``regression/local_test_setup.sample``. We
-  recommend copying this to ``regression/local_test_setup``, editing the values
-  and sourcing them into your environment::
+- Examples of these can be found in ``system_tests/local_test_setup.sample``. We
+  recommend copying this to ``system_tests/local_test_setup``, editing the
+  values and sourcing them into your environment::
 
-   $ source regression/local_test_setup
+   $ source system_tests/local_test_setup
 
 - For datastore tests, you'll need to create composite
   `indexes <https://cloud.google.com/datastore/docs/tools/indexconfig>`__
@@ -196,7 +196,7 @@ Running Regression Tests
    > --key-file=$P12_CREDENTIALS_FILE
 
    # Create the indexes
-   $ gcloud preview datastore create-indexes regression/data/ \
+   $ gcloud preview datastore create-indexes system_tests/data/ \
    > --project=$GCLOUD_TESTS_DATASET_ID
 
    # Restore your environment to its previous state.
@@ -205,13 +205,13 @@ Running Regression Tests
 - For datastore query tests, you'll need stored data in your dataset.
   To populate this data, run::
 
-   $ python regression/populate_datastore.py
+   $ python system_tests/populate_datastore.py
 
 - If you make a mistake during development (i.e. a failing test that
-  prevents clean-up) you can clear all regression data from your
+  prevents clean-up) you can clear all system test data from your
   datastore instance via::
 
-   $ python regression/clear_datastore.py
+   $ python system_tests/clear_datastore.py
 
 Test Coverage
 -------------

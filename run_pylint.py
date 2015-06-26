@@ -103,8 +103,7 @@ def is_production_filename(filename):
     :rtype: boolean
     :returns: Boolean indicating production status.
     """
-    return not ('demo' in filename or 'test' in filename or
-                filename.startswith('regression'))
+    return not ('demo' in filename or 'test' in filename)
 
 
 def get_files_for_linting(allow_limited=True):

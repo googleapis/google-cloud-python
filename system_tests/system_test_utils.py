@@ -23,7 +23,7 @@ DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
 CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 
 ENVIRON_ERROR_MSG = """\
-To run the regression tests, you need to set some environment variables.
+To run the system tests, you need to set some environment variables.
 Please check the Contributing guide for instructions.
 """
 

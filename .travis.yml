@@ -14,8 +14,8 @@ script:
   - tox -e py27
   - tox -e py34
   - tox -e lint
-  - tox -e regression
-  - tox -e regression3
+  - tox -e system-tests
+  - tox -e system-tests3
   - scripts/merge.sh
 
 after_success:
