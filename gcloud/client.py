@@ -25,6 +25,9 @@ from gcloud.credentials import get_for_service_account_p12
 class Client(object):
     """Client to bundle configuration needed for API requests.
 
+    Assumes that the associated ``_connection_class`` only accepts
+    ``http`` and ``credentials`` in its constructor.
+
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for the connection
@@ -38,9 +41,13 @@ class Client(object):
                  ``credentials`` for the current object.
     """
 
+    _connection_class = Connection
+
     def __init__(self, credentials=None, http=None):
-        self.credentials = credentials
-        self.http = http
+        if credentials is None and http is None:
+            credentials = get_credentials()
+        self.connection = self._connection_class(
+            credentials=credentials, http=http)
 
     @classmethod
     def from_service_account_json(cls, json_credentials_path, *args, **kwargs):
@@ -113,9 +120,6 @@ class JSONClient(Client):
     Assumes such APIs use the `project` and the client needs to store this
     value.
 
-    Also assumes that the associated ``_connection_class`` only accepts
-    ``http`` and ``credentials`` in it's constructor.
-
     :type project: string
     :param project: the project which the client acts on behalf of. If not
                     passed falls back to the default inferred from the
@@ -137,8 +141,6 @@ class JSONClient(Client):
              set in the environment.
     """
 
-    _connection_class = Connection
-
     def __init__(self, project=None, credentials=None, http=None):
         if project is None:
             project = _get_production_project()
@@ -147,7 +149,4 @@ class JSONClient(Client):
                              'determined from the environment.')
         self.project = project
 
-        if credentials is None and http is None:
-            credentials = get_credentials()
-        self.connection = self._connection_class(
-            credentials=credentials, http=http)
+        super(JSONClient, self).__init__(credentials=credentials, http=http)
