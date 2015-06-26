@@ -15,6 +15,9 @@
 """gcloud client base class for interacting with API."""
 
 
+from gcloud._helpers import _get_production_project
+from gcloud.connection import Connection
+from gcloud.credentials import get_credentials
 from gcloud.credentials import get_for_service_account_json
 from gcloud.credentials import get_for_service_account_p12
 
@@ -102,3 +105,49 @@ class Client(object):
                                                   private_key_path)
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
+
+
+class JSONClient(Client):
+    """Client to for Google JSON-based API.
+
+    Assumes such APIs use the `project` and the client needs to store this
+    value.
+
+    Also assumes that the associated ``_connection_class`` only accepts
+    ``http`` and ``credentials`` in it's constructor.
+
+    :type project: string
+    :param project: the project which the client acts on behalf of. If not
+                    passed falls back to the default inferred from the
+                    environment.
+
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+                       :class:`NoneType`
+    :param credentials: The OAuth2 Credentials to use for the connection
+                        owned by this client. If not passed (and if no ``http``
+                        object is passed), falls back to the default inferred
+                        from the environment.
+
+    :type http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param http: An optional HTTP object to make requests. If not passed, an
+                 ``http`` object is created that is bound to the
+                 ``credentials`` for the current object.
+
+    :raises: :class:`ValueError` if the project is neither passed in nor
+             set in the environment.
+    """
+
+    _connection_class = Connection
+
+    def __init__(self, project=None, credentials=None, http=None):
+        if project is None:
+            project = _get_production_project()
+        if project is None:
+            raise ValueError('Project was not passed and could not be '
+                             'determined from the environment.')
+        self.project = project
+
+        if credentials is None and http is None:
+            credentials = get_credentials()
+        self.connection = self._connection_class(
+            credentials=credentials, http=http)

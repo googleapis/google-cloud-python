@@ -15,15 +15,13 @@
 """gcloud pubsub client for interacting with API."""
 
 
-from gcloud._helpers import _get_production_project
-from gcloud.client import Client as BaseClient
-from gcloud.credentials import get_credentials
+from gcloud.client import JSONClient
 from gcloud.pubsub.connection import Connection
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
 
-class Client(BaseClient):
+class Client(JSONClient):
     """Client to bundle configuration needed for API requests.
 
     :type project: string
@@ -42,21 +40,9 @@ class Client(BaseClient):
     :param http: An optional HTTP object to make requests. If not passed, an
                  ``http`` object is created that is bound to the
                  ``credentials`` for the current object.
-
-    :raises: :class:`ValueError` if the project is neither passed in nor
-             set in the environment.
     """
-    def __init__(self, project=None, credentials=None, http=None):
-        if project is None:
-            project = _get_production_project()
-        if project is None:
-            raise ValueError('Project was not passed and could not be '
-                             'determined from the environment.')
-        self.project = project
 
-        if credentials is None and http is None:
-            credentials = get_credentials()
-        self.connection = Connection(credentials=credentials, http=http)
+    _connection_class = Connection
 
     def list_topics(self, page_size=None, page_token=None):
         """List topics for the project associated with this client.

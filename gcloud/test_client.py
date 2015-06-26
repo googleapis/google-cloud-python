@@ -81,3 +81,83 @@ class TestClient(unittest2.TestCase):
         CREDENTIALS = object()
         self.assertRaises(TypeError, KLASS.from_service_account_p12, None,
                           None, credentials=CREDENTIALS)
+
+
+class TestJSONClient(unittest2.TestCase):
+
+    def setUp(self):
+        KLASS = self._getTargetClass()
+        self.original_cnxn_class = KLASS._connection_class
+        KLASS._connection_class = _MockConnection
+
+    def tearDown(self):
+        KLASS = self._getTargetClass()
+        KLASS._connection_class = self.original_cnxn_class
+
+    def _getTargetClass(self):
+        from gcloud.client import JSONClient
+        return JSONClient
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        from gcloud._testing import _Monkey
+        from gcloud import client
+
+        PROJECT = object()
+        CREDENTIALS = object()
+        FUNC_CALLS = []
+
+        def mock_get_proj():
+            FUNC_CALLS.append('_get_production_project')
+            return PROJECT
+
+        def mock_get_credentials():
+            FUNC_CALLS.append('get_credentials')
+            return CREDENTIALS
+
+        with _Monkey(client, get_credentials=mock_get_credentials,
+                     _get_production_project=mock_get_proj):
+            client_obj = self._makeOne()
+
+        self.assertTrue(client_obj.project is PROJECT)
+        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
+        self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
+        self.assertEqual(FUNC_CALLS,
+                         ['_get_production_project', 'get_credentials'])
+
+    def test_ctor_missing_project(self):
+        from gcloud._testing import _Monkey
+        from gcloud import client
+
+        FUNC_CALLS = []
+
+        def mock_get_proj():
+            FUNC_CALLS.append('_get_production_project')
+            return None
+
+        with _Monkey(client, _get_production_project=mock_get_proj):
+            self.assertRaises(ValueError, self._makeOne)
+
+        self.assertEqual(FUNC_CALLS, ['_get_production_project'])
+
+    def test_ctor_explicit(self):
+        PROJECT = object()
+        CREDENTIALS = object()
+        HTTP = object()
+
+        client_obj = self._makeOne(project=PROJECT, credentials=CREDENTIALS,
+                                   http=HTTP)
+
+        self.assertTrue(client_obj.project is PROJECT)
+        self.assertTrue(isinstance(client_obj.connection, _MockConnection))
+        self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
+        self.assertTrue(client_obj.connection.http is HTTP)
+
+
+class _MockConnection(object):
+
+    def __init__(self, credentials=None, http=None):
+        self.credentials = credentials
+        self.http = http

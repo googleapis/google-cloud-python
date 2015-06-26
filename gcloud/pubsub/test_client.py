@@ -24,64 +24,6 @@ class TestClient(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor_defaults(self):
-        from gcloud._testing import _Monkey
-        from gcloud.pubsub import SCOPE
-        from gcloud.pubsub import client
-        from gcloud.pubsub.connection import Connection
-
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-        FUNC_CALLS = []
-
-        def mock_get_proj():
-            FUNC_CALLS.append('_get_production_project')
-            return PROJECT
-
-        def mock_get_credentials():
-            FUNC_CALLS.append('get_credentials')
-            return CREDS
-
-        with _Monkey(client, get_credentials=mock_get_credentials,
-                     _get_production_project=mock_get_proj):
-            client_obj = self._makeOne()
-
-        self.assertEqual(client_obj.project, PROJECT)
-        self.assertTrue(isinstance(client_obj.connection, Connection))
-        self.assertTrue(client_obj.connection._credentials is CREDS)
-        self.assertEqual(client_obj.connection._credentials._scopes, SCOPE)
-        self.assertEqual(FUNC_CALLS,
-                         ['_get_production_project', 'get_credentials'])
-
-    def test_ctor_missing_project(self):
-        from gcloud._testing import _Monkey
-        from gcloud.pubsub import client
-
-        FUNC_CALLS = []
-
-        def mock_get_proj():
-            FUNC_CALLS.append('_get_production_project')
-            return None
-
-        with _Monkey(client, _get_production_project=mock_get_proj):
-            self.assertRaises(ValueError, self._makeOne)
-
-        self.assertEqual(FUNC_CALLS, ['_get_production_project'])
-
-    def test_ctor_explicit(self):
-        from gcloud.pubsub import SCOPE
-        from gcloud.pubsub.connection import Connection
-
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-
-        client_obj = self._makeOne(project=PROJECT, credentials=CREDS)
-
-        self.assertEqual(client_obj.project, PROJECT)
-        self.assertTrue(isinstance(client_obj.connection, Connection))
-        self.assertTrue(client_obj.connection._credentials is CREDS)
-        self.assertEqual(CREDS._scopes, SCOPE)
-
     def test_list_topics_no_paging(self):
         from gcloud.pubsub.topic import Topic
         PROJECT = 'PROJECT'
