@@ -16,15 +16,14 @@
 
 
 from gcloud._helpers import _get_production_project
+from gcloud.client import Client as BaseClient
 from gcloud.credentials import get_credentials
-from gcloud.credentials import get_for_service_account_json
-from gcloud.credentials import get_for_service_account_p12
 from gcloud.pubsub.connection import Connection
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
 
-class Client(object):
+class Client(BaseClient):
     """Client to bundle configuration needed for API requests.
 
     :type project: string
@@ -58,58 +57,6 @@ class Client(object):
         if credentials is None and http is None:
             credentials = get_credentials()
         self.connection = Connection(credentials=credentials, http=http)
-
-    @classmethod
-    def from_service_account_json(cls, json_credentials_path, project=None):
-        """Factory to retrieve JSON credentials while creating client.
-
-        :type json_credentials_path: string
-        :param json_credentials_path: The path to a private key file (this file
-                                      was given to you when you created the
-                                      service account). This file must contain
-                                      a JSON object with a private key and
-                                      other credentials information (downloaded
-                                      from the Google APIs console).
-
-        :type project: string
-        :param project: the project which the client acts on behalf of. Will be
-                        passed when creating a topic.  If not passed, falls
-                        back to the default inferred from the environment.
-
-        :rtype: :class:`gcloud.pubsub.client.Client`
-        :returns: The client created with the retrieved JSON credentials.
-        """
-        credentials = get_for_service_account_json(json_credentials_path)
-        return cls(project=project, credentials=credentials)
-
-    @classmethod
-    def from_service_account_p12(cls, client_email, private_key_path,
-                                 project=None):
-        """Factory to retrieve P12 credentials while creating client.
-
-        .. note::
-          Unless you have an explicit reason to use a PKCS12 key for your
-          service account, we recommend using a JSON key.
-
-        :type client_email: string
-        :param client_email: The e-mail attached to the service account.
-
-        :type private_key_path: string
-        :param private_key_path: The path to a private key file (this file was
-                                 given to you when you created the service
-                                 account). This file must be in P12 format.
-
-        :type project: string
-        :param project: the project which the client acts on behalf of. Will be
-                        passed when creating a topic.  If not passed, falls
-                        back to the default inferred from the environment.
-
-        :rtype: :class:`gcloud.pubsub.client.Client`
-        :returns: The client created with the retrieved P12 credentials.
-        """
-        credentials = get_for_service_account_p12(client_email,
-                                                  private_key_path)
-        return cls(project=project, credentials=credentials)
 
     def list_topics(self, page_size=None, page_token=None):
         """List topics for the project associated with this client.

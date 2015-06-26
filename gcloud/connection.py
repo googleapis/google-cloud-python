@@ -135,10 +135,12 @@ class Connection(object):
 
         :rtype: :class:`gcloud.connection.Connection`
         :returns: The connection created with the retrieved JSON credentials.
+        :raises: class:`TypeError` if there is a conflict with the kwargs
+                 and the credentials created by the factory.
         """
-        credentials = get_for_service_account_json(json_credentials_path)
         if 'credentials' in kwargs:
             raise TypeError('credentials must not be in keyword arguments')
+        credentials = get_for_service_account_json(json_credentials_path)
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
@@ -167,11 +169,13 @@ class Connection(object):
 
         :rtype: :class:`gcloud.connection.Connection`
         :returns: The connection created with the retrieved P12 credentials.
+        :raises: class:`TypeError` if there is a conflict with the kwargs
+                 and the credentials created by the factory.
         """
-        credentials = get_for_service_account_p12(client_email,
-                                                  private_key_path)
         if 'credentials' in kwargs:
             raise TypeError('credentials must not be in keyword arguments')
+        credentials = get_for_service_account_p12(client_email,
+                                                  private_key_path)
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
@@ -179,13 +183,21 @@ class Connection(object):
     def from_environment(cls, *args, **kwargs):
         """Factory to retrieve implicit credentials while creating connection.
 
+        :type args: tuple
+        :param args: Remaining positional arguments to pass to constructor.
+
+        :type kwargs: dictionary
+        :param kwargs: Remaining keyword arguments to pass to constructor.
+
         :rtype: :class:`gcloud.connection.Connection`
         :returns: The connection created with the retrieved implicit
                   credentials.
+        :raises: class:`TypeError` if there is a conflict with the kwargs
+                 and the credentials created by the factory.
         """
-        credentials = get_credentials()
         if 'credentials' in kwargs:
             raise TypeError('credentials must not be in keyword arguments')
+        credentials = get_credentials()
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
