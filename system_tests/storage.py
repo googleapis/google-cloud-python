@@ -84,13 +84,13 @@ class TestStorageFiles(unittest2.TestCase):
 
     FILES = {
         'logo': {
-            'path': 'regression/data/CloudPlatform_128px_Retina.png',
+            'path': 'system_tests/data/CloudPlatform_128px_Retina.png',
         },
         'big': {
-            'path': 'regression/data/five-point-one-mb-file.zip',
+            'path': 'system_tests/data/five-point-one-mb-file.zip',
         },
         'simple': {
-            'path': 'regression/data/simple.txt',
+            'path': 'system_tests/data/simple.txt',
         }
     }
 

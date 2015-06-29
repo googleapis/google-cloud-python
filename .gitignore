@@ -43,8 +43,8 @@ docs/_build
 env/
 coverage.xml
 
-# Regression test environment variables.
-regression/local_test_setup
+# System test environment variables.
+system_tests/local_test_setup
 
 # Make sure a generated file isn't accidentally committed.
 pylintrc_reduced

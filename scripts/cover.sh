@@ -16,5 +16,6 @@
 
 set -ev
 
-nosetests --with-xunit --with-xcoverage --cover-package=gcloud \
+nosetests --ignore-files=run_system_test\.py \
+--with-xunit --with-xcoverage --cover-package=gcloud \
 --nocapture --cover-erase --cover-tests --cover-branches ${@}
