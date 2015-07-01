@@ -24,10 +24,11 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.client import Client
         return Client
 
-    def _makeOne(self, dataset_id=DATASET_ID, connection=CONNECTION,
-                 namespace=None):
-        return self._getTargetClass()(dataset_id, connection=connection,
-                                      namespace=namespace)
+    def _makeOne(self, dataset_id=DATASET_ID, namespace=None,
+                 connection=CONNECTION):
+        return self._getTargetClass()(dataset_id=dataset_id,
+                                      namespace=namespace,
+                                      connection=connection)
 
     def test_ctor_w_dataset_id_no_environ(self):
         self.assertRaises(EnvironmentError, self._makeOne, None)

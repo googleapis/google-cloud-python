@@ -33,14 +33,14 @@ class Client(object):
     :type dataset_id: string
     :param dataset_id: (optional) dataset ID to pass to proxied API methods.
 
-    :type connection: :class:`gcloud.datastore.connection.Connection`, or None
-    :param connection: (optional) connection to pass to proxied API methods
-
     :type namespace: string
     :param namespace: (optional) namespace to pass to proxied API methods.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`, or None
+    :param connection: (optional) connection to pass to proxied API methods
     """
 
-    def __init__(self, dataset_id=None, connection=None, namespace=None):
+    def __init__(self, dataset_id=None, namespace=None, connection=None):
         dataset_id = _determine_default_dataset_id(dataset_id)
         if dataset_id is None:
             raise EnvironmentError('Dataset ID could not be inferred.')
