@@ -23,27 +23,32 @@ from gcloud.datastore.batch import Batch
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
+from gcloud.datastore._implicit_environ import _determine_default_dataset_id
+from gcloud.datastore._implicit_environ import get_connection
 
 
 class Client(object):
     """Convenience wrapper for invoking APIs/factories w/ a dataset ID.
 
     :type dataset_id: string
-    :param dataset_id: (required) dataset ID to pass to proxied API methods.
-
-    :type namespace: string
-    :param namespace: (optional) namespace to pass to proxied API methods.
+    :param dataset_id: (optional) dataset ID to pass to proxied API methods.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`, or None
     :param connection: (optional) connection to pass to proxied API methods
+
+    :type namespace: string
+    :param namespace: (optional) namespace to pass to proxied API methods.
     """
 
-    def __init__(self, dataset_id, namespace=None, connection=None):
+    def __init__(self, dataset_id=None, connection=None, namespace=None):
+        dataset_id = _determine_default_dataset_id(dataset_id)
         if dataset_id is None:
-            raise ValueError('dataset_id required')
+            raise EnvironmentError('Dataset ID could not be inferred.')
         self.dataset_id = dataset_id
-        self.namespace = namespace
+        if connection is None:
+            connection = get_connection()
         self.connection = connection
+        self.namespace = namespace
 
     def get(self, key, missing=None, deferred=None):
         """Proxy to :func:`gcloud.datastore.api.get`.
