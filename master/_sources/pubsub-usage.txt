@@ -268,7 +268,7 @@ Fetch messages for a pull subscription without blocking (none pending):
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
    >>> subscription = topic.subscription('subscription_name')
-   >>> received = subscription.pull(max_messages=1)  # API request
+   >>> received = subscription.pull(return_immediately=True)  # API request
    >>> messages = [recv[1] for recv in received]
    >>> [message.id for message in messages]
    []
