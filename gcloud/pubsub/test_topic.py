@@ -331,6 +331,20 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_subscription(self):
+        from gcloud.pubsub.subscription import Subscription
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        CLIENT = _Client(project=PROJECT)
+        topic = self._makeOne(TOPIC_NAME,
+                              client=CLIENT)
+
+        SUBSCRIPTION_NAME = 'subscription_name'
+        subscription = topic.subscription(SUBSCRIPTION_NAME)
+        self.assertTrue(isinstance(subscription, Subscription))
+        self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
+        self.assertTrue(subscription.topic is topic)
+
 
 class TestBatch(unittest2.TestCase):
 

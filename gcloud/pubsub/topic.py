@@ -19,6 +19,8 @@ import datetime
 
 from gcloud._helpers import _RFC3339_MICROS
 from gcloud.exceptions import NotFound
+from gcloud.pubsub._helpers import topic_name_from_path
+from gcloud.pubsub.subscription import Subscription
 
 _NOW = datetime.datetime.utcnow
 
@@ -48,6 +50,24 @@ class Topic(object):
         self._client = client
         self.timestamp_messages = timestamp_messages
 
+    def subscription(self, name, ack_deadline=None, push_endpoint=None):
+        """Creates a subscription bound to the current topic.
+
+        :type name: string
+        :param name: the name of the subscription
+
+        :type ack_deadline: int
+        :param ack_deadline: the deadline (in seconds) by which messages pulled
+                             from the back-end must be acknowledged.
+
+        :type push_endpoint: string
+        :param push_endpoint: URL to which messages will be pushed by the
+                              back-end. If not set, the application must pull
+                              messages.
+        """
+        return Subscription(name, self, ack_deadline=ack_deadline,
+                            push_endpoint=push_endpoint)
+
     @classmethod
     def from_api_repr(cls, resource, client):
         """Factory:  construct a topic given its API representation
@@ -65,11 +85,8 @@ class Topic(object):
                  project from the resource does not agree with the project
                  from the client.
         """
-        _, project, _, name = resource['name'].split('/')
-        if client.project != project:
-            raise ValueError('Project from clientshould agree with '
-                             'project from resource.')
-        return cls(name, client=client)
+        topic_name = topic_name_from_path(resource['name'], client.project)
+        return cls(topic_name, client=client)
 
     @property
     def project(self):

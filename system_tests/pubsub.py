@@ -18,7 +18,6 @@ import unittest2
 
 from gcloud import _helpers
 from gcloud import pubsub
-from gcloud.pubsub.subscription import Subscription
 
 
 _helpers._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
@@ -68,7 +67,7 @@ class TestPubsub(unittest2.TestCase):
         topic.create()
         self.to_delete.append(topic)
         SUBSCRIPTION_NAME = 'subscribing-now'
-        subscription = Subscription(SUBSCRIPTION_NAME, topic)
+        subscription = topic.subscription(SUBSCRIPTION_NAME)
         self.assertFalse(subscription.exists())
         subscription.create()
         self.to_delete.append(subscription)
@@ -88,7 +87,7 @@ class TestPubsub(unittest2.TestCase):
             'newest%d' % (1000 * time.time(),),
         ]
         for subscription_name in subscriptions_to_create:
-            subscription = Subscription(subscription_name, topic)
+            subscription = topic.subscription(subscription_name)
             subscription.create()
             self.to_delete.append(subscription)
 
@@ -106,7 +105,7 @@ class TestPubsub(unittest2.TestCase):
         topic.create()
         self.to_delete.append(topic)
         SUBSCRIPTION_NAME = 'subscribing-now'
-        subscription = Subscription(SUBSCRIPTION_NAME, topic)
+        subscription = topic.subscription(SUBSCRIPTION_NAME)
         self.assertFalse(subscription.exists())
         subscription.create()
         self.to_delete.append(subscription)

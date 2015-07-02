@@ -518,3 +518,7 @@ class _Client(object):
     def __init__(self, project, connection=None):
         self.project = project
         self.connection = connection
+
+    def topic(self, name, timestamp_messages=False):
+        from gcloud.pubsub.topic import Topic
+        return Topic(name, client=self, timestamp_messages=timestamp_messages)

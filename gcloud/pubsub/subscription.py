@@ -15,8 +15,8 @@
 """Define API Subscriptions."""
 
 from gcloud.exceptions import NotFound
+from gcloud.pubsub._helpers import topic_name_from_path
 from gcloud.pubsub.message import Message
-from gcloud.pubsub.topic import Topic
 
 
 class Subscription(object):
@@ -65,11 +65,13 @@ class Subscription(object):
         """
         if topics is None:
             topics = {}
-        t_name = resource['topic']
-        topic = topics.get(t_name)
+        topic_path = resource['topic']
+        topic = topics.get(topic_path)
         if topic is None:
-            topic = topics[t_name] = Topic.from_api_repr({'name': t_name},
-                                                         client)
+            # NOTE: This duplicates behavior from Topic.from_api_repr to avoid
+            #       an import cycle.
+            topic_name = topic_name_from_path(topic_path, client.project)
+            topic = topics[topic_path] = client.topic(topic_name)
         _, _, _, name = resource['name'].split('/')
         ack_deadline = resource.get('ackDeadlineSeconds')
         push_config = resource.get('pushConfig', {})
