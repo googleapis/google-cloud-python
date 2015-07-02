@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>GCloud Package &mdash; gcloud 0.6.0 documentation</title>
+    <title>GCloud Package &mdash; gcloud 4ab3406 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.6.0',
+        VERSION:     '4ab3406',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 0.6.0 documentation" href="index.html" />
+    <link rel="top" title="gcloud 4ab3406 documentation" href="index.html" />
     <link rel="next" title="Datastore" href="datastore-api.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%200.6.0" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%204ab3406" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (0.6.0)
+              Version History (4ab3406)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -165,10 +165,22 @@ requests and handle token refresh on 401 errors.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<em>tuple</em>) &#8211; Remaining positional arguments to pass to constructor.</li>
+<li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The connection created with the retrieved implicit
-credentials.</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The connection created with the retrieved implicit
+credentials.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">class:<cite>TypeError</cite> if there is a conflict with the kwargs
+and the credentials created by the factory.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -197,7 +209,11 @@ from the Google APIs console).</li>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The connection created with the retrieved JSON credentials.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The connection created with the retrieved JSON credentials.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">class:<cite>TypeError</cite> if there is a conflict with the kwargs
+and the credentials created by the factory.</p>
 </td>
 </tr>
 </tbody>
@@ -230,7 +246,11 @@ account). This file must be in P12 format.</li>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The connection created with the retrieved P12 credentials.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The connection created with the retrieved P12 credentials.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">class:<cite>TypeError</cite> if there is a conflict with the kwargs
+and the credentials created by the factory.</p>
 </td>
 </tr>
 </tbody>

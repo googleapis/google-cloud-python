@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.connection &mdash; gcloud 0.6.0 documentation</title>
+    <title>gcloud.connection &mdash; gcloud 4ab3406 documentation</title>
     
     <link rel="stylesheet" href="../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.6.0',
+        VERSION:     '4ab3406',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 0.6.0 documentation" href="../../index.html" />
+    <link rel="top" title="gcloud 4ab3406 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/connection%0ARelease%3A%200.6.0" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/connection%0ARelease%3A%204ab3406" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (0.6.0)
+              Version History (4ab3406)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -217,10 +217,12 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: :class:`gcloud.connection.Connection`</span>
 <span class="sd">        :returns: The connection created with the retrieved JSON credentials.</span>
+<span class="sd">        :raises: class:`TypeError` if there is a conflict with the kwargs</span>
+<span class="sd">                 and the credentials created by the factory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_for_service_account_json</span><span class="p">(</span><span class="n">json_credentials_path</span><span class="p">)</span>
         <span class="k">if</span> <span class="s">&#39;credentials&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;credentials must not be in keyword arguments&#39;</span><span class="p">)</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_for_service_account_json</span><span class="p">(</span><span class="n">json_credentials_path</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
@@ -249,11 +251,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">        :rtype: :class:`gcloud.connection.Connection`</span>
 <span class="sd">        :returns: The connection created with the retrieved P12 credentials.</span>
+<span class="sd">        :raises: class:`TypeError` if there is a conflict with the kwargs</span>
+<span class="sd">                 and the credentials created by the factory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_for_service_account_p12</span><span class="p">(</span><span class="n">client_email</span><span class="p">,</span>
-                                                  <span class="n">private_key_path</span><span class="p">)</span>
         <span class="k">if</span> <span class="s">&#39;credentials&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;credentials must not be in keyword arguments&#39;</span><span class="p">)</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_for_service_account_p12</span><span class="p">(</span><span class="n">client_email</span><span class="p">,</span>
+                                                  <span class="n">private_key_path</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
@@ -261,13 +265,21 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <div class="viewcode-block" id="Connection.from_environment"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.connection.Connection.from_environment">[docs]</a>    <span class="k">def</span> <span class="nf">from_environment</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to retrieve implicit credentials while creating connection.</span>
 
+<span class="sd">        :type args: tuple</span>
+<span class="sd">        :param args: Remaining positional arguments to pass to constructor.</span>
+
+<span class="sd">        :type kwargs: dictionary</span>
+<span class="sd">        :param kwargs: Remaining keyword arguments to pass to constructor.</span>
+
 <span class="sd">        :rtype: :class:`gcloud.connection.Connection`</span>
 <span class="sd">        :returns: The connection created with the retrieved implicit</span>
 <span class="sd">                  credentials.</span>
+<span class="sd">        :raises: class:`TypeError` if there is a conflict with the kwargs</span>
+<span class="sd">                 and the credentials created by the factory.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
         <span class="k">if</span> <span class="s">&#39;credentials&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;credentials must not be in keyword arguments&#39;</span><span class="p">)</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;credentials&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">credentials</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 

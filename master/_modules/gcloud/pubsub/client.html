@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.client &mdash; gcloud 0.6.0 documentation</title>
+    <title>gcloud.pubsub.client &mdash; gcloud 4ab3406 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.6.0',
+        VERSION:     '4ab3406',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 0.6.0 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 4ab3406 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/client%0ARelease%3A%200.6.0" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/client%0ARelease%3A%204ab3406" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (0.6.0)
+              Version History (4ab3406)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -97,16 +97,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">&quot;&quot;&quot;gcloud pubsub client for interacting with API.&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_get_production_project</span>
-<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_credentials</span>
-<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_for_service_account_json</span>
-<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_for_service_account_p12</span>
+<span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">JSONClient</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.subscription</span> <span class="kn">import</span> <span class="n">Subscription</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.topic</span> <span class="kn">import</span> <span class="n">Topic</span>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
 <span class="sd">    :type project: string</span>
@@ -125,74 +122,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">    :param http: An optional HTTP object to make requests. If not passed, an</span>
 <span class="sd">                 ``http`` object is created that is bound to the</span>
 <span class="sd">                 ``credentials`` for the current object.</span>
-
-<span class="sd">    :raises: :class:`ValueError` if the project is neither passed in nor</span>
-<span class="sd">             set in the environment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">project</span> <span class="o">=</span> <span class="n">_get_production_project</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Project was not passed and could not be &#39;</span>
-                             <span class="s">&#39;determined from the environment.&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
 
-        <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">http</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
+    <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Client.from_service_account_json"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.client.Client.from_service_account_json">[docs]</a>    <span class="k">def</span> <span class="nf">from_service_account_json</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">json_credentials_path</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory to retrieve JSON credentials while creating client.</span>
-
-<span class="sd">        :type json_credentials_path: string</span>
-<span class="sd">        :param json_credentials_path: The path to a private key file (this file</span>
-<span class="sd">                                      was given to you when you created the</span>
-<span class="sd">                                      service account). This file must contain</span>
-<span class="sd">                                      a JSON object with a private key and</span>
-<span class="sd">                                      other credentials information (downloaded</span>
-<span class="sd">                                      from the Google APIs console).</span>
-
-<span class="sd">        :type project: string</span>
-<span class="sd">        :param project: the project which the client acts on behalf of. Will be</span>
-<span class="sd">                        passed when creating a topic.  If not passed, falls</span>
-<span class="sd">                        back to the default inferred from the environment.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.pubsub.client.Client`</span>
-<span class="sd">        :returns: The client created with the retrieved JSON credentials.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_for_service_account_json</span><span class="p">(</span><span class="n">json_credentials_path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
-</div>
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Client.from_service_account_p12"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.client.Client.from_service_account_p12">[docs]</a>    <span class="k">def</span> <span class="nf">from_service_account_p12</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client_email</span><span class="p">,</span> <span class="n">private_key_path</span><span class="p">,</span>
-                                 <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory to retrieve P12 credentials while creating client.</span>
-
-<span class="sd">        .. note::</span>
-<span class="sd">          Unless you have an explicit reason to use a PKCS12 key for your</span>
-<span class="sd">          service account, we recommend using a JSON key.</span>
-
-<span class="sd">        :type client_email: string</span>
-<span class="sd">        :param client_email: The e-mail attached to the service account.</span>
-
-<span class="sd">        :type private_key_path: string</span>
-<span class="sd">        :param private_key_path: The path to a private key file (this file was</span>
-<span class="sd">                                 given to you when you created the service</span>
-<span class="sd">                                 account). This file must be in P12 format.</span>
-
-<span class="sd">        :type project: string</span>
-<span class="sd">        :param project: the project which the client acts on behalf of. Will be</span>
-<span class="sd">                        passed when creating a topic.  If not passed, falls</span>
-<span class="sd">                        back to the default inferred from the environment.</span>
-
-<span class="sd">        :rtype: :class:`gcloud.pubsub.client.Client`</span>
-<span class="sd">        :returns: The client created with the retrieved P12 credentials.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_for_service_account_p12</span><span class="p">(</span><span class="n">client_email</span><span class="p">,</span>
-                                                  <span class="n">private_key_path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
-</div>
 <div class="viewcode-block" id="Client.list_topics"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.client.Client.list_topics">[docs]</a>    <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List topics for the project associated with this client.</span>
 
