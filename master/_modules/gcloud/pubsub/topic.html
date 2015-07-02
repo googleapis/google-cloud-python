@@ -101,6 +101,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_RFC3339_MICROS</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub._helpers</span> <span class="kn">import</span> <span class="n">topic_name_from_path</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub.subscription</span> <span class="kn">import</span> <span class="n">Subscription</span>
 
 <span class="n">_NOW</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span>
 
@@ -130,6 +132,24 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamp_messages</span> <span class="o">=</span> <span class="n">timestamp_messages</span>
 
+<div class="viewcode-block" id="Topic.subscription"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.subscription">[docs]</a>    <span class="k">def</span> <span class="nf">subscription</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a subscription bound to the current topic.</span>
+
+<span class="sd">        :type name: string</span>
+<span class="sd">        :param name: the name of the subscription</span>
+
+<span class="sd">        :type ack_deadline: int</span>
+<span class="sd">        :param ack_deadline: the deadline (in seconds) by which messages pulled</span>
+<span class="sd">                             from the back-end must be acknowledged.</span>
+
+<span class="sd">        :type push_endpoint: string</span>
+<span class="sd">        :param push_endpoint: URL to which messages will be pushed by the</span>
+<span class="sd">                              back-end. If not set, the application must pull</span>
+<span class="sd">                              messages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Subscription</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="n">ack_deadline</span><span class="p">,</span>
+                            <span class="n">push_endpoint</span><span class="o">=</span><span class="n">push_endpoint</span><span class="p">)</span>
+</div>
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Topic.from_api_repr"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a topic given its API representation</span>
@@ -147,11 +167,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">                 project from the resource does not agree with the project</span>
 <span class="sd">                 from the client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span> <span class="o">!=</span> <span class="n">project</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Project from clientshould agree with &#39;</span>
-                             <span class="s">&#39;project from resource.&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">topic_name</span> <span class="o">=</span> <span class="n">topic_name_from_path</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">topic_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

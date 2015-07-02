@@ -97,8 +97,8 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">&quot;&quot;&quot;Define API Subscriptions.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub._helpers</span> <span class="kn">import</span> <span class="n">topic_name_from_path</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.message</span> <span class="kn">import</span> <span class="n">Message</span>
-<span class="kn">from</span> <span class="nn">gcloud.pubsub.topic</span> <span class="kn">import</span> <span class="n">Topic</span>
 
 
 <div class="viewcode-block" id="Subscription"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription">[docs]</a><span class="k">class</span> <span class="nc">Subscription</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -147,11 +147,13 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">topics</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">topics</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">t_name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;topic&#39;</span><span class="p">]</span>
-        <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t_name</span><span class="p">)</span>
+        <span class="n">topic_path</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;topic&#39;</span><span class="p">]</span>
+        <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">topic_path</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="p">[</span><span class="n">t_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Topic</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">({</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">t_name</span><span class="p">},</span>
-                                                         <span class="n">client</span><span class="p">)</span>
+            <span class="c"># NOTE: This duplicates behavior from Topic.from_api_repr to avoid</span>
+            <span class="c">#       an import cycle.</span>
+            <span class="n">topic_name</span> <span class="o">=</span> <span class="n">topic_name_from_path</span><span class="p">(</span><span class="n">topic_path</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+            <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="p">[</span><span class="n">topic_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="n">topic_name</span><span class="p">)</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
         <span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
         <span class="n">push_config</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>

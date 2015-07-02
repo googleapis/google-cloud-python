@@ -121,7 +121,7 @@ Create a new pull subscription for a topic:
    >>> from gcloud import pubsub
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', topic)
+   >>> subscription = topic.subscription('subscription_name')
    >>> subscription.create()  # API request
 
 Create a new pull subscription for a topic with a non-default ACK deadline:
@@ -131,8 +131,7 @@ Create a new pull subscription for a topic with a non-default ACK deadline:
    >>> from gcloud import pubsub
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', topic,
-   ...                                    ack_deadline=90)
+   >>> subscription = topic.subscription('subscription_name', ack_deadline=90)
    >>> subscription.create()  # API request
 
 Create a new push subscription for a topic:
@@ -143,8 +142,8 @@ Create a new push subscription for a topic:
    >>> ENDPOINT = 'https://example.com/hook'
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', topic,
-   ...                                    push_endpoint=ENDPOINT)
+   >>> subscription = topic.subscription('subscription_name',
+   ...                                   push_endpoint=ENDPOINT)
    >>> subscription.create()  # API request
 
 Check for the existence of a subscription:
@@ -154,7 +153,7 @@ Check for the existence of a subscription:
    >>> from gcloud import pubsub
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', topic)
+   >>> subscription = topic.subscription('subscription_name')
    >>> subscription.exists()  # API request
    True
 
@@ -166,7 +165,7 @@ Convert a pull subscription to push:
    >>> ENDPOINT = 'https://example.com/hook'
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', topic)
+   >>> subscription = topic.subscription('subscription_name')
    >>> subscription.modify_push_configuration(push_endpoint=ENDPOINT)  # API request
 
 Convert a push subscription to pull:
@@ -177,8 +176,8 @@ Convert a push subscription to pull:
    >>> ENDPOINT = 'https://example.com/hook'
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubusb.Subscription('subscription_name', topic,
-   ...                                    push_endpoint=ENDPOINT)
+   >>> subscription = topic.subscription('subscription_name',
+   ...                                   push_endpoint=ENDPOINT)
    >>> subscription.modify_push_configuration(push_endpoint=None)  # API request
 
 List subscriptions for a topic:
@@ -209,7 +208,7 @@ Delete a subscription:
    >>> from gcloud import pubsub
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', topic)
+   >>> subscription = topic.subscription('subscription_name')
    >>> subscription.delete()  # API request
 
 
@@ -223,7 +222,7 @@ Fetch pending messages for a pull subscription:
    >>> from gcloud import pubsub
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', topic)
+   >>> subscription = topic.subscription('subscription_name')
    >>> with topic.batch() as batch:
    ...     batch.publish('this is the first message_payload')
    ...     batch.publish('this is the second message_payload',
@@ -252,7 +251,7 @@ Fetch a limited number of pending messages for a pull subscription:
    >>> from gcloud import pubsub
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', topic)
+   >>> subscription = topic.subscription('subscription_name')
    >>> with topic.batch() as batch:
    ...     batch.publish('this is the first message_payload')
    ...     batch.publish('this is the second message_payload',
@@ -268,7 +267,7 @@ Fetch messages for a pull subscription without blocking (none pending):
    >>> from gcloud import pubsub
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
-   >>> subscription = pubsub.Subscription('subscription_name', topic)
+   >>> subscription = topic.subscription('subscription_name')
    >>> received = subscription.pull(max_messages=1)  # API request
    >>> messages = [recv[1] for recv in received]
    >>> [message.id for message in messages]

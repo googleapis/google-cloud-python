@@ -182,7 +182,7 @@ used as a context manager.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
@@ -190,8 +190,7 @@ used as a context manager.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span>
-<span class="gp">... </span>                                   <span class="n">ack_deadline</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
@@ -200,8 +199,8 @@ used as a context manager.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://example.com/hook&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span>
-<span class="gp">... </span>                                   <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                                  <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
@@ -209,7 +208,7 @@ used as a context manager.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="go">True</span>
 </pre></div>
@@ -219,7 +218,7 @@ used as a context manager.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://example.com/hook&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
@@ -228,8 +227,8 @@ used as a context manager.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s">&#39;https://example.com/hook&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubusb</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span>
-<span class="gp">... </span>                                   <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                                  <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
@@ -254,7 +253,7 @@ used as a context manager.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
@@ -265,7 +264,7 @@ used as a context manager.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
@@ -290,7 +289,7 @@ will re-send them later:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
@@ -304,7 +303,7 @@ will re-send them later:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">topic</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
