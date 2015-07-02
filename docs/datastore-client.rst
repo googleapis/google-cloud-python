@@ -1,5 +1,5 @@
-Dataset
-~~~~~~~
+Client
+~~~~~~
 
 .. automodule:: gcloud.datastore.client
   :members:
