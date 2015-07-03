@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>GCloud Package &mdash; gcloud bb25b9e documentation</title>
+    <title>GCloud Package &mdash; gcloud af97ff1 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'bb25b9e',
+        VERSION:     'af97ff1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud bb25b9e documentation" href="index.html" />
+    <link rel="top" title="gcloud af97ff1 documentation" href="index.html" />
     <link rel="next" title="Datastore" href="datastore-api.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%20bb25b9e" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%20af97ff1" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (bb25b9e)
+              Version History (af97ff1)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -821,7 +821,7 @@ needed service account settings.</p>
 
 <dl class="function">
 <dt id="gcloud.exceptions.make_exception">
-<code class="descclassname">gcloud.exceptions.</code><code class="descname">make_exception</code><span class="sig-paren">(</span><em>response</em>, <em>content</em>, <em>use_json=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/exceptions.html#make_exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.make_exception" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.exceptions.</code><code class="descname">make_exception</code><span class="sig-paren">(</span><em>response</em>, <em>content</em>, <em>error_info=None</em>, <em>use_json=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/exceptions.html#make_exception"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.make_exception" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory:  create exception based on HTTP response code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -831,6 +831,8 @@ needed service account settings.</p>
 <li><strong>response</strong> (<code class="xref py py-class docutils literal"><span class="pre">httplib2.Response</span></code> or other HTTP response object) &#8211; A response object that defines a status code as the
 status attribute.</li>
 <li><strong>content</strong> (<em>string or dictionary</em>) &#8211; The body of the HTTP error response.</li>
+<li><strong>error_info</strong> (<em>string</em>) &#8211; Optional string giving extra information about the
+failed request.</li>
 <li><strong>use_json</strong> (<em>boolean</em>) &#8211; Flag indicating if <code class="docutils literal"><span class="pre">content</span></code> is expected to be JSON.</li>
 </ul>
 </td>

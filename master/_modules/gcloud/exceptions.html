@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.exceptions &mdash; gcloud bb25b9e documentation</title>
+    <title>gcloud.exceptions &mdash; gcloud af97ff1 documentation</title>
     
     <link rel="stylesheet" href="../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'bb25b9e',
+        VERSION:     'af97ff1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud bb25b9e documentation" href="../../index.html" />
+    <link rel="top" title="gcloud af97ff1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -52,7 +52,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/exceptions%0ARelease%3A%20bb25b9e" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/exceptions%0ARelease%3A%20af97ff1" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -66,7 +66,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (bb25b9e)
+              Version History (af97ff1)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -239,7 +239,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
     <span class="n">code</span> <span class="o">=</span> <span class="mi">503</span>
 
 </div>
-<div class="viewcode-block" id="make_exception"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.make_exception">[docs]</a><span class="k">def</span> <span class="nf">make_exception</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="make_exception"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.make_exception">[docs]</a><span class="k">def</span> <span class="nf">make_exception</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">error_info</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Factory:  create exception based on HTTP response code.</span>
 
 <span class="sd">    :type response: :class:`httplib2.Response` or other HTTP response object</span>
@@ -248,6 +248,10 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
 <span class="sd">    :type content: string or dictionary</span>
 <span class="sd">    :param content: The body of the HTTP error response.</span>
+
+<span class="sd">    :type error_info: string</span>
+<span class="sd">    :param error_info: Optional string giving extra information about the</span>
+<span class="sd">                       failed request.</span>
 
 <span class="sd">    :type use_json: boolean</span>
 <span class="sd">    :param use_json: Flag indicating if ``content`` is expected to be JSON.</span>
@@ -268,6 +272,9 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
 
     <span class="n">message</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;message&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;errors&#39;</span><span class="p">,</span> <span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">error_info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="s">&#39; (</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">error_info</span><span class="p">,)</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">klass</span> <span class="o">=</span> <span class="n">_HTTP_CODE_TO_EXCEPTION</span><span class="p">[</span><span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">]</span>
