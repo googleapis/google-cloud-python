@@ -230,6 +230,8 @@ class Client(object):
 
         :type entities: list of :class:`gcloud.datastore.entity.Entity`
         :param entities: The entities to be saved to the datastore.
+
+        :raises: ValueError if ``entities`` is a single entity.
         """
         if isinstance(entities, Entity):
             raise ValueError("Pass a sequence of entities")
