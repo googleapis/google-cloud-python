@@ -13,18 +13,97 @@
 # limitations under the License.
 """Convenience wrapper for invoking APIs/factories w/ a dataset ID."""
 
-from gcloud.datastore.api import delete
-from gcloud.datastore.api import delete_multi
-from gcloud.datastore.api import get
-from gcloud.datastore.api import get_multi
-from gcloud.datastore.api import put
-from gcloud.datastore.api import put_multi
+from gcloud.datastore import helpers
 from gcloud.datastore.batch import Batch
+from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
 from gcloud.datastore._implicit_environ import _determine_default_dataset_id
 from gcloud.datastore._implicit_environ import get_connection
+
+
+_MAX_LOOPS = 128
+"""Maximum number of iterations to wait for deferred keys."""
+
+
+def _extended_lookup(connection, dataset_id, key_pbs,
+                     missing=None, deferred=None,
+                     eventual=False, transaction_id=None):
+    """Repeat lookup until all keys found (unless stop requested).
+
+    Helper function for :method:`Client.get_multi`.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: The connection used to connect to datastore.
+
+    :type dataset_id: string
+    :param dataset_id: The ID of the dataset of which to make the request.
+
+    :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
+    :param key_pbs: The keys to retrieve from the datastore.
+
+    :type missing: an empty list or None.
+    :param missing: If a list is passed, the key-only entity protobufs
+                    returned by the backend as "missing" will be copied
+                    into it.  Use only as a keyword param.
+
+    :type deferred: an empty list or None.
+    :param deferred: If a list is passed, the key protobufs returned
+                     by the backend as "deferred" will be copied into it.
+                     Use only as a keyword param.
+
+    :type eventual: boolean
+    :param eventual: If False (the default), request ``STRONG`` read
+                     consistency.  If True, request ``EVENTUAL`` read
+                     consistency.
+
+    :type transaction_id: string
+    :param transaction_id: If passed, make the request in the scope of
+                           the given transaction.  Incompatible with
+                           ``eventual==True``.
+
+    :rtype: list of :class:`gcloud.datastore._datastore_v1_pb2.Entity`
+    :returns: The requested entities.
+    :raises: :class:`ValueError` if missing / deferred are not null or
+             empty list.
+    """
+    if missing is not None and missing != []:
+        raise ValueError('missing must be None or an empty list')
+
+    if deferred is not None and deferred != []:
+        raise ValueError('deferred must be None or an empty list')
+
+    results = []
+
+    loop_num = 0
+    while loop_num < _MAX_LOOPS:  # loop against possible deferred.
+        loop_num += 1
+
+        results_found, missing_found, deferred_found = connection.lookup(
+            dataset_id=dataset_id,
+            key_pbs=key_pbs,
+            eventual=eventual,
+            transaction_id=transaction_id,
+        )
+
+        results.extend(results_found)
+
+        if missing is not None:
+            missing.extend(missing_found)
+
+        if deferred is not None:
+            deferred.extend(deferred_found)
+            break
+
+        if len(deferred_found) == 0:
+            break
+
+        # We have deferred keys, and the user didn't ask to know about
+        # them, so retry (but only with the deferred ones).
+        key_pbs = deferred_found
+
+    return results
 
 
 class Client(object):
@@ -51,53 +130,168 @@ class Client(object):
         self.namespace = namespace
 
     def get(self, key, missing=None, deferred=None):
-        """Proxy to :func:`gcloud.datastore.api.get`.
+        """Retrieve an entity from a single key (if it exists).
 
-        Passes our ``dataset_id``.
+        .. note::
+
+           This is just a thin wrapper over :method:`get_multi`.
+           The backend API does not make a distinction between a single key or
+           multiple keys in a lookup request.
         """
-        return get(key, missing=missing, deferred=deferred,
-                   connection=self.connection, dataset_id=self.dataset_id)
+        entities = self.get_multi(keys=[key], missing=missing,
+                                  deferred=deferred)
+        if entities:
+            return entities[0]
 
     def get_multi(self, keys, missing=None, deferred=None):
-        """Proxy to :func:`gcloud.datastore.api.get_multi`.
+        """Retrieve entities, along with their attributes.
 
-        Passes our ``dataset_id``.
+        :type keys: list of :class:`gcloud.datastore.key.Key`
+        :param keys: The keys to be retrieved from the datastore.
+
+        :type missing: an empty list or None.
+        :param missing: If a list is passed, the key-only entities returned
+                        by the backend as "missing" will be copied into it.
+                        Use only as a keyword param.
+
+        :type deferred: an empty list or None.
+        :param deferred: If a list is passed, the keys returned
+                        by the backend as "deferred" will be copied into it.
+                        Use only as a keyword param.
         """
-        return get_multi(keys, missing=missing, deferred=deferred,
-                         connection=self.connection,
-                         dataset_id=self.dataset_id)
+        if not keys:
+            return []
+
+        ids = list(set([key.dataset_id for key in keys]))
+        if ids != [self.dataset_id]:
+            raise ValueError('Keys do not match dataset ID')
+
+        transaction = Transaction.current()
+
+        entity_pbs = _extended_lookup(
+            connection=self.connection,
+            dataset_id=self.dataset_id,
+            key_pbs=[k.to_protobuf() for k in keys],
+            missing=missing,
+            deferred=deferred,
+            transaction_id=transaction and transaction.id,
+        )
+
+        if missing is not None:
+            missing[:] = [
+                helpers.entity_from_protobuf(missed_pb)
+                for missed_pb in missing]
+
+        if deferred is not None:
+            deferred[:] = [
+                helpers.key_from_protobuf(deferred_pb)
+                for deferred_pb in deferred]
+
+        return [helpers.entity_from_protobuf(entity_pb)
+                for entity_pb in entity_pbs]
 
     def put(self, entity):
-        """Proxy to :func:`gcloud.datastore.api.put`.
+        """Save an entity in the Cloud Datastore.
 
-        Passes our ``dataset_id``.
+        .. note::
+
+           This is just a thin wrapper over :meth:`put_multi`.
+           The backend API does not make a distinction between a single
+           entity or multiple entities in a commit request.
+
+        :type entity: :class:`gcloud.datastore.entity.Entity`
+        :param entity: The entity to be saved to the datastore.
         """
-        return put(entity, connection=self.connection,
-                   dataset_id=self.dataset_id)
+        self.put_multi(entities=[entity])
 
     def put_multi(self, entities):
-        """Proxy to :func:`gcloud.datastore.api.put_multi`.
+        """Save entities in the Cloud Datastore.
 
-        Passes our ``dataset_id``.
+        :type entities: list of :class:`gcloud.datastore.entity.Entity`
+        :param entities: The entities to be saved to the datastore.
         """
-        return put_multi(entities, connection=self.connection,
-                         dataset_id=self.dataset_id)
+        if isinstance(entities, Entity):
+            raise ValueError("Pass a sequence of entities")
+
+        if not entities:
+            return
+
+        current = Batch.current()
+        in_batch = current is not None
+
+        if not in_batch:
+            current = Batch(dataset_id=self.dataset_id,
+                            connection=self.connection)
+        for entity in entities:
+            current.put(entity)
+
+        if not in_batch:
+            current.commit()
 
     def delete(self, key):
-        """Proxy to :func:`gcloud.datastore.api.delete`.
+        """Delete the key in the Cloud Datastore.
 
-        Passes our ``dataset_id``.
+        .. note::
+
+           This is just a thin wrapper over :meth:`delete_multi`.
+           The backend API does not make a distinction between a single key or
+           multiple keys in a commit request.
+
+        :type key: :class:`gcloud.datastore.key.Key`
+        :param key: The key to be deleted from the datastore.
         """
-        return delete(key, connection=self.connection,
-                      dataset_id=self.dataset_id)
+        return self.delete_multi(keys=[key])
 
     def delete_multi(self, keys):
-        """Proxy to :func:`gcloud.datastore.api.delete_multi`.
+        """Delete keys from the Cloud Datastore.
 
-        Passes our ``dataset_id``.
+        :type keys: list of :class:`gcloud.datastore.key.Key`
+        :param keys: The keys to be deleted from the datastore.
         """
-        return delete_multi(keys, connection=self.connection,
-                            dataset_id=self.dataset_id)
+        if not keys:
+            return
+
+        # We allow partial keys to attempt a delete, the backend will fail.
+        current = Batch.current()
+        in_batch = current is not None
+
+        if not in_batch:
+            current = Batch(dataset_id=self.dataset_id,
+                            connection=self.connection)
+        for key in keys:
+            current.delete(key)
+
+        if not in_batch:
+            current.commit()
+
+    def allocate_ids(self, incomplete_key, num_ids):
+        """Allocate a list of IDs from a partial key.
+
+        :type incomplete_key: A :class:`gcloud.datastore.key.Key`
+        :param incomplete_key: Partial key to use as base for allocated IDs.
+
+        :type num_ids: integer
+        :param num_ids: The number of IDs to allocate.
+
+        :rtype: list of :class:`gcloud.datastore.key.Key`
+        :returns: The (complete) keys allocated with ``incomplete_key`` as
+                  root.
+        :raises: :class:`ValueError` if ``incomplete_key`` is not a
+                 partial key.
+        """
+        if not incomplete_key.is_partial:
+            raise ValueError(('Key is not partial.', incomplete_key))
+
+        incomplete_key_pb = incomplete_key.to_protobuf()
+        incomplete_key_pbs = [incomplete_key_pb] * num_ids
+
+        conn = self.connection
+        allocated_key_pbs = conn.allocate_ids(incomplete_key.dataset_id,
+                                              incomplete_key_pbs)
+        allocated_ids = [allocated_key_pb.path_element[-1].id
+                         for allocated_key_pb in allocated_key_pbs]
+        return [incomplete_key.completed_key(allocated_id)
+                for allocated_id in allocated_ids]
 
     def key(self, *path_args, **kwargs):
         """Proxy to :class:`gcloud.datastore.key.Key`.

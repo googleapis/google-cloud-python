@@ -279,8 +279,8 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(connection._committed,
                          [(_DATASET, batch.mutation, None)])
-        self.assertFalse(key.is_partial)
-        self.assertEqual(key._id, _NEW_ID)
+        self.assertFalse(entity.key.is_partial)
+        self.assertEqual(entity.key._id, _NEW_ID)
 
     def test_as_context_mgr_wo_error(self):
         from gcloud.datastore.batch import _BATCHES
@@ -451,4 +451,6 @@ class _Key(object):
 
     def completed_key(self, new_id):
         assert self.is_partial
-        self._id = new_id
+        new_key = self.__class__(self.dataset_id)
+        new_key._id = new_id
+        return new_key
