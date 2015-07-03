@@ -24,6 +24,7 @@ from system_tests import populate_datastore
 
 
 _implicit_environ._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+client = datastore.Client()
 
 
 class TestDatastore(unittest2.TestCase):
@@ -32,16 +33,16 @@ class TestDatastore(unittest2.TestCase):
         self.case_entities_to_delete = []
 
     def tearDown(self):
-        with datastore.Transaction():
+        with client.transaction():
             keys = [entity.key for entity in self.case_entities_to_delete]
-            datastore.delete_multi(keys)
+            client.delete_multi(keys)
 
 
 class TestDatastoreAllocateIDs(TestDatastore):
 
     def test_allocate_ids(self):
         num_ids = 10
-        allocated_keys = datastore.allocate_ids(datastore.Key('Kind'), num_ids)
+        allocated_keys = client.allocate_ids(client.key('Kind'), num_ids)
         self.assertEqual(len(allocated_keys), num_ids)
 
         unique_ids = set()
@@ -82,7 +83,7 @@ class TestDatastoreSave(TestDatastore):
 
     def _generic_test_post(self, name=None, key_id=None):
         entity = self._get_post(id_or_name=(name or key_id))
-        datastore.put(entity)
+        client.put(entity)
 
         # Register entity to be deleted.
         self.case_entities_to_delete.append(entity)
@@ -91,7 +92,7 @@ class TestDatastoreSave(TestDatastore):
             self.assertEqual(entity.key.name, name)
         if key_id is not None:
             self.assertEqual(entity.key.id, key_id)
-        retrieved_entity = datastore.get(entity.key)
+        retrieved_entity = client.get(entity.key)
         # Check the given and retrieved are the the same.
         self.assertEqual(retrieved_entity, entity)
 
@@ -126,7 +127,7 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity2)
 
         keys = [entity1.key, entity2.key]
-        matches = datastore.get_multi(keys)
+        matches = client.get_multi(keys)
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
@@ -145,7 +146,7 @@ class TestDatastoreSaveKeys(TestDatastore):
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
-        datastore.put(entity)
+        client.put(entity)
         self.case_entities_to_delete.append(entity)
 
         query = datastore.Query(kind='Person')
@@ -330,12 +331,12 @@ class TestDatastoreTransaction(TestDatastore):
         entity['url'] = u'www.google.com'
 
         with datastore.Transaction() as xact:
-            result = datastore.get(entity.key)
+            result = client.get(entity.key)
             if result is None:
                 xact.put(entity)
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.
-        retrieved_entity = datastore.get(entity.key)
+        retrieved_entity = client.get(entity.key)
         self.case_entities_to_delete.append(retrieved_entity)
         self.assertEqual(retrieved_entity, entity)

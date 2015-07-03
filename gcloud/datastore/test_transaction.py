@@ -73,7 +73,7 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
 
     def test_current(self):
-        from gcloud.datastore.test_api import _NoCommitBatch
+        from gcloud.datastore.test_client import _NoCommitBatch
         _DATASET = 'DATASET'
         connection = _Connection()
         xact1 = self._makeOne(_DATASET, connection)
