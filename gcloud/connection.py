@@ -415,7 +415,8 @@ class JSONConnection(Connection):
             target_object=_target_object)
 
         if not 200 <= response.status < 300:
-            raise make_exception(response, content)
+            raise make_exception(response, content,
+                                 error_info=method + ' ' + url)
 
         string_or_bytes = (six.binary_type, six.text_type)
         if content and expect_json and isinstance(content, string_or_bytes):
