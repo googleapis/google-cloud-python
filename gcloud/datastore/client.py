@@ -137,6 +137,22 @@ class Client(object):
            This is just a thin wrapper over :method:`get_multi`.
            The backend API does not make a distinction between a single key or
            multiple keys in a lookup request.
+
+        :type key: :class:`gcloud.datastore.key.Key`
+        :param key: The key to be retrieved from the datastore.
+
+        :type missing: an empty list or None.
+        :param missing: If a list is passed, the key-only entities returned
+                        by the backend as "missing" will be copied into it.
+                        Use only as a keyword param.
+
+        :type deferred: an empty list or None.
+        :param deferred: If a list is passed, the keys returned
+                         by the backend as "deferred" will be copied into it.
+                         Use only as a keyword param.
+
+        :rtype: :class:`gcloud.datastore.entity.Entity` or ``NoneType``
+        :returns: The requested entity if it exists.
         """
         entities = self.get_multi(keys=[key], missing=missing,
                                   deferred=deferred)
@@ -156,8 +172,13 @@ class Client(object):
 
         :type deferred: an empty list or None.
         :param deferred: If a list is passed, the keys returned
-                        by the backend as "deferred" will be copied into it.
-                        Use only as a keyword param.
+                         by the backend as "deferred" will be copied into it.
+                         Use only as a keyword param.
+
+        :rtype: list of :class:`gcloud.datastore.entity.Entity`
+        :returns: The requested entities.
+        :raises: ValueError if one or more of ``keys`` has a dataset ID which
+                 does not match our dataset ID.
         """
         if not keys:
             return []
