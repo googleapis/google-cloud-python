@@ -157,7 +157,7 @@ class ServiceUnavailable(ServerError):
     code = 503
 
 
-def make_exception(response, content, request_string=None, use_json=True):
+def make_exception(response, content, error_info=None, use_json=True):
     """Factory:  create exception based on HTTP response code.
 
     :type response: :class:`httplib2.Response` or other HTTP response object
@@ -167,9 +167,9 @@ def make_exception(response, content, request_string=None, use_json=True):
     :type content: string or dictionary
     :param content: The body of the HTTP error response.
 
-    :type request_string: string
-    :param request_string: Optional string giving extra information about the
-                           failed request.
+    :type error_info: string
+    :param error_info: Optional string giving extra information about the
+                       failed request.
 
     :type use_json: boolean
     :param use_json: Flag indicating if ``content`` is expected to be JSON.
@@ -191,8 +191,8 @@ def make_exception(response, content, request_string=None, use_json=True):
     message = payload.get('error', {}).get('message', '')
     errors = payload.get('error', {}).get('errors', ())
 
-    if request_string is not None:
-        message += ' (%s)' % (request_string,)
+    if error_info is not None:
+        message += ' (%s)' % (error_info,)
 
     try:
         klass = _HTTP_CODE_TO_EXCEPTION[response.status]
