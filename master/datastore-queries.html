@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Queries &mdash; gcloud af97ff1 documentation</title>
+    <title>Queries &mdash; gcloud 46db5d9 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'af97ff1',
+        VERSION:     '46db5d9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud af97ff1 documentation" href="index.html" />
+    <link rel="top" title="gcloud 46db5d9 documentation" href="index.html" />
     <link rel="next" title="Transactions" href="datastore-transactions.html" />
     <link rel="prev" title="Keys" href="datastore-keys.html" /> 
   </head>
@@ -53,7 +53,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-queries%0ARelease%3A%20af97ff1" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-queries%0ARelease%3A%2046db5d9" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -67,7 +67,7 @@ https://googlecloudplatform.github.io/gcloud-node" title="Node.js docs page">
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (af97ff1)
+              Version History (46db5d9)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -140,7 +140,7 @@ default is set.</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&lt;=': 2, '&lt;': 1, '&gt;': 3, '=': 5, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'&gt;': 3, '=': 5, '&lt;': 1, '&gt;=': 4, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -233,7 +233,7 @@ is required).</p>
 <li><strong>offset</strong> (<em>integer</em>) &#8211; An optional offset passed through to the iterator.</li>
 <li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; An optional cursor passed through to the iterator.</li>
 <li><strong>end_cursor</strong> (<em>bytes</em>) &#8211; An optional cursor passed through to the iterator.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="datastore-api.html#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code></a>) &#8211; An optional cursor passed through to the iterator.
+<li><strong>connection</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code>) &#8211; An optional cursor passed through to the iterator.
 If not supplied, uses the implicit default.</li>
 </ul>
 </td>
@@ -353,7 +353,6 @@ default has been set.</p>
         <ul><li><a href="index.html">gcloud</a></li></ul>
         <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">GCloud Package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-api.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
