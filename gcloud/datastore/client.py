@@ -32,7 +32,7 @@ def _extended_lookup(connection, dataset_id, key_pbs,
                      eventual=False, transaction_id=None):
     """Repeat lookup until all keys found (unless stop requested).
 
-    Helper function for :method:`Client.get_multi`.
+    Helper function for :meth:`Client.get_multi`.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: The connection used to connect to datastore.
@@ -134,7 +134,7 @@ class Client(object):
 
         .. note::
 
-           This is just a thin wrapper over :method:`get_multi`.
+           This is just a thin wrapper over :meth:`get_multi`.
            The backend API does not make a distinction between a single key or
            multiple keys in a lookup request.
 
