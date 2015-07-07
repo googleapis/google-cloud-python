@@ -56,7 +56,7 @@ bucket.
 
 Let's create a bucket:
 
-  >>> bucket = storage.create_bucket('test', project_name, connection=connection)
+  >>> bucket = client.create_bucket('test')
   Traceback (most recent call last):
     File "<stdin>", line 1, in <module>
     File "gcloud/storage/connection.py", line 340, in create_bucket
@@ -184,8 +184,8 @@ If you have a full bucket, you can delete it this way::
 Listing available buckets
 -------------------------
 
-  >>> for bucket in storage.list_buckets(connection):
-  ...   print bucket.name
+  >>> for bucket in client.list_buckets():
+  ...     print bucket.name
 
 Managing access control
 -----------------------

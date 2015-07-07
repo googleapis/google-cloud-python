@@ -101,7 +101,8 @@ how to create a bucket.
 .. code:: python
 
     from gcloud import storage
-    bucket = storage.get_bucket('bucket-id-here')
+    client = storage.Client()
+    bucket = client.get_bucket('bucket-id-here')
     # Then do other things...
     blob = bucket.get_blob('/remote/path/to/file.txt')
     print blob.download_as_string()

@@ -19,8 +19,8 @@ an ACL object under the hood, and you can interact with that using
 :func:`gcloud.storage.bucket.Bucket.acl`::
 
   >>> from gcloud import storage
-  >>> connection = storage.get_connection()
-  >>> bucket = storage.get_bucket(bucket_name, connection=connection)
+  >>> client = storage.Client()
+  >>> bucket = client.get_bucket(bucket_name)
   >>> acl = bucket.acl
 
 Adding and removing permissions can be done with the following methods
