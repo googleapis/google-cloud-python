@@ -131,6 +131,54 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(http._called_with['method'], 'GET')
         self.assertEqual(http._called_with['uri'], URI)
 
+    def test_create_bucket_conflict(self):
+        from gcloud.exceptions import Conflict
+
+        PROJECT = 'PROJECT'
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        BLOB_NAME = 'blob-name'
+        URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'storage',
+            client.connection.API_VERSION,
+            'b?project=%s' % (PROJECT,),
+        ])
+        http = client.connection._http = _Http(
+            {'status': '409', 'content-type': 'application/json'},
+            '{"error": {"message": "Conflict"}}',
+        )
+
+        self.assertRaises(Conflict, client.create_bucket, BLOB_NAME)
+        self.assertEqual(http._called_with['method'], 'POST')
+        self.assertEqual(http._called_with['uri'], URI)
+
+    def test_create_bucket_success(self):
+        from gcloud.storage.bucket import Bucket
+
+        PROJECT = 'PROJECT'
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        BLOB_NAME = 'blob-name'
+        URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'storage',
+            client.connection.API_VERSION,
+            'b?project=%s' % (PROJECT,),
+        ])
+        http = client.connection._http = _Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
+        )
+
+        bucket = client.create_bucket(BLOB_NAME)
+        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(http._called_with['method'], 'POST')
+        self.assertEqual(http._called_with['uri'], URI)
+
 
 class _Credentials(object):
 

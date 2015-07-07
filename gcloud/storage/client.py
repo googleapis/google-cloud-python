@@ -93,3 +93,27 @@ class Client(JSONClient):
             return self.get_bucket(bucket_name)
         except NotFound:
             return None
+
+    def create_bucket(self, bucket_name):
+        """Create a new bucket.
+
+        For example::
+
+          >>> bucket = client.create_bucket('my-bucket')
+          >>> print bucket
+          <Bucket: my-bucket>
+
+        This implements "storage.buckets.insert".
+
+        If the bucket already exists, will raise
+        :class:`gcloud.exceptions.Conflict`.
+
+        :type bucket_name: string
+        :param bucket_name: The bucket name to create.
+
+        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :returns: The newly created bucket.
+        """
+        bucket = Bucket(bucket_name)
+        bucket.create(self.project, connection=self.connection)
+        return bucket
