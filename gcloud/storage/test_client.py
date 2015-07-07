@@ -290,6 +290,40 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(parse_qs(uri_parts.query), EXPECTED_QUERY)
 
 
+class Test__BucketIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.storage.client import _BucketIterator
+        return _BucketIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = object()
+        iterator = self._makeOne(connection)
+        self.assertEqual(iterator.path, '/b')
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+
+    def test_get_items_from_response_empty(self):
+        connection = object()
+        iterator = self._makeOne(connection)
+        self.assertEqual(list(iterator.get_items_from_response({})), [])
+
+    def test_get_items_from_response_non_empty(self):
+        from gcloud.storage.bucket import Bucket
+        BLOB_NAME = 'blob-name'
+        response = {'items': [{'name': BLOB_NAME}]}
+        connection = object()
+        iterator = self._makeOne(connection)
+        buckets = list(iterator.get_items_from_response(response))
+        self.assertEqual(len(buckets), 1)
+        bucket = buckets[0]
+        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertEqual(bucket.name, BLOB_NAME)
+
+
 class _Credentials(object):
 
     _scopes = None

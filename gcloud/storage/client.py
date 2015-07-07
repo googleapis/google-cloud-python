@@ -17,7 +17,7 @@
 
 from gcloud.client import JSONClient
 from gcloud.exceptions import NotFound
-from gcloud.storage.api import _BucketIterator
+from gcloud.iterator import Iterator
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.connection import Connection
 
@@ -177,3 +177,34 @@ class Client(JSONClient):
         if page_token is not None:
             result.next_page_token = page_token
         return result
+
+
+class _BucketIterator(Iterator):
+    """An iterator listing all buckets.
+
+    You shouldn't have to use this directly, but instead should use the
+    helper methods on :class:`gcloud.storage.connection.Connection`
+    objects.
+
+    :type connection: :class:`gcloud.storage.connection.Connection`
+    :param connection: The connection to use for querying the list of buckets.
+
+    :type extra_params: dict or ``NoneType``
+    :param extra_params: Extra query string parameters for the API call.
+    """
+
+    def __init__(self, connection, extra_params=None):
+        super(_BucketIterator, self).__init__(connection=connection, path='/b',
+                                              extra_params=extra_params)
+
+    def get_items_from_response(self, response):
+        """Factory method which yields :class:`.Bucket` items from a response.
+
+        :type response: dict
+        :param response: The JSON API response for a page of buckets.
+        """
+        for item in response.get('items', []):
+            name = item.get('name')
+            bucket = Bucket(name)
+            bucket._set_properties(item)
+            yield bucket

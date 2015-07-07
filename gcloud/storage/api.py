@@ -20,9 +20,9 @@ rather than via Connection.
 
 from gcloud.exceptions import NotFound
 from gcloud._helpers import get_default_project
-from gcloud.iterator import Iterator
 from gcloud.storage._helpers import _require_connection
 from gcloud.storage.bucket import Bucket
+from gcloud.storage.client import _BucketIterator
 
 
 def lookup_bucket(bucket_name, connection=None):
@@ -196,35 +196,3 @@ def create_bucket(bucket_name, project=None, connection=None):
     bucket = Bucket(bucket_name)
     bucket.create(project, connection=connection)
     return bucket
-
-
-class _BucketIterator(Iterator):
-    """An iterator listing all buckets.
-
-    You shouldn't have to use this directly, but instead should use the
-    helper methods on :class:`gcloud.storage.connection.Connection`
-    objects.
-
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: The connection to use for querying the list of buckets.
-
-    :type extra_params: dict or ``NoneType``
-    :param extra_params: Extra query string parameters for the API call.
-    """
-
-    def __init__(self, connection, extra_params=None):
-        connection = _require_connection(connection)
-        super(_BucketIterator, self).__init__(connection=connection, path='/b',
-                                              extra_params=extra_params)
-
-    def get_items_from_response(self, response):
-        """Factory method which yields :class:`.Bucket` items from a response.
-
-        :type response: dict
-        :param response: The JSON API response for a page of buckets.
-        """
-        for item in response.get('items', []):
-            name = item.get('name')
-            bucket = Bucket(name)
-            bucket._set_properties(item)
-            yield bucket
