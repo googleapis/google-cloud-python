@@ -179,6 +179,116 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(http._called_with['method'], 'POST')
         self.assertEqual(http._called_with['uri'], URI)
 
+    def test_list_buckets_empty(self):
+        from six.moves.urllib.parse import parse_qs
+        from six.moves.urllib.parse import urlparse
+
+        PROJECT = 'PROJECT'
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        EXPECTED_QUERY = {
+            'project': [PROJECT],
+            'projection': ['noAcl'],
+        }
+        http = client.connection._http = _Http(
+            {'status': '200', 'content-type': 'application/json'},
+            b'{}',
+        )
+        buckets = list(client.list_buckets())
+        self.assertEqual(len(buckets), 0)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertEqual(http._called_with['body'], None)
+
+        BASE_URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'storage',
+            client.connection.API_VERSION,
+            'b',
+        ])
+        URI = http._called_with['uri']
+        self.assertTrue(URI.startswith(BASE_URI))
+        uri_parts = urlparse(URI)
+        self.assertEqual(parse_qs(uri_parts.query), EXPECTED_QUERY)
+
+    def test_list_buckets_non_empty(self):
+        from six.moves.urllib.parse import parse_qs
+        from six.moves.urllib.parse import urlencode
+        from six.moves.urllib.parse import urlparse
+        PROJECT = 'PROJECT'
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        BUCKET_NAME = 'bucket-name'
+        query_params = urlencode({'project': PROJECT, 'projection': 'noAcl'})
+        BASE_URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'storage',
+            client.connection.API_VERSION,
+        ])
+        URI = '/'.join([BASE_URI, 'b?%s' % (query_params,)])
+        http = client.connection._http = _Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{{"items": [{{"name": "{0}"}}]}}'.format(BUCKET_NAME)
+            .encode('utf-8'),
+        )
+        buckets = list(client.list_buckets())
+        self.assertEqual(len(buckets), 1)
+        self.assertEqual(buckets[0].name, BUCKET_NAME)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertTrue(http._called_with['uri'].startswith(BASE_URI))
+        self.assertEqual(parse_qs(urlparse(http._called_with['uri']).query),
+                         parse_qs(urlparse(URI).query))
+
+    def test_list_buckets_all_arguments(self):
+        from six.moves.urllib.parse import parse_qs
+        from six.moves.urllib.parse import urlparse
+
+        PROJECT = 'foo-bar'
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        MAX_RESULTS = 10
+        PAGE_TOKEN = 'ABCD'
+        PREFIX = 'subfolder'
+        PROJECTION = 'full'
+        FIELDS = 'items/id,nextPageToken'
+        EXPECTED_QUERY = {
+            'project': [PROJECT],
+            'maxResults': [str(MAX_RESULTS)],
+            'pageToken': [PAGE_TOKEN],
+            'prefix': [PREFIX],
+            'projection': [PROJECTION],
+            'fields': [FIELDS],
+        }
+
+        http = client.connection._http = _Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{"items": []}',
+        )
+        iterator = client.list_buckets(
+            max_results=MAX_RESULTS,
+            page_token=PAGE_TOKEN,
+            prefix=PREFIX,
+            projection=PROJECTION,
+            fields=FIELDS,
+        )
+        buckets = list(iterator)
+        self.assertEqual(buckets, [])
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertEqual(http._called_with['body'], None)
+
+        BASE_URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'storage',
+            client.connection.API_VERSION,
+            'b'
+        ])
+        URI = http._called_with['uri']
+        self.assertTrue(URI.startswith(BASE_URI))
+        uri_parts = urlparse(URI)
+        self.assertEqual(parse_qs(uri_parts.query), EXPECTED_QUERY)
+
 
 class _Credentials(object):
 

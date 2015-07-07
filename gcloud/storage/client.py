@@ -17,6 +17,7 @@
 
 from gcloud.client import JSONClient
 from gcloud.exceptions import NotFound
+from gcloud.storage.api import _BucketIterator
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.connection import Connection
 
@@ -117,3 +118,62 @@ class Client(JSONClient):
         bucket = Bucket(bucket_name)
         bucket.create(self.project, connection=self.connection)
         return bucket
+
+    def list_buckets(self, max_results=None, page_token=None, prefix=None,
+                     projection='noAcl', fields=None):
+        """Get all buckets in the project associated to the client.
+
+        This will not populate the list of blobs available in each
+        bucket.
+
+          >>> for bucket in client.list_buckets():
+          >>>   print bucket
+
+        This implements "storage.buckets.list".
+
+        :type max_results: integer or ``NoneType``
+        :param max_results: Optional. Maximum number of buckets to return.
+
+        :type page_token: string or ``NoneType``
+        :param page_token: Optional. Opaque marker for the next "page" of
+                           buckets. If not passed, will return the first page
+                           of buckets.
+
+        :type prefix: string or ``NoneType``
+        :param prefix: Optional. Filter results to buckets whose names begin
+                       with this prefix.
+
+        :type projection: string or ``NoneType``
+        :param projection: If used, must be 'full' or 'noAcl'. Defaults to
+                           'noAcl'. Specifies the set of properties to return.
+
+        :type fields: string or ``NoneType``
+        :param fields: Selector specifying which fields to include in a
+                       partial response. Must be a list of fields. For example
+                       to get a partial response with just the next page token
+                       and the language of each bucket returned:
+                       'items/id,nextPageToken'
+
+        :rtype: iterable of :class:`gcloud.storage.bucket.Bucket` objects.
+        :returns: All buckets belonging to this project.
+        """
+        extra_params = {'project': self.project}
+
+        if max_results is not None:
+            extra_params['maxResults'] = max_results
+
+        if prefix is not None:
+            extra_params['prefix'] = prefix
+
+        extra_params['projection'] = projection
+
+        if fields is not None:
+            extra_params['fields'] = fields
+
+        result = _BucketIterator(connection=self.connection,
+                                 extra_params=extra_params)
+        # Page token must be handled specially since the base `Iterator`
+        # class has it as a reserved property.
+        if page_token is not None:
+            result.next_page_token = page_token
+        return result
