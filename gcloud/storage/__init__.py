@@ -47,10 +47,6 @@ from gcloud.storage._implicit_environ import get_connection
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
 from gcloud.storage._implicit_environ import set_default_connection
-from gcloud.storage.api import create_bucket
-from gcloud.storage.api import get_bucket
-from gcloud.storage.api import list_buckets
-from gcloud.storage.api import lookup_bucket
 from gcloud.storage.batch import Batch
 from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket

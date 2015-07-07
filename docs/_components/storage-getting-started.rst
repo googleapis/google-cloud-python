@@ -150,10 +150,10 @@ Accessing a bucket
 ------------------
 
 If you already have a bucket, use
-:func:`get_bucket <gcloud.storage.api.get_bucket>` to retrieve the
+:meth:`get_bucket <gcloud.storage.client.Client.get_bucket>` to retrieve the
 bucket object::
 
-  >>> bucket = storage.get_bucket('my-bucket', connection=connection)
+  >>> bucket = client.get_bucket('my-bucket')
 
 If you want to get all the blobs in the bucket, you can use
 :func:`list_blobs <gcloud.storage.bucket.Bucket.list_blobs>`::
