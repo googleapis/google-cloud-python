@@ -34,6 +34,103 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(client.connection, Connection))
         self.assertTrue(client.connection.credentials is CREDENTIALS)
 
+    def test_get_bucket_miss(self):
+        from gcloud.exceptions import NotFound
+
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        NONESUCH = 'nonesuch'
+        URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'storage',
+            client.connection.API_VERSION,
+            'b',
+            'nonesuch?projection=noAcl',
+        ])
+        http = client.connection._http = _Http(
+            {'status': '404', 'content-type': 'application/json'},
+            b'{}',
+        )
+        self.assertRaises(NotFound, client.get_bucket, NONESUCH)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertEqual(http._called_with['uri'], URI)
+
+    def test_get_bucket_hit(self):
+        from gcloud.storage.bucket import Bucket
+
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        BLOB_NAME = 'blob-name'
+        URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'storage',
+            client.connection.API_VERSION,
+            'b',
+            '%s?projection=noAcl' % (BLOB_NAME,),
+        ])
+        http = client.connection._http = _Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
+        )
+
+        bucket = client.get_bucket(BLOB_NAME)
+        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertEqual(http._called_with['uri'], URI)
+
+    def test_lookup_bucket_miss(self):
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        NONESUCH = 'nonesuch'
+        URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'storage',
+            client.connection.API_VERSION,
+            'b',
+            'nonesuch?projection=noAcl',
+        ])
+        http = client.connection._http = _Http(
+            {'status': '404', 'content-type': 'application/json'},
+            b'{}',
+        )
+        bucket = client.lookup_bucket(NONESUCH)
+        self.assertEqual(bucket, None)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertEqual(http._called_with['uri'], URI)
+
+    def test_lookup_bucket_hit(self):
+        from gcloud.storage.bucket import Bucket
+
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        BLOB_NAME = 'blob-name'
+        URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'storage',
+            client.connection.API_VERSION,
+            'b',
+            '%s?projection=noAcl' % (BLOB_NAME,),
+        ])
+        http = client.connection._http = _Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{{"name": "{0}"}}'.format(BLOB_NAME).encode('utf-8'),
+        )
+
+        bucket = client.lookup_bucket(BLOB_NAME)
+        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertEqual(bucket.name, BLOB_NAME)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertEqual(http._called_with['uri'], URI)
+
 
 class _Credentials(object):
 
@@ -46,3 +143,17 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
+
+
+class _Http(object):
+
+    _called_with = None
+
+    def __init__(self, headers, content):
+        from httplib2 import Response
+        self._response = Response(headers)
+        self._content = content
+
+    def request(self, **kw):
+        self._called_with = kw
+        return self._response, self._content

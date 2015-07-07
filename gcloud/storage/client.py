@@ -16,6 +16,8 @@
 
 
 from gcloud.client import JSONClient
+from gcloud.exceptions import NotFound
+from gcloud.storage.bucket import Bucket
 from gcloud.storage.connection import Connection
 
 
@@ -41,3 +43,53 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+
+    def get_bucket(self, bucket_name):
+        """Get a bucket by name.
+
+        If the bucket isn't found, this will raise a
+        :class:`gcloud.storage.exceptions.NotFound`.
+
+        For example::
+
+          >>> try:
+          >>>   bucket = client.get_bucket('my-bucket')
+          >>> except gcloud.exceptions.NotFound:
+          >>>   print 'Sorry, that bucket does not exist!'
+
+        This implements "storage.buckets.get".
+
+        :type bucket_name: string
+        :param bucket_name: The name of the bucket to get.
+
+        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :returns: The bucket matching the name provided.
+        :raises: :class:`gcloud.exceptions.NotFound`
+        """
+        bucket = Bucket(bucket_name)
+        bucket.reload(connection=self.connection)
+        return bucket
+
+    def lookup_bucket(self, bucket_name):
+        """Get a bucket by name, returning None if not found.
+
+        You can use this if you would rather check for a None value
+        than catching an exception::
+
+          >>> bucket = client.lookup_bucket('doesnt-exist')
+          >>> print bucket
+          None
+          >>> bucket = client.lookup_bucket('my-bucket')
+          >>> print bucket
+          <Bucket: my-bucket>
+
+        :type bucket_name: string
+        :param bucket_name: The name of the bucket to get.
+
+        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :returns: The bucket matching the name provided or None if not found.
+        """
+        try:
+            return self.get_bucket(bucket_name)
+        except NotFound:
+            return None
