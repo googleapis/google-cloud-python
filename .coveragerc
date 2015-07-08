@@ -1,7 +1,7 @@
 [report]
 omit =
-	*/demo/*
-	*/demo.py
+    */demo/*
+    */demo.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
