@@ -74,6 +74,18 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(client.dataset_id, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
         self.assertTrue(client.connection is conn)
+        self.assertEqual(list(client._connection_stack), [conn])
+
+    def test__push_connection_and__pop_connection(self):
+        conn = object()
+        new_conn = object()
+        client = self._makeOne(connection=conn)
+        client._push_connection(new_conn)
+        self.assertTrue(client.connection is new_conn)
+        self.assertEqual(list(client._connection_stack), [conn, new_conn])
+        self.assertTrue(client._pop_connection() is new_conn)
+        self.assertTrue(client.connection is conn)
+        self.assertEqual(list(client._connection_stack), [conn])
 
     def test_get_miss(self):
         _called_with = []

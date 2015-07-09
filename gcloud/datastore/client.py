@@ -126,8 +126,43 @@ class Client(object):
         self.dataset_id = dataset_id
         if connection is None:
             connection = get_connection()
-        self.connection = connection
+        self._connection_stack = [connection]
         self.namespace = namespace
+
+    def _push_connection(self, connection):
+        """Push a connection/batch/transaction onto our stack.
+
+        "Protected", intended for use by batch / transaction context mgrs.
+
+        :type connection: :class:`gcloud.datastore.connection.Connection`,
+                          or a subclass
+        :param connection: newly-active connection/batch/transaction to
+                           pass to proxied API methods
+        """
+        self._connection_stack.append(connection)
+
+    def _pop_connection(self):
+        """Pop a connection/batch/transaction from our stack.
+
+        "Protected", intended for use by batch / transaction context mgrs.
+
+        :raises: IndexError if the stack is empty.
+        :rtype: :class:`gcloud.datastore.connection.Connection`, or
+                a subclass.
+        :returns: the top-most connection/batch/transaction, after removing it.
+        """
+        return self._connection_stack.pop()
+
+    @property
+    def connection(self):
+        """Currently-active connection.
+
+        :rtype: :class:`gcloud.datastore.connection.Connection`, or
+                a subclass.
+        :returns: The connection/batch/transaction at the toop of the
+                  connection stack.
+        """
+        return self._connection_stack[-1]
 
     def get(self, key, missing=None, deferred=None):
         """Retrieve an entity from a single key (if it exists).
