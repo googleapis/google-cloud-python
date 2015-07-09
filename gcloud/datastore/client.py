@@ -135,7 +135,7 @@ class Client(object):
         "Protected", intended for use by batch / transaction context mgrs.
 
         :type connection: :class:`gcloud.datastore.connection.Connection`,
-                          or a subclass
+                          or an object implementing its API.
         :param connection: newly-active connection/batch/transaction to
                            pass to proxied API methods
         """
@@ -148,7 +148,7 @@ class Client(object):
 
         :raises: IndexError if the stack is empty.
         :rtype: :class:`gcloud.datastore.connection.Connection`, or
-                a subclass.
+                an object implementing its API.
         :returns: the top-most connection/batch/transaction, after removing it.
         """
         return self._connection_stack.pop()
@@ -158,7 +158,7 @@ class Client(object):
         """Currently-active connection.
 
         :rtype: :class:`gcloud.datastore.connection.Connection`, or
-                a subclass.
+                an object implementing its API.
         :returns: The connection/batch/transaction at the toop of the
                   connection stack.
         """
