@@ -21,6 +21,7 @@ from gcloud.datastore import _implicit_environ
 
 
 _implicit_environ._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+CLIENT = datastore.Client()
 
 
 FETCH_MAX = 20
@@ -36,7 +37,7 @@ TRANSACTION_MAX_GROUPS = 5
 
 def fetch_keys(kind, fetch_max=FETCH_MAX, query=None, cursor=None):
     if query is None:
-        query = datastore.Query(kind=kind, projection=['__key__'])
+        query = CLIENT.query(kind=kind, projection=['__key__'])
 
     iterator = query.fetch(limit=fetch_max, start_cursor=cursor)
 
@@ -65,7 +66,7 @@ def remove_kind(kind):
         return
 
     delete_outside_transaction = False
-    with datastore.Transaction():
+    with CLIENT.transaction():
         # Now that we have all results, we seek to delete.
         print('Deleting keys:')
         print(results)
@@ -74,10 +75,10 @@ def remove_kind(kind):
         if len(ancestors) > TRANSACTION_MAX_GROUPS:
             delete_outside_transaction = True
         else:
-            datastore.delete_multi([result.key for result in results])
+            CLIENT.delete_multi([result.key for result in results])
 
     if delete_outside_transaction:
-        datastore.delete_multi([result.key for result in results])
+        CLIENT.delete_multi([result.key for result in results])
 
 
 def remove_all_entities():
