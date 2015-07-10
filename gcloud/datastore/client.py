@@ -13,6 +13,7 @@
 # limitations under the License.
 """Convenience wrapper for invoking APIs/factories w/ a dataset ID."""
 
+from gcloud._helpers import _LocalStack
 from gcloud.datastore import helpers
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.entity import Entity
@@ -127,7 +128,41 @@ class Client(object):
         if connection is None:
             connection = get_connection()
         self.connection = connection
+        self._batch_stack = _LocalStack()
         self.namespace = namespace
+
+    def _push_batch(self, batch):
+        """Push a batch/transaction onto our stack.
+
+        "Protected", intended for use by batch / transaction context mgrs.
+
+        :type batch: :class:`gcloud.datastore.batch.Batch`, or an object
+                     implementing its API.
+        :param batch: newly-active batch/batch/transaction.
+        """
+        self._batch_stack.push(batch)
+
+    def _pop_batch(self):
+        """Pop a batch/transaction from our stack.
+
+        "Protected", intended for use by batch / transaction context mgrs.
+
+        :raises: IndexError if the stack is empty.
+        :rtype: :class:`gcloud.datastore.batch.Batch`, or an object
+                 implementing its API.
+        :returns: the top-most batch/transaction, after removing it.
+        """
+        return self._batch_stack.pop()
+
+    @property
+    def current_batch(self):
+        """Currently-active batch.
+
+        :rtype: :class:`gcloud.datastore.batch.Batch`, or an object
+                implementing its API, or ``NoneType`` (if no batch is active).
+        :returns: The batch/transaction at the toop of the batch stack.
+        """
+        return self._batch_stack.top
 
     def get(self, key, missing=None, deferred=None):
         """Retrieve an entity from a single key (if it exists).

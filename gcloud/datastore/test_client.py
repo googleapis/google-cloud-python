@@ -63,6 +63,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(client.dataset_id, OTHER)
         self.assertEqual(client.namespace, None)
         self.assertTrue(client.connection is conn)
+        self.assertTrue(client.current_batch is None)
 
     def test_ctor_w_explicit_inputs(self):
         OTHER = 'other'
@@ -74,6 +75,25 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(client.dataset_id, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
         self.assertTrue(client.connection is conn)
+        self.assertTrue(client.current_batch is None)
+        self.assertEqual(list(client._batch_stack), [])
+
+    def test__push_connection_and__pop_connection(self):
+        conn = object()
+        batch1 = object()
+        batch2 = object()
+        client = self._makeOne(connection=conn)
+        client._push_batch(batch1)
+        self.assertEqual(list(client._batch_stack), [batch1])
+        self.assertTrue(client.current_batch is batch1)
+        client._push_batch(batch2)
+        self.assertTrue(client.current_batch is batch2)
+        # list(_LocalStack) returns in reverse order.
+        self.assertEqual(list(client._batch_stack), [batch2, batch1])
+        self.assertTrue(client._pop_batch() is batch2)
+        self.assertEqual(list(client._batch_stack), [batch1])
+        self.assertTrue(client._pop_batch() is batch1)
+        self.assertEqual(list(client._batch_stack), [])
 
     def test_get_miss(self):
         _called_with = []
