@@ -31,33 +31,18 @@ class TestQuery(unittest2.TestCase):
             connection = _Connection()
         return _Client(self._DATASET, connection)
 
-    def test_ctor_implicit(self):
-        from gcloud.datastore.key import Key
-        _KIND = 'KIND'
+    def test_ctor_defaults(self):
         client = self._makeClient()
-        ancestor = Key('ANCESTOR', 123, dataset_id=self._DATASET)
-        FILTERS = [('foo', '=', 'Qux'), ('bar', '<', 17)]
-        PROJECTION = ['foo', 'bar', 'baz']
-        ORDER = ['foo', 'bar']
-        GROUP_BY = ['foo']
-        query = self._makeOne(
-            client,
-            kind=_KIND,
-            ancestor=ancestor,
-            filters=FILTERS,
-            projection=PROJECTION,
-            order=ORDER,
-            group_by=GROUP_BY,
-            )
+        query = self._makeOne(client)
         self.assertTrue(query._client is client)
-        self.assertEqual(query.dataset_id, self._DATASET)
-        self.assertEqual(query.kind, _KIND)
-        self.assertEqual(query.namespace, None)
-        self.assertEqual(query.ancestor.path, ancestor.path)
-        self.assertEqual(query.filters, FILTERS)
-        self.assertEqual(query.projection, PROJECTION)
-        self.assertEqual(query.order, ORDER)
-        self.assertEqual(query.group_by, GROUP_BY)
+        self.assertEqual(query.dataset_id, client.dataset_id)
+        self.assertEqual(query.kind, None)
+        self.assertEqual(query.namespace, client.namespace)
+        self.assertEqual(query.ancestor, None)
+        self.assertEqual(query.filters, [])
+        self.assertEqual(query.projection, [])
+        self.assertEqual(query.order, [])
+        self.assertEqual(query.group_by, [])
 
     def test_ctor_explicit(self):
         from gcloud.datastore.key import Key
