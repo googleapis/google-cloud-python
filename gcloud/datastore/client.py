@@ -13,19 +13,79 @@
 # limitations under the License.
 """Convenience wrapper for invoking APIs/factories w/ a dataset ID."""
 
+import os
+
 from gcloud._helpers import _LocalStack
+from gcloud._helpers import _app_engine_id
+from gcloud._helpers import _compute_engine_id
 from gcloud.datastore import helpers
+from gcloud.datastore.connection import Connection
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
-from gcloud.datastore._implicit_environ import _determine_default_dataset_id
-from gcloud.datastore._implicit_environ import get_connection
 
 
 _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
+
+_DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
+"""Environment variable defining default dataset ID."""
+
+_GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
+"""Environment variable defining default dataset ID under GCD."""
+
+
+def _get_production_dataset_id():
+    """Gets the production application ID if it can be inferred."""
+    return os.getenv(_DATASET_ENV_VAR_NAME)
+
+
+def _get_gcd_dataset_id():
+    """Gets the GCD application ID if it can be inferred."""
+    return os.getenv(_GCD_DATASET_ENV_VAR_NAME)
+
+
+def _determine_default_dataset_id(dataset_id=None):
+    """Determine default dataset ID explicitly or implicitly as fall-back.
+
+    In implicit case, supports four environments. In order of precedence, the
+    implicit environments are:
+
+    * GCLOUD_DATASET_ID environment variable
+    * DATASTORE_DATASET environment variable (for ``gcd`` testing)
+    * Google App Engine application ID
+    * Google Compute Engine project ID (from metadata server)
+
+    :type dataset_id: string
+    :param dataset_id: Optional. The dataset ID to use as default.
+
+    :rtype: string or ``NoneType``
+    :returns: Default dataset ID if it can be determined.
+    """
+    if dataset_id is None:
+        dataset_id = _get_production_dataset_id()
+
+    if dataset_id is None:
+        dataset_id = _get_gcd_dataset_id()
+
+    if dataset_id is None:
+        dataset_id = _app_engine_id()
+
+    if dataset_id is None:
+        dataset_id = _compute_engine_id()
+
+    return dataset_id
+
+
+def _get_connection():
+    """Shortcut method to establish a connection to the Cloud Datastore.
+
+    :rtype: :class:`gcloud.datastore.connection.Connection`
+    :returns: A connection defined with the proper credentials.
+    """
+    return Connection.from_environment()
 
 
 def _extended_lookup(connection, dataset_id, key_pbs,
@@ -126,7 +186,7 @@ class Client(object):
             raise EnvironmentError('Dataset ID could not be inferred.')
         self.dataset_id = dataset_id
         if connection is None:
-            connection = get_connection()
+            connection = _get_connection()
         self.connection = connection
         self._batch_stack = _LocalStack()
         self.namespace = namespace

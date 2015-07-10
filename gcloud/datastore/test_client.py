@@ -58,7 +58,7 @@ class TestClient(unittest2.TestCase):
         klass = self._getTargetClass()
         with _Monkey(_MUT,
                      _determine_default_dataset_id=lambda x: x or OTHER,
-                     get_connection=lambda: conn):
+                     _get_connection=lambda: conn):
             client = klass()
         self.assertEqual(client.dataset_id, OTHER)
         self.assertEqual(client.namespace, None)
