@@ -27,7 +27,6 @@ class TestQuery(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def _makeClient(self, connection=None):
-        from gcloud.datastore.test_batch import _Client
         if connection is None:
             connection = _Connection()
         return _Client(self._DATASET, connection)
@@ -358,7 +357,6 @@ class TestIterator(unittest2.TestCase):
             ([entity_pb], cursor, MORE if more else NO_MORE))
 
     def _makeClient(self, connection=None):
-        from gcloud.datastore.test_batch import _Client
         if connection is None:
             connection = _Connection()
         return _Client(self._DATASET, connection)
@@ -671,3 +669,15 @@ class _Connection(object):
         self._called_with.append(kw)
         result, self._results = self._results[0], self._results[1:]
         return result
+
+
+class _Client(object):
+
+    def __init__(self, dataset_id, connection, namespace=None):
+        self.dataset_id = dataset_id
+        self.connection = connection
+        self.namespace = namespace
+
+    @property
+    def current_transaction(self):
+        pass

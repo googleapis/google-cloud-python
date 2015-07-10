@@ -26,7 +26,6 @@ class TestTransaction(unittest2.TestCase):
 
     def test_ctor(self):
         from gcloud.datastore._datastore_v1_pb2 import Mutation
-        from gcloud.datastore.test_batch import _Client
 
         _DATASET = 'DATASET'
         connection = _Connection()
@@ -41,7 +40,6 @@ class TestTransaction(unittest2.TestCase):
 
     def test_current(self):
         from gcloud.datastore.test_client import _NoCommitBatch
-        from gcloud.datastore.test_batch import _Client
         _DATASET = 'DATASET'
         connection = _Connection()
         client = _Client(_DATASET, connection)
@@ -67,7 +65,6 @@ class TestTransaction(unittest2.TestCase):
         self.assertTrue(xact2.current() is None)
 
     def test_begin(self):
-        from gcloud.datastore.test_batch import _Client
         _DATASET = 'DATASET'
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
@@ -77,7 +74,6 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(connection._begun, _DATASET)
 
     def test_begin_tombstoned(self):
-        from gcloud.datastore.test_batch import _Client
         _DATASET = 'DATASET'
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
@@ -92,7 +88,6 @@ class TestTransaction(unittest2.TestCase):
         self.assertRaises(ValueError, xact.begin)
 
     def test_rollback(self):
-        from gcloud.datastore.test_batch import _Client
         _DATASET = 'DATASET'
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
@@ -103,7 +98,6 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(connection._rolled_back, (_DATASET, 234))
 
     def test_commit_no_auto_ids(self):
-        from gcloud.datastore.test_batch import _Client
         _DATASET = 'DATASET'
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
@@ -115,7 +109,6 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.id, None)
 
     def test_commit_w_auto_ids(self):
-        from gcloud.datastore.test_batch import _Client
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 123
@@ -134,7 +127,6 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(entity.key.path, [{'kind': _KIND, 'id': _ID}])
 
     def test_context_manager_no_raise(self):
-        from gcloud.datastore.test_batch import _Client
         _DATASET = 'DATASET'
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
@@ -147,7 +139,6 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.id, None)
 
     def test_context_manager_w_raise(self):
-        from gcloud.datastore.test_batch import _Client
 
         class Foo(Exception):
             pass
@@ -211,3 +202,23 @@ class _Entity(object):
     def __init__(self):
         from gcloud.datastore.key import Key
         self.key = Key('KIND', dataset_id='DATASET')
+
+
+class _Client(object):
+
+    def __init__(self, dataset_id, connection, namespace=None):
+        self.dataset_id = dataset_id
+        self.connection = connection
+        self.namespace = namespace
+        self._batches = []
+
+    def _push_batch(self, batch):
+        self._batches.insert(0, batch)
+
+    def _pop_batch(self):
+        return self._batches.pop(0)
+
+    @property
+    def current_batch(self):
+        if self._batches:
+            return self._batches[0]

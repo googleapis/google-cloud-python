@@ -463,7 +463,3 @@ class _Client(object):
     def current_batch(self):
         if self._batches:
             return self._batches[0]
-
-    @property
-    def current_transaction(self):
-        pass
