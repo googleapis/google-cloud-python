@@ -31,6 +31,162 @@ def _make_entity_pb(dataset_id, kind, integer_id, name=None, str_val=None):
     return entity_pb
 
 
+class Test__get_production_dataset_id(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud.datastore.client import _get_production_dataset_id
+        return _get_production_dataset_id()
+
+    def test_no_value(self):
+        import os
+        from gcloud._testing import _Monkey
+
+        environ = {}
+        with _Monkey(os, getenv=environ.get):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, None)
+
+    def test_value_set(self):
+        import os
+        from gcloud._testing import _Monkey
+        from gcloud.datastore.client import _DATASET_ENV_VAR_NAME
+
+        MOCK_DATASET_ID = object()
+        environ = {_DATASET_ENV_VAR_NAME: MOCK_DATASET_ID}
+        with _Monkey(os, getenv=environ.get):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, MOCK_DATASET_ID)
+
+
+class Test__get_gcd_dataset_id(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud.datastore.client import _get_gcd_dataset_id
+        return _get_gcd_dataset_id()
+
+    def test_no_value(self):
+        import os
+        from gcloud._testing import _Monkey
+
+        environ = {}
+        with _Monkey(os, getenv=environ.get):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, None)
+
+    def test_value_set(self):
+        import os
+        from gcloud._testing import _Monkey
+        from gcloud.datastore.client import _GCD_DATASET_ENV_VAR_NAME
+
+        MOCK_DATASET_ID = object()
+        environ = {_GCD_DATASET_ENV_VAR_NAME: MOCK_DATASET_ID}
+        with _Monkey(os, getenv=environ.get):
+            dataset_id = self._callFUT()
+            self.assertEqual(dataset_id, MOCK_DATASET_ID)
+
+
+class Test__determine_default_dataset_id(unittest2.TestCase):
+
+    def _callFUT(self, dataset_id=None):
+        from gcloud.datastore.client import _determine_default_dataset_id
+        return _determine_default_dataset_id(dataset_id=dataset_id)
+
+    def _determine_default_helper(self, prod=None, gcd=None, gae=None,
+                                  gce=None, dataset_id=None):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import client
+
+        _callers = []
+
+        def prod_mock():
+            _callers.append('prod_mock')
+            return prod
+
+        def gcd_mock():
+            _callers.append('gcd_mock')
+            return gcd
+
+        def gae_mock():
+            _callers.append('gae_mock')
+            return gae
+
+        def gce_mock():
+            _callers.append('gce_mock')
+            return gce
+
+        patched_methods = {
+            '_get_production_dataset_id': prod_mock,
+            '_get_gcd_dataset_id': gcd_mock,
+            '_app_engine_id': gae_mock,
+            '_compute_engine_id': gce_mock,
+        }
+
+        with _Monkey(client, **patched_methods):
+            returned_dataset_id = self._callFUT(dataset_id)
+
+        return returned_dataset_id, _callers
+
+    def test_no_value(self):
+        dataset_id, callers = self._determine_default_helper()
+        self.assertEqual(dataset_id, None)
+        self.assertEqual(callers,
+                         ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
+
+    def test_explicit(self):
+        DATASET_ID = object()
+        dataset_id, callers = self._determine_default_helper(
+            dataset_id=DATASET_ID)
+        self.assertEqual(dataset_id, DATASET_ID)
+        self.assertEqual(callers, [])
+
+    def test_prod(self):
+        DATASET_ID = object()
+        dataset_id, callers = self._determine_default_helper(prod=DATASET_ID)
+        self.assertEqual(dataset_id, DATASET_ID)
+        self.assertEqual(callers, ['prod_mock'])
+
+    def test_gcd(self):
+        DATASET_ID = object()
+        dataset_id, callers = self._determine_default_helper(gcd=DATASET_ID)
+        self.assertEqual(dataset_id, DATASET_ID)
+        self.assertEqual(callers, ['prod_mock', 'gcd_mock'])
+
+    def test_gae(self):
+        DATASET_ID = object()
+        dataset_id, callers = self._determine_default_helper(gae=DATASET_ID)
+        self.assertEqual(dataset_id, DATASET_ID)
+        self.assertEqual(callers, ['prod_mock', 'gcd_mock', 'gae_mock'])
+
+    def test_gce(self):
+        DATASET_ID = object()
+        dataset_id, callers = self._determine_default_helper(gce=DATASET_ID)
+        self.assertEqual(dataset_id, DATASET_ID)
+        self.assertEqual(callers,
+                         ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
+
+
+class Test__get_connection(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud.datastore.client import _get_connection
+        return _get_connection()
+
+    def test_it(self):
+        from gcloud import credentials
+        from gcloud.datastore.connection import SCOPE
+        from gcloud.datastore.connection import Connection
+        from gcloud.test_credentials import _Client
+        from gcloud._testing import _Monkey
+
+        client = _Client()
+        with _Monkey(credentials, client=client):
+            found = self._callFUT()
+        self.assertTrue(isinstance(found, Connection))
+        self.assertTrue(found._credentials is client._signed)
+        self.assertEqual(found._credentials._scopes, SCOPE)
+        self.assertTrue(client._get_app_default_called)
+
+
 class TestClient(unittest2.TestCase):
 
     DATASET_ID = 'DATASET'

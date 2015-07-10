@@ -217,3 +217,7 @@ class _Client(object):
 
     def _pop_batch(self):
         return self._batches.pop(0)
+
+    @property
+    def current_batch(self):
+        return self._batches and self._batches[0] or None
