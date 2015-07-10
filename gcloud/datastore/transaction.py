@@ -84,14 +84,8 @@ class Transaction(Batch):
       ... else:
       ...     transaction.commit()
 
-    :type dataset_id: string
-    :param dataset_id: The ID of the dataset.
-
-    :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: The connection used to connect to datastore.
-
-    :raises: :class:`ValueError` if either a connection or dataset ID
-             are not set.
+    :type client: :class:`gcloud.datastore.client.Client`
+    :param client: The client used to connect to datastore.
     """
 
     _INITIAL = 0
@@ -106,8 +100,8 @@ class Transaction(Batch):
     _FINISHED = 3
     """Enum value for _FINISHED status of transaction."""
 
-    def __init__(self, dataset_id=None, connection=None):
-        super(Transaction, self).__init__(dataset_id, connection)
+    def __init__(self, client):
+        super(Transaction, self).__init__(client)
         self._id = None
         self._status = self._INITIAL
 
@@ -120,8 +114,7 @@ class Transaction(Batch):
         """
         return self._id
 
-    @staticmethod
-    def current():
+    def current(self):
         """Return the topmost transaction.
 
         .. note:: if the topmost element on the stack is not a transaction,
@@ -129,7 +122,7 @@ class Transaction(Batch):
 
         :rtype: :class:`gcloud.datastore.transaction.Transaction` or None
         """
-        top = Batch.current()
+        top = super(Transaction, self).current()
         if isinstance(top, Transaction):
             return top
 
@@ -145,7 +138,7 @@ class Transaction(Batch):
         if self._status != self._INITIAL:
             raise ValueError('Transaction already started previously.')
         self._status = self._IN_PROGRESS
-        self._id = self.connection.begin_transaction(self._dataset_id)
+        self._id = self.connection.begin_transaction(self.dataset_id)
 
     def rollback(self):
         """Rolls back the current transaction.
@@ -156,7 +149,7 @@ class Transaction(Batch):
         - Sets the current transaction's ID to None.
         """
         try:
-            self.connection.rollback(self._dataset_id, self._id)
+            self.connection.rollback(self.dataset_id, self._id)
         finally:
             self._status = self._ABORTED
             # Clear our own ID in case this gets accidentally reused.

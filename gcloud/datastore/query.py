@@ -17,11 +17,9 @@
 import base64
 
 from gcloud._helpers import _ensure_tuple_or_list
-from gcloud.datastore import _implicit_environ
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore import helpers
 from gcloud.datastore.key import Key
-from gcloud.datastore.transaction import Transaction
 
 
 class Query(object):
@@ -30,15 +28,19 @@ class Query(object):
     This class serves as an abstraction for creating a query over data
     stored in the Cloud Datastore.
 
+    :type client: :class:`gcloud.datastore.client.Client`
+    :param client: The client used to connect to datastore.
+
     :type kind: string
     :param kind: The kind to query.
 
     :type dataset_id: string
     :param dataset_id: The ID of the dataset to query.  If not passed,
-                       uses the implicit default.
+                       uses the client's value.
 
     :type namespace: string or None
-    :param namespace: The namespace to which to restrict results.
+    :param namespace: The namespace to which to restrict results.  If not
+                      passed, uses the client's value.
 
     :type ancestor: :class:`gcloud.datastore.key.Key` or None
     :param ancestor: key of the ancestor to which this query's results are
@@ -71,6 +73,7 @@ class Query(object):
     """Mapping of operator strings and their protobuf equivalents."""
 
     def __init__(self,
+                 client,
                  kind=None,
                  dataset_id=None,
                  namespace=None,
@@ -80,14 +83,9 @@ class Query(object):
                  order=(),
                  group_by=()):
 
-        if dataset_id is None:
-            dataset_id = _implicit_environ.get_default_dataset_id()
-
-        if dataset_id is None:
-            raise ValueError("No dataset ID supplied, and no default set.")
-
-        self._dataset_id = dataset_id
+        self._client = client
         self._kind = kind
+        self._dataset_id = dataset_id
         self._namespace = namespace
         self._ancestor = ancestor
         self._filters = []
@@ -104,7 +102,7 @@ class Query(object):
 
         :rtype: str
         """
-        return self._dataset_id
+        return self._dataset_id or self._client.dataset_id
 
     @property
     def namespace(self):
@@ -113,7 +111,7 @@ class Query(object):
         :rtype: string or None
         :returns: the namespace assigned to this query
         """
-        return self._namespace
+        return self._namespace or self._client.namespace
 
     @namespace.setter
     def namespace(self, value):
@@ -294,7 +292,7 @@ class Query(object):
         self._group_by[:] = value
 
     def fetch(self, limit=None, offset=0, start_cursor=None, end_cursor=None,
-              connection=None):
+              client=None):
         """Execute the Query; return an iterator for the matching entities.
 
         For example::
@@ -319,22 +317,19 @@ class Query(object):
         :type end_cursor: bytes
         :param end_cursor: An optional cursor passed through to the iterator.
 
-        :type connection: :class:`gcloud.datastore.connection.Connection`
-        :param connection: An optional cursor passed through to the iterator.
-                           If not supplied, uses the implicit default.
+        :type client: :class:`gcloud.datastore.client.Client`
+        :param client: client used to connect to datastore.
+                       If not supplied, uses the query's value.
 
         :rtype: :class:`Iterator`
         :raises: ValueError if ``connection`` is not passed and no implicit
                  default has been set.
         """
-        if connection is None:
-            connection = _implicit_environ.get_default_connection()
-
-        if connection is None:
-            raise ValueError("No connection passed, and no default set")
+        if client is None:
+            client = self._client
 
         return Iterator(
-            self, connection, limit, offset, start_cursor, end_cursor)
+            self, client, limit, offset, start_cursor, end_cursor)
 
 
 class Iterator(object):
@@ -347,10 +342,10 @@ class Iterator(object):
         datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
     )
 
-    def __init__(self, query, connection, limit=None, offset=0,
+    def __init__(self, query, client, limit=None, offset=0,
                  start_cursor=None, end_cursor=None):
         self._query = query
-        self._connection = connection
+        self._client = client
         self._limit = limit
         self._offset = offset
         self._start_cursor = start_cursor
@@ -380,9 +375,9 @@ class Iterator(object):
 
         pb.offset = self._offset
 
-        transaction = Transaction.current()
+        transaction = self._client.current_transaction
 
-        query_results = self._connection.run_query(
+        query_results = self._client.connection.run_query(
             query_pb=pb,
             dataset_id=self._query.dataset_id,
             namespace=self._query.namespace,

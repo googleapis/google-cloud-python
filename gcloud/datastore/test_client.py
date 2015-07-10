@@ -64,6 +64,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(client.namespace, None)
         self.assertTrue(client.connection is conn)
         self.assertTrue(client.current_batch is None)
+        self.assertTrue(client.current_transaction is None)
 
     def test_ctor_w_explicit_inputs(self):
         OTHER = 'other'
@@ -78,21 +79,23 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client.current_batch is None)
         self.assertEqual(list(client._batch_stack), [])
 
-    def test__push_connection_and__pop_connection(self):
+    def test__push_batch_and__pop_batch(self):
         conn = object()
-        batch1 = object()
-        batch2 = object()
         client = self._makeOne(connection=conn)
-        client._push_batch(batch1)
-        self.assertEqual(list(client._batch_stack), [batch1])
-        self.assertTrue(client.current_batch is batch1)
-        client._push_batch(batch2)
-        self.assertTrue(client.current_batch is batch2)
+        batch = client.batch()
+        xact = client.transaction()
+        client._push_batch(batch)
+        self.assertEqual(list(client._batch_stack), [batch])
+        self.assertTrue(client.current_batch is batch)
+        self.assertTrue(client.current_transaction is None)
+        client._push_batch(xact)
+        self.assertTrue(client.current_batch is xact)
+        self.assertTrue(client.current_transaction is xact)
         # list(_LocalStack) returns in reverse order.
-        self.assertEqual(list(client._batch_stack), [batch2, batch1])
-        self.assertTrue(client._pop_batch() is batch2)
-        self.assertEqual(list(client._batch_stack), [batch1])
-        self.assertTrue(client._pop_batch() is batch1)
+        self.assertEqual(list(client._batch_stack), [xact, batch])
+        self.assertTrue(client._pop_batch() is xact)
+        self.assertEqual(list(client._batch_stack), [batch])
+        self.assertTrue(client._pop_batch() is batch)
         self.assertEqual(list(client._batch_stack), [])
 
     def test_get_miss(self):
@@ -464,7 +467,7 @@ class TestClient(unittest2.TestCase):
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(self.DATASET_ID)
 
-        with _NoCommitBatch(self.DATASET_ID, connection) as CURR_BATCH:
+        with _NoCommitBatch(client) as CURR_BATCH:
             result = client.put_multi([entity])
 
         self.assertEqual(result, None)
@@ -521,7 +524,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(connection=connection)
         key = _Key(self.DATASET_ID)
 
-        with _NoCommitBatch(self.DATASET_ID, connection) as CURR_BATCH:
+        with _NoCommitBatch(client) as CURR_BATCH:
             result = client.delete_multi([key])
 
         self.assertEqual(result, None)
@@ -540,13 +543,13 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(connection=connection)
         key = _Key(self.DATASET_ID)
 
-        with _NoCommitTransaction(self.DATASET_ID, connection) as CURR_BATCH:
+        with _NoCommitTransaction(client) as CURR_XACT:
             result = client.delete_multi([key])
 
         self.assertEqual(result, None)
-        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
-        self.assertEqual(len(CURR_BATCH.mutation.upsert), 0)
-        deletes = list(CURR_BATCH.mutation.delete)
+        self.assertEqual(len(CURR_XACT.mutation.insert_auto_id), 0)
+        self.assertEqual(len(CURR_XACT.mutation.upsert), 0)
+        deletes = list(CURR_XACT.mutation.delete)
         self.assertEqual(len(deletes), 1)
         self.assertEqual(deletes[0], key._key)
         self.assertEqual(len(connection._committed), 0)
@@ -638,7 +641,7 @@ class TestClient(unittest2.TestCase):
         }
         self.assertEqual(key.kwargs, expected_kwargs)
 
-    def test_batch_wo_connection(self):
+    def test_batch(self):
         from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
@@ -648,28 +651,10 @@ class TestClient(unittest2.TestCase):
             batch = client.batch()
 
         self.assertTrue(isinstance(batch, _Dummy))
-        self.assertEqual(batch.args, ())
-        self.assertEqual(batch.kwargs,
-                         {'dataset_id': self.DATASET_ID,
-                          'connection': self.CONNECTION})
+        self.assertEqual(batch.args, (client,))
+        self.assertEqual(batch.kwargs, {})
 
-    def test_batch_w_connection(self):
-        from gcloud.datastore import client as MUT
-        from gcloud._testing import _Monkey
-
-        connection = object()
-        client = self._makeOne(connection=connection)
-
-        with _Monkey(MUT, Batch=_Dummy):
-            batch = client.batch()
-
-        self.assertTrue(isinstance(batch, _Dummy))
-        self.assertEqual(batch.args, ())
-        self.assertEqual(batch.kwargs,
-                         {'dataset_id': self.DATASET_ID,
-                          'connection': connection})
-
-    def test_transaction_wo_connection(self):
+    def test_transaction(self):
         from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
@@ -679,28 +664,8 @@ class TestClient(unittest2.TestCase):
             xact = client.transaction()
 
         self.assertTrue(isinstance(xact, _Dummy))
-        self.assertEqual(xact.args, ())
-        self.assertEqual(xact.kwargs,
-                         {'dataset_id': self.DATASET_ID,
-                          'connection': self.CONNECTION})
-
-    def test_transaction_w_connection(self):
-        from gcloud.datastore import client as MUT
-        from gcloud._testing import _Monkey
-
-        conn = object()
-        client = self._makeOne(connection=conn)
-
-        with _Monkey(MUT, Transaction=_Dummy):
-            xact = client.transaction()
-
-        self.assertTrue(isinstance(xact, _Dummy))
-        self.assertEqual(xact.args, ())
-        expected_kwargs = {
-            'dataset_id': self.DATASET_ID,
-            'connection': conn,
-        }
-        self.assertEqual(xact.kwargs, expected_kwargs)
+        self.assertEqual(xact.args, (client,))
+        self.assertEqual(xact.kwargs, {})
 
     def test_query_w_dataset_id(self):
         KIND = 'KIND'
@@ -824,32 +789,30 @@ class _HttpMultiple(object):
 
 class _NoCommitBatch(object):
 
-    def __init__(self, dataset_id, connection):
+    def __init__(self, client):
         from gcloud.datastore.batch import Batch
-        self._batch = Batch(dataset_id, connection)
+        self._client = client
+        self._batch = Batch(client)
 
     def __enter__(self):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.push(self._batch)
+        self._client._push_batch(self._batch)
         return self._batch
 
     def __exit__(self, *args):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.pop()
+        self._client._pop_batch()
 
 
 class _NoCommitTransaction(object):
 
-    def __init__(self, dataset_id, connection, transaction_id='TRANSACTION'):
+    def __init__(self, client, transaction_id='TRANSACTION'):
         from gcloud.datastore.transaction import Transaction
-        xact = self._transaction = Transaction(dataset_id, connection)
+        self._client = client
+        xact = self._transaction = Transaction(client)
         xact._id = transaction_id
 
     def __enter__(self):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.push(self._transaction)
+        self._client._push_batch(self._transaction)
         return self._transaction
 
     def __exit__(self, *args):
-        from gcloud.datastore.batch import _BATCHES
-        _BATCHES.pop()
+        self._client._pop_batch()

@@ -164,6 +164,19 @@ class Client(object):
         """
         return self._batch_stack.top
 
+    @property
+    def current_transaction(self):
+        """Currently-active transaction.
+
+        :rtype: :class:`gcloud.datastore.transaction.Transaction`, or an object
+                implementing its API, or ``NoneType`` (if no transaction is
+                active).
+        :returns: The transaction at the toop of the batch stack.
+        """
+        transaction = self.current_batch
+        if isinstance(transaction, Transaction):
+            return transaction
+
     def get(self, key, missing=None, deferred=None):
         """Retrieve an entity from a single key (if it exists).
 
@@ -222,7 +235,7 @@ class Client(object):
         if ids != [self.dataset_id]:
             raise ValueError('Keys do not match dataset ID')
 
-        transaction = Transaction.current()
+        transaction = self.current_transaction
 
         entity_pbs = _extended_lookup(
             connection=self.connection,
@@ -274,12 +287,12 @@ class Client(object):
         if not entities:
             return
 
-        current = Batch.current()
+        current = self.current_batch
         in_batch = current is not None
 
         if not in_batch:
-            current = Batch(dataset_id=self.dataset_id,
-                            connection=self.connection)
+            current = self.batch()
+
         for entity in entities:
             current.put(entity)
 
@@ -310,12 +323,12 @@ class Client(object):
             return
 
         # We allow partial keys to attempt a delete, the backend will fail.
-        current = Batch.current()
+        current = self.current_batch
         in_batch = current is not None
 
         if not in_batch:
-            current = Batch(dataset_id=self.dataset_id,
-                            connection=self.connection)
+            current = self.batch()
+
         for key in keys:
             current.delete(key)
 
@@ -368,15 +381,14 @@ class Client(object):
 
         Passes our ``dataset_id``.
         """
-        return Batch(dataset_id=self.dataset_id, connection=self.connection)
+        return Batch(self)
 
     def transaction(self):
         """Proxy to :class:`gcloud.datastore.transaction.Transaction`.
 
         Passes our ``dataset_id``.
         """
-        return Transaction(dataset_id=self.dataset_id,
-                           connection=self.connection)
+        return Transaction(self)
 
     def query(self, **kwargs):
         """Proxy to :class:`gcloud.datastore.query.Query`.
