@@ -85,8 +85,8 @@ class Query(object):
 
         self._client = client
         self._kind = kind
-        self._dataset_id = dataset_id
-        self._namespace = namespace
+        self._dataset_id = dataset_id or client.dataset_id
+        self._namespace = namespace or client.namespace
         self._ancestor = ancestor
         self._filters = []
         # Verify filters passed in.
@@ -102,7 +102,7 @@ class Query(object):
 
         :rtype: str
         """
-        return self._dataset_id or self._client.dataset_id
+        return self._dataset_id
 
     @property
     def namespace(self):
@@ -111,7 +111,7 @@ class Query(object):
         :rtype: string or None
         :returns: the namespace assigned to this query
         """
-        return self._namespace or self._client.namespace
+        return self._namespace
 
     @namespace.setter
     def namespace(self, value):
