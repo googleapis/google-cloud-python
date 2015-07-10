@@ -17,13 +17,13 @@ import pytz
 import unittest2
 
 from gcloud import datastore
-from gcloud.datastore import _implicit_environ
+from gcloud.datastore import client
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from system_tests import populate_datastore
 
 
-_implicit_environ._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+client._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
 client = datastore.Client()
 
 
@@ -56,7 +56,7 @@ class TestDatastoreAllocateIDs(TestDatastore):
 
 class TestDatastoreSave(TestDatastore):
 
-    PARENT = datastore.Key('Blog', 'PizzaMan')
+    PARENT = client.key('Blog', 'PizzaMan')
 
     def _get_post(self, id_or_name=None, post_content=None):
         post_content = post_content or {
@@ -71,7 +71,7 @@ class TestDatastoreSave(TestDatastore):
         # Create an entity with the given content.
         # NOTE: Using a parent to ensure consistency for query
         #       in `test_empty_kind`.
-        key = datastore.Key('Post', parent=self.PARENT)
+        key = client.key('Post', parent=self.PARENT)
         entity = datastore.Entity(key=key)
         entity.update(post_content)
 
@@ -140,8 +140,8 @@ class TestDatastoreSave(TestDatastore):
 class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
-        parent_key = datastore.Key('Residence', 'NewYork')
-        key = datastore.Key('Person', 'name', parent=parent_key)
+        parent_key = client.key('Residence', 'NewYork')
+        key = client.key('Person', 'name', parent=parent_key)
         entity = datastore.Entity(key=key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
@@ -164,7 +164,7 @@ class TestDatastoreQuery(TestDatastore):
     def setUpClass(cls):
         super(TestDatastoreQuery, cls).setUpClass()
         cls.CHARACTERS = populate_datastore.CHARACTERS
-        cls.ANCESTOR_KEY = datastore.Key(*populate_datastore.ANCESTOR)
+        cls.ANCESTOR_KEY = client.key(*populate_datastore.ANCESTOR)
 
     def _base_query(self):
         return client.query(kind='Character', ancestor=self.ANCESTOR_KEY)
@@ -212,7 +212,7 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
     def test_query___key___filter(self):
-        rickard_key = datastore.Key(*populate_datastore.RICKARD)
+        rickard_key = client.key(*populate_datastore.RICKARD)
 
         query = self._base_query()
         query.add_filter('__key__', '=', rickard_key)
@@ -327,7 +327,7 @@ class TestDatastoreQuery(TestDatastore):
 class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
-        entity = datastore.Entity(key=datastore.Key('Company', 'Google'))
+        entity = datastore.Entity(key=client.key('Company', 'Google'))
         entity['url'] = u'www.google.com'
 
         with client.transaction() as xact:
