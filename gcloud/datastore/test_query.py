@@ -200,13 +200,13 @@ class TestQuery(unittest2.TestCase):
     def test_add_filter___key__valid_key(self):
         from gcloud.datastore.key import Key
         query = self._makeOne(self._makeClient())
-        key = Key('Foo', dataset_id='DATASET')
+        key = Key('Foo', dataset_id=self._DATASET)
         query.add_filter('__key__', '=', key)
         self.assertEqual(query.filters, [('__key__', '=', key)])
 
     def test_filter___key__not_equal_operator(self):
         from gcloud.datastore.key import Key
-        key = Key('Foo', dataset_id='DATASET')
+        key = Key('Foo', dataset_id=self._DATASET)
         query = self._makeOne(self._makeClient())
         query.add_filter('__key__', '<', key)
         self.assertEqual(query.filters, [('__key__', '<', key)])
