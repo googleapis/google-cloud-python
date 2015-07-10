@@ -17,7 +17,6 @@
 import copy
 import six
 
-from gcloud.datastore import _implicit_environ
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
 
@@ -395,15 +394,11 @@ def _validate_dataset_id(dataset_id, parent):
     :rtype: string
     :returns: The ``dataset_id`` passed in, or implied from the environment.
     :raises: :class:`ValueError` if ``dataset_id`` is ``None`` and no dataset
-             can be inferred.
+             can be inferred from the parent.
     """
     if parent is None:
-
         if dataset_id is None:
-
-            dataset_id = _implicit_environ.get_default_dataset_id()
-            if dataset_id is None:
-                raise ValueError("A Key must have a dataset ID set.")
+            raise ValueError("A Key must have a dataset ID set.")
 
     return dataset_id
 

@@ -19,14 +19,6 @@ class TestKey(unittest2.TestCase):
 
     _DEFAULT_DATASET = 'DATASET'
 
-    def setUp(self):
-        from gcloud.datastore._testing import _setup_defaults
-        _setup_defaults(self)
-
-    def tearDown(self):
-        from gcloud.datastore._testing import _tear_down_defaults
-        _tear_down_defaults(self)
-
     def _getTargetClass(self):
         from gcloud.datastore.key import Key
         return Key
@@ -34,29 +26,14 @@ class TestKey(unittest2.TestCase):
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
-    def _monkeyDatasetID(self, dataset_id=_DEFAULT_DATASET):
-        from gcloud.datastore._testing import _monkey_defaults
-        return _monkey_defaults(dataset_id=dataset_id)
-
     def test_ctor_empty(self):
         self.assertRaises(ValueError, self._makeOne)
 
     def test_ctor_no_dataset_id(self):
         klass = self._getTargetClass()
-        with self._monkeyDatasetID(None):
-            self.assertRaises(ValueError, klass, 'KIND')
+        self.assertRaises(ValueError, klass, 'KIND')
 
-    def test_ctor_w_implicit_dataset_id(self):
-        _DATASET = 'DATASET'
-        _KIND = 'KIND'
-        with self._monkeyDatasetID(_DATASET):
-            key = self._makeOne(_KIND)
-        self.assertEqual(key.dataset_id, _DATASET)
-        self.assertEqual(key.namespace, None)
-        self.assertEqual(key.kind, _KIND)
-        self.assertEqual(key.path, [{'kind': _KIND}])
-
-    def test_ctor_w_implicit_dataset_id_empty_path(self):
+    def test_ctor_w_explicit_dataset_id_empty_path(self):
         _DATASET = 'DATASET'
         self.assertRaises(ValueError, self._makeOne, dataset_id=_DATASET)
 
