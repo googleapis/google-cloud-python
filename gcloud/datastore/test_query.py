@@ -288,7 +288,7 @@ class TestQuery(unittest2.TestCase):
         query.group_by = _GROUP_BY2
         self.assertEqual(query.group_by, _GROUP_BY2)
 
-    def test_fetch_defaults_w_implicit_client(self):
+    def test_fetch_defaults_w_client_attr(self):
         connection = _Connection()
         client = self._makeClient(connection)
         query = self._makeOne(client)
