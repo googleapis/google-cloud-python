@@ -16,25 +16,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Let's start by importing the demo module and getting a connection:
+# Let's start by importing the demo module and getting a client:
 import time
 
 from gcloud import storage
 from gcloud.storage import demo
 
-connection = storage.get_connection()
+client = storage.Client(project=demo.PROJECT_ID)
 
 # OK, now let's look at all of the buckets...
-print(list(demo.list_buckets(connection)))  # This might take a second...
+print(list(client.list_buckets()))  # This might take a second...
 
 # Now let's create a new bucket...
 bucket_name = ("bucket-%s" % time.time()).replace(".", "")  # Get rid of dots.
 print(bucket_name)
-bucket = demo.create_bucket(bucket_name, connection)
+bucket = client.create_bucket(bucket_name)
 print(bucket)
 
 # Let's look at all of the buckets again...
-print(list(demo.list_buckets(connection)))
+print(list(client.list_buckets()))
 
 # How about we create a new blob inside this bucket.
 blob = storage.Blob("my-new-file.txt", bucket=bucket)

@@ -56,7 +56,7 @@ bucket.
 
 Let's create a bucket:
 
-  >>> bucket = storage.create_bucket('test', project_name, connection=connection)
+  >>> bucket = client.create_bucket('test')
   Traceback (most recent call last):
     File "<stdin>", line 1, in <module>
     File "gcloud/storage/connection.py", line 340, in create_bucket
@@ -150,10 +150,10 @@ Accessing a bucket
 ------------------
 
 If you already have a bucket, use
-:func:`get_bucket <gcloud.storage.api.get_bucket>` to retrieve the
+:meth:`get_bucket <gcloud.storage.client.Client.get_bucket>` to retrieve the
 bucket object::
 
-  >>> bucket = storage.get_bucket('my-bucket', connection=connection)
+  >>> bucket = client.get_bucket('my-bucket')
 
 If you want to get all the blobs in the bucket, you can use
 :func:`list_blobs <gcloud.storage.bucket.Bucket.list_blobs>`::
@@ -184,8 +184,8 @@ If you have a full bucket, you can delete it this way::
 Listing available buckets
 -------------------------
 
-  >>> for bucket in storage.list_buckets(connection):
-  ...   print bucket.name
+  >>> for bucket in client.list_buckets():
+  ...     print bucket.name
 
 Managing access control
 -----------------------

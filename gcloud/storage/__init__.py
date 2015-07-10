@@ -17,7 +17,8 @@
 You'll typically use these to get started with the API:
 
 >>> from gcloud import storage
->>> bucket = storage.get_bucket('bucket-id-here')
+>>> client = storage.Client()
+>>> bucket = client.get_bucket('bucket-id-here')
 >>> # Then do other things...
 >>> blob = bucket.get_blob('/remote/path/to/file.txt')
 >>> print blob.download_as_string()
@@ -47,13 +48,10 @@ from gcloud.storage._implicit_environ import get_connection
 from gcloud.storage._implicit_environ import get_default_bucket
 from gcloud.storage._implicit_environ import get_default_connection
 from gcloud.storage._implicit_environ import set_default_connection
-from gcloud.storage.api import create_bucket
-from gcloud.storage.api import get_bucket
-from gcloud.storage.api import list_buckets
-from gcloud.storage.api import lookup_bucket
 from gcloud.storage.batch import Batch
 from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
+from gcloud.storage.client import Client
 from gcloud.storage.connection import SCOPE
 from gcloud.storage.connection import Connection
 

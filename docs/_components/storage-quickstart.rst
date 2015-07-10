@@ -56,9 +56,9 @@ Once you have the connection,
 you can create buckets and blobs::
 
   >>> from gcloud import storage
-  >>> storage.list_buckets(connection)
+  >>> client.list_buckets()
   [<Bucket: ...>, ...]
-  >>> bucket = storage.create_bucket('my-new-bucket', connection=connection)
+  >>> bucket = client.create_bucket('my-new-bucket')
   >>> print bucket
   <Bucket: my-new-bucket>
   >>> blob = storage.Blob('my-test-file.txt', bucket=bucket)

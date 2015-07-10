@@ -28,6 +28,7 @@ HTTP = httplib2.Http()
 SHARED_BUCKETS = {}
 
 _helpers._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
+CLIENT = storage.Client()
 
 
 def setUpModule():
@@ -36,7 +37,7 @@ def setUpModule():
         bucket_name = 'new%d' % (1000 * time.time(),)
         # In the **very** rare case the bucket name is reserved, this
         # fails with a ConnectionError.
-        SHARED_BUCKETS['test_bucket'] = storage.create_bucket(bucket_name)
+        SHARED_BUCKETS['test_bucket'] = CLIENT.create_bucket(bucket_name)
 
 
 def tearDownModule():
@@ -57,12 +58,12 @@ class TestStorageBuckets(unittest2.TestCase):
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'
         self.assertRaises(exceptions.NotFound,
-                          storage.get_bucket, new_bucket_name)
-        created = storage.create_bucket(new_bucket_name)
+                          CLIENT.get_bucket, new_bucket_name)
+        created = CLIENT.create_bucket(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
-    def test_get_buckets(self):
+    def test_list_buckets(self):
         buckets_to_create = [
             'new%d' % (1000 * time.time(),),
             'newer%d' % (1000 * time.time(),),
@@ -70,11 +71,11 @@ class TestStorageBuckets(unittest2.TestCase):
         ]
         created_buckets = []
         for bucket_name in buckets_to_create:
-            bucket = storage.create_bucket(bucket_name)
+            bucket = CLIENT.create_bucket(bucket_name)
             self.case_buckets_to_delete.append(bucket_name)
 
         # Retrieve the buckets.
-        all_buckets = storage.list_buckets()
+        all_buckets = CLIENT.list_buckets()
         created_buckets = [bucket for bucket in all_buckets
                            if bucket.name in buckets_to_create]
         self.assertEqual(len(created_buckets), len(buckets_to_create))
