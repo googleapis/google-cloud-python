@@ -17,14 +17,6 @@ import unittest2
 
 class Test_entity_from_protobuf(unittest2.TestCase):
 
-    def setUp(self):
-        from gcloud.datastore._testing import _setup_defaults
-        _setup_defaults(self)
-
-    def tearDown(self):
-        from gcloud.datastore._testing import _tear_down_defaults
-        _tear_down_defaults(self)
-
     def _callFUT(self, val):
         from gcloud.datastore.helpers import entity_from_protobuf
         return entity_from_protobuf(val)
@@ -147,14 +139,6 @@ class Test_entity_from_protobuf(unittest2.TestCase):
 
 
 class Test_key_from_protobuf(unittest2.TestCase):
-
-    def setUp(self):
-        from gcloud.datastore._testing import _setup_defaults
-        _setup_defaults(self)
-
-    def tearDown(self):
-        from gcloud.datastore._testing import _tear_down_defaults
-        _tear_down_defaults(self)
 
     def _callFUT(self, val):
         from gcloud.datastore.helpers import key_from_protobuf
@@ -577,14 +561,6 @@ class Test__prepare_key_for_request(unittest2.TestCase):
 
 
 class Test_find_true_dataset_id(unittest2.TestCase):
-
-    def setUp(self):
-        from gcloud.datastore._testing import _setup_defaults
-        _setup_defaults(self)
-
-    def tearDown(self):
-        from gcloud.datastore._testing import _tear_down_defaults
-        _tear_down_defaults(self)
 
     def _callFUT(self, dataset_id, connection):
         from gcloud.datastore.helpers import find_true_dataset_id
