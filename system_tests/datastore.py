@@ -106,7 +106,7 @@ class TestDatastoreSave(TestDatastore):
         self._generic_test_post()
 
     def test_save_multiple(self):
-        with datastore.Transaction() as xact:
+        with client.transaction() as xact:
             entity1 = self._get_post()
             xact.put(entity1)
             # Register entity to be deleted.
@@ -131,7 +131,7 @@ class TestDatastoreSave(TestDatastore):
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
-        query = datastore.Query(kind='Post')
+        query = client.query(kind='Post')
         query.ancestor = self.PARENT
         posts = list(query.fetch(limit=2))
         self.assertEqual(posts, [])
@@ -149,7 +149,7 @@ class TestDatastoreSaveKeys(TestDatastore):
         client.put(entity)
         self.case_entities_to_delete.append(entity)
 
-        query = datastore.Query(kind='Person')
+        query = client.query(kind='Person')
         # Adding ancestor to ensure consistency.
         query.ancestor = parent_key
         query.add_filter('linkedTo', '=', key)
@@ -167,7 +167,7 @@ class TestDatastoreQuery(TestDatastore):
         cls.ANCESTOR_KEY = datastore.Key(*populate_datastore.ANCESTOR)
 
     def _base_query(self):
-        return datastore.Query(kind='Character', ancestor=self.ANCESTOR_KEY)
+        return client.query(kind='Character', ancestor=self.ANCESTOR_KEY)
 
     def test_limit_queries(self):
         limit = 5
@@ -330,7 +330,7 @@ class TestDatastoreTransaction(TestDatastore):
         entity = datastore.Entity(key=datastore.Key('Company', 'Google'))
         entity['url'] = u'www.google.com'
 
-        with datastore.Transaction() as xact:
+        with client.transaction() as xact:
             result = client.get(entity.key)
             if result is None:
                 xact.put(entity)

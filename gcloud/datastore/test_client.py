@@ -667,6 +667,12 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(xact.args, (client,))
         self.assertEqual(xact.kwargs, {})
 
+    def test_query_w_client(self):
+        KIND = 'KIND'
+        client = self._makeOne()
+        other = self._makeOne()
+        self.assertRaises(TypeError, client.query, kind=KIND, client=other)
+
     def test_query_w_dataset_id(self):
         KIND = 'KIND'
         client = self._makeOne()
@@ -683,7 +689,7 @@ class TestClient(unittest2.TestCase):
             query = client.query()
 
         self.assertTrue(isinstance(query, _Dummy))
-        self.assertEqual(query.args, ())
+        self.assertEqual(query.args, (client,))
         expected_kwargs = {
             'dataset_id': self.DATASET_ID,
             'namespace': None,
@@ -715,6 +721,7 @@ class TestClient(unittest2.TestCase):
                 )
 
         self.assertTrue(isinstance(query, _Dummy))
+        self.assertEqual(query.args, (client,))
         kwargs = {
             'dataset_id': self.DATASET_ID,
             'kind': KIND,
@@ -725,7 +732,6 @@ class TestClient(unittest2.TestCase):
             'order': ORDER,
             'group_by': GROUP_BY,
         }
-        self.assertEqual(query.args, ())
         self.assertEqual(query.kwargs, kwargs)
 
     def test_query_w_namespace(self):
@@ -739,7 +745,7 @@ class TestClient(unittest2.TestCase):
             query = client.query(kind=KIND)
 
         self.assertTrue(isinstance(query, _Dummy))
-        self.assertEqual(query.args, ())
+        self.assertEqual(query.args, (client,))
         expected_kwargs = {
             'dataset_id': self.DATASET_ID,
             'namespace': NAMESPACE,
@@ -759,7 +765,7 @@ class TestClient(unittest2.TestCase):
             query = client.query(kind=KIND, namespace=NAMESPACE2)
 
         self.assertTrue(isinstance(query, _Dummy))
-        self.assertEqual(query.args, ())
+        self.assertEqual(query.args, (client,))
         expected_kwargs = {
             'dataset_id': self.DATASET_ID,
             'namespace': NAMESPACE2,

@@ -395,9 +395,11 @@ class Client(object):
 
         Passes our ``dataset_id``.
         """
+        if 'client' in kwargs:
+            raise TypeError('Cannot pass client')
         if 'dataset_id' in kwargs:
             raise TypeError('Cannot pass dataset_id')
         kwargs['dataset_id'] = self.dataset_id
         if 'namespace' not in kwargs:
             kwargs['namespace'] = self.namespace
-        return Query(**kwargs)
+        return Query(self, **kwargs)
