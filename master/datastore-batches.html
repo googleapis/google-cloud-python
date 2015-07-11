@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Batches &mdash; gcloud 681105d documentation</title>
+    <title>Batches &mdash; gcloud 3c76dbf documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '681105d',
+        VERSION:     '3c76dbf',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 681105d documentation" href="index.html" />
+    <link rel="top" title="gcloud 3c76dbf documentation" href="index.html" />
     <link rel="next" title="Storage" href="storage-api.html" />
     <link rel="prev" title="Transactions" href="datastore-transactions.html" /> 
   </head>
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-batches%0ARelease%3A%20681105d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-batches%0ARelease%3A%203c76dbf" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -74,7 +74,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (681105d)
+              Version History (3c76dbf)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -96,7 +96,7 @@ in a single request to the Cloud Datastore API.</p>
 <a class="reference external" href="https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations">https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations</a></p>
 <dl class="class">
 <dt id="gcloud.datastore.batch.Batch">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.batch.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.batch.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>An abstraction representing a collected group of updates / deletes.</p>
 <p>Used to build up a bulk mutuation.</p>
@@ -130,15 +130,7 @@ raising an exception:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<code class="xref py py-class docutils literal"><span class="pre">str</span></code>.) &#8211; The ID of the dataset.</li>
-<li><strong>connection</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code>) &#8211; The connection used to connect to datastore.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if either a connection or dataset ID
-are not set.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="datastore-client.html#gcloud.datastore.client.Client" title="gcloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.client.Client</span></code></a>) &#8211; The client used to connect to datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -199,9 +191,9 @@ context manager.</p>
 </table>
 </dd></dl>
 
-<dl class="staticmethod">
+<dl class="method">
 <dt id="gcloud.datastore.batch.Batch.current">
-<em class="property">static </em><code class="descname">current</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.current" title="Permalink to this definition">#</a></dt>
+<code class="descname">current</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.current" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the topmost batch / transaction, or None.</p>
 </dd></dl>
 
@@ -255,6 +247,22 @@ has been built-up so far.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Mutation</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The Mutation protobuf to be sent in the commit request.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.datastore.batch.Batch.namespace">
+<code class="descname">namespace</code><a class="headerlink" href="#gcloud.datastore.batch.Batch.namespace" title="Permalink to this definition">#</a></dt>
+<dd><p>Getter for namespace in which the batch will run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The namespace in which the batch will run.</td>
 </tr>
 </tbody>
 </table>

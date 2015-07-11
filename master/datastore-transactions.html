@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Transactions &mdash; gcloud 681105d documentation</title>
+    <title>Transactions &mdash; gcloud 3c76dbf documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '681105d',
+        VERSION:     '3c76dbf',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 681105d documentation" href="index.html" />
+    <link rel="top" title="gcloud 3c76dbf documentation" href="index.html" />
     <link rel="next" title="Batches" href="datastore-batches.html" />
     <link rel="prev" title="Queries" href="datastore-queries.html" /> 
   </head>
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-transactions%0ARelease%3A%20681105d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-transactions%0ARelease%3A%203c76dbf" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -74,7 +74,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (681105d)
+              Version History (3c76dbf)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -92,7 +92,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <p>Create / interact with gcloud datastore transactions.</p>
 <dl class="class">
 <dt id="gcloud.datastore.transaction.Transaction">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="datastore-batches.html#gcloud.datastore.batch.Batch" title="gcloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.batch.Batch</span></code></a></p>
 <p>An abstraction representing datastore Transactions.</p>
 <p>Transactions can be used to build up a bulk mutuation as well as
@@ -163,15 +163,7 @@ transaction manually:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset.</li>
-<li><strong>connection</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code>) &#8211; The connection used to connect to datastore.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if either a connection or dataset ID
-are not set.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="datastore-client.html#gcloud.datastore.client.Client" title="gcloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.client.Client</span></code></a>) &#8211; The client used to connect to datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -205,9 +197,9 @@ context manager.</p>
 </ul>
 </dd></dl>
 
-<dl class="staticmethod">
+<dl class="method">
 <dt id="gcloud.datastore.transaction.Transaction.current">
-<em class="property">static </em><code class="descname">current</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.current" title="Permalink to this definition">#</a></dt>
+<code class="descname">current</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction.current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.current" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the topmost transaction.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

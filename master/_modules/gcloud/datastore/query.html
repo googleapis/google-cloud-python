@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.query &mdash; gcloud 681105d documentation</title>
+    <title>gcloud.datastore.query &mdash; gcloud 3c76dbf documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '681105d',
+        VERSION:     '3c76dbf',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 681105d documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 3c76dbf documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%20681105d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%203c76dbf" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (681105d)
+              Version History (3c76dbf)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -106,11 +106,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">import</span> <span class="nn">base64</span>
 
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_ensure_tuple_or_list</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_implicit_environ</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">_datastore_v1_pb2</span> <span class="k">as</span> <span class="n">datastore_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
 
 
 <div class="viewcode-block" id="Query"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query">[docs]</a><span class="k">class</span> <span class="nc">Query</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -119,15 +117,19 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    This class serves as an abstraction for creating a query over data</span>
 <span class="sd">    stored in the Cloud Datastore.</span>
 
+<span class="sd">    :type client: :class:`gcloud.datastore.client.Client`</span>
+<span class="sd">    :param client: The client used to connect to datastore.</span>
+
 <span class="sd">    :type kind: string</span>
 <span class="sd">    :param kind: The kind to query.</span>
 
 <span class="sd">    :type dataset_id: string</span>
 <span class="sd">    :param dataset_id: The ID of the dataset to query.  If not passed,</span>
-<span class="sd">                       uses the implicit default.</span>
+<span class="sd">                       uses the client&#39;s value.</span>
 
 <span class="sd">    :type namespace: string or None</span>
-<span class="sd">    :param namespace: The namespace to which to restrict results.</span>
+<span class="sd">    :param namespace: The namespace to which to restrict results.  If not</span>
+<span class="sd">                      passed, uses the client&#39;s value.</span>
 
 <span class="sd">    :type ancestor: :class:`gcloud.datastore.key.Key` or None</span>
 <span class="sd">    :param ancestor: key of the ancestor to which this query&#39;s results are</span>
@@ -160,6 +162,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="sd">&quot;&quot;&quot;Mapping of operator strings and their protobuf equivalents.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">client</span><span class="p">,</span>
                  <span class="n">kind</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                  <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                  <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
@@ -169,15 +172,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                  <span class="n">order</span><span class="o">=</span><span class="p">(),</span>
                  <span class="n">group_by</span><span class="o">=</span><span class="p">()):</span>
 
-        <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">get_default_dataset_id</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;No dataset ID supplied, and no default set.&quot;</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span> <span class="o">=</span> <span class="n">kind</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span> <span class="ow">or</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">namespace</span> <span class="ow">or</span> <span class="n">client</span><span class="o">.</span><span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ancestor</span> <span class="o">=</span> <span class="n">ancestor</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filters</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c"># Verify filters passed in.</span>
@@ -383,7 +381,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_group_by</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="Query.fetch"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.fetch">[docs]</a>    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-              <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+              <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute the Query; return an iterator for the matching entities.</span>
 
 <span class="sd">        For example::</span>
@@ -408,22 +406,19 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type end_cursor: bytes</span>
 <span class="sd">        :param end_cursor: An optional cursor passed through to the iterator.</span>
 
-<span class="sd">        :type connection: :class:`gcloud.datastore.connection.Connection`</span>
-<span class="sd">        :param connection: An optional cursor passed through to the iterator.</span>
-<span class="sd">                           If not supplied, uses the implicit default.</span>
+<span class="sd">        :type client: :class:`gcloud.datastore.client.Client`</span>
+<span class="sd">        :param client: client used to connect to datastore.</span>
+<span class="sd">                       If not supplied, uses the query&#39;s value.</span>
 
 <span class="sd">        :rtype: :class:`Iterator`</span>
 <span class="sd">        :raises: ValueError if ``connection`` is not passed and no implicit</span>
 <span class="sd">                 default has been set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">connection</span> <span class="o">=</span> <span class="n">_implicit_environ</span><span class="o">.</span><span class="n">get_default_connection</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;No connection passed, and no default set&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
 
         <span class="k">return</span> <span class="n">Iterator</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">start_cursor</span><span class="p">,</span> <span class="n">end_cursor</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">start_cursor</span><span class="p">,</span> <span class="n">end_cursor</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -436,10 +431,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">datastore_pb</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">MORE_RESULTS_AFTER_LIMIT</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                  <span class="n">start_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_query</span> <span class="o">=</span> <span class="n">query</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="o">=</span> <span class="n">limit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">offset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_cursor</span> <span class="o">=</span> <span class="n">start_cursor</span>
@@ -469,9 +464,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="n">pb</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
 
-        <span class="n">transaction</span> <span class="o">=</span> <span class="n">Transaction</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+        <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">current_transaction</span>
 
-        <span class="n">query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span>
+        <span class="n">query_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span>
             <span class="n">query_pb</span><span class="o">=</span><span class="n">pb</span><span class="p">,</span>
             <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
             <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="o">.</span><span class="n">namespace</span><span class="p">,</span>

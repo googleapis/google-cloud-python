@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Queries &mdash; gcloud 681105d documentation</title>
+    <title>Queries &mdash; gcloud 3c76dbf documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '681105d',
+        VERSION:     '3c76dbf',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 681105d documentation" href="index.html" />
+    <link rel="top" title="gcloud 3c76dbf documentation" href="index.html" />
     <link rel="next" title="Transactions" href="datastore-transactions.html" />
     <link rel="prev" title="Keys" href="datastore-keys.html" /> 
   </head>
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-queries%0ARelease%3A%20681105d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-queries%0ARelease%3A%203c76dbf" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -74,7 +74,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (681105d)
+              Version History (3c76dbf)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -92,7 +92,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <p>Create / interact with gcloud datastore queries.</p>
 <dl class="class">
 <dt id="gcloud.datastore.query.Iterator">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.query.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>query</em>, <em>connection</em>, <em>limit=None</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Iterator" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.query.</code><code class="descname">Iterator</code><span class="sig-paren">(</span><em>query</em>, <em>client</em>, <em>limit=None</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Iterator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Iterator" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Represent the state of a given execution of a Query.</p>
 <dl class="method">
@@ -115,7 +115,7 @@ to iterate on the current Iterator.</p>
 
 <dl class="class">
 <dt id="gcloud.datastore.query.Query">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>kind=None</em>, <em>dataset_id=None</em>, <em>namespace=None</em>, <em>ancestor=None</em>, <em>filters=()</em>, <em>projection=()</em>, <em>order=()</em>, <em>group_by=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>client</em>, <em>kind=None</em>, <em>dataset_id=None</em>, <em>namespace=None</em>, <em>ancestor=None</em>, <em>filters=()</em>, <em>projection=()</em>, <em>order=()</em>, <em>group_by=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>A Query against the Cloud Datastore.</p>
 <p>This class serves as an abstraction for creating a query over data
@@ -125,10 +125,12 @@ stored in the Cloud Datastore.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#gcloud.datastore.client.Client" title="gcloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.client.Client</span></code></a>) &#8211; The client used to connect to datastore.</li>
 <li><strong>kind</strong> (<em>string</em>) &#8211; The kind to query.</li>
 <li><strong>dataset_id</strong> (<em>string</em>) &#8211; The ID of the dataset to query.  If not passed,
-uses the implicit default.</li>
-<li><strong>namespace</strong> (<em>string or None</em>) &#8211; The namespace to which to restrict results.</li>
+uses the client&#8217;s value.</li>
+<li><strong>namespace</strong> (<em>string or None</em>) &#8211; The namespace to which to restrict results.  If not
+passed, uses the client&#8217;s value.</li>
 <li><strong>ancestor</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a> or None) &#8211; key of the ancestor to which this query&#8217;s results are
 restricted.</li>
 <li><strong>filters</strong> (<em>sequence of (property_name, operator, value) tuples</em>) &#8211; property filters applied by this query.</li>
@@ -147,7 +149,7 @@ default is set.</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&gt;': 3, '&lt;': 1, '=': 5, '&gt;=': 4, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'=': 5, '&lt;': 1, '&gt;': 3, '&lt;=': 2, '&gt;=': 4}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -219,7 +221,7 @@ is required).</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.query.Query.fetch">
-<code class="descname">fetch</code><span class="sig-paren">(</span><em>limit=None</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch" title="Permalink to this definition">#</a></dt>
+<code class="descname">fetch</code><span class="sig-paren">(</span><em>limit=None</em>, <em>offset=0</em>, <em>start_cursor=None</em>, <em>end_cursor=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/query.html#Query.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.query.Query.fetch" title="Permalink to this definition">#</a></dt>
 <dd><p>Execute the Query; return an iterator for the matching entities.</p>
 <p>For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
@@ -240,8 +242,8 @@ is required).</p>
 <li><strong>offset</strong> (<em>integer</em>) &#8211; An optional offset passed through to the iterator.</li>
 <li><strong>start_cursor</strong> (<em>bytes</em>) &#8211; An optional cursor passed through to the iterator.</li>
 <li><strong>end_cursor</strong> (<em>bytes</em>) &#8211; An optional cursor passed through to the iterator.</li>
-<li><strong>connection</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code>) &#8211; An optional cursor passed through to the iterator.
-If not supplied, uses the implicit default.</li>
+<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#gcloud.datastore.client.Client" title="gcloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.client.Client</span></code></a>) &#8211; client used to connect to datastore.
+If not supplied, uses the query&#8217;s value.</li>
 </ul>
 </td>
 </tr>
