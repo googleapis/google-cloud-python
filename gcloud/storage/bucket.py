@@ -95,18 +95,35 @@ class Bucket(_PropertyMixin):
     def __repr__(self):
         return '<Bucket: %s>' % self.name
 
-    def exists(self, connection=None):
+    @staticmethod
+    def _client_or_connection(client):
+        """Temporary method to get a connection from a client.
+
+        If the client is null, gets the connection from the environment.
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
+
+        :rtype: :class:`gcloud.storage.connection.Connection`
+        :returns: The connection determined from the ``client`` or environment.
+        """
+        if client is None:
+            return _require_connection()
+        else:
+            return client.connection
+
+    def exists(self, client=None):
         """Determines whether or not this bucket exists.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: boolean
         :returns: True if the bucket exists in Cloud Storage.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.

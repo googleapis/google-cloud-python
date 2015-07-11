@@ -125,6 +125,23 @@ class Test_Bucket(unittest2.TestCase):
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertTrue(bucket._default_object_acl.bucket is bucket)
 
+    def test__client_or_connection_implicit(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import bucket as MUT
+        bucket = self._makeOne()
+        num_mock_require_calls = [0]
+        cnxn = object()
+
+        def mock_require():
+            num_mock_require_calls[0] += 1
+            return cnxn
+
+        with _Monkey(MUT, _require_connection=mock_require):
+            result = bucket._client_or_connection(None)
+
+        self.assertTrue(result is cnxn)
+        self.assertEqual(num_mock_require_calls, [1])
+
     def test_exists_miss(self):
         from gcloud.exceptions import NotFound
 
@@ -139,7 +156,8 @@ class Test_Bucket(unittest2.TestCase):
 
         BUCKET_NAME = 'bucket-name'
         bucket = self._makeOne(BUCKET_NAME)
-        self.assertFalse(bucket.exists(connection=_FakeConnection))
+        client = _Client(_FakeConnection)
+        self.assertFalse(bucket.exists(client=client))
         expected_called_kwargs = {
             'method': 'GET',
             'path': bucket.path,
@@ -164,7 +182,8 @@ class Test_Bucket(unittest2.TestCase):
 
         BUCKET_NAME = 'bucket-name'
         bucket = self._makeOne(BUCKET_NAME)
-        self.assertTrue(bucket.exists(connection=_FakeConnection))
+        client = _Client(_FakeConnection)
+        self.assertTrue(bucket.exists(client=client))
         expected_called_kwargs = {
             'method': 'GET',
             'path': bucket.path,
@@ -1049,3 +1068,9 @@ class MockFile(io.StringIO):
     def __init__(self, name, buffer_=None):
         super(MockFile, self).__init__(buffer_)
         self.name = name
+
+
+class _Client(object):
+
+    def __init__(self, connection):
+        self.connection = connection
