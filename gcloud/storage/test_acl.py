@@ -526,11 +526,12 @@ class Test_ACL(unittest2.TestCase):
         # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
         ROLE = 'role'
         connection = _Connection({})
+        client = _Client(connection)
         acl = self._makeOne()
         acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
-        acl.reload(connection=connection)
+        acl.reload(client=client)
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -557,11 +558,12 @@ class Test_ACL(unittest2.TestCase):
     def test_reload_empty_result_clears_local_w_explicit_connection(self):
         ROLE = 'role'
         connection = _Connection({'items': []})
+        client = _Client(connection)
         acl = self._makeOne()
         acl.reload_path = '/testing/acl'
         acl.loaded = True
         acl.entity('allUsers', ROLE)
-        acl.reload(connection=connection)
+        acl.reload(client=client)
         self.assertTrue(acl.loaded)
         self.assertEqual(list(acl), [])
         kw = connection._requested
@@ -590,10 +592,11 @@ class Test_ACL(unittest2.TestCase):
         ROLE = 'role'
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
+        client = _Client(connection)
         acl = self._makeOne()
         acl.reload_path = '/testing/acl'
         acl.loaded = True
-        acl.reload(connection=connection)
+        acl.reload(client=client)
         self.assertTrue(acl.loaded)
         self.assertEqual(list(acl), [{'entity': 'allUsers', 'role': ROLE}])
         kw = connection._requested
@@ -870,3 +873,9 @@ class _Connection(object):
             raise NotFound('miss')
         else:
             return response
+
+
+class _Client(object):
+
+    def __init__(self, connection):
+        self.connection = connection

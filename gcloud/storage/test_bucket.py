@@ -1026,6 +1026,7 @@ class Test_Bucket(unittest2.TestCase):
             ],
         }
         connection = _Connection(AFTER, GET_BLOBS_RESP)
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
@@ -1033,7 +1034,7 @@ class Test_Bucket(unittest2.TestCase):
         # Make the Bucket refuse to make_public with 2 objects.
         bucket._MAX_OBJECTS_FOR_ITERATION = 1
         self.assertRaises(ValueError, bucket.make_public, recursive=True,
-                          connection=connection)
+                          client=client)
 
 
 class _Connection(object):

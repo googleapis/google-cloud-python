@@ -830,7 +830,7 @@ class Bucket(_PropertyMixin):
         """
         return self.configure_website(None, None)
 
-    def make_public(self, recursive=False, future=False, connection=None):
+    def make_public(self, recursive=False, future=False, client=None):
         """Make a bucket public.
 
         If ``recursive=True`` and the bucket contains more than 256
@@ -845,12 +845,11 @@ class Bucket(_PropertyMixin):
         :param future: If True, this will make all objects created in the
                        future public as well.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
 
         self.acl.all().grant_read()
         self.acl.save(connection=connection)
@@ -858,7 +857,7 @@ class Bucket(_PropertyMixin):
         if future:
             doa = self.default_object_acl
             if not doa.loaded:
-                doa.reload(connection=connection)
+                doa.reload(client=client)
             doa.all().grant_read()
             doa.save(connection=connection)
 
