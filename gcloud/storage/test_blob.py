@@ -257,19 +257,32 @@ class Test_Blob(unittest2.TestCase):
         NONESUCH = 'nonesuch'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(NONESUCH, bucket=bucket)
-        self.assertFalse(blob.exists(connection=connection))
+        self.assertFalse(blob.exists(client=client))
+
+    def test_exists_implicit(self):
+        from gcloud.storage._testing import _monkey_defaults
+        from six.moves.http_client import NOT_FOUND
+        NONESUCH = 'nonesuch'
+        not_found_response = {'status': NOT_FOUND}
+        connection = _Connection(not_found_response)
+        bucket = _Bucket()
+        blob = self._makeOne(NONESUCH, bucket=bucket)
+        with _monkey_defaults(connection=connection):
+            self.assertFalse(blob.exists())
 
     def test_exists_hit(self):
         from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
         found_response = {'status': OK}
         connection = _Connection(found_response)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        self.assertTrue(blob.exists(connection=connection))
+        self.assertTrue(blob.exists(client=client))
 
     def test_rename_w_implicit_connection(self):
         from gcloud.storage._testing import _monkey_defaults
@@ -307,12 +320,13 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         with _monkey_defaults(connection=connection):
             blob.delete()
-        self.assertFalse(blob.exists(connection=connection))
+        self.assertFalse(blob.exists(client=client))
         self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
 
     def test_delete_w_explicit_connection(self):
@@ -320,11 +334,12 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         blob.delete(connection=connection)
-        self.assertFalse(blob.exists(connection=connection))
+        self.assertFalse(blob.exists(client=client))
         self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
 
     def _download_to_file_helper(self, chunk_size=None):
