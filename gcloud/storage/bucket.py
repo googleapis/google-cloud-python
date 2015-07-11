@@ -455,7 +455,7 @@ class Bucket(_PropertyMixin):
         new_blob._set_properties(copy_result)
         return new_blob
 
-    def upload_file(self, filename, blob_name=None, connection=None):
+    def upload_file(self, filename, blob_name=None, client=None):
         """Shortcut method to upload a file into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -488,10 +488,9 @@ class Bucket(_PropertyMixin):
                           of the bucket with the same name as on your local
                           file system.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
@@ -499,10 +498,10 @@ class Bucket(_PropertyMixin):
         if blob_name is None:
             blob_name = os.path.basename(filename)
         blob = Blob(bucket=self, name=blob_name)
-        blob.upload_from_filename(filename, connection=connection)
+        blob.upload_from_filename(filename, client=client)
         return blob
 
-    def upload_file_object(self, file_obj, blob_name=None, connection=None):
+    def upload_file_object(self, file_obj, blob_name=None, client=None):
         """Shortcut method to upload a file object into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -535,10 +534,9 @@ class Bucket(_PropertyMixin):
                           of the bucket with the same name as on your local
                           file system.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
@@ -546,7 +544,7 @@ class Bucket(_PropertyMixin):
         if blob_name is None:
             blob_name = os.path.basename(file_obj.name)
         blob = Blob(bucket=self, name=blob_name)
-        blob.upload_from_file(file_obj, connection=connection)
+        blob.upload_from_file(file_obj, client=client)
         return blob
 
     @property

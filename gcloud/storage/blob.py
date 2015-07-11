@@ -355,7 +355,7 @@ class Blob(_PropertyMixin):
         return string_buffer.getvalue()
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
-                         content_type=None, num_retries=6, connection=None):
+                         content_type=None, num_retries=6, client=None):
         """Upload the contents of this blob from a file-like object.
 
         The content type of the upload will either be
@@ -393,15 +393,14 @@ class Blob(_PropertyMixin):
         :type num_retries: integer
         :param num_retries: Number of upload retries. Defaults to 6.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :raises: :class:`ValueError` if size is not passed in and can not be
                  determined
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         content_type = (content_type or self._properties.get('contentType') or
                         'application/octet-stream')
 
@@ -464,7 +463,7 @@ class Blob(_PropertyMixin):
         self._set_properties(json.loads(response_content))
 
     def upload_from_filename(self, filename, content_type=None,
-                             connection=None):
+                             client=None):
         """Upload this blob's contents from the content of a named file.
 
         The content type of the upload will either be
@@ -489,10 +488,9 @@ class Blob(_PropertyMixin):
         :type content_type: string or ``NoneType``
         :param content_type: Optional type of content being uploaded.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
         """
         content_type = content_type or self._properties.get('contentType')
         if content_type is None:
@@ -500,10 +498,10 @@ class Blob(_PropertyMixin):
 
         with open(filename, 'rb') as file_obj:
             self.upload_from_file(file_obj, content_type=content_type,
-                                  connection=connection)
+                                  client=client)
 
     def upload_from_string(self, data, content_type='text/plain',
-                           connection=None):
+                           client=None):
         """Upload contents of this blob from the provided string.
 
         .. note::
@@ -525,10 +523,9 @@ class Blob(_PropertyMixin):
         :param content_type: Optional type of content being uploaded. Defaults
                              to ``'text/plain'``.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
         """
         if isinstance(data, six.text_type):
             data = data.encode('utf-8')
@@ -536,7 +533,7 @@ class Blob(_PropertyMixin):
         string_buffer.write(data)
         self.upload_from_file(file_obj=string_buffer, rewind=True,
                               size=len(data), content_type=content_type,
-                              connection=connection)
+                              client=client)
 
     def make_public(self, connection=None):
         """Make this blob public giving all users read access.

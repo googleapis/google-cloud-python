@@ -544,9 +544,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_filename(self, filename, connection=None):
+            def upload_from_filename(self, filename, client=None):
                 _uploaded.append((self._bucket, self._name, filename,
-                                  connection))
+                                  client))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
@@ -566,9 +566,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_filename(self, filename, connection=None):
+            def upload_from_filename(self, filename, client=None):
                 _uploaded.append((self._bucket, self._name, filename,
-                                  connection))
+                                  client))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
@@ -588,8 +588,8 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_file(self, fh, connection=None):
-                _uploaded.append((self._bucket, self._name, fh, connection))
+            def upload_from_file(self, fh, client=None):
+                _uploaded.append((self._bucket, self._name, fh, client))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
@@ -613,8 +613,8 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_file(self, fh, connection=None):
-                _uploaded.append((self._bucket, self._name, fh, connection))
+            def upload_from_file(self, fh, client=None):
+                _uploaded.append((self._bucket, self._name, fh, client))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
