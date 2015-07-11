@@ -22,41 +22,20 @@ class TestBatch(unittest2.TestCase):
 
         return Batch
 
-    def _makeOne(self, dataset_id=None, connection=None):
-        return self._getTargetClass()(dataset_id=dataset_id,
-                                      connection=connection)
+    def _makeOne(self, client):
+        return self._getTargetClass()(client)
 
-    def test_ctor_missing_required(self):
-        from gcloud.datastore._testing import _monkey_defaults
-
-        with _monkey_defaults():
-            self.assertRaises(ValueError, self._makeOne)
-            self.assertRaises(ValueError, self._makeOne, dataset_id=object())
-            self.assertRaises(ValueError, self._makeOne, connection=object())
-
-    def test_ctor_explicit(self):
+    def test_ctor(self):
         from gcloud.datastore._datastore_v1_pb2 import Mutation
         _DATASET = 'DATASET'
+        _NAMESPACE = 'NAMESPACE'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection, _NAMESPACE)
+        batch = self._makeOne(client)
 
         self.assertEqual(batch.dataset_id, _DATASET)
         self.assertEqual(batch.connection, connection)
-        self.assertTrue(batch._id is None)
-        self.assertTrue(isinstance(batch.mutation, Mutation))
-        self.assertEqual(batch._auto_id_entities, [])
-
-    def test_ctor_implicit(self):
-        from gcloud.datastore._testing import _monkey_defaults
-        from gcloud.datastore._datastore_v1_pb2 import Mutation
-        _DATASET = 'DATASET'
-        CONNECTION = _Connection()
-
-        with _monkey_defaults(connection=CONNECTION, dataset_id=_DATASET):
-            batch = self._makeOne()
-
-        self.assertEqual(batch.dataset_id, _DATASET)
-        self.assertEqual(batch.connection, CONNECTION)
+        self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
         self.assertTrue(isinstance(batch.mutation, Mutation))
         self.assertEqual(batch._auto_id_entities, [])
@@ -64,8 +43,9 @@ class TestBatch(unittest2.TestCase):
     def test_current(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch1 = self._makeOne(_DATASET, connection)
-        batch2 = self._makeOne(_DATASET, connection)
+        client = _Client(_DATASET, connection)
+        batch1 = self._makeOne(client)
+        batch2 = self._makeOne(client)
         self.assertTrue(batch1.current() is None)
         self.assertTrue(batch2.current() is None)
         with batch1:
@@ -82,7 +62,8 @@ class TestBatch(unittest2.TestCase):
     def test_add_auto_id_entity_w_partial_key(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         entity = _Entity()
         key = entity.key = _Key(_DATASET)
         key._id = None
@@ -94,7 +75,8 @@ class TestBatch(unittest2.TestCase):
     def test_add_auto_id_entity_w_completed_key(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         entity = _Entity()
         entity.key = _Key(_DATASET)
 
@@ -103,14 +85,16 @@ class TestBatch(unittest2.TestCase):
     def test_put_entity_wo_key(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
 
         self.assertRaises(ValueError, batch.put, _Entity())
 
     def test_put_entity_w_key_wrong_dataset_id(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         entity = _Entity()
         entity.key = _Key('OTHER')
 
@@ -120,7 +104,8 @@ class TestBatch(unittest2.TestCase):
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         entity = _Entity(_PROPERTIES)
         key = entity.key = _Key(_DATASET)
         key._id = None
@@ -145,7 +130,8 @@ class TestBatch(unittest2.TestCase):
             'frotz': [],  # will be ignored
             }
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         entity = _Entity(_PROPERTIES)
         entity.exclude_from_indexes = ('baz', 'spam')
         key = entity.key = _Key(_DATASET)
@@ -180,7 +166,8 @@ class TestBatch(unittest2.TestCase):
             'frotz': [],  # will be ignored
             }
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         entity = _Entity(_PROPERTIES)
         entity.exclude_from_indexes = ('baz', 'spam')
         key = entity.key = _Key('s~' + _DATASET)
@@ -209,7 +196,8 @@ class TestBatch(unittest2.TestCase):
     def test_delete_w_partial_key(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         key = _Key(_DATASET)
         key._id = None
 
@@ -218,7 +206,8 @@ class TestBatch(unittest2.TestCase):
     def test_delete_w_key_wrong_dataset_id(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         key = _Key('OTHER')
 
         self.assertRaises(ValueError, batch.delete, key)
@@ -226,7 +215,8 @@ class TestBatch(unittest2.TestCase):
     def test_delete_w_completed_key(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         key = _Key(_DATASET)
 
         batch.delete(key)
@@ -242,7 +232,8 @@ class TestBatch(unittest2.TestCase):
     def test_delete_w_completed_key_w_prefixed_dataset_id(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         key = _Key('s~' + _DATASET)
 
         batch.delete(key)
@@ -258,7 +249,8 @@ class TestBatch(unittest2.TestCase):
     def test_commit(self):
         _DATASET = 'DATASET'
         connection = _Connection()
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
 
         batch.commit()
 
@@ -269,7 +261,8 @@ class TestBatch(unittest2.TestCase):
         _DATASET = 'DATASET'
         _NEW_ID = 1234
         connection = _Connection(_NEW_ID)
-        batch = self._makeOne(dataset_id=_DATASET, connection=connection)
+        client = _Client(_DATASET, connection)
+        batch = self._makeOne(client)
         entity = _Entity({})
         key = entity.key = _Key(_DATASET)
         key._id = None
@@ -283,21 +276,20 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(entity.key._id, _NEW_ID)
 
     def test_as_context_mgr_wo_error(self):
-        from gcloud.datastore.batch import _BATCHES
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity = _Entity(_PROPERTIES)
         key = entity.key = _Key(_DATASET)
 
-        self.assertEqual(list(_BATCHES), [])
+        client = _Client(_DATASET, connection)
+        self.assertEqual(list(client._batches), [])
 
-        with self._makeOne(dataset_id=_DATASET,
-                           connection=connection) as batch:
-            self.assertEqual(list(_BATCHES), [batch])
+        with self._makeOne(client) as batch:
+            self.assertEqual(list(client._batches), [batch])
             batch.put(entity)
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(client._batches), [])
 
         insert_auto_ids = list(batch.mutation.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
@@ -310,7 +302,6 @@ class TestBatch(unittest2.TestCase):
                          [(_DATASET, batch.mutation, None)])
 
     def test_as_context_mgr_nested(self):
-        from gcloud.datastore.batch import _BATCHES
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
@@ -319,20 +310,19 @@ class TestBatch(unittest2.TestCase):
         entity2 = _Entity(_PROPERTIES)
         key2 = entity2.key = _Key(_DATASET)
 
-        self.assertEqual(list(_BATCHES), [])
+        client = _Client(_DATASET, connection)
+        self.assertEqual(list(client._batches), [])
 
-        with self._makeOne(dataset_id=_DATASET,
-                           connection=connection) as batch1:
-            self.assertEqual(list(_BATCHES), [batch1])
+        with self._makeOne(client) as batch1:
+            self.assertEqual(list(client._batches), [batch1])
             batch1.put(entity1)
-            with self._makeOne(dataset_id=_DATASET,
-                               connection=connection) as batch2:
-                self.assertEqual(list(_BATCHES), [batch2, batch1])
+            with self._makeOne(client) as batch2:
+                self.assertEqual(list(client._batches), [batch2, batch1])
                 batch2.put(entity2)
 
-            self.assertEqual(list(_BATCHES), [batch1])
+            self.assertEqual(list(client._batches), [batch1])
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(client._batches), [])
 
         insert_auto_ids = list(batch1.mutation.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
@@ -355,25 +345,24 @@ class TestBatch(unittest2.TestCase):
                           (_DATASET, batch1.mutation, None)])
 
     def test_as_context_mgr_w_error(self):
-        from gcloud.datastore.batch import _BATCHES
         _DATASET = 'DATASET'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity = _Entity(_PROPERTIES)
         key = entity.key = _Key(_DATASET)
 
-        self.assertEqual(list(_BATCHES), [])
+        client = _Client(_DATASET, connection)
+        self.assertEqual(list(client._batches), [])
 
         try:
-            with self._makeOne(dataset_id=_DATASET,
-                               connection=connection) as batch:
-                self.assertEqual(list(_BATCHES), [batch])
+            with self._makeOne(client) as batch:
+                self.assertEqual(list(client._batches), [batch])
                 batch.put(entity)
                 raise ValueError("testing")
         except ValueError:
             pass
 
-        self.assertEqual(list(_BATCHES), [])
+        self.assertEqual(list(client._batches), [])
 
         insert_auto_ids = list(batch.mutation.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
@@ -454,3 +443,23 @@ class _Key(object):
         new_key = self.__class__(self.dataset_id)
         new_key._id = new_id
         return new_key
+
+
+class _Client(object):
+
+    def __init__(self, dataset_id, connection, namespace=None):
+        self.dataset_id = dataset_id
+        self.connection = connection
+        self.namespace = namespace
+        self._batches = []
+
+    def _push_batch(self, batch):
+        self._batches.insert(0, batch)
+
+    def _pop_batch(self):
+        return self._batches.pop(0)
+
+    @property
+    def current_batch(self):
+        if self._batches:
+            return self._batches[0]

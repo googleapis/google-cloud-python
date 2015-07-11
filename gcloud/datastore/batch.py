@@ -21,14 +21,9 @@ See
 https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations
 """
 
-from gcloud._helpers import _LocalStack
-from gcloud.datastore import _implicit_environ
 from gcloud.datastore import helpers
 from gcloud.datastore.key import _dataset_ids_equal
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
-
-
-_BATCHES = _LocalStack()
 
 
 class Batch(object):
@@ -62,34 +57,19 @@ class Batch(object):
       ...   do_some_work(batch)
       ...   raise Exception() # rolls back
 
-    :type dataset_id: :class:`str`.
-    :param dataset_id: The ID of the dataset.
-
-    :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: The connection used to connect to datastore.
-
-    :raises: :class:`ValueError` if either a connection or dataset ID
-             are not set.
+    :type client: :class:`gcloud.datastore.client.Client`
+    :param client: The client used to connect to datastore.
     """
     _id = None  # "protected" attribute, always None for non-transactions
 
-    def __init__(self, dataset_id=None, connection=None):
-        self._connection = (connection or
-                            _implicit_environ.get_default_connection())
-        self._dataset_id = (dataset_id or
-                            _implicit_environ.get_default_dataset_id())
-
-        if self._connection is None or self._dataset_id is None:
-            raise ValueError('A batch must have a connection and '
-                             'a dataset ID set.')
-
+    def __init__(self, client):
+        self._client = client
         self._mutation = datastore_pb.Mutation()
         self._auto_id_entities = []
 
-    @staticmethod
-    def current():
+    def current(self):
         """Return the topmost batch / transaction, or None."""
-        return _BATCHES.top
+        return self._client.current_batch
 
     @property
     def dataset_id(self):
@@ -98,7 +78,16 @@ class Batch(object):
         :rtype: :class:`str`
         :returns: The dataset ID in which the batch will run.
         """
-        return self._dataset_id
+        return self._client.dataset_id
+
+    @property
+    def namespace(self):
+        """Getter for namespace in which the batch will run.
+
+        :rtype: :class:`str`
+        :returns: The namespace in which the batch will run.
+        """
+        return self._client.namespace
 
     @property
     def connection(self):
@@ -107,7 +96,7 @@ class Batch(object):
         :rtype: :class:`gcloud.datastore.connection.Connection`
         :returns: The connection over which the batch will run.
         """
-        return self._connection
+        return self._client.connection
 
     @property
     def mutation(self):
@@ -172,7 +161,7 @@ class Batch(object):
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        if not _dataset_ids_equal(self._dataset_id, entity.key.dataset_id):
+        if not _dataset_ids_equal(self.dataset_id, entity.key.dataset_id):
             raise ValueError("Key must be from same dataset as batch")
 
         _assign_entity_to_mutation(
@@ -190,7 +179,7 @@ class Batch(object):
         if key.is_partial:
             raise ValueError("Key must be complete")
 
-        if not _dataset_ids_equal(self._dataset_id, key.dataset_id):
+        if not _dataset_ids_equal(self.dataset_id, key.dataset_id):
             raise ValueError("Key must be from same dataset as batch")
 
         key_pb = helpers._prepare_key_for_request(key.to_protobuf())
@@ -211,7 +200,7 @@ class Batch(object):
         context manager.
         """
         response = self.connection.commit(
-            self._dataset_id, self.mutation, self._id)
+            self.dataset_id, self.mutation, self._id)
         # If the back-end returns without error, we are guaranteed that
         # the response's 'insert_auto_id_key' will match (length and order)
         # the request's 'insert_auto_id` entities, which are derived from
@@ -229,7 +218,7 @@ class Batch(object):
         pass
 
     def __enter__(self):
-        _BATCHES.push(self)
+        self._client._push_batch(self)
         self.begin()
         return self
 
@@ -240,7 +229,7 @@ class Batch(object):
             else:
                 self.rollback()
         finally:
-            _BATCHES.pop()
+            self._client._pop_batch()
 
 
 def _assign_entity_to_mutation(mutation_pb, entity, auto_id_entities):
