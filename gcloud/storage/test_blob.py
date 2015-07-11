@@ -355,6 +355,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
@@ -363,7 +364,7 @@ class Test_Blob(unittest2.TestCase):
             blob._CHUNK_SIZE_MULTIPLE = 1
             blob.chunk_size = chunk_size
         fh = BytesIO()
-        blob.download_to_file(fh, connection=connection)
+        blob.download_to_file(fh, client=client)
         self.assertEqual(fh.getvalue(), b'abcdef')
 
     def test_download_to_file_default(self):
@@ -387,6 +388,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK,
@@ -395,7 +397,7 @@ class Test_Blob(unittest2.TestCase):
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
         with NamedTemporaryFile() as f:
-            blob.download_to_filename(f.name, connection=connection)
+            blob.download_to_filename(f.name, client=client)
             f.flush()
             with open(f.name, 'rb') as g:
                 wrote = g.read()
@@ -416,13 +418,14 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
-        fetched = blob.download_as_string(connection=connection)
+        fetched = blob.download_as_string(client=client)
         self.assertEqual(fetched, b'abcdef')
 
     def test_upload_from_file_size_failure(self):

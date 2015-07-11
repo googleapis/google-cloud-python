@@ -200,6 +200,24 @@ class Blob(_PropertyMixin):
             api_access_endpoint=_API_ACCESS_ENDPOINT,
             expiration=expiration, method=method)
 
+    @staticmethod
+    def _client_or_connection(client):
+        """Temporary method to get a connection from a client.
+
+        If the client is null, gets the connection from the environment.
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
+
+        :rtype: :class:`gcloud.storage.connection.Connection`
+        :returns: The connection determined from the ``client`` or environment.
+        """
+        if client is None:
+            return _require_connection()
+        else:
+            return client.connection
+
     def exists(self, client=None):
         """Determines whether or not this blob exists.
 
@@ -210,10 +228,7 @@ class Blob(_PropertyMixin):
         :rtype: boolean
         :returns: True if the blob exists in Cloud Storage.
         """
-        if client is None:
-            connection = _require_connection()
-        else:
-            connection = client.connection
+        connection = self._client_or_connection(client)
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
@@ -275,20 +290,19 @@ class Blob(_PropertyMixin):
         connection = _require_connection(connection)
         return self.bucket.delete_blob(self.name, connection=connection)
 
-    def download_to_file(self, file_obj, connection=None):
+    def download_to_file(self, file_obj, client=None):
         """Download the contents of this blob into a file-like object.
 
         :type file_obj: file
         :param file_obj: A file handle to which to write the blob's data.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :raises: :class:`gcloud.exceptions.NotFound`
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
@@ -307,39 +321,37 @@ class Blob(_PropertyMixin):
         download.StreamInChunks(callback=lambda *args: None,
                                 finish_callback=lambda *args: None)
 
-    def download_to_filename(self, filename, connection=None):
+    def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
 
         :type filename: string
         :param filename: A filename to be passed to ``open``.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :raises: :class:`gcloud.exceptions.NotFound`
         """
         with open(filename, 'wb') as file_obj:
-            self.download_to_file(file_obj, connection=connection)
+            self.download_to_file(file_obj, client=client)
 
         mtime = time.mktime(self.updated.timetuple())
         os.utime(file_obj.name, (mtime, mtime))
 
-    def download_as_string(self, connection=None):
+    def download_as_string(self, client=None):
         """Download the contents of this blob as a string.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: bytes
         :returns: The data stored in this blob.
         :raises: :class:`gcloud.exceptions.NotFound`
         """
         string_buffer = BytesIO()
-        self.download_to_file(string_buffer, connection=connection)
+        self.download_to_file(string_buffer, client=client)
         return string_buffer.getvalue()
 
     def upload_from_file(self, file_obj, rewind=False, size=None,
