@@ -51,7 +51,7 @@ class TestStorageBuckets(unittest2.TestCase):
         self.case_buckets_to_delete = []
 
     def tearDown(self):
-        with storage.Batch():
+        with storage.Batch(CLIENT):
             for bucket_name in self.case_buckets_to_delete:
                 storage.Bucket(bucket_name).delete()
 
