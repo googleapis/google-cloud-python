@@ -45,15 +45,32 @@ class _PropertyMixin(object):
         self._properties = {}
         self._changes = set()
 
-    def reload(self, connection=None):
+    @staticmethod
+    def _client_or_connection(client):
+        """Temporary method to get a connection from a client.
+
+        If the client is null, gets the connection from the environment.
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
+
+        :rtype: :class:`gcloud.storage.connection.Connection`
+        :returns: The connection determined from the ``client`` or environment.
+        """
+        if client is None:
+            return _require_connection()
+        else:
+            return client.connection
+
+    def reload(self, client=None):
         """Reload properties from Cloud Storage.
 
-        :type connection: :class:`gcloud.storage.connection.Connection`
-        :param connection: An explicit connection to use for the API request.
-                           If not passed, use the connection assigned to
-                           the object in its constructor.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params = {'projection': 'noAcl'}
@@ -90,17 +107,16 @@ class _PropertyMixin(object):
         # If the values are reset, the changes must as well.
         self._changes = set()
 
-    def patch(self, connection=None):
+    def patch(self, client=None):
         """Sends all changed properties in a PATCH request.
 
         Updates the ``_properties`` with the response from the backend.
 
-        :type connection: :class:`gcloud.storage.connection.Connection`
-        :param connection: An explicit connection to use for the API request.
-                           If not passed, use the connection assigned to
-                           the object in its constructor.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
         update_properties = dict((key, self._properties[key])

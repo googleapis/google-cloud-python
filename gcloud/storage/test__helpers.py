@@ -60,10 +60,11 @@ class Test_PropertyMixin(unittest2.TestCase):
 
     def test_reload_w_explicit_connection(self):
         connection = _Connection({'foo': 'Foo'})
+        client = _Client(connection)
         derived = self._derivedClass('/path')()
         # Make sure changes is not a set, so we can observe a change.
         derived._changes = object()
-        derived.reload(connection)
+        derived.reload(client=client)
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -108,13 +109,14 @@ class Test_PropertyMixin(unittest2.TestCase):
 
     def test_patch_w_explicit_connection(self):
         connection = _Connection({'foo': 'Foo'})
+        client = _Client(connection)
         derived = self._derivedClass('/path')()
         # Make sure changes is non-empty, so we can observe a change.
         BAR = object()
         BAZ = object()
         derived._properties = {'bar': BAR, 'baz': BAZ}
         derived._changes = set(['bar'])  # Ignore baz.
-        derived.patch(connection)
+        derived.patch(client=client)
         self.assertEqual(derived._properties, {'foo': 'Foo'})
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -301,3 +303,9 @@ class _NoCommitBatch(object):
     def __exit__(self, *args):
         from gcloud.storage.batch import _BATCHES
         _BATCHES.pop()
+
+
+class _Client(object):
+
+    def __init__(self, connection):
+        self.connection = connection
