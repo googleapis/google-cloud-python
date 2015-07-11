@@ -261,8 +261,9 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        result = bucket.get_blob(NONESUCH, connection=connection)
+        result = bucket.get_blob(NONESUCH, client=client)
         self.assertTrue(result is None)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
@@ -272,8 +273,9 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({'name': BLOB_NAME})
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        blob = bucket.get_blob(BLOB_NAME, connection=connection)
+        blob = bucket.get_blob(BLOB_NAME, client=client)
         self.assertTrue(blob.bucket is bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested

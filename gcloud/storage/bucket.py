@@ -205,7 +205,7 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob_name, connection=None):
+    def get_blob(self, blob_name, client=None):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist::
@@ -221,15 +221,14 @@ class Bucket(_PropertyMixin):
         :type blob_name: string
         :param blob_name: The name of the blob to retrieve.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`gcloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         blob = Blob(bucket=self, name=blob_name)
         try:
             response = connection.api_request(
