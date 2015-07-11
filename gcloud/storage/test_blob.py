@@ -296,7 +296,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(new_blob.name, NEW_NAME)
         self.assertFalse(BLOB_NAME in bucket._blobs)
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, client)])
         self.assertTrue(NEW_NAME in bucket._blobs)
 
     def test_delete_w_implicit_connection(self):
@@ -312,7 +312,7 @@ class Test_Blob(unittest2.TestCase):
         with _monkey_defaults(connection=connection):
             blob.delete()
         self.assertFalse(blob.exists(client=client))
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
 
     def test_delete_w_explicit_connection(self):
         from six.moves.http_client import NOT_FOUND
@@ -323,9 +323,9 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        blob.delete(connection=connection)
+        blob.delete(client=client)
         self.assertFalse(blob.exists(client=client))
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, client)])
 
     def _download_to_file_helper(self, chunk_size=None):
         from six.moves.http_client import OK
@@ -1147,9 +1147,9 @@ class _Bucket(object):
         destination_bucket._blobs[new_name] = self._blobs[blob.name]
         return blob.__class__(new_name, bucket=destination_bucket)
 
-    def delete_blob(self, blob_name, connection=None):
+    def delete_blob(self, blob_name, client=None):
         del self._blobs[blob_name]
-        self._deleted.append((blob_name, connection))
+        self._deleted.append((blob_name, client))
 
 
 class _Signer(object):

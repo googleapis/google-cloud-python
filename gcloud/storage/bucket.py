@@ -311,7 +311,7 @@ class Bucket(_PropertyMixin):
             result.next_page_token = page_token
         return result
 
-    def delete(self, force=False, connection=None):
+    def delete(self, force=False, client=None):
         """Delete this bucket.
 
         The bucket **must** be empty in order to submit a delete request. If
@@ -330,15 +330,14 @@ class Bucket(_PropertyMixin):
         :type force: boolean
         :param force: If True, empties the bucket's objects then deletes it.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :raises: :class:`ValueError` if ``force`` is ``True`` and the bucket
                  contains more than 256 objects / blobs.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         if force:
             blobs = list(self.list_blobs(
                 max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
@@ -354,7 +353,7 @@ class Bucket(_PropertyMixin):
 
             # Ignore 404 errors on delete.
             self.delete_blobs(blobs, on_error=lambda blob: None,
-                              connection=connection)
+                              client=client)
 
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
@@ -362,7 +361,7 @@ class Bucket(_PropertyMixin):
         connection.api_request(method='DELETE', path=self.path,
                                _target_object=None)
 
-    def delete_blob(self, blob_name, connection=None):
+    def delete_blob(self, blob_name, client=None):
         """Deletes a blob from the current bucket.
 
         If the blob isn't found (backend 404), raises a
@@ -385,10 +384,9 @@ class Bucket(_PropertyMixin):
         :type blob_name: string
         :param blob_name: A blob name to delete.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :raises: :class:`gcloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
@@ -396,7 +394,7 @@ class Bucket(_PropertyMixin):
 
                  >>> bucket.delete_blobs([blob], on_error=lambda blob: None)
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         blob_path = Blob.path_helper(self.path, blob_name)
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
@@ -404,7 +402,7 @@ class Bucket(_PropertyMixin):
         connection.api_request(method='DELETE', path=blob_path,
                                _target_object=None)
 
-    def delete_blobs(self, blobs, on_error=None, connection=None):
+    def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
 
         Uses :func:`Bucket.delete_blob` to delete each individual blob.
@@ -417,21 +415,19 @@ class Bucket(_PropertyMixin):
                          :class:`gcloud.exceptions.NotFound`;
                          otherwise, the exception is propagated.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :raises: :class:`gcloud.exceptions.NotFound` (if
                  `on_error` is not passed).
         """
-        connection = _require_connection(connection)
         for blob in blobs:
             try:
                 blob_name = blob
                 if not isinstance(blob_name, six.string_types):
                     blob_name = blob.name
-                self.delete_blob(blob_name, connection=connection)
+                self.delete_blob(blob_name, client=client)
             except NotFound:
                 if on_error is not None:
                     on_error(blob)

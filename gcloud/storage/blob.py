@@ -266,19 +266,17 @@ class Blob(_PropertyMixin):
         :rtype: :class:`Blob`
         :returns: The newly-copied blob.
         """
-        connection = self._client_or_connection(client)
         new_blob = self.bucket.copy_blob(self, self.bucket, new_name,
                                          client=client)
-        self.delete(connection=connection)
+        self.delete(client=client)
         return new_blob
 
-    def delete(self, connection=None):
+    def delete(self, client=None):
         """Deletes a blob from Cloud Storage.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`Blob`
         :returns: The blob that was just deleted.
@@ -286,8 +284,7 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`gcloud.storage.bucket.Bucket.delete_blob`).
         """
-        connection = _require_connection(connection)
-        return self.bucket.delete_blob(self.name, connection=connection)
+        return self.bucket.delete_blob(self.name, client=client)
 
     def download_to_file(self, file_obj, client=None):
         """Download the contents of this blob into a file-like object.
