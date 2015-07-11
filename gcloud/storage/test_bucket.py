@@ -975,9 +975,9 @@ class Test_Bucket(unittest2.TestCase):
             def grant_read(self):
                 self._granted = True
 
-            def save(self, connection=None):
+            def save(self, client=None):
                 _saved.append(
-                    (self._bucket, self._name, self._granted, connection))
+                    (self._bucket, self._name, self._granted, client))
 
         class _Iterator(_BlobIterator):
             def get_items_from_response(self, response):
@@ -997,7 +997,7 @@ class Test_Bucket(unittest2.TestCase):
             bucket.make_public(recursive=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, connection)])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, None)])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'PATCH')

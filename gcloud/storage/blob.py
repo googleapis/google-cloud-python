@@ -531,16 +531,15 @@ class Blob(_PropertyMixin):
                               size=len(data), content_type=content_type,
                               client=client)
 
-    def make_public(self, connection=None):
+    def make_public(self, client=None):
         """Make this blob public giving all users read access.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use. If not passed, falls back
+                       to the ``connection`` stored on the blob's bucket.
         """
         self.acl.all().grant_read()
-        self.acl.save(connection=connection)
+        self.acl.save(client=client)
 
     cache_control = _scalar_property('cacheControl')
     """HTTP 'Cache-Control' header for this object.

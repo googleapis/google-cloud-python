@@ -769,10 +769,11 @@ class Test_Blob(unittest2.TestCase):
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive}
         connection = _Connection(after)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.acl.loaded = True
-        blob.make_public(connection=connection)
+        blob.make_public(client=client)
         self.assertEqual(list(blob.acl), permissive)
         kw = connection._requested
         self.assertEqual(len(kw), 1)

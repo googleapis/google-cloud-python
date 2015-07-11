@@ -617,9 +617,10 @@ class Test_ACL(unittest2.TestCase):
 
     def test_save_none_set_none_passed_w_explicit_connection(self):
         connection = _Connection()
+        client = _Client(connection)
         acl = self._makeOne()
         acl.save_path = '/testing'
-        acl.save(connection=connection)
+        acl.save(client=client)
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
@@ -641,10 +642,11 @@ class Test_ACL(unittest2.TestCase):
 
     def test_save_existing_missing_none_passed_w_explicit_connection(self):
         connection = _Connection({})
+        client = _Client(connection)
         acl = self._makeOne()
         acl.save_path = '/testing'
         acl.loaded = True
-        acl.save(connection=connection)
+        acl.save(client=client)
         self.assertEqual(list(acl), [])
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -676,11 +678,12 @@ class Test_ACL(unittest2.TestCase):
         ROLE = 'role'
         AFTER = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'acl': AFTER})
+        client = _Client(connection)
         acl = self._makeOne()
         acl.save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers').grant(ROLE)
-        acl.save(connection=connection)
+        acl.save(client=client)
         self.assertEqual(list(acl), AFTER)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -718,10 +721,11 @@ class Test_ACL(unittest2.TestCase):
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
         new_acl = [{'entity': 'allUsers', 'role': ROLE1}]
         connection = _Connection({'acl': [STICKY] + new_acl})
+        client = _Client(connection)
         acl = self._makeOne()
         acl.save_path = '/testing'
         acl.loaded = True
-        acl.save(new_acl, connection)
+        acl.save(new_acl, client=client)
         entries = list(acl)
         self.assertEqual(len(entries), 2)
         self.assertTrue(STICKY in entries)
@@ -758,11 +762,12 @@ class Test_ACL(unittest2.TestCase):
         ROLE2 = 'role2'
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
         connection = _Connection({'acl': [STICKY]})
+        client = _Client(connection)
         acl = self._makeOne()
         acl.save_path = '/testing'
         acl.loaded = True
         acl.entity('allUsers', ROLE1)
-        acl.clear(connection=connection)
+        acl.clear(client=client)
         self.assertEqual(list(acl), [STICKY])
         kw = connection._requested
         self.assertEqual(len(kw), 1)

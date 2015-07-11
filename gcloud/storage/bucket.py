@@ -852,14 +852,14 @@ class Bucket(_PropertyMixin):
         connection = self._client_or_connection(client)
 
         self.acl.all().grant_read()
-        self.acl.save(connection=connection)
+        self.acl.save(client=client)
 
         if future:
             doa = self.default_object_acl
             if not doa.loaded:
                 doa.reload(client=client)
             doa.all().grant_read()
-            doa.save(connection=connection)
+            doa.save(client=client)
 
         if recursive:
             blobs = list(self.list_blobs(
@@ -877,4 +877,4 @@ class Bucket(_PropertyMixin):
 
             for blob in blobs:
                 blob.acl.all().grant_read()
-                blob.acl.save(connection=connection)
+                blob.acl.save(client=client)
