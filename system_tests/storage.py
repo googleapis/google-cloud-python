@@ -321,7 +321,8 @@ class TestStorageSignURLs(TestStorageFiles):
     def test_create_signed_read_url(self):
         blob = storage.Blob(bucket=self.bucket, name='LogoToSign.jpg')
         expiration = int(time.time() + 5)
-        signed_url = blob.generate_signed_url(expiration, method='GET')
+        signed_url = blob.generate_signed_url(expiration, method='GET',
+                                              client=CLIENT)
 
         response, content = HTTP.request(signed_url, method='GET')
         self.assertEqual(response.status, 200)
@@ -331,7 +332,8 @@ class TestStorageSignURLs(TestStorageFiles):
         blob = storage.Blob(bucket=self.bucket, name='LogoToSign.jpg')
         expiration = int(time.time() + 283473274)
         signed_delete_url = blob.generate_signed_url(expiration,
-                                                     method='DELETE')
+                                                     method='DELETE',
+                                                     client=CLIENT)
 
         response, content = HTTP.request(signed_delete_url, method='DELETE')
         self.assertEqual(response.status, 204)

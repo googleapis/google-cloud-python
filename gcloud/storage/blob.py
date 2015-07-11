@@ -154,7 +154,7 @@ class Blob(_PropertyMixin):
             quoted_name=quote(self.name, safe=''))
 
     def generate_signed_url(self, expiration, method='GET',
-                            connection=None, credentials=None):
+                            client=None, credentials=None):
         """Generates a signed URL for this blob.
 
         If you have a blob that you want to allow access to for a set
@@ -171,10 +171,9 @@ class Blob(_PropertyMixin):
         :type method: string
         :param method: The HTTP verb that will be used when requesting the URL.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use. If not passed, falls back
+                       to the ``connection`` stored on the blob's bucket.
 
         :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                            :class:`NoneType`
@@ -183,14 +182,18 @@ class Blob(_PropertyMixin):
         :rtype: string
         :returns: A signed URL you can use to access the resource
                   until expiration.
+        :raises: :class:`ValueError` if no credentials could be determined
+                 from the arguments.
         """
         resource = '/{bucket_name}/{quoted_name}'.format(
             bucket_name=self.bucket.name,
             quoted_name=quote(self.name, safe=''))
 
         if credentials is None:
-            connection = _require_connection(connection)
-            credentials = connection.credentials
+            if client is not None:
+                credentials = client.connection.credentials
+            else:
+                raise ValueError('Credentials could be determined.')
 
         return generate_signed_url(
             credentials, resource=resource,

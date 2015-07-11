@@ -146,36 +146,30 @@ class Test_Blob(unittest2.TestCase):
             blob.public_url,
             'https://storage.googleapis.com/name/parent%2Fchild')
 
-    def _basic_generate_signed_url_helper(self, credentials=None):
+    def _basic_generate_signed_url_helper(self, credentials=None,
+                                          use_client=True):
         from gcloud._testing import _Monkey
         from gcloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
 
-        _called_require = []
-
-        def mock_require(connection):
-            _called_require.append(connection)
-            return connection
-
         SIGNER = _Signer()
-        with _Monkey(MUT, generate_signed_url=SIGNER,
-                     _require_connection=mock_require):
-            signed_uri = blob.generate_signed_url(EXPIRATION,
-                                                  connection=connection,
-                                                  credentials=credentials)
+        with _Monkey(MUT, generate_signed_url=SIGNER):
+            if use_client:
+                signed_uri = blob.generate_signed_url(EXPIRATION,
+                                                      client=client,
+                                                      credentials=credentials)
+            else:
+                signed_uri = blob.generate_signed_url(EXPIRATION,
+                                                      credentials=credentials)
             self.assertEqual(signed_uri, URI)
-
-        if credentials is None:
-            self.assertEqual(_called_require, [connection])
-        else:
-            self.assertEqual(_called_require, [])
 
         PATH = '/name/%s' % (BLOB_NAME,)
         if credentials is None:
@@ -189,6 +183,10 @@ class Test_Blob(unittest2.TestCase):
             'resource': PATH,
         }
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+
+    def test_generate_signed_url_w_no_creds(self):
+        with self.assertRaises(ValueError):
+            self._basic_generate_signed_url_helper(use_client=False)
 
     def test_generate_signed_url_w_default_method(self):
         self._basic_generate_signed_url_helper()
@@ -204,6 +202,7 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
@@ -212,7 +211,7 @@ class Test_Blob(unittest2.TestCase):
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
             signed_url = blob.generate_signed_url(EXPIRATION,
-                                                  connection=connection)
+                                                  client=client)
             self.assertEqual(signed_url, URI)
 
         EXPECTED_ARGS = (_Connection.credentials,)
@@ -231,6 +230,7 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
@@ -239,7 +239,7 @@ class Test_Blob(unittest2.TestCase):
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
             signed_uri = blob.generate_signed_url(EXPIRATION, method='POST',
-                                                  connection=connection)
+                                                  client=client)
             self.assertEqual(signed_uri, URI)
 
         PATH = '/name/%s' % (BLOB_NAME,)
@@ -1152,3 +1152,9 @@ class _Signer(object):
         self._signed.append((args, kwargs))
         return ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                 '&Expiration=%s' % kwargs.get('expiration'))
+
+
+class _Client(object):
+
+    def __init__(self, connection):
+        self.connection = connection
