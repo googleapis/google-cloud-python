@@ -245,7 +245,7 @@ class Blob(_PropertyMixin):
         except NotFound:
             return False
 
-    def rename(self, new_name, connection=None):
+    def rename(self, new_name, client=None):
         """Renames this blob using copy and delete operations.
 
         Effectively, copies blob to the same bucket with a new name, then
@@ -259,17 +259,16 @@ class Blob(_PropertyMixin):
         :type new_name: string
         :param new_name: The new name for this blob.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`Blob`
         :returns: The newly-copied blob.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         new_blob = self.bucket.copy_blob(self, self.bucket, new_name,
-                                         connection=connection)
+                                         client=client)
         self.delete(connection=connection)
         return new_blob
 

@@ -438,9 +438,8 @@ class Bucket(_PropertyMixin):
                 else:
                     raise
 
-    @staticmethod
-    def copy_blob(blob, destination_bucket, new_name=None,
-                  connection=None):
+    def copy_blob(self, blob, destination_bucket, new_name=None,
+                  client=None):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         :type blob: string or :class:`gcloud.storage.blob.Blob`
@@ -453,15 +452,14 @@ class Bucket(_PropertyMixin):
         :type new_name: string
         :param new_name: (optional) the new name for the copied file.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`gcloud.storage.blob.Blob`
         :returns: The new Blob.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         if new_name is None:
             new_name = blob.name
         new_blob = Blob(bucket=destination_bucket, name=new_name)

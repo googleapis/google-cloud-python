@@ -284,30 +284,15 @@ class Test_Blob(unittest2.TestCase):
         bucket._blobs[BLOB_NAME] = 1
         self.assertTrue(blob.exists(client=client))
 
-    def test_rename_w_implicit_connection(self):
-        from gcloud.storage._testing import _monkey_defaults
+    def test_rename(self):
         BLOB_NAME = 'blob-name'
         NEW_NAME = 'new-name'
         connection = _Connection()
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        with _monkey_defaults(connection=connection):
-            new_blob = blob.rename(NEW_NAME)
-        self.assertEqual(blob.name, BLOB_NAME)
-        self.assertEqual(new_blob.name, NEW_NAME)
-        self.assertFalse(BLOB_NAME in bucket._blobs)
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
-        self.assertTrue(NEW_NAME in bucket._blobs)
-
-    def test_rename_w_explicit_connection(self):
-        BLOB_NAME = 'blob-name'
-        NEW_NAME = 'new-name'
-        connection = _Connection()
-        bucket = _Bucket()
-        blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        bucket._blobs[BLOB_NAME] = 1
-        new_blob = blob.rename(NEW_NAME, connection=connection)
+        new_blob = blob.rename(NEW_NAME, client=client)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(new_blob.name, NEW_NAME)
         self.assertFalse(BLOB_NAME in bucket._blobs)
@@ -1157,8 +1142,8 @@ class _Bucket(object):
         self._copied = []
         self._deleted = []
 
-    def copy_blob(self, blob, destination_bucket, new_name, connection=None):
-        self._copied.append((blob, destination_bucket, new_name, connection))
+    def copy_blob(self, blob, destination_bucket, new_name, client=None):
+        self._copied.append((blob, destination_bucket, new_name, client))
         destination_bucket._blobs[new_name] = self._blobs[blob.name]
         return blob.__class__(new_name, bucket=destination_bucket)
 

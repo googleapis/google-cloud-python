@@ -516,10 +516,11 @@ class Test_Bucket(unittest2.TestCase):
             path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
 
         connection = _Connection({})
+        client = _Client(connection)
         source = self._makeOne(SOURCE)
         dest = self._makeOne(DEST)
         blob = _Blob()
-        new_blob = source.copy_blob(blob, dest, connection=connection)
+        new_blob = source.copy_blob(blob, dest, client=client)
         self.assertTrue(new_blob.bucket is dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
         kw, = connection._requested
@@ -539,11 +540,12 @@ class Test_Bucket(unittest2.TestCase):
             path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
 
         connection = _Connection({})
+        client = _Client(connection)
         source = self._makeOne(SOURCE)
         dest = self._makeOne(DEST)
         blob = _Blob()
         new_blob = source.copy_blob(blob, dest, NEW_NAME,
-                                    connection=connection)
+                                    client=client)
         self.assertTrue(new_blob.bucket is dest)
         self.assertEqual(new_blob.name, NEW_NAME)
         kw, = connection._requested
