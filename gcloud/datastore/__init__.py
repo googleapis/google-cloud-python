@@ -18,9 +18,10 @@ You'll typically use these to get started with the API:
 
 >>> from gcloud import datastore
 
->>> key = datastore.Key('EntityKind', 1234)
+>>> client = datastore.Client()
+>>> key = client.key('EntityKind', 1234)
 >>> entity = datastore.Entity(key)
->>> query = datastore.Query(kind='EntityKind')
+>>> query = client.query(kind='EntityKind')
 
 The main concepts with this API are:
 
@@ -49,11 +50,6 @@ The main concepts with this API are:
   when race conditions may occur.
 """
 
-from gcloud.datastore._implicit_environ import get_connection
-from gcloud.datastore._implicit_environ import get_default_connection
-from gcloud.datastore._implicit_environ import get_default_dataset_id
-from gcloud.datastore._implicit_environ import set_default_connection
-from gcloud.datastore._implicit_environ import set_default_dataset_id
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.connection import SCOPE
 from gcloud.datastore.connection import Connection
@@ -62,25 +58,3 @@ from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
-
-
-def set_defaults(dataset_id=None, connection=None):
-    """Set defaults either explicitly or implicitly as fall-back.
-
-    Uses the arguments to call the individual default methods
-
-    - set_default_dataset_id
-    - set_default_connection
-
-    In the future we will likely enable methods like
-
-    - set_default_namespace
-
-    :type dataset_id: string
-    :param dataset_id: Optional. The dataset ID to use as default.
-
-    :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: A connection provided to be the default.
-    """
-    set_default_dataset_id(dataset_id=dataset_id)
-    set_default_connection(connection=connection)

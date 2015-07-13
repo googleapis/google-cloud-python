@@ -21,14 +21,6 @@ _ID = 1234
 
 class TestEntity(unittest2.TestCase):
 
-    def setUp(self):
-        from gcloud.datastore._testing import _setup_defaults
-        _setup_defaults(self)
-
-    def tearDown(self):
-        from gcloud.datastore._testing import _tear_down_defaults
-        _tear_down_defaults(self)
-
     def _getTargetClass(self):
         from gcloud.datastore.entity import Entity
         return Entity

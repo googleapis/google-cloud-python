@@ -220,5 +220,4 @@ class _Client(object):
 
     @property
     def current_batch(self):
-        if self._batches:
-            return self._batches[0]
+        return self._batches and self._batches[0] or None
