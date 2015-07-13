@@ -79,15 +79,6 @@ def _determine_default_dataset_id(dataset_id=None):
     return dataset_id
 
 
-def _get_connection():
-    """Shortcut method to establish a connection to the Cloud Datastore.
-
-    :rtype: :class:`gcloud.datastore.connection.Connection`
-    :returns: A connection defined with the proper credentials.
-    """
-    return Connection.from_environment()
-
-
 def _extended_lookup(connection, dataset_id, key_pbs,
                      missing=None, deferred=None,
                      eventual=False, transaction_id=None):
@@ -186,7 +177,7 @@ class Client(object):
             raise EnvironmentError('Dataset ID could not be inferred.')
         self.dataset_id = dataset_id
         if connection is None:
-            connection = _get_connection()
+            connection = Connection.from_environment()
         self.connection = connection
         self._batch_stack = _LocalStack()
         self.namespace = namespace

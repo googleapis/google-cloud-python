@@ -165,28 +165,6 @@ class Test__determine_default_dataset_id(unittest2.TestCase):
                          ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
 
 
-class Test__get_connection(unittest2.TestCase):
-
-    def _callFUT(self):
-        from gcloud.datastore.client import _get_connection
-        return _get_connection()
-
-    def test_it(self):
-        from gcloud import credentials
-        from gcloud.datastore.connection import SCOPE
-        from gcloud.datastore.connection import Connection
-        from gcloud.test_credentials import _Client
-        from gcloud._testing import _Monkey
-
-        client = _Client()
-        with _Monkey(credentials, client=client):
-            found = self._callFUT()
-        self.assertTrue(isinstance(found, Connection))
-        self.assertTrue(found._credentials is client._signed)
-        self.assertEqual(found._credentials._scopes, SCOPE)
-        self.assertTrue(client._get_app_default_called)
-
-
 class TestClient(unittest2.TestCase):
 
     DATASET_ID = 'DATASET'
@@ -211,10 +189,16 @@ class TestClient(unittest2.TestCase):
 
         OTHER = 'other'
         conn = object()
+
+        class _Connection(object):
+            @classmethod
+            def from_environment(cls):
+                return conn
+
         klass = self._getTargetClass()
         with _Monkey(_MUT,
                      _determine_default_dataset_id=lambda x: x or OTHER,
-                     _get_connection=lambda: conn):
+                     Connection=_Connection):
             client = klass()
         self.assertEqual(client.dataset_id, OTHER)
         self.assertEqual(client.namespace, None)
