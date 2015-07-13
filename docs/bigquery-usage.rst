@@ -55,3 +55,69 @@ Authorization / Configuration
 
      >>> from gcloud import bigquery
      >>> client = bigquery.Client(project='PROJECT_ID')
+
+
+Manage datasets
+---------------
+
+Create a new dataset for the client's project:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> dataset.create()  # API request
+
+Check for the existence of a dataset:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> dataset.exists()  # API request
+   True
+
+List datasets for the client's project:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> datasets, next_page_token = client.list_datasets()  # API request
+   >>> [dataset.name for dataset in datasets]
+   ['dataset_name']
+
+Patch metadata for a dataset:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> one_day_ms = 86400 * 1000
+   >>> dataset.patch(description='Description goes here',
+   ...               default_table_expiration_ms=one_day_ms)  # API request
+
+Replace the ACL for a project, and update all writeable fields:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> dataset.get()  # API request
+   >>> acl = list(dataset.acl)
+   >>> acl.append(bigquery.Access(role='READER', entity_type='domain', entity='example.com'))
+   >>> dataset.acl = acl
+   >>> dataset.update()  # API request
+
+Delete a dataset:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> dataset.delete()  # API request
