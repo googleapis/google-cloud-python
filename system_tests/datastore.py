@@ -24,7 +24,7 @@ from system_tests import populate_datastore
 
 
 client._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
-client = datastore.Client()
+CLIENT = datastore.Client()
 
 
 class TestDatastore(unittest2.TestCase):
@@ -33,16 +33,16 @@ class TestDatastore(unittest2.TestCase):
         self.case_entities_to_delete = []
 
     def tearDown(self):
-        with client.transaction():
+        with CLIENT.transaction():
             keys = [entity.key for entity in self.case_entities_to_delete]
-            client.delete_multi(keys)
+            CLIENT.delete_multi(keys)
 
 
 class TestDatastoreAllocateIDs(TestDatastore):
 
     def test_allocate_ids(self):
         num_ids = 10
-        allocated_keys = client.allocate_ids(client.key('Kind'), num_ids)
+        allocated_keys = CLIENT.allocate_ids(CLIENT.key('Kind'), num_ids)
         self.assertEqual(len(allocated_keys), num_ids)
 
         unique_ids = set()
@@ -56,7 +56,7 @@ class TestDatastoreAllocateIDs(TestDatastore):
 
 class TestDatastoreSave(TestDatastore):
 
-    PARENT = client.key('Blog', 'PizzaMan')
+    PARENT = CLIENT.key('Blog', 'PizzaMan')
 
     def _get_post(self, id_or_name=None, post_content=None):
         post_content = post_content or {
@@ -71,7 +71,7 @@ class TestDatastoreSave(TestDatastore):
         # Create an entity with the given content.
         # NOTE: Using a parent to ensure consistency for query
         #       in `test_empty_kind`.
-        key = client.key('Post', parent=self.PARENT)
+        key = CLIENT.key('Post', parent=self.PARENT)
         entity = datastore.Entity(key=key)
         entity.update(post_content)
 
@@ -83,7 +83,7 @@ class TestDatastoreSave(TestDatastore):
 
     def _generic_test_post(self, name=None, key_id=None):
         entity = self._get_post(id_or_name=(name or key_id))
-        client.put(entity)
+        CLIENT.put(entity)
 
         # Register entity to be deleted.
         self.case_entities_to_delete.append(entity)
@@ -92,7 +92,7 @@ class TestDatastoreSave(TestDatastore):
             self.assertEqual(entity.key.name, name)
         if key_id is not None:
             self.assertEqual(entity.key.id, key_id)
-        retrieved_entity = client.get(entity.key)
+        retrieved_entity = CLIENT.get(entity.key)
         # Check the given and retrieved are the the same.
         self.assertEqual(retrieved_entity, entity)
 
@@ -106,7 +106,7 @@ class TestDatastoreSave(TestDatastore):
         self._generic_test_post()
 
     def test_save_multiple(self):
-        with client.transaction() as xact:
+        with CLIENT.transaction() as xact:
             entity1 = self._get_post()
             xact.put(entity1)
             # Register entity to be deleted.
@@ -127,11 +127,11 @@ class TestDatastoreSave(TestDatastore):
             self.case_entities_to_delete.append(entity2)
 
         keys = [entity1.key, entity2.key]
-        matches = client.get_multi(keys)
+        matches = CLIENT.get_multi(keys)
         self.assertEqual(len(matches), 2)
 
     def test_empty_kind(self):
-        query = client.query(kind='Post')
+        query = CLIENT.query(kind='Post')
         query.ancestor = self.PARENT
         posts = list(query.fetch(limit=2))
         self.assertEqual(posts, [])
@@ -140,16 +140,16 @@ class TestDatastoreSave(TestDatastore):
 class TestDatastoreSaveKeys(TestDatastore):
 
     def test_save_key_self_reference(self):
-        parent_key = client.key('Residence', 'NewYork')
-        key = client.key('Person', 'name', parent=parent_key)
+        parent_key = CLIENT.key('Residence', 'NewYork')
+        key = CLIENT.key('Person', 'name', parent=parent_key)
         entity = datastore.Entity(key=key)
         entity['fullName'] = u'Full name'
         entity['linkedTo'] = key  # Self reference.
 
-        client.put(entity)
+        CLIENT.put(entity)
         self.case_entities_to_delete.append(entity)
 
-        query = client.query(kind='Person')
+        query = CLIENT.query(kind='Person')
         # Adding ancestor to ensure consistency.
         query.ancestor = parent_key
         query.add_filter('linkedTo', '=', key)
@@ -164,10 +164,10 @@ class TestDatastoreQuery(TestDatastore):
     def setUpClass(cls):
         super(TestDatastoreQuery, cls).setUpClass()
         cls.CHARACTERS = populate_datastore.CHARACTERS
-        cls.ANCESTOR_KEY = client.key(*populate_datastore.ANCESTOR)
+        cls.ANCESTOR_KEY = CLIENT.key(*populate_datastore.ANCESTOR)
 
     def _base_query(self):
-        return client.query(kind='Character', ancestor=self.ANCESTOR_KEY)
+        return CLIENT.query(kind='Character', ancestor=self.ANCESTOR_KEY)
 
     def test_limit_queries(self):
         limit = 5
@@ -212,7 +212,7 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
     def test_query___key___filter(self):
-        rickard_key = client.key(*populate_datastore.RICKARD)
+        rickard_key = CLIENT.key(*populate_datastore.RICKARD)
 
         query = self._base_query()
         query.add_filter('__key__', '=', rickard_key)
@@ -327,16 +327,16 @@ class TestDatastoreQuery(TestDatastore):
 class TestDatastoreTransaction(TestDatastore):
 
     def test_transaction(self):
-        entity = datastore.Entity(key=client.key('Company', 'Google'))
+        entity = datastore.Entity(key=CLIENT.key('Company', 'Google'))
         entity['url'] = u'www.google.com'
 
-        with client.transaction() as xact:
-            result = client.get(entity.key)
+        with CLIENT.transaction() as xact:
+            result = CLIENT.get(entity.key)
             if result is None:
                 xact.put(entity)
                 self.case_entities_to_delete.append(entity)
 
         # This will always return after the transaction.
-        retrieved_entity = client.get(entity.key)
+        retrieved_entity = CLIENT.get(entity.key)
         self.case_entities_to_delete.append(retrieved_entity)
         self.assertEqual(retrieved_entity, entity)
