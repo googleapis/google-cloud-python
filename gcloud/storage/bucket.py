@@ -25,7 +25,6 @@ from gcloud._helpers import get_default_project
 from gcloud.exceptions import NotFound
 from gcloud.iterator import Iterator
 from gcloud.storage._helpers import _PropertyMixin
-from gcloud.storage._helpers import _require_connection
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
@@ -45,17 +44,18 @@ class _BlobIterator(Iterator):
     :type extra_params: dict or None
     :param extra_params: Extra query string parameters for the API call.
 
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: The connection to use when sending requests.  Defaults
-                       to the bucket's connection
+    :type client: :class:`gcloud.storage.client.Client`
+    :param client: Optional. The client to use for making connections.
+                   Defaults to the bucket's client.
     """
-    def __init__(self, bucket, extra_params=None, connection=None):
-        connection = _require_connection(connection)
+    def __init__(self, bucket, extra_params=None, client=None):
+        if client is None:
+            client = bucket.client
         self.bucket = bucket
         self.prefixes = set()
         self._current_prefixes = None
         super(_BlobIterator, self).__init__(
-            connection=connection, path=bucket.path + '/o',
+            connection=client.connection, path=bucket.path + '/o',
             extra_params=extra_params)
 
     def get_items_from_response(self, response):
@@ -76,6 +76,10 @@ class _BlobIterator(Iterator):
 class Bucket(_PropertyMixin):
     """A class representing a Bucket on Cloud Storage.
 
+    :type client: :class:`gcloud.storage.client.Client`
+    :param client: A client which holds credentials and project configuration
+                   for the bucket (which requires a project).
+
     :type name: string
     :param name: The name of the bucket.
     """
@@ -87,52 +91,49 @@ class Bucket(_PropertyMixin):
     This is used in Bucket.delete() and Bucket.make_public().
     """
 
-    def __init__(self, name=None):
+    def __init__(self, client, name=None):
         super(Bucket, self).__init__(name=name)
+        self._client = client
         self._acl = BucketACL(self)
         self._default_object_acl = DefaultObjectACL(self)
 
     def __repr__(self):
         return '<Bucket: %s>' % self.name
 
-    @staticmethod
-    def _client_or_connection(client):
-        """Temporary method to get a connection from a client.
-
-        If the client is null, gets the connection from the environment.
+    def _require_client(self, client):
+        """Check client or verify over-ride.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current object.
 
-        :rtype: :class:`gcloud.storage.connection.Connection`
-        :returns: The connection determined from the ``client`` or environment.
+        :rtype: :class:`gcloud.storage.client.Client`
+        :returns: The client passed in or the currently bound client.
         """
         if client is None:
-            return _require_connection()
-        else:
-            return client.connection
+            client = self.client
+        return client
 
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the current bucket.
 
         :rtype: boolean
         :returns: True if the bucket exists in Cloud Storage.
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
             query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
-            connection.api_request(method='GET', path=self.path,
-                                   query_params=query_params,
-                                   _target_object=None)
+            client.connection.api_request(method='GET', path=self.path,
+                                          query_params=query_params,
+                                          _target_object=None)
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
             #       raised.
@@ -140,7 +141,7 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
-    def create(self, project=None, connection=None):
+    def create(self, project=None, client=None):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -152,17 +153,16 @@ class Bucket(_PropertyMixin):
         :param project: Optional. The project to use when creating bucket.
                         If not provided, falls back to default.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
 
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
         :raises: :class:`EnvironmentError` if the project is not given and
                  can't be inferred.
         """
-        connection = _require_connection(connection)
+        client = self._require_client(client)
         if project is None:
             project = get_default_project()
         if project is None:
@@ -170,7 +170,7 @@ class Bucket(_PropertyMixin):
                                    'from environment.')
 
         query_params = {'project': project}
-        api_response = connection.api_request(
+        api_response = client.connection.api_request(
             method='POST', path='/b', query_params=query_params,
             data={'name': self.name}, _target_object=self)
         self._set_properties(api_response)
@@ -205,6 +205,11 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
+    @property
+    def client(self):
+        """The client bound to this bucket."""
+        return self._client
+
     def get_blob(self, blob_name, client=None):
         """Get a blob object by name.
 
@@ -223,15 +228,15 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the current bucket.
 
         :rtype: :class:`gcloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
         blob = Blob(bucket=self, name=blob_name)
         try:
-            response = connection.api_request(
+            response = client.connection.api_request(
                 method='GET', path=blob.path, _target_object=blob)
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
@@ -244,7 +249,7 @@ class Bucket(_PropertyMixin):
 
     def list_blobs(self, max_results=None, page_token=None, prefix=None,
                    delimiter=None, versions=None,
-                   projection='noAcl', fields=None, connection=None):
+                   projection='noAcl', fields=None, client=None):
         """Return an iterator used to find blobs in the bucket.
 
         :type max_results: integer or ``NoneType``
@@ -276,10 +281,9 @@ class Bucket(_PropertyMixin):
                        and the language of each blob returned:
                        'items/contentLanguage,nextPageToken'
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
 
         :rtype: :class:`_BlobIterator`.
         :returns: An iterator of blobs.
@@ -304,7 +308,7 @@ class Bucket(_PropertyMixin):
             extra_params['fields'] = fields
 
         result = self._iterator_class(
-            self, extra_params=extra_params, connection=connection)
+            self, extra_params=extra_params, client=client)
         # Page token must be handled specially since the base `Iterator`
         # class has it as a reserved property.
         if page_token is not None:
@@ -332,16 +336,16 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the current bucket.
 
         :raises: :class:`ValueError` if ``force`` is ``True`` and the bucket
                  contains more than 256 objects / blobs.
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
         if force:
             blobs = list(self.list_blobs(
                 max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
-                connection=connection))
+                client=client))
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                 message = (
                     'Refusing to delete bucket with more than '
@@ -358,8 +362,8 @@ class Bucket(_PropertyMixin):
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
-        connection.api_request(method='DELETE', path=self.path,
-                               _target_object=None)
+        client.connection.api_request(method='DELETE', path=self.path,
+                                      _target_object=None)
 
     def delete_blob(self, blob_name, client=None):
         """Deletes a blob from the current bucket.
@@ -386,7 +390,7 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the current bucket.
 
         :raises: :class:`gcloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
@@ -394,13 +398,13 @@ class Bucket(_PropertyMixin):
 
                  >>> bucket.delete_blobs([blob], on_error=lambda blob: None)
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
         blob_path = Blob.path_helper(self.path, blob_name)
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
-        connection.api_request(method='DELETE', path=blob_path,
-                               _target_object=None)
+        client.connection.api_request(method='DELETE', path=blob_path,
+                                      _target_object=None)
 
     def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
@@ -417,7 +421,7 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the current bucket.
 
         :raises: :class:`gcloud.exceptions.NotFound` (if
                  `on_error` is not passed).
@@ -450,18 +454,18 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the current bucket.
 
         :rtype: :class:`gcloud.storage.blob.Blob`
         :returns: The new Blob.
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
         if new_name is None:
             new_name = blob.name
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
-        copy_result = connection.api_request(method='POST', path=api_path,
-                                             _target_object=new_blob)
+        copy_result = client.connection.api_request(
+            method='POST', path=api_path, _target_object=new_blob)
         new_blob._set_properties(copy_result)
         return new_blob
 
@@ -500,7 +504,7 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the current bucket.
 
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
@@ -546,7 +550,7 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the current bucket.
 
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
@@ -847,10 +851,8 @@ class Bucket(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the current bucket.
         """
-        connection = self._client_or_connection(client)
-
         self.acl.all().grant_read()
         self.acl.save(client=client)
 
@@ -865,7 +867,7 @@ class Bucket(_PropertyMixin):
             blobs = list(self.list_blobs(
                 projection='full',
                 max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
-                connection=connection))
+                client=client))
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
                 message = (
                     'Refusing to make public recursively with more than '

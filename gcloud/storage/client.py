@@ -67,7 +67,7 @@ class Client(JSONClient):
         :returns: The bucket matching the name provided.
         :raises: :class:`gcloud.exceptions.NotFound`
         """
-        bucket = Bucket(bucket_name)
+        bucket = Bucket(self, name=bucket_name)
         bucket.reload(client=self)
         return bucket
 
@@ -115,8 +115,8 @@ class Client(JSONClient):
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
         """
-        bucket = Bucket(bucket_name)
-        bucket.create(self.project, connection=self.connection)
+        bucket = Bucket(self, name=bucket_name)
+        bucket.create(self.project, client=self)
         return bucket
 
     def list_buckets(self, max_results=None, page_token=None, prefix=None,
@@ -205,6 +205,6 @@ class _BucketIterator(Iterator):
         """
         for item in response.get('items', []):
             name = item.get('name')
-            bucket = Bucket(name)
+            bucket = Bucket(None, name)
             bucket._set_properties(item)
             yield bucket
