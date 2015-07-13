@@ -18,6 +18,7 @@
   pubsub-usage
   pubsub-subscription
   pubsub-topic
+  bigquery-usage
 
 
 Getting started
