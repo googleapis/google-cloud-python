@@ -3,6 +3,7 @@
   :hidden:
 
   gcloud-api
+  datastore-overview
   datastore-client
   datastore-entities
   datastore-keys
