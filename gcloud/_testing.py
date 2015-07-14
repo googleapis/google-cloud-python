@@ -14,9 +14,6 @@
 
 """Shared testing utilities."""
 
-from gcloud import _helpers
-from gcloud._helpers import _DefaultsContainer
-
 
 class _Monkey(object):
     # context-manager for replacing module names in the scope of a test.
@@ -33,12 +30,3 @@ class _Monkey(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         for key, value in self.to_restore.items():
             setattr(self.module, key, value)
-
-
-def _setup_defaults(test_case, *args, **kwargs):
-    test_case._replaced_defaults = _helpers._DEFAULTS
-    _helpers._DEFAULTS = _DefaultsContainer(*args, **kwargs)
-
-
-def _tear_down_defaults(test_case):
-    _helpers._DEFAULTS = test_case._replaced_defaults
