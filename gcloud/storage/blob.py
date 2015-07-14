@@ -157,6 +157,14 @@ class Blob(_PropertyMixin):
                             connection=None, credentials=None):
         """Generates a signed URL for this blob.
 
+        .. note::
+          If you are on Google Compute Engine, you can't generate a signed URL.
+          Follow
+              https://github.com/GoogleCloudPlatform/gcloud-python/issues/922
+          for updates on this. If you'd like to be able to generate a signed
+          URL from GCE, you can use a standard service account from a JSON
+          file rather than a GCE service account.
+
         If you have a blob that you want to allow access to for a set
         amount of time, you can use this method to generate a URL that
         is only valid within a certain time period.
