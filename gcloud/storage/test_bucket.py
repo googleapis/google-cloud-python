@@ -32,7 +32,7 @@ class Test__BlobIterator(unittest2.TestCase):
         bucket = _Bucket()
         iterator = self._makeOne(bucket, client=client)
         self.assertTrue(iterator.bucket is bucket)
-        self.assertTrue(iterator.connection is connection)
+        self.assertTrue(iterator.client is client)
         self.assertEqual(iterator.path, '%s/o' % bucket.path)
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, None)

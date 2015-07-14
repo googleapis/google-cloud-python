@@ -301,14 +301,17 @@ class Test__BucketIterator(unittest2.TestCase):
 
     def test_ctor(self):
         connection = object()
-        iterator = self._makeOne(connection)
+        client = _Client(connection)
+        iterator = self._makeOne(client)
         self.assertEqual(iterator.path, '/b')
         self.assertEqual(iterator.page_number, 0)
         self.assertEqual(iterator.next_page_token, None)
+        self.assertTrue(iterator.client is client)
 
     def test_get_items_from_response_empty(self):
         connection = object()
-        iterator = self._makeOne(connection)
+        client = _Client(connection)
+        iterator = self._makeOne(client)
         self.assertEqual(list(iterator.get_items_from_response({})), [])
 
     def test_get_items_from_response_non_empty(self):
@@ -316,7 +319,8 @@ class Test__BucketIterator(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         response = {'items': [{'name': BLOB_NAME}]}
         connection = object()
-        iterator = self._makeOne(connection)
+        client = _Client(connection)
+        iterator = self._makeOne(client)
         buckets = list(iterator.get_items_from_response(response))
         self.assertEqual(len(buckets), 1)
         bucket = buckets[0]
@@ -349,3 +353,9 @@ class _Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
+
+
+class _Client(object):
+
+    def __init__(self, connection):
+        self.connection = connection
