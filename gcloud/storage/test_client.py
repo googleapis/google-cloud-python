@@ -57,6 +57,38 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client._pop_batch() is batch1)
         self.assertEqual(list(client._batch_stack), [])
 
+    def test_connection_setter(self):
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        client._connection = None  # Unset the value from the constructor
+        client.connection = connection = object()
+        self.assertTrue(client._connection is connection)
+
+    def test_connection_setter_when_set(self):
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        self.assertRaises(ValueError, setattr, client, 'connection', None)
+
+    def test_connection_getter_no_batch(self):
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        self.assertTrue(client.connection is client._connection)
+        self.assertTrue(client.current_batch is None)
+
+    def test_connection_getter_with_batch(self):
+        from gcloud.storage.batch import Batch
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        batch = Batch(client)
+        client._push_batch(batch)
+        self.assertTrue(client.connection is not client._connection)
+        self.assertTrue(client.connection is batch)
+        self.assertTrue(client.current_batch is batch)
+
     def test_get_bucket_miss(self):
         from gcloud.exceptions import NotFound
 
