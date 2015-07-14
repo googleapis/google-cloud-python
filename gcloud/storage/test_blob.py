@@ -146,36 +146,30 @@ class Test_Blob(unittest2.TestCase):
             blob.public_url,
             'https://storage.googleapis.com/name/parent%2Fchild')
 
-    def _basic_generate_signed_url_helper(self, credentials=None):
+    def _basic_generate_signed_url_helper(self, credentials=None,
+                                          use_client=True):
         from gcloud._testing import _Monkey
         from gcloud.storage import blob as MUT
 
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                '&Expiration=2014-10-16T20:34:37.000Z')
 
-        _called_require = []
-
-        def mock_require(connection):
-            _called_require.append(connection)
-            return connection
-
         SIGNER = _Signer()
-        with _Monkey(MUT, generate_signed_url=SIGNER,
-                     _require_connection=mock_require):
-            signed_uri = blob.generate_signed_url(EXPIRATION,
-                                                  connection=connection,
-                                                  credentials=credentials)
+        with _Monkey(MUT, generate_signed_url=SIGNER):
+            if use_client:
+                signed_uri = blob.generate_signed_url(EXPIRATION,
+                                                      client=client,
+                                                      credentials=credentials)
+            else:
+                signed_uri = blob.generate_signed_url(EXPIRATION,
+                                                      credentials=credentials)
             self.assertEqual(signed_uri, URI)
-
-        if credentials is None:
-            self.assertEqual(_called_require, [connection])
-        else:
-            self.assertEqual(_called_require, [])
 
         PATH = '/name/%s' % (BLOB_NAME,)
         if credentials is None:
@@ -189,6 +183,10 @@ class Test_Blob(unittest2.TestCase):
             'resource': PATH,
         }
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
+
+    def test_generate_signed_url_w_no_creds(self):
+        with self.assertRaises(ValueError):
+            self._basic_generate_signed_url_helper(use_client=False)
 
     def test_generate_signed_url_w_default_method(self):
         self._basic_generate_signed_url_helper()
@@ -204,6 +202,7 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'parent/child'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
@@ -212,7 +211,7 @@ class Test_Blob(unittest2.TestCase):
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
             signed_url = blob.generate_signed_url(EXPIRATION,
-                                                  connection=connection)
+                                                  client=client)
             self.assertEqual(signed_url, URI)
 
         EXPECTED_ARGS = (_Connection.credentials,)
@@ -231,6 +230,7 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         EXPIRATION = '2014-10-16T20:34:37.000Z'
         connection = _Connection()
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
@@ -239,7 +239,7 @@ class Test_Blob(unittest2.TestCase):
         SIGNER = _Signer()
         with _Monkey(MUT, generate_signed_url=SIGNER):
             signed_uri = blob.generate_signed_url(EXPIRATION, method='POST',
-                                                  connection=connection)
+                                                  client=client)
             self.assertEqual(signed_uri, URI)
 
         PATH = '/name/%s' % (BLOB_NAME,)
@@ -257,48 +257,46 @@ class Test_Blob(unittest2.TestCase):
         NONESUCH = 'nonesuch'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(NONESUCH, bucket=bucket)
-        self.assertFalse(blob.exists(connection=connection))
+        self.assertFalse(blob.exists(client=client))
+
+    def test_exists_implicit(self):
+        from gcloud.storage._testing import _monkey_defaults
+        from six.moves.http_client import NOT_FOUND
+        NONESUCH = 'nonesuch'
+        not_found_response = {'status': NOT_FOUND}
+        connection = _Connection(not_found_response)
+        bucket = _Bucket()
+        blob = self._makeOne(NONESUCH, bucket=bucket)
+        with _monkey_defaults(connection=connection):
+            self.assertFalse(blob.exists())
 
     def test_exists_hit(self):
         from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
         found_response = {'status': OK}
         connection = _Connection(found_response)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        self.assertTrue(blob.exists(connection=connection))
+        self.assertTrue(blob.exists(client=client))
 
-    def test_rename_w_implicit_connection(self):
-        from gcloud.storage._testing import _monkey_defaults
+    def test_rename(self):
         BLOB_NAME = 'blob-name'
         NEW_NAME = 'new-name'
         connection = _Connection()
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        with _monkey_defaults(connection=connection):
-            new_blob = blob.rename(NEW_NAME)
+        new_blob = blob.rename(NEW_NAME, client=client)
         self.assertEqual(blob.name, BLOB_NAME)
         self.assertEqual(new_blob.name, NEW_NAME)
         self.assertFalse(BLOB_NAME in bucket._blobs)
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
-        self.assertTrue(NEW_NAME in bucket._blobs)
-
-    def test_rename_w_explicit_connection(self):
-        BLOB_NAME = 'blob-name'
-        NEW_NAME = 'new-name'
-        connection = _Connection()
-        bucket = _Bucket()
-        blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        bucket._blobs[BLOB_NAME] = 1
-        new_blob = blob.rename(NEW_NAME, connection=connection)
-        self.assertEqual(blob.name, BLOB_NAME)
-        self.assertEqual(new_blob.name, NEW_NAME)
-        self.assertFalse(BLOB_NAME in bucket._blobs)
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, client)])
         self.assertTrue(NEW_NAME in bucket._blobs)
 
     def test_delete_w_implicit_connection(self):
@@ -307,25 +305,27 @@ class Test_Blob(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
         with _monkey_defaults(connection=connection):
             blob.delete()
-        self.assertFalse(blob.exists(connection=connection))
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
+        self.assertFalse(blob.exists(client=client))
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
 
     def test_delete_w_explicit_connection(self):
         from six.moves.http_client import NOT_FOUND
         BLOB_NAME = 'blob-name'
         not_found_response = {'status': NOT_FOUND}
         connection = _Connection(not_found_response)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         bucket._blobs[BLOB_NAME] = 1
-        blob.delete(connection=connection)
-        self.assertFalse(blob.exists(connection=connection))
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, connection)])
+        blob.delete(client=client)
+        self.assertFalse(blob.exists(client=client))
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, client)])
 
     def _download_to_file_helper(self, chunk_size=None):
         from six.moves.http_client import OK
@@ -340,6 +340,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
@@ -348,7 +349,7 @@ class Test_Blob(unittest2.TestCase):
             blob._CHUNK_SIZE_MULTIPLE = 1
             blob.chunk_size = chunk_size
         fh = BytesIO()
-        blob.download_to_file(fh, connection=connection)
+        blob.download_to_file(fh, client=client)
         self.assertEqual(fh.getvalue(), b'abcdef')
 
     def test_download_to_file_default(self):
@@ -372,6 +373,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK,
@@ -380,7 +382,7 @@ class Test_Blob(unittest2.TestCase):
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
         with NamedTemporaryFile() as f:
-            blob.download_to_filename(f.name, connection=connection)
+            blob.download_to_filename(f.name, client=client)
             f.flush()
             with open(f.name, 'rb') as g:
                 wrote = g.read()
@@ -401,13 +403,14 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b'abc'),
             (chunk2_response, b'def'),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         MEDIA_LINK = 'http://example.com/media/'
         properties = {'mediaLink': MEDIA_LINK}
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
-        fetched = blob.download_as_string(connection=connection)
+        fetched = blob.download_as_string(client=client)
         self.assertEqual(fetched, b'abcdef')
 
     def test_upload_from_file_size_failure(self):
@@ -416,9 +419,9 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         file_obj = object()
         connection = _Connection()
+        client = _Client(connection)
         with self.assertRaises(ValueError):
-            blob.upload_from_file(file_obj, size=None,
-                                  connection=connection)
+            blob.upload_from_file(file_obj, size=None, client=client)
 
     def _upload_from_file_simple_test_helper(self, properties=None,
                                              content_type_arg=None,
@@ -433,6 +436,7 @@ class Test_Blob(unittest2.TestCase):
         connection = _Connection(
             (response, b'{}'),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
@@ -442,7 +446,7 @@ class Test_Blob(unittest2.TestCase):
             fh.flush()
             blob.upload_from_file(fh, rewind=True,
                                   content_type=content_type_arg,
-                                  connection=connection)
+                                  client=client)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -503,6 +507,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, b''),
             (chunk2_response, b'{}'),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
@@ -512,7 +517,7 @@ class Test_Blob(unittest2.TestCase):
             with NamedTemporaryFile() as fh:
                 fh.write(DATA)
                 fh.flush()
-                blob.upload_from_file(fh, rewind=True, connection=connection)
+                blob.upload_from_file(fh, rewind=True, client=client)
         rq = connection.http._requested
         self.assertEqual(len(rq), 3)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -561,6 +566,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
@@ -568,7 +574,7 @@ class Test_Blob(unittest2.TestCase):
         with NamedTemporaryFile() as fh:
             fh.write(DATA)
             fh.flush()
-            blob.upload_from_file(fh, rewind=True, connection=connection)
+            blob.upload_from_file(fh, rewind=True, client=client)
             self.assertEqual(fh.tell(), len(DATA))
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
@@ -608,6 +614,7 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket,
                              properties=properties)
@@ -617,7 +624,7 @@ class Test_Blob(unittest2.TestCase):
             fh.write(DATA)
             fh.flush()
             blob.upload_from_filename(fh.name, content_type=content_type_arg,
-                                      connection=connection)
+                                      client=client)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -674,11 +681,12 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        blob.upload_from_string(DATA, connection=connection)
+        blob.upload_from_string(DATA, client=client)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -713,11 +721,12 @@ class Test_Blob(unittest2.TestCase):
             (chunk1_response, ''),
             (chunk2_response, ''),
         )
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        blob.upload_from_string(DATA, connection=connection)
+        blob.upload_from_string(DATA, client=client)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -760,10 +769,11 @@ class Test_Blob(unittest2.TestCase):
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
         after = {'acl': permissive}
         connection = _Connection(after)
+        client = _Client(connection)
         bucket = _Bucket()
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob.acl.loaded = True
-        blob.make_public(connection=connection)
+        blob.make_public(client=client)
         self.assertEqual(list(blob.acl), permissive)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
@@ -1133,14 +1143,14 @@ class _Bucket(object):
         self._copied = []
         self._deleted = []
 
-    def copy_blob(self, blob, destination_bucket, new_name, connection=None):
-        self._copied.append((blob, destination_bucket, new_name, connection))
+    def copy_blob(self, blob, destination_bucket, new_name, client=None):
+        self._copied.append((blob, destination_bucket, new_name, client))
         destination_bucket._blobs[new_name] = self._blobs[blob.name]
         return blob.__class__(new_name, bucket=destination_bucket)
 
-    def delete_blob(self, blob_name, connection=None):
+    def delete_blob(self, blob_name, client=None):
         del self._blobs[blob_name]
-        self._deleted.append((blob_name, connection))
+        self._deleted.append((blob_name, client))
 
 
 class _Signer(object):
@@ -1152,3 +1162,9 @@ class _Signer(object):
         self._signed.append((args, kwargs))
         return ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
                 '&Expiration=%s' % kwargs.get('expiration'))
+
+
+class _Client(object):
+
+    def __init__(self, connection):
+        self.connection = connection

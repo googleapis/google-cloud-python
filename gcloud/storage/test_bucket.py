@@ -125,6 +125,23 @@ class Test_Bucket(unittest2.TestCase):
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertTrue(bucket._default_object_acl.bucket is bucket)
 
+    def test__client_or_connection_implicit(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import bucket as MUT
+        bucket = self._makeOne()
+        num_mock_require_calls = [0]
+        cnxn = object()
+
+        def mock_require():
+            num_mock_require_calls[0] += 1
+            return cnxn
+
+        with _Monkey(MUT, _require_connection=mock_require):
+            result = bucket._client_or_connection(None)
+
+        self.assertTrue(result is cnxn)
+        self.assertEqual(num_mock_require_calls, [1])
+
     def test_exists_miss(self):
         from gcloud.exceptions import NotFound
 
@@ -139,7 +156,8 @@ class Test_Bucket(unittest2.TestCase):
 
         BUCKET_NAME = 'bucket-name'
         bucket = self._makeOne(BUCKET_NAME)
-        self.assertFalse(bucket.exists(connection=_FakeConnection))
+        client = _Client(_FakeConnection)
+        self.assertFalse(bucket.exists(client=client))
         expected_called_kwargs = {
             'method': 'GET',
             'path': bucket.path,
@@ -164,7 +182,8 @@ class Test_Bucket(unittest2.TestCase):
 
         BUCKET_NAME = 'bucket-name'
         bucket = self._makeOne(BUCKET_NAME)
-        self.assertTrue(bucket.exists(connection=_FakeConnection))
+        client = _Client(_FakeConnection)
+        self.assertTrue(bucket.exists(client=client))
         expected_called_kwargs = {
             'method': 'GET',
             'path': bucket.path,
@@ -242,8 +261,9 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        result = bucket.get_blob(NONESUCH, connection=connection)
+        result = bucket.get_blob(NONESUCH, client=client)
         self.assertTrue(result is None)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
@@ -253,8 +273,9 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({'name': BLOB_NAME})
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        blob = bucket.get_blob(BLOB_NAME, connection=connection)
+        blob = bucket.get_blob(BLOB_NAME, client=client)
         self.assertTrue(blob.bucket is bucket)
         self.assertEqual(blob.name, BLOB_NAME)
         kw, = connection._requested
@@ -326,8 +347,9 @@ class Test_Bucket(unittest2.TestCase):
         from gcloud.exceptions import NotFound
         NAME = 'name'
         connection = _Connection()
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        self.assertRaises(NotFound, bucket.delete, connection=connection)
+        self.assertRaises(NotFound, bucket.delete, client=client)
         expected_cw = [{
             'method': 'DELETE',
             'path': bucket.path,
@@ -340,8 +362,9 @@ class Test_Bucket(unittest2.TestCase):
         GET_BLOBS_RESP = {'items': []}
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        result = bucket.delete(force=True, connection=connection)
+        result = bucket.delete(force=True, client=client)
         self.assertTrue(result is None)
         expected_cw = [{
             'method': 'DELETE',
@@ -364,8 +387,9 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection(GET_BLOBS_RESP, DELETE_BLOB1_RESP,
                                  DELETE_BLOB2_RESP)
         connection._delete_bucket = True
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        result = bucket.delete(force=True, connection=connection)
+        result = bucket.delete(force=True, client=client)
         self.assertTrue(result is None)
         expected_cw = [{
             'method': 'DELETE',
@@ -381,8 +405,9 @@ class Test_Bucket(unittest2.TestCase):
         # Note the connection does not have a response for the blob.
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        result = bucket.delete(force=True, connection=connection)
+        result = bucket.delete(force=True, client=client)
         self.assertTrue(result is None)
         expected_cw = [{
             'method': 'DELETE',
@@ -403,12 +428,13 @@ class Test_Bucket(unittest2.TestCase):
         }
         connection = _Connection(GET_BLOBS_RESP)
         connection._delete_bucket = True
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
 
         # Make the Bucket refuse to delete with 2 objects.
         bucket._MAX_OBJECTS_FOR_ITERATION = 1
         self.assertRaises(ValueError, bucket.delete, force=True,
-                          connection=connection)
+                          client=client)
         self.assertEqual(connection._deleted_buckets, [])
 
     def test_delete_blob_miss(self):
@@ -416,9 +442,10 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         NONESUCH = 'nonesuch'
         connection = _Connection()
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
         self.assertRaises(NotFound, bucket.delete_blob, NONESUCH,
-                          connection=connection)
+                          client=client)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, NONESUCH))
@@ -427,8 +454,9 @@ class Test_Bucket(unittest2.TestCase):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({})
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        result = bucket.delete_blob(BLOB_NAME, connection=connection)
+        result = bucket.delete_blob(BLOB_NAME, client=client)
         self.assertTrue(result is None)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
@@ -437,16 +465,18 @@ class Test_Bucket(unittest2.TestCase):
     def test_delete_blobs_empty(self):
         NAME = 'name'
         connection = _Connection()
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        bucket.delete_blobs([], connection=connection)
+        bucket.delete_blobs([], client=client)
         self.assertEqual(connection._requested, [])
 
     def test_delete_blobs_hit(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name'
         connection = _Connection({})
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
-        bucket.delete_blobs([BLOB_NAME], connection=connection)
+        bucket.delete_blobs([BLOB_NAME], client=client)
         kw = connection._requested
         self.assertEqual(len(kw), 1)
         self.assertEqual(kw[0]['method'], 'DELETE')
@@ -458,9 +488,10 @@ class Test_Bucket(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         NONESUCH = 'nonesuch'
         connection = _Connection({})
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
         self.assertRaises(NotFound, bucket.delete_blobs, [BLOB_NAME, NONESUCH],
-                          connection=connection)
+                          client=client)
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'DELETE')
@@ -473,10 +504,11 @@ class Test_Bucket(unittest2.TestCase):
         BLOB_NAME = 'blob-name'
         NONESUCH = 'nonesuch'
         connection = _Connection({})
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
         errors = []
         bucket.delete_blobs([BLOB_NAME, NONESUCH], errors.append,
-                            connection=connection)
+                            client=client)
         self.assertEqual(errors, [NONESUCH])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
@@ -495,10 +527,11 @@ class Test_Bucket(unittest2.TestCase):
             path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
 
         connection = _Connection({})
+        client = _Client(connection)
         source = self._makeOne(SOURCE)
         dest = self._makeOne(DEST)
         blob = _Blob()
-        new_blob = source.copy_blob(blob, dest, connection=connection)
+        new_blob = source.copy_blob(blob, dest, client=client)
         self.assertTrue(new_blob.bucket is dest)
         self.assertEqual(new_blob.name, BLOB_NAME)
         kw, = connection._requested
@@ -518,11 +551,12 @@ class Test_Bucket(unittest2.TestCase):
             path = '/b/%s/o/%s' % (SOURCE, BLOB_NAME)
 
         connection = _Connection({})
+        client = _Client(connection)
         source = self._makeOne(SOURCE)
         dest = self._makeOne(DEST)
         blob = _Blob()
         new_blob = source.copy_blob(blob, dest, NEW_NAME,
-                                    connection=connection)
+                                    client=client)
         self.assertTrue(new_blob.bucket is dest)
         self.assertEqual(new_blob.name, NEW_NAME)
         kw, = connection._requested
@@ -544,9 +578,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_filename(self, filename, connection=None):
+            def upload_from_filename(self, filename, client=None):
                 _uploaded.append((self._bucket, self._name, filename,
-                                  connection))
+                                  client))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
@@ -566,9 +600,9 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_filename(self, filename, connection=None):
+            def upload_from_filename(self, filename, client=None):
                 _uploaded.append((self._bucket, self._name, filename,
-                                  connection))
+                                  client))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
@@ -588,8 +622,8 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_file(self, fh, connection=None):
-                _uploaded.append((self._bucket, self._name, fh, connection))
+            def upload_from_file(self, fh, client=None):
+                _uploaded.append((self._bucket, self._name, fh, client))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
@@ -613,8 +647,8 @@ class Test_Bucket(unittest2.TestCase):
                 self._bucket = bucket
                 self._name = name
 
-            def upload_from_file(self, fh, connection=None):
-                _uploaded.append((self._bucket, self._name, fh, connection))
+            def upload_from_file(self, fh, client=None):
+                _uploaded.append((self._bucket, self._name, fh, client))
 
         bucket = self._makeOne()
         with _Monkey(MUT, Blob=_Blob):
@@ -941,9 +975,9 @@ class Test_Bucket(unittest2.TestCase):
             def grant_read(self):
                 self._granted = True
 
-            def save(self, connection=None):
+            def save(self, client=None):
                 _saved.append(
-                    (self._bucket, self._name, self._granted, connection))
+                    (self._bucket, self._name, self._granted, client))
 
         class _Iterator(_BlobIterator):
             def get_items_from_response(self, response):
@@ -963,7 +997,7 @@ class Test_Bucket(unittest2.TestCase):
             bucket.make_public(recursive=True)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, connection)])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, None)])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]['method'], 'PATCH')
@@ -992,6 +1026,7 @@ class Test_Bucket(unittest2.TestCase):
             ],
         }
         connection = _Connection(AFTER, GET_BLOBS_RESP)
+        client = _Client(connection)
         bucket = self._makeOne(NAME)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
@@ -999,7 +1034,7 @@ class Test_Bucket(unittest2.TestCase):
         # Make the Bucket refuse to make_public with 2 objects.
         bucket._MAX_OBJECTS_FOR_ITERATION = 1
         self.assertRaises(ValueError, bucket.make_public, recursive=True,
-                          connection=connection)
+                          client=client)
 
 
 class _Connection(object):
@@ -1049,3 +1084,9 @@ class MockFile(io.StringIO):
     def __init__(self, name, buffer_=None):
         super(MockFile, self).__init__(buffer_)
         self.name = name
+
+
+class _Client(object):
+
+    def __init__(self, connection):
+        self.connection = connection

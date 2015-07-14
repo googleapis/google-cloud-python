@@ -95,18 +95,35 @@ class Bucket(_PropertyMixin):
     def __repr__(self):
         return '<Bucket: %s>' % self.name
 
-    def exists(self, connection=None):
+    @staticmethod
+    def _client_or_connection(client):
+        """Temporary method to get a connection from a client.
+
+        If the client is null, gets the connection from the environment.
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
+
+        :rtype: :class:`gcloud.storage.connection.Connection`
+        :returns: The connection determined from the ``client`` or environment.
+        """
+        if client is None:
+            return _require_connection()
+        else:
+            return client.connection
+
+    def exists(self, client=None):
         """Determines whether or not this bucket exists.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: boolean
         :returns: True if the bucket exists in Cloud Storage.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
@@ -188,7 +205,7 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob_name, connection=None):
+    def get_blob(self, blob_name, client=None):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist::
@@ -204,15 +221,14 @@ class Bucket(_PropertyMixin):
         :type blob_name: string
         :param blob_name: The name of the blob to retrieve.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`gcloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         blob = Blob(bucket=self, name=blob_name)
         try:
             response = connection.api_request(
@@ -295,7 +311,7 @@ class Bucket(_PropertyMixin):
             result.next_page_token = page_token
         return result
 
-    def delete(self, force=False, connection=None):
+    def delete(self, force=False, client=None):
         """Delete this bucket.
 
         The bucket **must** be empty in order to submit a delete request. If
@@ -314,15 +330,14 @@ class Bucket(_PropertyMixin):
         :type force: boolean
         :param force: If True, empties the bucket's objects then deletes it.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :raises: :class:`ValueError` if ``force`` is ``True`` and the bucket
                  contains more than 256 objects / blobs.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         if force:
             blobs = list(self.list_blobs(
                 max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
@@ -338,7 +353,7 @@ class Bucket(_PropertyMixin):
 
             # Ignore 404 errors on delete.
             self.delete_blobs(blobs, on_error=lambda blob: None,
-                              connection=connection)
+                              client=client)
 
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
@@ -346,7 +361,7 @@ class Bucket(_PropertyMixin):
         connection.api_request(method='DELETE', path=self.path,
                                _target_object=None)
 
-    def delete_blob(self, blob_name, connection=None):
+    def delete_blob(self, blob_name, client=None):
         """Deletes a blob from the current bucket.
 
         If the blob isn't found (backend 404), raises a
@@ -369,10 +384,9 @@ class Bucket(_PropertyMixin):
         :type blob_name: string
         :param blob_name: A blob name to delete.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :raises: :class:`gcloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
@@ -380,7 +394,7 @@ class Bucket(_PropertyMixin):
 
                  >>> bucket.delete_blobs([blob], on_error=lambda blob: None)
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         blob_path = Blob.path_helper(self.path, blob_name)
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
@@ -388,7 +402,7 @@ class Bucket(_PropertyMixin):
         connection.api_request(method='DELETE', path=blob_path,
                                _target_object=None)
 
-    def delete_blobs(self, blobs, on_error=None, connection=None):
+    def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
 
         Uses :func:`Bucket.delete_blob` to delete each individual blob.
@@ -401,30 +415,27 @@ class Bucket(_PropertyMixin):
                          :class:`gcloud.exceptions.NotFound`;
                          otherwise, the exception is propagated.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :raises: :class:`gcloud.exceptions.NotFound` (if
                  `on_error` is not passed).
         """
-        connection = _require_connection(connection)
         for blob in blobs:
             try:
                 blob_name = blob
                 if not isinstance(blob_name, six.string_types):
                     blob_name = blob.name
-                self.delete_blob(blob_name, connection=connection)
+                self.delete_blob(blob_name, client=client)
             except NotFound:
                 if on_error is not None:
                     on_error(blob)
                 else:
                     raise
 
-    @staticmethod
-    def copy_blob(blob, destination_bucket, new_name=None,
-                  connection=None):
+    def copy_blob(self, blob, destination_bucket, new_name=None,
+                  client=None):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         :type blob: string or :class:`gcloud.storage.blob.Blob`
@@ -437,15 +448,14 @@ class Bucket(_PropertyMixin):
         :type new_name: string
         :param new_name: (optional) the new name for the copied file.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`gcloud.storage.blob.Blob`
         :returns: The new Blob.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
         if new_name is None:
             new_name = blob.name
         new_blob = Blob(bucket=destination_bucket, name=new_name)
@@ -455,7 +465,7 @@ class Bucket(_PropertyMixin):
         new_blob._set_properties(copy_result)
         return new_blob
 
-    def upload_file(self, filename, blob_name=None, connection=None):
+    def upload_file(self, filename, blob_name=None, client=None):
         """Shortcut method to upload a file into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -488,10 +498,9 @@ class Bucket(_PropertyMixin):
                           of the bucket with the same name as on your local
                           file system.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
@@ -499,10 +508,10 @@ class Bucket(_PropertyMixin):
         if blob_name is None:
             blob_name = os.path.basename(filename)
         blob = Blob(bucket=self, name=blob_name)
-        blob.upload_from_filename(filename, connection=connection)
+        blob.upload_from_filename(filename, client=client)
         return blob
 
-    def upload_file_object(self, file_obj, blob_name=None, connection=None):
+    def upload_file_object(self, file_obj, blob_name=None, client=None):
         """Shortcut method to upload a file object into this bucket.
 
         Use this method to quickly put a local file in Cloud Storage.
@@ -535,10 +544,9 @@ class Bucket(_PropertyMixin):
                           of the bucket with the same name as on your local
                           file system.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
 
         :rtype: :class:`Blob`
         :returns: The updated Blob object.
@@ -546,7 +554,7 @@ class Bucket(_PropertyMixin):
         if blob_name is None:
             blob_name = os.path.basename(file_obj.name)
         blob = Blob(bucket=self, name=blob_name)
-        blob.upload_from_file(file_obj, connection=connection)
+        blob.upload_from_file(file_obj, client=client)
         return blob
 
     @property
@@ -822,7 +830,7 @@ class Bucket(_PropertyMixin):
         """
         return self.configure_website(None, None)
 
-    def make_public(self, recursive=False, future=False, connection=None):
+    def make_public(self, recursive=False, future=False, client=None):
         """Make a bucket public.
 
         If ``recursive=True`` and the bucket contains more than 256
@@ -837,22 +845,21 @@ class Bucket(_PropertyMixin):
         :param future: If True, this will make all objects created in the
                        future public as well.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or
-                          ``NoneType``
-        :param connection: Optional. The connection to use when sending
-                           requests. If not provided, falls back to default.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
         """
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
 
         self.acl.all().grant_read()
-        self.acl.save(connection=connection)
+        self.acl.save(client=client)
 
         if future:
             doa = self.default_object_acl
             if not doa.loaded:
-                doa.reload(connection=connection)
+                doa.reload(client=client)
             doa.all().grant_read()
-            doa.save(connection=connection)
+            doa.save(client=client)
 
         if recursive:
             blobs = list(self.list_blobs(
@@ -870,4 +877,4 @@ class Bucket(_PropertyMixin):
 
             for blob in blobs:
                 blob.acl.all().grant_read()
-                blob.acl.save(connection=connection)
+                blob.acl.save(client=client)

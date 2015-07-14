@@ -68,7 +68,7 @@ class Client(JSONClient):
         :raises: :class:`gcloud.exceptions.NotFound`
         """
         bucket = Bucket(bucket_name)
-        bucket.reload(connection=self.connection)
+        bucket.reload(client=self)
         return bucket
 
     def lookup_bucket(self, bucket_name):

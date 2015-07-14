@@ -351,15 +351,33 @@ class ACL(object):
         self._ensure_loaded()
         return list(self.entities.values())
 
-    def reload(self, connection=None):
+    @staticmethod
+    def _client_or_connection(client):
+        """Temporary method to get a connection from a client.
+
+        If the client is null, gets the connection from the environment.
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
+
+        :rtype: :class:`gcloud.storage.connection.Connection`
+        :returns: The connection determined from the ``client`` or environment.
+        """
+        if client is None:
+            return _require_connection()
+        else:
+            return client.connection
+
+    def reload(self, client=None):
         """Reload the ACL data from Cloud Storage.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or None
-        :param connection: explicit connection to use for API request;
-                           defaults to instance property.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
         """
         path = self.reload_path
-        connection = _require_connection(connection)
+        connection = self._client_or_connection(client)
 
         self.entities.clear()
 
@@ -368,16 +386,16 @@ class ACL(object):
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
 
-    def save(self, acl=None, connection=None):
+    def save(self, acl=None, client=None):
         """Save this ACL for the current bucket.
 
         :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.
         :param acl: The ACL object to save.  If left blank, this will save
                     current entries.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or None
-        :param connection: explicit connection to use for API request;
-                           defaults to instance property.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
         """
         if acl is None:
             acl = self
@@ -387,7 +405,7 @@ class ACL(object):
 
         if save_to_backend:
             path = self.save_path
-            connection = _require_connection(connection)
+            connection = self._client_or_connection(client)
             result = connection.api_request(
                 method='PATCH',
                 path=path,
@@ -398,7 +416,7 @@ class ACL(object):
                 self.add_entity(self.entity_from_dict(entry))
             self.loaded = True
 
-    def clear(self, connection=None):
+    def clear(self, client=None):
         """Remove all ACL entries.
 
         Note that this won't actually remove *ALL* the rules, but it
@@ -406,11 +424,11 @@ class ACL(object):
         have access to a bucket that you created even after you clear
         ACL rules with this method.
 
-        :type connection: :class:`gcloud.storage.connection.Connection` or None
-        :param connection: explicit connection to use for API request;
-                           defaults to instance property.
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to default connection.
         """
-        self.save([], connection)
+        self.save([], client=client)
 
 
 class BucketACL(ACL):
