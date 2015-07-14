@@ -42,7 +42,7 @@ class Test_PropertyMixin(unittest2.TestCase):
         mixin = self._makeOne()
         self.assertRaises(NotImplementedError, lambda: mixin.client)
 
-    def test_reload_w_explicit_connection(self):
+    def test_reload(self):
         connection = _Connection({'foo': 'Foo'})
         client = _Client(connection)
         derived = self._derivedClass('/path')()
@@ -70,7 +70,7 @@ class Test_PropertyMixin(unittest2.TestCase):
         derived._patch_property('foo', 'Foo')
         self.assertEqual(derived._properties, {'foo': 'Foo'})
 
-    def test_patch_w_explicit_connection(self):
+    def test_patch(self):
         connection = _Connection({'foo': 'Foo'})
         client = _Client(connection)
         derived = self._derivedClass('/path')()
