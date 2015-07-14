@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.acl &mdash; gcloud 8373227 documentation</title>
+    <title>gcloud.storage.acl &mdash; gcloud 247899b documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '8373227',
+        VERSION:     '247899b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8373227 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 247899b documentation" href="../../../index.html" />
     <link rel="up" title="gcloud.storage" href="../storage.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%208373227" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%20247899b" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8373227)
+              Version History (247899b)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -440,15 +440,33 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_ensure_loaded</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 </div>
-<div class="viewcode-block" id="ACL.reload"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Temporary method to get a connection from a client.</span>
+
+<span class="sd">        If the client is null, gets the connection from the environment.</span>
+
+<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to default connection.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.storage.connection.Connection`</span>
+<span class="sd">        :returns: The connection determined from the ``client`` or environment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_require_connection</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
+
+<div class="viewcode-block" id="ACL.reload"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload the ACL data from Cloud Storage.</span>
 
-<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or None</span>
-<span class="sd">        :param connection: explicit connection to use for API request;</span>
-<span class="sd">                           defaults to instance property.</span>
+<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to default connection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_path</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
@@ -457,16 +475,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
 </div>
-<div class="viewcode-block" id="ACL.save"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ACL.save"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save this ACL for the current bucket.</span>
 
 <span class="sd">        :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.</span>
 <span class="sd">        :param acl: The ACL object to save.  If left blank, this will save</span>
 <span class="sd">                    current entries.</span>
 
-<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or None</span>
-<span class="sd">        :param connection: explicit connection to use for API request;</span>
-<span class="sd">                           defaults to instance property.</span>
+<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to default connection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">acl</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">acl</span> <span class="o">=</span> <span class="bp">self</span>
@@ -476,7 +494,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">if</span> <span class="n">save_to_backend</span><span class="p">:</span>
             <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span>
-            <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
                 <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span>
                 <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
@@ -487,7 +505,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
 </div>
-<div class="viewcode-block" id="ACL.clear"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ACL.clear"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove all ACL entries.</span>
 
 <span class="sd">        Note that this won&#39;t actually remove *ALL* the rules, but it</span>
@@ -495,11 +513,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        have access to a bucket that you created even after you clear</span>
 <span class="sd">        ACL rules with this method.</span>
 
-<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or None</span>
-<span class="sd">        :param connection: explicit connection to use for API request;</span>
-<span class="sd">                           defaults to instance property.</span>
+<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to default connection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">([],</span> <span class="n">connection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">([],</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="BucketACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.BucketACL">[docs]</a><span class="k">class</span> <span class="nc">BucketACL</span><span class="p">(</span><span class="n">ACL</span><span class="p">):</span>
