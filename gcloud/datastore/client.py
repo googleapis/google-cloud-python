@@ -189,7 +189,7 @@ class Client(object):
 
         :type batch: :class:`gcloud.datastore.batch.Batch`, or an object
                      implementing its API.
-        :param batch: newly-active batch/batch/transaction.
+        :param batch: newly-active batch/transaction.
         """
         self._batch_stack.push(batch)
 
@@ -211,7 +211,7 @@ class Client(object):
 
         :rtype: :class:`gcloud.datastore.batch.Batch`, or an object
                 implementing its API, or ``NoneType`` (if no batch is active).
-        :returns: The batch/transaction at the toop of the batch stack.
+        :returns: The batch/transaction at the top of the batch stack.
         """
         return self._batch_stack.top
 
@@ -222,7 +222,7 @@ class Client(object):
         :rtype: :class:`gcloud.datastore.transaction.Transaction`, or an object
                 implementing its API, or ``NoneType`` (if no transaction is
                 active).
-        :returns: The transaction at the toop of the batch stack.
+        :returns: The transaction at the top of the batch stack.
         """
         transaction = self.current_batch
         if isinstance(transaction, Transaction):

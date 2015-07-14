@@ -33,6 +33,29 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         self.assertTrue(isinstance(client.connection, Connection))
         self.assertTrue(client.connection.credentials is CREDENTIALS)
+        self.assertTrue(client.current_batch is None)
+        self.assertEqual(list(client._batch_stack), [])
+
+    def test__push_batch_and__pop_batch(self):
+        from gcloud.storage.batch import Batch
+
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        batch1 = Batch(client)
+        batch2 = Batch(client)
+        client._push_batch(batch1)
+        self.assertEqual(list(client._batch_stack), [batch1])
+        self.assertTrue(client.current_batch is batch1)
+        client._push_batch(batch2)
+        self.assertTrue(client.current_batch is batch2)
+        # list(_LocalStack) returns in reverse order.
+        self.assertEqual(list(client._batch_stack), [batch2, batch1])
+        self.assertTrue(client._pop_batch() is batch2)
+        self.assertEqual(list(client._batch_stack), [batch1])
+        self.assertTrue(client._pop_batch() is batch1)
+        self.assertEqual(list(client._batch_stack), [])
 
     def test_get_bucket_miss(self):
         from gcloud.exceptions import NotFound
