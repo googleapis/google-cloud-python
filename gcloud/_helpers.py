@@ -228,15 +228,6 @@ def set_default_project(project=None):
         raise EnvironmentError('No project could be inferred.')
 
 
-def get_default_project():
-    """Get default project.
-
-    :rtype: string or ``NoneType``
-    :returns: The default project if one has been set.
-    """
-    return _DEFAULTS.project
-
-
 class _DefaultsContainer(object):
     """Container for defaults.
 

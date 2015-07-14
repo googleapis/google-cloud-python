@@ -32,9 +32,7 @@ from apitools.base.py import transfer
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
-from gcloud.storage._helpers import _require_connection
 from gcloud.storage._helpers import _scalar_property
-from gcloud.storage import _implicit_environ
 from gcloud.storage.acl import ObjectACL
 from gcloud._helpers import _RFC3339_MICROS
 
@@ -50,8 +48,7 @@ class Blob(_PropertyMixin):
                  unique path of the object in the bucket.
 
     :type bucket: :class:`gcloud.storage.bucket.Bucket`
-    :param bucket: The bucket to which this blob belongs. Required, unless the
-                   implicit default bucket has been set.
+    :param bucket: The bucket to which this blob belongs.
 
     :type chunk_size: integer
     :param chunk_size: The size of a chunk of data whenever iterating (1 MB).
@@ -64,13 +61,7 @@ class Blob(_PropertyMixin):
     _CHUNK_SIZE_MULTIPLE = 256 * 1024
     """Number (256 KB, in bytes) that must divide the chunk size."""
 
-    def __init__(self, name, bucket=None, chunk_size=None):
-        if bucket is None:
-            bucket = _implicit_environ.get_default_bucket()
-
-        if bucket is None:
-            raise ValueError('A Blob must have a bucket set.')
-
+    def __init__(self, name, bucket, chunk_size=None):
         super(Blob, self).__init__(name=name)
 
         self.chunk_size = chunk_size  # Check that setter accepts value.
@@ -142,6 +133,11 @@ class Blob(_PropertyMixin):
         return self.path_helper(self.bucket.path, self.name)
 
     @property
+    def client(self):
+        """The client bound to this blob."""
+        return self.bucket.client
+
+    @property
     def public_url(self):
         """The public URL for this blob's object.
 
@@ -180,8 +176,8 @@ class Blob(_PropertyMixin):
         :param method: The HTTP verb that will be used when requesting the URL.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use. If not passed, falls back
-                       to the ``connection`` stored on the blob's bucket.
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
 
         :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                            :class:`NoneType`
@@ -190,62 +186,40 @@ class Blob(_PropertyMixin):
         :rtype: string
         :returns: A signed URL you can use to access the resource
                   until expiration.
-        :raises: :class:`ValueError` if no credentials could be determined
-                 from the arguments.
         """
         resource = '/{bucket_name}/{quoted_name}'.format(
             bucket_name=self.bucket.name,
             quoted_name=quote(self.name, safe=''))
 
         if credentials is None:
-            if client is not None:
-                credentials = client.connection.credentials
-            else:
-                raise ValueError('Credentials could be determined.')
+            client = self._require_client(client)
+            credentials = client.connection.credentials
 
         return generate_signed_url(
             credentials, resource=resource,
             api_access_endpoint=_API_ACCESS_ENDPOINT,
             expiration=expiration, method=method)
 
-    @staticmethod
-    def _client_or_connection(client):
-        """Temporary method to get a connection from a client.
-
-        If the client is null, gets the connection from the environment.
-
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
-
-        :rtype: :class:`gcloud.storage.connection.Connection`
-        :returns: The connection determined from the ``client`` or environment.
-        """
-        if client is None:
-            return _require_connection()
-        else:
-            return client.connection
-
     def exists(self, client=None):
         """Determines whether or not this blob exists.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the blob's bucket.
 
         :rtype: boolean
         :returns: True if the blob exists in Cloud Storage.
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
             query_params = {'fields': 'name'}
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
-            connection.api_request(method='GET', path=self.path,
-                                   query_params=query_params,
-                                   _target_object=None)
+            client.connection.api_request(method='GET', path=self.path,
+                                          query_params=query_params,
+                                          _target_object=None)
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
             #       raised.
@@ -269,7 +243,7 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the blob's bucket.
 
         :rtype: :class:`Blob`
         :returns: The newly-copied blob.
@@ -284,7 +258,7 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the blob's bucket.
 
         :rtype: :class:`Blob`
         :returns: The blob that was just deleted.
@@ -302,11 +276,11 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the blob's bucket.
 
         :raises: :class:`gcloud.exceptions.NotFound`
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
@@ -317,7 +291,7 @@ class Blob(_PropertyMixin):
             headers['Range'] = 'bytes=0-%d' % (self.chunk_size - 1,)
         request = http_wrapper.Request(download_url, 'GET', headers)
 
-        download.InitializeDownload(request, connection.http)
+        download.InitializeDownload(request, client.connection.http)
 
         # Should we be passing callbacks through from caller?  We can't
         # pass them as None, because apitools wants to print to the console
@@ -333,7 +307,7 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the blob's bucket.
 
         :raises: :class:`gcloud.exceptions.NotFound`
         """
@@ -348,7 +322,7 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the blob's bucket.
 
         :rtype: bytes
         :returns: The data stored in this blob.
@@ -399,12 +373,13 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the blob's bucket.
 
         :raises: :class:`ValueError` if size is not passed in and can not be
                  determined
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
+        connection = client.connection
         content_type = (content_type or self._properties.get('contentType') or
                         'application/octet-stream')
 
@@ -494,7 +469,7 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the blob's bucket.
         """
         content_type = content_type or self._properties.get('contentType')
         if content_type is None:
@@ -529,7 +504,7 @@ class Blob(_PropertyMixin):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the blob's bucket.
         """
         if isinstance(data, six.text_type):
             data = data.encode('utf-8')
@@ -543,8 +518,8 @@ class Blob(_PropertyMixin):
         """Make this blob public giving all users read access.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use. If not passed, falls back
-                       to the ``connection`` stored on the blob's bucket.
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
         """
         self.acl.all().grant_read()
         self.acl.save(client=client)

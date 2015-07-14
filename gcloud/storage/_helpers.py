@@ -20,9 +20,6 @@ These are *not* part of the API.
 from Crypto.Hash import MD5
 import base64
 
-from gcloud.storage._implicit_environ import get_default_connection
-from gcloud.storage.batch import Batch
-
 
 class _PropertyMixin(object):
     """Abstract mixin for cloud storage classes with associated propertties.
@@ -35,33 +32,34 @@ class _PropertyMixin(object):
     :param name: The name of the object.
     """
 
-    @property
-    def path(self):
-        """Abstract getter for the object path."""
-        raise NotImplementedError
-
     def __init__(self, name=None):
         self.name = name
         self._properties = {}
         self._changes = set()
 
-    @staticmethod
-    def _client_or_connection(client):
-        """Temporary method to get a connection from a client.
+    @property
+    def path(self):
+        """Abstract getter for the object path."""
+        raise NotImplementedError
 
-        If the client is null, gets the connection from the environment.
+    @property
+    def client(self):
+        """Abstract getter for the object client."""
+        raise NotImplementedError
+
+    def _require_client(self, client):
+        """Check client or verify over-ride.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current object.
 
-        :rtype: :class:`gcloud.storage.connection.Connection`
-        :returns: The connection determined from the ``client`` or environment.
+        :rtype: :class:`gcloud.storage.client.Client`
+        :returns: The client passed in or the currently bound client.
         """
         if client is None:
-            return _require_connection()
-        else:
-            return client.connection
+            client = self.client
+        return client
 
     def reload(self, client=None):
         """Reload properties from Cloud Storage.
@@ -70,11 +68,11 @@ class _PropertyMixin(object):
         :param client: Optional. The client to use.  If not passed, falls back
                        to default connection.
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
         # Pass only '?projection=noAcl' here because 'acl' and related
         # are handled via custom endpoints.
         query_params = {'projection': 'noAcl'}
-        api_response = connection.api_request(
+        api_response = client.connection.api_request(
             method='GET', path=self.path, query_params=query_params,
             _target_object=self)
         self._set_properties(api_response)
@@ -116,39 +114,15 @@ class _PropertyMixin(object):
         :param client: Optional. The client to use.  If not passed, falls back
                        to default connection.
         """
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
         # Pass '?projection=full' here because 'PATCH' documented not
         # to work properly w/ 'noAcl'.
         update_properties = dict((key, self._properties[key])
                                  for key in self._changes)
-        api_response = connection.api_request(
+        api_response = client.connection.api_request(
             method='PATCH', path=self.path, data=update_properties,
             query_params={'projection': 'full'}, _target_object=self)
         self._set_properties(api_response)
-
-
-def _require_connection(connection=None):
-    """Infer a connection from the environment, if not passed explicitly.
-
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: Optional.
-
-    :rtype: :class:`gcloud.storage.connection.Connection`
-    :returns: A connection based on the current environment.
-    :raises: :class:`EnvironmentError` if ``connection`` is ``None``, and
-             cannot be inferred from the environment.
-    """
-    # NOTE: We use current Batch directly since it inherits from Connection.
-    if connection is None:
-        connection = Batch.current()
-
-    if connection is None:
-        connection = get_default_connection()
-
-    if connection is None:
-        raise EnvironmentError('Connection could not be inferred.')
-
-    return connection
 
 
 def _scalar_property(fieldname):

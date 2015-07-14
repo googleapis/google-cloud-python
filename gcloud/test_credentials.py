@@ -60,21 +60,43 @@ def _teardown_appengine_import(test_case):
     sys.modules['google'] = test_case._PREV_GOOGLE_MODULE
 
 
-class TestCredentials(unittest2.TestCase):
+class Test_get_credentials(unittest2.TestCase):
 
-    def test_get_for_service_account_p12_wo_scope(self):
-        from tempfile import NamedTemporaryFile
+    def _callFUT(self):
         from gcloud import credentials
+        return credentials.get_credentials()
+
+    def test_it(self):
+        from gcloud._testing import _Monkey
+        from gcloud import credentials as MUT
+
+        client = _Client()
+        with _Monkey(MUT, client=client):
+            found = self._callFUT()
+        self.assertTrue(isinstance(found, _Credentials))
+        self.assertTrue(found is client._signed)
+        self.assertTrue(client._get_app_default_called)
+
+
+class Test_get_for_service_account_p12(unittest2.TestCase):
+
+    def _callFUT(self, client_email, private_key_path, scope=None):
+        from gcloud.credentials import get_for_service_account_p12
+        return get_for_service_account_p12(client_email, private_key_path,
+                                           scope=scope)
+
+    def test_it(self):
+        from tempfile import NamedTemporaryFile
+        from gcloud import credentials as MUT
         from gcloud._testing import _Monkey
         CLIENT_EMAIL = 'phred@example.com'
         PRIVATE_KEY = b'SEEkR1t'
         client = _Client()
-        with _Monkey(credentials, client=client):
+        with _Monkey(MUT, client=client):
             with NamedTemporaryFile() as file_obj:
                 file_obj.write(PRIVATE_KEY)
                 file_obj.flush()
-                found = credentials.get_for_service_account_p12(
-                    CLIENT_EMAIL, file_obj.name)
+                found = self._callFUT(CLIENT_EMAIL, file_obj.name)
         self.assertTrue(found is client._signed)
         expected_called_with = {
             'service_account_name': CLIENT_EMAIL,
@@ -83,20 +105,19 @@ class TestCredentials(unittest2.TestCase):
         }
         self.assertEqual(client._called_with, expected_called_with)
 
-    def test_get_for_service_account_p12_w_scope(self):
+    def test_it_with_scope(self):
         from tempfile import NamedTemporaryFile
-        from gcloud import credentials
+        from gcloud import credentials as MUT
         from gcloud._testing import _Monkey
         CLIENT_EMAIL = 'phred@example.com'
         PRIVATE_KEY = b'SEEkR1t'
         SCOPE = 'SCOPE'
         client = _Client()
-        with _Monkey(credentials, client=client):
+        with _Monkey(MUT, client=client):
             with NamedTemporaryFile() as file_obj:
                 file_obj.write(PRIVATE_KEY)
                 file_obj.flush()
-                found = credentials.get_for_service_account_p12(
-                    CLIENT_EMAIL, file_obj.name, SCOPE)
+                found = self._callFUT(CLIENT_EMAIL, file_obj.name, SCOPE)
         self.assertTrue(found is client._signed)
         expected_called_with = {
             'service_account_name': CLIENT_EMAIL,
@@ -543,9 +564,6 @@ class _Credentials(object):
     def create_scoped(self, scopes):
         self._scopes = scopes
         return self
-
-    def create_scoped_required(self):
-        return True
 
 
 class _Client(object):
