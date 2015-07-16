@@ -10,14 +10,20 @@
   datastore-queries
   datastore-transactions
   datastore-batches
-  storage-api
-  storage-blobs
-  storage-buckets
-  storage-acl
+  datastore-dataset
   pubsub-api
   pubsub-usage
   pubsub-subscription
   pubsub-topic
+  search-api
+  search-client
+  search-index
+  search-document
+  search-field
+  storage-api
+  storage-blobs
+  storage-buckets
+  storage-acl
 
 
 Getting started
