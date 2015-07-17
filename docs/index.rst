@@ -18,6 +18,9 @@
   pubsub-usage
   pubsub-subscription
   pubsub-topic
+  resource-manager-api
+  resource-manager-client
+  resource-manager-project
 
 
 Getting started
