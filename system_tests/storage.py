@@ -51,9 +51,15 @@ class TestStorageBuckets(unittest2.TestCase):
         self.case_buckets_to_delete = []
 
     def tearDown(self):
-        with storage.Batch():
+        with storage.Batch(CLIENT) as batch:
+            # Stop-gap measure to support batches during transation to
+            # to clients from implicit behavior.
+            batch_client = storage.Client(
+                project=CLIENT.project,
+                credentials=CLIENT.connection.credentials)
+            batch_client.connection = batch
             for bucket_name in self.case_buckets_to_delete:
-                storage.Bucket(bucket_name).delete()
+                storage.Bucket(batch_client, name=bucket_name).delete()
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'

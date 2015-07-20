@@ -86,20 +86,9 @@ class TestBatch(unittest2.TestCase):
     def test_ctor_w_explicit_connection(self):
         http = _HTTP()
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
-        self.assertTrue(batch._connection is connection)
-        self.assertEqual(len(batch._requests), 0)
-        self.assertEqual(len(batch._target_objects), 0)
-
-    def test_ctor_w_implicit_connection(self):
-        from gcloud.storage._testing import _monkey_defaults
-
-        http = _HTTP()
-        connection = _Connection(http=http)
-        with _monkey_defaults(connection=connection):
-            batch = self._makeOne()
-
-        self.assertTrue(batch._connection is connection)
+        client = _Client(connection)
+        batch = self._makeOne(client)
+        self.assertTrue(batch._client is client)
         self.assertEqual(len(batch._requests), 0)
         self.assertEqual(len(batch._target_objects), 0)
 
@@ -262,7 +251,8 @@ class TestBatch(unittest2.TestCase):
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        client = _Client(connection)
+        batch = self._makeOne(client)
         batch.API_BASE_URL = 'http://api.example.com'
         batch._do_request('POST', URL, {}, {'foo': 1, 'bar': 2}, None)
         batch._do_request('PATCH', URL, {}, {'bar': 3}, None)
@@ -311,7 +301,8 @@ class TestBatch(unittest2.TestCase):
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
         http = _HTTP((expected, _TWO_PART_MIME_RESPONSE_WITH_FAIL))
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        client = _Client(connection)
+        batch = self._makeOne(client)
         batch.API_BASE_URL = 'http://api.example.com'
         batch._requests.append(('GET', URL, {}, None))
         self.assertRaises(ValueError, batch.finish)
@@ -323,7 +314,8 @@ class TestBatch(unittest2.TestCase):
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
         http = _HTTP((expected, _TWO_PART_MIME_RESPONSE_WITH_FAIL))
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        client = _Client(connection)
+        batch = self._makeOne(client)
         batch.API_BASE_URL = 'http://api.example.com'
         target1 = _MockObject()
         target2 = _MockObject()
@@ -363,7 +355,8 @@ class TestBatch(unittest2.TestCase):
         expected['content-type'] = 'text/plain'
         http = _HTTP((expected, 'NOT A MIME_RESPONSE'))
         connection = _Connection(http=http)
-        batch = self._makeOne(connection)
+        client = _Client(connection)
+        batch = self._makeOne(client)
         batch._requests.append(('POST', URL, {}, {'foo': 1, 'bar': 2}))
         batch._requests.append(('PATCH', URL, {}, {'bar': 3}))
         batch._requests.append(('DELETE', URL, {}, None))
@@ -376,13 +369,14 @@ class TestBatch(unittest2.TestCase):
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
         connection = _Connection(http=http)
+        client = _Client(connection)
 
         self.assertEqual(list(_BATCHES), [])
 
         target1 = _MockObject()
         target2 = _MockObject()
         target3 = _MockObject()
-        with self._makeOne(connection) as batch:
+        with self._makeOne(client) as batch:
             self.assertEqual(list(_BATCHES), [batch])
             batch._make_request('POST', URL, {'foo': 1, 'bar': 2},
                                 target_object=target1)
@@ -596,3 +590,9 @@ class _HTTP(object):
 
 class _MockObject(object):
     pass
+
+
+class _Client(object):
+
+    def __init__(self, connection):
+        self.connection = connection

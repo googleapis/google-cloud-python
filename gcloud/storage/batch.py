@@ -28,7 +28,6 @@ import six
 
 from gcloud._helpers import _LocalStack
 from gcloud.exceptions import make_exception
-from gcloud.storage import _implicit_environ
 from gcloud.storage.connection import Connection
 
 
@@ -130,17 +129,14 @@ class _FutureDict(object):
 class Batch(Connection):
     """Proxy an underlying connection, batching up change operations.
 
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: the connection for which the batch proxies.
+    :type client: :class:`gcloud.storage.client.Client`
+    :param client: The client to use for making connections.
     """
     _MAX_BATCH_SIZE = 1000
 
-    def __init__(self, connection=None):
-        if connection is None:
-            connection = _implicit_environ.get_default_connection()
-
+    def __init__(self, client):
         super(Batch, self).__init__()
-        self._connection = connection
+        self._client = client
         self._requests = []
         self._target_objects = []
 
@@ -248,7 +244,7 @@ class Batch(Connection):
 
         url = '%s/batch' % self.API_BASE_URL
 
-        response, content = self._connection._make_request(
+        response, content = self._client.connection._make_request(
             'POST', url, data=body, headers=headers)
         responses = list(_unpack_batch_response(response, content))
         self._finish_futures(responses)

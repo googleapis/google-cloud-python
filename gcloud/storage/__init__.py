@@ -78,7 +78,7 @@ def set_default_bucket(bucket=None):
         bucket_name = os.getenv(_BUCKET_ENV_VAR_NAME)
 
         if bucket_name is not None:
-            bucket = Bucket(bucket_name)
+            bucket = Bucket(None, name=bucket_name)
 
     if bucket is not None:
         _implicit_environ._DEFAULTS.bucket = bucket
