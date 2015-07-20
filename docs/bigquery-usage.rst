@@ -96,7 +96,7 @@ Patch metadata for a dataset:
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
    >>> dataset = client.dataset('dataset_name')
-   >>> one_day_ms = 86400 * 1000
+   >>> one_day_ms = 24 * 60 * 60 * 1000
    >>> dataset.patch(description='Description goes here',
    ...               default_table_expiration_ms=one_day_ms)  # API request
 
