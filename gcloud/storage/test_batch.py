@@ -68,14 +68,6 @@ class TestMIMEApplicationHTTP(unittest2.TestCase):
 
 class TestBatch(unittest2.TestCase):
 
-    def setUp(self):
-        from gcloud.storage._testing import _setup_defaults
-        _setup_defaults(self)
-
-    def tearDown(self):
-        from gcloud.storage._testing import _tear_down_defaults
-        _tear_down_defaults(self)
-
     def _getTargetClass(self):
         from gcloud.storage.batch import Batch
         return Batch
@@ -361,6 +353,16 @@ class TestBatch(unittest2.TestCase):
         batch._requests.append(('PATCH', URL, {}, {'bar': 3}))
         batch._requests.append(('DELETE', URL, {}, None))
         self.assertRaises(ValueError, batch.finish)
+
+    def test_current(self):
+        from gcloud.storage.batch import _BATCHES
+        klass = self._getTargetClass()
+        batch_top = object()
+        self.assertEqual(list(_BATCHES), [])
+        _BATCHES.push(batch_top)
+        self.assertTrue(klass.current() is batch_top)
+        _BATCHES.pop()
+        self.assertEqual(list(_BATCHES), [])
 
     def test_as_context_mgr_wo_error(self):
         from gcloud.storage.batch import _BATCHES

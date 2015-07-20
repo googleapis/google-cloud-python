@@ -21,7 +21,6 @@ import os
 import pytz
 import six
 
-from gcloud._helpers import get_default_project
 from gcloud.exceptions import NotFound
 from gcloud.iterator import Iterator
 from gcloud.storage._helpers import _PropertyMixin
@@ -100,20 +99,6 @@ class Bucket(_PropertyMixin):
     def __repr__(self):
         return '<Bucket: %s>' % self.name
 
-    def _require_client(self, client):
-        """Check client or verify over-ride.
-
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current object.
-
-        :rtype: :class:`gcloud.storage.client.Client`
-        :returns: The client passed in or the currently bound client.
-        """
-        if client is None:
-            client = self.client
-        return client
-
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
 
@@ -141,7 +126,7 @@ class Bucket(_PropertyMixin):
         except NotFound:
             return False
 
-    def create(self, project=None, client=None):
+    def create(self, client=None):
         """Creates current bucket.
 
         If the bucket already exists, will raise
@@ -149,27 +134,15 @@ class Bucket(_PropertyMixin):
 
         This implements "storage.buckets.insert".
 
-        :type project: string
-        :param project: Optional. The project to use when creating bucket.
-                        If not provided, falls back to default.
-
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
         :rtype: :class:`gcloud.storage.bucket.Bucket`
         :returns: The newly created bucket.
-        :raises: :class:`EnvironmentError` if the project is not given and
-                 can't be inferred.
         """
         client = self._require_client(client)
-        if project is None:
-            project = get_default_project()
-        if project is None:
-            raise EnvironmentError('Project could not be inferred '
-                                   'from environment.')
-
-        query_params = {'project': project}
+        query_params = {'project': client.project}
         api_response = client.connection.api_request(
             method='POST', path='/b', query_params=query_params,
             data={'name': self.name}, _target_object=self)

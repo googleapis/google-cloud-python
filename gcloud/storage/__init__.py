@@ -38,68 +38,9 @@ The main concepts with this API are:
   machine).
 """
 
-import os
-
-from gcloud import credentials
-from gcloud._helpers import get_default_project
-from gcloud._helpers import set_default_project
-from gcloud.storage import _implicit_environ
-from gcloud.storage._implicit_environ import get_connection
-from gcloud.storage._implicit_environ import get_default_bucket
-from gcloud.storage._implicit_environ import get_default_connection
-from gcloud.storage._implicit_environ import set_default_connection
 from gcloud.storage.batch import Batch
 from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.client import Client
 from gcloud.storage.connection import SCOPE
 from gcloud.storage.connection import Connection
-
-
-_BUCKET_ENV_VAR_NAME = 'GCLOUD_BUCKET_NAME'
-
-
-def set_default_bucket(bucket=None):
-    """Set default bucket either explicitly or implicitly as fall-back.
-
-    In implicit case, currently only supports enviroment variable but will
-    support App Engine, Compute Engine and other environments in the future.
-
-    In the implicit case, relies on an implicit connection in addition to the
-    implicit bucket name.
-
-    Local environment variable used is:
-    - GCLOUD_BUCKET_NAME
-
-    :type bucket: :class:`gcloud.storage.bucket.Bucket`
-    :param bucket: Optional. The bucket to use as default.
-    """
-    if bucket is None:
-        bucket_name = os.getenv(_BUCKET_ENV_VAR_NAME)
-
-        if bucket_name is not None:
-            bucket = Bucket(None, name=bucket_name)
-
-    if bucket is not None:
-        _implicit_environ._DEFAULTS.bucket = bucket
-
-
-def set_defaults(bucket=None, project=None, connection=None):
-    """Set defaults either explicitly or implicitly as fall-back.
-
-    Uses the arguments to call the individual default methods.
-
-    :type bucket: :class:`gcloud.storage.bucket.Bucket`
-    :param bucket: Optional. The bucket to use as default.
-
-    :type project: string
-    :param project: Optional. The name of the project to connect to.
-
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: Optional. A connection provided to be the default.
-    """
-    set_default_project(project=project)
-    set_default_connection(connection=connection)
-    # NOTE: `set_default_bucket` is called after `set_default_connection`
-    #       since `set_default_bucket` falls back to implicit connection.
-    set_default_bucket(bucket=bucket)

@@ -34,29 +34,13 @@ class Test_PropertyMixin(unittest2.TestCase):
 
         return Derived
 
-    def _monkey(self, connection):
-        from gcloud.storage._testing import _monkey_defaults
-        return _monkey_defaults(connection=connection)
-
     def test_path_is_abstract(self):
         mixin = self._makeOne()
         self.assertRaises(NotImplementedError, lambda: mixin.path)
 
-    def test_reload_w_implicit_connection(self):
-        connection = _Connection({'foo': 'Foo'})
-        derived = self._derivedClass('/path')()
-        # Make sure changes is not a set, so we can observe a change.
-        derived._changes = object()
-        with self._monkey(connection):
-            derived.reload()
-        self.assertEqual(derived._properties, {'foo': 'Foo'})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'GET')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['query_params'], {'projection': 'noAcl'})
-        # Make sure changes get reset by reload.
-        self.assertEqual(derived._changes, set())
+    def test_client_is_abstract(self):
+        mixin = self._makeOne()
+        self.assertRaises(NotImplementedError, lambda: mixin.client)
 
     def test_reload_w_explicit_connection(self):
         connection = _Connection({'foo': 'Foo'})
@@ -85,27 +69,6 @@ class Test_PropertyMixin(unittest2.TestCase):
         derived = self._derivedClass()()
         derived._patch_property('foo', 'Foo')
         self.assertEqual(derived._properties, {'foo': 'Foo'})
-
-    def test_patch_w_implicit_connection(self):
-        connection = _Connection({'foo': 'Foo'})
-        derived = self._derivedClass('/path')()
-        # Make sure changes is non-empty, so we can observe a change.
-        BAR = object()
-        BAZ = object()
-        derived._properties = {'bar': BAR, 'baz': BAZ}
-        derived._changes = set(['bar'])  # Ignore baz.
-        with self._monkey(connection):
-            derived.patch()
-        self.assertEqual(derived._properties, {'foo': 'Foo'})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]['method'], 'PATCH')
-        self.assertEqual(kw[0]['path'], '/path')
-        self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
-        # Since changes does not include `baz`, we don't see it sent.
-        self.assertEqual(kw[0]['data'], {'bar': BAR})
-        # Make sure changes get reset by patch().
-        self.assertEqual(derived._changes, set())
 
     def test_patch_w_explicit_connection(self):
         connection = _Connection({'foo': 'Foo'})
@@ -155,44 +118,6 @@ class Test__scalar_property(unittest2.TestCase):
         test = Test()
         test.do_re_mi = 'Latido'
         self.assertEqual(test._patched, ('solfege', 'Latido'))
-
-
-class Test__require_connection(unittest2.TestCase):
-
-    def _callFUT(self, connection=None):
-        from gcloud.storage._helpers import _require_connection
-        return _require_connection(connection=connection)
-
-    def _monkey(self, connection):
-        from gcloud.storage._testing import _monkey_defaults
-        return _monkey_defaults(connection=connection)
-
-    def test_implicit_unset(self):
-        with self._monkey(None):
-            with self.assertRaises(EnvironmentError):
-                self._callFUT()
-
-    def test_implicit_unset_w_existing_batch(self):
-        CONNECTION = object()
-        with self._monkey(None):
-            with _NoCommitBatch(connection=CONNECTION):
-                self.assertEqual(self._callFUT(), CONNECTION)
-
-    def test_implicit_unset_passed_explicitly(self):
-        CONNECTION = object()
-        with self._monkey(None):
-            self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
-
-    def test_implicit_set(self):
-        IMPLICIT_CONNECTION = object()
-        with self._monkey(IMPLICIT_CONNECTION):
-            self.assertTrue(self._callFUT() is IMPLICIT_CONNECTION)
-
-    def test_implicit_set_passed_explicitly(self):
-        IMPLICIT_CONNECTION = object()
-        CONNECTION = object()
-        with self._monkey(IMPLICIT_CONNECTION):
-            self.assertTrue(self._callFUT(CONNECTION) is CONNECTION)
 
 
 class Test__base64_md5hash(unittest2.TestCase):
@@ -288,21 +213,6 @@ class _Base64(object):
     def b64encode(self, value):
         self._called_b64encode.append(value)
         return value
-
-
-class _NoCommitBatch(object):
-
-    def __init__(self, connection):
-        self._connection = connection
-
-    def __enter__(self):
-        from gcloud.storage.batch import _BATCHES
-        _BATCHES.push(self._connection)
-        return self._connection
-
-    def __exit__(self, *args):
-        from gcloud.storage.batch import _BATCHES
-        _BATCHES.pop()
 
 
 class _Client(object):

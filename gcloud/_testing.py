@@ -35,11 +35,6 @@ class _Monkey(object):
             setattr(self.module, key, value)
 
 
-def _monkey_defaults(*args, **kwargs):
-    mock_defaults = _DefaultsContainer(*args, **kwargs)
-    return _Monkey(_helpers, _DEFAULTS=mock_defaults)
-
-
 def _setup_defaults(test_case, *args, **kwargs):
     test_case._replaced_defaults = _helpers._DEFAULTS
     _helpers._DEFAULTS = _DefaultsContainer(*args, **kwargs)

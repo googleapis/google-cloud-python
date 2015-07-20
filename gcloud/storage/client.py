@@ -116,7 +116,7 @@ class Client(JSONClient):
         :returns: The newly created bucket.
         """
         bucket = Bucket(self, name=bucket_name)
-        bucket.create(self.project, client=self)
+        bucket.create(client=self)
         return bucket
 
     def list_buckets(self, max_results=None, page_token=None, prefix=None,

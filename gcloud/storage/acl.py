@@ -78,8 +78,6 @@ This list of tuples can be used as the ``entity`` and ``role`` fields
 when sending metadata for ACLs to the API.
 """
 
-from gcloud.storage._helpers import _require_connection
-
 
 class _ACLEntity(object):
     """Class representing a set of roles for an entity.
@@ -351,23 +349,24 @@ class ACL(object):
         self._ensure_loaded()
         return list(self.entities.values())
 
-    @staticmethod
-    def _client_or_connection(client):
-        """Temporary method to get a connection from a client.
+    @property
+    def client(self):
+        """Abstract getter for the object client."""
+        raise NotImplementedError
 
-        If the client is null, gets the connection from the environment.
+    def _require_client(self, client):
+        """Check client or verify over-ride.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current object.
 
-        :rtype: :class:`gcloud.storage.connection.Connection`
-        :returns: The connection determined from the ``client`` or environment.
+        :rtype: :class:`gcloud.storage.client.Client`
+        :returns: The client passed in or the currently bound client.
         """
         if client is None:
-            return _require_connection()
-        else:
-            return client.connection
+            client = self.client
+        return client
 
     def reload(self, client=None):
         """Reload the ACL data from Cloud Storage.
@@ -377,11 +376,11 @@ class ACL(object):
                        to default connection.
         """
         path = self.reload_path
-        connection = self._client_or_connection(client)
+        client = self._require_client(client)
 
         self.entities.clear()
 
-        found = connection.api_request(method='GET', path=path)
+        found = client.connection.api_request(method='GET', path=path)
         self.loaded = True
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
@@ -405,8 +404,8 @@ class ACL(object):
 
         if save_to_backend:
             path = self.save_path
-            connection = self._client_or_connection(client)
-            result = connection.api_request(
+            client = self._require_client(client)
+            result = client.connection.api_request(
                 method='PATCH',
                 path=path,
                 data={self._URL_PATH_ELEM: list(acl)},
@@ -443,6 +442,11 @@ class BucketACL(ACL):
         self.bucket = bucket
 
     @property
+    def client(self):
+        """The client bound to this ACL's bucket."""
+        return self.bucket.client
+
+    @property
     def reload_path(self):
         """Compute the path for GET API requests for this ACL."""
         return '%s/%s' % (self.bucket.path, self._URL_PATH_ELEM)
@@ -469,6 +473,11 @@ class ObjectACL(ACL):
     def __init__(self, blob):
         super(ObjectACL, self).__init__()
         self.blob = blob
+
+    @property
+    def client(self):
+        """The client bound to this ACL's blob."""
+        return self.blob.client
 
     @property
     def reload_path(self):
