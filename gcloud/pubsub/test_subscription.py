@@ -427,7 +427,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s:modifyAckDeadline' % SUB_PATH)
         self.assertEqual(req['data'],
-                         {'ackId': ACK_ID, 'ackDeadlineSeconds': DEADLINE})
+                         {'ackIds': [ACK_ID], 'ackDeadlineSeconds': DEADLINE})
 
     def test_modify_ack_deadline_w_alternate_client(self):
         PROJECT = 'PROJECT'
@@ -449,7 +449,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s:modifyAckDeadline' % SUB_PATH)
         self.assertEqual(req['data'],
-                         {'ackId': ACK_ID, 'ackDeadlineSeconds': DEADLINE})
+                         {'ackIds': [ACK_ID], 'ackDeadlineSeconds': DEADLINE})
 
     def test_delete_w_bound_client(self):
         PROJECT = 'PROJECT'

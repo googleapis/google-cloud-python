@@ -246,7 +246,7 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = {'ackId': ack_id, 'ackDeadlineSeconds': ack_deadline}
+        data = {'ackIds': [ack_id], 'ackDeadlineSeconds': ack_deadline}
         client.connection.api_request(
             method='POST', path='%s:modifyAckDeadline' % (self.path,),
             data=data)
