@@ -38,7 +38,7 @@ Authorization / Configuration
   .. doctest::
 
      >>> from gcloud import bigquery
-     >>> client = bigquery.Client.from_service_account_p12('/path/to/creds.p12')
+     >>> client = bigquery.Client.from_service_account_p12('/path/to/creds.p12', 'jrandom@example.com')
 
 - Override the project inferred from the environment by passing an explicit
   ``project`` to the constructor, or to either of the alternative classmethods:
