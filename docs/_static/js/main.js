@@ -15,8 +15,10 @@ $('.headerlink').parent().each(function() {
 
 $('.side-nav').children('ul:nth-child(2)').children().each(function() {
   var itemName = $(this).text();
-    if (itemName !== 'Datastore' && itemName !== 'Storage' &&
-        itemName !== 'Pub/Sub') {
+    if (itemName !== 'Datastore' &&
+        itemName !== 'Storage' &&
+        itemName !== 'Pub/Sub' &&
+        itemName !== 'Big Query') {
       $(this).css('padding-left','2em');
   }
 });
@@ -27,6 +29,10 @@ if ($('#cloud-datastore-in-10-seconds').length)
   apiQsSection = $('#cloud-datastore-in-10-seconds');
 else if ($('#cloud-storage-in-10-seconds').length)
   apiQsSection = $('#cloud-storage-in-10-seconds');
+else if ($('#cloud-pubsub-in-10-seconds').length)
+  apiQsSection = $('#cloud-pubsub-in-10-seconds');
+else if ($('#cloud-bigquery-in-10-seconds').length)
+  apiQsSection = $('#cloud-bigquery-in-10-seconds');
 
 if(apiQsSection) {
   var apiQsSubSections = apiQsSection.children('div');

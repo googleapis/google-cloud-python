@@ -1,3 +1,11 @@
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+
+=========
+Big Query
+=========
+
 Using the API
 =============
 
