@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Buckets &mdash; gcloud 8522653 documentation</title>
+    <title>Buckets &mdash; gcloud f62de09 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '8522653',
+        VERSION:     'f62de09',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8522653 documentation" href="index.html" />
+    <link rel="top" title="gcloud f62de09 documentation" href="index.html" />
     <link rel="next" title="ACL" href="storage-acl.html" />
     <link rel="prev" title="Blobs / Objects" href="storage-blobs.html" /> 
   </head>
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%208522653" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%20f62de09" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -74,7 +74,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8522653)
+              Version History (f62de09)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -92,14 +92,19 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <p>Create / interact with gcloud storage buckets.</p>
 <dl class="class">
 <dt id="gcloud.storage.bucket.Bucket">
-<em class="property">class </em><code class="descclassname">gcloud.storage.bucket.</code><code class="descname">Bucket</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.storage.bucket.</code><code class="descname">Bucket</code><span class="sig-paren">(</span><em>client</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.storage._helpers._PropertyMixin</span></code></p>
 <p>A class representing a Bucket on Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>string</em>) &#8211; The name of the bucket.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code>) &#8211; A client which holds credentials and project configuration
+for the bucket (which requires a project).</li>
+<li><strong>name</strong> (<em>string</em>) &#8211; The name of the bucket.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -107,6 +112,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <dt id="gcloud.storage.bucket.Bucket.acl">
 <code class="descname">acl</code><a class="headerlink" href="#gcloud.storage.bucket.Bucket.acl" title="Permalink to this definition">#</a></dt>
 <dd><p>Create our ACL on demand.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.bucket.Bucket.client">
+<code class="descname">client</code><a class="headerlink" href="#gcloud.storage.bucket.Bucket.client" title="Permalink to this definition">#</a></dt>
+<dd><p>The client bound to this bucket.</p>
 </dd></dl>
 
 <dl class="method">
@@ -165,7 +176,7 @@ Typically something like index.html.</li>
 copied.</li>
 <li><strong>new_name</strong> (<em>string</em>) &#8211; (optional) the new name for the copied file.</li>
 <li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to default connection.</li>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
@@ -201,7 +212,7 @@ to default connection.</li>
 
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>project=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.create" title="Permalink to this definition">#</a></dt>
+<code class="descname">create</code><span class="sig-paren">(</span><em>project=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates current bucket.</p>
 <p>If the bucket already exists, will raise
 <a class="reference internal" href="gcloud-api.html#gcloud.exceptions.Conflict" title="gcloud.exceptions.Conflict"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.Conflict</span></code></a>.</p>
@@ -213,9 +224,8 @@ to default connection.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>project</strong> (<em>string</em>) &#8211; Optional. The project to use when creating bucket.
 If not provided, falls back to default.</li>
-<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
-requests. If not provided, falls back to default.</li>
+<li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
@@ -260,7 +270,7 @@ runtime of this method.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>force</strong> (<em>boolean</em>) &#8211; If True, empties the bucket&#8217;s objects then deletes it.</li>
 <li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to default connection.</li>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
@@ -299,7 +309,7 @@ contains more than 256 objects / blobs.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>blob_name</strong> (<em>string</em>) &#8211; A blob name to delete.</li>
 <li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to default connection.</li>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
@@ -330,7 +340,7 @@ the exception, call <code class="docutils literal"><span class="pre">delete_blob
 <a class="reference internal" href="gcloud-api.html#gcloud.exceptions.NotFound" title="gcloud.exceptions.NotFound"><code class="xref py py-class docutils literal"><span class="pre">gcloud.exceptions.NotFound</span></code></a>;
 otherwise, the exception is propagated.</li>
 <li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to default connection.</li>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
@@ -406,7 +416,7 @@ set locally.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to default connection.</td>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
 </tr>
@@ -437,7 +447,7 @@ to default connection.</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>blob_name</strong> (<em>string</em>) &#8211; The name of the blob to retrieve.</li>
 <li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to default connection.</li>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
@@ -509,7 +519,7 @@ set locally.</td>
 
 <dl class="method">
 <dt id="gcloud.storage.bucket.Bucket.list_blobs">
-<code class="descname">list_blobs</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>versions=None</em>, <em>projection='noAcl'</em>, <em>fields=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.list_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.list_blobs" title="Permalink to this definition">#</a></dt>
+<code class="descname">list_blobs</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>versions=None</em>, <em>projection='noAcl'</em>, <em>fields=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.list_blobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.list_blobs" title="Permalink to this definition">#</a></dt>
 <dd><p>Return an iterator used to find blobs in the bucket.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -531,9 +541,8 @@ partial response. Must be a list of fields. For example
 to get a partial response with just the next page token
 and the language of each blob returned:
 &#8216;items/contentLanguage,nextPageToken&#8217;</li>
-<li><strong>connection</strong> (<a class="reference internal" href="storage-api.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a> or
-<code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The connection to use when sending
-requests. If not provided, falls back to default.</li>
+<li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
@@ -581,7 +590,7 @@ public as well.</li>
 <li><strong>future</strong> (<em>boolean</em>) &#8211; If True, this will make all objects created in the
 future public as well.</li>
 <li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to default connection.</li>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
@@ -758,7 +767,7 @@ is blank, we will try to upload the file to the root
 of the bucket with the same name as on your local
 file system.</li>
 <li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to default connection.</li>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>
@@ -807,7 +816,7 @@ is blank, we will try to upload the file to the root
 of the bucket with the same name as on your local
 file system.</li>
 <li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to default connection.</li>
+to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
 </ul>
 </td>
 </tr>

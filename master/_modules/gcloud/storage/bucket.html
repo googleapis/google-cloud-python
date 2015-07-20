@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud 8522653 documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud f62de09 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '8522653',
+        VERSION:     'f62de09',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8522653 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud f62de09 documentation" href="../../../index.html" />
     <link rel="up" title="gcloud.storage" href="../storage.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%208522653" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20f62de09" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8522653)
+              Version History (f62de09)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -114,7 +114,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">gcloud.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_require_connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">BucketACL</span>
 <span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
@@ -134,17 +133,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type extra_params: dict or None</span>
 <span class="sd">    :param extra_params: Extra query string parameters for the API call.</span>
 
-<span class="sd">    :type connection: :class:`gcloud.storage.connection.Connection`</span>
-<span class="sd">    :param connection: The connection to use when sending requests.  Defaults</span>
-<span class="sd">                       to the bucket&#39;s connection</span>
+<span class="sd">    :type client: :class:`gcloud.storage.client.Client`</span>
+<span class="sd">    :param client: Optional. The client to use for making connections.</span>
+<span class="sd">                   Defaults to the bucket&#39;s client.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_prefixes</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">_BlobIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
-            <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span>
+            <span class="n">connection</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/o&#39;</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_items_from_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
@@ -165,6 +165,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Bucket"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket">[docs]</a><span class="k">class</span> <span class="nc">Bucket</span><span class="p">(</span><span class="n">_PropertyMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class representing a Bucket on Cloud Storage.</span>
 
+<span class="sd">    :type client: :class:`gcloud.storage.client.Client`</span>
+<span class="sd">    :param client: A client which holds credentials and project configuration</span>
+<span class="sd">                   for the bucket (which requires a project).</span>
+
 <span class="sd">    :type name: string</span>
 <span class="sd">    :param name: The name of the bucket.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -176,52 +180,49 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    This is used in Bucket.delete() and Bucket.make_public().</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Bucket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">BucketACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_default_object_acl</span> <span class="o">=</span> <span class="n">DefaultObjectACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;&lt;Bucket: </span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Temporary method to get a connection from a client.</span>
-
-<span class="sd">        If the client is null, gets the connection from the environment.</span>
+    <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current object.</span>
 
-<span class="sd">        :rtype: :class:`gcloud.storage.connection.Connection`</span>
-<span class="sd">        :returns: The connection determined from the ``client`` or environment.</span>
+<span class="sd">        :rtype: :class:`gcloud.storage.client.Client`</span>
+<span class="sd">        :returns: The client passed in or the currently bound client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">_require_connection</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
+        <span class="k">return</span> <span class="n">client</span>
 
 <div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this bucket exists.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :rtype: boolean</span>
 <span class="sd">        :returns: True if the bucket exists in Cloud Storage.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c"># We only need the status code (200 or not) so we seek to</span>
             <span class="c"># minimize the returned payload.</span>
             <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="s">&#39;name&#39;</span><span class="p">}</span>
             <span class="c"># We intentionally pass `_target_object=None` since fields=name</span>
             <span class="c"># would limit the local properties.</span>
-            <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                   <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-                                   <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                                          <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
+                                          <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
             <span class="c"># NOTE: This will not fail immediately in a batch. However, when</span>
             <span class="c">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c">#       raised.</span>
@@ -229,7 +230,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
 </div>
-<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates current bucket.</span>
 
 <span class="sd">        If the bucket already exists, will raise</span>
@@ -241,17 +242,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param project: Optional. The project to use when creating bucket.</span>
 <span class="sd">                        If not provided, falls back to default.</span>
 
-<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
-<span class="sd">                          ``NoneType``</span>
-<span class="sd">        :param connection: Optional. The connection to use when sending</span>
-<span class="sd">                           requests. If not provided, falls back to default.</span>
+<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.storage.bucket.Bucket`</span>
 <span class="sd">        :returns: The newly created bucket.</span>
 <span class="sd">        :raises: :class:`EnvironmentError` if the project is not given and</span>
 <span class="sd">                 can&#39;t be inferred.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">_require_connection</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="n">get_default_project</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -259,7 +259,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                    <span class="s">&#39;from environment.&#39;</span><span class="p">)</span>
 
         <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;project&#39;</span><span class="p">:</span> <span class="n">project</span><span class="p">}</span>
-        <span class="n">api_response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;/b&#39;</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span> <span class="n">_target_object</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
@@ -294,6 +294,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The client bound to this bucket.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
+
 <div class="viewcode-block" id="Bucket.get_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_blob">[docs]</a>    <span class="k">def</span> <span class="nf">get_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a blob object by name.</span>
 
@@ -312,15 +317,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.storage.blob.Blob` or None</span>
 <span class="sd">        :returns: The blob object if it exists, otherwise None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
                 <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="n">blob</span><span class="p">)</span>
             <span class="c"># NOTE: We assume response.get(&#39;name&#39;) matches `blob_name`.</span>
             <span class="n">blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
@@ -333,7 +338,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 </div>
 <div class="viewcode-block" id="Bucket.list_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.list_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                    <span class="n">delimiter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                   <span class="n">projection</span><span class="o">=</span><span class="s">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                   <span class="n">projection</span><span class="o">=</span><span class="s">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an iterator used to find blobs in the bucket.</span>
 
 <span class="sd">        :type max_results: integer or ``NoneType``</span>
@@ -365,10 +370,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       and the language of each blob returned:</span>
 <span class="sd">                       &#39;items/contentLanguage,nextPageToken&#39;</span>
 
-<span class="sd">        :type connection: :class:`gcloud.storage.connection.Connection` or</span>
-<span class="sd">                          ``NoneType``</span>
-<span class="sd">        :param connection: Optional. The connection to use when sending</span>
-<span class="sd">                           requests. If not provided, falls back to default.</span>
+<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :rtype: :class:`_BlobIterator`.</span>
 <span class="sd">        :returns: An iterator of blobs.</span>
@@ -393,7 +397,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="c"># Page token must be handled specially since the base `Iterator`</span>
         <span class="c"># class has it as a reserved property.</span>
         <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
@@ -421,16 +425,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :raises: :class:`ValueError` if ``force`` is ``True`` and the bucket</span>
 <span class="sd">                 contains more than 256 objects / blobs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
             <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
                 <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">))</span>
+                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s">&#39;Refusing to delete bucket with more than &#39;</span>
@@ -447,8 +451,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c"># We intentionally pass `_target_object=None` since a DELETE</span>
         <span class="c"># request has no response value (whether in a standard request or</span>
         <span class="c"># in a batch request).</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                               <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                                      <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from the current bucket.</span>
@@ -475,7 +479,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound` (to suppress</span>
 <span class="sd">                 the exception, call ``delete_blobs``, passing a no-op</span>
@@ -483,13 +487,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">                 &gt;&gt;&gt; bucket.delete_blobs([blob], on_error=lambda blob: None)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">blob_path</span> <span class="o">=</span> <span class="n">Blob</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">)</span>
         <span class="c"># We intentionally pass `_target_object=None` since a DELETE</span>
         <span class="c"># request has no response value (whether in a standard request or</span>
         <span class="c"># in a batch request).</span>
-        <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob_path</span><span class="p">,</span>
-                               <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob_path</span><span class="p">,</span>
+                                      <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Bucket.delete_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a list of blobs from the current bucket.</span>
@@ -506,7 +510,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound` (if</span>
 <span class="sd">                 `on_error` is not passed).</span>
@@ -539,18 +543,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.storage.blob.Blob`</span>
 <span class="sd">        :returns: The new Blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">new_name</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span>
         <span class="n">new_blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">destination_bucket</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">new_name</span><span class="p">)</span>
         <span class="n">api_path</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s">&#39;/copyTo&#39;</span> <span class="o">+</span> <span class="n">new_blob</span><span class="o">.</span><span class="n">path</span>
-        <span class="n">copy_result</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span>
-                                             <span class="n">_target_object</span><span class="o">=</span><span class="n">new_blob</span><span class="p">)</span>
+        <span class="n">copy_result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="n">new_blob</span><span class="p">)</span>
         <span class="n">new_blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">copy_result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_blob</span>
 </div>
@@ -589,7 +593,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :rtype: :class:`Blob`</span>
 <span class="sd">        :returns: The updated Blob object.</span>
@@ -635,7 +639,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 
 <span class="sd">        :rtype: :class:`Blob`</span>
 <span class="sd">        :returns: The updated Blob object.</span>
@@ -936,10 +940,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to default connection.</span>
+<span class="sd">                       to the ``client`` stored on the current bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client_or_connection</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">grant_read</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">acl</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
@@ -954,7 +956,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">blobs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span>
                 <span class="n">projection</span><span class="o">=</span><span class="s">&#39;full&#39;</span><span class="p">,</span>
                 <span class="n">max_results</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="n">connection</span><span class="o">=</span><span class="n">connection</span><span class="p">))</span>
+                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_MAX_OBJECTS_FOR_ITERATION</span><span class="p">:</span>
                 <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="s">&#39;Refusing to make public recursively with more than &#39;</span>

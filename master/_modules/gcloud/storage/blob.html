@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 8522653 documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud f62de09 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '8522653',
+        VERSION:     'f62de09',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8522653 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud f62de09 documentation" href="../../../index.html" />
     <link rel="up" title="gcloud.storage" href="../storage.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%208522653" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20f62de09" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8522653)
+              Version History (f62de09)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -245,6 +245,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Blob.generate_signed_url"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span>
                             <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a signed URL for this blob.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">          If you are on Google Compute Engine, you can&#39;t generate a signed URL.</span>
+<span class="sd">          Follow</span>
+<span class="sd">          https://github.com/GoogleCloudPlatform/gcloud-python/issues/922</span>
+<span class="sd">          for updates on this. If you&#39;d like to be able to generate a signed</span>
+<span class="sd">          URL from GCE, you can use a standard service account from a JSON</span>
+<span class="sd">          file rather than a GCE service account.</span>
 
 <span class="sd">        If you have a blob that you want to allow access to for a set</span>
 <span class="sd">        amount of time, you can use this method to generate a URL that</span>
