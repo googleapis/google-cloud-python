@@ -2,9 +2,9 @@
   :maxdepth: 0
   :hidden:
 
-=========
-Big Query
-=========
+========
+BigQuery
+========
 
 Using the API
 =============

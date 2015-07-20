@@ -18,7 +18,7 @@ $('.side-nav').children('ul:nth-child(2)').children().each(function() {
     if (itemName !== 'Datastore' &&
         itemName !== 'Storage' &&
         itemName !== 'Pub/Sub' &&
-        itemName !== 'Big Query') {
+        itemName !== 'BigQuery') {
       $(this).css('padding-left','2em');
   }
 });
