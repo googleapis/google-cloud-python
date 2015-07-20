@@ -7,13 +7,6 @@ Storage
 
 .. include:: _components/storage-quickstart.rst
 
-:mod:`gcloud.storage`
-~~~~~~~~~~~~~~~~~~~~~
-
-.. automodule:: gcloud.storage
-  :members: get_connection, get_default_connection, get_default_bucket,
-            set_default_connection, set_default_bucket, set_defaults
-
 Connections
 ~~~~~~~~~~~
 
