@@ -170,7 +170,7 @@ class Client(JSONClient):
         if fields is not None:
             extra_params['fields'] = fields
 
-        result = _BucketIterator(connection=self.connection,
+        result = _BucketIterator(client=self,
                                  extra_params=extra_params)
         # Page token must be handled specially since the base `Iterator`
         # class has it as a reserved property.
@@ -186,15 +186,15 @@ class _BucketIterator(Iterator):
     helper methods on :class:`gcloud.storage.connection.Connection`
     objects.
 
-    :type connection: :class:`gcloud.storage.connection.Connection`
-    :param connection: The connection to use for querying the list of buckets.
+    :type client: :class:`gcloud.storage.client.Client`
+    :param client: The client to use for making connections.
 
     :type extra_params: dict or ``NoneType``
     :param extra_params: Extra query string parameters for the API call.
     """
 
-    def __init__(self, connection, extra_params=None):
-        super(_BucketIterator, self).__init__(connection=connection, path='/b',
+    def __init__(self, client, extra_params=None):
+        super(_BucketIterator, self).__init__(client=client, path='/b',
                                               extra_params=extra_params)
 
     def get_items_from_response(self, response):
@@ -205,6 +205,6 @@ class _BucketIterator(Iterator):
         """
         for item in response.get('items', []):
             name = item.get('name')
-            bucket = Bucket(None, name)
+            bucket = Bucket(self.client, name)
             bucket._set_properties(item)
             yield bucket

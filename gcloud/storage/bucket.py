@@ -54,7 +54,7 @@ class _BlobIterator(Iterator):
         self.prefixes = set()
         self._current_prefixes = None
         super(_BlobIterator, self).__init__(
-            connection=client.connection, path=bucket.path + '/o',
+            client=client, path=bucket.path + '/o',
             extra_params=extra_params)
 
     def get_items_from_response(self, response):

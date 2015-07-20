@@ -48,8 +48,8 @@ requests)::
 class Iterator(object):
     """A generic class for iterating through Cloud JSON APIs list responses.
 
-    :type connection: :class:`gcloud.connection.Connection`
-    :param connection: The connection to use to make requests.
+    :type client: :class:`gcloud.client.Client`
+    :param client: The client, which owns a connection to make requests.
 
     :type path: string
     :param path: The path to query for the list of items.
@@ -61,8 +61,8 @@ class Iterator(object):
     PAGE_TOKEN = 'pageToken'
     RESERVED_PARAMS = frozenset([PAGE_TOKEN])
 
-    def __init__(self, connection, path, extra_params=None):
-        self.connection = connection
+    def __init__(self, client, path, extra_params=None):
+        self.client = client
         self.path = path
         self.page_number = 0
         self.next_page_token = None
@@ -111,7 +111,7 @@ class Iterator(object):
         if not self.has_next_page():
             raise RuntimeError('No more pages. Try resetting the iterator.')
 
-        response = self.connection.api_request(
+        response = self.client.connection.api_request(
             method='GET', path=self.path, query_params=self.get_query_params())
 
         self.page_number += 1
