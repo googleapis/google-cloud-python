@@ -160,7 +160,7 @@ class Blob(_PropertyMixin):
         .. note::
           If you are on Google Compute Engine, you can't generate a signed URL.
           Follow
-              https://github.com/GoogleCloudPlatform/gcloud-python/issues/922
+          https://github.com/GoogleCloudPlatform/gcloud-python/issues/922
           for updates on this. If you'd like to be able to generate a signed
           URL from GCE, you can use a standard service account from a JSON
           file rather than a GCE service account.
