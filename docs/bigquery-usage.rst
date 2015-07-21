@@ -91,7 +91,7 @@ via the API:  it must be managed using the Google Developer Console.
 Datasets
 --------
 
-A dataset represents a collection of tables, and appies several default
+A dataset represents a collection of tables, and applies several default
 policies to tables as they are created:
 
 - An access control list (ACL).  When created, a dataset has an ACL
