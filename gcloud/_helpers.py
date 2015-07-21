@@ -95,49 +95,6 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
     return list(tuple_or_list)
 
 
-class _LazyProperty(object):
-    """Descriptor for lazy loaded property.
-
-    This follows the reify pattern: lazy evaluation and then replacement
-    after evaluation.
-
-    :type name: string
-    :param name: The name of the attribute / property being evaluated.
-
-    :type deferred_callable: callable that takes no arguments
-    :param deferred_callable: The function / method used to evaluate the
-                              property.
-    """
-
-    def __init__(self, name, deferred_callable):
-        self._name = name
-        self._deferred_callable = deferred_callable
-
-    def __get__(self, obj, objtype):
-        if obj is None:
-            return self
-
-        setattr(obj, self._name, self._deferred_callable())
-        return getattr(obj, self._name)
-
-
-def _lazy_property_deco(deferred_callable):
-    """Decorator a method to create a :class:`_LazyProperty`.
-
-    :type deferred_callable: callable that takes no arguments
-    :param deferred_callable: The function / method used to evaluate the
-                              property.
-
-    :rtype: :class:`_LazyProperty`.
-    :returns: A lazy property which defers the deferred_callable.
-    """
-    if isinstance(deferred_callable, staticmethod):
-        # H/T: http://stackoverflow.com/a/9527450/1068170
-        #      For Python2.7+ deferred_callable.__func__ would suffice.
-        deferred_callable = deferred_callable.__get__(True)
-    return _LazyProperty(deferred_callable.__name__, deferred_callable)
-
-
 def _app_engine_id():
     """Gets the App Engine application ID if it can be inferred.
 
@@ -211,44 +168,3 @@ def _determine_default_project(project=None):
         project = _get_production_project()
 
     return project
-
-
-def set_default_project(project=None):
-    """Set default project either explicitly or implicitly as fall-back.
-
-    :type project: string
-    :param project: Optional. The project name to use as default.
-
-    :raises: :class:`EnvironmentError` if no project was found.
-    """
-    project = _determine_default_project(project=project)
-    if project is not None:
-        _DEFAULTS.project = project
-    else:
-        raise EnvironmentError('No project could be inferred.')
-
-
-class _DefaultsContainer(object):
-    """Container for defaults.
-
-    :type project: string
-    :param project: Persistent implied project from environment.
-
-    :type implicit: boolean
-    :param implicit: if False, assign the instance's ``project`` attribute
-                     unconditionally;  otherwise, assign it only if the
-                     value is not None.
-    """
-
-    @_lazy_property_deco
-    @staticmethod
-    def project():
-        """Return the implicit default project."""
-        return _determine_default_project()
-
-    def __init__(self, project=None, implicit=False):
-        if project is not None or not implicit:
-            self.project = project
-
-
-_DEFAULTS = _DefaultsContainer(implicit=True)
