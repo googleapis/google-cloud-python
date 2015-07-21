@@ -55,4 +55,4 @@ Cloud Storage
   client = storage.Client()
   bucket = client.get_bucket('<your-bucket-name>')
   blob = storage.Blob('my-test-file.txt', bucket=bucket)
-  blob = blob.upload_contents_from_string('this is test content!')
+  blob.upload_from_string('this is test content!')

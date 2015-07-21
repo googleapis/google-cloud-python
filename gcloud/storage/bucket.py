@@ -16,7 +16,6 @@
 
 import datetime
 import copy
-import os
 
 import pytz
 import six
@@ -441,98 +440,6 @@ class Bucket(_PropertyMixin):
             method='POST', path=api_path, _target_object=new_blob)
         new_blob._set_properties(copy_result)
         return new_blob
-
-    def upload_file(self, filename, blob_name=None, client=None):
-        """Shortcut method to upload a file into this bucket.
-
-        Use this method to quickly put a local file in Cloud Storage.
-
-        For example::
-
-          >>> from gcloud import storage
-          >>> client = storage.Client()
-          >>> bucket = client.get_bucket('my-bucket')
-          >>> bucket.upload_file('~/my-file.txt', 'remote-text-file.txt')
-          >>> print bucket.list_blobs()
-          [<Blob: my-bucket, remote-text-file.txt>]
-
-        If you don't provide a blob name, we will try to upload the file
-        using the local filename (**not** the complete path)::
-
-          >>> from gcloud import storage
-          >>> client = storage.Client()
-          >>> bucket = client.get_bucket('my-bucket')
-          >>> bucket.upload_file('~/my-file.txt')
-          >>> print bucket.list_blobs()
-          [<Blob: my-bucket, my-file.txt>]
-
-        :type filename: string
-        :param filename: Local path to the file you want to upload.
-
-        :type blob_name: string
-        :param blob_name: The name of the blob to upload the file to. If this
-                          is blank, we will try to upload the file to the root
-                          of the bucket with the same name as on your local
-                          file system.
-
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to the ``client`` stored on the current bucket.
-
-        :rtype: :class:`Blob`
-        :returns: The updated Blob object.
-        """
-        if blob_name is None:
-            blob_name = os.path.basename(filename)
-        blob = Blob(bucket=self, name=blob_name)
-        blob.upload_from_filename(filename, client=client)
-        return blob
-
-    def upload_file_object(self, file_obj, blob_name=None, client=None):
-        """Shortcut method to upload a file object into this bucket.
-
-        Use this method to quickly put a local file in Cloud Storage.
-
-        For example::
-
-          >>> from gcloud import storage
-          >>> client = storage.Client()
-          >>> bucket = client.get_bucket('my-bucket')
-          >>> bucket.upload_file(open('~/my-file.txt'), 'remote-text-file.txt')
-          >>> print bucket.list_blobs()
-          [<Blob: my-bucket, remote-text-file.txt>]
-
-        If you don't provide a blob name, we will try to upload the file
-        using the local filename (**not** the complete path)::
-
-          >>> from gcloud import storage
-          >>> client = storage.Client()
-          >>> bucket = client.get_bucket('my-bucket')
-          >>> bucket.upload_file(open('~/my-file.txt'))
-          >>> print bucket.list_blobs()
-          [<Blob: my-bucket, my-file.txt>]
-
-        :type file_obj: file
-        :param file_obj: A file handle open for reading.
-
-        :type blob_name: string
-        :param blob_name: The name of the blob to upload the file to. If this
-                          is blank, we will try to upload the file to the root
-                          of the bucket with the same name as on your local
-                          file system.
-
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to the ``client`` stored on the current bucket.
-
-        :rtype: :class:`Blob`
-        :returns: The updated Blob object.
-        """
-        if blob_name is None:
-            blob_name = os.path.basename(file_obj.name)
-        blob = Blob(bucket=self, name=blob_name)
-        blob.upload_from_file(file_obj, client=client)
-        return blob
 
     @property
     def cors(self):
