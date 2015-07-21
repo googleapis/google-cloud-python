@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.query &mdash; gcloud d4c77ef documentation</title>
+    <title>gcloud.datastore.query &mdash; gcloud 25968c8 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'd4c77ef',
+        VERSION:     '25968c8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud d4c77ef documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 25968c8 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%20d4c77ef" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%2025968c8" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (d4c77ef)
+              Version History (25968c8)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -422,7 +422,31 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 </div></div>
 <div class="viewcode-block" id="Iterator"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Iterator">[docs]</a><span class="k">class</span> <span class="nc">Iterator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represent the state of a given execution of a Query.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Represent the state of a given execution of a Query.</span>
+
+<span class="sd">    :type query: :class:`gcloud.datastore.query.Query`</span>
+<span class="sd">    :param query: Query object holding permanent configuration (i.e.</span>
+<span class="sd">                  things that don&#39;t change on with each page in</span>
+<span class="sd">                  a results set).</span>
+
+<span class="sd">    :type client: :class:`gcloud.datastore.client.Client`</span>
+<span class="sd">    :param client: The client used to make a request.</span>
+
+<span class="sd">    :type limit: integer</span>
+<span class="sd">    :param limit: (Optional) Limit the number of results returned.</span>
+
+<span class="sd">    :type offset: integer</span>
+<span class="sd">    :param offset: (Optional) Defaults to 0. Offset used to begin</span>
+<span class="sd">                   a query.</span>
+
+<span class="sd">    :type start_cursor: bytes</span>
+<span class="sd">    :param start_cursor: (Optional) Cursor to begin paging through</span>
+<span class="sd">                         query results.</span>
+
+<span class="sd">    :type end_cursor: bytes</span>
+<span class="sd">    :param end_cursor: (Optional) Cursor to end paging through</span>
+<span class="sd">                       query results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_NOT_FINISHED</span> <span class="o">=</span> <span class="n">datastore_pb</span><span class="o">.</span><span class="n">QueryResultBatch</span><span class="o">.</span><span class="n">NOT_FINISHED</span>
 

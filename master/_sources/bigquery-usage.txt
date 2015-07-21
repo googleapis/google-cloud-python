@@ -2,12 +2,8 @@
   :maxdepth: 0
   :hidden:
 
-========
 BigQuery
 ========
-
-Using the API
-=============
 
 Authorization / Configuration
 -----------------------------
@@ -119,6 +115,15 @@ List datasets for the client's project:
    >>> [dataset.name for dataset in datasets]
    ['dataset_name']
 
+Refresh metadata for a dataset (to pick up changes made by another client):
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> dataset.reload()  # API request
+
 Patch metadata for a dataset:
 
 .. doctest::
@@ -151,3 +156,83 @@ Delete a dataset:
    >>> client = bigquery.Client()
    >>> dataset = client.dataset('dataset_name')
    >>> dataset.delete()  # API request
+
+
+Tables
+------
+
+Tables exist within datasets.  List tables for the dataset:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> tables, next_page_token = dataset.list_tables()  # API request
+   >>> [table.name for table in tables]
+   ['table_name']
+
+Create a table:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> table = dataset.table(name='person_ages')
+   >>> table.create()  # API request
+
+Check for the existence of a table:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> table = dataset.table(name='person_ages')
+   >>> table.exists()  # API request
+   True
+
+Refresh metadata for a table (to pick up changes made by another client):
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> dataset.reload()  # API request
+
+Patch specific properties for a table:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> table = dataset.table(name='person_ages')
+   >>> table.patch(friendly_name='Person Ages',
+   ...             description='Ages of persons')  # API request
+
+Update all writable metadata for a table
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> from gcloud.bigquery import SchemaField
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> table = dataset.table(name='person_ages')
+   >>> table.schema = [
+   ...     SchemaField(name='full_name', type='string', mode='required'),
+   ...     SchemaField(name='age', type='int', mode='required)]
+   >>> table.update()  # API request
+
+Delete a table:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> table = dataset.table(name='person_ages')
+   >>> table.delete()  # API request
