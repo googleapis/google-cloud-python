@@ -18,9 +18,10 @@ import os
 from gcloud._helpers import _LocalStack
 from gcloud._helpers import _app_engine_id
 from gcloud._helpers import _compute_engine_id
+from gcloud.client import Client as BaseClient
 from gcloud.datastore import helpers
-from gcloud.datastore.connection import Connection
 from gcloud.datastore.batch import Batch
+from gcloud.datastore.connection import Connection
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
@@ -158,7 +159,7 @@ def _extended_lookup(connection, dataset_id, key_pbs,
     return results
 
 
-class Client(object):
+class Client(BaseClient):
     """Convenience wrapper for invoking APIs/factories w/ a dataset ID.
 
     :type dataset_id: string
@@ -167,20 +168,30 @@ class Client(object):
     :type namespace: string
     :param namespace: (optional) namespace to pass to proxied API methods.
 
-    :type connection: :class:`gcloud.datastore.connection.Connection`, or None
-    :param connection: (optional) connection to pass to proxied API methods
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+                        :class:`NoneType`
+    :param credentials: The OAuth2 Credentials to use for the connection
+                        owned by this client. If not passed (and if no ``http``
+                        object is passed), falls back to the default inferred
+                        from the environment.
+
+    :type http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param http: An optional HTTP object to make requests. If not passed, an
+                 ``http`` object is created that is bound to the
+                 ``credentials`` for the current object.
     """
 
-    def __init__(self, dataset_id=None, namespace=None, connection=None):
+    _connection_class = Connection
+
+    def __init__(self, dataset_id=None, namespace=None,
+                 credentials=None, http=None):
         dataset_id = _determine_default_dataset_id(dataset_id)
         if dataset_id is None:
             raise EnvironmentError('Dataset ID could not be inferred.')
         self.dataset_id = dataset_id
-        if connection is None:
-            connection = Connection.from_environment()
-        self.connection = connection
         self._batch_stack = _LocalStack()
         self.namespace = namespace
+        super(Client, self).__init__(credentials=credentials, http=http)
 
     def _push_batch(self, batch):
         """Push a batch/transaction onto our stack.
