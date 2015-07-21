@@ -98,6 +98,11 @@ class Bucket(_PropertyMixin):
     def __repr__(self):
         return '<Bucket: %s>' % self.name
 
+    @property
+    def client(self):
+        """The client bound to this bucket."""
+        return self._client
+
     def blob(self, blob_name, chunk_size=None):
         """Factory constructor for blob object.
 
@@ -196,11 +201,6 @@ class Bucket(_PropertyMixin):
             raise ValueError('Cannot determine path without bucket name.')
 
         return self.path_helper(self.name)
-
-    @property
-    def client(self):
-        """The client bound to this bucket."""
-        return self._client
 
     def get_blob(self, blob_name, client=None):
         """Get a blob object by name.
