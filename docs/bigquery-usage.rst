@@ -68,19 +68,6 @@ To override the project inferred from the environment, pass an explicit
      >>> from gcloud import bigquery
      >>> client = bigquery.Client(project='PROJECT_ID')
 
-If no project is known, and it is not desired to infer one from the
-environment, pass an explicit value of ``None`` to the constructor.  Such a
-client can only be used to query for the list of projects to which the
-client's credentials has some access:
-
-  .. doctest::
-
-     >>> from gcloud import bigquery
-     >>> client = bigquery.Client(project=None)
-     >>> projects, next_page_token = client.list_projects()  # API request
-     >>> list(projects)
-     ['project-one', 'project-two']
-
 Project ACLs
 ~~~~~~~~~~~~
 
