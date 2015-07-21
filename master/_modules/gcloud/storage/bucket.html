@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud 712744f documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud c98b707 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '712744f',
+        VERSION:     'c98b707',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 712744f documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud c98b707 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20712744f" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20c98b707" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (712744f)
+              Version History (c98b707)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -105,7 +105,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">pytz</span>
 <span class="kn">import</span> <span class="nn">six</span>
@@ -530,98 +529,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">api_path</span><span class="p">,</span> <span class="n">_target_object</span><span class="o">=</span><span class="n">new_blob</span><span class="p">)</span>
         <span class="n">new_blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">copy_result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_blob</span>
-</div>
-<div class="viewcode-block" id="Bucket.upload_file"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.upload_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Shortcut method to upload a file into this bucket.</span>
-
-<span class="sd">        Use this method to quickly put a local file in Cloud Storage.</span>
-
-<span class="sd">        For example::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; client = storage.Client()</span>
-<span class="sd">          &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;, &#39;remote-text-file.txt&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket.list_blobs()</span>
-<span class="sd">          [&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
-
-<span class="sd">        If you don&#39;t provide a blob name, we will try to upload the file</span>
-<span class="sd">        using the local filename (**not** the complete path)::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; client = storage.Client()</span>
-<span class="sd">          &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; bucket.upload_file(&#39;~/my-file.txt&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket.list_blobs()</span>
-<span class="sd">          [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
-
-<span class="sd">        :type filename: string</span>
-<span class="sd">        :param filename: Local path to the file you want to upload.</span>
-
-<span class="sd">        :type blob_name: string</span>
-<span class="sd">        :param blob_name: The name of the blob to upload the file to. If this</span>
-<span class="sd">                          is blank, we will try to upload the file to the root</span>
-<span class="sd">                          of the bucket with the same name as on your local</span>
-<span class="sd">                          file system.</span>
-
-<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to the ``client`` stored on the current bucket.</span>
-
-<span class="sd">        :rtype: :class:`Blob`</span>
-<span class="sd">        :returns: The updated Blob object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">blob_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">blob_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
-        <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">blob</span>
-</div>
-<div class="viewcode-block" id="Bucket.upload_file_object"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.upload_file_object">[docs]</a>    <span class="k">def</span> <span class="nf">upload_file_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">blob_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Shortcut method to upload a file object into this bucket.</span>
-
-<span class="sd">        Use this method to quickly put a local file in Cloud Storage.</span>
-
-<span class="sd">        For example::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; client = storage.Client()</span>
-<span class="sd">          &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; bucket.upload_file(open(&#39;~/my-file.txt&#39;), &#39;remote-text-file.txt&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; print bucket.list_blobs()</span>
-<span class="sd">          [&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
-
-<span class="sd">        If you don&#39;t provide a blob name, we will try to upload the file</span>
-<span class="sd">        using the local filename (**not** the complete path)::</span>
-
-<span class="sd">          &gt;&gt;&gt; from gcloud import storage</span>
-<span class="sd">          &gt;&gt;&gt; client = storage.Client()</span>
-<span class="sd">          &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
-<span class="sd">          &gt;&gt;&gt; bucket.upload_file(open(&#39;~/my-file.txt&#39;))</span>
-<span class="sd">          &gt;&gt;&gt; print bucket.list_blobs()</span>
-<span class="sd">          [&lt;Blob: my-bucket, my-file.txt&gt;]</span>
-
-<span class="sd">        :type file_obj: file</span>
-<span class="sd">        :param file_obj: A file handle open for reading.</span>
-
-<span class="sd">        :type blob_name: string</span>
-<span class="sd">        :param blob_name: The name of the blob to upload the file to. If this</span>
-<span class="sd">                          is blank, we will try to upload the file to the root</span>
-<span class="sd">                          of the bucket with the same name as on your local</span>
-<span class="sd">                          file system.</span>
-
-<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
-<span class="sd">                       to the ``client`` stored on the current bucket.</span>
-
-<span class="sd">        :rtype: :class:`Blob`</span>
-<span class="sd">        :returns: The updated Blob object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">blob_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">blob_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">)</span>
-        <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">blob</span>
 </div>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">cors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
