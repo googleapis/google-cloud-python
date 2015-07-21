@@ -34,31 +34,61 @@ Authorization / Configuration
      >>> client = bigquery.Client()
 
 - Override the credentials inferred from the environment by passing explicit
-  ``credentials`` to one of the alternative classmethods, `from_service_account_json`:
+  ``credentials`` to one of the alternative ``classmethod`` factories,
+  `:meth:gcloud.bigquery.client.Client.from_service_account_json`:
 
   .. doctest::
 
      >>> from gcloud import bigquery
      >>> client = bigquery.Client.from_service_account_json('/path/to/creds.json')
 
-  or `from_service_account_p12`:
+  or `:meth:gcloud.bigquery.client.Client.from_service_account_p12`:
 
   .. doctest::
 
      >>> from gcloud import bigquery
      >>> client = bigquery.Client.from_service_account_p12('/path/to/creds.p12', 'jrandom@example.com')
 
-- Override the project inferred from the environment by passing an explicit
-  ``project`` to the constructor, or to either of the alternative classmethods:
+
+Projects
+--------
+
+A project is the top-level container in the ``BigQuery`` API:  it is tied
+closely to billing, and can provide default access control across all its
+datasets.  If no ``project`` is passed to the client container, the library
+attempts to infer a project using the environment (including explicit
+environment variables, GAE, and GCE).
+
+To override the project inferred from the environment, pass an explicit
+``project`` to the constructor, or to either of the alternative
+``classmethod`` factories:
 
   .. doctest::
 
      >>> from gcloud import bigquery
      >>> client = bigquery.Client(project='PROJECT_ID')
 
+Project ACLs
+~~~~~~~~~~~~
 
-Manage datasets
----------------
+Each project has an access control list granting reader / writer / owner
+permission to one or more entities.  This list cannot be queried or set
+via the API:  it must be managed using the Google Developer Console.
+
+Datasets
+--------
+
+A dataset represents a collection of tables, and applies several default
+policies to tables as they are created:
+
+- An access control list (ACL).  When created, a dataset has an ACL
+  which maps to the ACL inherited from its project.
+
+- A default table expiration period.  If set, tables created within the
+  dataset will have the value as their expiration period.
+
+Dataset operations
+~~~~~~~~~~~~~~~~~~
 
 Create a new dataset for the client's project:
 
@@ -100,7 +130,7 @@ Patch metadata for a dataset:
    >>> dataset.patch(description='Description goes here',
    ...               default_table_expiration_ms=one_day_ms)  # API request
 
-Replace the ACL for a project, and update all writeable fields:
+Replace the ACL for a dataset, and update all writeable fields:
 
 .. doctest::
 
