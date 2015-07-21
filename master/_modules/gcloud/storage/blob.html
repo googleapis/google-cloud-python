@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 50b2fd8 documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud 63af1e8 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '50b2fd8',
+        VERSION:     '63af1e8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 50b2fd8 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 63af1e8 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%2050b2fd8" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%2063af1e8" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (50b2fd8)
+              Version History (63af1e8)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -282,7 +282,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-            <span class="n">credentials</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">credentials</span>
+            <span class="n">credentials</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">credentials</span>
 
         <span class="k">return</span> <span class="n">generate_signed_url</span><span class="p">(</span>
             <span class="n">credentials</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
@@ -380,7 +380,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">headers</span><span class="p">[</span><span class="s">&#39;Range&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;bytes=0-</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,)</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">http_wrapper</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
-        <span class="n">download</span><span class="o">.</span><span class="n">InitializeDownload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+        <span class="c"># Use the private ``_connection`` rather than the public</span>
+        <span class="c"># ``.connection``, since the public connection may be a batch. A</span>
+        <span class="c"># batch wraps a client&#39;s connection, but does not store the `http`</span>
+        <span class="c"># object. The rest (API_BASE_URL and build_api_url) are also defined</span>
+        <span class="c"># on the Batch class, but we just use the wrapped connection since</span>
+        <span class="c"># it has all three (http, API_BASE_URL and build_api_url).</span>
+        <span class="n">download</span><span class="o">.</span><span class="n">InitializeDownload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
 
         <span class="c"># Should we be passing callbacks through from caller?  We can&#39;t</span>
         <span class="c"># pass them as None, because apitools wants to print to the console</span>
@@ -468,7 +474,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                 determined</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
+        <span class="c"># Use the private ``_connection`` rather than the public</span>
+        <span class="c"># ``.connection``, since the public connection may be a batch. A</span>
+        <span class="c"># batch wraps a client&#39;s connection, but does not store the `http`</span>
+        <span class="c"># object. The rest (API_BASE_URL and build_api_url) are also defined</span>
+        <span class="c"># on the Batch class, but we just use the wrapped connection since</span>
+        <span class="c"># it has all three (http, API_BASE_URL and build_api_url).</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span>
         <span class="n">content_type</span> <span class="o">=</span> <span class="p">(</span><span class="n">content_type</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;contentType&#39;</span><span class="p">)</span> <span class="ow">or</span>
                         <span class="s">&#39;application/octet-stream&#39;</span><span class="p">)</span>
 

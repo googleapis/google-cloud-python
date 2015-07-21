@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.client &mdash; gcloud 50b2fd8 documentation</title>
+    <title>gcloud.datastore.client &mdash; gcloud 63af1e8 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '50b2fd8',
+        VERSION:     '63af1e8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 50b2fd8 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 63af1e8 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%2050b2fd8" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%2063af1e8" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (50b2fd8)
+              Version History (63af1e8)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -278,7 +278,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type batch: :class:`gcloud.datastore.batch.Batch`, or an object</span>
 <span class="sd">                     implementing its API.</span>
-<span class="sd">        :param batch: newly-active batch/batch/transaction.</span>
+<span class="sd">        :param batch: newly-active batch/transaction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_batch_stack</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 
@@ -300,7 +300,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.batch.Batch`, or an object</span>
 <span class="sd">                implementing its API, or ``NoneType`` (if no batch is active).</span>
-<span class="sd">        :returns: The batch/transaction at the toop of the batch stack.</span>
+<span class="sd">        :returns: The batch/transaction at the top of the batch stack.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch_stack</span><span class="o">.</span><span class="n">top</span>
 
@@ -311,7 +311,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.datastore.transaction.Transaction`, or an object</span>
 <span class="sd">                implementing its API, or ``NoneType`` (if no transaction is</span>
 <span class="sd">                active).</span>
-<span class="sd">        :returns: The transaction at the toop of the batch stack.</span>
+<span class="sd">        :returns: The transaction at the top of the batch stack.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_batch</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">transaction</span><span class="p">,</span> <span class="n">Transaction</span><span class="p">):</span>
