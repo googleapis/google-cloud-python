@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Client &mdash; gcloud 0.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/github.min.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.7.0 documentation" href="index.html" />
+    <link rel="next" title="Entities" href="datastore-entities.html" />
+    <link rel="prev" title="Datastore" href="datastore-overview.html" /> 
+  </head>
+  <body role="document">
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="
+http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
+              <img src="_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
+              Ruby
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%200.7.0" target="_blank" class="v-btn" id="file-issue">
+        <img src="_static/images/icon-link-github.svg" />
+        Report an Issue
+      </a>
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+        <h1 class="page-title">Python</h1>
+
+          <div class="versions">
+            <a href="/gcloud-python/versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              Version History (0.7.0)
+            </a>
+          </div><!-- end of .versions -->
+          <div>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
+              <img src="_static/images/icon-link-github.svg" />
+              Report an Issue
+            </a>
+          </div>
+      </header>
+
+      <section class="content">
+        
+  <div class="section" id="module-gcloud.datastore.client">
+<span id="client"></span><h1>Client<a class="headerlink" href="#module-gcloud.datastore.client" title="Permalink to this headline">#</a></h1>
+<p>Convenience wrapper for invoking APIs/factories w/ a dataset ID.</p>
+<dl class="class">
+<dt id="gcloud.datastore.client.Client">
+<em class="property">class </em><code class="descclassname">gcloud.datastore.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>namespace=None</em>, <em>connection=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Convenience wrapper for invoking APIs/factories w/ a dataset ID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dataset_id</strong> (<em>string</em>) &#8211; (optional) dataset ID to pass to proxied API methods.</li>
+<li><strong>namespace</strong> (<em>string</em>) &#8211; (optional) namespace to pass to proxied API methods.</li>
+<li><strong>connection</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.connection.Connection</span></code>, or None) &#8211; (optional) connection to pass to proxied API methods</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.allocate_ids">
+<code class="descname">allocate_ids</code><span class="sig-paren">(</span><em>incomplete_key</em>, <em>num_ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.allocate_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.allocate_ids" title="Permalink to this definition">#</a></dt>
+<dd><p>Allocate a list of IDs from a partial key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>incomplete_key</strong> (A <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; Partial key to use as base for allocated IDs.</li>
+<li><strong>num_ids</strong> (<em>integer</em>) &#8211; The number of IDs to allocate.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The (complete) keys allocated with <code class="docutils literal"><span class="pre">incomplete_key</span></code> as
+root.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if <code class="docutils literal"><span class="pre">incomplete_key</span></code> is not a
+partial key.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.batch">
+<code class="descname">batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.batch" title="Permalink to this definition">#</a></dt>
+<dd><p>Proxy to <a class="reference internal" href="datastore-batches.html#gcloud.datastore.batch.Batch" title="gcloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.batch.Batch</span></code></a>.</p>
+<p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.datastore.client.Client.current_batch">
+<code class="descname">current_batch</code><a class="headerlink" href="#gcloud.datastore.client.Client.current_batch" title="Permalink to this definition">#</a></dt>
+<dd><p>Currently-active batch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-batches.html#gcloud.datastore.batch.Batch" title="gcloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.batch.Batch</span></code></a>, or an object
+implementing its API, or <code class="docutils literal"><span class="pre">NoneType</span></code> (if no batch is active).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The batch/transaction at the top of the batch stack.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.datastore.client.Client.current_transaction">
+<code class="descname">current_transaction</code><a class="headerlink" href="#gcloud.datastore.client.Client.current_transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Currently-active transaction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>, or an object
+implementing its API, or <code class="docutils literal"><span class="pre">NoneType</span></code> (if no transaction is
+active).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The transaction at the top of the batch stack.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete the key in the Cloud Datastore.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is just a thin wrapper over <a class="reference internal" href="#gcloud.datastore.client.Client.delete_multi" title="gcloud.datastore.client.Client.delete_multi"><code class="xref py py-meth docutils literal"><span class="pre">delete_multi()</span></code></a>.
+The backend API does not make a distinction between a single key or
+multiple keys in a commit request.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; The key to be deleted from the datastore.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.delete_multi">
+<code class="descname">delete_multi</code><span class="sig-paren">(</span><em>keys</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.delete_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.delete_multi" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete keys from the Cloud Datastore.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>keys</strong> (list of <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; The keys to be deleted from the datastore.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>missing=None</em>, <em>deferred=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.get" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve an entity from a single key (if it exists).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is just a thin wrapper over <a class="reference internal" href="#gcloud.datastore.client.Client.get_multi" title="gcloud.datastore.client.Client.get_multi"><code class="xref py py-meth docutils literal"><span class="pre">get_multi()</span></code></a>.
+The backend API does not make a distinction between a single key or
+multiple keys in a lookup request.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; The key to be retrieved from the datastore.</li>
+<li><strong>missing</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the key-only entities returned
+by the backend as &#8220;missing&#8221; will be copied into it.
+Use only as a keyword param.</li>
+<li><strong>deferred</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the keys returned
+by the backend as &#8220;deferred&#8221; will be copied into it.
+Use only as a keyword param.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The requested entity if it exists.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.get_multi">
+<code class="descname">get_multi</code><span class="sig-paren">(</span><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.get_multi" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve entities, along with their attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>keys</strong> (list of <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>) &#8211; The keys to be retrieved from the datastore.</li>
+<li><strong>missing</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the key-only entities returned
+by the backend as &#8220;missing&#8221; will be copied into it.
+Use only as a keyword param.</li>
+<li><strong>deferred</strong> (<em>an empty list or None.</em>) &#8211; If a list is passed, the keys returned
+by the backend as &#8220;deferred&#8221; will be copied into it.
+Use only as a keyword param.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The requested entities.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if one or more of <code class="docutils literal"><span class="pre">keys</span></code> has a dataset ID which
+does not match our dataset ID.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.key">
+<code class="descname">key</code><span class="sig-paren">(</span><em>*path_args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.key" title="Permalink to this definition">#</a></dt>
+<dd><p>Proxy to <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>.</p>
+<p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.put">
+<code class="descname">put</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.put" title="Permalink to this definition">#</a></dt>
+<dd><p>Save an entity in the Cloud Datastore.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This is just a thin wrapper over <a class="reference internal" href="#gcloud.datastore.client.Client.put_multi" title="gcloud.datastore.client.Client.put_multi"><code class="xref py py-meth docutils literal"><span class="pre">put_multi()</span></code></a>.
+The backend API does not make a distinction between a single
+entity or multiple entities in a commit request.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entity</strong> (<a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a>) &#8211; The entity to be saved to the datastore.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.put_multi">
+<code class="descname">put_multi</code><span class="sig-paren">(</span><em>entities</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.put_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.put_multi" title="Permalink to this definition">#</a></dt>
+<dd><p>Save entities in the Cloud Datastore.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>entities</strong> (list of <a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a>) &#8211; The entities to be saved to the datastore.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body">ValueError if <code class="docutils literal"><span class="pre">entities</span></code> is a single entity.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.query">
+<code class="descname">query</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.query" title="Permalink to this definition">#</a></dt>
+<dd><p>Proxy to <a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></code></a>.</p>
+<p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.datastore.client.Client.transaction">
+<code class="descname">transaction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.transaction" title="Permalink to this definition">#</a></dt>
+<dd><p>Proxy to <a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>.</p>
+<p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <ul><li><a href="index.html">gcloud</a></li></ul>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">GCloud Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-overview.html">Datastore</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-api.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">BigQuery</a></li>
+</ul>
+
+        <ul class="external-links">
+          <li>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/" title="Python on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues" title="Python issues on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="http://stackoverflow.com/questions/tagged/gcloud-python" title="gcloud on StackOverflow">
+              <img src="_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              gcloud
+            </a>
+          </li>
+          <li>
+            <a href="https://pypi.python.org/pypi/gcloud" title="Python package manager">
+              <img src="_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              Package Manager
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
+  </body>
+</html>

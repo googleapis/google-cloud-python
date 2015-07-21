@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>BigQuery &mdash; gcloud 0.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/github.min.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.7.0 documentation" href="index.html" />
+    <link rel="prev" title="Topics" href="pubsub-topic.html" /> 
+  </head>
+  <body role="document">
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="
+http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
+              <img src="_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
+              Ruby
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-usage%0ARelease%3A%200.7.0" target="_blank" class="v-btn" id="file-issue">
+        <img src="_static/images/icon-link-github.svg" />
+        Report an Issue
+      </a>
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+        <h1 class="page-title">Python</h1>
+
+          <div class="versions">
+            <a href="/gcloud-python/versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              Version History (0.7.0)
+            </a>
+          </div><!-- end of .versions -->
+          <div>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
+              <img src="_static/images/icon-link-github.svg" />
+              Report an Issue
+            </a>
+          </div>
+      </header>
+
+      <section class="content">
+        
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="bigquery">
+<h1>BigQuery<a class="headerlink" href="#bigquery" title="Permalink to this headline">#</a></h1>
+<div class="section" id="using-the-api">
+<h2>Using the API<a class="headerlink" href="#using-the-api" title="Permalink to this headline">#</a></h2>
+<div class="section" id="authorization-configuration">
+<h3>Authorization / Configuration<a class="headerlink" href="#authorization-configuration" title="Permalink to this headline">#</a></h3>
+<ul>
+<li><p class="first">Use <code class="xref py py-class docutils literal"><span class="pre">Client</span></code> objects to configure
+your applications.</p>
+</li>
+<li><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code> objects hold both a <code class="docutils literal"><span class="pre">project</span></code>
+and an authenticated connection to the PubSub service.</p>
+</li>
+<li><p class="first">The authentication credentials can be implicitly determined from the
+environment or directly via
+<code class="xref py py-meth docutils literal"><span class="pre">from_service_account_json</span></code>
+and
+<code class="xref py py-meth docutils literal"><span class="pre">from_service_account_p12</span></code>.</p>
+</li>
+<li><p class="first">After setting <code class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> and <code class="docutils literal"><span class="pre">GCLOUD_PROJECT</span></code>
+environment variables, create an instance of
+<code class="xref py py-class docutils literal"><span class="pre">Client</span></code>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Override the credentials inferred from the environment by passing explicit
+<code class="docutils literal"><span class="pre">credentials</span></code> to one of the alternative classmethods, <cite>from_service_account_json</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s">&#39;/path/to/creds.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or <cite>from_service_account_p12</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_p12</span><span class="p">(</span><span class="s">&#39;/path/to/creds.p12&#39;</span><span class="p">,</span> <span class="s">&#39;jrandom@example.com&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Override the project inferred from the environment by passing an explicit
+<code class="docutils literal"><span class="pre">project</span></code> to the constructor, or to either of the alternative classmethods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="manage-datasets">
+<h3>Manage datasets<a class="headerlink" href="#manage-datasets" title="Permalink to this headline">#</a></h3>
+<p>Create a new dataset for the client&#8217;s project:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
+</pre></div>
+</div>
+<p>Check for the existence of a dataset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>List datasets for the client&#8217;s project:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">dataset</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">]</span>
+<span class="go">[&#39;dataset_name&#39;]</span>
+</pre></div>
+</div>
+<p>Patch metadata for a dataset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">one_day_ms</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&#39;Description goes here&#39;</span><span class="p">,</span>
+<span class="gp">... </span>              <span class="n">default_table_expiration_ms</span><span class="o">=</span><span class="n">one_day_ms</span><span class="p">)</span>  <span class="c"># API request</span>
+</pre></div>
+</div>
+<p>Replace the ACL for a project, and update all writeable fields:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">acl</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">acl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bigquery</span><span class="o">.</span><span class="n">Access</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="s">&#39;READER&#39;</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="s">&#39;domain&#39;</span><span class="p">,</span> <span class="n">entity</span><span class="o">=</span><span class="s">&#39;example.com&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">acl</span> <span class="o">=</span> <span class="n">acl</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c"># API request</span>
+</pre></div>
+</div>
+<p>Delete a dataset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset_name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c"># API request</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <ul><li><a href="index.html">gcloud</a></li></ul>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">GCloud Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-overview.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-api.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">BigQuery</a></li>
+</ul>
+
+        <ul class="external-links">
+          <li>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/" title="Python on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues" title="Python issues on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="http://stackoverflow.com/questions/tagged/gcloud-python" title="gcloud on StackOverflow">
+              <img src="_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              gcloud
+            </a>
+          </li>
+          <li>
+            <a href="https://pypi.python.org/pypi/gcloud" title="Python package manager">
+              <img src="_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              Package Manager
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
+  </body>
+</html>
