@@ -91,7 +91,7 @@ Python built-in ``object``.
 If you want to set some data, you just create a ``Blob`` inside your bucket
 and store your data inside the blob::
 
-  >>> blob = storage.Blob('greeting.txt', bucket=bucket)
+  >>> blob = bucket.blob('greeting.txt')
   >>> blob.upload_from_string('Hello world!')
 
 This creates a :class:`Blob <gcloud.storage.blob.Blob>` object locally and
@@ -116,7 +116,7 @@ Then you can look at the file in a terminal::
 And what about when you're not dealing with text?
 That's pretty simple too::
 
-  >>> blob = storage.Blob('kitten.jpg', bucket)
+  >>> blob = bucket.blob('kitten.jpg')
   >>> blob.upload_from_filename('kitten.jpg')
 
 And to test whether it worked?

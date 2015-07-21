@@ -107,6 +107,21 @@ class Test_Bucket(unittest2.TestCase):
         self.assertFalse(bucket._default_object_acl.loaded)
         self.assertTrue(bucket._default_object_acl.bucket is bucket)
 
+    def test_blob(self):
+        from gcloud.storage.blob import Blob
+
+        BUCKET_NAME = 'BUCKET_NAME'
+        BLOB_NAME = 'BLOB_NAME'
+        CHUNK_SIZE = 1024 * 1024
+
+        bucket = self._makeOne(name=BUCKET_NAME)
+        blob = bucket.blob(BLOB_NAME, chunk_size=CHUNK_SIZE)
+        self.assertTrue(isinstance(blob, Blob))
+        self.assertTrue(blob.bucket is bucket)
+        self.assertTrue(blob.client is bucket.client)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.chunk_size, CHUNK_SIZE)
+
     def test_exists_miss(self):
         from gcloud.exceptions import NotFound
 

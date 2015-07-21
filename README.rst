@@ -107,7 +107,7 @@ how to create a bucket.
     blob = bucket.get_blob('/remote/path/to/file.txt')
     print blob.download_as_string()
     blob.upload_from_string('New contents!')
-    blob2 = storage.Blob('/remote/path/storage.txt', bucket)
+    blob2 = bucket.blob('/remote/path/storage.txt')
     blob2.upload_from_filename(filename='/local/path.txt')
 
 Contributing
