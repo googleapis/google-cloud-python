@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import httplib2
+import os
 import six
 import tempfile
 import time
@@ -141,7 +142,11 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.assertEqual(md5_hash, file_data['hash'])
 
     def test_write_metadata(self):
-        blob = self.bucket.upload_file(self.FILES['logo']['path'])
+        filename = self.FILES['logo']['path']
+        blob_name = os.path.basename(filename)
+
+        blob = storage.Blob(blob_name, bucket=self.bucket)
+        blob.upload_from_filename(filename)
         self.case_blobs_to_delete.append(blob)
 
         # NOTE: This should not be necessary. We should be able to pass
@@ -167,8 +172,9 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.assertEqual(file_contents, stored_contents)
 
     def test_copy_existing_file(self):
-        blob = self.bucket.upload_file(self.FILES['logo']['path'],
-                                       blob_name='CloudLogo')
+        filename = self.FILES['logo']['path']
+        blob = storage.Blob('CloudLogo', bucket=self.bucket)
+        blob.upload_from_filename(filename)
         self.case_blobs_to_delete.append(blob)
 
         new_blob = self.bucket.copy_blob(blob, self.bucket, 'CloudLogoCopy')
@@ -191,7 +197,8 @@ class TestStorageListFiles(TestStorageFiles):
             blob.delete()
 
         logo_path = cls.FILES['logo']['path']
-        blob = cls.bucket.upload_file(logo_path, blob_name=cls.FILENAMES[0])
+        blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
+        blob.upload_from_filename(logo_path)
         cls.suite_blobs_to_delete = [blob]
 
         # Copy main blob onto remaining in FILENAMES.
@@ -242,7 +249,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
             blob.delete()
 
         simple_path = cls.FILES['simple']['path']
-        blob = cls.bucket.upload_file(simple_path, blob_name=cls.FILENAMES[0])
+        blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
+        blob.upload_from_filename(simple_path)
         cls.suite_blobs_to_delete = [blob]
         for filename in cls.FILENAMES[1:]:
             new_blob = cls.bucket.copy_blob(blob, cls.bucket, filename)

@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import io
-
 import unittest2
 
 
@@ -506,99 +504,6 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
 
-    def test_upload_file_default_blob_name(self):
-        from gcloud._testing import _Monkey
-        from gcloud.storage import bucket as MUT
-        BASENAME = 'file.ext'
-        FILENAME = '/path/to/%s' % BASENAME
-        _uploaded = []
-
-        class _Blob(object):
-
-            def __init__(self, bucket, name):
-                self._bucket = bucket
-                self._name = name
-
-            def upload_from_filename(self, filename, client=None):
-                _uploaded.append((self._bucket, self._name, filename,
-                                  client))
-
-        bucket = self._makeOne()
-        with _Monkey(MUT, Blob=_Blob):
-            bucket.upload_file(FILENAME)
-        self.assertEqual(_uploaded, [(bucket, BASENAME, FILENAME, None)])
-
-    def test_upload_file_blob_w_blob_name(self):
-        from gcloud._testing import _Monkey
-        from gcloud.storage import bucket as MUT
-        FILENAME = '/path/to/file'
-        BLOB_NAME = 'blob-name'
-        _uploaded = []
-
-        class _Blob(object):
-
-            def __init__(self, bucket, name):
-                self._bucket = bucket
-                self._name = name
-
-            def upload_from_filename(self, filename, client=None):
-                _uploaded.append((self._bucket, self._name, filename,
-                                  client))
-
-        bucket = self._makeOne()
-        with _Monkey(MUT, Blob=_Blob):
-            bucket.upload_file(FILENAME, BLOB_NAME)
-        self.assertEqual(_uploaded, [(bucket, BLOB_NAME, FILENAME, None)])
-
-    def test_upload_file_object_no_blob(self):
-        from gcloud._testing import _Monkey
-        from gcloud.storage import bucket as MUT
-        FILENAME = 'file.txt'
-        FILEOBJECT = MockFile(FILENAME)
-        _uploaded = []
-
-        class _Blob(object):
-
-            def __init__(self, bucket, name):
-                self._bucket = bucket
-                self._name = name
-
-            def upload_from_file(self, fh, client=None):
-                _uploaded.append((self._bucket, self._name, fh, client))
-
-        bucket = self._makeOne()
-        with _Monkey(MUT, Blob=_Blob):
-            found = bucket.upload_file_object(FILEOBJECT)
-        self.assertEqual(_uploaded, [(bucket, FILENAME, FILEOBJECT, None)])
-        self.assertTrue(isinstance(found, _Blob))
-        self.assertEqual(found._name, FILENAME)
-        self.assertTrue(found._bucket is bucket)
-
-    def test_upload_file_object_blob(self):
-        from gcloud._testing import _Monkey
-        from gcloud.storage import bucket as MUT
-        FILENAME = 'file.txt'
-        FILEOBJECT = MockFile(FILENAME)
-        BLOB_NAME = 'blob-name'
-        _uploaded = []
-
-        class _Blob(object):
-
-            def __init__(self, bucket, name):
-                self._bucket = bucket
-                self._name = name
-
-            def upload_from_file(self, fh, client=None):
-                _uploaded.append((self._bucket, self._name, fh, client))
-
-        bucket = self._makeOne()
-        with _Monkey(MUT, Blob=_Blob):
-            found = bucket.upload_file_object(FILEOBJECT, BLOB_NAME)
-        self.assertEqual(_uploaded, [(bucket, BLOB_NAME, FILEOBJECT, None)])
-        self.assertTrue(isinstance(found, _Blob))
-        self.assertEqual(found._name, BLOB_NAME)
-        self.assertTrue(found._bucket is bucket)
-
     def test_etag(self):
         ETAG = 'ETAG'
         properties = {'etag': ETAG}
@@ -1016,14 +921,6 @@ class _Bucket(object):
 
     def __init__(self, client=None):
         self.client = client
-
-
-class MockFile(io.StringIO):
-    name = None
-
-    def __init__(self, name, buffer_=None):
-        super(MockFile, self).__init__(buffer_)
-        self.name = name
 
 
 class _Client(object):

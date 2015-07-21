@@ -116,7 +116,8 @@ Then you can look at the file in a terminal::
 And what about when you're not dealing with text?
 That's pretty simple too::
 
-  >>> blob = bucket.upload_file('kitten.jpg')
+  >>> blob = storage.Blob('kitten.jpg', bucket)
+  >>> blob.upload_from_filename('kitten.jpg')
 
 And to test whether it worked?
 
