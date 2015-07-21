@@ -26,7 +26,7 @@ class Test__BlobIterator(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor_w_explicit_connection(self):
+    def test_ctor(self):
         connection = _Connection()
         client = _Client(connection)
         bucket = _Bucket()
@@ -162,7 +162,7 @@ class Test_Bucket(unittest2.TestCase):
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
 
-    def test_create_hit_explicit_project(self):
+    def test_create_hit(self):
         BUCKET_NAME = 'bucket-name'
         DATA = {'name': BUCKET_NAME}
         connection = _Connection(DATA)
@@ -238,7 +238,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
-    def test_list_blobs_explicit(self):
+    def test_list_blobs_w_all_arguments(self):
         NAME = 'name'
         MAX_RESULTS = 10
         PAGE_TOKEN = 'ABCD'
@@ -276,7 +276,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], EXPECTED)
 
-    def test_list_blobs_w_explicit_connection(self):
+    def test_list_blobs(self):
         NAME = 'name'
         connection = _Connection({'items': []})
         client = _Client(connection)
@@ -289,7 +289,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['path'], '/b/%s/o' % NAME)
         self.assertEqual(kw['query_params'], {'projection': 'noAcl'})
 
-    def test_delete_default_miss(self):
+    def test_delete_miss(self):
         from gcloud.exceptions import NotFound
         NAME = 'name'
         connection = _Connection()
@@ -303,7 +303,7 @@ class Test_Bucket(unittest2.TestCase):
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
-    def test_delete_explicit_hit(self):
+    def test_delete_hit(self):
         NAME = 'name'
         GET_BLOBS_RESP = {'items': []}
         connection = _Connection(GET_BLOBS_RESP)
@@ -319,7 +319,7 @@ class Test_Bucket(unittest2.TestCase):
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
-    def test_delete_explicit_force_delete_blobs(self):
+    def test_delete_force_delete_blobs(self):
         NAME = 'name'
         BLOB_NAME1 = 'blob-name1'
         BLOB_NAME2 = 'blob-name2'
@@ -344,7 +344,7 @@ class Test_Bucket(unittest2.TestCase):
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
-    def test_delete_explicit_force_miss_blobs(self):
+    def test_delete_force_miss_blobs(self):
         NAME = 'name'
         BLOB_NAME = 'blob-name1'
         GET_BLOBS_RESP = {'items': [{'name': BLOB_NAME}]}
@@ -362,7 +362,7 @@ class Test_Bucket(unittest2.TestCase):
         }]
         self.assertEqual(connection._deleted_buckets, expected_cw)
 
-    def test_delete_explicit_too_many(self):
+    def test_delete_too_many(self):
         NAME = 'name'
         BLOB_NAME1 = 'blob-name1'
         BLOB_NAME2 = 'blob-name2'
@@ -506,7 +506,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
 
-    def test_upload_file_default_blob(self):
+    def test_upload_file_default_blob_name(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         BASENAME = 'file.ext'
@@ -528,7 +528,7 @@ class Test_Bucket(unittest2.TestCase):
             bucket.upload_file(FILENAME)
         self.assertEqual(_uploaded, [(bucket, BASENAME, FILENAME, None)])
 
-    def test_upload_file_explicit_blob(self):
+    def test_upload_file_blob_w_blob_name(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         FILENAME = '/path/to/file'
@@ -574,7 +574,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(found._name, FILENAME)
         self.assertTrue(found._bucket is bucket)
 
-    def test_upload_file_object_explicit_blob(self):
+    def test_upload_file_object_blob(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import bucket as MUT
         FILENAME = 'file.txt'
@@ -700,7 +700,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(info['logBucket'], LOG_BUCKET)
         self.assertEqual(info['logObjectPrefix'], '')
 
-    def test_enable_logging_explicit(self):
+    def test_enable_logging(self):
         NAME = 'name'
         LOG_BUCKET = 'logs'
         LOG_PFX = 'pfx'
@@ -812,7 +812,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket.configure_website()
         self.assertEqual(bucket._properties, UNSET)
 
-    def test_configure_website_explicit(self):
+    def test_configure_website(self):
         NAME = 'name'
         WEBSITE_VAL = {'website': {'mainPageSuffix': 'html',
                                    'notFoundPage': '404.html'}}

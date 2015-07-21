@@ -359,7 +359,7 @@ class ACL(object):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current object.
+                       ``client`` stored on the current ACL.
 
         :rtype: :class:`gcloud.storage.client.Client`
         :returns: The client passed in or the currently bound client.
@@ -373,7 +373,7 @@ class ACL(object):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the ACL's parent.
         """
         path = self.reload_path
         client = self._require_client(client)
@@ -394,7 +394,7 @@ class ACL(object):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the ACL's parent.
         """
         if acl is None:
             acl = self
@@ -425,7 +425,7 @@ class ACL(object):
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+                       to the ``client`` stored on the ACL's parent.
         """
         self.save([], client=client)
 

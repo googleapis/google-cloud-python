@@ -183,7 +183,7 @@ class Test_Blob(unittest2.TestCase):
         }
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
-    def test_generate_signed_url_w_explicit_method(self):
+    def test_generate_signed_url_w_method_arg(self):
         from gcloud._testing import _Monkey
         from gcloud.storage import blob as MUT
 
@@ -674,7 +674,7 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(headers['Content-Type'], 'text/plain')
         self.assertEqual(rq[0]['body'], ENCODED)
 
-    def test_make_public_w_explicit_connection(self):
+    def test_make_public(self):
         from gcloud.storage.acl import _ACLEntity
         BLOB_NAME = 'blob-name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]

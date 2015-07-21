@@ -75,7 +75,7 @@ class TestBatch(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor_w_explicit_connection(self):
+    def test_ctor(self):
         http = _HTTP()
         connection = _Connection(http=http)
         client = _Client(connection)

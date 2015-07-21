@@ -25,7 +25,7 @@ class _PropertyMixin(object):
     """Abstract mixin for cloud storage classes with associated propertties.
 
     Non-abstract subclasses should implement:
-      - connection
+      - client
       - path
 
     :type name: string
@@ -65,8 +65,8 @@ class _PropertyMixin(object):
         """Reload properties from Cloud Storage.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current object.
         """
         client = self._require_client(client)
         # Pass only '?projection=noAcl' here because 'acl' and related
@@ -111,8 +111,8 @@ class _PropertyMixin(object):
         Updates the ``_properties`` with the response from the backend.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to default connection.
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current object.
         """
         client = self._require_client(client)
         # Pass '?projection=full' here because 'PATCH' documented not

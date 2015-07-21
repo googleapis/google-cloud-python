@@ -31,7 +31,7 @@ class Test_ACLEntity(unittest2.TestCase):
         self.assertEqual(entity.identifier, None)
         self.assertEqual(entity.get_roles(), set())
 
-    def test_ctor_explicit_identifier(self):
+    def test_ctor_w_identifier(self):
         TYPE = 'type'
         ID = 'id'
         entity = self._makeOne(TYPE, ID)
@@ -509,7 +509,7 @@ class Test_ACL(unittest2.TestCase):
         entity = acl.entity(TYPE, ID)
         self.assertEqual(acl.get_entities(), [entity])
 
-    def test_reload_missing_w_explicit_connection(self):
+    def test_reload_missing(self):
         # https://github.com/GoogleCloudPlatform/gcloud-python/issues/652
         ROLE = 'role'
         connection = _Connection({})
@@ -525,7 +525,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/testing/acl')
 
-    def test_reload_empty_result_clears_local_w_explicit_connection(self):
+    def test_reload_empty_result_clears_local(self):
         ROLE = 'role'
         connection = _Connection({'items': []})
         client = _Client(connection)
@@ -541,7 +541,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/testing/acl')
 
-    def test_reload_nonempty_result_w_explicit_connection(self):
+    def test_reload_nonempty_result(self):
         ROLE = 'role'
         connection = _Connection(
             {'items': [{'entity': 'allUsers', 'role': ROLE}]})
@@ -557,7 +557,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['method'], 'GET')
         self.assertEqual(kw[0]['path'], '/testing/acl')
 
-    def test_save_none_set_none_passed_w_explicit_connection(self):
+    def test_save_none_set_none_passed(self):
         connection = _Connection()
         client = _Client(connection)
         acl = self._makeOne()
@@ -566,7 +566,7 @@ class Test_ACL(unittest2.TestCase):
         kw = connection._requested
         self.assertEqual(len(kw), 0)
 
-    def test_save_existing_missing_none_passed_w_explicit_connection(self):
+    def test_save_existing_missing_none_passed(self):
         connection = _Connection({})
         client = _Client(connection)
         acl = self._makeOne()
@@ -581,7 +581,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': []})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_save_no_arg_w_explicit_connection(self):
+    def test_save_no_arg(self):
         ROLE = 'role'
         AFTER = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'acl': AFTER})
@@ -599,7 +599,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': AFTER})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_save_w_arg_w_explicit_connection(self):
+    def test_save_w_arg(self):
         ROLE1 = 'role1'
         ROLE2 = 'role2'
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
@@ -621,7 +621,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': new_acl})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_clear_w_explicit_connection(self):
+    def test_clear(self):
         ROLE1 = 'role1'
         ROLE2 = 'role2'
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
