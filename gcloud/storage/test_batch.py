@@ -90,8 +90,11 @@ class TestBatch(unittest2.TestCase):
         credentials = _Credentials()
         client = Client(project=project, credentials=credentials)
         batch1 = self._makeOne(client)
+        self.assertTrue(batch1.current() is None)
+
         client._push_batch(batch1)
         self.assertTrue(batch1.current() is batch1)
+
         batch2 = self._makeOne(client)
         client._push_batch(batch2)
         self.assertTrue(batch1.current() is batch2)
@@ -372,11 +375,10 @@ class TestBatch(unittest2.TestCase):
         expected = _Response()
         expected['content-type'] = 'multipart/mixed; boundary="DEADBEEF="'
         http = _HTTP((expected, _THREE_PART_MIME_RESPONSE))
-        connection = _Connection(http=http)
         project = 'PROJECT'
         credentials = _Credentials()
         client = Client(project=project, credentials=credentials)
-        client._connection = connection
+        client._connection._http = http
 
         self.assertEqual(list(client._batch_stack), [])
 

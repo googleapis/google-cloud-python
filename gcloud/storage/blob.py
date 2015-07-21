@@ -291,6 +291,12 @@ class Blob(_PropertyMixin):
             headers['Range'] = 'bytes=0-%d' % (self.chunk_size - 1,)
         request = http_wrapper.Request(download_url, 'GET', headers)
 
+        # Use the private ``_connection`` rather than the public
+        # ``.connection``, since the public connection may be a batch. A
+        # batch wraps a client's connection, but does not store the `http`
+        # object. The rest (API_BASE_URL and build_api_url) are also defined
+        # on the Batch class, but we just use the wrapped connection since
+        # it has all three (http, API_BASE_URL and build_api_url).
         download.InitializeDownload(request, client._connection.http)
 
         # Should we be passing callbacks through from caller?  We can't
