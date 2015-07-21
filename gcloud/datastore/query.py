@@ -333,7 +333,31 @@ class Query(object):
 
 
 class Iterator(object):
-    """Represent the state of a given execution of a Query."""
+    """Represent the state of a given execution of a Query.
+
+    :type query: :class:`gcloud.datastore.query.Query`
+    :param query: Query object holding permanent configuration (i.e.
+                  things that don't change on with each page in
+                  a results set).
+
+    :type client: :class:`gcloud.datastore.client.Client`
+    :param client: The client used to make a request.
+
+    :type limit: integer
+    :param limit: (Optional) Limit the number of results returned.
+
+    :type offset: integer
+    :param offset: (Optional) Defaults to 0. Offset used to begin
+                   a query.
+
+    :type start_cursor: bytes
+    :param start_cursor: (Optional) Cursor to begin paging through
+                         query results.
+
+    :type end_cursor: bytes
+    :param end_cursor: (Optional) Cursor to end paging through
+                       query results.
+    """
 
     _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
 
