@@ -175,53 +175,69 @@ class TestClient(unittest2.TestCase):
         return Client
 
     def _makeOne(self, dataset_id=DATASET_ID, namespace=None,
-                 connection=CONNECTION):
+                 credentials=None, http=None):
+        if credentials is None:
+            credentials = _Credentials()
         return self._getTargetClass()(dataset_id=dataset_id,
                                       namespace=namespace,
-                                      connection=connection)
+                                      credentials=credentials,
+                                      http=http)
 
     def test_ctor_w_dataset_id_no_environ(self):
-        self.assertRaises(EnvironmentError, self._makeOne, None)
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import client as _MUT
+
+        determine_dataset_inputs = []
+
+        def mock_determine(dataset_id):
+            determine_dataset_inputs.append(dataset_id)
+            return None
+
+        with _Monkey(_MUT, _determine_default_dataset_id=mock_determine):
+            self.assertRaises(EnvironmentError, self._makeOne, None)
+
+        self.assertEqual(determine_dataset_inputs, [None])
 
     def test_ctor_w_implicit_inputs(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import client as _MUT
+        from gcloud import client as base_client
 
         OTHER = 'other'
-        conn = object()
+        CREDENTIALS = _Credentials()
 
-        class _Connection(object):
-            @classmethod
-            def from_environment(cls):
-                return conn
+        def mock_get_credentials():
+            return CREDENTIALS
 
         klass = self._getTargetClass()
         with _Monkey(_MUT,
-                     _determine_default_dataset_id=lambda x: x or OTHER,
-                     Connection=_Connection):
-            client = klass()
+                     _determine_default_dataset_id=lambda x: x or OTHER):
+            with _Monkey(base_client, get_credentials=mock_get_credentials):
+                client = klass()
         self.assertEqual(client.dataset_id, OTHER)
         self.assertEqual(client.namespace, None)
-        self.assertTrue(client.connection is conn)
+        self.assertTrue(client.connection._credentials is CREDENTIALS)
         self.assertTrue(client.current_batch is None)
         self.assertTrue(client.current_transaction is None)
 
     def test_ctor_w_explicit_inputs(self):
         OTHER = 'other'
         NAMESPACE = 'namespace'
-        conn = object()
+        credentials = _Credentials()
+        http = object()
         client = self._makeOne(dataset_id=OTHER,
                                namespace=NAMESPACE,
-                               connection=conn)
+                               credentials=credentials,
+                               http=http)
         self.assertEqual(client.dataset_id, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
-        self.assertTrue(client.connection is conn)
+        self.assertTrue(client.connection._credentials is credentials)
+        self.assertTrue(client.connection._http is http)
         self.assertTrue(client.current_batch is None)
         self.assertEqual(list(client._batch_stack), [])
 
     def test__push_batch_and__pop_batch(self):
-        conn = object()
-        client = self._makeOne(connection=conn)
+        client = self._makeOne()
         batch = client.batch()
         xact = client.transaction()
         client._push_batch(batch)
@@ -245,8 +261,7 @@ class TestClient(unittest2.TestCase):
             _called_with.append((args, kw))
             return []
 
-        connection = object()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
         client.get_multi = _get_multi
 
         key = object()
@@ -266,8 +281,7 @@ class TestClient(unittest2.TestCase):
             _called_with.append((args, kw))
             return [_entity]
 
-        connection = object()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
         client.get_multi = _get_multi
 
         key, missing, deferred = object(), [], []
@@ -280,8 +294,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(_called_with[0][1]['deferred'] is deferred)
 
     def test_get_multi_no_keys(self):
-        connection = object()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
         results = client.get_multi([])
         self.assertEqual(results, [])
 
@@ -289,8 +302,8 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.key import Key
         from gcloud.datastore.test_connection import _Connection
 
-        connection = _Connection()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = _Connection()
         key = Key('Kind', 1234, dataset_id=self.DATASET_ID)
         results = client.get_multi([key])
         self.assertEqual(results, [])
@@ -311,9 +324,9 @@ class TestClient(unittest2.TestCase):
         path_element.id = ID
 
         # Set missing entity on mock connection.
-        connection = _Connection()
+        client = self._makeOne()
+        client.connection = connection = _Connection()
         connection._missing = [missed]
-        client = self._makeOne(connection=connection)
 
         key = Key(KIND, ID, dataset_id=self.DATASET_ID)
         missing = []
@@ -325,8 +338,7 @@ class TestClient(unittest2.TestCase):
     def test_get_multi_w_missing_non_empty(self):
         from gcloud.datastore.key import Key
 
-        CONNECTION = object()
-        client = self._makeOne(connection=CONNECTION)
+        client = self._makeOne()
         key = Key('Kind', 1234, dataset_id=self.DATASET_ID)
 
         missing = ['this', 'list', 'is', 'not', 'empty']
@@ -336,8 +348,7 @@ class TestClient(unittest2.TestCase):
     def test_get_multi_w_deferred_non_empty(self):
         from gcloud.datastore.key import Key
 
-        CONNECTION = object()
-        client = self._makeOne(connection=CONNECTION)
+        client = self._makeOne()
         key = Key('Kind', 1234, dataset_id=self.DATASET_ID)
 
         deferred = ['this', 'list', 'is', 'not', 'empty']
@@ -351,9 +362,9 @@ class TestClient(unittest2.TestCase):
         key = Key('Kind', 1234, dataset_id=self.DATASET_ID)
 
         # Set deferred entity on mock connection.
-        connection = _Connection()
+        client = self._makeOne()
+        client.connection = connection = _Connection()
         connection._deferred = [key.to_protobuf()]
-        client = self._makeOne(connection=connection)
 
         deferred = []
         entities = client.get_multi([key], deferred=deferred)
@@ -399,8 +410,8 @@ class TestClient(unittest2.TestCase):
         entity2.key.CopyFrom(key_pb2)
         rsp_pb2.found.add(entity=entity2)
 
-        connection = Connection()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = connection = Connection()
         # Add mock http object to connection with response from above.
         http = connection._http = _HttpMultiple(
             ({'status': '200'}, rsp_pb1.SerializeToString()),
@@ -461,8 +472,8 @@ class TestClient(unittest2.TestCase):
         entity_pb = _make_entity_pb(self.DATASET_ID, KIND, ID, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
-        connection = _Connection(entity_pb)
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = _Connection(entity_pb)
 
         key = Key(KIND, ID, dataset_id=self.DATASET_ID)
         result, = client.get_multi([key])
@@ -488,8 +499,8 @@ class TestClient(unittest2.TestCase):
         entity_pb2 = _make_entity_pb(self.DATASET_ID, KIND, ID2)
 
         # Make a connection to return the entity pbs.
-        connection = _Connection(entity_pb1, entity_pb2)
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = _Connection(entity_pb1, entity_pb2)
 
         key1 = Key(KIND, ID1, dataset_id=self.DATASET_ID)
         key2 = Key(KIND, ID2, dataset_id=self.DATASET_ID)
@@ -512,7 +523,7 @@ class TestClient(unittest2.TestCase):
 
         key1 = Key('KIND', 1234, dataset_id=DATASET_ID1)
         key2 = Key('KIND', 1234, dataset_id=DATASET_ID2)
-        client = self._makeOne(connection=object())
+        client = self._makeOne()
 
         with self.assertRaises(ValueError):
             client.get_multi([key1, key2])
@@ -530,8 +541,8 @@ class TestClient(unittest2.TestCase):
         entity_pb = _make_entity_pb(self.DATASET_ID, KIND, ID, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
-        connection = _Connection(entity_pb)
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = _Connection(entity_pb)
 
         key = Key(KIND, ID, dataset_id=self.DATASET_ID)
         deferred = []
@@ -562,14 +573,14 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(_called_with[0][1]['entities'], [entity])
 
     def test_put_multi_no_entities(self):
-        client = self._makeOne(connection=object())
+        client = self._makeOne()
         self.assertEqual(client.put_multi([]), None)
 
     def test_put_multi_w_single_empty_entity(self):
         # https://github.com/GoogleCloudPlatform/gcloud-python/issues/649
         from gcloud.datastore.entity import Entity
 
-        client = self._makeOne(connection=object())
+        client = self._makeOne()
         self.assertRaises(ValueError, client.put_multi, Entity())
 
     def test_put_multi_no_batch_w_partial_key(self):
@@ -577,8 +588,8 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
 
-        connection = _Connection()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = connection = _Connection()
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(self.DATASET_ID)
         key._id = None
@@ -598,12 +609,10 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(transaction_id is None)
 
     def test_put_multi_existing_batch_w_completed_key(self):
-        from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
 
-        connection = _Connection()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(self.DATASET_ID)
 
@@ -636,7 +645,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(_called_with[0][1]['keys'], [key])
 
     def test_delete_multi_no_keys(self):
-        client = self._makeOne(connection=object())
+        client = self._makeOne()
         result = client.delete_multi([])
         self.assertEqual(result, None)
 
@@ -644,8 +653,8 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
 
-        connection = _Connection()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = connection = _Connection()
         key = _Key(self.DATASET_ID)
 
         result = client.delete_multi([key])
@@ -660,8 +669,8 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
 
-        connection = _Connection()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = connection = _Connection()
         key = _Key(self.DATASET_ID)
 
         with _NoCommitBatch(client) as CURR_BATCH:
@@ -679,8 +688,8 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Connection
         from gcloud.datastore.test_batch import _Key
 
-        connection = _Connection()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = connection = _Connection()
         key = _Key(self.DATASET_ID)
 
         with _NoCommitTransaction(client) as CURR_XACT:
@@ -698,8 +707,8 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Key
         from gcloud.datastore.test_connection import _Connection
 
-        connection = _Connection()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = _Connection()
         NUM_IDS = 2
 
         INCOMPLETE_KEY = _Key(self.DATASET_ID)
@@ -713,8 +722,8 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Key
         from gcloud.datastore.test_connection import _Connection
 
-        connection = _Connection()
-        client = self._makeOne(connection=connection)
+        client = self._makeOne()
+        client.connection = _Connection()
         COMPLETE_KEY = _Key(self.DATASET_ID)
         self.assertRaises(ValueError, client.allocate_ids, COMPLETE_KEY, 2)
 
@@ -962,3 +971,9 @@ class _NoCommitTransaction(object):
 
     def __exit__(self, *args):
         self._client._pop_batch()
+
+
+class _Credentials(object):
+
+    def create_scoped_required(self):
+        return False
