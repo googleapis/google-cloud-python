@@ -861,24 +861,6 @@ def _compare_key_pb_after_request(test, key_before, key_after):
         test.assertEqual(elt1, elt2)
 
 
-class _Connection(object):
-    _called_with = None
-    _missing = _deferred = ()
-
-    def __init__(self, *result):
-        self._result = list(result)
-
-    def lookup(self, **kw):
-        self._called_with = kw
-        return self._result, self._missing[:], self._deferred[:]
-
-    def allocate_ids(self, dataset_id, key_pbs):
-        self._called_dataset_id = dataset_id
-        self._called_key_pbs = key_pbs
-        num_pbs = len(key_pbs)
-        return [_KeyProto(i) for i in list(range(num_pbs))]
-
-
 class _PathElementProto(object):
 
     def __init__(self, _id):
