@@ -193,7 +193,7 @@ class Blob(_PropertyMixin):
 
         if credentials is None:
             client = self._require_client(client)
-            credentials = client.connection.credentials
+            credentials = client._connection.credentials
 
         return generate_signed_url(
             credentials, resource=resource,
@@ -291,7 +291,13 @@ class Blob(_PropertyMixin):
             headers['Range'] = 'bytes=0-%d' % (self.chunk_size - 1,)
         request = http_wrapper.Request(download_url, 'GET', headers)
 
-        download.InitializeDownload(request, client.connection.http)
+        # Use the private ``_connection`` rather than the public
+        # ``.connection``, since the public connection may be a batch. A
+        # batch wraps a client's connection, but does not store the `http`
+        # object. The rest (API_BASE_URL and build_api_url) are also defined
+        # on the Batch class, but we just use the wrapped connection since
+        # it has all three (http, API_BASE_URL and build_api_url).
+        download.InitializeDownload(request, client._connection.http)
 
         # Should we be passing callbacks through from caller?  We can't
         # pass them as None, because apitools wants to print to the console
@@ -379,7 +385,13 @@ class Blob(_PropertyMixin):
                  determined
         """
         client = self._require_client(client)
-        connection = client.connection
+        # Use the private ``_connection`` rather than the public
+        # ``.connection``, since the public connection may be a batch. A
+        # batch wraps a client's connection, but does not store the `http`
+        # object. The rest (API_BASE_URL and build_api_url) are also defined
+        # on the Batch class, but we just use the wrapped connection since
+        # it has all three (http, API_BASE_URL and build_api_url).
+        connection = client._connection
         content_type = (content_type or self._properties.get('contentType') or
                         'application/octet-stream')
 

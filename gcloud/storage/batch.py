@@ -26,12 +26,8 @@ import json
 
 import six
 
-from gcloud._helpers import _LocalStack
 from gcloud.exceptions import make_exception
 from gcloud.storage.connection import Connection
-
-
-_BATCHES = _LocalStack()
 
 
 class MIMEApplicationHTTP(MIMEApplication):
@@ -244,19 +240,21 @@ class Batch(Connection):
 
         url = '%s/batch' % self.API_BASE_URL
 
-        response, content = self._client.connection._make_request(
+        # Use the private ``_connection`` rather than the public
+        # ``.connection``, since the public connection may be this
+        # current batch.
+        response, content = self._client._connection._make_request(
             'POST', url, data=body, headers=headers)
         responses = list(_unpack_batch_response(response, content))
         self._finish_futures(responses)
         return responses
 
-    @staticmethod
-    def current():
+    def current(self):
         """Return the topmost batch, or None."""
-        return _BATCHES.top
+        return self._client.current_batch
 
     def __enter__(self):
-        _BATCHES.push(self)
+        self._client._push_batch(self)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -264,7 +262,7 @@ class Batch(Connection):
             if exc_type is None:
                 self.finish()
         finally:
-            _BATCHES.pop()
+            self._client._pop_batch()
 
 
 def _generate_faux_mime_message(parser, response, content):

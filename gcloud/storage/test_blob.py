@@ -1082,4 +1082,8 @@ class _Signer(object):
 class _Client(object):
 
     def __init__(self, connection):
-        self.connection = connection
+        self._connection = connection
+
+    @property
+    def connection(self):
+        return self._connection

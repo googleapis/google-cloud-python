@@ -15,6 +15,7 @@
 """gcloud storage client for interacting with API."""
 
 
+from gcloud._helpers import _LocalStack
 from gcloud.client import JSONClient
 from gcloud.exceptions import NotFound
 from gcloud.iterator import Iterator
@@ -44,6 +45,73 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+
+    def __init__(self, project=None, credentials=None, http=None):
+        self._connection = None
+        super(Client, self).__init__(project=project, credentials=credentials,
+                                     http=http)
+        self._batch_stack = _LocalStack()
+
+    @property
+    def connection(self):
+        """Get connection or batch on the client.
+
+        :rtype: :class:`gcloud.storage.connection.Connection`
+        :returns: The connection set on the client, or the batch
+                  if one is set.
+        """
+        if self.current_batch is not None:
+            return self.current_batch
+        else:
+            return self._connection
+
+    @connection.setter
+    def connection(self, value):
+        """Set connection on the client.
+
+        Intended to be used by constructor (since the base class calls)
+            self.connection = connection
+        Will raise if the connection is set more than once.
+
+        :type value: :class:`gcloud.storage.connection.Connection`
+        :param value: The connection set on the client.
+
+        :raises: :class:`ValueError` if connection has already been set.
+        """
+        if self._connection is not None:
+            raise ValueError('Connection already set on client')
+        self._connection = value
+
+    def _push_batch(self, batch):
+        """Push a batch onto our stack.
+
+        "Protected", intended for use by batch context mgrs.
+
+        :type batch: :class:`gcloud.storage.batch.Batch`
+        :param batch: newly-active batch
+        """
+        self._batch_stack.push(batch)
+
+    def _pop_batch(self):
+        """Pop a batch from our stack.
+
+        "Protected", intended for use by batch context mgrs.
+
+        :raises: IndexError if the stack is empty.
+        :rtype: :class:`gcloud.storage.batch.Batch`
+        :returns: the top-most batch/transaction, after removing it.
+        """
+        return self._batch_stack.pop()
+
+    @property
+    def current_batch(self):
+        """Currently-active batch.
+
+        :rtype: :class:`gcloud.storage.batch.Batch` or ``NoneType`` (if
+                no batch is active).
+        :returns: The batch at the top of the batch stack.
+        """
+        return self._batch_stack.top
 
     def get_bucket(self, bucket_name):
         """Get a bucket by name.
