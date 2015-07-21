@@ -34,14 +34,15 @@ Authorization / Configuration
      >>> client = bigquery.Client()
 
 - Override the credentials inferred from the environment by passing explicit
-  ``credentials`` to one of the alternative classmethods, `from_service_account_json`:
+  ``credentials`` to one of the alternative ``classmethod`` factories,
+  `:meth:gcloud.bigquery.client.Client.from_service_account_json`:
 
   .. doctest::
 
      >>> from gcloud import bigquery
      >>> client = bigquery.Client.from_service_account_json('/path/to/creds.json')
 
-  or `from_service_account_p12`:
+  or `:meth:gcloud.bigquery.client.Client.from_service_account_p12`:
 
   .. doctest::
 
@@ -59,7 +60,8 @@ attempts to infer a project using the environment (including explicit
 environment variables, GAE, and GCE).
 
 To override the project inferred from the environment, pass an explicit
-``project`` to the constructor, or to either of the alternative classmethods:
+``project`` to the constructor, or to either of the alternative
+``classmethod`` factories:
 
   .. doctest::
 
