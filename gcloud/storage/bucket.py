@@ -98,6 +98,26 @@ class Bucket(_PropertyMixin):
     def __repr__(self):
         return '<Bucket: %s>' % self.name
 
+    def blob(self, blob_name, chunk_size=None):
+        """Factory constructor for blob object.
+
+        .. note::
+          This will not make an HTTP request; it simply instantiates
+          a blob object owned by this bucket.
+
+        :type blob_name: string
+        :param blob_name: The name of the blob to be instantiated.
+
+        :type chunk_size: integer
+        :param chunk_size: The size of a chunk of data whenever iterating
+                           (1 MB). This must be a multiple of 256 KB per the
+                           API specification.
+
+        :rtype: :class:`gcloud.storage.blob.Blob`
+        :returns: The blob object created.
+        """
+        return Blob(name=blob_name, bucket=self, chunk_size=chunk_size)
+
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
 

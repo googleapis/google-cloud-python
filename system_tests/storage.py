@@ -52,9 +52,9 @@ class TestStorageBuckets(unittest2.TestCase):
         self.case_buckets_to_delete = []
 
     def tearDown(self):
-        with storage.Batch(CLIENT):
+        with CLIENT.batch():
             for bucket_name in self.case_buckets_to_delete:
-                storage.Bucket(CLIENT, name=bucket_name).delete()
+                CLIENT.bucket(bucket_name).delete()
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'
@@ -115,7 +115,7 @@ class TestStorageFiles(unittest2.TestCase):
 class TestStorageWriteFiles(TestStorageFiles):
 
     def test_large_file_write_from_stream(self):
-        blob = storage.Blob(bucket=self.bucket, name='LargeFile')
+        blob = self.bucket.blob('LargeFile')
         self.assertEqual(blob._properties, {})
 
         file_data = self.FILES['big']
@@ -129,7 +129,7 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.assertEqual(md5_hash, file_data['hash'])
 
     def test_small_file_write_from_filename(self):
-        blob = storage.Blob(bucket=self.bucket, name='SmallFile')
+        blob = self.bucket.blob('SmallFile')
         self.assertEqual(blob._properties, {})
 
         file_data = self.FILES['simple']
@@ -155,12 +155,12 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.assertEqual(blob.content_type, 'image/png')
 
     def test_direct_write_and_read_into_file(self):
-        blob = storage.Blob(bucket=self.bucket, name='MyBuffer')
+        blob = self.bucket.blob('MyBuffer')
         file_contents = b'Hello World'
         blob.upload_from_string(file_contents)
         self.case_blobs_to_delete.append(blob)
 
-        same_blob = storage.Blob(bucket=self.bucket, name='MyBuffer')
+        same_blob = self.bucket.blob('MyBuffer')
         same_blob.reload()  # Initialize properties.
         temp_filename = tempfile.mktemp()
         with open(temp_filename, 'wb') as file_obj:
@@ -317,7 +317,7 @@ class TestStorageSignURLs(TestStorageFiles):
         with open(logo_path, 'rb') as file_obj:
             self.LOCAL_FILE = file_obj.read()
 
-        blob = storage.Blob(bucket=self.bucket, name='LogoToSign.jpg')
+        blob = self.bucket.blob('LogoToSign.jpg')
         blob.upload_from_string(self.LOCAL_FILE)
         self.case_blobs_to_delete.append(blob)
 
@@ -327,7 +327,7 @@ class TestStorageSignURLs(TestStorageFiles):
                 blob.delete()
 
     def test_create_signed_read_url(self):
-        blob = storage.Blob(bucket=self.bucket, name='LogoToSign.jpg')
+        blob = self.bucket.blob('LogoToSign.jpg')
         expiration = int(time.time() + 5)
         signed_url = blob.generate_signed_url(expiration, method='GET',
                                               client=CLIENT)
@@ -337,7 +337,7 @@ class TestStorageSignURLs(TestStorageFiles):
         self.assertEqual(content, self.LOCAL_FILE)
 
     def test_create_signed_delete_url(self):
-        blob = storage.Blob(bucket=self.bucket, name='LogoToSign.jpg')
+        blob = self.bucket.blob('LogoToSign.jpg')
         expiration = int(time.time() + 283473274)
         signed_delete_url = blob.generate_signed_url(expiration,
                                                      method='DELETE',

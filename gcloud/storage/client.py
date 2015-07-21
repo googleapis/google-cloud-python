@@ -19,6 +19,7 @@ from gcloud._helpers import _LocalStack
 from gcloud.client import JSONClient
 from gcloud.exceptions import NotFound
 from gcloud.iterator import Iterator
+from gcloud.storage.batch import Batch
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.connection import Connection
 
@@ -112,6 +113,33 @@ class Client(JSONClient):
         :returns: The batch at the top of the batch stack.
         """
         return self._batch_stack.top
+
+    def bucket(self, bucket_name):
+        """Factory constructor for bucket object.
+
+        .. note::
+          This will not make an HTTP request; it simply instantiates
+          a bucket object owned by this client.
+
+        :type bucket_name: string
+        :param bucket_name: The name of the bucket to be instantiated.
+
+        :rtype: :class:`gcloud.storage.bucket.Bucket`
+        :returns: The bucket object created.
+        """
+        return Bucket(client=self, name=bucket_name)
+
+    def batch(self):
+        """Factory constructor for batch object.
+
+        .. note::
+          This will not make an HTTP request; it simply instantiates
+          a batch object owned by this client.
+
+        :rtype: :class:`gcloud.storage.batch.Batch`
+        :returns: The batch object created.
+        """
+        return Batch(client=self)
 
     def get_bucket(self, bucket_name):
         """Get a bucket by name.

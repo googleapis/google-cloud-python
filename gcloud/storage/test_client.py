@@ -89,6 +89,30 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client.connection is batch)
         self.assertTrue(client.current_batch is batch)
 
+    def test_bucket(self):
+        from gcloud.storage.bucket import Bucket
+
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+        BUCKET_NAME = 'BUCKET_NAME'
+
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        bucket = client.bucket(BUCKET_NAME)
+        self.assertTrue(isinstance(bucket, Bucket))
+        self.assertTrue(bucket.client is client)
+        self.assertEqual(bucket.name, BUCKET_NAME)
+
+    def test_batch(self):
+        from gcloud.storage.batch import Batch
+
+        PROJECT = object()
+        CREDENTIALS = _Credentials()
+
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        batch = client.batch()
+        self.assertTrue(isinstance(batch, Batch))
+        self.assertTrue(batch._client is client)
+
     def test_get_bucket_miss(self):
         from gcloud.exceptions import NotFound
 

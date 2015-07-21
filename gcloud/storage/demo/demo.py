@@ -37,7 +37,7 @@ print(bucket)
 print(list(client.list_buckets()))
 
 # How about we create a new blob inside this bucket.
-blob = storage.Blob("my-new-file.txt", bucket=bucket)
+blob = bucket.blob("my-new-file.txt")
 
 # Now let's put some data in there.
 blob.upload_from_string("this is some data!")
