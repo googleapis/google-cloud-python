@@ -15,6 +15,8 @@
 
 import os
 
+from gcloud._environment_vars import _DATASET_ENV_VAR_NAME
+from gcloud._environment_vars import _GCD_DATASET_ENV_VAR_NAME
 from gcloud._helpers import _LocalStack
 from gcloud._helpers import _app_engine_id
 from gcloud._helpers import _compute_engine_id
@@ -30,12 +32,6 @@ from gcloud.datastore.transaction import Transaction
 
 _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
-
-_DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
-"""Environment variable defining default dataset ID."""
-
-_GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
-"""Environment variable defining default dataset ID under GCD."""
 
 
 def _get_production_dataset_id():

@@ -16,11 +16,12 @@ import time
 
 import unittest2
 
+from gcloud._environment_vars import _TESTS_PROJECT_ENV_VAR_NAME
 from gcloud import _helpers
 from gcloud import pubsub
 
 
-_helpers._PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
+_helpers._PROJECT_ENV_VAR_NAME = _TESTS_PROJECT_ENV_VAR_NAME
 CLIENT = pubsub.Client()
 
 

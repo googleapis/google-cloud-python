@@ -16,6 +16,7 @@ import datetime
 import pytz
 import unittest2
 
+from gcloud._environment_vars import _TESTS_DATASET_ENV_VAR_NAME
 from gcloud import datastore
 from gcloud.datastore import client
 # This assumes the command is being run via tox hence the
@@ -23,7 +24,7 @@ from gcloud.datastore import client
 from system_tests import populate_datastore
 
 
-client._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+client._DATASET_ENV_VAR_NAME = _TESTS_DATASET_ENV_VAR_NAME
 CLIENT = datastore.Client()
 
 

@@ -16,6 +16,7 @@
 
 import os
 
+from gcloud._environment_vars import _GCD_HOST_ENV_VAR_NAME
 from gcloud import connection
 from gcloud.exceptions import make_exception
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
@@ -24,8 +25,6 @@ from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 SCOPE = ('https://www.googleapis.com/auth/datastore',
          'https://www.googleapis.com/auth/userinfo.email')
 """The scopes required for authenticating as a Cloud Datastore consumer."""
-
-_GCD_HOST_ENV_VAR_NAME = 'DATASTORE_HOST'
 
 
 class Connection(connection.Connection):

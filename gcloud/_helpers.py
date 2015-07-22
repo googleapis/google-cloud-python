@@ -26,6 +26,7 @@ except ImportError:     # pragma: NO COVER (who doesn't have it?)
 
 from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
 
+from gcloud._environment_vars import _PROJECT_ENV_VAR_NAME
 try:
     from google.appengine.api import app_identity
 except ImportError:
@@ -139,9 +140,6 @@ def _compute_engine_id():
         pass
     finally:
         connection.close()
-
-
-_PROJECT_ENV_VAR_NAME = 'GCLOUD_PROJECT'
 
 
 def _get_production_project():
