@@ -15,8 +15,6 @@
 
 import os
 
-from gcloud._environment_vars import _DATASET_ENV_VAR_NAME
-from gcloud._environment_vars import _GCD_DATASET_ENV_VAR_NAME
 from gcloud._helpers import _LocalStack
 from gcloud._helpers import _app_engine_id
 from gcloud._helpers import _compute_engine_id
@@ -28,6 +26,8 @@ from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
+from gcloud.environment_vars import DATASET
+from gcloud.environment_vars import GCD_DATASET
 
 
 _MAX_LOOPS = 128
@@ -36,12 +36,12 @@ _MAX_LOOPS = 128
 
 def _get_production_dataset_id():
     """Gets the production application ID if it can be inferred."""
-    return os.getenv(_DATASET_ENV_VAR_NAME)
+    return os.getenv(DATASET)
 
 
 def _get_gcd_dataset_id():
     """Gets the GCD application ID if it can be inferred."""
-    return os.getenv(_GCD_DATASET_ENV_VAR_NAME)
+    return os.getenv(GCD_DATASET)
 
 
 def _determine_default_dataset_id(dataset_id=None):

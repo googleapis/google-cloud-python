@@ -16,8 +16,8 @@
 
 import os
 
-from gcloud._environment_vars import _GCD_HOST_ENV_VAR_NAME
 from gcloud import connection
+from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import make_exception
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
@@ -55,7 +55,7 @@ class Connection(connection.Connection):
         credentials = self._create_scoped_credentials(credentials, SCOPE)
         super(Connection, self).__init__(credentials=credentials, http=http)
         if api_base_url is None:
-            api_base_url = os.getenv(_GCD_HOST_ENV_VAR_NAME,
+            api_base_url = os.getenv(GCD_HOST,
                                      connection.API_BASE_URL)
         self.api_base_url = api_base_url
 

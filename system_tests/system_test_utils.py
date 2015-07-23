@@ -16,15 +16,15 @@ from __future__ import print_function
 import os
 import sys
 
-from gcloud._environment_vars import _CREDENTIALS_ENV_VAR_NAME
-from gcloud._environment_vars import _TESTS_DATASET_ENV_VAR_NAME
-from gcloud._environment_vars import _TESTS_PROJECT_ENV_VAR_NAME
+from gcloud.environment_vars import CREDENTIALS
+from gcloud.environment_vars import TESTS_DATASET
+from gcloud.environment_vars import TESTS_PROJECT
 
 
 # From shell environ. May be None.
-PROJECT_ID = os.getenv(_TESTS_PROJECT_ENV_VAR_NAME)
-DATASET_ID = os.getenv(_TESTS_DATASET_ENV_VAR_NAME)
-CREDENTIALS = os.getenv(_CREDENTIALS_ENV_VAR_NAME)
+PROJECT_ID = os.getenv(TESTS_PROJECT)
+DATASET_ID = os.getenv(TESTS_DATASET)
+CREDENTIALS = os.getenv(CREDENTIALS)
 
 ENVIRON_ERROR_MSG = """\
 To run the system tests, you need to set some environment variables.

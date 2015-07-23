@@ -18,23 +18,23 @@ These enable many types of implicit behavior in both production
 and tests.
 """
 
-_PROJECT_ENV_VAR_NAME = 'GCLOUD_PROJECT'
+PROJECT = 'GCLOUD_PROJECT'
 """Environment variable defining default project."""
 
-_TESTS_PROJECT_ENV_VAR_NAME = 'GCLOUD_TESTS_PROJECT_ID'
+TESTS_PROJECT = 'GCLOUD_TESTS_PROJECT_ID'
 """Environment variable defining project for tests."""
 
-_DATASET_ENV_VAR_NAME = 'GCLOUD_DATASET_ID'
+DATASET = 'GCLOUD_DATASET_ID'
 """Environment variable defining default dataset ID."""
 
-_GCD_DATASET_ENV_VAR_NAME = 'DATASTORE_DATASET'
+GCD_DATASET = 'DATASTORE_DATASET'
 """Environment variable defining default dataset ID under GCD."""
 
-_GCD_HOST_ENV_VAR_NAME = 'DATASTORE_HOST'
+GCD_HOST = 'DATASTORE_HOST'
 """Environment variable defining host for GCD dataset server."""
 
-_TESTS_DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+TESTS_DATASET = 'GCLOUD_TESTS_DATASET_ID'
 """Environment variable defining dataset ID for tests."""
 
-_CREDENTIALS_ENV_VAR_NAME = 'GOOGLE_APPLICATION_CREDENTIALS'
+CREDENTIALS = 'GOOGLE_APPLICATION_CREDENTIALS'
 """Environment variable defining location of Google credentials."""

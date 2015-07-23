@@ -26,11 +26,13 @@ except ImportError:     # pragma: NO COVER (who doesn't have it?)
 
 from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
 
-from gcloud._environment_vars import _PROJECT_ENV_VAR_NAME
 try:
     from google.appengine.api import app_identity
 except ImportError:
     app_identity = None
+
+from gcloud.environment_vars import PROJECT
+
 
 _RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
 
@@ -144,7 +146,7 @@ def _compute_engine_id():
 
 def _get_production_project():
     """Gets the production project if it can be inferred."""
-    return os.getenv(_PROJECT_ENV_VAR_NAME)
+    return os.getenv(PROJECT)
 
 
 def _determine_default_project(project=None):

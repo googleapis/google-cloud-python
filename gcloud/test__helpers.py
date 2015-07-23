@@ -150,10 +150,10 @@ class Test__get_production_project(unittest2.TestCase):
     def test_value_set(self):
         import os
         from gcloud._testing import _Monkey
-        from gcloud._helpers import _PROJECT_ENV_VAR_NAME
+        from gcloud._helpers import PROJECT
 
         MOCK_PROJECT = object()
-        environ = {_PROJECT_ENV_VAR_NAME: MOCK_PROJECT}
+        environ = {PROJECT: MOCK_PROJECT}
         with _Monkey(os, getenv=environ.get):
             project = self._callFUT()
             self.assertEqual(project, MOCK_PROJECT)

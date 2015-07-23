@@ -49,10 +49,10 @@ class Test__get_production_dataset_id(unittest2.TestCase):
     def test_value_set(self):
         import os
         from gcloud._testing import _Monkey
-        from gcloud.datastore.client import _DATASET_ENV_VAR_NAME
+        from gcloud.datastore.client import DATASET
 
         MOCK_DATASET_ID = object()
-        environ = {_DATASET_ENV_VAR_NAME: MOCK_DATASET_ID}
+        environ = {DATASET: MOCK_DATASET_ID}
         with _Monkey(os, getenv=environ.get):
             dataset_id = self._callFUT()
             self.assertEqual(dataset_id, MOCK_DATASET_ID)
@@ -76,10 +76,10 @@ class Test__get_gcd_dataset_id(unittest2.TestCase):
     def test_value_set(self):
         import os
         from gcloud._testing import _Monkey
-        from gcloud.datastore.client import _GCD_DATASET_ENV_VAR_NAME
+        from gcloud.datastore.client import GCD_DATASET
 
         MOCK_DATASET_ID = object()
-        environ = {_GCD_DATASET_ENV_VAR_NAME: MOCK_DATASET_ID}
+        environ = {GCD_DATASET: MOCK_DATASET_ID}
         with _Monkey(os, getenv=environ.get):
             dataset_id = self._callFUT()
             self.assertEqual(dataset_id, MOCK_DATASET_ID)
