@@ -270,9 +270,11 @@ Run a query which can be expected to complete within bounded time:
    SELECT count(*) AS age_count FROM dataset_name.person_ages
    """
    >>> results = client.query(query, timeout_ms=1000)
-   >>> while not results.job_complete:
-   ...    time.sleep(10)
-   ...    results.reload()  # API request
+   >>> retry_count = 100
+   >>> while retry_count > 0 and not results.job_complete:
+   ...     retry_count -= 1
+   ...     time.sleep(10)
+   ...     results.reload()  # API request
    >>> results.schema
    [{'name': 'age_count', 'type': 'integer', 'mode': 'nullable'}]
    >>> results.rows
@@ -332,7 +334,9 @@ Poll until the job is complete:
 .. doctest::
 
    >>> import time
-   >>> while job.state == 'running':
+   >>> retry_count = 100
+   >>> while retry_count > 0 and job.state == 'running':
+   ...     retry_count -= 1
    ...     time.sleep(10)
    ...     job.reload()  # API call
    >>> job.state
@@ -415,7 +419,9 @@ Poll until the job is complete:
 .. doctest::
 
    >>> import time
-   >>> while job.state == 'running':
+   >>> retry_count = 100
+   >>> while retry_count > 0 and job.state == 'running':
+   ...     retry_count -= 1
    ...     time.sleep(10)
    ...     job.reload()  # API call
    >>> job.state
