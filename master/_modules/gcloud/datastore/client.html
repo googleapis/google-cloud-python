@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.client &mdash; gcloud 00c82b6 documentation</title>
+    <title>gcloud.datastore.client &mdash; gcloud 871f26e documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '00c82b6',
+        VERSION:     '871f26e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 00c82b6 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 871f26e documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%2000c82b6" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%20871f26e" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (00c82b6)
+              Version History (871f26e)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -115,26 +115,22 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
+<span class="kn">from</span> <span class="nn">gcloud.environment_vars</span> <span class="kn">import</span> <span class="n">DATASET</span>
+<span class="kn">from</span> <span class="nn">gcloud.environment_vars</span> <span class="kn">import</span> <span class="n">GCD_DATASET</span>
 
 
 <span class="n">_MAX_LOOPS</span> <span class="o">=</span> <span class="mi">128</span>
 <span class="sd">&quot;&quot;&quot;Maximum number of iterations to wait for deferred keys.&quot;&quot;&quot;</span>
 
-<span class="n">_DATASET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;GCLOUD_DATASET_ID&#39;</span>
-<span class="sd">&quot;&quot;&quot;Environment variable defining default dataset ID.&quot;&quot;&quot;</span>
-
-<span class="n">_GCD_DATASET_ENV_VAR_NAME</span> <span class="o">=</span> <span class="s">&#39;DATASTORE_DATASET&#39;</span>
-<span class="sd">&quot;&quot;&quot;Environment variable defining default dataset ID under GCD.&quot;&quot;&quot;</span>
-
 
 <span class="k">def</span> <span class="nf">_get_production_dataset_id</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Gets the production application ID if it can be inferred.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_DATASET_ENV_VAR_NAME</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DATASET</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_get_gcd_dataset_id</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Gets the GCD application ID if it can be inferred.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">_GCD_DATASET_ENV_VAR_NAME</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">GCD_DATASET</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_determine_default_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
