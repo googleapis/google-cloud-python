@@ -355,12 +355,13 @@ create the job locally:
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
-   >>> with open('/path/to/person_ages.csv') as f:
-   ...     job = table.load_from_file(f,
-   ...                                source_format='CSV',
-   ...                                skip_leading_rows=1
-   ...                                write_disposition='truncate',
-   ...                               )  # API request
+   >>> with open('/path/to/person_ages.csv', 'rb') as file_obj:
+   ...     job = table.load_from_file(
+   ...         file_obj,
+   ...         source_format='CSV',
+   ...         skip_leading_rows=1
+   ...         write_disposition='truncate',
+   ...         )  # API request
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
