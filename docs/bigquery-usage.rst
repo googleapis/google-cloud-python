@@ -244,7 +244,7 @@ Jobs describe actions peformed on data in BigQuery tables:
 
 - Load data into a table
 - Run a query against data in one or more tables
-- Extrat data from a table
+- Extract data from a table
 - Copy a table
 
 List jobs for a project:
@@ -280,8 +280,8 @@ Run a query which can be expected to complete within bounded time:
 
 .. note::
    
-   If the query takse longer than the timeout allowd, ``results.job_complete``
-   will be False:  we therefore poll until it is completed.
+   If the query takes longer than the timeout allowed, ``results.job_complete``
+   will be ``False``:  we therefore poll until it is completed.
 
 Querying data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -343,8 +343,8 @@ Poll until the job is complete:
 Inserting data (synchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Start a job loading data asynchronously from a local CSV files.
-into a new table.  First, create the job locally:
+Load data synchronously from a local CSV file into a new table.  First,
+create the job locally:
 
 .. doctest::
 
@@ -383,7 +383,7 @@ locally:
    >>> job = table.load_from_storage(bucket_name='bucket-name',
    ...                               object_name='object-prefix*',
    ...                               source_format='CSV',
-   ...                               skip_leading_rows=1
+   ...                               skip_leading_rows=1,
    ...                               write_disposition='truncate')
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
