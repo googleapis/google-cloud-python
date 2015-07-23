@@ -16,8 +16,8 @@
   storage-acl
   pubsub-api
   pubsub-usage
-  pubsub-subscription
   pubsub-topic
+  pubsub-subscription
   bigquery-usage
 
 
