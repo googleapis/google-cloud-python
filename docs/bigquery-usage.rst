@@ -227,6 +227,20 @@ Update all writable metadata for a table
    ...     SchemaField(name='age', type='int', mode='required)]
    >>> table.update()  # API request
 
+Get rows from a table's data:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> table = dataset.table(name='person_ages')
+   >>> rows, next_page_token = table.data(max_results=100)  # API request
+   >>> rows.csv.headers
+   ('full_name', 'age')
+   >>> list(rows.csv)
+   [('Abel Adamson', 27), ('Beverly Bowman', 33)]
+
 Delete a table:
 
 .. doctest::
@@ -307,7 +321,7 @@ Background a query, loading the results into a table:
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
-   'load'
+   'query'
    >>> job.created
    None
    >>> job.state
@@ -394,6 +408,115 @@ locally:
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
    'load'
+   >>> job.created
+   None
+   >>> job.state
+   None
+
+.. note::
+
+   - ``gcloud.bigquery`` generates a UUID for each job.
+   - The ``created`` and ``state`` fields are not set until the job
+     is submitted to the BigQuery back-end.
+
+Then, begin executing the job on the server:
+
+.. doctest::
+
+   >>> job.submit()  # API call
+   >>> job.created
+   datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
+   >>> job.state
+   'running'
+
+Poll until the job is complete:
+
+.. doctest::
+
+   >>> import time
+   >>> retry_count = 100
+   >>> while retry_count > 0 and job.state == 'running':
+   ...     retry_count -= 1
+   ...     time.sleep(10)
+   ...     job.reload()  # API call
+   >>> job.state
+   'done'
+   >>> job.ended
+   datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
+
+Exporting data (async)
+~~~~~~~~~~~~~~~~~~~~~~
+
+Start a job exporting a table's data asynchronously to a set of CSV files,
+located on GCloud Storage.  First, create the job locally:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> table = dataset.table(name='person_ages')
+   >>> job = table.export_to_storage(bucket_name='bucket-name',
+   ...                               object_name='export-prefix*.csv',
+   ...                               destination_format='CSV',
+   ...                               print_header=1,
+   ...                               write_disposition='truncate')
+   >>> job.job_id
+   'e3344fba-09df-4ae0-8337-fddee34b3840'
+   >>> job.type
+   'load'
+   >>> job.created
+   None
+   >>> job.state
+   None
+
+.. note::
+
+   - ``gcloud.bigquery`` generates a UUID for each job.
+   - The ``created`` and ``state`` fields are not set until the job
+     is submitted to the BigQuery back-end.
+
+Then, begin executing the job on the server:
+
+.. doctest::
+
+   >>> job.submit()  # API call
+   >>> job.created
+   datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
+   >>> job.state
+   'running'
+
+Poll until the job is complete:
+
+.. doctest::
+
+   >>> import time
+   >>> retry_count = 100
+   >>> while retry_count > 0 and job.state == 'running':
+   ...     retry_count -= 1
+   ...     time.sleep(10)
+   ...     job.reload()  # API call
+   >>> job.state
+   'done'
+   >>> job.ended
+   datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
+
+
+Copy tables (async)
+~~~~~~~~~~~~~~~~~~~
+
+First, create the job locally:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> source_table = dataset.table(name='person_ages')
+   >>> destination_table = dataset.table(name='person_ages_copy')
+   >>> job = source_table.copy_to(destination_table)  # API request
+   >>> job.job_id
+   'e3344fba-09df-4ae0-8337-fddee34b3840'
+   >>> job.type
+   'copy'
    >>> job.created
    None
    >>> job.state
