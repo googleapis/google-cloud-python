@@ -31,6 +31,9 @@ try:
 except ImportError:
     app_identity = None
 
+from gcloud.environment_vars import PROJECT
+
+
 _RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 
@@ -141,12 +144,9 @@ def _compute_engine_id():
         connection.close()
 
 
-_PROJECT_ENV_VAR_NAME = 'GCLOUD_PROJECT'
-
-
 def _get_production_project():
     """Gets the production project if it can be inferred."""
-    return os.getenv(_PROJECT_ENV_VAR_NAME)
+    return os.getenv(PROJECT)
 
 
 def _determine_default_project(project=None):

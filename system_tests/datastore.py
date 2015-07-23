@@ -18,12 +18,13 @@ import unittest2
 
 from gcloud import datastore
 from gcloud.datastore import client
+from gcloud.environment_vars import TESTS_DATASET
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from system_tests import populate_datastore
 
 
-client._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+client.DATASET = TESTS_DATASET
 CLIENT = datastore.Client()
 
 

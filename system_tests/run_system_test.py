@@ -45,6 +45,10 @@ def main():
         system_test_utils.check_environ(require_datastore=True)
     elif args.package == 'storage':
         system_test_utils.check_environ(require_storage=True)
+    elif args.package == 'pubsub':
+        system_test_utils.check_environ(require_pubsub=True)
+    else:
+        raise ValueError('Unexpected package name.')
     test_result = run_module_tests(args.package)
     if not test_result.wasSuccessful():
         sys.exit(1)

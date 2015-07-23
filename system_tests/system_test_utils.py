@@ -16,25 +16,30 @@ from __future__ import print_function
 import os
 import sys
 
+from gcloud.environment_vars import CREDENTIALS
+from gcloud.environment_vars import TESTS_DATASET
+from gcloud.environment_vars import TESTS_PROJECT
+
 
 # From shell environ. May be None.
-PROJECT_ID = os.getenv('GCLOUD_TESTS_PROJECT_ID')
-DATASET_ID = os.getenv('GCLOUD_TESTS_DATASET_ID')
-CREDENTIALS = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+PROJECT_ID = os.getenv(TESTS_PROJECT)
+DATASET_ID = os.getenv(TESTS_DATASET)
+CREDENTIALS = os.getenv(CREDENTIALS)
 
 ENVIRON_ERROR_MSG = """\
 To run the system tests, you need to set some environment variables.
-Please check the Contributing guide for instructions.
+Please check the CONTRIBUTING guide for instructions.
 """
 
 
-def check_environ(require_datastore=False, require_storage=False):
+def check_environ(require_datastore=False, require_storage=False,
+                  require_pubsub=False):
     if require_datastore:
         if DATASET_ID is None or not os.path.isfile(CREDENTIALS):
             print(ENVIRON_ERROR_MSG, file=sys.stderr)
             sys.exit(1)
 
-    if require_storage:
+    if require_storage or require_pubsub:
         if PROJECT_ID is None or not os.path.isfile(CREDENTIALS):
             print(ENVIRON_ERROR_MSG, file=sys.stderr)
             sys.exit(1)

@@ -18,9 +18,10 @@ from six.moves import zip
 
 from gcloud import datastore
 from gcloud.datastore import client
+from gcloud.environment_vars import TESTS_DATASET
 
 
-client._DATASET_ENV_VAR_NAME = 'GCLOUD_TESTS_DATASET_ID'
+client.DATASET = TESTS_DATASET
 CLIENT = datastore.Client()
 
 
