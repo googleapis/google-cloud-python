@@ -194,14 +194,24 @@ class Dataset(object):
 
     def _build_resource(self):
         """Generate a resource for ``create`` or ``update``."""
-        return {
+        resource = {
             'datasetReference': {
                 'projectId': self.project, 'datasetId': self.name},
-            'defaultTableExpirationMs': self.default_table_expiration_ms,
-            'description': self.description,
-            'friendlyName': self.friendly_name,
-            'location': self.location,
         }
+        if self.default_table_expiration_ms is not None:
+            value = self.default_table_expiration_ms
+            resource['defaultTableExpirationMs'] = value
+
+        if self.description is not None:
+            resource['description'] = self.description
+
+        if self.friendly_name is not None:
+            resource['friendlyName'] = self.friendly_name
+
+        if self.location is not None:
+            resource['location'] = self.location
+
+        return resource
 
     def create(self, client=None):
         """API call:  create the dataset via a PUT request

@@ -144,22 +144,24 @@ class TestDataset(unittest2.TestCase):
         SENT = {
             'datasetReference':
                 {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
-            'defaultTableExpirationMs': None,
-            'description': None,
-            'friendlyName': None,
-            'location': None,
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_create_w_alternate_client(self):
         PATH = 'projects/%s/datasets' % self.PROJECT
+        DESCRIPTION = 'DESCRIPTION'
+        TITLE = 'TITLE'
         RESOURCE = self._makeResource()
+        RESOURCE['description'] = DESCRIPTION
+        RESOURCE['friendlyName'] = TITLE
         conn1 = _Connection()
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = self._makeOne(self.DS_NAME, client=CLIENT1)
+        dataset.friendly_name = TITLE
+        dataset.description = DESCRIPTION
 
         dataset.create(client=CLIENT2)
 
@@ -171,10 +173,8 @@ class TestDataset(unittest2.TestCase):
         SENT = {
             'datasetReference':
                 {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
-            'defaultTableExpirationMs': None,
-            'description': None,
-            'friendlyName': None,
-            'location': None,
+            'description': DESCRIPTION,
+            'friendlyName': TITLE,
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(dataset, RESOURCE)
@@ -324,10 +324,8 @@ class TestDataset(unittest2.TestCase):
         SENT = {
             'datasetReference':
                 {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
-            'defaultTableExpirationMs': None,
             'description': DESCRIPTION,
             'friendlyName': TITLE,
-            'location': None,
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(req['path'], '/%s' % PATH)
@@ -359,8 +357,6 @@ class TestDataset(unittest2.TestCase):
             'datasetReference':
                 {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
             'defaultTableExpirationMs': 12345,
-            'description': None,
-            'friendlyName': None,
             'location': 'EU',
         }
         self.assertEqual(req['data'], SENT)
