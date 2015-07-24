@@ -386,7 +386,7 @@ locally:
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
    >>> job = table.load_from_storage(bucket_name='bucket-name',
-   ...                               object_name='object-prefix*',
+   ...                               object_name_glob='object-prefix*',
    ...                               source_format='CSV',
    ...                               skip_leading_rows=1,
    ...                               write_disposition='truncate')
