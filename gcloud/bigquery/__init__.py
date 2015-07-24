@@ -23,3 +23,4 @@ The main concepts with this API are:
 
 from gcloud.bigquery.client import Client
 from gcloud.bigquery.connection import SCOPE
+from gcloud.bigquery.dataset import Dataset
