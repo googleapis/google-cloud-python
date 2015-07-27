@@ -62,7 +62,7 @@ class Dataset(object):
     def dataset_id(self):
         """ID for the dataset resource.
 
-        :rtype: ``str``, or ``NoneType``
+        :rtype: string, or ``NoneType``
         """
         return self._properties.get('id')
 
@@ -70,7 +70,7 @@ class Dataset(object):
     def etag(self):
         """ETag for the dataset resource.
 
-        :rtype: ``str``, or ``NoneType``
+        :rtype: string, or ``NoneType``
         """
         return self._properties.get('etag')
 
@@ -86,7 +86,7 @@ class Dataset(object):
     def self_link(self):
         """URL for the dataset resource.
 
-        :rtype: ``str``, or ``NoneType``
+        :rtype: string, or ``NoneType``
         """
         return self._properties.get('selfLink')
 
@@ -94,7 +94,7 @@ class Dataset(object):
     def default_table_expiration_ms(self):
         """Default expiration time for tables in the dataset.
 
-        :rtype: ``int``, or ``NoneType``
+        :rtype: integer, or ``NoneType``
         """
         return self._properties.get('defaultTableExpirationMs')
 
@@ -102,7 +102,7 @@ class Dataset(object):
     def default_table_expiration_ms(self, value):
         """Update default expiration time for tables in the dataset.
 
-        :type value: ``int``, or ``NoneType``
+        :type value: integer, or ``NoneType``
         :param value: new default time, in milliseconds
         """
         if not isinstance(value, int) and value is not None:
@@ -113,7 +113,7 @@ class Dataset(object):
     def description(self):
         """Description of the dataset.
 
-        :rtype: ``str``, or ``NoneType``
+        :rtype: string, or ``NoneType``
         """
         return self._properties.get('description')
 
@@ -121,7 +121,7 @@ class Dataset(object):
     def description(self, value):
         """Update description of the dataset.
 
-        :type value: ``str``, or ``NoneType``
+        :type value: string, or ``NoneType``
         :param value: new description
         """
         if not isinstance(value, str) and value is not None:
@@ -132,7 +132,7 @@ class Dataset(object):
     def friendly_name(self):
         """Title of the dataset.
 
-        :rtype: ``str``, or ``NoneType``
+        :rtype: string, or ``NoneType``
         """
         return self._properties.get('friendlyName')
 
@@ -140,7 +140,7 @@ class Dataset(object):
     def friendly_name(self, value):
         """Update title of the dataset.
 
-        :type value: ``str``, or ``NoneType``
+        :type value: string, or ``NoneType``
         :param value: new title
         """
         if not isinstance(value, str) and value is not None:
@@ -151,7 +151,7 @@ class Dataset(object):
     def location(self):
         """Location in which the dataset is hosted.
 
-        :rtype: ``str``, or ``NoneType``
+        :rtype: string, or ``NoneType``
         """
         return self._properties.get('location')
 
@@ -159,7 +159,7 @@ class Dataset(object):
     def location(self, value):
         """Update location in which the dataset is hosted.
 
-        :type value: ``str``, or ``NoneType``
+        :type value: string, or ``NoneType``
         :param value: new location
         """
         if not isinstance(value, str) and value is not None:
