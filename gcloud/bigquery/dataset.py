@@ -17,6 +17,7 @@
 import datetime
 
 import pytz
+import six
 
 from gcloud.exceptions import NotFound
 
@@ -128,7 +129,7 @@ class Dataset(object):
 
         :raises: ValueError for invalid value types.
         """
-        if not isinstance(value, str) and value is not None:
+        if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties['description'] = value
 
@@ -149,7 +150,7 @@ class Dataset(object):
 
         :raises: ValueError for invalid value types.
         """
-        if not isinstance(value, str) and value is not None:
+        if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties['friendlyName'] = value
 
@@ -170,7 +171,7 @@ class Dataset(object):
 
         :raises: ValueError for invalid value types.
         """
-        if not isinstance(value, str) and value is not None:
+        if not isinstance(value, six.string_types) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties['location'] = value
 
