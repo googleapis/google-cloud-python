@@ -106,7 +106,7 @@ class Dataset(object):
         :param value: new default time, in milliseconds
         """
         if not isinstance(value, int) and value is not None:
-            raise ValueError()
+            raise ValueError("Pass an integer, or None")
         self._properties['defaultTableExpirationMs'] = value
 
     @property
@@ -125,7 +125,7 @@ class Dataset(object):
         :param value: new description
         """
         if not isinstance(value, str) and value is not None:
-            raise ValueError()
+            raise ValueError("Pass a string, or None")
         self._properties['description'] = value
 
     @property
@@ -144,7 +144,7 @@ class Dataset(object):
         :param value: new title
         """
         if not isinstance(value, str) and value is not None:
-            raise ValueError()
+            raise ValueError("Pass a string, or None")
         self._properties['friendlyName'] = value
 
     @property
@@ -163,7 +163,7 @@ class Dataset(object):
         :param value: new location
         """
         if not isinstance(value, str) and value is not None:
-            raise ValueError()
+            raise ValueError("Pass a string, or None")
         self._properties['location'] = value
 
     def _require_client(self, client):
@@ -284,7 +284,7 @@ class Dataset(object):
         if 'default_table_expiration_ms' in kw:
             value = kw['default_table_expiration_ms']
             if not isinstance(value, int) and value is not None:
-                raise ValueError()
+                raise ValueError("Pass an integer, or None")
             partial['defaultTableExpirationMs'] = value
 
         if 'description' in kw:
