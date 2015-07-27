@@ -104,6 +104,8 @@ class Dataset(object):
 
         :type value: integer, or ``NoneType``
         :param value: new default time, in milliseconds
+
+        :raises: ValueError for invalid value types.
         """
         if not isinstance(value, int) and value is not None:
             raise ValueError("Pass an integer, or None")
@@ -123,6 +125,8 @@ class Dataset(object):
 
         :type value: string, or ``NoneType``
         :param value: new description
+
+        :raises: ValueError for invalid value types.
         """
         if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
@@ -142,6 +146,8 @@ class Dataset(object):
 
         :type value: string, or ``NoneType``
         :param value: new title
+
+        :raises: ValueError for invalid value types.
         """
         if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
@@ -161,6 +167,8 @@ class Dataset(object):
 
         :type value: string, or ``NoneType``
         :param value: new location
+
+        :raises: ValueError for invalid value types.
         """
         if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
@@ -276,6 +284,8 @@ class Dataset(object):
 
         :type kw: ``dict``
         :param kw: properties to be patched.
+
+        :raises: ValueError for invalid value types.
         """
         client = self._require_client(client)
 
