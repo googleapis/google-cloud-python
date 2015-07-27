@@ -456,7 +456,7 @@ located on Google Cloud Storage.  First, create the job locally:
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
    >>> job = table.export_to_storage(bucket_name='bucket-name',
-   ...                               object_name='export-prefix*.csv',
+   ...                               object_name_glob='export-prefix*.csv',
    ...                               destination_format='CSV',
    ...                               print_header=1,
    ...                               write_disposition='truncate')
