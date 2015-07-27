@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""GCloud Pubsub API wrapper.
+"""Google Cloud Pubsub API wrapper.
 
 The main concepts with this API are:
 

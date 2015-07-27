@@ -391,8 +391,8 @@ Inserting data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Start a job loading data asynchronously from a set of CSV files, located on
-GCloud Storage, appending rows into an existing table.  First, create the job
-locally:
+Google Cloud Storage, appending rows into an existing table.  First, create
+the job locally:
 
 .. doctest::
 
@@ -448,7 +448,7 @@ Exporting data (async)
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Start a job exporting a table's data asynchronously to a set of CSV files,
-located on GCloud Storage.  First, create the job locally:
+located on Google Cloud Storage.  First, create the job locally:
 
 .. doctest::
 
