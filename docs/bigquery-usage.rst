@@ -240,6 +240,9 @@ Get rows from a table's data:
    ('full_name', 'age')
    >>> list(rows.csv)
    [('Abel Adamson', 27), ('Beverly Bowman', 33)]
+   >>> for row in rows:
+   ...     for field, value in zip(table.schema, row):
+   ...         do_something(field, value)
 
 Delete a table:
 
