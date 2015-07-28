@@ -13,13 +13,10 @@
 # limitations under the License.
 
 """Define API Datasets."""
-
-import datetime
-
-import pytz
 import six
 
 from gcloud.exceptions import NotFound
+from gcloud.bigquery._helpers import _datetime_from_prop
 
 
 class Dataset(object):
@@ -356,14 +353,3 @@ class Dataset(object):
         """
         client = self._require_client(client)
         client.connection.api_request(method='DELETE', path=self.path)
-
-
-def _datetime_from_prop(value):
-    """Convert non-none timestamp to datetime, assuming UTC.
-
-    :rtype: ``datetime.datetime``, or ``NoneType``
-    """
-    if value is not None:
-        # back-end returns timestamps as milliseconds since the epoch
-        value = datetime.datetime.utcfromtimestamp(value / 1000.0)
-        return value.replace(tzinfo=pytz.utc)
