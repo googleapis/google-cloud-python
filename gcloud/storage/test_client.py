@@ -27,10 +27,11 @@ class TestClient(unittest2.TestCase):
     def test_ctor_connection_type(self):
         from gcloud.storage.connection import Connection
 
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
 
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+        self.assertEqual(client.project, PROJECT)
         self.assertTrue(isinstance(client.connection, Connection))
         self.assertTrue(client.connection.credentials is CREDENTIALS)
         self.assertTrue(client.current_batch is None)
@@ -39,7 +40,7 @@ class TestClient(unittest2.TestCase):
     def test__push_batch_and__pop_batch(self):
         from gcloud.storage.batch import Batch
 
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
 
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
@@ -58,7 +59,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(list(client._batch_stack), [])
 
     def test_connection_setter(self):
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         client._connection = None  # Unset the value from the constructor
@@ -66,13 +67,13 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client._connection is connection)
 
     def test_connection_setter_when_set(self):
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         self.assertRaises(ValueError, setattr, client, 'connection', None)
 
     def test_connection_getter_no_batch(self):
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         self.assertTrue(client.connection is client._connection)
@@ -80,7 +81,7 @@ class TestClient(unittest2.TestCase):
 
     def test_connection_getter_with_batch(self):
         from gcloud.storage.batch import Batch
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
         batch = Batch(client)
@@ -92,7 +93,7 @@ class TestClient(unittest2.TestCase):
     def test_bucket(self):
         from gcloud.storage.bucket import Bucket
 
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         BUCKET_NAME = 'BUCKET_NAME'
 
@@ -105,7 +106,7 @@ class TestClient(unittest2.TestCase):
     def test_batch(self):
         from gcloud.storage.batch import Batch
 
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
 
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
@@ -116,7 +117,7 @@ class TestClient(unittest2.TestCase):
     def test_get_bucket_miss(self):
         from gcloud.exceptions import NotFound
 
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
 
@@ -139,7 +140,7 @@ class TestClient(unittest2.TestCase):
     def test_get_bucket_hit(self):
         from gcloud.storage.bucket import Bucket
 
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
 
@@ -163,7 +164,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(http._called_with['uri'], URI)
 
     def test_lookup_bucket_miss(self):
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
 
@@ -187,7 +188,7 @@ class TestClient(unittest2.TestCase):
     def test_lookup_bucket_hit(self):
         from gcloud.storage.bucket import Bucket
 
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
 

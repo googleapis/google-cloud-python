@@ -134,7 +134,7 @@ class TestJSONClient(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud import client
 
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = object()
         FUNC_CALLS = []
 
@@ -171,8 +171,14 @@ class TestJSONClient(unittest2.TestCase):
 
         self.assertEqual(FUNC_CALLS, ['_get_production_project'])
 
+    def test_ctor_w_invalid_project(self):
+        CREDENTIALS = object()
+        HTTP = object()
+        with self.assertRaises(ValueError):
+            self._makeOne(project=object(), credentials=CREDENTIALS, http=HTTP)
+
     def test_ctor_explicit(self):
-        PROJECT = object()
+        PROJECT = 'PROJECT'
         CREDENTIALS = object()
         HTTP = object()
 
