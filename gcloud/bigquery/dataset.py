@@ -108,7 +108,7 @@ class Dataset(object):
 
         :raises: ValueError for invalid value types.
         """
-        if not isinstance(value, int) and value is not None:
+        if not isinstance(value, six.integer_types) and value is not None:
             raise ValueError("Pass an integer, or None")
         self._properties['defaultTableExpirationMs'] = value
 
@@ -295,7 +295,7 @@ class Dataset(object):
 
         if 'default_table_expiration_ms' in kw:
             value = kw['default_table_expiration_ms']
-            if not isinstance(value, int) and value is not None:
+            if not isinstance(value, six.integer_types) and value is not None:
                 raise ValueError("Pass an integer, or None")
             partial['defaultTableExpirationMs'] = value
 
