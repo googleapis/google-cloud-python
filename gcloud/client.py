@@ -14,6 +14,7 @@
 
 """gcloud client base class for interacting with API."""
 
+import six
 
 from gcloud._helpers import _get_production_project
 from gcloud.connection import Connection
@@ -147,6 +148,8 @@ class JSONClient(Client):
         if project is None:
             raise ValueError('Project was not passed and could not be '
                              'determined from the environment.')
+        if not isinstance(project, six.string_types):
+            raise ValueError('Project must be a string.')
         self.project = project
 
         super(JSONClient, self).__init__(credentials=credentials, http=http)
