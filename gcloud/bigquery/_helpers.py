@@ -16,6 +16,7 @@
 
 
 import datetime
+import sys
 
 import pytz
 
@@ -47,4 +48,15 @@ def _prop_from_datetime(value):
             # Assume UTC
             value = value.replace(tzinfo=pytz.utc)
         # back-end wants timestamps as milliseconds since the epoch
-        return (value - _EPOCH).total_seconds() * 1000.0
+        return _total_seconds(value - _EPOCH) * 1000.0
+
+
+if sys.version_info[:2] < (2, 7):
+    def _total_seconds(offset):  # pragma: NO COVER
+        """Backport of timedelta.total_seconds() from python 2.7+."""
+        seconds = offset.days * 24 * 60 * 60 + offset.seconds
+        microseconds = seconds * 10**6 + offset.microseconds
+        return microseconds / (10**6 * 1.0)
+else:
+    def _total_seconds(offset):
+        return offset.total_seconds()

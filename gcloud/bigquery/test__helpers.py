@@ -27,9 +27,10 @@ class Test__datetime_from_prop(unittest2.TestCase):
     def test_w_millis(self):
         import datetime
         import pytz
+        from gcloud.bigquery._helpers import _total_seconds
         NOW = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
         EPOCH = datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)
-        MILLIS = (NOW - EPOCH).total_seconds() * 1000
+        MILLIS = _total_seconds(NOW - EPOCH) * 1000
         self.assertEqual(self._callFUT(MILLIS), NOW)
 
 
@@ -45,25 +46,28 @@ class Test__prop_from_datetime(unittest2.TestCase):
     def test_w_utc_datetime(self):
         import datetime
         import pytz
+        from gcloud.bigquery._helpers import _total_seconds
         NOW = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
         EPOCH = datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)
-        MILLIS = (NOW - EPOCH).total_seconds() * 1000
+        MILLIS = _total_seconds(NOW - EPOCH) * 1000
         self.assertEqual(self._callFUT(NOW), MILLIS)
 
     def test_w_non_utc_datetime(self):
         import datetime
         import pytz
+        from gcloud.bigquery._helpers import _total_seconds
         eastern = pytz.timezone('US/Eastern')
         NOW = datetime.datetime(2015, 7, 28, 16, 34, 47, tzinfo=eastern)
         EPOCH = datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)
-        MILLIS = (NOW - EPOCH).total_seconds() * 1000
+        MILLIS = _total_seconds(NOW - EPOCH) * 1000
         self.assertEqual(self._callFUT(NOW), MILLIS)
 
     def test_w_naive_datetime(self):
         import datetime
         import pytz
+        from gcloud.bigquery._helpers import _total_seconds
         NOW = datetime.datetime.utcnow()
         UTC_NOW = NOW.replace(tzinfo=pytz.utc)
         EPOCH = datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)
-        MILLIS = (UTC_NOW - EPOCH).total_seconds() * 1000
+        MILLIS = _total_seconds(UTC_NOW - EPOCH) * 1000
         self.assertEqual(self._callFUT(NOW), MILLIS)
