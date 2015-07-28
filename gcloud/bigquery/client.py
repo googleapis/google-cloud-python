@@ -46,7 +46,7 @@ class Client(JSONClient):
     def dataset(self, name):
         """Construct a dataset bound to this client.
 
-        :type name: ``str``
+        :type name: string
         :param name: Name of the dataset.
 
         :rtype: :class:`gcloud.bigquery.dataset.Dataset`
