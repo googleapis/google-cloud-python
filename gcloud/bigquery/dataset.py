@@ -250,7 +250,7 @@ class Dataset(object):
                        ``client`` stored on the current dataset.
         """
         client = self._require_client(client)
-        path = '/projects/%s/datasets' % self.project
+        path = '/projects/%s/datasets' % (self.project,)
         api_response = client.connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
