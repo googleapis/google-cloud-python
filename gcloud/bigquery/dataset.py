@@ -347,5 +347,6 @@ def _datetime_from_prop(value):
     :rtype: ``datetime.datetime``, or ``NoneType``
     """
     if value is not None:
+        # back-end returns timestamps as milliseconds since the epoch
         value = datetime.datetime.utcfromtimestamp(value / 1000.0)
         return value.replace(tzinfo=pytz.utc)
