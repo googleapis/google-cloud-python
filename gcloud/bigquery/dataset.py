@@ -251,7 +251,8 @@ class Dataset(object):
         client = self._require_client(client)
 
         try:
-            client.connection.api_request(method='GET', path=self.path)
+            client.connection.api_request(method='GET', path=self.path,
+                                          query_params={'fields': 'id'})
         except NotFound:
             return False
         else:
