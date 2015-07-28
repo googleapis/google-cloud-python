@@ -17,6 +17,7 @@
 
 from gcloud.client import JSONClient
 from gcloud.bigquery.connection import Connection
+from gcloud.bigquery.dataset import Dataset
 
 
 class Client(JSONClient):
@@ -41,3 +42,14 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+
+    def dataset(self, name):
+        """Construct a dataset bound to this client.
+
+        :type name: string
+        :param name: Name of the dataset.
+
+        :rtype: :class:`gcloud.bigquery.dataset.Dataset`
+        :returns: a new ``Dataset`` instance
+        """
+        return Dataset(name, client=self)
