@@ -43,12 +43,20 @@ class Dataset(object):
 
     @property
     def project(self):
-        """Project bound to the dataset."""
+        """Project bound to the dataset.
+
+        :rtype: string
+        :returns: the project (derived from the client).
+        """
         return self._client.project
 
     @property
     def path(self):
-        """URL path for the dataset's APIs"""
+        """URL path for the dataset's APIs.
+
+        :rtype: string
+        :returns: the path based on project and dataste name.
+        """
         return '/projects/%s/datasets/%s' % (self.project, self.name)
 
     @property
@@ -56,6 +64,7 @@ class Dataset(object):
         """Datetime at which the dataset was created.
 
         :rtype: ``datetime.datetime``, or ``NoneType``
+        :returns: the creation time (None until set from the server).
         """
         return _datetime_from_prop(self._properties.get('creationTime'))
 
@@ -64,6 +73,7 @@ class Dataset(object):
         """ID for the dataset resource.
 
         :rtype: string, or ``NoneType``
+        :returns: the ID (None until set from the server).
         """
         return self._properties.get('id')
 
@@ -72,6 +82,7 @@ class Dataset(object):
         """ETag for the dataset resource.
 
         :rtype: string, or ``NoneType``
+        :returns: the ETag (None until set from the server).
         """
         return self._properties.get('etag')
 
@@ -80,6 +91,7 @@ class Dataset(object):
         """Datetime at which the dataset was last modified.
 
         :rtype: ``datetime.datetime``, or ``NoneType``
+        :returns: the modification time (None until set from the server).
         """
         return _datetime_from_prop(self._properties.get('lastModifiedTime'))
 
@@ -88,6 +100,7 @@ class Dataset(object):
         """URL for the dataset resource.
 
         :rtype: string, or ``NoneType``
+        :returns: the URL (None until set from the server).
         """
         return self._properties.get('selfLink')
 
@@ -96,6 +109,7 @@ class Dataset(object):
         """Default expiration time for tables in the dataset.
 
         :rtype: integer, or ``NoneType``
+        :returns: The time in milliseconds, or None (the default).
         """
         return self._properties.get('defaultTableExpirationMs')
 
@@ -117,6 +131,7 @@ class Dataset(object):
         """Description of the dataset.
 
         :rtype: string, or ``NoneType``
+        :returns: The description as set by the user, or None (the default).
         """
         return self._properties.get('description')
 
@@ -138,6 +153,7 @@ class Dataset(object):
         """Title of the dataset.
 
         :rtype: string, or ``NoneType``
+        :returns: The name as set by the user, or None (the default).
         """
         return self._properties.get('friendlyName')
 
@@ -159,6 +175,7 @@ class Dataset(object):
         """Location in which the dataset is hosted.
 
         :rtype: string, or ``NoneType``
+        :returns: The location as set by the user, or None (the default).
         """
         return self._properties.get('location')
 
