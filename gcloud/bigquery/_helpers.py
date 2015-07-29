@@ -20,7 +20,7 @@ import sys
 
 import pytz
 
-_EPOCH = datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)
+_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
 
 
 def _millis(when):
