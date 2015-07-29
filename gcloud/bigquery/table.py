@@ -224,14 +224,16 @@ class Table(object):
     def view_query(self, value):
         """Update SQL query definiing the table as a view.
 
-        :type value: string, or ``NoneType``
+        :type value: string
         :param value: new location
 
         :raises: ValueError for invalid value types.
         """
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, six.string_types):
             raise ValueError("Pass a string, or None")
-        if value is None:
-            self._properties.pop('view', None)
-        else:
-            self._properties['view'] = {'query': value}
+        self._properties['view'] = {'query': value}
+
+    @view_query.deleter
+    def view_query(self):
+        """Delete SQL query definiing the table as a view."""
+        self._properties.pop('view', None)

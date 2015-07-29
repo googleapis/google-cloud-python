@@ -156,7 +156,13 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(self.TABLE_NAME, dataset)
         table.view_query = 'select * from foo'
         self.assertEqual(table.view_query, 'select * from foo')
-        table.view_query = None
+
+    def test_view_query_deleter(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        table.view_query = 'select * from foo'
+        del table.view_query
         self.assertEqual(table.view_query, None)
 
 
