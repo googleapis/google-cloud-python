@@ -393,6 +393,31 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_table_wo_schema(self):
+        from gcloud.bigquery.table import Table
+        conn = _Connection({})
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        table = dataset.table('table_name')
+        self.assertTrue(isinstance(table, Table))
+        self.assertEqual(table.name, 'table_name')
+        self.assertTrue(table._dataset is dataset)
+        self.assertEqual(table.schema, [])
+
+    def test_table_w_schema(self):
+        from gcloud.bigquery.table import SchemaField
+        from gcloud.bigquery.table import Table
+        conn = _Connection({})
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = dataset.table('table_name', schema=[full_name, age])
+        self.assertTrue(isinstance(table, Table))
+        self.assertEqual(table.name, 'table_name')
+        self.assertTrue(table._dataset is dataset)
+        self.assertEqual(table.schema, [full_name, age])
+
 
 class _Client(object):
 

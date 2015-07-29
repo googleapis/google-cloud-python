@@ -17,6 +17,7 @@ import six
 
 from gcloud.exceptions import NotFound
 from gcloud.bigquery._helpers import _datetime_from_prop
+from gcloud.bigquery.table import Table
 
 
 class Dataset(object):
@@ -353,3 +354,17 @@ class Dataset(object):
         """
         client = self._require_client(client)
         client.connection.api_request(method='DELETE', path=self.path)
+
+    def table(self, name, schema=()):
+        """Construct a table bound to this dataset.
+
+        :type name: string
+        :param name: Name of the table.
+
+        :rtype: :class:`gcloud.bigquery.table.Table`
+        :returns: a new ``Table`` instance
+
+        :type schema: list of :class:`gcloud.bigquery.table.SchemaField`
+        :param schema: The table's schema
+        """
+        return Table(name, dataset=self, schema=schema)
