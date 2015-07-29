@@ -74,6 +74,59 @@ class TestTable(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
+    def _makeResource(self):
+        import datetime
+        import pytz
+        self.WHEN_TS = 1437767599.006
+        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
+            tzinfo=pytz.UTC)
+        self.ETAG = 'ETAG'
+        self.TABLE_ID = '%s:%s:%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        self.RESOURCE_URL = 'http://example.com/path/to/resource'
+        self.NUM_BYTES = 12345
+        self.NUM_ROWS = 67
+        return {
+            'creationTime': self.WHEN_TS * 1000,
+            'tableReference':
+                {'projectId': self.PROJECT,
+                 'datasetId': self.DS_NAME,
+                 'tableId': self.TABLE_NAME},
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
+            'etag': 'ETAG',
+            'id': self.TABLE_ID,
+            'lastModifiedTime': self.WHEN_TS * 1000,
+            'location': 'US',
+            'selfLink': self.RESOURCE_URL,
+            'numRows': self.NUM_ROWS,
+            'numBytes': self.NUM_BYTES,
+            'type': 'TABLE',
+        }
+
+    def _verifyResourceProperties(self, table, resource):
+        self.assertEqual(table.created, self.WHEN)
+        self.assertEqual(table.etag, self.ETAG)
+        self.assertEqual(table.num_rows, self.NUM_ROWS)
+        self.assertEqual(table.num_bytes, self.NUM_BYTES)
+        self.assertEqual(table.self_link, self.RESOURCE_URL)
+        self.assertEqual(table.table_id, self.TABLE_ID)
+        self.assertEqual(table.table_type,
+                         'TABLE' if 'view' not in resource else 'VIEW')
+
+        if 'expirationTime' in resource:
+            self.assertEqual(table.expires, self.EXP_TIME)
+        else:
+            self.assertEqual(table.expires, None)
+        self.assertEqual(table.description, resource.get('description'))
+        self.assertEqual(table.friendly_name, resource.get('friendlyName'))
+        self.assertEqual(table.location, resource.get('location'))
+        if 'view' in resource:
+            self.assertEqual(table.view_query, resource['view']['query'])
+        else:
+            self.assertEqual(table.view_query, None)
+
     def test_ctor(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
@@ -249,6 +302,430 @@ class TestTable(unittest2.TestCase):
         del table.view_query
         self.assertEqual(table.view_query, None)
 
+    def test__build_schema_resource_defaults(self):
+        from gcloud.bigquery.table import SchemaField
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        resource = table._build_schema_resource()
+        self.assertEqual(len(resource), 2)
+        self.assertEqual(resource[0],
+                         {'name': 'full_name',
+                          'type': 'STRING',
+                          'mode': 'REQUIRED'})
+        self.assertEqual(resource[1],
+                         {'name': 'age',
+                          'type': 'INTEGER',
+                          'mode': 'REQUIRED'})
+
+    def test__build_schema_resource_w_description(self):
+        from gcloud.bigquery.table import SchemaField
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        DESCRIPTION = 'DESCRIPTION'
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED',
+                                description=DESCRIPTION)
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        resource = table._build_schema_resource()
+        self.assertEqual(len(resource), 2)
+        self.assertEqual(resource[0],
+                         {'name': 'full_name',
+                          'type': 'STRING',
+                          'mode': 'REQUIRED',
+                          'description': DESCRIPTION})
+        self.assertEqual(resource[1],
+                         {'name': 'age',
+                          'type': 'INTEGER',
+                          'mode': 'REQUIRED'})
+
+    def test__build_schema_resource_w_subfields(self):
+        from gcloud.bigquery.table import SchemaField
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        ph_type = SchemaField('type', 'STRING', 'REQUIRED')
+        ph_num = SchemaField('number', 'STRING', 'REQUIRED')
+        phone = SchemaField('phone', 'RECORD', mode='REPEATABLE',
+                            fields=[ph_type, ph_num])
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, phone])
+        resource = table._build_schema_resource()
+        self.assertEqual(len(resource), 2)
+        self.assertEqual(resource[0],
+                         {'name': 'full_name',
+                          'type': 'STRING',
+                          'mode': 'REQUIRED'})
+        self.assertEqual(resource[1],
+                         {'name': 'phone',
+                          'type': 'RECORD',
+                          'mode': 'REPEATABLE',
+                          'fields': [{'name': 'type',
+                                      'type': 'STRING',
+                                      'mode': 'REQUIRED'},
+                                     {'name': 'number',
+                                      'type': 'STRING',
+                                      'mode': 'REQUIRED'}]})
+
+    def test_create_w_bound_client(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+
+        table.create()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.TABLE_NAME},
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_create_w_alternate_client(self):
+        import datetime
+        import pytz
+        from gcloud.bigquery.table import SchemaField
+        from gcloud.bigquery._helpers import _millis
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        DESCRIPTION = 'DESCRIPTION'
+        TITLE = 'TITLE'
+        QUERY = 'select fullname, age from person_ages'
+        RESOURCE = self._makeResource()
+        RESOURCE['description'] = DESCRIPTION
+        RESOURCE['friendlyName'] = TITLE
+        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
+                                          tzinfo=pytz.utc)
+        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
+        RESOURCE['view'] = {}
+        RESOURCE['view']['query'] = QUERY
+        RESOURCE['type'] = 'VIEW'
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        dataset = _Dataset(client=client1)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, age])
+        table.friendly_name = TITLE
+        table.description = DESCRIPTION
+        table.view_query = QUERY
+
+        table.create(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.TABLE_NAME},
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
+            'description': DESCRIPTION,
+            'friendlyName': TITLE,
+            'view': {'query': QUERY},
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_exists_miss_w_bound_client(self):
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        self.assertFalse(table.exists())
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_exists_hit_w_alternate_client(self):
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        dataset = _Dataset(client1)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        self.assertTrue(table.exists(client=client2))
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_reload_w_bound_client(self):
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        table.reload()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_reload_w_alternate_client(self):
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        RESOURCE = self._makeResource()
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        dataset = _Dataset(client1)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        table.reload(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_patch_w_invalid_expiration(self):
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        with self.assertRaises(ValueError):
+            table.patch(expires='BOGUS')
+
+    def test_patch_w_bound_client(self):
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        DESCRIPTION = 'DESCRIPTION'
+        TITLE = 'TITLE'
+        RESOURCE = self._makeResource()
+        RESOURCE['description'] = DESCRIPTION
+        RESOURCE['friendlyName'] = TITLE
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        table.patch(description=DESCRIPTION, friendly_name=TITLE)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        SENT = {
+            'description': DESCRIPTION,
+            'friendlyName': TITLE,
+        }
+        self.assertEqual(req['data'], SENT)
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_patch_w_alternate_client(self):
+        import datetime
+        import pytz
+        from gcloud.bigquery._helpers import _millis
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        QUERY = 'select fullname, age from person_ages'
+        LOCATION = 'EU'
+        RESOURCE = self._makeResource()
+        RESOURCE['view'] = {'query': QUERY}
+        RESOURCE['type'] = 'VIEW'
+        RESOURCE['location'] = LOCATION
+        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
+                                          tzinfo=pytz.utc)
+        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        dataset = _Dataset(client1)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        table.patch(client=client2, view_query=QUERY, location=LOCATION,
+                    expires=self.EXP_TIME)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'view': {'query': QUERY},
+            'location': LOCATION,
+            'expirationTime': _millis(self.EXP_TIME),
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_update_w_bound_client(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        DESCRIPTION = 'DESCRIPTION'
+        TITLE = 'TITLE'
+        RESOURCE = self._makeResource()
+        RESOURCE['description'] = DESCRIPTION
+        RESOURCE['friendlyName'] = TITLE
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, age])
+        table.description = DESCRIPTION
+        table.friendly_name = TITLE
+
+        table.update()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PUT')
+        SENT = {
+            'tableReference':
+                {'projectId': self.PROJECT,
+                 'datasetId': self.DS_NAME,
+                 'tableId': self.TABLE_NAME},
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
+            'description': DESCRIPTION,
+            'friendlyName': TITLE,
+        }
+        self.assertEqual(req['data'], SENT)
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_update_w_alternate_client(self):
+        import datetime
+        import pytz
+        from gcloud.bigquery._helpers import _millis
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        DEF_TABLE_EXP = 12345
+        LOCATION = 'EU'
+        QUERY = 'select fullname, age from person_ages'
+        RESOURCE = self._makeResource()
+        RESOURCE['defaultTableExpirationMs'] = 12345
+        RESOURCE['location'] = LOCATION
+        self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
+                                          tzinfo=pytz.utc)
+        RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
+        RESOURCE['view'] = {'query': QUERY}
+        RESOURCE['type'] = 'VIEW'
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        dataset = _Dataset(client1)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, age])
+        table.default_table_expiration_ms = DEF_TABLE_EXP
+        table.location = LOCATION
+        table.expires = self.EXP_TIME
+        table.view_query = QUERY
+
+        table.update(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'PUT')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'tableReference':
+                {'projectId': self.PROJECT,
+                 'datasetId': self.DS_NAME,
+                 'tableId': self.TABLE_NAME},
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
+            'expirationTime': _millis(self.EXP_TIME),
+            'location': 'EU',
+            'view': {'query': QUERY},
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_delete_w_bound_client(self):
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        conn = _Connection({})
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        table.delete()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'DELETE')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_delete_w_alternate_client(self):
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        dataset = _Dataset(client1)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        table.delete(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'DELETE')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
 
 class _Client(object):
 
@@ -261,9 +738,31 @@ class _Dataset(object):
 
     def __init__(self, client, name=TestTable.DS_NAME):
         self._client = client
-        self._name = name
+        self.name = name
 
     @property
     def path(self):
         return '/projects/%s/datasets/%s' % (
-            self._client.project, self._name)
+            self._client.project, self.name)
+
+    @property
+    def project(self):
+        return self._client.project
+
+
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def api_request(self, **kw):
+        from gcloud.exceptions import NotFound
+        self._requested.append(kw)
+
+        try:
+            response, self._responses = self._responses[0], self._responses[1:]
+        except:
+            raise NotFound('miss')
+        else:
+            return response

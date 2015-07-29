@@ -18,6 +18,7 @@ import datetime
 
 import six
 
+from gcloud.exceptions import NotFound
 from gcloud.bigquery._helpers import _datetime_from_prop
 from gcloud.bigquery._helpers import _prop_from_datetime
 
@@ -293,3 +294,197 @@ class Table(object):
     def view_query(self):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
+
+    def _require_client(self, client):
+        """Check client or verify over-ride.
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+
+        :rtype: :class:`gcloud.bigquery.client.Client`
+        :returns: The client passed in or the currently bound client.
+        """
+        if client is None:
+            client = self._dataset._client
+        return client
+
+    def _set_properties(self, api_response):
+        """Update properties from resource in body of ``api_response``
+
+        :type api_response: httplib2.Response
+        :param api_response: response returned from an API call
+        """
+        self._properties.clear()
+        cleaned = api_response.copy()
+        cleaned['creationTime'] = float(cleaned['creationTime'])
+        cleaned['lastModifiedTime'] = float(cleaned['lastModifiedTime'])
+        if 'expirationTime' in cleaned:
+            cleaned['expirationTime'] = float(cleaned['expirationTime'])
+        self._properties.update(cleaned)
+
+    def _build_schema_resource(self, fields=None):
+        """Generate a resource fragment for table's schema."""
+        if fields is None:
+            fields = self._schema
+        infos = []
+        for field in fields:
+            info = {'name': field.name,
+                    'type': field.field_type,
+                    'mode': field.mode}
+            if field.description is not None:
+                info['description'] = field.description
+            if field.fields is not None:
+                info['fields'] = self._build_schema_resource(field.fields)
+            infos.append(info)
+        return infos
+
+    def _build_resource(self):
+        """Generate a resource for ``create`` or ``update``."""
+        resource = {
+            'tableReference': {
+                'projectId': self._dataset.project,
+                'datasetId': self._dataset.name,
+                'tableId': self.name},
+            'schema': {'fields': self._build_schema_resource()},
+        }
+        if self.description is not None:
+            resource['description'] = self.description
+
+        if self.expires is not None:
+            value = _prop_from_datetime(self.expires)
+            resource['expirationTime'] = value
+
+        if self.friendly_name is not None:
+            resource['friendlyName'] = self.friendly_name
+
+        if self.location is not None:
+            resource['location'] = self.location
+
+        if self.view_query is not None:
+            view = resource['view'] = {}
+            view['query'] = self.view_query
+
+        return resource
+
+    def create(self, client=None):
+        """API call:  create the dataset via a PUT request
+
+        See:
+        https://cloud.google.com/bigquery/reference/rest/v2/tables/insert
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+        path = '/projects/%s/datasets/%s/tables' % (
+            self._dataset.project, self._dataset.name)
+        api_response = client.connection.api_request(
+            method='POST', path=path, data=self._build_resource())
+        self._set_properties(api_response)
+
+    def exists(self, client=None):
+        """API call:  test for the existence of the table via a GET request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/tables/get
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+
+        try:
+            client.connection.api_request(method='GET', path=self.path,
+                                          query_params={'fields': 'id'})
+        except NotFound:
+            return False
+        else:
+            return True
+
+    def reload(self, client=None):
+        """API call:  refresh table properties via a GET request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/tables/get
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+
+        api_response = client.connection.api_request(
+            method='GET', path=self.path)
+        self._set_properties(api_response)
+
+    def patch(self, client=None, **kw):
+        """API call:  update individual table properties via a PATCH request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/tables/patch
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+
+        :type kw: ``dict``
+        :param kw: properties to be patched.
+
+        :raises: ValueError for invalid value types.
+        """
+        client = self._require_client(client)
+
+        partial = {}
+
+        if 'expires' in kw:
+            value = kw['expires']
+            if not isinstance(value, datetime.datetime) and value is not None:
+                raise ValueError("Pass a datetime, or None")
+            partial['expirationTime'] = _prop_from_datetime(value)
+
+        if 'description' in kw:
+            partial['description'] = kw['description']
+
+        if 'friendly_name' in kw:
+            partial['friendlyName'] = kw['friendly_name']
+
+        if 'location' in kw:
+            partial['location'] = kw['location']
+
+        if 'view_query' in kw:
+            partial['view'] = {'query': kw['view_query']}
+
+        api_response = client.connection.api_request(
+            method='PATCH', path=self.path, data=partial)
+        self._set_properties(api_response)
+
+    def update(self, client=None):
+        """API call:  update table properties via a PUT request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/tables/update
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+        api_response = client.connection.api_request(
+            method='PUT', path=self.path, data=self._build_resource())
+        self._set_properties(api_response)
+
+    def delete(self, client=None):
+        """API call:  delete the table via a DELETE request
+
+        See:
+        https://cloud.google.com/bigquery/reference/rest/v2/tables/delete
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+        client.connection.api_request(method='DELETE', path=self.path)
