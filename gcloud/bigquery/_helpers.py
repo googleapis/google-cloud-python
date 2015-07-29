@@ -23,6 +23,18 @@ import pytz
 _EPOCH = datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)
 
 
+def _millis(when):
+    """Convert a zone-aware datetime to integer milliseconds.
+
+    :type when: ``datetime.datetime``
+    :param when: the datetime to convert
+
+    :rtype: integer
+    :returns: milliseconds since epoch for ``when``
+    """
+    return int(_total_seconds(when - _EPOCH) * 1000)
+
+
 def _datetime_from_prop(value):
     """Convert non-none timestamp to datetime, assuming UTC.
 
@@ -48,7 +60,7 @@ def _prop_from_datetime(value):
             # Assume UTC
             value = value.replace(tzinfo=pytz.utc)
         # back-end wants timestamps as milliseconds since the epoch
-        return _total_seconds(value - _EPOCH) * 1000.0
+        return _millis(value)
 
 
 if sys.version_info[:2] < (2, 7):
