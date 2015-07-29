@@ -59,15 +59,6 @@ class Table(object):
         return _datetime_from_prop(self._properties.get('creationTime'))
 
     @property
-    def dataset_id(self):
-        """ID for the table resource.
-
-        :rtype: string, or ``NoneType``
-        :returns: the ID (None until set from the server).
-        """
-        return self._properties.get('id')
-
-    @property
     def etag(self):
         """ETag for the table resource.
 
@@ -101,7 +92,7 @@ class Table(object):
         :rtype: integer, or ``NoneType``
         :returns: the row count (None until set from the server).
         """
-        return self._properties.get('numBytes')
+        return self._properties.get('numRows')
 
     @property
     def self_link(self):
@@ -111,6 +102,15 @@ class Table(object):
         :returns: the URL (None until set from the server).
         """
         return self._properties.get('selfLink')
+
+    @property
+    def table_id(self):
+        """ID for the table resource.
+
+        :rtype: string, or ``NoneType``
+        :returns: the ID (None until set from the server).
+        """
+        return self._properties.get('id')
 
     @property
     def table_type(self):

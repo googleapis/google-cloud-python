@@ -39,12 +39,12 @@ class TestTable(unittest2.TestCase):
                 self.PROJECT, self.DS_NAME, self.TABLE_NAME))
 
         self.assertEqual(table.created, None)
-        self.assertEqual(table.dataset_id, None)
         self.assertEqual(table.etag, None)
         self.assertEqual(table.modified, None)
         self.assertEqual(table.num_bytes, None)
         self.assertEqual(table.num_rows, None)
         self.assertEqual(table.self_link, None)
+        self.assertEqual(table.table_id, None)
         self.assertEqual(table.table_type, None)
 
         self.assertEqual(table.description, None)
@@ -52,6 +52,37 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(table.friendly_name, None)
         self.assertEqual(table.location, None)
         self.assertEqual(table.view_query, None)
+
+    def test_props_set_by_server(self):
+        import datetime
+        import pytz
+        from gcloud.bigquery._helpers import _millis
+        CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=pytz.utc)
+        MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=pytz.utc)
+        TABLE_ID = '%s:%s:%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        URL = 'http://example.com/projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        table._properties['creationTime'] = _millis(CREATED)
+        table._properties['etag'] = 'ETAG'
+        table._properties['lastModifiedTime'] = _millis(MODIFIED)
+        table._properties['numBytes'] = 12345
+        table._properties['numRows'] = 66
+        table._properties['selfLink'] = URL
+        table._properties['id'] = TABLE_ID
+        table._properties['type'] = 'TABLE'
+
+        self.assertEqual(table.created, CREATED)
+        self.assertEqual(table.etag, 'ETAG')
+        self.assertEqual(table.modified, MODIFIED)
+        self.assertEqual(table.num_bytes, 12345)
+        self.assertEqual(table.num_rows, 66)
+        self.assertEqual(table.self_link, URL)
+        self.assertEqual(table.table_id, TABLE_ID)
+        self.assertEqual(table.table_type, 'TABLE')
 
     def test_description_setter_bad_value(self):
         client = _Client(self.PROJECT)
