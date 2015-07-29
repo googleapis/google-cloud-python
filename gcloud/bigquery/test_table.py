@@ -15,6 +15,53 @@
 import unittest2
 
 
+class TestSchemaField(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.table import SchemaField
+        return SchemaField
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        field = self._makeOne('test', 'STRING')
+        self.assertEqual(field.name, 'test')
+        self.assertEqual(field.field_type, 'STRING')
+        self.assertEqual(field.mode, 'NULLABLE')
+        self.assertEqual(field.description, None)
+        self.assertEqual(field.fields, None)
+
+    def test_ctor_explicit(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        self.assertEqual(field.name, 'test')
+        self.assertEqual(field.field_type, 'STRING')
+        self.assertEqual(field.mode, 'REQUIRED')
+        self.assertEqual(field.description, 'Testing')
+        self.assertEqual(field.fields, None)
+
+    def test_ctor_subfields(self):
+        field = self._makeOne('phone_number', 'RECORD',
+                              fields=[self._makeOne('area_code', 'STRING'),
+                                      self._makeOne('local_number', 'STRING')])
+        self.assertEqual(field.name, 'phone_number')
+        self.assertEqual(field.field_type, 'RECORD')
+        self.assertEqual(field.mode, 'NULLABLE')
+        self.assertEqual(field.description, None)
+        self.assertEqual(len(field.fields), 2)
+        self.assertEqual(field.fields[0].name, 'area_code')
+        self.assertEqual(field.fields[0].field_type, 'STRING')
+        self.assertEqual(field.fields[0].mode, 'NULLABLE')
+        self.assertEqual(field.fields[0].description, None)
+        self.assertEqual(field.fields[0].fields, None)
+        self.assertEqual(field.fields[1].name, 'local_number')
+        self.assertEqual(field.fields[1].field_type, 'STRING')
+        self.assertEqual(field.fields[1].mode, 'NULLABLE')
+        self.assertEqual(field.fields[1].description, None)
+        self.assertEqual(field.fields[1].fields, None)
+
+
 class TestTable(unittest2.TestCase):
     PROJECT = 'project'
     DS_NAME = 'dataset-name'
@@ -37,6 +84,7 @@ class TestTable(unittest2.TestCase):
             table.path,
             '/projects/%s/datasets/%s/tables/%s' % (
                 self.PROJECT, self.DS_NAME, self.TABLE_NAME))
+        self.assertEqual(table.schema, [])
 
         self.assertEqual(table.created, None)
         self.assertEqual(table.etag, None)
@@ -52,6 +100,42 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(table.friendly_name, None)
         self.assertEqual(table.location, None)
         self.assertEqual(table.view_query, None)
+
+    def test_ctor_w_schema(self):
+        from gcloud.bigquery.table import SchemaField
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.schema, [full_name, age])
+
+    def test_schema_setter_non_list(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        with self.assertRaises(TypeError):
+            table.schema = object()
+
+    def test_schema_setter_invalid_field(self):
+        from gcloud.bigquery.table import SchemaField
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        with self.assertRaises(ValueError):
+            table.schema = [full_name, object()]
+
+    def test_schema_setter(self):
+        from gcloud.bigquery.table import SchemaField
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table.schema = [full_name, age]
+        self.assertEqual(table.schema, [full_name, age])
 
     def test_props_set_by_server(self):
         import datetime

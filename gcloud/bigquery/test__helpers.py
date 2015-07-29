@@ -41,7 +41,8 @@ class Test__datetime_from_prop(unittest2.TestCase):
         import datetime
         import pytz
         from gcloud.bigquery._helpers import _total_seconds
-        NOW = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+        NOW = datetime.datetime(2015, 7, 29, 17, 45, 21, 123456,
+                                tzinfo=pytz.utc)
         EPOCH = datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)
         MILLIS = _total_seconds(NOW - EPOCH) * 1000
         self.assertEqual(self._callFUT(MILLIS), NOW)

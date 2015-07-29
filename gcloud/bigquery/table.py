@@ -22,6 +22,35 @@ from gcloud.bigquery._helpers import _datetime_from_prop
 from gcloud.bigquery._helpers import _prop_from_datetime
 
 
+class SchemaField(object):
+    """Describe a single field within a table schema.
+
+    :type name: string
+    :param name: the name of the field
+
+    :type field_type: string
+    :param field_type: the type of the field (one of 'STRING', 'INTEGER',
+                       'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD')
+
+    :type mode: string
+    :param mode: the type of the field (one of 'NULLABLE', 'REQUIRED',
+                 or 'REPEATED')
+
+    :type description: string
+    :param description: optional description for the field
+
+    :type fields: list of ``SchemaField``, or None
+    :param fields: subfields (requires ``field_type`` of 'RECORD').
+    """
+    def __init__(self, name, field_type, mode='NULLABLE', description=None,
+                 fields=None):
+        self.name = name
+        self.field_type = field_type
+        self.mode = mode
+        self.description = description
+        self.fields = fields
+
+
 class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
 
@@ -33,12 +62,16 @@ class Table(object):
 
     :type dataset: :class:`gcloud.bigquery.dataset.Dataset`
     :param dataset: The dataset which contains the table.
+
+    :type schema: list of :class:`SchemaField`
+    :param schema: The table's schema
     """
 
-    def __init__(self, name, dataset):
+    def __init__(self, name, dataset, schema=()):
         self.name = name
         self._dataset = dataset
         self._properties = {}
+        self.schema = schema
 
     @property
     def path(self):
@@ -48,6 +81,32 @@ class Table(object):
         :returns: the path based on project and dataste name.
         """
         return '%s/tables/%s' % (self._dataset.path, self.name)
+
+    @property
+    def schema(self):
+        """Table's schema.
+
+        :rtype: list of ``SchemaField``
+        :returns: fields describing the schema
+        """
+        return list(self._schema)
+
+    @schema.setter
+    def schema(self, value):
+        """Update table's schema
+
+        :type value: list of ``SchemaField``
+        :param value: fields describing the schema
+
+        :raises: TypeError if 'value' is not a sequence, or ValueError if
+                 any item in the sequence is not a SchemaField
+        """
+        fields = list(value)
+        if len(fields) > 0:
+            types = set([type(field) for field in fields])
+            if types != set([SchemaField]):
+                raise ValueError('Schema items must be fields')
+        self._schema = tuple(value)
 
     @property
     def created(self):
