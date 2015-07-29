@@ -230,7 +230,7 @@ class Table(object):
         :raises: ValueError for invalid value types.
         """
         if not isinstance(value, six.string_types):
-            raise ValueError("Pass a string, or None")
+            raise ValueError("Pass a string")
         self._properties['view'] = {'query': value}
 
     @view_query.deleter
