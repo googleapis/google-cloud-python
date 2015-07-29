@@ -211,7 +211,7 @@ class Table(object):
 
     @property
     def view_query(self):
-        """SQL query definiing the table as a view.
+        """SQL query defining the table as a view.
 
         :rtype: string, or ``NoneType``
         :returns: The query as set by the user, or None (the default).
@@ -222,7 +222,7 @@ class Table(object):
 
     @view_query.setter
     def view_query(self, value):
-        """Update SQL query definiing the table as a view.
+        """Update SQL query defining the table as a view.
 
         :type value: string
         :param value: new location
@@ -235,5 +235,5 @@ class Table(object):
 
     @view_query.deleter
     def view_query(self):
-        """Delete SQL query definiing the table as a view."""
+        """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
