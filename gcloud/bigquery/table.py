@@ -23,6 +23,9 @@ from gcloud.bigquery._helpers import _datetime_from_prop
 from gcloud.bigquery._helpers import _prop_from_datetime
 
 
+_MARKER = object()
+
+
 class SchemaField(object):
     """Describe a single field within a table schema.
 
@@ -282,7 +285,7 @@ class Table(object):
         """Update SQL query defining the table as a view.
 
         :type value: string
-        :param value: new location
+        :param value: new query
 
         :raises: ValueError for invalid value types.
         """
@@ -420,7 +423,8 @@ class Table(object):
             method='GET', path=self.path)
         self._set_properties(api_response)
 
-    def patch(self, client=None, **kw):
+    def patch(self, client=None, friendly_name=_MARKER, description=_MARKER,
+              location=_MARKER, expires=_MARKER, view_query=_MARKER):
         """API call:  update individual table properties via a PATCH request
 
         See
@@ -430,8 +434,20 @@ class Table(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :type kw: ``dict``
-        :param kw: properties to be patched.
+        :type friendly_name: string or ``NoneType``
+        :param friendly_name: point in time at which the table expires.
+
+        :type description: string or ``NoneType``
+        :param description: point in time at which the table expires.
+
+        :type location: string or ``NoneType``
+        :param location: point in time at which the table expires.
+
+        :type expires: :class:`datetime.datetime` or ``NoneType``
+        :param expires: point in time at which the table expires.
+
+        :type view_query: string
+        :param view_query: SQL query defining the table as a view
 
         :raises: ValueError for invalid value types.
         """
@@ -439,23 +455,23 @@ class Table(object):
 
         partial = {}
 
-        if 'expires' in kw:
-            value = kw['expires']
-            if not isinstance(value, datetime.datetime) and value is not None:
+        if expires is not _MARKER:
+            if (not isinstance(expires, datetime.datetime) and
+                    expires is not None):
                 raise ValueError("Pass a datetime, or None")
-            partial['expirationTime'] = _prop_from_datetime(value)
+            partial['expirationTime'] = _prop_from_datetime(expires)
 
-        if 'description' in kw:
-            partial['description'] = kw['description']
+        if description is not _MARKER:
+            partial['description'] = description
 
-        if 'friendly_name' in kw:
-            partial['friendlyName'] = kw['friendly_name']
+        if friendly_name is not _MARKER:
+            partial['friendlyName'] = friendly_name
 
-        if 'location' in kw:
-            partial['location'] = kw['location']
+        if location is not _MARKER:
+            partial['location'] = location
 
-        if 'view_query' in kw:
-            partial['view'] = {'query': kw['view_query']}
+        if view_query is not _MARKER:
+            partial['view'] = {'query': view_query}
 
         api_response = client.connection.api_request(
             method='PATCH', path=self.path, data=partial)
