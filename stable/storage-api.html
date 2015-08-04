@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Storage &mdash; gcloud 0.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/github.min.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.7.0 documentation" href="index.html" />
+    <link rel="next" title="Blobs / Objects" href="storage-blobs.html" />
+    <link rel="prev" title="Batches" href="datastore-batches.html" /> 
+  </head>
+  <body role="document">
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="
+http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
+              <img src="_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
+              Ruby
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-api%0ARelease%3A%200.7.0" target="_blank" class="v-btn" id="file-issue">
+        <img src="_static/images/icon-link-github.svg" />
+        Report an Issue
+      </a>
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+        <h1 class="page-title">Python</h1>
+
+          <div class="versions">
+            <a href="/gcloud-python/versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              Version History (0.7.0)
+            </a>
+          </div><!-- end of .versions -->
+          <div>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
+              <img src="_static/images/icon-link-github.svg" />
+              Report an Issue
+            </a>
+          </div>
+      </header>
+
+      <section class="content">
+        
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="storage">
+<h1>Storage<a class="headerlink" href="#storage" title="Permalink to this headline">#</a></h1>
+<div class="section" id="cloud-storage-in-10-seconds">
+<h2>Cloud Storage in 10 seconds<a class="headerlink" href="#cloud-storage-in-10-seconds" title="Permalink to this headline">#</a></h2>
+<div class="section" id="install-the-library">
+<h3>Install the library<a class="headerlink" href="#install-the-library" title="Permalink to this headline">#</a></h3>
+<p>The source code for the library
+(and demo code)
+lives on GitHub,
+You can install the library quickly with <code class="docutils literal"><span class="pre">pip</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ pip install gcloud
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-the-demo">
+<h3>Run the demo<a class="headerlink" href="#run-the-demo" title="Permalink to this headline">#</a></h3>
+<p>In order to run the demo, you need to have registred an actual <code class="docutils literal"><span class="pre">gcloud</span></code>
+project and so you&#8217;ll need to provide some environment variables to facilitate
+authentication to your project:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></code>: Developers Console project ID (e.g.
+bamboo-shift-455).</li>
+<li><code class="docutils literal"><span class="pre">GCLOUD_TESTS_DATASET_ID</span></code>: The name of the dataset your tests connect to.
+This is typically the same as <code class="docutils literal"><span class="pre">GCLOUD_TESTS_PROJECT_ID</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code>: The path to a JSON key file;
+see <code class="docutils literal"><span class="pre">system_tests/app_credentials.json.sample</span></code> as an example. Such a file
+can be downloaded directly from the developer&#8217;s console by clicking
+&#8220;Generate new JSON key&#8221;. See private key
+<a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">docs</a>
+for more details.</li>
+</ul>
+</div></blockquote>
+<p>Run the
+<a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/gcloud/storage/demo/demo.py">example script</a>
+included in the package:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python -m gcloud.storage.demo
+</pre></div>
+</div>
+<p>And that&#8217;s it!
+You should be walking through
+a demonstration of using <code class="docutils literal"><span class="pre">gcloud.storage</span></code>
+to read and write data to Google Cloud Storage.</p>
+</div>
+<div class="section" id="try-it-yourself">
+<h3>Try it yourself<a class="headerlink" href="#try-it-yourself" title="Permalink to this headline">#</a></h3>
+<p>You can interact with a demo dataset
+in a Python interactive shell.</p>
+<p>Start by importing the demo module
+and instantiating the demo connection:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">demo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">demo</span><span class="o">.</span><span class="n">get_connection</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Once you have the connection,
+you can create buckets and blobs:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">list_buckets</span><span class="p">()</span>
+<span class="go">[&lt;Bucket: ...&gt;, ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span><span class="s">&#39;my-new-bucket&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span>
+<span class="go">&lt;Bucket: my-new-bucket&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Blob</span><span class="p">(</span><span class="s">&#39;my-test-file.txt&#39;</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span>
+<span class="go">&lt;Blob: my-new-bucket, my-test-file.txt&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">blob</span><span class="o">.</span><span class="n">download_as_string</span><span class="p">()</span>
+<span class="go">&#39;this is test content!&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
+<span class="go">[&lt;Blob: my-new-bucket, my-test-file.txt&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blob</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The <code class="docutils literal"><span class="pre">get_connection</span></code> method is just a shortcut for:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.storage</span> <span class="kn">import</span> <span class="n">demo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get_connection</span><span class="p">(</span><span class="n">demo</span><span class="o">.</span><span class="n">PROJECT_ID</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="module-gcloud.storage.connection">
+<span id="connections"></span><h2>Connections<a class="headerlink" href="#module-gcloud.storage.connection" title="Permalink to this headline">#</a></h2>
+<p>Create / interact with gcloud storage connections.</p>
+<dl class="class">
+<dt id="gcloud.storage.connection.Connection">
+<em class="property">class </em><code class="descclassname">gcloud.storage.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.connection.Connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.connection.JSONConnection" title="gcloud.connection.JSONConnection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.JSONConnection</span></code></a></p>
+<p>A connection to Google Cloud Storage via the JSON REST API.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.connection.Connection.API_BASE_URL">
+<code class="descname">API_BASE_URL</code><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
+<dd><p>The base of the API call URL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.connection.Connection.API_URL_TEMPLATE">
+<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base_url}/storage/{api_version}{path}'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
+<dd><p>A template for the URL of a particular API call.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.storage.connection.Connection.API_VERSION">
+<code class="descname">API_VERSION</code><em class="property"> = 'v1'</em><a class="headerlink" href="#gcloud.storage.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
+<dd><p>The version of the API, used in building the API call&#8217;s URL.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="gcloud.storage.connection.SCOPE">
+<code class="descclassname">gcloud.storage.connection.</code><code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/devstorage.full_control', 'https://www.googleapis.com/auth/devstorage.read_only', 'https://www.googleapis.com/auth/devstorage.read_write')</em><a class="headerlink" href="#gcloud.storage.connection.SCOPE" title="Permalink to this definition">#</a></dt>
+<dd><p>The scopes required for authenticating as a Cloud Storage consumer.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <ul><li><a href="index.html">gcloud</a></li></ul>
+        <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">GCloud Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-overview.html">Datastore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-api.html">Pub/Sub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">BigQuery</a></li>
+</ul>
+
+        <ul class="external-links">
+          <li>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/" title="Python on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Github
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues" title="Python issues on Github">
+              <img src="_static/images/icon-link-github.svg" alt="Github icon" />
+              Issues
+            </a>
+          </li>
+          <li>
+            <a href="http://stackoverflow.com/questions/tagged/gcloud-python" title="gcloud on StackOverflow">
+              <img src="_static/images/icon-link-stackoverflow.svg" alt="StackOverflow icon" />
+              gcloud
+            </a>
+          </li>
+          <li>
+            <a href="https://pypi.python.org/pypi/gcloud" title="Python package manager">
+              <img src="_static/images/icon-link-package-manager.svg" alt="Package Manager icon" />
+              Package Manager
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
+  </body>
+</html>

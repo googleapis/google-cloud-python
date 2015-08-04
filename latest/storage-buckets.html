@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Buckets &mdash; gcloud 0.7.0 documentation</title>
+    <title>Buckets &mdash; gcloud 777c6ac documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.7.0',
+        VERSION:     '777c6ac',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 0.7.0 documentation" href="index.html" />
+    <link rel="top" title="gcloud 777c6ac documentation" href="index.html" />
     <link rel="next" title="ACL" href="storage-acl.html" />
     <link rel="prev" title="Blobs / Objects" href="storage-blobs.html" /> 
   </head>
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%200.7.0" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-buckets%0ARelease%3A%20777c6ac" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -74,7 +74,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (0.7.0)
+              Version History (777c6ac)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -112,6 +112,37 @@ for the bucket (which requires a project).</li>
 <dt id="gcloud.storage.bucket.Bucket.acl">
 <code class="descname">acl</code><a class="headerlink" href="#gcloud.storage.bucket.Bucket.acl" title="Permalink to this definition">#</a></dt>
 <dd><p>Create our ACL on demand.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.storage.bucket.Bucket.blob">
+<code class="descname">blob</code><span class="sig-paren">(</span><em>blob_name</em>, <em>chunk_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.blob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.blob" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory constructor for blob object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will not make an HTTP request; it simply instantiates
+a blob object owned by this bucket.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>blob_name</strong> (<em>string</em>) &#8211; The name of the blob to be instantiated.</li>
+<li><strong>chunk_size</strong> (<em>integer</em>) &#8211; The size of a chunk of data whenever iterating
+(1 MB). This must be a multiple of 256 KB per the
+API specification.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="storage-blobs.html#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.blob.Blob</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The blob object created.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -721,104 +752,6 @@ not set locally.</td>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.upload_file">
-<code class="descname">upload_file</code><span class="sig-paren">(</span><em>filename</em>, <em>blob_name=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.upload_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.upload_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Shortcut method to upload a file into this bucket.</p>
-<p>Use this method to quickly put a local file in Cloud Storage.</p>
-<p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">,</span> <span class="s">&#39;remote-text-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
-<span class="go">[&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
-</pre></div>
-</div>
-<p>If you don&#8217;t provide a blob name, we will try to upload the file
-using the local filename (<strong>not</strong> the complete path):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
-<span class="go">[&lt;Blob: my-bucket, my-file.txt&gt;]</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<em>string</em>) &#8211; Local path to the file you want to upload.</li>
-<li><strong>blob_name</strong> (<em>string</em>) &#8211; The name of the blob to upload the file to. If this
-is blank, we will try to upload the file to the root
-of the bucket with the same name as on your local
-file system.</li>
-<li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated Blob object.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.bucket.Bucket.upload_file_object">
-<code class="descname">upload_file_object</code><span class="sig-paren">(</span><em>file_obj</em>, <em>blob_name=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/bucket.html#Bucket.upload_file_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.bucket.Bucket.upload_file_object" title="Permalink to this definition">#</a></dt>
-<dd><p>Shortcut method to upload a file object into this bucket.</p>
-<p>Use this method to quickly put a local file in Cloud Storage.</p>
-<p>For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">),</span> <span class="s">&#39;remote-text-file.txt&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
-<span class="go">[&lt;Blob: my-bucket, remote-text-file.txt&gt;]</span>
-</pre></div>
-</div>
-<p>If you don&#8217;t provide a blob name, we will try to upload the file
-using the local filename (<strong>not</strong> the complete path):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;my-bucket&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;~/my-file.txt&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
-<span class="go">[&lt;Blob: my-bucket, my-file.txt&gt;]</span>
-</pre></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>file_obj</strong> (<em>file</em>) &#8211; A file handle open for reading.</li>
-<li><strong>blob_name</strong> (<em>string</em>) &#8211; The name of the blob to upload the file to. If this
-is blank, we will try to upload the file to the root
-of the bucket with the same name as on your local
-file system.</li>
-<li><strong>client</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the current bucket.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The updated Blob object.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="attribute">
 <dt id="gcloud.storage.bucket.Bucket.versioning_enabled">
 <code class="descname">versioning_enabled</code><a class="headerlink" href="#gcloud.storage.bucket.Bucket.versioning_enabled" title="Permalink to this definition">#</a></dt>
@@ -860,8 +793,8 @@ details.</p>
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-api.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">BigQuery</a></li>
 </ul>
 
