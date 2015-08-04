@@ -39,7 +39,7 @@ class SchemaField(object):
     :type description: string
     :param description: optional description for the field
 
-    :type fields: list of ``SchemaField``, or None
+    :type fields: list of :class:`SchemaField`, or None
     :param fields: subfields (requires ``field_type`` of 'RECORD').
     """
     def __init__(self, name, field_type, mode='NULLABLE', description=None,
@@ -86,7 +86,7 @@ class Table(object):
     def schema(self):
         """Table's schema.
 
-        :rtype: list of ``SchemaField``
+        :rtype: list of :class:`SchemaField`
         :returns: fields describing the schema
         """
         return list(self._schema)
@@ -95,7 +95,7 @@ class Table(object):
     def schema(self, value):
         """Update table's schema
 
-        :type value: list of ``SchemaField``
+        :type value: list of :class:`SchemaField`
         :param value: fields describing the schema
 
         :raises: TypeError if 'value' is not a sequence, or ValueError if
