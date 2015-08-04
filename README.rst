@@ -11,7 +11,7 @@ Google Cloud Python Client
 -  `API Documentation`_
 
 .. _Homepage: https://googlecloudplatform.github.io/gcloud-python/
-.. _API Documentation: http://googlecloudplatform.github.io/gcloud-python/latest/
+.. _API Documentation: http://googlecloudplatform.github.io/gcloud-python/stable/
 
 This client supports the following Google Cloud Platform services:
 
@@ -55,7 +55,7 @@ consistency for all other queries.
 See the ``gcloud-python`` API `datastore documentation`_ to learn how to
 interact with the Cloud Datastore using this Client Library.
 
-.. _datastore documentation: https://googlecloudplatform.github.io/gcloud-python/latest/datastore-api.html
+.. _datastore documentation: https://googlecloudplatform.github.io/gcloud-python/stable/datastore-api.html
 
 See the `official Google Cloud Datastore documentation`_ for more details on how
 to activate Cloud Datastore for your project.
@@ -90,7 +90,7 @@ be used to distribute large data objects to users via direct download.
 See the ``gcloud-python`` API `storage documentation`_ to learn how to connect
 to Cloud Storage using this Client Library.
 
-.. _storage documentation: https://googlecloudplatform.github.io/gcloud-python/latest/storage-api.html
+.. _storage documentation: https://googlecloudplatform.github.io/gcloud-python/stable/storage-api.html
 
 You need to create a Google Cloud Storage bucket to use this client library.
 Follow along with the `official Google Cloud Storage documentation`_ to learn
