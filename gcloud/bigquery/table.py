@@ -101,11 +101,8 @@ class Table(object):
         :raises: TypeError if 'value' is not a sequence, or ValueError if
                  any item in the sequence is not a SchemaField
         """
-        fields = list(value)
-        if len(fields) > 0:
-            types = set([type(field) for field in fields])
-            if types != set([SchemaField]):
-                raise ValueError('Schema items must be fields')
+        if not all(isinstance(field, SchemaField) for field in value):
+            raise ValueError('Schema items must be fields')
         self._schema = tuple(value)
 
     @property
