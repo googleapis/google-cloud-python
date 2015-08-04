@@ -16,8 +16,8 @@
   storage-acl
   pubsub-api
   pubsub-usage
-  pubsub-subscription
   pubsub-topic
+  pubsub-subscription
   bigquery-usage
 
 
@@ -54,5 +54,5 @@ Cloud Storage
   from gcloud import storage
   client = storage.Client()
   bucket = client.get_bucket('<your-bucket-name>')
-  blob = storage.Blob('my-test-file.txt', bucket=bucket)
-  blob = blob.upload_contents_from_string('this is test content!')
+  blob = bucket.blob('my-test-file.txt')
+  blob.upload_from_string('this is test content!')
