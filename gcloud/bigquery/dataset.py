@@ -361,10 +361,10 @@ class Dataset(object):
         :type name: string
         :param name: Name of the table.
 
-        :rtype: :class:`gcloud.bigquery.table.Table`
-        :returns: a new ``Table`` instance
-
         :type schema: list of :class:`gcloud.bigquery.table.SchemaField`
         :param schema: The table's schema
+
+        :rtype: :class:`gcloud.bigquery.table.Table`
+        :returns: a new ``Table`` instance
         """
         return Table(name, dataset=self, schema=schema)
