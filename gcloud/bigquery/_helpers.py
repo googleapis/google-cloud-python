@@ -42,8 +42,12 @@ def _datetime_from_prop(value):
     """
     if value is not None:
         # back-end returns timestamps as milliseconds since the epoch
-        value = datetime.datetime.utcfromtimestamp(value / 1000.0)
-        return value.replace(tzinfo=pytz.utc)
+        seconds = int(value / 1000.0)
+        microseconds = 1000.0 * (value - 1000 * seconds)
+        return (
+            _EPOCH +
+            datetime.timedelta(seconds=seconds, microseconds=microseconds)
+        )
 
 
 def _prop_from_datetime(value):
