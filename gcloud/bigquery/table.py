@@ -613,7 +613,7 @@ class Table(object):
         """API call:  insert table data via a POST request
 
         See:
-        https://cloud.google.com/bigquery/reference/rest/v2/tabledata/list
+        https://cloud.google.com/bigquery/reference/rest/v2/tabledata/insertAll
 
         :type rows: list of tuples
         :param rows: row data to be inserted
