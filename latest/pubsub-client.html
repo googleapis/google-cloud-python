@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pub/Sub &mdash; gcloud c7b436f documentation</title>
+    <title>Pub/Sub Client &mdash; gcloud 73f1a2d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'c7b436f',
+        VERSION:     '73f1a2d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,9 +23,9 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud c7b436f documentation" href="index.html" />
-    <link rel="next" title="Using the API" href="pubsub-usage.html" />
-    <link rel="prev" title="ACL" href="storage-acl.html" /> 
+    <link rel="top" title="gcloud 73f1a2d documentation" href="index.html" />
+    <link rel="next" title="Topics" href="pubsub-topic.html" />
+    <link rel="prev" title="Using the API" href="pubsub-usage.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-api%0ARelease%3A%20c7b436f" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-client%0ARelease%3A%2073f1a2d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -74,7 +74,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c7b436f)
+              Version History (73f1a2d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -87,17 +87,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <div class="toctree-wrapper compound">
-</div>
-<div class="section" id="pub-sub">
-<h1>Pub/Sub<a class="headerlink" href="#pub-sub" title="Permalink to this headline">#</a></h1>
-<div class="section" id="module-gcloud.pubsub.client">
-<span id="client"></span><h2>Client<a class="headerlink" href="#module-gcloud.pubsub.client" title="Permalink to this headline">#</a></h2>
+  <div class="section" id="module-gcloud.pubsub.client">
+<span id="pub-sub-client"></span><h1>Pub/Sub Client<a class="headerlink" href="#module-gcloud.pubsub.client" title="Permalink to this headline">#</a></h1>
 <p>gcloud pubsub client for interacting with API.</p>
 <dl class="class">
 <dt id="gcloud.pubsub.client.Client">
 <em class="property">class </em><code class="descclassname">gcloud.pubsub.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.client.Client" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.client.JSONClient</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.client.JSONClient" title="gcloud.client.JSONClient"><code class="xref py py-class docutils literal"><span class="pre">gcloud.client.JSONClient</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -214,9 +210,8 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 
 </dd></dl>
 
-</div>
 <div class="section" id="module-gcloud.pubsub.connection">
-<span id="connections"></span><h2>Connections<a class="headerlink" href="#module-gcloud.pubsub.connection" title="Permalink to this headline">#</a></h2>
+<span id="connection"></span><h2>Connection<a class="headerlink" href="#module-gcloud.pubsub.connection" title="Permalink to this headline">#</a></h2>
 <p>Create / interact with gcloud pubsub connections.</p>
 <dl class="class">
 <dt id="gcloud.pubsub.connection.Connection">
@@ -257,11 +252,10 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
       <nav class="side-nav">
         <p class="caption"><span class="caption-text">gcloud</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">GCloud Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="datastore-overview.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
@@ -271,21 +265,21 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 </ul>
 <p class="caption"><span class="caption-text">Storage</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Pub/Sub</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
 </ul>
 <p class="caption"><span class="caption-text">BigQuery</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
 </ul>
 
         <ul class="external-links">

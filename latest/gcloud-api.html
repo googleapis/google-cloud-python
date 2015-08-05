@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>GCloud Package &mdash; gcloud c7b436f documentation</title>
+    <title>Shared Core Modules &mdash; gcloud 73f1a2d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'c7b436f',
+        VERSION:     '73f1a2d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,8 +23,8 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud c7b436f documentation" href="index.html" />
-    <link rel="next" title="Datastore" href="datastore-overview.html" />
+    <link rel="top" title="gcloud 73f1a2d documentation" href="index.html" />
+    <link rel="next" title="Datastore Client" href="datastore-client.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
   <body role="document">
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%20c7b436f" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%2073f1a2d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -74,7 +74,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c7b436f)
+              Version History (73f1a2d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -87,16 +87,314 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <div class="toctree-wrapper compound">
+  <div class="section" id="shared-core-modules">
+<h1>Shared Core Modules<a class="headerlink" href="#shared-core-modules" title="Permalink to this headline">#</a></h1>
+<div class="section" id="module-gcloud.client">
+<span id="base-client"></span><h2>Base Client<a class="headerlink" href="#module-gcloud.client" title="Permalink to this headline">#</a></h2>
+<p>gcloud client base class for interacting with API.</p>
+<dl class="class">
+<dt id="gcloud.client.Client">
+<em class="property">class </em><code class="descclassname">gcloud.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.client.Client" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Client to bundle configuration needed for API requests.</p>
+<p>Assumes that the associated <code class="docutils literal"><span class="pre">_connection_class</span></code> only accepts
+<code class="docutils literal"><span class="pre">http</span></code> and <code class="docutils literal"><span class="pre">credentials</span></code> in its constructor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
+<code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
+owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
+object is passed), falls back to the default inferred
+from the environment.</li>
+<li><strong>http</strong> (<code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
+<code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="gcloud.client.Client.from_service_account_json">
+<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/client.html#Client.from_service_account_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.client.Client.from_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to retrieve JSON credentials while creating client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>json_credentials_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file
+was given to you when you created the
+service account). This file must contain
+a JSON object with a private key and
+other credentials information (downloaded
+from the Google APIs console).</li>
+<li><strong>args</strong> (<em>tuple</em>) &#8211; Remaining positional arguments to pass to constructor.</li>
+<li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The client created with the retrieved JSON credentials.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">class:<cite>TypeError</cite> if there is a conflict with the kwargs
+and the credentials created by the factory.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="gcloud.client.Client.from_service_account_p12">
+<em class="property">classmethod </em><code class="descname">from_service_account_p12</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/client.html#Client.from_service_account_p12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.client.Client.from_service_account_p12" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory to retrieve P12 credentials while creating client.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unless you have an explicit reason to use a PKCS12 key for your
+service account, we recommend using a JSON key.</p>
 </div>
-<div class="section" id="gcloud-package">
-<h1>GCloud Package<a class="headerlink" href="#gcloud-package" title="Permalink to this headline">#</a></h1>
-<div class="section" id="module-gcloud.__init__">
-<span id="gcloud"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">gcloud</span></code><a class="headerlink" href="#module-gcloud.__init__" title="Permalink to this headline">#</a></h2>
-<p>GCloud API access in idiomatic Python.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
+<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
+given to you when you created the service
+account). This file must be in P12 format.</li>
+<li><strong>args</strong> (<em>tuple</em>) &#8211; Remaining positional arguments to pass to constructor.</li>
+<li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.client.Client</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The client created with the retrieved P12 credentials.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">class:<cite>TypeError</cite> if there is a conflict with the kwargs
+and the credentials created by the factory.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.client.JSONClient">
+<em class="property">class </em><code class="descclassname">gcloud.client.</code><code class="descname">JSONClient</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/client.html#JSONClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.client.JSONClient" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.client.Client</span></code></a></p>
+<p>Client to for Google JSON-based API.</p>
+<p>Assumes such APIs use the <cite>project</cite> and the client needs to store this
+value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>project</strong> (<em>string</em>) &#8211; the project which the client acts on behalf of. If not
+passed falls back to the default inferred from the
+environment.</li>
+<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
+<code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
+owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
+object is passed), falls back to the default inferred
+from the environment.</li>
+<li><strong>http</strong> (<code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
+<code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the project is neither passed in nor
+set in the environment.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-gcloud.credentials">
+<span id="credentials-helpers"></span><h2>Credentials Helpers<a class="headerlink" href="#module-gcloud.credentials" title="Permalink to this headline">#</a></h2>
+<p>A simple wrapper around the OAuth2 credentials library.</p>
+<dl class="function">
+<dt id="gcloud.credentials.generate_signed_url">
+<code class="descclassname">gcloud.credentials.</code><code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>credentials</em>, <em>resource</em>, <em>expiration</em>, <em>api_access_endpoint=''</em>, <em>method='GET'</em>, <em>content_md5=None</em>, <em>content_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.generate_signed_url" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate signed URL to provide query-string auth&#8217;n to a resource.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are on Google Compute Engine, you can&#8217;t generate a signed URL.
+Follow <a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/922">https://github.com/GoogleCloudPlatform/gcloud-python/issues/922</a>
+for updates on this. If you&#8217;d like to be able to generate a signed URL
+from GCE, you can use a standard service account from a JSON file
+rather than a GCE service account.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></code>) &#8211; Credentials object with an associated private key to
+sign text.</li>
+<li><strong>resource</strong> (<em>string</em>) &#8211; A pointer to a specific resource
+(typically, <code class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></code>).</li>
+<li><strong>expiration</strong> (<em>int, long, datetime.datetime, datetime.timedelta</em>) &#8211; When the signed URL should expire.</li>
+<li><strong>api_access_endpoint</strong> (<em>string</em>) &#8211; Optional URI base. Defaults to empty string.</li>
+<li><strong>method</strong> (<em>string</em>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
+<li><strong>content_md5</strong> (<em>string</em>) &#8211; The MD5 hash of the object referenced by
+<code class="docutils literal"><span class="pre">resource</span></code>.</li>
+<li><strong>content_type</strong> (<em>string</em>) &#8211; The content type of the object referenced by
+<code class="docutils literal"><span class="pre">resource</span></code>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">string</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
+until expiration.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.credentials.get_credentials">
+<code class="descclassname">gcloud.credentials.</code><code class="descname">get_credentials</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#get_credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_credentials" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets credentials implicitly from the current environment.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You should not need to use this function directly. Instead, use the
+helper method <code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.__init__.get_connection()</span></code>
+which uses this method under the hood.</p>
+</div>
+<p>Checks environment in order of precedence:</p>
+<ul class="simple">
+<li>Google App Engine (production and testing)</li>
+<li>Environment variable GOOGLE_APPLICATION_CREDENTIALS pointing to
+a file with stored credentials information.</li>
+<li>Stored &#8220;well known&#8221; file associated with <code class="docutils literal"><span class="pre">gcloud</span></code> command line tool.</li>
+<li>Google Compute Engine production environment.</li>
+</ul>
+<p>The file referred to in GOOGLE_APPLICATION_CREDENTIALS is expected to
+contain information about credentials that are ready to use. This means
+either service account information or user account information with
+a ready-to-use refresh token:</p>
+<div class="highlight-python"><div class="highlight"><pre>{                                       {
+    &#39;type&#39;: &#39;authorized_user&#39;,              &#39;type&#39;: &#39;service_account&#39;,
+    &#39;client_id&#39;: &#39;...&#39;,                     &#39;client_id&#39;: &#39;...&#39;,
+    &#39;client_secret&#39;: &#39;...&#39;,       OR        &#39;client_email&#39;: &#39;...&#39;,
+    &#39;refresh_token&#39;: &#39;...,                  &#39;private_key_id&#39;: &#39;...&#39;,
+}                                           &#39;private_key&#39;: &#39;...&#39;,
+                                        }
+</pre></div>
+</div>
+<p>The second of these is simply a JSON key downloaded from the Google APIs
+console. The first is a close cousin of the &#8220;client secrets&#8221; JSON file
+used by <code class="docutils literal"><span class="pre">oauth2client.clientsecrets</span></code> but differs in formatting.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code>,
+<code class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></code>,
+<code class="xref py py-class docutils literal"><span class="pre">oauth2client.gce.AppAssertionCredentials</span></code>,
+<code class="xref py py-class docutils literal"><span class="pre">oauth2client.service_account._ServiceAccountCredentials</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new credentials instance corresponding to the implicit
+environment.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.credentials.get_for_service_account_json">
+<code class="descclassname">gcloud.credentials.</code><code class="descname">get_for_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>scope=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#get_for_service_account_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_for_service_account_json" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets the credentials for a service account with JSON key.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>json_credentials_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
+given to you when you created the service
+account). This file must contain a JSON
+object with a private key and other
+credentials information (downloaded from the
+Google APIs console).</li>
+<li><strong>scope</strong> (<em>string or tuple of string</em>) &#8211; The scope against which to authenticate. (Different services
+require different scopes, check the documentation for which
+scope is required for the different levels of access to any
+particular API.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code>,
+<code class="xref py py-class docutils literal"><span class="pre">oauth2client.service_account._ServiceAccountCredentials</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">New service account or Google (for a user JSON key file)
+credentials object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.credentials.get_for_service_account_p12">
+<code class="descclassname">gcloud.credentials.</code><code class="descname">get_for_service_account_p12</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em>, <em>scope=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#get_for_service_account_p12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_for_service_account_p12" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets the credentials for a service account with PKCS12 / p12 key.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method is not used by default, instead <a class="reference internal" href="#gcloud.credentials.get_credentials" title="gcloud.credentials.get_credentials"><code class="xref py py-func docutils literal"><span class="pre">get_credentials()</span></code></a>
+is used. This method is intended to be used when the environments is
+known explicitly and detecting the environment implicitly would be
+superfluous.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
+<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
+given to you when you created the service
+account). This file must be in P12 format.</li>
+<li><strong>scope</strong> (<em>string or tuple of string</em>) &#8211; The scope against which to authenticate. (Different services
+require different scopes, check the documentation for which
+scope is required for the different levels of access to any
+particular API.)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.SignedJwtAssertionCredentials</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new <code class="docutils literal"><span class="pre">SignedJwtAssertionCredentials</span></code> instance with the
+needed service account settings.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="module-gcloud.connection">
-<span id="connections"></span><h2>Connections<a class="headerlink" href="#module-gcloud.connection" title="Permalink to this headline">#</a></h2>
+<span id="base-connections"></span><h2>Base Connections<a class="headerlink" href="#module-gcloud.connection" title="Permalink to this headline">#</a></h2>
 <p>Shared implementation of connections to API servers.</p>
 <dl class="data">
 <dt id="gcloud.connection.API_BASE_URL">
@@ -395,174 +693,6 @@ use the default for the library.</li>
 </table>
 </dd></dl>
 
-</dd></dl>
-
-</div>
-<div class="section" id="module-gcloud.credentials">
-<span id="credentials"></span><h2>Credentials<a class="headerlink" href="#module-gcloud.credentials" title="Permalink to this headline">#</a></h2>
-<p>A simple wrapper around the OAuth2 credentials library.</p>
-<dl class="function">
-<dt id="gcloud.credentials.generate_signed_url">
-<code class="descclassname">gcloud.credentials.</code><code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>credentials</em>, <em>resource</em>, <em>expiration</em>, <em>api_access_endpoint=''</em>, <em>method='GET'</em>, <em>content_md5=None</em>, <em>content_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.generate_signed_url" title="Permalink to this definition">#</a></dt>
-<dd><p>Generate signed URL to provide query-string auth&#8217;n to a resource.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you are on Google Compute Engine, you can&#8217;t generate a signed URL.
-Follow <a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/922">https://github.com/GoogleCloudPlatform/gcloud-python/issues/922</a>
-for updates on this. If you&#8217;d like to be able to generate a signed URL
-from GCE, you can use a standard service account from a JSON file
-rather than a GCE service account.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></code>) &#8211; Credentials object with an associated private key to
-sign text.</li>
-<li><strong>resource</strong> (<em>string</em>) &#8211; A pointer to a specific resource
-(typically, <code class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></code>).</li>
-<li><strong>expiration</strong> (<em>int, long, datetime.datetime, datetime.timedelta</em>) &#8211; When the signed URL should expire.</li>
-<li><strong>api_access_endpoint</strong> (<em>string</em>) &#8211; Optional URI base. Defaults to empty string.</li>
-<li><strong>method</strong> (<em>string</em>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
-<li><strong>content_md5</strong> (<em>string</em>) &#8211; The MD5 hash of the object referenced by
-<code class="docutils literal"><span class="pre">resource</span></code>.</li>
-<li><strong>content_type</strong> (<em>string</em>) &#8211; The content type of the object referenced by
-<code class="docutils literal"><span class="pre">resource</span></code>.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">string</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
-until expiration.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="gcloud.credentials.get_credentials">
-<code class="descclassname">gcloud.credentials.</code><code class="descname">get_credentials</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#get_credentials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_credentials" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets credentials implicitly from the current environment.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You should not need to use this function directly. Instead, use the
-helper method <code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.__init__.get_connection()</span></code>
-which uses this method under the hood.</p>
-</div>
-<p>Checks environment in order of precedence:</p>
-<ul class="simple">
-<li>Google App Engine (production and testing)</li>
-<li>Environment variable GOOGLE_APPLICATION_CREDENTIALS pointing to
-a file with stored credentials information.</li>
-<li>Stored &#8220;well known&#8221; file associated with <code class="docutils literal"><span class="pre">gcloud</span></code> command line tool.</li>
-<li>Google Compute Engine production environment.</li>
-</ul>
-<p>The file referred to in GOOGLE_APPLICATION_CREDENTIALS is expected to
-contain information about credentials that are ready to use. This means
-either service account information or user account information with
-a ready-to-use refresh token:</p>
-<div class="highlight-python"><div class="highlight"><pre>{                                       {
-    &#39;type&#39;: &#39;authorized_user&#39;,              &#39;type&#39;: &#39;service_account&#39;,
-    &#39;client_id&#39;: &#39;...&#39;,                     &#39;client_id&#39;: &#39;...&#39;,
-    &#39;client_secret&#39;: &#39;...&#39;,       OR        &#39;client_email&#39;: &#39;...&#39;,
-    &#39;refresh_token&#39;: &#39;...,                  &#39;private_key_id&#39;: &#39;...&#39;,
-}                                           &#39;private_key&#39;: &#39;...&#39;,
-                                        }
-</pre></div>
-</div>
-<p>The second of these is simply a JSON key downloaded from the Google APIs
-console. The first is a close cousin of the &#8220;client secrets&#8221; JSON file
-used by <code class="docutils literal"><span class="pre">oauth2client.clientsecrets</span></code> but differs in formatting.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code>,
-<code class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></code>,
-<code class="xref py py-class docutils literal"><span class="pre">oauth2client.gce.AppAssertionCredentials</span></code>,
-<code class="xref py py-class docutils literal"><span class="pre">oauth2client.service_account._ServiceAccountCredentials</span></code></td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new credentials instance corresponding to the implicit
-environment.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="gcloud.credentials.get_for_service_account_json">
-<code class="descclassname">gcloud.credentials.</code><code class="descname">get_for_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>scope=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#get_for_service_account_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_for_service_account_json" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets the credentials for a service account with JSON key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>json_credentials_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account). This file must contain a JSON
-object with a private key and other
-credentials information (downloaded from the
-Google APIs console).</li>
-<li><strong>scope</strong> (<em>string or tuple of string</em>) &#8211; The scope against which to authenticate. (Different services
-require different scopes, check the documentation for which
-scope is required for the different levels of access to any
-particular API.)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code>,
-<code class="xref py py-class docutils literal"><span class="pre">oauth2client.service_account._ServiceAccountCredentials</span></code></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">New service account or Google (for a user JSON key file)
-credentials object.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="gcloud.credentials.get_for_service_account_p12">
-<code class="descclassname">gcloud.credentials.</code><code class="descname">get_for_service_account_p12</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em>, <em>scope=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#get_for_service_account_p12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_for_service_account_p12" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets the credentials for a service account with PKCS12 / p12 key.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This method is not used by default, instead <a class="reference internal" href="#gcloud.credentials.get_credentials" title="gcloud.credentials.get_credentials"><code class="xref py py-func docutils literal"><span class="pre">get_credentials()</span></code></a>
-is used. This method is intended to be used when the environments is
-known explicitly and detecting the environment implicitly would be
-superfluous.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account). This file must be in P12 format.</li>
-<li><strong>scope</strong> (<em>string or tuple of string</em>) &#8211; The scope against which to authenticate. (Different services
-require different scopes, check the documentation for which
-scope is required for the different levels of access to any
-particular API.)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.SignedJwtAssertionCredentials</span></code></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new <code class="docutils literal"><span class="pre">SignedJwtAssertionCredentials</span></code> instance with the
-needed service account settings.</p>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </div>
@@ -870,11 +1000,10 @@ failed request.</li>
       <nav class="side-nav">
         <p class="caption"><span class="caption-text">gcloud</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">GCloud Package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Shared Core Modules</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="datastore-overview.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
@@ -884,21 +1013,21 @@ failed request.</li>
 </ul>
 <p class="caption"><span class="caption-text">Storage</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Pub/Sub</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pubsub-api.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
 </ul>
 <p class="caption"><span class="caption-text">BigQuery</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
 </ul>
 
         <ul class="external-links">

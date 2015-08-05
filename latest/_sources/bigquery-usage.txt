@@ -1,9 +1,5 @@
-.. toctree::
-  :maxdepth: 0
-  :hidden:
-
-BigQuery
-========
+Using the API
+=============
 
 Authorization / Configuration
 -----------------------------
@@ -298,7 +294,7 @@ Run a query which can be expected to complete within bounded time:
    [(15,)]
 
 .. note::
-   
+
    If the query takes longer than the timeout allowed, ``results.job_complete``
    will be ``False``:  we therefore poll until it is completed.
 

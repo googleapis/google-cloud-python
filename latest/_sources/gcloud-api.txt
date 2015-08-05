@@ -1,30 +1,26 @@
-.. toctree::
-  :maxdepth: 1
-  :hidden:
+Shared Core Modules
+-------------------
 
-GCloud Package
---------------
+Base Client
+~~~~~~~~~~~
 
-:mod:`gcloud`
-~~~~~~~~~~~~~
-
-.. automodule:: gcloud.__init__
+.. automodule:: gcloud.client
   :members:
   :undoc-members:
   :show-inheritance:
 
-Connections
-~~~~~~~~~~~
-
-.. automodule:: gcloud.connection
-  :members:
-  :undoc-members:
-  :show-inheritance:
-
-Credentials
-~~~~~~~~~~~
+Credentials Helpers
+~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: gcloud.credentials
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+Base Connections
+~~~~~~~~~~~~~~~~
+
+.. automodule:: gcloud.connection
   :members:
   :undoc-members:
   :show-inheritance:

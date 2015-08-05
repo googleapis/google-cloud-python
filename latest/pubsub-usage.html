@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud c7b436f documentation</title>
+    <title>Using the API &mdash; gcloud 73f1a2d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'c7b436f',
+        VERSION:     '73f1a2d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,9 +23,9 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud c7b436f documentation" href="index.html" />
-    <link rel="next" title="Topics" href="pubsub-topic.html" />
-    <link rel="prev" title="Pub/Sub" href="pubsub-api.html" /> 
+    <link rel="top" title="gcloud 73f1a2d documentation" href="index.html" />
+    <link rel="next" title="Pub/Sub Client" href="pubsub-client.html" />
+    <link rel="prev" title="ACL" href="storage-acl.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%20c7b436f" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%2073f1a2d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -74,7 +74,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c7b436f)
+              Version History (73f1a2d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -92,10 +92,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="section" id="authorization-configuration">
 <h2>Authorization / Configuration<a class="headerlink" href="#authorization-configuration" title="Permalink to this headline">#</a></h2>
 <ul>
-<li><p class="first">Use <a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
+<li><p class="first">Use <a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
 your applications.</p>
 </li>
-<li><p class="first"><a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">project</span></code>
+<li><p class="first"><a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">project</span></code>
 and an authenticated connection to the PubSub service.</p>
 </li>
 <li><p class="first">The authentication credentials can be implicitly determined from the
@@ -105,7 +105,7 @@ and
 <code class="xref py py-meth docutils literal"><span class="pre">from_service_account_p12</span></code>.</p>
 </li>
 <li><p class="first">After setting <code class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> and <code class="docutils literal"><span class="pre">GCLOUD_PROJECT</span></code>
-environment variables, create a <a class="reference internal" href="pubsub-api.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
+environment variables, create a <a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">pubsub</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
@@ -325,11 +325,10 @@ will re-send them later:</p>
       <nav class="side-nav">
         <p class="caption"><span class="caption-text">gcloud</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">GCloud Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="datastore-overview.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
@@ -339,21 +338,21 @@ will re-send them later:</p>
 </ul>
 <p class="caption"><span class="caption-text">Storage</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Pub/Sub</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="pubsub-api.html">Pub/Sub</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
 </ul>
 <p class="caption"><span class="caption-text">BigQuery</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
 </ul>
 
         <ul class="external-links">

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.client &mdash; gcloud c7b436f documentation</title>
+    <title>gcloud.pubsub.client &mdash; gcloud 73f1a2d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'c7b436f',
+        VERSION:     '73f1a2d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud c7b436f documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 73f1a2d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/client%0ARelease%3A%20c7b436f" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/client%0ARelease%3A%2073f1a2d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -73,7 +73,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c7b436f)
+              Version History (73f1a2d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -110,7 +110,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.topic</span> <span class="kn">import</span> <span class="n">Topic</span>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
 <span class="sd">    :type project: string</span>
@@ -133,7 +133,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
 
-<div class="viewcode-block" id="Client.list_topics"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.client.Client.list_topics">[docs]</a>    <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_topics"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.client.Client.list_topics">[docs]</a>    <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List topics for the project associated with this client.</span>
 
 <span class="sd">        See:</span>
@@ -169,7 +169,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                   <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;topics&#39;</span><span class="p">]]</span>
         <span class="k">return</span> <span class="n">topics</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Client.list_subscriptions"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.client.Client.list_subscriptions">[docs]</a>    <span class="k">def</span> <span class="nf">list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Client.list_subscriptions"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.client.Client.list_subscriptions">[docs]</a>    <span class="k">def</span> <span class="nf">list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                            <span class="n">topic_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List subscriptions for the project associated with this client.</span>
 
@@ -220,7 +220,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                          <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;subscriptions&#39;</span><span class="p">]]</span>
         <span class="k">return</span> <span class="n">subscriptions</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Client.topic"><a class="viewcode-back" href="../../../pubsub-api.html#gcloud.pubsub.client.Client.topic">[docs]</a>    <span class="k">def</span> <span class="nf">topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">timestamp_messages</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.topic"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.client.Client.topic">[docs]</a>    <span class="k">def</span> <span class="nf">topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">timestamp_messages</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a topic bound to the current client.</span>
 
 <span class="sd">        :type name: string</span>
@@ -239,11 +239,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
       <nav class="side-nav">
         <p class="caption"><span class="caption-text">gcloud</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">GCloud Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">Shared Core Modules</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../datastore-overview.html">Datastore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>
@@ -253,21 +252,21 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 </ul>
 <p class="caption"><span class="caption-text">Storage</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../storage-api.html">Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-buckets.html">Buckets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../storage-acl.html">ACL</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Pub/Sub</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-api.html">Pub/Sub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pubsub-topic.html">Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pubsub-subscription.html">Subscriptions</a></li>
 </ul>
 <p class="caption"><span class="caption-text">BigQuery</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../bigquery-usage.html">BigQuery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery-usage.html">Using the API</a></li>
 </ul>
 
         <ul class="external-links">
