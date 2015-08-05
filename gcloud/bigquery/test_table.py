@@ -549,7 +549,9 @@ class TestTable(unittest2.TestCase):
         dataset = _Dataset(client)
         table = self._makeOne(self.TABLE_NAME, dataset=dataset)
 
-        table.patch(description=DESCRIPTION, friendly_name=TITLE)
+        table.patch(description=DESCRIPTION,
+                    friendly_name=TITLE,
+                    view_query=None)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -557,6 +559,7 @@ class TestTable(unittest2.TestCase):
         SENT = {
             'description': DESCRIPTION,
             'friendlyName': TITLE,
+            'view': None,
         }
         self.assertEqual(req['data'], SENT)
         self.assertEqual(req['path'], '/%s' % PATH)

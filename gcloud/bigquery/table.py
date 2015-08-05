@@ -471,7 +471,10 @@ class Table(object):
             partial['location'] = location
 
         if view_query is not _MARKER:
-            partial['view'] = {'query': view_query}
+            if view_query is None:
+                partial['view'] = None
+            else:
+                partial['view'] = {'query': view_query}
 
         api_response = client.connection.api_request(
             method='PATCH', path=self.path, data=partial)
