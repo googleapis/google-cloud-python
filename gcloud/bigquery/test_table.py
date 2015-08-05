@@ -454,6 +454,41 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
 
+    def test_create_w_missing_output_properties(self):
+        # In the wild, the resource returned from 'dataset.create' sometimes
+        # lacks 'creationTime' / 'lastModifiedTime'
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        RESOURCE = self._makeResource()
+        del RESOURCE['creationTime']
+        del RESOURCE['lastModifiedTime']
+        self.WHEN = None
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+
+        table.create()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.TABLE_NAME},
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(table, RESOURCE)
+
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)

@@ -320,8 +320,10 @@ class Table(object):
         """
         self._properties.clear()
         cleaned = api_response.copy()
-        cleaned['creationTime'] = float(cleaned['creationTime'])
-        cleaned['lastModifiedTime'] = float(cleaned['lastModifiedTime'])
+        if 'creationTime' in cleaned:
+            cleaned['creationTime'] = float(cleaned['creationTime'])
+        if 'lastModifiedTime' in cleaned:
+            cleaned['lastModifiedTime'] = float(cleaned['lastModifiedTime'])
         if 'expirationTime' in cleaned:
             cleaned['expirationTime'] = float(cleaned['expirationTime'])
         self._properties.update(cleaned)
