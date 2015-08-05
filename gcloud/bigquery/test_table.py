@@ -105,6 +105,18 @@ class TestTable(unittest2.TestCase):
             'type': 'TABLE',
         }
 
+    def _verify_field(self, field, r_field):
+        self.assertEqual(field.name, r_field['name'])
+        self.assertEqual(field.field_type, r_field['type'])
+        self.assertEqual(field.mode, r_field['mode'])
+
+    def _verifySchema(self, schema, resource):
+        r_fields = resource['schema']['fields']
+        self.assertEqual(len(schema), len(r_fields))
+
+        for field, r_field in zip(schema, r_fields):
+            self._verify_field(field, r_field)
+
     def _verifyResourceProperties(self, table, resource):
         self.assertEqual(table.created, self.WHEN)
         self.assertEqual(table.etag, self.ETAG)
@@ -126,6 +138,8 @@ class TestTable(unittest2.TestCase):
             self.assertEqual(table.view_query, resource['view']['query'])
         else:
             self.assertEqual(table.view_query, None)
+
+        self._verifySchema(table.schema, resource)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -301,6 +315,32 @@ class TestTable(unittest2.TestCase):
         table.view_query = 'select * from foo'
         del table.view_query
         self.assertEqual(table.view_query, None)
+
+    def test__parse_schema_resource_defaults(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        RESOURCE = self._makeResource()
+        schema = table._parse_schema_resource(RESOURCE['schema'])
+        self._verifySchema(schema, RESOURCE)
+
+    def test__parse_schema_resource_subfields(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        RESOURCE = self._makeResource()
+        RESOURCE['schema']['fields'].append(
+            {'name': 'phone',
+             'type': 'RECORD',
+             'mode': 'REPEATABLE',
+             'fields': [{'name': 'type',
+                         'type': 'STRING',
+                         'mode': 'REQUIRED'},
+                        {'name': 'number',
+                         'type': 'STRING',
+                         'mode': 'REQUIRED'}]})
+        schema = table._parse_schema_resource(RESOURCE['schema'])
+        self._verifySchema(schema, RESOURCE)
 
     def test__build_schema_resource_defaults(self):
         from gcloud.bigquery.table import SchemaField

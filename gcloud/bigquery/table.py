@@ -312,6 +312,30 @@ class Table(object):
             client = self._dataset._client
         return client
 
+    def _parse_schema_resource(self, info):
+        """Parse a resource fragment into a schema field.
+
+        :type info: mapping
+        :param info: should contain a "fields" key to be parsed
+
+        :rtype: list of :class:`SchemaField`, or ``NoneType``
+        :returns: a list of parsed fields, or ``None`` if no "fields" key is
+                  present in ``info``.
+        """
+        if 'fields' not in info:
+            return None
+
+        schema = []
+        for r_field in info['fields']:
+            name = r_field['name']
+            field_type = r_field['type']
+            mode = r_field['mode']
+            description = r_field.get('description')
+            sub_fields = self._parse_schema_resource(r_field)
+            schema.append(
+                SchemaField(name, field_type, mode, description, sub_fields))
+        return schema
+
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
@@ -320,6 +344,8 @@ class Table(object):
         """
         self._properties.clear()
         cleaned = api_response.copy()
+        schema = cleaned.pop('schema', {})
+        self.schema = self._parse_schema_resource(schema)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = float(cleaned['creationTime'])
         if 'lastModifiedTime' in cleaned:
