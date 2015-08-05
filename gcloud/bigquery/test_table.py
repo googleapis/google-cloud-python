@@ -569,6 +569,7 @@ class TestTable(unittest2.TestCase):
         import datetime
         import pytz
         from gcloud.bigquery._helpers import _millis
+        from gcloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         QUERY = 'select fullname, age from person_ages'
@@ -586,9 +587,11 @@ class TestTable(unittest2.TestCase):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client1)
         table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='OPTIONAL')
 
         table.patch(client=client2, view_query=QUERY, location=LOCATION,
-                    expires=self.EXP_TIME)
+                    expires=self.EXP_TIME, schema=[full_name, age])
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -599,8 +602,36 @@ class TestTable(unittest2.TestCase):
             'view': {'query': QUERY},
             'location': LOCATION,
             'expirationTime': _millis(self.EXP_TIME),
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'OPTIONAL'}]},
         }
         self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_patch_w_schema_None(self):
+        # Simulate deleting schema:  not sure if back-end will actually
+        # allow this operation, but the spec says it is optional.
+        PATH = 'projects/%s/datasets/%s/tables/%s' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        DESCRIPTION = 'DESCRIPTION'
+        TITLE = 'TITLE'
+        RESOURCE = self._makeResource()
+        RESOURCE['description'] = DESCRIPTION
+        RESOURCE['friendlyName'] = TITLE
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+
+        table.patch(schema=None)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PATCH')
+        SENT = {'schema': None}
+        self.assertEqual(req['data'], SENT)
+        self.assertEqual(req['path'], '/%s' % PATH)
         self._verifyResourceProperties(table, RESOURCE)
 
     def test_update_w_bound_client(self):

@@ -423,8 +423,14 @@ class Table(object):
             method='GET', path=self.path)
         self._set_properties(api_response)
 
-    def patch(self, client=None, friendly_name=_MARKER, description=_MARKER,
-              location=_MARKER, expires=_MARKER, view_query=_MARKER):
+    def patch(self,
+              client=None,
+              friendly_name=_MARKER,
+              description=_MARKER,
+              location=_MARKER,
+              expires=_MARKER,
+              view_query=_MARKER,
+              schema=_MARKER):
         """API call:  update individual table properties via a PATCH request
 
         See
@@ -448,6 +454,9 @@ class Table(object):
 
         :type view_query: string
         :param view_query: SQL query defining the table as a view
+
+        :type schema: list of :class:`SchemaField`
+        :param schema: fields describing the schema
 
         :raises: ValueError for invalid value types.
         """
@@ -475,6 +484,13 @@ class Table(object):
                 partial['view'] = None
             else:
                 partial['view'] = {'query': view_query}
+
+        if schema is not _MARKER:
+            if schema is None:
+                partial['schema'] = None
+            else:
+                partial['schema'] = {
+                    'fields': self._build_schema_resource(schema)}
 
         api_response = client.connection.api_request(
             method='PATCH', path=self.path, data=partial)
