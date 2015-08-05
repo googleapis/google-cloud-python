@@ -1,5 +1,5 @@
-Client
-========
+Pub/Sub Client
+==============
 
 .. automodule:: gcloud.pubsub.client
   :members:

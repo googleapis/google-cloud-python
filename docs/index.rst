@@ -10,7 +10,7 @@
   :hidden:
   :caption: Datastore
 
-  datastore-client
+  Client <datastore-client>
   datastore-entities
   datastore-keys
   datastore-queries
@@ -22,7 +22,7 @@
   :hidden:
   :caption: Storage
 
-  storage-client
+  Client <storage-client>
   storage-blobs
   storage-buckets
   storage-acl
@@ -33,7 +33,7 @@
   :caption: Pub/Sub
 
   pubsub-usage
-  pubsub-client
+  Client <pubsub-client>
   pubsub-topic
   pubsub-subscription
 

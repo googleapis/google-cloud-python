@@ -1,5 +1,5 @@
-Client
-======
+Datastore Client
+================
 
 .. automodule:: gcloud.datastore.client
   :members:

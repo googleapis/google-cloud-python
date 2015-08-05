@@ -1,5 +1,5 @@
-Client
-======
+Storage Client
+==============
 
 .. automodule:: gcloud.storage.client
   :members:
