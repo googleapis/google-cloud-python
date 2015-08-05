@@ -17,6 +17,12 @@ from pkg_resources import get_distribution
 import sys
 import urllib
 
+import sphinx_rtd_theme
+
+
+ON_READ_THE_DOCS = os.environ.get('READTHEDOCS', None) == 'True'
+LOCAL_READ_THE_DOCS = os.environ.get('LOCAL_RTD', None) == 'True'
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -38,7 +44,10 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+if ON_READ_THE_DOCS or LOCAL_READ_THE_DOCS:
+  templates_path = []
+else:
+  templates_path = ['_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -103,10 +112,10 @@ pygments_style = 'sphinx'
 
 html_theme = 'classic'
 
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-if on_rtd:
-  html_style = 'default.css'
-else:
+if LOCAL_READ_THE_DOCS:
+  html_theme = 'sphinx_rtd_theme'
+  html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+elif not ON_READ_THE_DOCS:
   html_style = 'css/main.css'
 
 # Theme options are theme-specific and customize the look and feel of a theme

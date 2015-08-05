@@ -13,16 +13,6 @@ $('.headerlink').parent().each(function() {
   );
 });
 
-$('.side-nav').children('ul:nth-child(2)').children().each(function() {
-  var itemName = $(this).text();
-    if (itemName !== 'Datastore' &&
-        itemName !== 'Storage' &&
-        itemName !== 'Pub/Sub' &&
-        itemName !== 'BigQuery') {
-      $(this).css('padding-left','2em');
-  }
-});
-
 var apiQsSection;
 // don't even ask me why
 if ($('#cloud-datastore-in-10-seconds').length)
