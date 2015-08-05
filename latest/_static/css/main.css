@@ -862,6 +862,18 @@ h2 .headerlink:hover {
     margin-top: 2em;
 }
 
+.side-nav > ul > li.toctree-l1 {
+    padding-left: 2em;
+}
+
+p.caption {
+    padding-left: 2em;
+}
+
+span.caption-text {
+    font-weight: bold;
+}
+
 .external-links img {
     margin-right: 0.3em;
     opacity: 0.3;

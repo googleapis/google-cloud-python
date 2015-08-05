@@ -1,8 +1,15 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: gcloud
 
   gcloud-api
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Datastore
+
   datastore-overview
   datastore-client
   datastore-entities
@@ -10,14 +17,32 @@
   datastore-queries
   datastore-transactions
   datastore-batches
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Storage
+
   storage-api
   storage-blobs
   storage-buckets
   storage-acl
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Pub/Sub
+
   pubsub-api
   pubsub-usage
   pubsub-topic
   pubsub-subscription
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: BigQuery
+
   bigquery-usage
 
 
