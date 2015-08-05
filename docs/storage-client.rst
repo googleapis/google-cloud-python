@@ -1,7 +1,7 @@
 Client
 ======
 
-.. automodule:: gcloud.datastore.client
+.. automodule:: gcloud.storage.client
   :members:
   :undoc-members:
   :show-inheritance:
@@ -9,7 +9,7 @@ Client
 Connection
 ~~~~~~~~~~
 
-.. automodule:: gcloud.datastore.connection
+.. automodule:: gcloud.storage.connection
   :members:
   :undoc-members:
   :show-inheritance:
