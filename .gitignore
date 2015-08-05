@@ -38,6 +38,7 @@ nosetests.xml
 
 # Built documentation
 docs/_build
+docs/_build_rtd
 
 # Virtual environment
 env/
