@@ -596,7 +596,11 @@ class Table(object):
             row_data = []
             for field, cell in zip(self._schema, row['f']):
                 converter = _CELLDATA_FROM_JSON[field.field_type]
-                row_data.append(converter(cell['v'], field))
+                if field.mode == 'REPEATED':
+                    row_data.append([converter(item, field)
+                                     for item in cell['v']])
+                else:
+                    row_data.append(converter(cell['v'], field))
             rows_data.append(tuple(row_data))
 
         return rows_data, total_rows, page_token
@@ -702,7 +706,11 @@ def _record_from_json(value, field):
         record = {}
         for subfield, cell in zip(field.fields, value['f']):
             converter = _CELLDATA_FROM_JSON[subfield.field_type]
-            record[subfield.name] = converter(cell['v'], subfield)
+            if field.mode == 'REPEATED':
+                value = [converter(item, field) for item in cell['v']]
+            else:
+                value = converter(cell['v'], field)
+            record[subfield.name] = value
         return record
 
 

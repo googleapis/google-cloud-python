@@ -967,6 +967,48 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(req['query_params'],
                          {'maxResults': MAX, 'pageToken': TOKEN})
 
+    def test_fetch_data_w_repeated_fields(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        ROWS = 1234
+        TOKEN = 'TOKEN'
+        DATA = {
+            'totalRows': ROWS,
+            'pageToken': TOKEN,
+            'rows': [
+                {'f': [
+                    {'v': ['red', 'green']},
+                    {'v': [{'f': [{'v': ['1', '2']},
+                                  {'v': ['3.1415', '1.414']}]}]},
+                ]},
+            ]
+        }
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('color', 'STRING', mode='REPEATED')
+        index = SchemaField('index', 'INTEGER', 'REPEATED')
+        score = SchemaField('score', 'FLOAT', 'REPEATED')
+        struct = SchemaField('struct', 'RECORD', mode='REPEATED',
+                             fields=[index, score])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, struct])
+
+        rows, total_rows, page_token = table.fetch_data()
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0][0], ['red', 'green'])
+        self.assertEqual(rows[0][1], [{'index': [1, 2],
+                                       'score': [3.1415, 1.414]}])
+        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(page_token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
     def test_fetch_data_w_record_schema(self):
         from gcloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
@@ -1124,6 +1166,41 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
+    def test_insert_data_w_repeated_fields(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        conn = _Connection({})
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('color', 'STRING', mode='REPEATED')
+        index = SchemaField('index', 'INTEGER', 'REPEATED')
+        score = SchemaField('score', 'FLOAT', 'REPEATED')
+        struct = SchemaField('struct', 'RECORD', mode='REPEATED',
+                             fields=[index, score])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, struct])
+        ROWS = [
+            (['red', 'green'], [{'index': [1, 2], 'score': [3.1415, 1.414]}]),
+        ]
+
+        def _row_data(row):
+            return {'color': row[0],
+                    'struct': row[1]}
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = table.insert_data(ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
