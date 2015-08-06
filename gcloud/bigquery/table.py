@@ -558,6 +558,14 @@ class Table(object):
         See:
         https://cloud.google.com/bigquery/reference/rest/v2/tabledata/list
 
+        .. note::
+
+           This method assumes that its instance's ``schema`` attribute is
+           up-to-date with the schema as defined on the back-end:  if the
+           two schemas are not identical, the values returned may be
+           incomplete.  To ensure that the local copy of the schema is
+           up-to-date, call the table's ``reload`` method.
+
         :type max_results: integer or ``NoneType``
         :param max_results: maximum number of rows to return.
 
