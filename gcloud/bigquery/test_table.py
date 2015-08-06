@@ -105,6 +105,18 @@ class TestTable(unittest2.TestCase):
             'type': 'TABLE',
         }
 
+    def _verify_field(self, field, r_field):
+        self.assertEqual(field.name, r_field['name'])
+        self.assertEqual(field.field_type, r_field['type'])
+        self.assertEqual(field.mode, r_field['mode'])
+
+    def _verifySchema(self, schema, resource):
+        r_fields = resource['schema']['fields']
+        self.assertEqual(len(schema), len(r_fields))
+
+        for field, r_field in zip(schema, r_fields):
+            self._verify_field(field, r_field)
+
     def _verifyResourceProperties(self, table, resource):
         self.assertEqual(table.created, self.WHEN)
         self.assertEqual(table.etag, self.ETAG)
@@ -126,6 +138,8 @@ class TestTable(unittest2.TestCase):
             self.assertEqual(table.view_query, resource['view']['query'])
         else:
             self.assertEqual(table.view_query, None)
+
+        self._verifySchema(table.schema, resource)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -301,6 +315,32 @@ class TestTable(unittest2.TestCase):
         table.view_query = 'select * from foo'
         del table.view_query
         self.assertEqual(table.view_query, None)
+
+    def test__parse_schema_resource_defaults(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        RESOURCE = self._makeResource()
+        schema = table._parse_schema_resource(RESOURCE['schema'])
+        self._verifySchema(schema, RESOURCE)
+
+    def test__parse_schema_resource_subfields(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        RESOURCE = self._makeResource()
+        RESOURCE['schema']['fields'].append(
+            {'name': 'phone',
+             'type': 'RECORD',
+             'mode': 'REPEATABLE',
+             'fields': [{'name': 'type',
+                         'type': 'STRING',
+                         'mode': 'REQUIRED'},
+                        {'name': 'number',
+                         'type': 'STRING',
+                         'mode': 'REQUIRED'}]})
+        schema = table._parse_schema_resource(RESOURCE['schema'])
+        self._verifySchema(schema, RESOURCE)
 
     def test__build_schema_resource_defaults(self):
         from gcloud.bigquery.table import SchemaField
@@ -623,7 +663,7 @@ class TestTable(unittest2.TestCase):
         dataset = _Dataset(client1)
         table = self._makeOne(self.TABLE_NAME, dataset=dataset)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='OPTIONAL')
+        age = SchemaField('age', 'INTEGER', mode='NULLABLE')
 
         table.patch(client=client2, view_query=QUERY, location=LOCATION,
                     expires=self.EXP_TIME, schema=[full_name, age])
@@ -639,7 +679,7 @@ class TestTable(unittest2.TestCase):
             'expirationTime': _millis(self.EXP_TIME),
             'schema': {'fields': [
                 {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'OPTIONAL'}]},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'NULLABLE'}]},
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
@@ -794,6 +834,418 @@ class TestTable(unittest2.TestCase):
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_fetch_data_w_bound_client(self):
+        import datetime
+        import pytz
+        from gcloud.bigquery.table import SchemaField
+        from gcloud.bigquery._helpers import _prop_from_datetime
+        PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        WHEN_TS = 1437767599.006
+        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
+            tzinfo=pytz.UTC)
+        WHEN_1 = WHEN + datetime.timedelta(seconds=1)
+        WHEN_2 = WHEN + datetime.timedelta(seconds=2)
+        ROWS = 1234
+        TOKEN = 'TOKEN'
+        DATA = {
+            'totalRows': ROWS,
+            'pageToken': TOKEN,
+            'rows': [
+                {'f': [
+                    {'v': 'Phred Phlyntstone'},
+                    {'v': '32'},
+                    {'v': _prop_from_datetime(WHEN)},
+                ]},
+                {'f': [
+                    {'v': 'Bharney Rhubble'},
+                    {'v': '33'},
+                    {'v': _prop_from_datetime(WHEN_1)},
+                ]},
+                {'f': [
+                    {'v': 'Wylma Phlyntstone'},
+                    {'v': '29'},
+                    {'v': _prop_from_datetime(WHEN_2)},
+                ]},
+                {'f': [
+                    {'v': 'Bhettye Rhubble'},
+                    {'v': None},
+                    {'v': None},
+                ]},
+            ]
+        }
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='NULLABLE')
+        joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, age, joined])
+
+        rows, total_rows, page_token = table.fetch_data()
+
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(rows[0], ('Phred Phlyntstone', 32, WHEN))
+        self.assertEqual(rows[1], ('Bharney Rhubble', 33, WHEN_1))
+        self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, WHEN_2))
+        self.assertEqual(rows[3], ('Bhettye Rhubble', None, None))
+        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(page_token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_fetch_data_w_alternate_client(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        MAX = 10
+        ROWS = 1234
+        TOKEN = 'TOKEN'
+        DATA = {
+            'totalRows': ROWS,
+            'rows': [
+                {'f': [
+                    {'v': 'Phred Phlyntstone'},
+                    {'v': '32'},
+                    {'v': 'true'},
+                    {'v': '3.1415926'},
+                ]},
+                {'f': [
+                    {'v': 'Bharney Rhubble'},
+                    {'v': '33'},
+                    {'v': 'false'},
+                    {'v': '1.414'},
+                ]},
+                {'f': [
+                    {'v': 'Wylma Phlyntstone'},
+                    {'v': '29'},
+                    {'v': 'true'},
+                    {'v': '2.71828'},
+                ]},
+                {'f': [
+                    {'v': 'Bhettye Rhubble'},
+                    {'v': '27'},
+                    {'v': None},
+                    {'v': None},
+                ]},
+            ]
+        }
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(DATA)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        dataset = _Dataset(client1)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        voter = SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
+        score = SchemaField('score', 'FLOAT', mode='NULLABLE')
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, age, voter, score])
+
+        rows, total_rows, page_token = table.fetch_data(client=client2,
+                                                        max_results=MAX,
+                                                        page_token=TOKEN)
+
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(rows[0], ('Phred Phlyntstone', 32, True, 3.1415926))
+        self.assertEqual(rows[1], ('Bharney Rhubble', 33, False, 1.414))
+        self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, True, 2.71828))
+        self.assertEqual(rows[3], ('Bhettye Rhubble', 27, None, None))
+        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(page_token, None)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': MAX, 'pageToken': TOKEN})
+
+    def test_fetch_data_w_repeated_fields(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        ROWS = 1234
+        TOKEN = 'TOKEN'
+        DATA = {
+            'totalRows': ROWS,
+            'pageToken': TOKEN,
+            'rows': [
+                {'f': [
+                    {'v': ['red', 'green']},
+                    {'v': [{'f': [{'v': ['1', '2']},
+                                  {'v': ['3.1415', '1.414']}]}]},
+                ]},
+            ]
+        }
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('color', 'STRING', mode='REPEATED')
+        index = SchemaField('index', 'INTEGER', 'REPEATED')
+        score = SchemaField('score', 'FLOAT', 'REPEATED')
+        struct = SchemaField('struct', 'RECORD', mode='REPEATED',
+                             fields=[index, score])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, struct])
+
+        rows, total_rows, page_token = table.fetch_data()
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0][0], ['red', 'green'])
+        self.assertEqual(rows[0][1], [{'index': [1, 2],
+                                       'score': [3.1415, 1.414]}])
+        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(page_token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_fetch_data_w_record_schema(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        ROWS = 1234
+        TOKEN = 'TOKEN'
+        DATA = {
+            'totalRows': ROWS,
+            'pageToken': TOKEN,
+            'rows': [
+                {'f': [
+                    {'v': 'Phred Phlyntstone'},
+                    {'v': {'f': [{'v': '800'}, {'v': '555-1212'}, {'v': 1}]}},
+                ]},
+                {'f': [
+                    {'v': 'Bharney Rhubble'},
+                    {'v': {'f': [{'v': '877'}, {'v': '768-5309'}, {'v': 2}]}},
+                ]},
+                {'f': [
+                    {'v': 'Wylma Phlyntstone'},
+                    {'v': None},
+                ]},
+            ]
+        }
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
+        local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
+        rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
+        phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
+                            fields=[area_code, local_number, rank])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, phone])
+
+        rows, total_rows, page_token = table.fetch_data()
+
+        self.assertEqual(len(rows), 3)
+        self.assertEqual(rows[0][0], 'Phred Phlyntstone')
+        self.assertEqual(rows[0][1], {'area_code': '800',
+                                      'local_number': '555-1212',
+                                      'rank': 1})
+        self.assertEqual(rows[1][0], 'Bharney Rhubble')
+        self.assertEqual(rows[1][1], {'area_code': '877',
+                                      'local_number': '768-5309',
+                                      'rank': 2})
+        self.assertEqual(rows[2][0], 'Wylma Phlyntstone')
+        self.assertEqual(rows[2][1], None)
+        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(page_token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_insert_data_w_bound_client(self):
+        import datetime
+        import pytz
+        from gcloud.bigquery._helpers import _prop_from_datetime
+        from gcloud.bigquery.table import SchemaField
+        WHEN_TS = 1437767599.006
+        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
+            tzinfo=pytz.UTC)
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        conn = _Connection({})
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, age, joined])
+        ROWS = [
+            ('Phred Phlyntstone', 32, WHEN),
+            ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
+            ('Wylma Phlyntstone', 29, WHEN + datetime.timedelta(seconds=2)),
+            ('Bhettye Rhubble', 27, None),
+        ]
+
+        def _row_data(row):
+            return {'full_name': row[0],
+                    'age': row[1],
+                    'joined': _prop_from_datetime(row[2])}
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = table.insert_data(ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
+    def test_insert_data_w_alternate_client(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        RESPONSE = {
+            'insertErrors': [
+                {'index': 1,
+                 'errors': [
+                     {'reason': 'REASON',
+                      'location': 'LOCATION',
+                      'debugInfo': 'INFO',
+                      'message': 'MESSAGE'}
+                 ]},
+            ]}
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESPONSE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        dataset = _Dataset(client1)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        voter = SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, age, voter])
+        ROWS = [
+            ('Phred Phlyntstone', 32, True),
+            ('Bharney Rhubble', 33, False),
+            ('Wylma Phlyntstone', 29, True),
+            ('Bhettye Rhubble', 27, True),
+        ]
+
+        def _row_data(row):
+            return {'full_name': row[0], 'age': row[1], 'voter': row[2]}
+
+        SENT = {
+            'skipInvalidRows': True,
+            'ignoreUnknownValues': True,
+            'rows': [{'insertId': index, 'json': _row_data(row)}
+                     for index, row in enumerate(ROWS)],
+        }
+
+        errors = table.insert_data(
+            client=client2,
+            rows=ROWS,
+            row_ids=[index for index, _ in enumerate(ROWS)],
+            skip_invalid_rows=True,
+            ignore_unknown_values=True)
+
+        self.assertEqual(len(errors), 1)
+        self.assertEqual(errors[0]['index'], 1)
+        self.assertEqual(len(errors[0]['errors']), 1)
+        self.assertEqual(errors[0]['errors'][0],
+                         RESPONSE['insertErrors'][0]['errors'][0])
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
+    def test_insert_data_w_repeated_fields(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        conn = _Connection({})
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('color', 'STRING', mode='REPEATED')
+        index = SchemaField('index', 'INTEGER', 'REPEATED')
+        score = SchemaField('score', 'FLOAT', 'REPEATED')
+        struct = SchemaField('struct', 'RECORD', mode='REPEATED',
+                             fields=[index, score])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, struct])
+        ROWS = [
+            (['red', 'green'], [{'index': [1, 2], 'score': [3.1415, 1.414]}]),
+        ]
+
+        def _row_data(row):
+            return {'color': row[0],
+                    'struct': row[1]}
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = table.insert_data(ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
+    def test_insert_data_w_record_schema(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        conn = _Connection({})
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
+        local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
+        rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
+        phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
+                            fields=[area_code, local_number, rank])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, phone])
+        ROWS = [
+            ('Phred Phlyntstone', {'area_code': '800',
+                                   'local_number': '555-1212',
+                                   'rank': 1}),
+            ('Bharney Rhubble', {'area_code': '877',
+                                 'local_number': '768-5309',
+                                 'rank': 2}),
+            ('Wylma Phlyntstone', None),
+        ]
+
+        def _row_data(row):
+            return {'full_name': row[0],
+                    'phone': row[1]}
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = table.insert_data(ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
 
 
 class _Client(object):
