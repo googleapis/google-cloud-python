@@ -914,21 +914,25 @@ class TestTable(unittest2.TestCase):
                     {"v": "Phred Phlyntstone"},
                     {"v": "32"},
                     {"v": "true"},
+                    {"v": "3.1415926"},
                 ]},
                 {"f": [
                     {"v": "Bharney Rhubble"},
                     {"v": "33"},
                     {"v": "false"},
+                    {"v": "1.0"},
                 ]},
                 {"f": [
                     {"v": "Wylma Phlyntstone"},
                     {"v": "29"},
                     {"v": "true"},
+                    {"v": "2.71828"},
                 ]},
                 {"f": [
                     {"v": "Bhettye Rhubble"},
                     {"v": "27"},
                     {"v": "true"},
+                    {"v": "1.414"},
                 ]},
             ]
         }
@@ -940,18 +944,19 @@ class TestTable(unittest2.TestCase):
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         voter = SchemaField('voter', 'BOOLEAN', mode='NULLABLE')
+        score = SchemaField('score', 'FLOAT', mode='NULLABLE')
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age, voter])
+                              schema=[full_name, age, voter, score])
 
         rows, total_rows, page_token = table.fetch_data(client=client2,
                                                         max_results=MAX,
                                                         page_token=TOKEN)
 
         self.assertEqual(len(rows), 4)
-        self.assertEqual(rows[0], ('Phred Phlyntstone', 32, True))
-        self.assertEqual(rows[1], ('Bharney Rhubble', 33, False))
-        self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, True))
-        self.assertEqual(rows[3], ('Bhettye Rhubble', 27, True))
+        self.assertEqual(rows[0], ('Phred Phlyntstone', 32, True, 3.1415926))
+        self.assertEqual(rows[1], ('Bharney Rhubble', 33, False, 1.0))
+        self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, True, 2.71828))
+        self.assertEqual(rows[3], ('Bhettye Rhubble', 27, True, 1.414))
         self.assertEqual(total_rows, ROWS)
         self.assertEqual(page_token, None)
 
@@ -962,6 +967,57 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'],
                          {'maxResults': MAX, 'pageToken': TOKEN})
+
+    def test_fetch_data_w_record_schema(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        ROWS = 1234
+        TOKEN = 'TOKEN'
+        DATA = {
+            "totalRows": ROWS,
+            "pageToken": TOKEN,
+            "rows": [
+                {"f": [
+                    {"v": "Phred Phlyntstone"},
+                    {"v": {"f": [{"v": "800"}, {"v": "555-1212"}, {"v": 1}]}},
+                ]},
+                {"f": [
+                    {"v": "Bharney Rhubble"},
+                    {"v": {"f": [{"v": "877"}, {"v": "768-5309"}, {"v": 2}]}},
+                ]},
+            ]
+        }
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
+        local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
+        rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
+        phone = SchemaField('phone', 'RECORD', mode='REQUIRED',
+                            fields=[area_code, local_number, rank])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, phone])
+
+        rows, total_rows, page_token = table.fetch_data()
+
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0][0], 'Phred Phlyntstone')
+        self.assertEqual(rows[0][1], {'area_code': '800',
+                                      'local_number': '555-1212',
+                                      'rank': 1})
+        self.assertEqual(rows[1][0], 'Bharney Rhubble')
+        self.assertEqual(rows[1][1], {'area_code': '877',
+                                      'local_number': '768-5309',
+                                      'rank': 2})
+        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(page_token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_insert_data_w_bound_client(self):
         import datetime
@@ -1063,6 +1119,47 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], SENT)
+
+    def test_insert_data_w_record_schema(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
+            self.PROJECT, self.DS_NAME, self.TABLE_NAME)
+        conn = _Connection({})
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
+        local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
+        rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
+        phone = SchemaField('phone', 'RECORD', mode='REQUIRED',
+                            fields=[area_code, local_number, rank])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, phone])
+        ROWS = [
+            ("Phred Phlyntstone", {'area_code': '800',
+                                   'local_number': '555-1212',
+                                   'rank': 1}),
+            ("Bharney Rhubble", {'area_code': '877',
+                                 'local_number': '768-5309',
+                                 'rank': 2}),
+        ]
+
+        def _row_data(row):
+            return {'full_name': row[0],
+                    'phone': row[1]}
+
+        SENT = {
+            'rows': [{'json': _row_data(row)} for row in ROWS],
+        }
+
+        errors = table.insert_data(ROWS)
+
+        self.assertEqual(len(errors), 0)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
