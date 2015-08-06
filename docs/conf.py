@@ -39,6 +39,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
 ]
@@ -284,3 +285,12 @@ html_context.update(
     issue_uri=issue_uri,
     issue_uri_template=issue_uri_template,
 )
+
+# Configuration for intersphinx:
+# Refer to the Python standard library and the oauth2client and
+# httplib2 libraries.
+intersphinx_mapping = {
+    'httplib2': ('http://bitworking.org/projects/httplib2/doc/html/', None),
+    'oauth2client': ('http://google.github.io/oauth2client/', None),
+    'python': ('https://docs.python.org/', None),
+}
