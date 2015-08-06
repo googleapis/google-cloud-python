@@ -595,11 +595,8 @@ class Table(object):
         for row in response.get('rows', ()):
             row_data = []
             for field, cell in zip(self._schema, row['f']):
-                value = cell['v']
-                converter = _CELLDATA_FROM_JSON.get(field.field_type)
-                if converter is not None:
-                    value = converter(value, field)
-                row_data.append(value)
+                converter = _CELLDATA_FROM_JSON[field.field_type]
+                row_data.append(converter(cell['v'], field))
             rows_data.append(tuple(row_data))
 
         return rows_data, total_rows, page_token
@@ -704,12 +701,13 @@ def _record_from_json(value, field):
     if _not_null(value, field):
         record = {}
         for subfield, cell in zip(field.fields, value['f']):
-            value = cell['v']
-            converter = _CELLDATA_FROM_JSON.get(subfield.field_type)
-            if converter is not None:
-                value = converter(value, subfield)
-            record[subfield.name] = value
+            converter = _CELLDATA_FROM_JSON[subfield.field_type]
+            record[subfield.name] = converter(cell['v'], subfield)
         return record
+
+
+def _string_from_json(value, _):
+    return value
 
 
 _CELLDATA_FROM_JSON = {
@@ -718,6 +716,7 @@ _CELLDATA_FROM_JSON = {
     'BOOLEAN': _bool_from_json,
     'TIMESTAMP': _datetime_from_json,
     'RECORD': _record_from_json,
+    'STRING': _string_from_json,
 }
 
 _JSON_FROM_CELLDATA = {
