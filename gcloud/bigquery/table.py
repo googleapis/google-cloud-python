@@ -552,7 +552,7 @@ class Table(object):
         client = self._require_client(client)
         client.connection.api_request(method='DELETE', path=self.path)
 
-    def data(self, max_results=None, page_token=None, client=None):
+    def fetch_data(self, max_results=None, page_token=None, client=None):
         """API call:  fetch the table data via a GET request
 
         See:
@@ -604,12 +604,12 @@ class Table(object):
 
         return rows_data, total_rows, page_token
 
-    def insert_all(self,
-                   rows,
-                   row_ids=None,
-                   skip_invalid_rows=None,
-                   ignore_unknown_values=None,
-                   client=None):
+    def insert_data(self,
+                    rows,
+                    row_ids=None,
+                    skip_invalid_rows=None,
+                    ignore_unknown_values=None,
+                    client=None):
         """API call:  insert table data via a POST request
 
         See:

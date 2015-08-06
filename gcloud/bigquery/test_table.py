@@ -835,7 +835,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
-    def test_data_w_bound_client(self):
+    def test_fetch_data_w_bound_client(self):
         import datetime
         import pytz
         from gcloud.bigquery.table import SchemaField
@@ -885,7 +885,7 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, age, joined])
 
-        rows, total_rows, page_token = table.data()
+        rows, total_rows, page_token = table.fetch_data()
 
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32, WHEN))
@@ -900,7 +900,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
 
-    def test_data_w_alternate_client(self):
+    def test_fetch_data_w_alternate_client(self):
         from gcloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -943,9 +943,9 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, age, voter])
 
-        rows, total_rows, page_token = table.data(client=client2,
-                                                  max_results=MAX,
-                                                  page_token=TOKEN)
+        rows, total_rows, page_token = table.fetch_data(client=client2,
+                                                        max_results=MAX,
+                                                        page_token=TOKEN)
 
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32, True))
@@ -963,7 +963,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(req['query_params'],
                          {'maxResults': MAX, 'pageToken': TOKEN})
 
-    def test_insert_all_w_bound_client(self):
+    def test_insert_data_w_bound_client(self):
         import datetime
         import pytz
         from gcloud.bigquery._helpers import _prop_from_datetime
@@ -997,7 +997,7 @@ class TestTable(unittest2.TestCase):
             'rows': [{'json': _row_data(row)} for row in ROWS],
         }
 
-        errors = table.insert_all(ROWS)
+        errors = table.insert_data(ROWS)
 
         self.assertEqual(len(errors), 0)
         self.assertEqual(len(conn._requested), 1)
@@ -1006,7 +1006,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
-    def test_insert_all_w_alternate_client(self):
+    def test_insert_data_w_alternate_client(self):
         from gcloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -1047,7 +1047,7 @@ class TestTable(unittest2.TestCase):
                      for index, row in enumerate(ROWS)],
         }
 
-        errors = table.insert_all(
+        errors = table.insert_data(
             client=client2,
             rows=ROWS,
             row_ids=[index for index, _ in enumerate(ROWS)],
