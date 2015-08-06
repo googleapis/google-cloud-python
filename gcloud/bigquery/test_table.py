@@ -850,28 +850,28 @@ class TestTable(unittest2.TestCase):
         ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
-            "totalRows": ROWS,
-            "pageToken": TOKEN,
-            "rows": [
-                {"f": [
-                    {"v": "Phred Phlyntstone"},
-                    {"v": "32"},
-                    {"v": _prop_from_datetime(WHEN)},
+            'totalRows': ROWS,
+            'pageToken': TOKEN,
+            'rows': [
+                {'f': [
+                    {'v': 'Phred Phlyntstone'},
+                    {'v': '32'},
+                    {'v': _prop_from_datetime(WHEN)},
                 ]},
-                {"f": [
-                    {"v": "Bharney Rhubble"},
-                    {"v": "33"},
-                    {"v": _prop_from_datetime(WHEN_1)},
+                {'f': [
+                    {'v': 'Bharney Rhubble'},
+                    {'v': '33'},
+                    {'v': _prop_from_datetime(WHEN_1)},
                 ]},
-                {"f": [
-                    {"v": "Wylma Phlyntstone"},
-                    {"v": "29"},
-                    {"v": _prop_from_datetime(WHEN_2)},
+                {'f': [
+                    {'v': 'Wylma Phlyntstone'},
+                    {'v': '29'},
+                    {'v': _prop_from_datetime(WHEN_2)},
                 ]},
-                {"f": [
-                    {"v": "Bhettye Rhubble"},
-                    {"v": None},
-                    {"v": None},
+                {'f': [
+                    {'v': 'Bhettye Rhubble'},
+                    {'v': None},
+                    {'v': None},
                 ]},
             ]
         }
@@ -907,31 +907,31 @@ class TestTable(unittest2.TestCase):
         ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
-            "totalRows": ROWS,
-            "rows": [
-                {"f": [
-                    {"v": "Phred Phlyntstone"},
-                    {"v": "32"},
-                    {"v": "true"},
-                    {"v": "3.1415926"},
+            'totalRows': ROWS,
+            'rows': [
+                {'f': [
+                    {'v': 'Phred Phlyntstone'},
+                    {'v': '32'},
+                    {'v': 'true'},
+                    {'v': '3.1415926'},
                 ]},
-                {"f": [
-                    {"v": "Bharney Rhubble"},
-                    {"v": "33"},
-                    {"v": "false"},
-                    {"v": "1.414"},
+                {'f': [
+                    {'v': 'Bharney Rhubble'},
+                    {'v': '33'},
+                    {'v': 'false'},
+                    {'v': '1.414'},
                 ]},
-                {"f": [
-                    {"v": "Wylma Phlyntstone"},
-                    {"v": "29"},
-                    {"v": "true"},
-                    {"v": "2.71828"},
+                {'f': [
+                    {'v': 'Wylma Phlyntstone'},
+                    {'v': '29'},
+                    {'v': 'true'},
+                    {'v': '2.71828'},
                 ]},
-                {"f": [
-                    {"v": "Bhettye Rhubble"},
-                    {"v": "27"},
-                    {"v": None},
-                    {"v": None},
+                {'f': [
+                    {'v': 'Bhettye Rhubble'},
+                    {'v': '27'},
+                    {'v': None},
+                    {'v': None},
                 ]},
             ]
         }
@@ -974,20 +974,20 @@ class TestTable(unittest2.TestCase):
         ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
-            "totalRows": ROWS,
-            "pageToken": TOKEN,
-            "rows": [
-                {"f": [
-                    {"v": "Phred Phlyntstone"},
-                    {"v": {"f": [{"v": "800"}, {"v": "555-1212"}, {"v": 1}]}},
+            'totalRows': ROWS,
+            'pageToken': TOKEN,
+            'rows': [
+                {'f': [
+                    {'v': 'Phred Phlyntstone'},
+                    {'v': {'f': [{'v': '800'}, {'v': '555-1212'}, {'v': 1}]}},
                 ]},
-                {"f": [
-                    {"v": "Bharney Rhubble"},
-                    {"v": {"f": [{"v": "877"}, {"v": "768-5309"}, {"v": 2}]}},
+                {'f': [
+                    {'v': 'Bharney Rhubble'},
+                    {'v': {'f': [{'v': '877'}, {'v': '768-5309'}, {'v': 2}]}},
                 ]},
-                {"f": [
-                    {"v": "Wylma Phlyntstone"},
-                    {"v": None},
+                {'f': [
+                    {'v': 'Wylma Phlyntstone'},
+                    {'v': None},
                 ]},
             ]
         }
