@@ -647,9 +647,8 @@ class Table(object):
             row_info = {}
 
             for field, value in zip(self._schema, row):
-                converter = _JSON_FROM_CELLDATA.get(field.field_type)
-                if converter is not None:
-                    value = converter(value)
+                if field.field_type == 'TIMESTAMP':
+                    value = _prop_from_datetime(value)
                 row_info[field.name] = value
 
             info = {'json': row_info}
@@ -725,8 +724,4 @@ _CELLDATA_FROM_JSON = {
     'TIMESTAMP': _datetime_from_json,
     'RECORD': _record_from_json,
     'STRING': _string_from_json,
-}
-
-_JSON_FROM_CELLDATA = {
-    'TIMESTAMP': _prop_from_datetime,
 }
