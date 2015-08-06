@@ -1043,10 +1043,10 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, age, joined])
         ROWS = [
-            ("Phred Phlyntstone", 32, WHEN),
-            ("Bharney Rhubble", 33, WHEN + datetime.timedelta(seconds=1)),
-            ("Wylma Phlyntstone", 29, WHEN + datetime.timedelta(seconds=2)),
-            ("Bhettye Rhubble", 27, None),
+            ('Phred Phlyntstone', 32, WHEN),
+            ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
+            ('Wylma Phlyntstone', 29, WHEN + datetime.timedelta(seconds=2)),
+            ('Bhettye Rhubble', 27, None),
         ]
 
         def _row_data(row):
@@ -1092,10 +1092,10 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, age, voter])
         ROWS = [
-            ("Phred Phlyntstone", 32, True),
-            ("Bharney Rhubble", 33, False),
-            ("Wylma Phlyntstone", 29, True),
-            ("Bhettye Rhubble", 27, True),
+            ('Phred Phlyntstone', 32, True),
+            ('Bharney Rhubble', 33, False),
+            ('Wylma Phlyntstone', 29, True),
+            ('Bhettye Rhubble', 27, True),
         ]
 
         def _row_data(row):
@@ -1144,13 +1144,13 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, phone])
         ROWS = [
-            ("Phred Phlyntstone", {'area_code': '800',
+            ('Phred Phlyntstone', {'area_code': '800',
                                    'local_number': '555-1212',
                                    'rank': 1}),
-            ("Bharney Rhubble", {'area_code': '877',
+            ('Bharney Rhubble', {'area_code': '877',
                                  'local_number': '768-5309',
                                  'rank': 2}),
-            ("Wylma Phlyntstone", None),
+            ('Wylma Phlyntstone', None),
         ]
 
         def _row_data(row):
