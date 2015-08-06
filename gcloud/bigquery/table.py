@@ -676,31 +676,40 @@ class Table(object):
         return errors
 
 
-def _int_from_json(value, field):  # pylint: disable=unused-argument
-    return int(value)
+def _not_null(value, field):
+    return value is not None or field.mode != 'NULLABLE'
 
 
-def _float_from_json(value, field):  # pylint: disable=unused-argument
-    return float(value)
+def _int_from_json(value, field):
+    if _not_null(value, field):
+        return int(value)
 
 
-def _bool_from_json(value, field):  # pylint: disable=unused-argument
-    return value.lower() in ['t', 'true', '1']
+def _float_from_json(value, field):
+    if _not_null(value, field):
+        return float(value)
 
 
-def _datetime_from_json(value, field):  # pylint: disable=unused-argument
-    return _datetime_from_prop(float(value))
+def _bool_from_json(value, field):
+    if _not_null(value, field):
+        return value.lower() in ['t', 'true', '1']
+
+
+def _datetime_from_json(value, field):
+    if _not_null(value, field):
+        return _datetime_from_prop(float(value))
 
 
 def _record_from_json(value, field):
-    record = {}
-    for subfield, cell in zip(field.fields, value['f']):
-        value = cell['v']
-        converter = _CELLDATA_FROM_JSON.get(subfield.field_type)
-        if converter is not None:
-            value = converter(value, subfield)
-        record[subfield.name] = value
-    return record
+    if _not_null(value, field):
+        record = {}
+        for subfield, cell in zip(field.fields, value['f']):
+            value = cell['v']
+            converter = _CELLDATA_FROM_JSON.get(subfield.field_type)
+            if converter is not None:
+                value = converter(value, subfield)
+            record[subfield.name] = value
+        return record
 
 
 _CELLDATA_FROM_JSON = {

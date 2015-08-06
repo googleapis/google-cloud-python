@@ -847,7 +847,6 @@ class TestTable(unittest2.TestCase):
             tzinfo=pytz.UTC)
         WHEN_1 = WHEN + datetime.timedelta(seconds=1)
         WHEN_2 = WHEN + datetime.timedelta(seconds=2)
-        WHEN_3 = WHEN + datetime.timedelta(seconds=3)
         ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
@@ -871,8 +870,8 @@ class TestTable(unittest2.TestCase):
                 ]},
                 {"f": [
                     {"v": "Bhettye Rhubble"},
-                    {"v": "27"},
-                    {"v": _prop_from_datetime(WHEN_3)},
+                    {"v": None},
+                    {"v": None},
                 ]},
             ]
         }
@@ -880,7 +879,7 @@ class TestTable(unittest2.TestCase):
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='NULLABLE')
         joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, age, joined])
@@ -891,7 +890,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32, WHEN))
         self.assertEqual(rows[1], ('Bharney Rhubble', 33, WHEN_1))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, WHEN_2))
-        self.assertEqual(rows[3], ('Bhettye Rhubble', 27, WHEN_3))
+        self.assertEqual(rows[3], ('Bhettye Rhubble', None, None))
         self.assertEqual(total_rows, ROWS)
         self.assertEqual(page_token, TOKEN)
 
@@ -920,7 +919,7 @@ class TestTable(unittest2.TestCase):
                     {"v": "Bharney Rhubble"},
                     {"v": "33"},
                     {"v": "false"},
-                    {"v": "1.0"},
+                    {"v": "1.414"},
                 ]},
                 {"f": [
                     {"v": "Wylma Phlyntstone"},
@@ -931,8 +930,8 @@ class TestTable(unittest2.TestCase):
                 {"f": [
                     {"v": "Bhettye Rhubble"},
                     {"v": "27"},
-                    {"v": "true"},
-                    {"v": "1.414"},
+                    {"v": None},
+                    {"v": None},
                 ]},
             ]
         }
@@ -954,9 +953,9 @@ class TestTable(unittest2.TestCase):
 
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32, True, 3.1415926))
-        self.assertEqual(rows[1], ('Bharney Rhubble', 33, False, 1.0))
+        self.assertEqual(rows[1], ('Bharney Rhubble', 33, False, 1.414))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, True, 2.71828))
-        self.assertEqual(rows[3], ('Bhettye Rhubble', 27, True, 1.414))
+        self.assertEqual(rows[3], ('Bhettye Rhubble', 27, None, None))
         self.assertEqual(total_rows, ROWS)
         self.assertEqual(page_token, None)
 
@@ -986,6 +985,10 @@ class TestTable(unittest2.TestCase):
                     {"v": "Bharney Rhubble"},
                     {"v": {"f": [{"v": "877"}, {"v": "768-5309"}, {"v": 2}]}},
                 ]},
+                {"f": [
+                    {"v": "Wylma Phlyntstone"},
+                    {"v": None},
+                ]},
             ]
         }
         conn = _Connection(DATA)
@@ -995,14 +998,14 @@ class TestTable(unittest2.TestCase):
         area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
         local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
         rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
-        phone = SchemaField('phone', 'RECORD', mode='REQUIRED',
+        phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
                             fields=[area_code, local_number, rank])
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, phone])
 
         rows, total_rows, page_token = table.fetch_data()
 
-        self.assertEqual(len(rows), 2)
+        self.assertEqual(len(rows), 3)
         self.assertEqual(rows[0][0], 'Phred Phlyntstone')
         self.assertEqual(rows[0][1], {'area_code': '800',
                                       'local_number': '555-1212',
@@ -1011,6 +1014,8 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(rows[1][1], {'area_code': '877',
                                       'local_number': '768-5309',
                                       'rank': 2})
+        self.assertEqual(rows[2][0], 'Wylma Phlyntstone')
+        self.assertEqual(rows[2][1], None)
         self.assertEqual(total_rows, ROWS)
         self.assertEqual(page_token, TOKEN)
 
@@ -1041,7 +1046,7 @@ class TestTable(unittest2.TestCase):
             ("Phred Phlyntstone", 32, WHEN),
             ("Bharney Rhubble", 33, WHEN + datetime.timedelta(seconds=1)),
             ("Wylma Phlyntstone", 29, WHEN + datetime.timedelta(seconds=2)),
-            ("Bhettye Rhubble", 27, WHEN + datetime.timedelta(seconds=3)),
+            ("Bhettye Rhubble", 27, None),
         ]
 
         def _row_data(row):
@@ -1134,7 +1139,7 @@ class TestTable(unittest2.TestCase):
         area_code = SchemaField('area_code', 'STRING', 'REQUIRED')
         local_number = SchemaField('local_number', 'STRING', 'REQUIRED')
         rank = SchemaField('rank', 'INTEGER', 'REQUIRED')
-        phone = SchemaField('phone', 'RECORD', mode='REQUIRED',
+        phone = SchemaField('phone', 'RECORD', mode='NULLABLE',
                             fields=[area_code, local_number, rank])
         table = self._makeOne(self.TABLE_NAME, dataset=dataset,
                               schema=[full_name, phone])
@@ -1145,6 +1150,7 @@ class TestTable(unittest2.TestCase):
             ("Bharney Rhubble", {'area_code': '877',
                                  'local_number': '768-5309',
                                  'rank': 2}),
+            ("Wylma Phlyntstone", None),
         ]
 
         def _row_data(row):
