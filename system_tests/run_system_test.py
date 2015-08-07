@@ -20,12 +20,18 @@ import unittest2
 # repository root is the current directory.
 from system_tests import system_test_utils
 
+REQUIREMENTS = {
+    'datastore': ['dataset_id', 'credentials'],
+    'storage': ['project', 'credentials'],
+    'pubsub': ['project', 'credentials'],
+}
+
 
 def get_parser():
     parser = argparse.ArgumentParser(
         description='GCloud test runner against actual project.')
     parser.add_argument('--package', dest='package',
-                        choices=('datastore', 'storage', 'pubsub'),
+                        choices=REQUIREMENTS.keys(),
                         default='datastore', help='Package to be tested.')
     return parser
 
@@ -41,14 +47,9 @@ def main():
     parser = get_parser()
     args = parser.parse_args()
     # Make sure environ is set before running test.
-    if args.package == 'datastore':
-        system_test_utils.check_environ(require_datastore=True)
-    elif args.package == 'storage':
-        system_test_utils.check_environ(require_storage=True)
-    elif args.package == 'pubsub':
-        system_test_utils.check_environ(require_pubsub=True)
-    else:
-        raise ValueError('Unexpected package name.')
+    requirements = REQUIREMENTS[args.package]
+    system_test_utils.check_environ(*requirements)
+
     test_result = run_module_tests(args.package)
     if not test_result.wasSuccessful():
         sys.exit(1)
