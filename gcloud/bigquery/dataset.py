@@ -197,15 +197,12 @@ class Dataset(object):
         :type resource: dict
         :param resource: dataset resource representation returned from the API
 
-        :type client: :class:`gcloud.pubsub.client.Client`
+        :type client: :class:`gcloud.bigquery.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the dataset.
 
-        :rtype: :class:`gcloud.pubsub.dataset.Topic`
-        :returns: Topic parsed from ``resource``.
-        :raises: :class:`ValueError` if ``client`` is not ``None`` and the
-                 project from the resource does not agree with the project
-                 from the client.
+        :rtype: :class:`gcloud.bigquery.dataset.Dataset`
+        :returns: Dataset parsed from ``resource``.
         """
         name = resource['datasetReference']['datasetId']
         dataset = cls(name, client=client)

@@ -145,7 +145,7 @@ class TestDataset(unittest2.TestCase):
 
     def test_from_api_repr_bare(self):
         self._setUpConstants()
-        CLIENT = _Client(self.PROJECT)
+        client = _Client(self.PROJECT)
         RESOURCE = {
             'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
             'datasetReference': {
@@ -154,24 +154,24 @@ class TestDataset(unittest2.TestCase):
             }
         }
         klass = self._getTargetClass()
-        dataset = klass.from_api_repr(RESOURCE, client=CLIENT)
-        self.assertTrue(dataset._client is CLIENT)
+        dataset = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(dataset._client is client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
-        CLIENT = _Client(self.PROJECT)
+        client = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
-        dataset = klass.from_api_repr(RESOURCE, client=CLIENT)
-        self.assertTrue(dataset._client is CLIENT)
+        dataset = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(dataset._client is client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/datasets' % self.PROJECT
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.create()
 
@@ -226,8 +226,8 @@ class TestDataset(unittest2.TestCase):
         del RESOURCE['lastModifiedTime']
         self.WHEN = None
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.create()
 
@@ -245,8 +245,8 @@ class TestDataset(unittest2.TestCase):
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
         conn = _Connection()
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         self.assertFalse(dataset.exists())
 
@@ -277,8 +277,8 @@ class TestDataset(unittest2.TestCase):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.reload()
 
@@ -309,8 +309,8 @@ class TestDataset(unittest2.TestCase):
     def test_patch_w_invalid_expiration(self):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         with self.assertRaises(ValueError):
             dataset.patch(default_table_expiration_ms='BOGUS')
@@ -323,8 +323,8 @@ class TestDataset(unittest2.TestCase):
         RESOURCE['description'] = DESCRIPTION
         RESOURCE['friendlyName'] = TITLE
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.patch(description=DESCRIPTION, friendly_name=TITLE)
 
@@ -376,8 +376,8 @@ class TestDataset(unittest2.TestCase):
         RESOURCE['description'] = DESCRIPTION
         RESOURCE['friendlyName'] = TITLE
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
         dataset.description = DESCRIPTION
         dataset.friendly_name = TITLE
 
@@ -430,8 +430,8 @@ class TestDataset(unittest2.TestCase):
     def test_delete_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
         conn = _Connection({})
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.delete()
 
@@ -459,8 +459,8 @@ class TestDataset(unittest2.TestCase):
     def test_table_wo_schema(self):
         from gcloud.bigquery.table import Table
         conn = _Connection({})
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
         table = dataset.table('table_name')
         self.assertTrue(isinstance(table, Table))
         self.assertEqual(table.name, 'table_name')
@@ -471,8 +471,8 @@ class TestDataset(unittest2.TestCase):
         from gcloud.bigquery.table import SchemaField
         from gcloud.bigquery.table import Table
         conn = _Connection({})
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = dataset.table('table_name', schema=[full_name, age])
