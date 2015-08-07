@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Shared Core Modules &mdash; gcloud 3d0e871 documentation</title>
+    <title>Shared Core Modules &mdash; gcloud 42fa77d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3d0e871',
+        VERSION:     '42fa77d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 3d0e871 documentation" href="index.html" />
+    <link rel="top" title="gcloud 42fa77d documentation" href="index.html" />
     <link rel="next" title="Datastore Client" href="datastore-client.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%203d0e871" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%2042fa77d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -72,7 +72,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (3d0e871)
+              Version History (42fa77d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -93,7 +93,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <dl class="class">
 <dt id="gcloud.client.Client">
 <em class="property">class </em><code class="descclassname">gcloud.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.client.Client" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Client to bundle configuration needed for API requests.</p>
 <p>Assumes that the associated <code class="docutils literal"><span class="pre">_connection_class</span></code> only accepts
 <code class="docutils literal"><span class="pre">http</span></code> and <code class="docutils literal"><span class="pre">credentials</span></code> in its constructor.</p>
@@ -102,12 +102,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
+<li><strong>credentials</strong> (<a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
 owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
 object is passed), falls back to the default inferred
 from the environment.</li>
-<li><strong>http</strong> (<code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
+<li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
 <code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
 </ul>
@@ -124,13 +124,13 @@ from the environment.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>json_credentials_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file
+<li><strong>json_credentials_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file
 was given to you when you created the
 service account). This file must contain
 a JSON object with a private key and
 other credentials information (downloaded
 from the Google APIs console).</li>
-<li><strong>args</strong> (<em>tuple</em>) &#8211; Remaining positional arguments to pass to constructor.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
 <li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
 </ul>
 </td>
@@ -163,11 +163,11 @@ service account, we recommend using a JSON key.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
+<li><strong>client_email</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The e-mail attached to the service account.</li>
+<li><strong>private_key_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file was
 given to you when you created the service
 account). This file must be in P12 format.</li>
-<li><strong>args</strong> (<em>tuple</em>) &#8211; Remaining positional arguments to pass to constructor.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
 <li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
 </ul>
 </td>
@@ -200,15 +200,15 @@ value.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<em>string</em>) &#8211; the project which the client acts on behalf of. If not
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the project which the client acts on behalf of. If not
 passed falls back to the default inferred from the
 environment.</li>
-<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
+<li><strong>credentials</strong> (<a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
 owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
 object is passed), falls back to the default inferred
 from the environment.</li>
-<li><strong>http</strong> (<code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
+<li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
 <code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
 <code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
 </ul>
@@ -243,21 +243,21 @@ rather than a GCE service account.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></code>) &#8211; Credentials object with an associated private key to
+<li><strong>credentials</strong> (<a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.appengine.AppAssertionCredentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></code></a>) &#8211; Credentials object with an associated private key to
 sign text.</li>
-<li><strong>resource</strong> (<em>string</em>) &#8211; A pointer to a specific resource
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; A pointer to a specific resource
 (typically, <code class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></code>).</li>
 <li><strong>expiration</strong> (<em>int, long, datetime.datetime, datetime.timedelta</em>) &#8211; When the signed URL should expire.</li>
-<li><strong>api_access_endpoint</strong> (<em>string</em>) &#8211; Optional URI base. Defaults to empty string.</li>
-<li><strong>method</strong> (<em>string</em>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
-<li><strong>content_md5</strong> (<em>string</em>) &#8211; The MD5 hash of the object referenced by
+<li><strong>api_access_endpoint</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Optional URI base. Defaults to empty string.</li>
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
+<li><strong>content_md5</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The MD5 hash of the object referenced by
 <code class="docutils literal"><span class="pre">resource</span></code>.</li>
-<li><strong>content_type</strong> (<em>string</em>) &#8211; The content type of the object referenced by
+<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The content type of the object referenced by
 <code class="docutils literal"><span class="pre">resource</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">string</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)">string</a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
@@ -306,9 +306,9 @@ used by <code class="docutils literal"><span class="pre">oauth2client.clientsecr
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code>,
-<code class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></code>,
-<code class="xref py py-class docutils literal"><span class="pre">oauth2client.gce.AppAssertionCredentials</span></code>,
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.client.GoogleCredentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code></a>,
+<a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.appengine.AppAssertionCredentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.appengine.AppAssertionCredentials</span></code></a>,
+<a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.gce.AppAssertionCredentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.gce.AppAssertionCredentials</span></code></a>,
 <code class="xref py py-class docutils literal"><span class="pre">oauth2client.service_account._ServiceAccountCredentials</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new credentials instance corresponding to the implicit
@@ -327,7 +327,7 @@ environment.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>json_credentials_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
+<li><strong>json_credentials_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file was
 given to you when you created the service
 account). This file must contain a JSON
 object with a private key and other
@@ -340,7 +340,7 @@ particular API.)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code>,
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.client.GoogleCredentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code></a>,
 <code class="xref py py-class docutils literal"><span class="pre">oauth2client.service_account._ServiceAccountCredentials</span></code></p>
 </td>
 </tr>
@@ -368,8 +368,8 @@ superfluous.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
+<li><strong>client_email</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The e-mail attached to the service account.</li>
+<li><strong>private_key_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file was
 given to you when you created the service
 account). This file must be in P12 format.</li>
 <li><strong>scope</strong> (<em>string or tuple of string</em>) &#8211; The scope against which to authenticate. (Different services
@@ -379,7 +379,7 @@ particular API.)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.SignedJwtAssertionCredentials</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.client.SignedJwtAssertionCredentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.SignedJwtAssertionCredentials</span></code></a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new <code class="docutils literal"><span class="pre">SignedJwtAssertionCredentials</span></code> instance with the
@@ -403,11 +403,11 @@ needed service account settings.</p>
 <dl class="class">
 <dt id="gcloud.connection.Connection">
 <em class="property">class </em><code class="descclassname">gcloud.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A generic connection to Google Cloud Platform.</p>
 <p>Subclasses should understand only the basic types in method arguments,
 however they should be capable of returning advanced types.</p>
-<p>If no value is passed in for <code class="docutils literal"><span class="pre">http</span></code>, a <code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code> object
+<p>If no value is passed in for <code class="docutils literal"><span class="pre">http</span></code>, a <a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> object
 will be created and authorized with the <code class="docutils literal"><span class="pre">credentials</span></code>. If not, the
 <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">http</span></code> need not be related.</p>
 <p>Subclasses may seek to use the private key from <code class="docutils literal"><span class="pre">credentials</span></code> to sign
@@ -429,9 +429,9 @@ requests and handle token refresh on 401 errors.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
+<li><strong>credentials</strong> (<a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for this connection.</li>
-<li><strong>http</strong> (<code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests.</li>
+<li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests.</li>
 </ul>
 </td>
 </tr>
@@ -451,7 +451,7 @@ requests and handle token refresh on 401 errors.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code> or
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://google.github.io/oauth2client/source/oauth2client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The credentials object associated with this connection.</td>
@@ -469,7 +469,7 @@ requests and handle token refresh on 401 errors.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<em>tuple</em>) &#8211; Remaining positional arguments to pass to constructor.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
 <li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
 </ul>
 </td>
@@ -498,13 +498,13 @@ and the credentials created by the factory.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>json_credentials_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file
+<li><strong>json_credentials_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file
 was given to you when you created the
 service account). This file must contain
 a JSON object with a private key and
 other credentials information (downloaded
 from the Google APIs console).</li>
-<li><strong>args</strong> (<em>tuple</em>) &#8211; Remaining positional arguments to pass to constructor.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
 <li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
 </ul>
 </td>
@@ -537,11 +537,11 @@ service account, we recommend using a JSON key.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client_email</strong> (<em>string</em>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<em>string</em>) &#8211; The path to a private key file (this file was
+<li><strong>client_email</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The e-mail attached to the service account.</li>
+<li><strong>private_key_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file was
 given to you when you created the service
 account). This file must be in P12 format.</li>
-<li><strong>args</strong> (<em>tuple</em>) &#8211; Remaining positional arguments to pass to constructor.</li>
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
 <li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
 </ul>
 </td>
@@ -568,7 +568,7 @@ and the credentials created by the factory.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A Http object used to transport data.</td>
 </tr>
@@ -624,21 +624,21 @@ correct one to use.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>method</strong> (<em>string</em>) &#8211; The HTTP method name (ie, <code class="docutils literal"><span class="pre">GET</span></code>, <code class="docutils literal"><span class="pre">POST</span></code>, etc).
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The HTTP method name (ie, <code class="docutils literal"><span class="pre">GET</span></code>, <code class="docutils literal"><span class="pre">POST</span></code>, etc).
 Required.</li>
-<li><strong>path</strong> (<em>string</em>) &#8211; The path to the resource (ie, <code class="docutils literal"><span class="pre">'/b/bucket-name'</span></code>).
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to the resource (ie, <code class="docutils literal"><span class="pre">'/b/bucket-name'</span></code>).
 Required.</li>
-<li><strong>query_params</strong> (<em>dict</em>) &#8211; A dictionary of keys and values to insert into
+<li><strong>query_params</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A dictionary of keys and values to insert into
 the query string of the URL.  Default is
 empty dict.</li>
-<li><strong>data</strong> (<em>string</em>) &#8211; The data to send as the body of the request. Default is
+<li><strong>data</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The data to send as the body of the request. Default is
 the empty string.</li>
-<li><strong>content_type</strong> (<em>string</em>) &#8211; The proper MIME type of the data provided. Default
+<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The proper MIME type of the data provided. Default
 is None.</li>
-<li><strong>api_base_url</strong> (<em>string</em>) &#8211; The base URL for the API endpoint.
+<li><strong>api_base_url</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The base URL for the API endpoint.
 Typically you won&#8217;t have to provide this.
 Default is the standard API base URL.</li>
-<li><strong>api_version</strong> (<em>string</em>) &#8211; The version of the API to call.  Typically
+<li><strong>api_version</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The version of the API to call.  Typically
 you shouldn&#8217;t provide this and instead use
 the default for the library.  Default is the
 latest API version supported by
@@ -670,18 +670,18 @@ initialization of the object at a later time.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>path</strong> (<em>string</em>) &#8211; The path to the resource (ie, <code class="docutils literal"><span class="pre">'/b/bucket-name'</span></code>).</li>
-<li><strong>query_params</strong> (<em>dict</em>) &#8211; A dictionary of keys and values to insert into
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to the resource (ie, <code class="docutils literal"><span class="pre">'/b/bucket-name'</span></code>).</li>
+<li><strong>query_params</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A dictionary of keys and values to insert into
 the query string of the URL.</li>
-<li><strong>api_base_url</strong> (<em>string</em>) &#8211; The base URL for the API endpoint.
+<li><strong>api_base_url</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The base URL for the API endpoint.
 Typically you won&#8217;t have to provide this.</li>
-<li><strong>api_version</strong> (<em>string</em>) &#8211; The version of the API to call.
+<li><strong>api_version</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The version of the API to call.
 Typically you shouldn&#8217;t provide this and instead
 use the default for the library.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">string</p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)">string</a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The URL assembled from the pieces provided.</p>
@@ -745,7 +745,7 @@ use the default for the library.</li>
 <dl class="exception">
 <dt id="gcloud.exceptions.GCloudError">
 <em class="property">exception </em><code class="descclassname">gcloud.exceptions.</code><code class="descname">GCloudError</code><span class="sig-paren">(</span><em>message</em>, <em>errors=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/exceptions.html#GCloudError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.exceptions.GCloudError" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
 <p>Base error class for gcloud errors (abstract).</p>
 <p>Each subclass represents a single type of HTTP error response.</p>
 <dl class="attribute">
@@ -971,10 +971,10 @@ use the default for the library.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>response</strong> (<code class="xref py py-class docutils literal"><span class="pre">httplib2.Response</span></code> or other HTTP response object) &#8211; A response object that defines a status code as the
+<li><strong>response</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Response" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Response</span></code></a> or other HTTP response object) &#8211; A response object that defines a status code as the
 status attribute.</li>
 <li><strong>content</strong> (<em>string or dictionary</em>) &#8211; The body of the HTTP error response.</li>
-<li><strong>error_info</strong> (<em>string</em>) &#8211; Optional string giving extra information about the
+<li><strong>error_info</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Optional string giving extra information about the
 failed request.</li>
 <li><strong>use_json</strong> (<em>boolean</em>) &#8211; Flag indicating if <code class="docutils literal"><span class="pre">content</span></code> is expected to be JSON.</li>
 </ul>
