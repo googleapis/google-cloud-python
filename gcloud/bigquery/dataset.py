@@ -209,7 +209,7 @@ class Dataset(object):
         """
         name = resource['datasetReference']['datasetId']
         dataset = cls(name, client=client)
-        dataset._properties = resource.copy()
+        dataset._set_properties(resource)
         return dataset
 
     def _require_client(self, client):

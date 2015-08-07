@@ -43,6 +43,49 @@ class Client(JSONClient):
 
     _connection_class = Connection
 
+    def list_datasets(self, include_all=False, max_results=None,
+                      page_token=None):
+        """List datasets for the project associated with this client.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/datasets/list
+
+        :type include_all: boolean
+        :param include_all: Should results include hidden datasets?
+
+        :type max_results: int
+        :param max_results: maximum number of datasets to return, If not
+                            passed, defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of datasets. If
+                           not passed, the API will return the first page of
+                           datasets.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.pubsub.dataset.Dataset`, plus a
+                  "next page token" string:  if not None, indicates that
+                  more datasets can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        params = {}
+
+        if include_all:
+            params['all'] = True
+
+        if max_results is not None:
+            params['maxResults'] = max_results
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/datasets' % (self.project,)
+        resp = self.connection.api_request(method='GET', path=path,
+                                           query_params=params)
+        datasets = [Dataset.from_api_repr(resource, self)
+                    for resource in resp['datasets']]
+        return datasets, resp.get('nextPageToken')
+
     def dataset(self, name):
         """Construct a dataset bound to this client.
 

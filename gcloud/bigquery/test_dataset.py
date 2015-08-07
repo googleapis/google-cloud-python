@@ -159,11 +159,6 @@ class TestDataset(unittest2.TestCase):
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_from_api_repr_w_properties(self):
-        import datetime
-        import pytz
-        self.WHEN_TS = 1437767599.006
-        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
-            tzinfo=pytz.UTC)
         CLIENT = _Client(self.PROJECT)
         RESOURCE = self._makeResource()
         klass = self._getTargetClass()
