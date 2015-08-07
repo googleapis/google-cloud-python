@@ -46,9 +46,9 @@ extensions = [
 
 # Add any paths that contain templates here, relative to this directory.
 if ON_READ_THE_DOCS or LOCAL_READ_THE_DOCS:
-  templates_path = []
+    templates_path = []
 else:
-  templates_path = ['_templates']
+    templates_path = ['_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -112,10 +112,10 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 
 if LOCAL_READ_THE_DOCS:
-  html_theme = 'sphinx_rtd_theme'
-  html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+    html_theme = 'sphinx_rtd_theme'
+    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 elif not ON_READ_THE_DOCS:
-  html_style = 'css/main.css'
+    html_style = 'css/main.css'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -213,8 +213,8 @@ author = message_from_string(metadata).get('Author')
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'gcloud.tex', u'gCloud Documentation',
-   author, 'manual'),
+    ('index', 'gcloud.tex', u'gCloud Documentation',
+     author, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -257,9 +257,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'gcloud', u'gCloud Documentation',
-   author, 'gcloud', 'Python API for Google Cloud.',
-   'Miscellaneous'),
+    ('index', 'gcloud', u'gCloud Documentation',
+     author, 'gcloud', 'Python API for Google Cloud.',
+     'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.

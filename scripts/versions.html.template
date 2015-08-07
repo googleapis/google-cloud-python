@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="_landing-page-static/css/docs-main.css" type="text/css" />
     <link rel="stylesheet" href="_landing-page-static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_landing-page-static/css/normalize.css" type="text/css" />
-    <link rel="stylesheet" href="_landing-page-static/css/github.min.css" type="text/css" />
 
     <script type="text/javascript" src="_landing-page-static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_landing-page-static/favicon.ico"/>
