@@ -15,6 +15,22 @@
 import unittest2
 
 
+class TestAccessRole(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.dataset import AccessGrant
+        return AccessGrant
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
+        self.assertEqual(grant.role, 'OWNER')
+        self.assertEqual(grant.entity_type, 'userByEmail')
+        self.assertEqual(grant.entity_id, 'phred@example.com')
+
+
 class TestDataset(unittest2.TestCase):
     PROJECT = 'project'
     DS_NAME = 'dataset-name'
@@ -39,6 +55,8 @@ class TestDataset(unittest2.TestCase):
 
     def _makeResource(self):
         self._setUpConstants()
+        USER_EMAIL = 'phred@example.com'
+        GROUP_EMAIL = 'group-name@lists.example.com'
         return {
             'creationTime': self.WHEN_TS * 1000,
             'datasetReference':
@@ -48,10 +66,37 @@ class TestDataset(unittest2.TestCase):
             'lastModifiedTime': self.WHEN_TS * 1000,
             'location': 'US',
             'selfLink': self.RESOURCE_URL,
+            'access': [
+                {'role': 'OWNER', 'userByEmail': USER_EMAIL},
+                {'role': 'OWNER', 'groupByEmail': GROUP_EMAIL},
+                {'role': 'WRITER', 'specialGroup': 'projectWriters'},
+                {'role': 'READER', 'specialGroup': 'projectReaders'}],
         }
 
-    def _verifyResourceProperties(self, dataset, resource):
+    def _verifyAccessGrants(self, access_grants, resource):
+        r_grants = resource['access']
+        self.assertEqual(len(access_grants), len(r_grants))
+
+        for a_grant, r_grant in zip(access_grants, r_grants):
+
+            self.assertEqual(a_grant.role, r_grant['role'])
+
+            if 'specialGroup' in r_grant:
+                self.assertEqual(a_grant.entity_type, 'specialGroup')
+                entity_id = r_grant['specialGroup']
+            elif 'groupByEmail' in r_grant:
+                self.assertEqual(a_grant.entity_type, 'groupByEmail')
+                entity_id = r_grant['groupByEmail']
+            else:
+                self.assertEqual(a_grant.entity_type, 'userByEmail')
+                entity_id = r_grant['userByEmail']
+
+            self.assertEqual(a_grant.entity_id, entity_id)
+
+    def _verifyReadonlyResourceProperties(self, dataset, resource):
+
         self.assertEqual(dataset.dataset_id, self.DS_ID)
+
         if 'creationTime' in resource:
             self.assertEqual(dataset.created, self.WHEN)
         else:
@@ -69,11 +114,20 @@ class TestDataset(unittest2.TestCase):
         else:
             self.assertEqual(dataset.self_link, None)
 
+    def _verifyResourceProperties(self, dataset, resource):
+
+        self._verifyReadonlyResourceProperties(dataset, resource)
+
         self.assertEqual(dataset.default_table_expiration_ms,
                          resource.get('defaultTableExpirationMs'))
         self.assertEqual(dataset.description, resource.get('description'))
         self.assertEqual(dataset.friendly_name, resource.get('friendlyName'))
         self.assertEqual(dataset.location, resource.get('location'))
+
+        if 'access' in resource:
+            self._verifyAccessGrants(dataset.access_grants, resource)
+        else:
+            self.assertEqual(dataset.access_grants, [])
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -84,6 +138,7 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(
             dataset.path,
             '/projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME))
+        self.assertEqual(dataset.access_grants, [])
 
         self.assertEqual(dataset.created, None)
         self.assertEqual(dataset.dataset_id, None)
@@ -95,6 +150,29 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(dataset.description, None)
         self.assertEqual(dataset.friendly_name, None)
         self.assertEqual(dataset.location, None)
+
+    def test_access_roles_setter_non_list(self):
+        client = _Client(self.PROJECT)
+        dataset = self._makeOne(self.DS_NAME, client)
+        with self.assertRaises(TypeError):
+            dataset.access_grants = object()
+
+    def test_access_roles_setter_invalid_field(self):
+        from gcloud.bigquery.dataset import AccessGrant
+        client = _Client(self.PROJECT)
+        dataset = self._makeOne(self.DS_NAME, client)
+        phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
+        with self.assertRaises(ValueError):
+            dataset.access_grants = [phred, object()]
+
+    def test_access_roles_setter(self):
+        from gcloud.bigquery.dataset import AccessGrant
+        client = _Client(self.PROJECT)
+        dataset = self._makeOne(self.DS_NAME, client)
+        phred = AccessGrant('OWNER', 'userByEmail', 'phred@example.com')
+        bharney = AccessGrant('OWNER', 'userByEmail', 'bharney@example.com')
+        dataset.access_grants = [phred, bharney]
+        self.assertEqual(dataset.access_grants, [phred, bharney])
 
     def test_default_table_expiration_ms_setter_bad_value(self):
         client = _Client(self.PROJECT)
@@ -196,7 +274,10 @@ class TestDataset(unittest2.TestCase):
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_create_w_alternate_client(self):
+        from gcloud.bigquery.dataset import AccessGrant
         PATH = 'projects/%s/datasets' % self.PROJECT
+        USER_EMAIL = 'phred@example.com'
+        GROUP_EMAIL = 'group-name@lists.example.com'
         DESCRIPTION = 'DESCRIPTION'
         TITLE = 'TITLE'
         RESOURCE = self._makeResource()
@@ -209,6 +290,11 @@ class TestDataset(unittest2.TestCase):
         dataset = self._makeOne(self.DS_NAME, client=CLIENT1)
         dataset.friendly_name = TITLE
         dataset.description = DESCRIPTION
+        dataset.access_grants = [
+            AccessGrant('OWNER', 'userByEmail', USER_EMAIL),
+            AccessGrant('OWNER', 'groupByEmail', GROUP_EMAIL),
+            AccessGrant('READER', 'specialGroup', 'projectReaders'),
+            AccessGrant('WRITER', 'specialGroup', 'projectWriters')]
 
         dataset.create(client=CLIENT2)
 
@@ -222,6 +308,11 @@ class TestDataset(unittest2.TestCase):
                 {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
             'description': DESCRIPTION,
             'friendlyName': TITLE,
+            'access': [
+                {'role': 'OWNER', 'userByEmail': USER_EMAIL},
+                {'role': 'OWNER', 'groupByEmail': GROUP_EMAIL},
+                {'role': 'READER', 'specialGroup': 'projectReaders'},
+                {'role': 'WRITER', 'specialGroup': 'projectWriters'}],
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(dataset, RESOURCE)

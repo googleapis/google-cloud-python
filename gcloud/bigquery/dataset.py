@@ -20,6 +20,29 @@ from gcloud.bigquery._helpers import _datetime_from_prop
 from gcloud.bigquery.table import Table
 
 
+class AccessGrant(object):
+    """Represent grant of an access role to an entity.
+
+    :type role: string (one of 'OWNER', 'WRITER', 'READER').
+    :param role: role granted to the entity.
+
+    :type entity_type: string (one of 'specialGroup', 'groupByEmail', or
+                       'userByEmail')
+    :param entity_type: type of entity being granted the role.
+
+    :type entity_id: string
+    :param entity_id: ID of entity being granted the role.
+    """
+    def __init__(self, role, entity_type, entity_id):
+        self.role = role
+        self.entity_type = entity_type
+        self.entity_id = entity_id
+
+    def __repr__(self):  # pragma: NO COVER
+        return '<AccessGrant: role=%s, %s=%s>' % (
+            self.role, self.entity_type, self.entity_id)
+
+
 class Dataset(object):
     """Datasets are containers for tables.
 
@@ -32,12 +55,16 @@ class Dataset(object):
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
+
+    :type access_grants: list of :class:`AccessGrant`
+    :param access_grants: roles granted to entities for this dataset
     """
 
-    def __init__(self, name, client):
+    def __init__(self, name, client, access_grants=()):
         self.name = name
         self._client = client
         self._properties = {}
+        self.access_grants = access_grants
 
     @property
     def project(self):
@@ -56,6 +83,29 @@ class Dataset(object):
         :returns: the path based on project and dataste name.
         """
         return '/projects/%s/datasets/%s' % (self.project, self.name)
+
+    @property
+    def access_grants(self):
+        """Dataset's access grants.
+
+        :rtype: list of :class:`AccessGrant`
+        :returns: roles granted to entities for this dataset
+        """
+        return list(self._access_roles)
+
+    @access_grants.setter
+    def access_grants(self, value):
+        """Update dataset's access grants
+
+        :type value: list of :class:`AccessGrant`
+        :param value: roles granted to entities for this dataset
+
+        :raises: TypeError if 'value' is not a sequence, or ValueError if
+                 any item in the sequence is not an AccessGrant
+        """
+        if not all(isinstance(field, AccessGrant) for field in value):
+            raise ValueError('Values must be AccessGrant instances')
+        self._access_roles = tuple(value)
 
     @property
     def created(self):
@@ -227,6 +277,28 @@ class Dataset(object):
             client = self._client
         return client
 
+    def _parse_access_grants(self, access):
+        """Parse a resource fragment into a schema field.
+
+        :type access: list of mappings
+        :param access: each mapping represents a single access grant
+
+        :rtype: list of :class:`AccessGrant`
+        :returns: a list of parsed grants
+        """
+        result = []
+        for grant in access:
+            role = grant['role']
+            if 'specialGroup' in grant:
+                entity_type = 'specialGroup'
+            elif 'groupByEmail' in grant:
+                entity_type = 'groupByEmail'
+            else:
+                entity_type = 'userByEmail'
+            result.append(
+                AccessGrant(role, entity_type, grant[entity_type]))
+        return result
+
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
@@ -235,11 +307,21 @@ class Dataset(object):
         """
         self._properties.clear()
         cleaned = api_response.copy()
+        access = cleaned.pop('access', ())
+        self.access_grants = self._parse_access_grants(access)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = float(cleaned['creationTime'])
         if 'lastModifiedTime' in cleaned:
             cleaned['lastModifiedTime'] = float(cleaned['lastModifiedTime'])
         self._properties.update(cleaned)
+
+    def _build_access_resource(self):
+        """Generate a resource fragment for dataset's access grants."""
+        result = []
+        for grant in self.access_grants:
+            info = {'role': grant.role, grant.entity_type: grant.entity_id}
+            result.append(info)
+        return result
 
     def _build_resource(self):
         """Generate a resource for ``create`` or ``update``."""
@@ -259,6 +341,9 @@ class Dataset(object):
 
         if self.location is not None:
             resource['location'] = self.location
+
+        if len(self.access_grants) > 0:
+            resource['access'] = self._build_access_resource()
 
         return resource
 
