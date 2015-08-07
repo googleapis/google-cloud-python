@@ -24,6 +24,7 @@ REQUIREMENTS = {
     'datastore': ['dataset_id', 'credentials'],
     'storage': ['project', 'credentials'],
     'pubsub': ['project', 'credentials'],
+    'bigquery': ['project', 'credentials'],
 }
 
 
