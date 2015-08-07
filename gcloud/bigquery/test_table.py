@@ -74,7 +74,7 @@ class TestTable(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def _makeResource(self):
+    def _setUpConstants(self):
         import datetime
         import pytz
         self.WHEN_TS = 1437767599.006
@@ -86,6 +86,9 @@ class TestTable(unittest2.TestCase):
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
         self.NUM_BYTES = 12345
         self.NUM_ROWS = 67
+
+    def _makeResource(self):
+        self._setUpConstants()
         return {
             'creationTime': self.WHEN_TS * 1000,
             'tableReference':
@@ -117,29 +120,58 @@ class TestTable(unittest2.TestCase):
         for field, r_field in zip(schema, r_fields):
             self._verify_field(field, r_field)
 
-    def _verifyResourceProperties(self, table, resource):
-        self.assertEqual(table.created, self.WHEN)
-        self.assertEqual(table.etag, self.ETAG)
-        self.assertEqual(table.num_rows, self.NUM_ROWS)
-        self.assertEqual(table.num_bytes, self.NUM_BYTES)
-        self.assertEqual(table.self_link, self.RESOURCE_URL)
+    def _verifyReadonlyResourceProperties(self, table, resource):
+        if 'creationTime' in resource:
+            self.assertEqual(table.created, self.WHEN)
+        else:
+            self.assertEqual(table.created, None)
+
+        if 'etag' in resource:
+            self.assertEqual(table.etag, self.ETAG)
+        else:
+            self.assertEqual(table.etag, None)
+
+        if 'numRows' in resource:
+            self.assertEqual(table.num_rows, self.NUM_ROWS)
+        else:
+            self.assertEqual(table.num_rows, None)
+
+        if 'numBytes' in resource:
+            self.assertEqual(table.num_bytes, self.NUM_BYTES)
+        else:
+            self.assertEqual(table.num_bytes, None)
+
+        if 'selfLink' in resource:
+            self.assertEqual(table.self_link, self.RESOURCE_URL)
+        else:
+            self.assertEqual(table.self_link, None)
+
         self.assertEqual(table.table_id, self.TABLE_ID)
         self.assertEqual(table.table_type,
                          'TABLE' if 'view' not in resource else 'VIEW')
+
+    def _verifyResourceProperties(self, table, resource):
+
+        self._verifyReadonlyResourceProperties(table, resource)
 
         if 'expirationTime' in resource:
             self.assertEqual(table.expires, self.EXP_TIME)
         else:
             self.assertEqual(table.expires, None)
+
         self.assertEqual(table.description, resource.get('description'))
         self.assertEqual(table.friendly_name, resource.get('friendlyName'))
         self.assertEqual(table.location, resource.get('location'))
+
         if 'view' in resource:
             self.assertEqual(table.view_query, resource['view']['query'])
         else:
             self.assertEqual(table.view_query, None)
 
-        self._verifySchema(table.schema, resource)
+        if 'schema' in resource:
+            self._verifySchema(table.schema, resource)
+        else:
+            self.assertEqual(table.schema, [])
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -315,6 +347,34 @@ class TestTable(unittest2.TestCase):
         table.view_query = 'select * from foo'
         del table.view_query
         self.assertEqual(table.view_query, None)
+
+    def test_from_api_repr_bare(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        RESOURCE = {
+            'id': '%s:%s:%s' % (self.PROJECT, self.DS_NAME, self.TABLE_NAME),
+            'tableReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.TABLE_NAME,
+            },
+            'type': 'TABLE',
+        }
+        klass = self._getTargetClass()
+        table = klass.from_api_repr(RESOURCE, dataset)
+        self.assertEqual(table.name, self.TABLE_NAME)
+        self.assertTrue(table._dataset is dataset)
+        self._verifyResourceProperties(table, RESOURCE)
+
+    def test_from_api_repr_w_properties(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        RESOURCE = self._makeResource()
+        klass = self._getTargetClass()
+        table = klass.from_api_repr(RESOURCE, dataset)
+        self.assertTrue(table._dataset._client is client)
+        self._verifyResourceProperties(table, RESOURCE)
 
     def test__parse_schema_resource_defaults(self):
         client = _Client(self.PROJECT)
