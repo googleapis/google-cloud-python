@@ -376,6 +376,43 @@ class Dataset(object):
         client = self._require_client(client)
         client.connection.api_request(method='DELETE', path=self.path)
 
+    def list_tables(self, max_results=None, page_token=None):
+        """List tables for the project associated with this client.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/tables/list
+
+        :type max_results: int
+        :param max_results: maximum number of tables to return, If not
+                            passed, defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of datasets. If
+                           not passed, the API will return the first page of
+                           datasets.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.pubsub.table.Table`, plus a
+                  "next page token" string:  if not None, indicates that
+                  more tables can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        params = {}
+
+        if max_results is not None:
+            params['maxResults'] = max_results
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/datasets/%s/tables' % (self.project, self.name)
+        connection = self._client.connection
+        resp = connection.api_request(method='GET', path=path,
+                                      query_params=params)
+        tables = [Table.from_api_repr(resource, self)
+                  for resource in resp['tables']]
+        return tables, resp.get('nextPageToken')
+
     def table(self, name, schema=()):
         """Construct a table bound to this dataset.
 

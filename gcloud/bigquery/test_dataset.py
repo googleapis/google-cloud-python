@@ -456,6 +456,93 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_list_tables_defaults(self):
+        from gcloud.bigquery.table import Table
+        conn = _Connection({})
+        TABLE_1 = 'table_one'
+        TABLE_2 = 'table_two'
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        TOKEN = 'TOKEN'
+        DATA = {
+            'nextPageToken': TOKEN,
+            'tables': [
+                {'kind': 'bigquery#table',
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_1),
+                 'tableReference': {'tableId': TABLE_1,
+                                    'datasetId': self.DS_NAME,
+                                    'projectId': self.PROJECT},
+                 'type': 'TABLE'},
+                {'kind': 'bigquery#table',
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_2),
+                 'tableReference': {'tableId': TABLE_2,
+                                    'datasetId': self.DS_NAME,
+                                    'projectId': self.PROJECT},
+                 'type': 'TABLE'},
+            ]
+        }
+
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
+
+        tables, token = dataset.list_tables()
+
+        self.assertEqual(len(tables), len(DATA['tables']))
+        for found, expected in zip(tables, DATA['tables']):
+            self.assertTrue(isinstance(found, Table))
+            self.assertEqual(found.table_id, expected['id'])
+            self.assertEqual(found.table_type, expected['type'])
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_tables_explicit(self):
+        from gcloud.bigquery.table import Table
+        conn = _Connection({})
+        TABLE_1 = 'table_one'
+        TABLE_2 = 'table_two'
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        TOKEN = 'TOKEN'
+        DATA = {
+            'tables': [
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_1),
+                 'tableReference': {'tableId': TABLE_1,
+                                    'datasetId': self.DS_NAME,
+                                    'projectId': self.PROJECT},
+                 'type': 'TABLE'},
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_2),
+                 'tableReference': {'tableId': TABLE_2,
+                                    'datasetId': self.DS_NAME,
+                                    'projectId': self.PROJECT},
+                 'type': 'TABLE'},
+            ]
+        }
+
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
+
+        tables, token = dataset.list_tables(max_results=3, page_token=TOKEN)
+
+        self.assertEqual(len(tables), len(DATA['tables']))
+        for found, expected in zip(tables, DATA['tables']):
+            self.assertTrue(isinstance(found, Table))
+            self.assertEqual(found.table_id, expected['id'])
+            self.assertEqual(found.table_type, expected['type'])
+        self.assertEqual(token, None)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': 3, 'pageToken': TOKEN})
+
     def test_table_wo_schema(self):
         from gcloud.bigquery.table import Table
         conn = _Connection({})
