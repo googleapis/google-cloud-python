@@ -16,7 +16,7 @@ from __future__ import print_function
 import os
 import sys
 
-from gcloud.environment_vars import CREDENTIALS
+from gcloud.environment_vars import CREDENTIALS as TEST_CREDENTIALS
 from gcloud.environment_vars import TESTS_DATASET
 from gcloud.environment_vars import TESTS_PROJECT
 
@@ -24,22 +24,32 @@ from gcloud.environment_vars import TESTS_PROJECT
 # From shell environ. May be None.
 PROJECT_ID = os.getenv(TESTS_PROJECT)
 DATASET_ID = os.getenv(TESTS_DATASET)
-CREDENTIALS = os.getenv(CREDENTIALS)
+CREDENTIALS = os.getenv(TEST_CREDENTIALS)
 
 ENVIRON_ERROR_MSG = """\
 To run the system tests, you need to set some environment variables.
 Please check the CONTRIBUTING guide for instructions.
+
+Missing variables: %s
 """
 
 
-def check_environ(require_datastore=False, require_storage=False,
-                  require_pubsub=False):
-    if require_datastore:
-        if DATASET_ID is None or not os.path.isfile(CREDENTIALS):
-            print(ENVIRON_ERROR_MSG, file=sys.stderr)
-            sys.exit(1)
+def check_environ(*requirements):
 
-    if require_storage or require_pubsub:
-        if PROJECT_ID is None or not os.path.isfile(CREDENTIALS):
-            print(ENVIRON_ERROR_MSG, file=sys.stderr)
-            sys.exit(1)
+    missing = []
+
+    if 'dataset_id' in requirements:
+        if DATASET_ID is None:
+            missing.append(TESTS_DATASET)
+
+    if 'project' in requirements:
+        if PROJECT_ID is None:
+            missing.append(TESTS_PROJECT)
+
+    if 'credentials' in requirements:
+        if CREDENTIALS is None or not os.path.isfile(CREDENTIALS):
+            missing.append(TEST_CREDENTIALS)
+
+    if missing:
+        print(ENVIRON_ERROR_MSG % ', '.join(missing), file=sys.stderr)
+        sys.exit(1)
