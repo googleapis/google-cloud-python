@@ -26,7 +26,7 @@ class TestDataset(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def _makeResource(self):
+    def _setUpConstants(self):
         import datetime
         import pytz
         self.WHEN_TS = 1437767599.006
@@ -35,11 +35,14 @@ class TestDataset(unittest2.TestCase):
         self.ETAG = 'ETAG'
         self.DS_ID = '%s:%s' % (self.PROJECT, self.DS_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
+
+    def _makeResource(self):
+        self._setUpConstants()
         return {
             'creationTime': self.WHEN_TS * 1000,
             'datasetReference':
                 {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
-            'etag': 'ETAG',
+            'etag': self.ETAG,
             'id': self.DS_ID,
             'lastModifiedTime': self.WHEN_TS * 1000,
             'location': 'US',
@@ -47,11 +50,23 @@ class TestDataset(unittest2.TestCase):
         }
 
     def _verifyResourceProperties(self, dataset, resource):
-        self.assertEqual(dataset.created, self.WHEN)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
-        self.assertEqual(dataset.etag, self.ETAG)
-        self.assertEqual(dataset.modified, self.WHEN)
-        self.assertEqual(dataset.self_link, self.RESOURCE_URL)
+        if 'creationTime' in resource:
+            self.assertEqual(dataset.created, self.WHEN)
+        else:
+            self.assertEqual(dataset.created, None)
+        if 'etag' in resource:
+            self.assertEqual(dataset.etag, self.ETAG)
+        else:
+            self.assertEqual(dataset.etag, None)
+        if 'lastModifiedTime' in resource:
+            self.assertEqual(dataset.modified, self.WHEN)
+        else:
+            self.assertEqual(dataset.modified, None)
+        if 'selfLink' in resource:
+            self.assertEqual(dataset.self_link, self.RESOURCE_URL)
+        else:
+            self.assertEqual(dataset.self_link, None)
 
         self.assertEqual(dataset.default_table_expiration_ms,
                          resource.get('defaultTableExpirationMs'))
@@ -127,6 +142,34 @@ class TestDataset(unittest2.TestCase):
         dataset = self._makeOne(self.DS_NAME, client)
         dataset.location = 'LOCATION'
         self.assertEqual(dataset.location, 'LOCATION')
+
+    def test_from_api_repr_bare(self):
+        self._setUpConstants()
+        CLIENT = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'datasetReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+            }
+        }
+        klass = self._getTargetClass()
+        dataset = klass.from_api_repr(RESOURCE, client=CLIENT)
+        self.assertTrue(dataset._client is CLIENT)
+        self._verifyResourceProperties(dataset, RESOURCE)
+
+    def test_from_api_repr_w_properties(self):
+        import datetime
+        import pytz
+        self.WHEN_TS = 1437767599.006
+        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
+            tzinfo=pytz.UTC)
+        CLIENT = _Client(self.PROJECT)
+        RESOURCE = self._makeResource()
+        klass = self._getTargetClass()
+        dataset = klass.from_api_repr(RESOURCE, client=CLIENT)
+        self.assertTrue(dataset._client is CLIENT)
+        self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/datasets' % self.PROJECT

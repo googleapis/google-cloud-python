@@ -190,6 +190,28 @@ class Dataset(object):
             raise ValueError("Pass a string, or None")
         self._properties['location'] = value
 
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a dataset given its API representation
+
+        :type resource: dict
+        :param resource: dataset resource representation returned from the API
+
+        :type client: :class:`gcloud.pubsub.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the dataset.
+
+        :rtype: :class:`gcloud.pubsub.dataset.Topic`
+        :returns: Topic parsed from ``resource``.
+        :raises: :class:`ValueError` if ``client`` is not ``None`` and the
+                 project from the resource does not agree with the project
+                 from the client.
+        """
+        name = resource['datasetReference']['datasetId']
+        dataset = cls(name, client=client)
+        dataset._properties = resource.copy()
+        return dataset
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 
