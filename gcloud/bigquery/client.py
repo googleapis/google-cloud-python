@@ -48,7 +48,7 @@ class Client(JSONClient):
         """List datasets for the project associated with this client.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/datasets/list
+        https://cloud.google.com/bigquery/reference/rest/v1beta2/projects/datasets/list
 
         :type include_all: boolean
         :param include_all: Should results include hidden datasets?
@@ -63,7 +63,7 @@ class Client(JSONClient):
                            datasets.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.pubsub.dataset.Dataset`, plus a
+        :returns: list of :class:`gcloud.bigquery.dataset.Dataset`, plus a
                   "next page token" string:  if not None, indicates that
                   more datasets can be retrieved with another call (pass that
                   value as ``page_token``).

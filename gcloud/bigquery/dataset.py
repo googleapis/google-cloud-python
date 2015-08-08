@@ -380,7 +380,7 @@ class Dataset(object):
         """List tables for the project associated with this client.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/tables/list
+        https://cloud.google.com/bigquery/reference/rest/v1beta2/projects/tables/list
 
         :type max_results: int
         :param max_results: maximum number of tables to return, If not
@@ -392,7 +392,7 @@ class Dataset(object):
                            datasets.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.pubsub.table.Table`, plus a
+        :returns: list of :class:`gcloud.bigquery.table.Table`, plus a
                   "next page token" string:  if not None, indicates that
                   more tables can be retrieved with another call (pass that
                   value as ``page_token``).
