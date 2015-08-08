@@ -17,9 +17,8 @@
 import base64
 import datetime
 
-import pytz
-
 from gcloud._helpers import _RFC3339_MICROS
+from gcloud._helpers import UTC
 
 
 class Message(object):
@@ -66,7 +65,7 @@ class Message(object):
         if stamp is None:
             raise ValueError('No timestamp')
         return datetime.datetime.strptime(stamp, _RFC3339_MICROS).replace(
-            tzinfo=pytz.UTC)
+            tzinfo=UTC)
 
     @classmethod
     def from_api_repr(cls, api_repr):

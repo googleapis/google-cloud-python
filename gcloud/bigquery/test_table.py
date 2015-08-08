@@ -76,10 +76,11 @@ class TestTable(unittest2.TestCase):
 
     def _makeResource(self):
         import datetime
-        import pytz
+        from gcloud._helpers import UTC
+
         self.WHEN_TS = 1437767599.006
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
-            tzinfo=pytz.UTC)
+            tzinfo=UTC)
         self.ETAG = 'ETAG'
         self.TABLE_ID = '%s:%s:%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -206,10 +207,11 @@ class TestTable(unittest2.TestCase):
 
     def test_props_set_by_server(self):
         import datetime
-        import pytz
+        from gcloud._helpers import UTC
         from gcloud.bigquery._helpers import _millis
-        CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=pytz.utc)
-        MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=pytz.utc)
+
+        CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
+        MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
         TABLE_ID = '%s:%s:%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         URL = 'http://example.com/projects/%s/datasets/%s/tables/%s' % (
@@ -258,8 +260,9 @@ class TestTable(unittest2.TestCase):
 
     def test_expires_setter(self):
         import datetime
-        import pytz
-        WHEN = datetime.datetime(2015, 7, 28, 16, 39, tzinfo=pytz.utc)
+        from gcloud._helpers import UTC
+
+        WHEN = datetime.datetime(2015, 7, 28, 16, 39, tzinfo=UTC)
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
         table = self._makeOne(self.TABLE_NAME, dataset)
@@ -443,9 +446,10 @@ class TestTable(unittest2.TestCase):
 
     def test_create_w_alternate_client(self):
         import datetime
-        import pytz
+        from gcloud._helpers import UTC
         from gcloud.bigquery.table import SchemaField
         from gcloud.bigquery._helpers import _millis
+
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         DESCRIPTION = 'DESCRIPTION'
         TITLE = 'TITLE'
@@ -454,7 +458,7 @@ class TestTable(unittest2.TestCase):
         RESOURCE['description'] = DESCRIPTION
         RESOURCE['friendlyName'] = TITLE
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
-                                          tzinfo=pytz.utc)
+                                          tzinfo=UTC)
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
         RESOURCE['view'] = {}
         RESOURCE['view']['query'] = QUERY
@@ -642,9 +646,10 @@ class TestTable(unittest2.TestCase):
 
     def test_patch_w_alternate_client(self):
         import datetime
-        import pytz
+        from gcloud._helpers import UTC
         from gcloud.bigquery._helpers import _millis
         from gcloud.bigquery.table import SchemaField
+
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         QUERY = 'select fullname, age from person_ages'
@@ -654,7 +659,7 @@ class TestTable(unittest2.TestCase):
         RESOURCE['type'] = 'VIEW'
         RESOURCE['location'] = LOCATION
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
-                                          tzinfo=pytz.utc)
+                                          tzinfo=UTC)
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
@@ -750,9 +755,10 @@ class TestTable(unittest2.TestCase):
 
     def test_update_w_alternate_client(self):
         import datetime
-        import pytz
+        from gcloud._helpers import UTC
         from gcloud.bigquery._helpers import _millis
         from gcloud.bigquery.table import SchemaField
+
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         DEF_TABLE_EXP = 12345
@@ -762,7 +768,7 @@ class TestTable(unittest2.TestCase):
         RESOURCE['defaultTableExpirationMs'] = 12345
         RESOURCE['location'] = LOCATION
         self.EXP_TIME = datetime.datetime(2015, 8, 1, 23, 59, 59,
-                                          tzinfo=pytz.utc)
+                                          tzinfo=UTC)
         RESOURCE['expirationTime'] = _millis(self.EXP_TIME)
         RESOURCE['view'] = {'query': QUERY}
         RESOURCE['type'] = 'VIEW'
@@ -837,14 +843,15 @@ class TestTable(unittest2.TestCase):
 
     def test_fetch_data_w_bound_client(self):
         import datetime
-        import pytz
+        from gcloud._helpers import UTC
         from gcloud.bigquery.table import SchemaField
         from gcloud.bigquery._helpers import _prop_from_datetime
+
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
-            tzinfo=pytz.UTC)
+            tzinfo=UTC)
         WHEN_1 = WHEN + datetime.timedelta(seconds=1)
         WHEN_2 = WHEN + datetime.timedelta(seconds=2)
         ROWS = 1234
@@ -1068,12 +1075,13 @@ class TestTable(unittest2.TestCase):
 
     def test_insert_data_w_bound_client(self):
         import datetime
-        import pytz
+        from gcloud._helpers import UTC
         from gcloud.bigquery._helpers import _prop_from_datetime
         from gcloud.bigquery.table import SchemaField
+
         WHEN_TS = 1437767599.006
         WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
-            tzinfo=pytz.UTC)
+            tzinfo=UTC)
         PATH = 'projects/%s/datasets/%s/tables/%s/insertAll' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         conn = _Connection({})

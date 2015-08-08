@@ -28,10 +28,11 @@ class TestDataset(unittest2.TestCase):
 
     def _makeResource(self):
         import datetime
-        import pytz
+        from gcloud._helpers import UTC
+
         self.WHEN_TS = 1437767599.006
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
-            tzinfo=pytz.UTC)
+            tzinfo=UTC)
         self.ETAG = 'ETAG'
         self.DS_ID = '%s:%s' % (self.PROJECT, self.DS_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'

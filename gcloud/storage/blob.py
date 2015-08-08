@@ -22,19 +22,19 @@ import mimetypes
 import os
 import time
 
-import pytz
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
 from apitools.base.py import http_wrapper
 from apitools.base.py import transfer
 
+from gcloud._helpers import _RFC3339_MICROS
+from gcloud._helpers import UTC
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
-from gcloud._helpers import _RFC3339_MICROS
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
@@ -781,7 +781,7 @@ class Blob(_PropertyMixin):
         value = self._properties.get('timeDeleted')
         if value is not None:
             naive = datetime.datetime.strptime(value, _RFC3339_MICROS)
-            return naive.replace(tzinfo=pytz.utc)
+            return naive.replace(tzinfo=UTC)
 
     @property
     def updated(self):
@@ -796,7 +796,7 @@ class Blob(_PropertyMixin):
         value = self._properties.get('updated')
         if value is not None:
             naive = datetime.datetime.strptime(value, _RFC3339_MICROS)
-            return naive.replace(tzinfo=pytz.utc)
+            return naive.replace(tzinfo=UTC)
 
 
 class _UploadConfig(object):

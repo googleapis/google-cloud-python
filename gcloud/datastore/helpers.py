@@ -21,9 +21,9 @@ import calendar
 import datetime
 
 from google.protobuf.internal.type_checkers import Int64ValueChecker
-import pytz
 import six
 
+from gcloud._helpers import UTC
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
@@ -185,9 +185,9 @@ def _pb_attr_value(val):
         # If the datetime is naive (no timezone), consider that it was
         # intended to be UTC and replace the tzinfo to that effect.
         if not val.tzinfo:
-            val = val.replace(tzinfo=pytz.utc)
+            val = val.replace(tzinfo=UTC)
         # Regardless of what timezone is on the value, convert it to UTC.
-        val = val.astimezone(pytz.utc)
+        val = val.astimezone(UTC)
         # Convert the datetime to a microsecond timestamp.
         value = int(calendar.timegm(val.timetuple()) * 1e6) + val.microsecond
     elif isinstance(val, Key):
@@ -233,7 +233,7 @@ def _get_value_from_value_pb(value_pb):
         microseconds = value_pb.timestamp_microseconds_value
         naive = (datetime.datetime.utcfromtimestamp(0) +
                  datetime.timedelta(microseconds=microseconds))
-        result = naive.replace(tzinfo=pytz.utc)
+        result = naive.replace(tzinfo=UTC)
 
     elif value_pb.HasField('key_value'):
         result = key_from_protobuf(value_pb.key_value)

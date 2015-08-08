@@ -17,7 +17,6 @@ REQUIREMENTS = [
     'oauth2client >= 1.4.6',
     'protobuf == 3.0.0-alpha-1',
     'pycrypto',
-    'pytz',
     'six',
 ]
 

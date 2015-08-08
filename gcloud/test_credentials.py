@@ -512,17 +512,21 @@ class Test__get_expiration_seconds(unittest2.TestCase):
 
     def test_w_utc_datetime(self):
         import datetime
-        import pytz
+        from gcloud._helpers import UTC
 
-        expiration_utc = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, pytz.utc)
+        expiration_utc = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, UTC)
         utc_seconds = self._utc_seconds(expiration_utc)
         self.assertEqual(self._callFUT(expiration_utc), utc_seconds)
 
     def test_w_other_zone_datetime(self):
         import datetime
-        import pytz
+        from gcloud._helpers import _UTC
 
-        zone = pytz.timezone('CET')
+        class CET(_UTC):
+            _tzname = 'CET'
+            _utcoffset = datetime.timedelta(hours=1)
+
+        zone = CET()
         expiration_other = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, zone)
         utc_seconds = self._utc_seconds(expiration_other)
         cet_seconds = utc_seconds - (60 * 60)  # CET one hour earlier than UTC

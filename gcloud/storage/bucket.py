@@ -17,9 +17,10 @@
 import datetime
 import copy
 
-import pytz
 import six
 
+from gcloud._helpers import _RFC3339_MICROS
+from gcloud._helpers import UTC
 from gcloud.exceptions import NotFound
 from gcloud.iterator import Iterator
 from gcloud.storage._helpers import _PropertyMixin
@@ -27,7 +28,6 @@ from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import BucketACL
 from gcloud.storage.acl import DefaultObjectACL
 from gcloud.storage.blob import Blob
-from gcloud._helpers import _RFC3339_MICROS
 
 
 class _BlobIterator(Iterator):
@@ -659,7 +659,7 @@ class Bucket(_PropertyMixin):
         value = self._properties.get('timeCreated')
         if value is not None:
             naive = datetime.datetime.strptime(value, _RFC3339_MICROS)
-            return naive.replace(tzinfo=pytz.utc)
+            return naive.replace(tzinfo=UTC)
 
     @property
     def versioning_enabled(self):

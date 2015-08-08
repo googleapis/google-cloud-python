@@ -27,7 +27,6 @@ from oauth2client import client
 from oauth2client.client import _get_application_default_credential_from_file
 from oauth2client import crypt
 from oauth2client import service_account
-import pytz
 
 try:
     from google.appengine.api import app_identity
@@ -39,6 +38,8 @@ try:
 except ImportError:
     class _GAECreds(object):
         """Dummy class if not in App Engine environment."""
+
+from gcloud._helpers import UTC
 
 
 def get_credentials():
@@ -274,7 +275,7 @@ def _get_expiration_seconds(expiration):
     """
     # If it's a timedelta, add it to `now` in UTC.
     if isinstance(expiration, datetime.timedelta):
-        now = _utcnow().replace(tzinfo=pytz.utc)
+        now = _utcnow().replace(tzinfo=UTC)
         expiration = now + expiration
 
     # If it's a datetime, convert to a timestamp.
@@ -282,9 +283,9 @@ def _get_expiration_seconds(expiration):
         # Make sure the timezone on the value is UTC
         # (either by converting or replacing the value).
         if expiration.tzinfo:
-            expiration = expiration.astimezone(pytz.utc)
+            expiration = expiration.astimezone(UTC)
         else:
-            expiration = expiration.replace(tzinfo=pytz.utc)
+            expiration = expiration.replace(tzinfo=UTC)
 
         # Turn the datetime into a timestamp (seconds, not microseconds).
         expiration = int(calendar.timegm(expiration.timetuple()))
