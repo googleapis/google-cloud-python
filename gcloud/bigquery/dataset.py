@@ -38,7 +38,7 @@ class AccessGrant(object):
         self.entity_type = entity_type
         self.entity_id = entity_id
 
-    def __repr__(self):  # pragma: NO COVER
+    def __repr__(self):
         return '<AccessGrant: role=%s, %s=%s>' % (
             self.role, self.entity_type, self.entity_id)
 
