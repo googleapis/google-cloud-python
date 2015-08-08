@@ -15,7 +15,7 @@
 import unittest2
 
 
-class TestAccessRole(unittest2.TestCase):
+class TestAccessGrant(unittest2.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigquery.dataset import AccessGrant
