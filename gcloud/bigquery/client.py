@@ -51,7 +51,7 @@ class Client(JSONClient):
         https://cloud.google.com/bigquery/reference/rest/v1beta2/projects/datasets/list
 
         :type include_all: boolean
-        :param include_all: Should results include hidden datasets?
+        :param include_all: True if results include hidden datasets.
 
         :type max_results: int
         :param max_results: maximum number of datasets to return, If not
