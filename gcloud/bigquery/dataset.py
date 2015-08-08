@@ -91,7 +91,7 @@ class Dataset(object):
         :rtype: list of :class:`AccessGrant`
         :returns: roles granted to entities for this dataset
         """
-        return list(self._access_roles)
+        return list(self._access_grants)
 
     @access_grants.setter
     def access_grants(self, value):
@@ -105,7 +105,7 @@ class Dataset(object):
         """
         if not all(isinstance(field, AccessGrant) for field in value):
             raise ValueError('Values must be AccessGrant instances')
-        self._access_roles = tuple(value)
+        self._access_grants = tuple(value)
 
     @property
     def created(self):
