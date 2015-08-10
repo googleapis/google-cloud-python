@@ -380,7 +380,7 @@ class Dataset(object):
         """List tables for the project associated with this client.
 
         See:
-        https://cloud.google.com/bigquery/reference/rest/v1beta2/projects/tables/list
+        https://cloud.google.com/bigquery/docs/reference/v2/tables/list
 
         :type max_results: int
         :param max_results: maximum number of tables to return, If not

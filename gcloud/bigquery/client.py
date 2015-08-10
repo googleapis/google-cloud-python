@@ -48,7 +48,7 @@ class Client(JSONClient):
         """List datasets for the project associated with this client.
 
         See:
-        https://cloud.google.com/bigquery/reference/rest/v1beta2/projects/datasets/list
+        https://cloud.google.com/bigquery/docs/reference/v2/datasets/list
 
         :type include_all: boolean
         :param include_all: True if results include hidden datasets.
