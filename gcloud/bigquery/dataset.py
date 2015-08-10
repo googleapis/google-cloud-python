@@ -204,6 +204,10 @@ class Dataset(object):
         :rtype: :class:`gcloud.bigquery.dataset.Dataset`
         :returns: Dataset parsed from ``resource``.
         """
+        if ('datasetReference' not in resource or
+                'datasetId' not in resource['datasetReference']):
+            raise KeyError('Resource lacks required identity information:'
+                           '["datasetReference"]["datasetId"]')
         name = resource['datasetReference']['datasetId']
         dataset = cls(name, client=client)
         dataset._set_properties(resource)

@@ -348,6 +348,15 @@ class TestTable(unittest2.TestCase):
         del table.view_query
         self.assertEqual(table.view_query, None)
 
+    def test_from_api_repr_missing_identity(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        RESOURCE = {}
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, dataset)
+
     def test_from_api_repr_bare(self):
         self._setUpConstants()
         client = _Client(self.PROJECT)

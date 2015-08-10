@@ -311,6 +311,10 @@ class Table(object):
         :rtype: :class:`gcloud.bigquery.table.Table`
         :returns: Table parsed from ``resource``.
         """
+        if ('tableReference' not in resource or
+                'tableId' not in resource['tableReference']):
+            raise KeyError('Resource lacks required identity information:'
+                           '["tableReference"]["tableId"]')
         table_name = resource['tableReference']['tableId']
         table = cls(table_name, dataset=dataset)
         table._set_properties(resource)

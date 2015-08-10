@@ -143,6 +143,14 @@ class TestDataset(unittest2.TestCase):
         dataset.location = 'LOCATION'
         self.assertEqual(dataset.location, 'LOCATION')
 
+    def test_from_api_repr_missing_identity(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {}
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
     def test_from_api_repr_bare(self):
         self._setUpConstants()
         client = _Client(self.PROJECT)
