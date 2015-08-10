@@ -208,16 +208,42 @@ def _determine_default_project(project=None):
     return project
 
 
+def _manual_total_seconds(offset):
+    """Backport of timedelta.total_seconds() from python 2.7+.
+
+    :type offset: :class:`datetime.timedelta`
+    :param offset: The value to convert into seconds.
+
+    :rtype: float
+    :returns: The time offset, converted to total seconds.
+    """
+    seconds = offset.days * 24 * 60 * 60 + offset.seconds
+    microseconds = seconds * 10**6 + offset.microseconds
+    return microseconds / (10**6 * 1.0)
+
+
+def _total_seconds_from_type(offset):
+    """Basic wrapper around timedelta.total_seconds().
+
+    :type offset: :class:`datetime.timedelta`
+    :param offset: The value to convert into seconds.
+
+    :rtype: float
+    :returns: The time offset, converted to total seconds.
+    """
+    return offset.total_seconds()
+
+
 def _millis(when):
     """Convert a zone-aware datetime to integer milliseconds.
 
-    :type when: ``datetime.datetime``
+    :type when: :class:`datetime.datetime`
     :param when: the datetime to convert
 
     :rtype: integer
     :returns: milliseconds since epoch for ``when``
     """
-    return int(_total_seconds(when - _EPOCH) * 1000)
+    return int(_TOTAL_SECONDS(when - _EPOCH) * 1000)
 
 
 try:
@@ -230,11 +256,6 @@ _EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=UTC)
 
 
 if sys.version_info[:2] < (2, 7):
-    def _total_seconds(offset):  # pragma: NO COVER
-        """Backport of timedelta.total_seconds() from python 2.7+."""
-        seconds = offset.days * 24 * 60 * 60 + offset.seconds
-        microseconds = seconds * 10**6 + offset.microseconds
-        return microseconds / (10**6 * 1.0)
+    _TOTAL_SECONDS = _manual_total_seconds  # pragma: NO COVER
 else:
-    def _total_seconds(offset):
-        return offset.total_seconds()
+    _TOTAL_SECONDS = _total_seconds_from_type

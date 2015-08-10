@@ -251,6 +251,41 @@ class Test__determine_default_project(unittest2.TestCase):
         self.assertEqual(callers, ['prod_mock'])
 
 
+class Test__manual_total_seconds(unittest2.TestCase):
+
+    def _callFUT(self, value):
+        from gcloud._helpers import _manual_total_seconds
+        return _manual_total_seconds(value)
+
+    def test_it(self):
+        import datetime
+
+        delta = datetime.timedelta(minutes=1, seconds=1,
+                                   microseconds=10**(6 - 1))
+        result = self._callFUT(delta)
+        self.assertEqual(result, 61.1)
+
+
+class Test__total_seconds_from_type(unittest2.TestCase):
+
+    def _callFUT(self, value):
+        from gcloud._helpers import _total_seconds_from_type
+        return _total_seconds_from_type(value)
+
+    def test_it(self):
+        class FakeDelta(object):
+
+            def __init__(self, total_seconds):
+                self._total_seconds = total_seconds
+
+            def total_seconds(self):
+                return self._total_seconds
+
+        value = object()
+        fake_delta = FakeDelta(value)
+        self.assertEqual(self._callFUT(fake_delta), value)
+
+
 class Test__millis(unittest2.TestCase):
 
     def _callFUT(self, value):
