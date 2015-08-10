@@ -15,6 +15,8 @@
 
 This module is not part of the public API surface of `gcloud`.
 """
+
+import datetime
 import os
 import socket
 
@@ -73,6 +75,41 @@ class _LocalStack(Local):
         """
         if len(self._stack) > 0:
             return self._stack[-1]
+
+
+class _UTC(datetime.tzinfo):
+    """Basic UTC implementation.
+
+    Implementing a small surface area to avoid depending on ``pytz``.
+    """
+
+    _dst = datetime.timedelta(0)
+    _tzname = 'UTC'
+    _utcoffset = _dst
+
+    def dst(self, dt):  # pylint: disable=unused-argument
+        """Daylight savings time offset."""
+        return self._dst
+
+    def fromutc(self, dt):
+        """Convert a timestamp from (naive) UTC to this timezone."""
+        if dt.tzinfo is None:
+            return dt.replace(tzinfo=self)
+        return super(_UTC, self).fromutc(dt)
+
+    def tzname(self, dt):  # pylint: disable=unused-argument
+        """Get the name of this timezone."""
+        return self._tzname
+
+    def utcoffset(self, dt):  # pylint: disable=unused-argument
+        """UTC offset of this timezone."""
+        return self._utcoffset
+
+    def __repr__(self):
+        return '<%s>' % (self._tzname,)
+
+    def __str__(self):
+        return self._tzname
 
 
 def _ensure_tuple_or_list(arg_name, tuple_or_list):
@@ -168,3 +205,9 @@ def _determine_default_project(project=None):
         project = _get_production_project()
 
     return project
+
+
+try:
+    from pytz import UTC  # pylint: disable=unused-import
+except ImportError:
+    UTC = _UTC()  # Singleton instance to be used throughout.

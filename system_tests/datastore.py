@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import datetime
-import pytz
 import unittest2
 
+from gcloud._helpers import UTC
 from gcloud import datastore
 from gcloud.datastore import client
 from gcloud.environment_vars import TESTS_DATASET
@@ -63,7 +63,7 @@ class TestDatastoreSave(TestDatastore):
         post_content = post_content or {
             'title': u'How to make the perfect pizza in your grill',
             'tags': [u'pizza', u'grill'],
-            'publishedAt': datetime.datetime(2001, 1, 1, tzinfo=pytz.utc),
+            'publishedAt': datetime.datetime(2001, 1, 1, tzinfo=UTC),
             'author': u'Silvano',
             'isDraft': False,
             'wordCount': 400,

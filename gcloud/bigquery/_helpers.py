@@ -18,9 +18,10 @@
 import datetime
 import sys
 
-import pytz
+from gcloud._helpers import UTC
 
-_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.utc)
+
+_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=UTC)
 
 
 def _millis(when):
@@ -62,7 +63,7 @@ def _prop_from_datetime(value):
     if value is not None:
         if value.tzinfo is None:
             # Assume UTC
-            value = value.replace(tzinfo=pytz.utc)
+            value = value.replace(tzinfo=UTC)
         # back-end wants timestamps as milliseconds since the epoch
         return _millis(value)
 

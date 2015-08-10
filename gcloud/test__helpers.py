@@ -43,6 +43,55 @@ class Test__LocalStack(unittest2.TestCase):
         self.assertEqual(list(batches), [])
 
 
+class Test__UTC(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud._helpers import _UTC
+        return _UTC
+
+    def _makeOne(self):
+        return self._getTargetClass()()
+
+    def test_module_property(self):
+        from gcloud import _helpers as MUT
+
+        klass = self._getTargetClass()
+        self.assertTrue(isinstance(MUT.UTC, klass))
+
+    def test_dst(self):
+        import datetime
+
+        tz = self._makeOne()
+        self.assertEqual(tz.dst(None), datetime.timedelta(0))
+
+    def test_fromutc(self):
+        import datetime
+
+        naive_epoch = datetime.datetime.utcfromtimestamp(0)
+        self.assertEqual(naive_epoch.tzinfo, None)
+        tz = self._makeOne()
+        epoch = tz.fromutc(naive_epoch)
+        self.assertEqual(epoch.tzinfo, tz)
+
+    def test_tzname(self):
+        tz = self._makeOne()
+        self.assertEqual(tz.tzname(None), 'UTC')
+
+    def test_utcoffset(self):
+        import datetime
+
+        tz = self._makeOne()
+        self.assertEqual(tz.utcoffset(None), datetime.timedelta(0))
+
+    def test___repr__(self):
+        tz = self._makeOne()
+        self.assertEqual(repr(tz), '<UTC>')
+
+    def test___str__(self):
+        tz = self._makeOne()
+        self.assertEqual(str(tz), 'UTC')
+
+
 class Test__ensure_tuple_or_list(unittest2.TestCase):
 
     def _callFUT(self, arg_name, tuple_or_list):
