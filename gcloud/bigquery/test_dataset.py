@@ -26,7 +26,7 @@ class TestDataset(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def _makeResource(self):
+    def _setUpConstants(self):
         import datetime
         from gcloud._helpers import UTC
 
@@ -36,11 +36,14 @@ class TestDataset(unittest2.TestCase):
         self.ETAG = 'ETAG'
         self.DS_ID = '%s:%s' % (self.PROJECT, self.DS_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
+
+    def _makeResource(self):
+        self._setUpConstants()
         return {
             'creationTime': self.WHEN_TS * 1000,
             'datasetReference':
                 {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
-            'etag': 'ETAG',
+            'etag': self.ETAG,
             'id': self.DS_ID,
             'lastModifiedTime': self.WHEN_TS * 1000,
             'location': 'US',
@@ -48,11 +51,23 @@ class TestDataset(unittest2.TestCase):
         }
 
     def _verifyResourceProperties(self, dataset, resource):
-        self.assertEqual(dataset.created, self.WHEN)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
-        self.assertEqual(dataset.etag, self.ETAG)
-        self.assertEqual(dataset.modified, self.WHEN)
-        self.assertEqual(dataset.self_link, self.RESOURCE_URL)
+        if 'creationTime' in resource:
+            self.assertEqual(dataset.created, self.WHEN)
+        else:
+            self.assertEqual(dataset.created, None)
+        if 'etag' in resource:
+            self.assertEqual(dataset.etag, self.ETAG)
+        else:
+            self.assertEqual(dataset.etag, None)
+        if 'lastModifiedTime' in resource:
+            self.assertEqual(dataset.modified, self.WHEN)
+        else:
+            self.assertEqual(dataset.modified, None)
+        if 'selfLink' in resource:
+            self.assertEqual(dataset.self_link, self.RESOURCE_URL)
+        else:
+            self.assertEqual(dataset.self_link, None)
 
         self.assertEqual(dataset.default_table_expiration_ms,
                          resource.get('defaultTableExpirationMs'))
@@ -129,12 +144,43 @@ class TestDataset(unittest2.TestCase):
         dataset.location = 'LOCATION'
         self.assertEqual(dataset.location, 'LOCATION')
 
+    def test_from_api_repr_missing_identity(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {}
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_bare(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'datasetReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+            }
+        }
+        klass = self._getTargetClass()
+        dataset = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(dataset._client is client)
+        self._verifyResourceProperties(dataset, RESOURCE)
+
+    def test_from_api_repr_w_properties(self):
+        client = _Client(self.PROJECT)
+        RESOURCE = self._makeResource()
+        klass = self._getTargetClass()
+        dataset = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(dataset._client is client)
+        self._verifyResourceProperties(dataset, RESOURCE)
+
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/datasets' % self.PROJECT
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.create()
 
@@ -189,8 +235,8 @@ class TestDataset(unittest2.TestCase):
         del RESOURCE['lastModifiedTime']
         self.WHEN = None
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.create()
 
@@ -208,8 +254,8 @@ class TestDataset(unittest2.TestCase):
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
         conn = _Connection()
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         self.assertFalse(dataset.exists())
 
@@ -240,8 +286,8 @@ class TestDataset(unittest2.TestCase):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.reload()
 
@@ -272,8 +318,8 @@ class TestDataset(unittest2.TestCase):
     def test_patch_w_invalid_expiration(self):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         with self.assertRaises(ValueError):
             dataset.patch(default_table_expiration_ms='BOGUS')
@@ -286,8 +332,8 @@ class TestDataset(unittest2.TestCase):
         RESOURCE['description'] = DESCRIPTION
         RESOURCE['friendlyName'] = TITLE
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.patch(description=DESCRIPTION, friendly_name=TITLE)
 
@@ -339,8 +385,8 @@ class TestDataset(unittest2.TestCase):
         RESOURCE['description'] = DESCRIPTION
         RESOURCE['friendlyName'] = TITLE
         conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
         dataset.description = DESCRIPTION
         dataset.friendly_name = TITLE
 
@@ -393,8 +439,8 @@ class TestDataset(unittest2.TestCase):
     def test_delete_w_bound_client(self):
         PATH = 'projects/%s/datasets/%s' % (self.PROJECT, self.DS_NAME)
         conn = _Connection({})
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
 
         dataset.delete()
 
@@ -419,11 +465,98 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_list_tables_defaults(self):
+        from gcloud.bigquery.table import Table
+        conn = _Connection({})
+        TABLE_1 = 'table_one'
+        TABLE_2 = 'table_two'
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        TOKEN = 'TOKEN'
+        DATA = {
+            'nextPageToken': TOKEN,
+            'tables': [
+                {'kind': 'bigquery#table',
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_1),
+                 'tableReference': {'tableId': TABLE_1,
+                                    'datasetId': self.DS_NAME,
+                                    'projectId': self.PROJECT},
+                 'type': 'TABLE'},
+                {'kind': 'bigquery#table',
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_2),
+                 'tableReference': {'tableId': TABLE_2,
+                                    'datasetId': self.DS_NAME,
+                                    'projectId': self.PROJECT},
+                 'type': 'TABLE'},
+            ]
+        }
+
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
+
+        tables, token = dataset.list_tables()
+
+        self.assertEqual(len(tables), len(DATA['tables']))
+        for found, expected in zip(tables, DATA['tables']):
+            self.assertTrue(isinstance(found, Table))
+            self.assertEqual(found.table_id, expected['id'])
+            self.assertEqual(found.table_type, expected['type'])
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_tables_explicit(self):
+        from gcloud.bigquery.table import Table
+        conn = _Connection({})
+        TABLE_1 = 'table_one'
+        TABLE_2 = 'table_two'
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        TOKEN = 'TOKEN'
+        DATA = {
+            'tables': [
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_1),
+                 'tableReference': {'tableId': TABLE_1,
+                                    'datasetId': self.DS_NAME,
+                                    'projectId': self.PROJECT},
+                 'type': 'TABLE'},
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s.%s' % (self.PROJECT, self.DS_NAME, TABLE_2),
+                 'tableReference': {'tableId': TABLE_2,
+                                    'datasetId': self.DS_NAME,
+                                    'projectId': self.PROJECT},
+                 'type': 'TABLE'},
+            ]
+        }
+
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
+
+        tables, token = dataset.list_tables(max_results=3, page_token=TOKEN)
+
+        self.assertEqual(len(tables), len(DATA['tables']))
+        for found, expected in zip(tables, DATA['tables']):
+            self.assertTrue(isinstance(found, Table))
+            self.assertEqual(found.table_id, expected['id'])
+            self.assertEqual(found.table_type, expected['type'])
+        self.assertEqual(token, None)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': 3, 'pageToken': TOKEN})
+
     def test_table_wo_schema(self):
         from gcloud.bigquery.table import Table
         conn = _Connection({})
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
         table = dataset.table('table_name')
         self.assertTrue(isinstance(table, Table))
         self.assertEqual(table.name, 'table_name')
@@ -434,8 +567,8 @@ class TestDataset(unittest2.TestCase):
         from gcloud.bigquery.table import SchemaField
         from gcloud.bigquery.table import Table
         conn = _Connection({})
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        dataset = self._makeOne(self.DS_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = dataset.table('table_name', schema=[full_name, age])

@@ -298,6 +298,28 @@ class Table(object):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
 
+    @classmethod
+    def from_api_repr(cls, resource, dataset):
+        """Factory:  construct a table given its API representation
+
+        :type resource: dict
+        :param resource: table resource representation returned from the API
+
+        :type dataset: :class:`gcloud.bigquery.dataset.Dataset`
+        :param dataset: The dataset containing the table.
+
+        :rtype: :class:`gcloud.bigquery.table.Table`
+        :returns: Table parsed from ``resource``.
+        """
+        if ('tableReference' not in resource or
+                'tableId' not in resource['tableReference']):
+            raise KeyError('Resource lacks required identity information:'
+                           '["tableReference"]["tableId"]')
+        table_name = resource['tableReference']['tableId']
+        table = cls(table_name, dataset=dataset)
+        table._set_properties(resource)
+        return table
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 
@@ -344,7 +366,7 @@ class Table(object):
         """
         self._properties.clear()
         cleaned = api_response.copy()
-        schema = cleaned.pop('schema', {})
+        schema = cleaned.pop('schema', {'fields': ()})
         self.schema = self._parse_schema_resource(schema)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = float(cleaned['creationTime'])

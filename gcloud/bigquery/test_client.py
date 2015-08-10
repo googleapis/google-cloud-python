@@ -46,6 +46,88 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(dataset.name, DATASET)
         self.assertTrue(dataset._client is client)
 
+    def test_list_datasets_defaults(self):
+        from gcloud.bigquery.dataset import Dataset
+        PROJECT = 'PROJECT'
+        DATASET_1 = 'dataset_one'
+        DATASET_2 = 'dataset_two'
+        PATH = 'projects/%s/datasets' % PROJECT
+        TOKEN = 'TOKEN'
+        DATA = {
+            'nextPageToken': TOKEN,
+            'datasets': [
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s' % (PROJECT, DATASET_1),
+                 'datasetReference': {'datasetId': DATASET_1,
+                                      'projectId': PROJECT},
+                 'friendlyName': None},
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s' % (PROJECT, DATASET_2),
+                 'datasetReference': {'datasetId': DATASET_2,
+                                      'projectId': PROJECT},
+                 'friendlyName': 'Two'},
+            ]
+        }
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        conn = client.connection = _Connection(DATA)
+
+        datasets, token = client.list_datasets()
+
+        self.assertEqual(len(datasets), len(DATA['datasets']))
+        for found, expected in zip(datasets, DATA['datasets']):
+            self.assertTrue(isinstance(found, Dataset))
+            self.assertEqual(found.dataset_id, expected['id'])
+            self.assertEqual(found.friendly_name, expected['friendlyName'])
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_datasets_explicit(self):
+        from gcloud.bigquery.dataset import Dataset
+        PROJECT = 'PROJECT'
+        DATASET_1 = 'dataset_one'
+        DATASET_2 = 'dataset_two'
+        PATH = 'projects/%s/datasets' % PROJECT
+        TOKEN = 'TOKEN'
+        DATA = {
+            'datasets': [
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s' % (PROJECT, DATASET_1),
+                 'datasetReference': {'datasetId': DATASET_1,
+                                      'projectId': PROJECT},
+                 'friendlyName': None},
+                {'kind': 'bigquery#dataset',
+                 'id': '%s:%s' % (PROJECT, DATASET_2),
+                 'datasetReference': {'datasetId': DATASET_2,
+                                      'projectId': PROJECT},
+                 'friendlyName': 'Two'},
+            ]
+        }
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        conn = client.connection = _Connection(DATA)
+
+        datasets, token = client.list_datasets(
+            include_all=True, max_results=3, page_token=TOKEN)
+
+        self.assertEqual(len(datasets), len(DATA['datasets']))
+        for found, expected in zip(datasets, DATA['datasets']):
+            self.assertTrue(isinstance(found, Dataset))
+            self.assertEqual(found.dataset_id, expected['id'])
+            self.assertEqual(found.friendly_name, expected['friendlyName'])
+        self.assertEqual(token, None)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'all': True, 'maxResults': 3, 'pageToken': TOKEN})
+
 
 class _Credentials(object):
 
@@ -58,3 +140,15 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
+
+
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def api_request(self, **kw):
+        self._requested.append(kw)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
