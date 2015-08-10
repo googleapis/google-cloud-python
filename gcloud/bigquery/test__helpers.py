@@ -15,20 +15,6 @@
 import unittest2
 
 
-class Test__millis(unittest2.TestCase):
-
-    def _callFUT(self, value):
-        from gcloud.bigquery._helpers import _millis
-        return _millis(value)
-
-    def test_one_second_from_epoch(self):
-        import datetime
-        from gcloud._helpers import UTC
-
-        WHEN = datetime.datetime(1970, 1, 1, 0, 0, 1, tzinfo=UTC)
-        self.assertEqual(self._callFUT(WHEN), 1000)
-
-
 class Test__datetime_from_prop(unittest2.TestCase):
 
     def _callFUT(self, value):
@@ -41,7 +27,7 @@ class Test__datetime_from_prop(unittest2.TestCase):
     def test_w_millis(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _total_seconds
+        from gcloud._helpers import _total_seconds
 
         NOW = datetime.datetime(2015, 7, 29, 17, 45, 21, 123456,
                                 tzinfo=UTC)
@@ -62,7 +48,7 @@ class Test__prop_from_datetime(unittest2.TestCase):
     def test_w_utc_datetime(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _total_seconds
+        from gcloud._helpers import _total_seconds
 
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         EPOCH = datetime.datetime(1970, 1, 1, tzinfo=UTC)
@@ -75,7 +61,7 @@ class Test__prop_from_datetime(unittest2.TestCase):
         import datetime
         from gcloud._helpers import UTC
         from gcloud._helpers import _UTC
-        from gcloud.bigquery._helpers import _total_seconds
+        from gcloud._helpers import _total_seconds
 
         class CET(_UTC):
             _tzname = 'CET'
@@ -92,7 +78,7 @@ class Test__prop_from_datetime(unittest2.TestCase):
     def test_w_naive_datetime(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _total_seconds
+        from gcloud._helpers import _total_seconds
 
         NOW = datetime.datetime.utcnow()
         UTC_NOW = NOW.replace(tzinfo=UTC)

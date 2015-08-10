@@ -19,6 +19,7 @@ This module is not part of the public API surface of `gcloud`.
 import datetime
 import os
 import socket
+import sys
 
 try:
     from threading import local as Local
@@ -207,7 +208,33 @@ def _determine_default_project(project=None):
     return project
 
 
+def _millis(when):
+    """Convert a zone-aware datetime to integer milliseconds.
+
+    :type when: ``datetime.datetime``
+    :param when: the datetime to convert
+
+    :rtype: integer
+    :returns: milliseconds since epoch for ``when``
+    """
+    return int(_total_seconds(when - _EPOCH) * 1000)
+
+
 try:
     from pytz import UTC  # pylint: disable=unused-import
 except ImportError:
     UTC = _UTC()  # Singleton instance to be used throughout.
+
+# Need to define _EPOCH at the end of module since it relies on UTC.
+_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=UTC)
+
+
+if sys.version_info[:2] < (2, 7):
+    def _total_seconds(offset):  # pragma: NO COVER
+        """Backport of timedelta.total_seconds() from python 2.7+."""
+        seconds = offset.days * 24 * 60 * 60 + offset.seconds
+        microseconds = seconds * 10**6 + offset.microseconds
+        return microseconds / (10**6 * 1.0)
+else:
+    def _total_seconds(offset):
+        return offset.total_seconds()

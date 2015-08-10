@@ -240,7 +240,7 @@ class TestTable(unittest2.TestCase):
     def test_props_set_by_server(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _millis
+        from gcloud._helpers import _millis
 
         CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
         MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
@@ -516,8 +516,8 @@ class TestTable(unittest2.TestCase):
     def test_create_w_alternate_client(self):
         import datetime
         from gcloud._helpers import UTC
+        from gcloud._helpers import _millis
         from gcloud.bigquery.table import SchemaField
-        from gcloud.bigquery._helpers import _millis
 
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         DESCRIPTION = 'DESCRIPTION'
@@ -716,7 +716,7 @@ class TestTable(unittest2.TestCase):
     def test_patch_w_alternate_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _millis
+        from gcloud._helpers import _millis
         from gcloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
@@ -825,7 +825,7 @@ class TestTable(unittest2.TestCase):
     def test_update_w_alternate_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _millis
+        from gcloud._helpers import _millis
         from gcloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (

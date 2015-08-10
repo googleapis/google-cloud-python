@@ -251,6 +251,20 @@ class Test__determine_default_project(unittest2.TestCase):
         self.assertEqual(callers, ['prod_mock'])
 
 
+class Test__millis(unittest2.TestCase):
+
+    def _callFUT(self, value):
+        from gcloud._helpers import _millis
+        return _millis(value)
+
+    def test_one_second_from_epoch(self):
+        import datetime
+        from gcloud._helpers import UTC
+
+        WHEN = datetime.datetime(1970, 1, 1, 0, 0, 1, tzinfo=UTC)
+        self.assertEqual(self._callFUT(WHEN), 1000)
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):

@@ -16,24 +16,12 @@
 
 
 import datetime
-import sys
 
 from gcloud._helpers import UTC
+from gcloud._helpers import _millis
 
 
 _EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=UTC)
-
-
-def _millis(when):
-    """Convert a zone-aware datetime to integer milliseconds.
-
-    :type when: ``datetime.datetime``
-    :param when: the datetime to convert
-
-    :rtype: integer
-    :returns: milliseconds since epoch for ``when``
-    """
-    return int(_total_seconds(when - _EPOCH) * 1000)
 
 
 def _datetime_from_prop(value):
@@ -66,14 +54,3 @@ def _prop_from_datetime(value):
             value = value.replace(tzinfo=UTC)
         # back-end wants timestamps as milliseconds since the epoch
         return _millis(value)
-
-
-if sys.version_info[:2] < (2, 7):
-    def _total_seconds(offset):  # pragma: NO COVER
-        """Backport of timedelta.total_seconds() from python 2.7+."""
-        seconds = offset.days * 24 * 60 * 60 + offset.seconds
-        microseconds = seconds * 10**6 + offset.microseconds
-        return microseconds / (10**6 * 1.0)
-else:
-    def _total_seconds(offset):
-        return offset.total_seconds()
