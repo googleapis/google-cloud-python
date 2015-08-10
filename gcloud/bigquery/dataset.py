@@ -290,9 +290,9 @@ class Dataset(object):
         for grant in access:
             grant = grant.copy()
             role = grant.pop('role')
-            entity_type, entity_id = grant.items()[0]
+            entity_type, entity_id = list(grant.items())[0]
             result.append(
-                AccessGrant(role, entity_type, grant[entity_type]))
+                AccessGrant(role, entity_type, entity_id))
         return result
 
     def _set_properties(self, api_response):

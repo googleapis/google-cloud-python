@@ -81,7 +81,7 @@ class TestDataset(unittest2.TestCase):
             role = r_grant.pop('role')
             self.assertEqual(a_grant.role, role)
             self.assertEqual(len(r_grant), 1)
-            entity_type, entity_id = r_grant.items()[0]
+            entity_type, entity_id = list(r_grant.items())[0]
             self.assertEqual(a_grant.entity_type, entity_type)
             self.assertEqual(a_grant.entity_id, entity_id)
 
