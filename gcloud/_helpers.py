@@ -246,7 +246,7 @@ def _millis(when):
     return int(_TOTAL_SECONDS(when - _EPOCH) * 1000)
 
 
-def _datetime_from_prop(value):
+def _datetime_from_millis(value):
     """Convert non-none timestamp to datetime, assuming UTC.
 
     :rtype: :class:`datetime.datetime`, or ``NoneType``
@@ -261,7 +261,7 @@ def _datetime_from_prop(value):
         )
 
 
-def _prop_from_datetime(value):
+def _millis_from_datetime(value):
     """Convert non-none datetime to timestamp, assuming UTC.
 
     :type value: :class:`datetime.datetime`, or None

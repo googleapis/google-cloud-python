@@ -15,7 +15,7 @@
 """Define API Datasets."""
 import six
 
-from gcloud._helpers import _datetime_from_prop
+from gcloud._helpers import _datetime_from_millis
 from gcloud.exceptions import NotFound
 from gcloud.bigquery.table import Table
 
@@ -114,7 +114,7 @@ class Dataset(object):
         :rtype: ``datetime.datetime``, or ``NoneType``
         :returns: the creation time (None until set from the server).
         """
-        return _datetime_from_prop(self._properties.get('creationTime'))
+        return _datetime_from_millis(self._properties.get('creationTime'))
 
     @property
     def dataset_id(self):
@@ -141,7 +141,7 @@ class Dataset(object):
         :rtype: ``datetime.datetime``, or ``NoneType``
         :returns: the modification time (None until set from the server).
         """
-        return _datetime_from_prop(self._properties.get('lastModifiedTime'))
+        return _datetime_from_millis(self._properties.get('lastModifiedTime'))
 
     @property
     def self_link(self):

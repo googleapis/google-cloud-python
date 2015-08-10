@@ -300,11 +300,11 @@ class Test__millis(unittest2.TestCase):
         self.assertEqual(self._callFUT(WHEN), 1000)
 
 
-class Test__datetime_from_prop(unittest2.TestCase):
+class Test__datetime_from_millis(unittest2.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _datetime_from_prop
-        return _datetime_from_prop(value)
+        from gcloud._helpers import _datetime_from_millis
+        return _datetime_from_millis(value)
 
     def test_w_none(self):
         self.assertTrue(self._callFUT(None) is None)
@@ -321,11 +321,11 @@ class Test__datetime_from_prop(unittest2.TestCase):
         self.assertEqual(self._callFUT(MILLIS), NOW)
 
 
-class Test__prop_from_datetime(unittest2.TestCase):
+class Test__millis_from_datetime(unittest2.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _prop_from_datetime
-        return _prop_from_datetime(value)
+        from gcloud._helpers import _millis_from_datetime
+        return _millis_from_datetime(value)
 
     def test_w_none(self):
         self.assertTrue(self._callFUT(None) is None)
