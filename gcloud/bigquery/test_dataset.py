@@ -78,19 +78,11 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(len(access_grants), len(r_grants))
 
         for a_grant, r_grant in zip(access_grants, r_grants):
-
-            self.assertEqual(a_grant.role, r_grant['role'])
-
-            if 'specialGroup' in r_grant:
-                self.assertEqual(a_grant.entity_type, 'specialGroup')
-                entity_id = r_grant['specialGroup']
-            elif 'groupByEmail' in r_grant:
-                self.assertEqual(a_grant.entity_type, 'groupByEmail')
-                entity_id = r_grant['groupByEmail']
-            else:
-                self.assertEqual(a_grant.entity_type, 'userByEmail')
-                entity_id = r_grant['userByEmail']
-
+            role = r_grant.pop('role')
+            self.assertEqual(a_grant.role, role)
+            self.assertEqual(len(r_grant), 1)
+            entity_type, entity_id = r_grant.items()[0]
+            self.assertEqual(a_grant.entity_type, entity_type)
             self.assertEqual(a_grant.entity_id, entity_id)
 
     def _verifyReadonlyResourceProperties(self, dataset, resource):
@@ -252,6 +244,21 @@ class TestDataset(unittest2.TestCase):
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertTrue(dataset._client is client)
         self._verifyResourceProperties(dataset, RESOURCE)
+
+    def test__parse_access_grants_w_unknown_entity_type(self):
+        USER_EMAIL = 'phred@example.com'
+        GROUP_EMAIL = 'group-name@lists.example.com'
+        RESOURCE = {
+            'access': [
+                {'role': 'OWNER', 'userByEmail': USER_EMAIL},
+                {'role': 'WRITER', 'groupByEmail': GROUP_EMAIL},
+                {'role': 'READER', 'specialGroup': 'projectReaders'},
+                {'role': 'READER', 'unknown': 'UNKNOWN'}]
+        }
+        client = _Client(self.PROJECT)
+        dataset = self._makeOne(self.DS_NAME, client=client)
+        grants = dataset._parse_access_grants(RESOURCE['access'])
+        self._verifyAccessGrants(grants, RESOURCE)
 
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/datasets' % self.PROJECT

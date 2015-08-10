@@ -288,13 +288,9 @@ class Dataset(object):
         """
         result = []
         for grant in access:
-            role = grant['role']
-            if 'specialGroup' in grant:
-                entity_type = 'specialGroup'
-            elif 'groupByEmail' in grant:
-                entity_type = 'groupByEmail'
-            else:
-                entity_type = 'userByEmail'
+            grant = grant.copy()
+            role = grant.pop('role')
+            entity_type, entity_id = grant.items()[0]
             result.append(
                 AccessGrant(role, entity_type, grant[entity_type]))
         return result
