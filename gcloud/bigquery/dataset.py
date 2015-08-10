@@ -278,7 +278,7 @@ class Dataset(object):
         return client
 
     def _parse_access_grants(self, access):
-        """Parse a resource fragment into a schema field.
+        """Parse a resource fragment into a set of access grants.
 
         :type access: list of mappings
         :param access: each mapping represents a single access grant
