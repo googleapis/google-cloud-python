@@ -914,7 +914,7 @@ class TestTable(unittest2.TestCase):
         import datetime
         from gcloud._helpers import UTC
         from gcloud.bigquery.table import SchemaField
-        from gcloud.bigquery._helpers import _prop_from_datetime
+        from gcloud._helpers import _prop_from_datetime
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -1145,7 +1145,7 @@ class TestTable(unittest2.TestCase):
     def test_insert_data_w_bound_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _prop_from_datetime
+        from gcloud._helpers import _prop_from_datetime
         from gcloud.bigquery.table import SchemaField
 
         WHEN_TS = 1437767599.006

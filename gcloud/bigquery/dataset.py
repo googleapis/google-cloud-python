@@ -15,8 +15,8 @@
 """Define API Datasets."""
 import six
 
+from gcloud._helpers import _datetime_from_prop
 from gcloud.exceptions import NotFound
-from gcloud.bigquery._helpers import _datetime_from_prop
 from gcloud.bigquery.table import Table
 
 

@@ -246,6 +246,38 @@ def _millis(when):
     return int(_TOTAL_SECONDS(when - _EPOCH) * 1000)
 
 
+def _datetime_from_prop(value):
+    """Convert non-none timestamp to datetime, assuming UTC.
+
+    :rtype: :class:`datetime.datetime`, or ``NoneType``
+    """
+    if value is not None:
+        # back-end returns timestamps as milliseconds since the epoch
+        seconds = int(value / 1000.0)
+        microseconds = 1000.0 * (value - 1000 * seconds)
+        return (
+            _EPOCH +
+            datetime.timedelta(seconds=seconds, microseconds=microseconds)
+        )
+
+
+def _prop_from_datetime(value):
+    """Convert non-none datetime to timestamp, assuming UTC.
+
+    :type value: :class:`datetime.datetime`, or None
+    :param value: the timestamp
+
+    :rtype: integer, or ``NoneType``
+    :returns: the timestamp, in milliseconds, or None
+    """
+    if value is not None:
+        if value.tzinfo is None:
+            # Assume UTC
+            value = value.replace(tzinfo=UTC)
+        # back-end wants timestamps as milliseconds since the epoch
+        return _millis(value)
+
+
 try:
     from pytz import UTC  # pylint: disable=unused-import
 except ImportError:
