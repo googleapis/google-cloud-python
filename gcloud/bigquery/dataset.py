@@ -290,9 +290,12 @@ class Dataset(object):
         for grant in access:
             grant = grant.copy()
             role = grant.pop('role')
-            entity_type, entity_id = list(grant.items())[0]
-            result.append(
-                AccessGrant(role, entity_type, entity_id))
+            # Hypothetical case:  we don't know that the back-end will ever
+            # return such structures, but they are logical.  See:
+            #https://github.com/GoogleCloudPlatform/gcloud-python/pull/1046#discussion_r36687769
+            for entity_type, entity_id in grant.items():
+                result.append(
+                    AccessGrant(role, entity_type, entity_id))
         return result
 
     def _set_properties(self, api_response):
