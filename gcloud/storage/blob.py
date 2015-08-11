@@ -227,32 +227,6 @@ class Blob(_PropertyMixin):
         except NotFound:
             return False
 
-    def rename(self, new_name, client=None):
-        """Renames this blob using copy and delete operations.
-
-        Effectively, copies blob to the same bucket with a new name, then
-        deletes the blob.
-
-        .. warning::
-          This method will first duplicate the data and then delete the
-          old blob.  This means that with very large objects renaming
-          could be a very (temporarily) costly or a very slow operation.
-
-        :type new_name: string
-        :param new_name: The new name for this blob.
-
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
-
-        :rtype: :class:`Blob`
-        :returns: The newly-copied blob.
-        """
-        new_blob = self.bucket.copy_blob(self, self.bucket, new_name,
-                                         client=client)
-        self.delete(client=client)
-        return new_blob
-
     def delete(self, client=None):
         """Deletes a blob from Cloud Storage.
 

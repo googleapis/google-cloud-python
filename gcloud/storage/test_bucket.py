@@ -519,6 +519,32 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['method'], 'POST')
         self.assertEqual(kw['path'], COPY_PATH)
 
+    def test_rename_blob(self):
+        BUCKET_NAME = 'BUCKET_NAME'
+        BLOB_NAME = 'blob-name'
+        NEW_BLOB_NAME = 'new-blob-name'
+
+        DATA = {'name': NEW_BLOB_NAME}
+        connection = _Connection(DATA)
+        client = _Client(connection)
+        bucket = self._makeOne(client=client, name=BUCKET_NAME)
+
+        class _Blob(object):
+
+            def __init__(self, name, bucket_name):
+                self.name = name
+                self.path = '/b/%s/o/%s' % (bucket_name, name)
+                self._deleted = []
+
+            def delete(self, client=None):
+                self._deleted.append(client)
+
+        blob = _Blob(BLOB_NAME, BUCKET_NAME)
+        renamed_blob = bucket.rename_blob(blob, NEW_BLOB_NAME, client=client)
+        self.assertTrue(renamed_blob.bucket is bucket)
+        self.assertEqual(renamed_blob.name, NEW_BLOB_NAME)
+        self.assertEqual(blob._deleted, [client])
+
     def test_etag(self):
         ETAG = 'ETAG'
         properties = {'etag': ETAG}

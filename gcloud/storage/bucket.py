@@ -434,7 +434,7 @@ class Bucket(_PropertyMixin):
                   client=None):
         """Copy the given blob to the given bucket, optionally with a new name.
 
-        :type blob: string or :class:`gcloud.storage.blob.Blob`
+        :type blob: :class:`gcloud.storage.blob.Blob`
         :param blob: The blob to be copied.
 
         :type destination_bucket: :class:`gcloud.storage.bucket.Bucket`
@@ -459,6 +459,35 @@ class Bucket(_PropertyMixin):
         copy_result = client.connection.api_request(
             method='POST', path=api_path, _target_object=new_blob)
         new_blob._set_properties(copy_result)
+        return new_blob
+
+    def rename_blob(self, blob, new_name, client=None):
+        """Rename the given blob using copy and delete operations.
+
+        Effectively, copies blob to the same bucket with a new name, then
+        deletes the blob.
+
+        .. warning::
+
+          This method will first duplicate the data and then delete the
+          old blob.  This means that with very large objects renaming
+          could be a very (temporarily) costly or a very slow operation.
+
+        :type blob: :class:`gcloud.storage.blob.Blob`
+        :param blob: The blob to be renamed.
+
+        :type new_name: string
+        :param new_name: The new name for this blob.
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :rtype: :class:`Blob`
+        :returns: The newly-renamed blob.
+        """
+        new_blob = self.copy_blob(blob, self, new_name, client=client)
+        blob.delete(client=client)
         return new_blob
 
     @property
