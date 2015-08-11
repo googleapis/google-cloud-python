@@ -39,6 +39,7 @@ except ImportError:
         """Dummy class if not in App Engine environment."""
 
 from gcloud._helpers import UTC
+from gcloud._helpers import _NOW
 from gcloud._helpers import _microseconds_from_datetime
 
 
@@ -256,14 +257,6 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
     }
 
 
-def _utcnow():  # pragma: NO COVER testing replaces
-    """Returns current time as UTC datetime.
-
-    NOTE: on the module namespace so tests can replace it.
-    """
-    return datetime.datetime.utcnow()
-
-
 def _get_expiration_seconds(expiration):
     """Convert 'expiration' to a number of seconds in the future.
 
@@ -275,7 +268,7 @@ def _get_expiration_seconds(expiration):
     """
     # If it's a timedelta, add it to `now` in UTC.
     if isinstance(expiration, datetime.timedelta):
-        now = _utcnow().replace(tzinfo=UTC)
+        now = _NOW().replace(tzinfo=UTC)
         expiration = now + expiration
 
     # If it's a datetime, convert to a timestamp.

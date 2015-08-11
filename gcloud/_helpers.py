@@ -37,6 +37,7 @@ except ImportError:
 from gcloud.environment_vars import PROJECT
 
 
+_NOW = datetime.datetime.utcnow  # To be replaced by tests.
 _RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 

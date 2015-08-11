@@ -541,7 +541,7 @@ class Test__get_expiration_seconds(unittest2.TestCase):
         utc_seconds = self._utc_seconds(dummy_utcnow)
         expiration_as_delta = datetime.timedelta(seconds=10)
 
-        with _Monkey(MUT, _utcnow=lambda: dummy_utcnow):
+        with _Monkey(MUT, _NOW=lambda: dummy_utcnow):
             result = self._callFUT(expiration_as_delta)
 
         self.assertEqual(result, utc_seconds + 10)
@@ -555,7 +555,7 @@ class Test__get_expiration_seconds(unittest2.TestCase):
         utc_seconds = self._utc_seconds(dummy_utcnow)
         expiration_as_delta = datetime.timedelta(days=1)
 
-        with _Monkey(MUT, _utcnow=lambda: dummy_utcnow):
+        with _Monkey(MUT, _NOW=lambda: dummy_utcnow):
             result = self._callFUT(expiration_as_delta)
 
         self.assertEqual(result, utc_seconds + 86400)

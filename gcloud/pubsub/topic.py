@@ -15,14 +15,12 @@
 """Define API Topics."""
 
 import base64
-import datetime
 
+from gcloud._helpers import _NOW
 from gcloud._helpers import _RFC3339_MICROS
 from gcloud.exceptions import NotFound
 from gcloud.pubsub._helpers import topic_name_from_path
 from gcloud.pubsub.subscription import Subscription
-
-_NOW = datetime.datetime.utcnow
 
 
 class Topic(object):
