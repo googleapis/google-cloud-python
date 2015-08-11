@@ -16,6 +16,7 @@
 
 import six
 
+from gcloud.exceptions import NotFound
 from gcloud.bigquery._helpers import _datetime_from_prop
 from gcloud.bigquery.table import SchemaField
 from gcloud.bigquery.table import _build_schema_resource
@@ -656,3 +657,23 @@ class LoadFromStorageJob(object):
         api_response = client.connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
+
+    def exists(self, client=None):
+        """API call:  test for the existence of the job via a GET request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+
+        try:
+            client.connection.api_request(method='GET', path=self.path,
+                                          query_params={'fields': 'id'})
+        except NotFound:
+            return False
+        else:
+            return True

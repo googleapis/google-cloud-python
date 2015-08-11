@@ -589,6 +589,39 @@ class TestLoadFromStorageJob(unittest2.TestCase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(job, RESOURCE)
 
+    def test_exists_miss_w_bound_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        table = _Table()
+        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+
+        self.assertFalse(job.exists())
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_exists_hit_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        table = _Table()
+        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client1)
+
+        self.assertTrue(job.exists(client=client2))
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
 
 class _Client(object):
 
@@ -627,7 +660,7 @@ class _Connection(object):
 
         try:
             response, self._responses = self._responses[0], self._responses[1:]
-        except:  # pragma: NO COVER  temporary, until 'get()' w/ miss
+        except:
             raise NotFound('miss')
         else:
             return response
