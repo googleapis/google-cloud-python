@@ -22,7 +22,7 @@ import datetime
 from google.protobuf.internal.type_checkers import Int64ValueChecker
 import six
 
-from gcloud._helpers import UTC
+from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.entity import Entity
@@ -224,9 +224,7 @@ def _get_value_from_value_pb(value_pb):
     result = None
     if value_pb.HasField('timestamp_microseconds_value'):
         microseconds = value_pb.timestamp_microseconds_value
-        naive = (datetime.datetime.utcfromtimestamp(0) +
-                 datetime.timedelta(microseconds=microseconds))
-        result = naive.replace(tzinfo=UTC)
+        result = _datetime_from_microseconds(microseconds)
 
     elif value_pb.HasField('key_value'):
         result = key_from_protobuf(value_pb.key_value)
@@ -285,7 +283,7 @@ def _set_protobuf_value(value_pb, val):
     :type value_pb: :class:`gcloud.datastore._datastore_v1_pb2.Value`
     :param value_pb: The value protobuf to which the value is being assigned.
 
-    :type val: `datetime.datetime`, boolean, float, integer, string,
+    :type val: :class:`datetime.datetime`, boolean, float, integer, string,
                :class:`gcloud.datastore.key.Key`,
                :class:`gcloud.datastore.entity.Entity`,
     :param val: The value to be assigned.

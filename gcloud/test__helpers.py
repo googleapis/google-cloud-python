@@ -334,16 +334,13 @@ class Test__millis_from_datetime(unittest2.TestCase):
         self.assertEqual(result, MILLIS)
 
 
-class Test__datetime_from_millis(unittest2.TestCase):
+class Test__datetime_from_microseconds(unittest2.TestCase):
 
     def _callFUT(self, value):
-        from gcloud._helpers import _datetime_from_millis
-        return _datetime_from_millis(value)
+        from gcloud._helpers import _datetime_from_microseconds
+        return _datetime_from_microseconds(value)
 
-    def test_w_none(self):
-        self.assertTrue(self._callFUT(None) is None)
-
-    def test_w_millis(self):
+    def test_it(self):
         import datetime
         from gcloud._helpers import UTC
         from gcloud._helpers import _microseconds_from_datetime
@@ -351,8 +348,7 @@ class Test__datetime_from_millis(unittest2.TestCase):
         NOW = datetime.datetime(2015, 7, 29, 17, 45, 21, 123456,
                                 tzinfo=UTC)
         NOW_MICROS = _microseconds_from_datetime(NOW)
-        MILLIS = NOW_MICROS / 1000.0
-        self.assertEqual(self._callFUT(MILLIS), NOW)
+        self.assertEqual(self._callFUT(NOW_MICROS), NOW)
 
 
 class _AppIdentity(object):

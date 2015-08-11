@@ -222,19 +222,16 @@ def _millis(when):
     return millis
 
 
-def _datetime_from_millis(value):
-    """Convert non-none timestamp to datetime, assuming UTC.
+def _datetime_from_microseconds(value):
+    """Convert timestamp to datetime, assuming UTC.
 
-    :rtype: :class:`datetime.datetime`, or ``NoneType``
+    :type value: float
+    :param value: The timestamp to convert
+
+    :rtype: :class:`datetime.datetime`
+    :returns: The datetime object created from the value.
     """
-    if value is not None:
-        # back-end returns timestamps as milliseconds since the epoch
-        seconds = int(value / 1000.0)
-        microseconds = 1000.0 * (value - 1000 * seconds)
-        return (
-            _EPOCH +
-            datetime.timedelta(seconds=seconds, microseconds=microseconds)
-        )
+    return _EPOCH + datetime.timedelta(microseconds=value)
 
 
 def _microseconds_from_datetime(value):
