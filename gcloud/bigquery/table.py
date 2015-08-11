@@ -78,6 +78,24 @@ class Table(object):
         self.schema = schema
 
     @property
+    def project(self):
+        """Project bound to the table.
+
+        :rtype: string
+        :returns: the project (derived from the dataset).
+        """
+        return self._dataset.project
+
+    @property
+    def dataset_name(self):
+        """Name of dataset containing the table.
+
+        :rtype: string
+        :returns: the ID (derived from the dataset).
+        """
+        return self._dataset.name
+
+    @property
     def path(self):
         """URL path for the table's APIs.
 

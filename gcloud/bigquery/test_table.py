@@ -183,6 +183,8 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset)
         self.assertEqual(table.name, self.TABLE_NAME)
         self.assertTrue(table._dataset is dataset)
+        self.assertEqual(table.project, self.PROJECT)
+        self.assertEqual(table.dataset_name, self.DS_NAME)
         self.assertEqual(
             table.path,
             '/projects/%s/datasets/%s/tables/%s' % (
