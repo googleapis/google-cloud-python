@@ -15,7 +15,6 @@
 """A simple wrapper around the OAuth2 credentials library."""
 
 import base64
-import calendar
 import datetime
 import six
 from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
@@ -40,6 +39,7 @@ except ImportError:
         """Dummy class if not in App Engine environment."""
 
 from gcloud._helpers import UTC
+from gcloud._helpers import _microseconds_from_datetime
 
 
 def get_credentials():
@@ -280,15 +280,8 @@ def _get_expiration_seconds(expiration):
 
     # If it's a datetime, convert to a timestamp.
     if isinstance(expiration, datetime.datetime):
-        # Make sure the timezone on the value is UTC
-        # (either by converting or replacing the value).
-        if expiration.tzinfo:
-            expiration = expiration.astimezone(UTC)
-        else:
-            expiration = expiration.replace(tzinfo=UTC)
-
-        # Turn the datetime into a timestamp (seconds, not microseconds).
-        expiration = int(calendar.timegm(expiration.timetuple()))
+        micros = _microseconds_from_datetime(expiration)
+        expiration, _ = divmod(micros, 10**6)
 
     if not isinstance(expiration, six.integer_types):
         raise TypeError('Expected an integer timestamp, datetime, or '

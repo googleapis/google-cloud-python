@@ -16,10 +16,10 @@
 This module is not part of the public API surface of `gcloud`.
 """
 
+import calendar
 import datetime
 import os
 import socket
-import sys
 
 try:
     from threading import local as Local
@@ -208,32 +208,6 @@ def _determine_default_project(project=None):
     return project
 
 
-def _manual_total_seconds(offset):
-    """Backport of timedelta.total_seconds() from python 2.7+.
-
-    :type offset: :class:`datetime.timedelta`
-    :param offset: The value to convert into seconds.
-
-    :rtype: float
-    :returns: The time offset, converted to total seconds.
-    """
-    seconds = offset.days * 24 * 60 * 60 + offset.seconds
-    microseconds = seconds * 10**6 + offset.microseconds
-    return microseconds / (10**6 * 1.0)
-
-
-def _total_seconds_from_type(offset):
-    """Basic wrapper around timedelta.total_seconds().
-
-    :type offset: :class:`datetime.timedelta`
-    :param offset: The value to convert into seconds.
-
-    :rtype: float
-    :returns: The time offset, converted to total seconds.
-    """
-    return offset.total_seconds()
-
-
 def _millis(when):
     """Convert a zone-aware datetime to integer milliseconds.
 
@@ -243,7 +217,9 @@ def _millis(when):
     :rtype: integer
     :returns: milliseconds since epoch for ``when``
     """
-    return int(_TOTAL_SECONDS(when - _EPOCH) * 1000)
+    micros = _microseconds_from_datetime(when)
+    millis, _ = divmod(micros, 1000)
+    return millis
 
 
 def _datetime_from_millis(value):
@@ -261,6 +237,23 @@ def _datetime_from_millis(value):
         )
 
 
+def _microseconds_from_datetime(value):
+    """Convert non-none datetime to microseconds.
+
+    :type value: :class:`datetime.datetime`
+    :param value: The timestamp to convert.
+
+    :rtype: integer
+    :returns: The timestamp, in microseconds.
+    """
+    if not value.tzinfo:
+        value = value.replace(tzinfo=UTC)
+    # Regardless of what timezone is on the value, convert it to UTC.
+    value = value.astimezone(UTC)
+    # Convert the datetime to a microsecond timestamp.
+    return int(calendar.timegm(value.timetuple()) * 1e6) + value.microsecond
+
+
 def _millis_from_datetime(value):
     """Convert non-none datetime to timestamp, assuming UTC.
 
@@ -271,10 +264,6 @@ def _millis_from_datetime(value):
     :returns: the timestamp, in milliseconds, or None
     """
     if value is not None:
-        if value.tzinfo is None:
-            # Assume UTC
-            value = value.replace(tzinfo=UTC)
-        # back-end wants timestamps as milliseconds since the epoch
         return _millis(value)
 
 
@@ -285,9 +274,3 @@ except ImportError:
 
 # Need to define _EPOCH at the end of module since it relies on UTC.
 _EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=UTC)
-
-
-if sys.version_info[:2] < (2, 7):
-    _TOTAL_SECONDS = _manual_total_seconds  # pragma: NO COVER
-else:
-    _TOTAL_SECONDS = _total_seconds_from_type

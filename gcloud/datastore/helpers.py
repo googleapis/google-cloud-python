@@ -17,13 +17,13 @@
 The non-private functions are part of the API.
 """
 
-import calendar
 import datetime
 
 from google.protobuf.internal.type_checkers import Int64ValueChecker
 import six
 
 from gcloud._helpers import UTC
+from gcloud._helpers import _microseconds_from_datetime
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
@@ -182,14 +182,7 @@ def _pb_attr_value(val):
 
     if isinstance(val, datetime.datetime):
         name = 'timestamp_microseconds'
-        # If the datetime is naive (no timezone), consider that it was
-        # intended to be UTC and replace the tzinfo to that effect.
-        if not val.tzinfo:
-            val = val.replace(tzinfo=UTC)
-        # Regardless of what timezone is on the value, convert it to UTC.
-        val = val.astimezone(UTC)
-        # Convert the datetime to a microsecond timestamp.
-        value = int(calendar.timegm(val.timetuple()) * 1e6) + val.microsecond
+        value = _microseconds_from_datetime(val)
     elif isinstance(val, Key):
         name, value = 'key', val.to_protobuf()
     elif isinstance(val, bool):
