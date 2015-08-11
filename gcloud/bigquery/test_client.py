@@ -128,6 +128,25 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(dataset.name, DATASET)
         self.assertTrue(dataset._client is client)
 
+    def test_load_from_storage(self):
+        from gcloud.bigquery.job import LoadFromStorageJob
+        PROJECT = 'PROJECT'
+        JOB = 'job_name'
+        DATASET = 'dataset_name'
+        DESTINATION = 'destination_table'
+        SOURCE_URI = 'http://example.com/source.csv'
+        creds = _Credentials()
+        http = object()
+        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        dataset = client.dataset(DATASET)
+        destination = dataset.table(DESTINATION)
+        job = client.load_from_storage(JOB, destination, SOURCE_URI)
+        self.assertTrue(isinstance(job, LoadFromStorageJob))
+        self.assertTrue(job._client is client)
+        self.assertEqual(job.name, JOB)
+        self.assertEqual(list(job.source_uris), [SOURCE_URI])
+        self.assertTrue(job.destination is destination)
+
 
 class _Credentials(object):
 
