@@ -34,18 +34,6 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
 
-    def test_dataset(self):
-        from gcloud.bigquery.dataset import Dataset
-        PROJECT = 'PROJECT'
-        DATASET = 'dataset_name'
-        creds = _Credentials()
-        http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
-        dataset = client.dataset(DATASET)
-        self.assertTrue(isinstance(dataset, Dataset))
-        self.assertEqual(dataset.name, DATASET)
-        self.assertTrue(dataset._client is client)
-
     def test_list_datasets_defaults(self):
         from gcloud.bigquery.dataset import Dataset
         PROJECT = 'PROJECT'
@@ -127,6 +115,18 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'],
                          {'all': True, 'maxResults': 3, 'pageToken': TOKEN})
+
+    def test_dataset(self):
+        from gcloud.bigquery.dataset import Dataset
+        PROJECT = 'PROJECT'
+        DATASET = 'dataset_name'
+        creds = _Credentials()
+        http = object()
+        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        dataset = client.dataset(DATASET)
+        self.assertTrue(isinstance(dataset, Dataset))
+        self.assertEqual(dataset.name, DATASET)
+        self.assertTrue(dataset._client is client)
 
 
 class _Credentials(object):
